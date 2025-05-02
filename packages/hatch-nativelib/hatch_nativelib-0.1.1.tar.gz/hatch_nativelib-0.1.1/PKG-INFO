@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: hatch-nativelib
+Version: 0.1.1
+Summary: Hatchling plugin with utilities for native libraries
+Project-URL: Source code, https://github.com/robotpy/hatch-nativelib
+Author-email: Dustin Spicuzza <dustin@virtualroadside.com>
+License-Expression: BSD-3-Clause
+Keywords: hatch,pkgconf
+Classifier: Framework :: Hatch
+Requires-Python: >=3.8
+Requires-Dist: delocate; platform_system == 'Darwin'
+Requires-Dist: hatchling
+Requires-Dist: packaging
+Requires-Dist: pkgconf
+Requires-Dist: validobj~=1.2
+Description-Content-Type: text/markdown
+
+hatch-nativelib
+===============
+
+Hatchling plugin with utilities for native libraries.
+
+pkgconf dependency generation
+-----------------------------
+
+By adding `[[tool.hatch.build.hooks.nativelib.pcfile]]` to your hatchling project's
+`pyproject.toml`, this plugin will do a couple of things:
+
+* Automatically generate the .pc file from the `pyproject.toml` config section
+* Register the .pc file so that [pkgconf-pypi](https://github.com/pypackaging-native/pkgconf-pypi)
+  will find it and things such as meson can use it for dependency resolution
+* On macOS, will adjust any libraries mentioned in the .pc file to have a `@loader_path`
+  pointing at their dependencies (as specified in the .pc file)
+
+See [config](src/hatch_nativelib/config.py) for `pyproject.toml` configuration.
