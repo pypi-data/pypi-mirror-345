@@ -1,0 +1,66 @@
+[project]
+name = "domain-validator"
+version = "0.1.0"
+description = "Domain name validation package for Python"
+authors = [
+    {name = "Stacy Noland", email = "stacy.noland@outlook.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dnspython (>=2.7.0,<3.0.0)",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: Name Service (DNS)",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+
+[project.optional-dependencies]
+cli = ["typer (>=0.15.2,<1.0.0)"]
+
+[tool.poetry]
+packages = [{include = "domain_validator", from = "src"}]
+
+[tool.poetry.group.cli]
+optional = true
+
+[tool.poetry.group.cli.dependencies]
+typer = "^0.15.2"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
+black = "^25.1.0"
+flake8 = "^7.2.0"
+isort = "^6.0.1"
+mypy = "^1.15.0"
+tox = "^4.25.0"
+pre-commit = "^4.2.0"
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+extend_skip = [".pytest_cache",]
+skip_glob = ["*/__pycache__/*", "*/tests/__pycache__/*"]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
