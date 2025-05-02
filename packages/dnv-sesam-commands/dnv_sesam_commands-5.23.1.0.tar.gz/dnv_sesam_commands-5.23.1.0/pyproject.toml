@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dnv-sesam-commands"
+version = "5.23.1.0"
+authors = [
+    {name = "DNV AS", email = "software.support@dnv.com"},
+]
+description = "A Python library for developing and executing Sesam workflows on local or cloud platforms, and for executing commands outside of workflow contexts."
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["onecompute", "oneworkflow", "workflow", "sesam"]
+license = {file = "LICENSE"}
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "dnv-oneworkflow >= 1.0.0, < 2",
+  "dnv-net-runtime",
+  "multipledispatch",
+]
+
+[options]
+package_dir = "src"
+
+[tool.setuptools.package-data]
+"*" = ["*.pyi"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["docs*", "tests*"]
+
+[project.urls]
+Homepage = "https://myworkspace.dnv.com/knowledge-centre/sesam-workflows/usermanual/?document=sesam-workflows-getstarted"
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.isort]
+profile = "black"
+skip = [
+    '.eggs', '.git', '.hg', '.mypy_cache', '.nox', '.pants.d', '.tox',
+    '.venv', '_build', 'buck-out', 'build', 'dist', 'node_modules', 'venv',
+]
+skip_gitignore = true
