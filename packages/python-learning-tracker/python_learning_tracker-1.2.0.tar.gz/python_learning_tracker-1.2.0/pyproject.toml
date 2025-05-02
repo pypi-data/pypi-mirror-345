@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python_learning_tracker"
+version = "1.2.0"
+description = "Flask-додаток для аналізу прогресу навчання Python"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE.txt" }
+
+dependencies = [
+  "flask",
+  "jinja2",
+  "flask-restful",
+  "flasgger"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "ruff"
+]
+
+[project.scripts]
+learning-tracker = "python_learning_tracker.cli:main"
+run-web = "python_learning_tracker.api:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages]
+find = { where = ["src"] }
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=src --cov-report=term"
+testpaths = ["tests"]

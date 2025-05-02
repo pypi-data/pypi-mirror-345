@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Результати пошуку{% endblock %}
+
+{% block content %}
+    <h1>Результати пошуку</h1>
+    <p>Ви шукали: <strong>{{ query }}</strong></p>
+
+    {% if results %}
+        <ul>
+            {% for result in results %}
+                <li><a href="{{ result.url }}">{{ result.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нічого не знайдено.</p>
+    {% endif %}
+{% endblock %}
