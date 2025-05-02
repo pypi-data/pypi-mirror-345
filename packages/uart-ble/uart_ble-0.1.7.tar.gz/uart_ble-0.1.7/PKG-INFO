@@ -1,0 +1,49 @@
+Metadata-Version: 2.3
+Name: uart-ble
+Version: 0.1.7
+Summary: Stream UART BLE data from a microcontroller
+Author: Tsmorz
+Author-email: tony.smoragiewicz@tum.de
+Requires-Python: >=3.12,<3.14
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: loguru (>=0.7.3,<0.8.0)
+Requires-Dist: numpy (>=2.2.3,<3.0.0)
+Requires-Dist: poetry-core (>=2.1.2,<3.0.0)
+Requires-Dist: pre-commit (>=4.1.0,<5.0.0)
+Requires-Dist: py-imu (>=0.0.1,<0.0.2)
+Requires-Dist: pyserial (>=3.5,<4.0)
+Requires-Dist: pytest (>=8.3.5,<9.0.0)
+Requires-Dist: pytest-cov (>=6.0.0,<7.0.0)
+Requires-Dist: scipy (>=1.15.2,<2.0.0)
+Requires-Dist: tqdm (>=4.67.1,<5.0.0)
+Project-URL: homepage, https://github.com/TUM-Aries-Lab/uart_ble
+Description-Content-Type: text/markdown
+
+# UART-Bluetooth Low Energy
+Stream UART BLE data from a microcontroller
+
+## Install
+To install the library run: `pip install uart-ble`
+
+## Development
+0. Install [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer)
+1. `make init` to create the virtual environment and install dependencies
+2. `make format` to format the code and check for errors
+3. `make test` to run the test suite
+4. `make clean` to delete the temporary files and directories
+5. `poetry publish --build` to build and publish to https://pypi.org/project/uart-ble
+
+
+## Usage
+```
+import asyncio
+
+from uart_ble import stream_uart_ble
+
+if __name__ == "__main__":
+    asyncio.run(stream_uart_ble(microcontroller_name="CIRCUITPY"))
+
+```
+
