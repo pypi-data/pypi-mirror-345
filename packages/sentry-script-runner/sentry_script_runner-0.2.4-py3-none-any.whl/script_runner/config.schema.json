@@ -1,0 +1,179 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Config schema",
+  "type": "object",
+  "properties": {
+    "mode": {
+      "enum": [
+        "combined",
+        "main",
+        "region"
+      ]
+    },
+    "groups": {
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "python_module": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "python_module"
+        ]
+      }
+    },
+    "audit_logs": {
+      "type": "object",
+      "properties": {
+        "console": {},
+        "datadog": {
+          "type": "object",
+          "properties": {
+            "api_key": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "api_key"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "authentication": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "no_auth",
+            "google_iap"
+          ]
+        },
+        "additionalProperties": false,
+        "google_iap": {
+          "type": "object",
+          "properties": {
+            "audience_code": {
+              "type": "string",
+              "description": "JWT audience code"
+            },
+            "iap_principals": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "method"
+      ],
+      "dependencies": {
+        "google_iap": {
+          "properties": {
+            "method": {
+              "const": "google_iap"
+            }
+          },
+          "required": [
+            "google_iap"
+          ]
+        }
+      }
+    },
+    "sentry_dsn": {
+      "type": "string",
+      "description": "Sentry DSN for error tracking"
+    },
+    "main": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Page title for UI"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "region": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "configs": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "required": [
+    "mode",
+    "groups",
+    "audit_logs",
+    "authentication"
+  ],
+  "dependencies": {
+    "mode": {
+      "oneOf": [
+        {
+          "properties": {
+            "mode": {
+              "const": "combined"
+            }
+          },
+          "required": [
+            "main",
+            "region"
+          ]
+        },
+        {
+          "properties": {
+            "mode": {
+              "const": "main"
+            }
+          },
+          "required": [
+            "main"
+          ]
+        },
+        {
+          "properties": {
+            "mode": {
+              "const": "region"
+            }
+          },
+          "required": [
+            "region"
+          ]
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}
