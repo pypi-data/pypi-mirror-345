@@ -1,0 +1,522 @@
+Metadata-Version: 2.4
+Name: cellnition
+Version: 0.6.0
+Summary: Open-source cross-platform biology simulator analyzing gene regulatory networks (GRNs) with Network Finite State Machines (NFSMs).
+Project-URL: Docs, https://betsee.github.io/cellnition
+Project-URL: GitHub, https://github.com/betsee/cellnition
+Project-URL: Forums, https://github.com/betsee/cellnition/discussions
+Project-URL: Issues, https://github.com/betsee/cellnition/issues
+Project-URL: Releases, https://github.com/betsee/cellnition/releases
+Author-email: Alexis Pietak <alexis.pietak@gmail.com>
+Maintainer-email: Cecil Curry <leycec@gmail.com>
+License: Tufts Open Source License Rider v.1
+        Academic Use Only
+        
+        
+        Tufts University (“Licensor”) provides you a single copy of the Software
+        identified below pursuant to the License identified below, subject to the
+        following additional License conditions and terms, which are expressly
+        made a part of and integrated with the below License.
+        
+        Notwithstanding anything to the contrary in the License, the license rights
+        provided to you pursuant to the License may be exercised by you solely for
+        academic, non-commercial, research purposes and for no other purpose.  The
+        rights granted to you in the License expressly do not include, and the
+        License does not grant to you, the right to copy, modify, reproduce, distribute,
+        display, perform, or otherwise exploit the Software for any commercial purpose.
+        You may not use the Software to provide any product or service to any third
+        party, whether for a fee or any other consideration, including without limitation
+        any hosting, software as a service, consulting, or support services, and may
+        not otherwise use the Software to develop, provide, maintain, or support any
+        commercial product or service whose values derives, in whole or in part, from
+        the Software or its features or functions.  The Software is intended solely to
+        support academic research purposes and any use outside this permitted purpose
+        is prohibited.
+        
+        To this end, in the event you make or have made any modifications, updates,
+        upgrades, or contributions to the Software (“Modifications”), Licensor asks
+        that all such Modifications be disclosed and shared back to Licensor for
+        potential use and consideration for updates and improvements to the Software
+        for further use, disclosure, and licensing by Licensor in its discretion to
+        further the associated research.  At your request, in the event Licensor
+        uses or incorporates your Modifications into future versions of the Software,
+        Licensor will include attribution to you for such Modifications.
+        
+        Any license notice or attribution required by the License must also include
+        the additional terms of this Tufts Open Source License Rider – Academic Use
+        Only v. 1.
+        
+        Software: Cellnition
+        License: Apache 2.0
+        
+        
+        
+                                         Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           Copyright 2025 Alexis Pietak
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at:
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+License-File: LICENSE
+Keywords: biology,python,science,simulator
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: >=3.10
+Requires-Dist: beartype>=0.15.0
+Requires-Dist: networkx>=3.4.0
+Requires-Dist: numpy>=1.22.0
+Requires-Dist: pandas>=1.5.0
+Requires-Dist: pygraphviz>=1.10
+Requires-Dist: pyvista>=0.42.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: sympy>=1.9.0
+Provides-Extra: dev
+Requires-Dist: coverage>=5.5; extra == 'dev'
+Requires-Dist: mkdocs-material>=9.6.0; extra == 'dev'
+Requires-Dist: mkdocstrings-python>=1.16.0; extra == 'dev'
+Requires-Dist: pytest>=4.0.0; extra == 'dev'
+Requires-Dist: tox>=3.20.1; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: mkdocs-material>=9.6.0; extra == 'docs'
+Requires-Dist: mkdocstrings-python>=1.16.0; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: coverage>=5.5; extra == 'test'
+Requires-Dist: pytest>=4.0.0; extra == 'test'
+Requires-Dist: tox>=3.20.1; extra == 'test'
+Provides-Extra: test-tox
+Requires-Dist: pytest>=4.0.0; extra == 'test-tox'
+Provides-Extra: test-tox-coverage
+Requires-Dist: coverage>=5.5; extra == 'test-tox-coverage'
+Description-Content-Type: text/x-rst
+
+.. # ------------------( SEO                                 )------------------
+.. # Metadata converted into HTML-specific meta tags parsed by search engines.
+.. # Note that:
+.. # * The "description" should be no more than 300 characters and ideally no
+.. #   more than 150 characters, as search engines may silently truncate this
+.. #   description to 150 characters in edge cases.
+
+.. #FIXME: Fill this description in with meaningful content, please.
+.. meta::
+   :description lang=en:
+     Analyze gene regulatory networks (GRNs) via Network Finite State Machines (NFSMs).
+
+.. # ------------------( SYNOPSIS                            )------------------
+
+===================
+|cellnition-banner|
+===================
+
+|ci-badge|
+
+**Cellnition** is an open source simulator to create and analyze Network Finite
+State Machines (NFSMs) from gene regulatory network (GRN) models.
+
+Regulatory networks such as GRNs preside over complex phenomena in biological systems, 
+yet given a specific regulatory network, how do we know what it's capable of doing?
+
+**Cellnition** treats regulatory networks as analogue computers, where NFSMs map the sequential
+logic inherent in the network as a dissipative dynamic system. As an extension and 
+improvement upon attractor landscape analysis, NFSMs reveal the analogue computing 
+operations inherent in GRNs, allowing for identification of associated "intelligent 
+behaviors".  NFSMs capture the "analog programming" of GRNs, which aim to provide clear identification of:
+
+* Interventions that may induce transitions between stable states (e.g. from "diseased" to "healthy") 
+* Identification of path-dependencies, representing stable changes occurring after a transient intervention is applied (e.g. predicting if a transient treatment with pharmacological agent might permanently heal a condition)
+* Identification of inducible cycles of behavior that may take the system through a complex multi-phase process (e.g. wound healing). 
+
+NFSMs have a range of potential applications, including the identification of potential strategies to 
+renormalize cancer (see `Tutorial 2`_). 
+
+Read more about **Cellnition's** NFSMs in our publication: 
+`Harnessing the Analogue Computing Power of Regulatory Networks with the 
+Regulatory Network Machine <paper_>`__. Please cite this publication in any work that utilizes **Cellnition**:
+
+Pietak, Alexis, and Levin, Michael.
+ “Harnessing the Analog Computing Power of Regulatory Networks 
+ with the Regulatory Network Machine.” *iScience*, 28 April 2025, 112536.
+
+**Cellnition** is `portably implemented <cellnition codebase_>`__ in Python_,
+`continuously stress-tested <cellnition tests_>`__ via `GitHub Actions`_ **×**
+tox_ **×** pytest_  **×** Codecov_, and `licensed <cellnition
+license_>`__ under a non-commercial use, open source `APACHE license`_ with Tufts Open Source License Rider v.1. 
+For maintainability, cellnition officially supports *only* the most recently released version of CPython_.
+
+.. # ------------------( TABLE OF CONTENTS                   )------------------
+.. # Blank line. By default, Docutils appears to only separate the subsequent
+.. # table of contents heading from the prior paragraph by less than a single
+.. # blank line, hampering this table's readability and aesthetic comeliness.
+
+|
+
+.. # Table of contents, excluding the above document heading. While the
+.. # official reStructuredText documentation suggests that a language-specific
+.. # heading will automatically prepend this table, this does *NOT* appear to
+.. # be the case. Instead, this heading must be explicitly declared.
+
+.. contents:: **Contents**
+   :local:
+
+.. # ------------------( DESCRIPTION                         )------------------
+
+Install
+=======
+
+**Cellnition** is installable with pip_, the standard package installer
+officially bundled with Python_:
+
+.. code-block:: bash
+
+   pip3 install cellnition
+
+Documentation
+=============
+
+Comprehensive documentation for **Cellnition** is available at our `GitHub Pages hosted site <cellnition docs_>`__.
+
+Features
+=========
+**Cellnition** embodies a range of functionality, including:
+
+* Work with regulatory networks imported from **Cellnition's** network-library, use **Cellnition** to procedurally generate regulatory networks with random or scale-free degree distributions, or import your own user-defined regulatory networks as directed graphs with activating or inhibiting edge characteristics (see `Tutorial 1`_ and `Tutorial 2`_ for some examples).
+* Analyze and characterize regulatory network graphs with a variety of metrics (see the `characterize_graph`_ method and `Tutorial 1`_ and `Tutorial 2`_). 
+* Use directed graph representations of regulatory networks to build fully-continuous, differential equation based simulators of network dynamics (see `ProbabilityNet`_ class and `Tutorial 1`_). 
+* Use directed graph representations of regulatory networks to build logic equation based Boolean simulators of network dynamics (see `BooleanNet`_ class and `Tutorial 2`_).
+* Explore regulatory network dynamics with comprehensive equillibrium state search and characterization capabilities, along with temporal simulators (see `Tutorial 1`_ and `Tutorial 2`_ for some examples).
+* Create simulated datasets, including simulation of automated gene-knockout experiments for a continuous regulatory network model (see `GeneKnockout`_ class). 
+* Generate Network Finite State Machines (NFSMs) for continuous models (see `Tutorial 1`_) or for Boolean models (see `Tutorial 2`_). 
+* Create and export a variety of plots and visualizations, including of the regulatory network analytic equations, regulatory network directed graphs, heatmaps of gene expressions in equilibrium states, gene expressions in temporal simulations, and depictions of the general and event-driven NFSMs (see `Tutorial 1`_ and `Tutorial 2`_ for some examples).     
+
+Tutorials
+=========
+
+**Cellnition** tutorials are available as `Jupyter Notebooks <Jupyter_>`__:
+
+* `Tutorial 1`_ : Create NFSMs from a continuous, differential-equation based GRN model.
+* `Tutorial 2`_ : Create NFSMs from a Boolean, logic-equation based GRN model.
+* `Tutorial 3`_ : Apply a dynamic stimulation to a continuous, differential-equation based GRN model.
+* `Tutorial 4`_ : Apply a dynamic stimulation to a Boolean based GRN model.
+
+Acknowledgements
+================
+
+**Cellnition** creator Alexis Pietak is grateful for collaboration opportunities and funding support
+from the `Levin Lab <Levin Lab_>`__ at `Tufts University <Tufts_>`__, via a `Templeton World Charity Foundation grant 0606 <TWCFGrant_>`__.
+Thanks goes out to Brian Curry for his volunteer assistance with the *Cellnition* code repository. 
+
+Disclaimer
+==========
+
+Alexis Pietak created **Cellnition**, and co-authored the associated `scientific manuscript <paper_>`__, as an 
+external contractor ("Affiliate Research Scientist") for `Tufts University <Tufts_>`__. Under the established `terms <TuftsRoyalties_>`__ of 
+`Tufts University <Tufts_>`__, as an external contractor, Alexis recieves no royalties nor other financial benefits or entitlements in connection with any intellectual 
+property associated with the **Cellnition** project or its associated `scientific manuscript <paper_>`__.
+
+Note that the functionality provided and work presented in **Cellnition** and its associated `scientific manuscript <paper_>`__ are at a 
+theoretical and computational stage, with any and all potential applications for the work requiring verification by real world experiments and comprehensive testing.   
+
+License
+=======
+
+**Cellnition** is non-commerical use, open source software `licensed <cellnition license_>`__ under an
+`Apache 2.0 license <APACHE license_>`__ with Tufts Open Source License Rider v.1, restricting use
+to academic purposes only.
+
+.. # ------------------( IMAGES                              )------------------
+.. |cellnition-banner| image:: https://github.com/user-attachments/assets/50f45c9b-980a-473f-9362-361d3f62061a
+   :target: https://github.com/betsee/cellnition
+   :alt: Cellnition
+
+.. # ------------------( IMAGES ~ badge                      )------------------
+.. |app-badge| image:: https://static.streamlit.io/badges/streamlit_badge_black_white.svg
+   :target: https://cellnition.streamlit.app
+   :alt: Cellnition web app (graciously hosted by Streamlit Cloud)
+.. |ci-badge| image:: https://github.com/betsee/cellnition/workflows/test/badge.svg
+   :target: https://github.com/betsee/cellnition/actions?workflow=test
+   :alt: Cellnition continuous integration (CI) status
+
+.. # ------------------( LINKS ~ cellnition : local          )------------------
+.. _cellnition License:
+   LICENSE
+.. _Tutorial 1:
+   ipynb/Tutorial1_ContinuousNFSM_v1.ipynb
+.. _Tutorial 2:
+   ipynb/Tutorial2_BooleanNFSM_v1.ipynb
+.. _Tutorial 3:
+   ipynb/Tutorial3_ContinuousTimeStim_v2.ipynb
+.. _Tutorial 4:
+   ipynb/Tutorial4_BooleanTimeSim_v2.ipynb
+
+.. # ------------------( LINKS ~ cellnition : package        )------------------
+.. #FIXME: None of these exist, naturally. *sigh*
+.. _cellnition Anaconda:
+   https://anaconda.org/conda-forge/cellnition
+.. _cellnition PyPI:
+   https://pypi.org/project/cellnition
+
+.. # ------------------( LINKS ~ cellnition : remote         )------------------
+.. _cellnition:
+   https://gitlab.com/betsee/cellnition
+.. _cellnition app:
+   https://cellnition.streamlit.app
+.. _cellnition codebase:
+   https://gitlab.com/betsee/cellnition
+.. _cellnition docs:
+   https://betsee.github.io/cellnition
+.. _cellnition pulls:
+   https://gitlab.com/betsee/cellnition/-/merge_requests
+.. _cellnition tests:
+   https://gitlab.com/betsee/cellnition/actions?workflow=tests
+
+.. # ------------------( LINKS ~ cellnition : internal         )------------------
+.. _characterize_graph:
+   https://github.com/betsee/cellnition/blob/4b1e6b78c725cdb24bcf82b7c259ad6e726f42ce/cellnition/science/network_models/network_abc.py#L214
+.. _ProbabilityNet:
+   https://github.com/betsee/cellnition/blob/4b1e6b78c725cdb24bcf82b7c259ad6e726f42ce/cellnition/science/network_models/probability_networks.py#L30
+.. _BooleanNet:
+   https://github.com/betsee/cellnition/blob/4b1e6b78c725cdb24bcf82b7c259ad6e726f42ce/cellnition/science/network_models/boolean_networks.py#L25
+.. _GeneKnockout:
+   https://github.com/betsee/cellnition/blob/4b1e6b78c725cdb24bcf82b7c259ad6e726f42ce/cellnition/science/networks_toolbox/gene_knockout.py#L18
+
+.. # ------------------( LINKS ~ github                      )------------------
+.. _GitHub Actions:
+   https://github.com/features/actions
+
+.. # ------------------( LINKS ~ py                          )------------------
+.. _Python:
+   https://www.python.org
+.. _pip:
+   https://pip.pypa.io
+
+.. # ------------------( LINKS ~ py : interpreter            )------------------
+.. _CPython:
+   https://github.com/python/cpython
+
+.. # ------------------( LINKS ~ py : package : science      )------------------
+.. _Jupyter:
+   https://jupyter.org
+
+.. # ------------------( LINKS ~ py : package : test         )------------------
+.. _Codecov:
+   https://about.codecov.io
+.. _pytest:
+   https://docs.pytest.org
+.. _tox:
+   https://tox.readthedocs.io
+
+.. # ------------------( LINKS ~ py : package : web          )------------------
+.. _Streamlit:
+   https://streamlit.io
+
+.. # ------------------( LINKS ~ py : service                )------------------
+.. _Anaconda:
+   https://docs.conda.io/en/latest/miniconda.html
+.. _PyPI:
+   https://pypi.org
+
+.. # ------------------( LINKS ~ external                    )------------------
+.. _paper:
+   https://www.sciencedirect.com/science/article/pii/S2589004225007977
+.. _Levin Lab:
+   https://as.tufts.edu/biology/levin-lab
+.. _Tufts:
+   https://www.tufts.edu
+.. _TWCFGrant:
+   https://www.templetonworldcharity.org/projects-resources/project-database/0606
+.. _TuftsRoyalties: 
+   https://viceprovost.tufts.edu/policies-forms-guides/policy-rights-and-responsibilities-respect-intellectual-property
+
+.. # ------------------( LINKS ~ soft : license             )------------------
+.. _MIT license:
+   https://opensource.org/licenses/MIT
+.. _APACHE license:
+   https://www.apache.org/licenses/LICENSE-2.0
