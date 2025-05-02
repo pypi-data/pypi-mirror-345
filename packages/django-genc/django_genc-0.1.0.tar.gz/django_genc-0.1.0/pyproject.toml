@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django_genc"
+version = "0.1.0"
+description = "A django app for working with GENC country codes"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+keywords = ["django", "genc", "country", "codes", "iso"]
+authors = [
+    { name = "V. David Zvenyach", email = "dave@makegov.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Django",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "django>=4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/makegov/django-genc"
+Documentation = "https://django-genc.readthedocs.io/"
+Repository = "https://github.com/makegov/django-genc"
+Issues = "https://github.com/makegov/django-genc/issues"
+
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "isort",
+    "pytest",
+    "pytest-django",
+    "coverage",
+]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
