@@ -1,0 +1,15 @@
+# @package _global_
+defaults:
+  - base
+optimizer_id: SMAC3-MultiFidelityFacade  # BOHB
+optimizer:
+  smac_cfg:
+    smac_class: smac.facade.multi_fidelity_facade.MultiFidelityFacade
+    smac_kwargs:
+      intensifier:
+        _target_: smac.intensifier.hyperband.Hyperband
+        _partial_: true
+        eta: 3
+
+  expects_multiple_objectives: false
+  expects_fidelities: true
