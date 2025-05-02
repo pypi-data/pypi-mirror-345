@@ -1,0 +1,2 @@
+conn = None
+tables = None
