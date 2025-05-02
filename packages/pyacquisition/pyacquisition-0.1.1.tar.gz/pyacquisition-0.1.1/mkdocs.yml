@@ -1,0 +1,53 @@
+site_name: PyAcquisition
+repo_url: https://github.com/jakeayres/pyacquisition
+repo_name: pyacquisition
+nav:
+  - Home: index.md
+  - Basic Usage:
+    - Installation: basics/installation.md
+    - Getting Started: basics/getting_started.md
+    - Configuration: basics/configuration.md
+  - Experiment:
+    - Experiment: experiment/experiment.md
+    - Rack: experiment/rack.md
+    - Scribe: experiment/scribe.md
+    - Task Manager: experiment/task_manager.md
+  - Instruments:
+    - Clock: instruments/clock.md
+    - SR_830: instruments/sr_830.md
+    - SR_860: instruments/sr_860.md
+    - Lakeshore_340: instruments/lakeshore_340.md
+    - Lakeshore_350: instruments/lakeshore_350.md
+  - Tasks:
+    - WaitFor: tasks/wait_for.md
+    - WaitUntil: tasks/wait_until.md
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/git-alt 
+  palette:
+    primary: deep purple
+  features:
+    - navigation.tabs
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            heading_level: 2
+            show_root_heading: true
+            show_root_toc_entry: false
+            show_root_full_path: false
+            merge_init_into_class: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            show_docstring_examples: true
+            modernize_annotations: true
+            
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
