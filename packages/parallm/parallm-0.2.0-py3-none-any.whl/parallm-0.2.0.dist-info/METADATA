@@ -1,0 +1,448 @@
+Metadata-Version: 2.4
+Name: parallm
+Version: 0.2.0
+Summary: CLI tool for querying multiple models with prompts from a CSV with schema support
+Author-email: Rohit Krishnan <rohit.krishnan@gmail.com>
+License:                                  Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by each Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise comply with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright 2025 Rohit Krishnan
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+        
+Project-URL: Homepage, https://github.com/strangeloopcanon/parallm
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: bodo>=2025.3.3
+Requires-Dist: llm>=0.23
+Requires-Dist: pandas==2.2.3
+Requires-Dist: python-dotenv==1.1.0
+Requires-Dist: pydantic>=2.0.0
+
+# ParaLLM
+
+ParaLLM is a command-line tool and Python package for efficiently querying language models. It supports batch processing with multiple prompts and models, and includes structured JSON output via schemas.
+
+## Features
+
+- **Multi-Model Querying:** Query multiple LLMs simultaneously, comparing their outputs
+- **CSV Input/Output:** Use CSV files for batch processing of prompts
+- **Structured JSON Output:** Get responses formatted to JSON schemas or Pydantic models
+- **High Performance:** Leverages Bodo for parallel execution of queries
+- **Multiple Providers:** Support for OpenAI, AWS Bedrock, and Google Gemini
+
+## Installation
+
+```bash
+pip install parallm
+```
+
+Or install from source:
+
+```bash
+git clone https://github.com/strangeloopcanon/parallm.git
+cd parallm
+pip install -e .
+```
+
+You'll need to install Simon Willison's `llm` package and set up your API keys. For AWS Bedrock, ensure you have AWS credentials configured. For Gemini, set the `GEMINI_API_KEY` environment variable.
+
+## Command-Line Usage
+
+### Batch Processing (CSV Files)
+
+Process multiple prompts from a CSV file with one or more models:
+
+```bash
+# Default mode (OpenAI/llm)
+parallm --prompts data/prompts.csv --models gpt-4 claude-3-sonnet-20240229
+
+# AWS Bedrock mode
+parallm aws --prompts data/prompts.csv --models anthropic.claude-3-sonnet-20240229 amazon.titan-text-express-v1
+
+# Gemini mode
+parallm gemini --prompts data/prompts.csv --models gemini-2.0-flash
+```
+
+### Single Prompt Processing
+
+Process a single prompt with optional repeat functionality:
+
+```bash
+# Default mode (OpenAI/llm)
+parallm --prompts "What is the capital of France?" --models gpt-4 --repeat 5
+
+# AWS Bedrock mode
+parallm aws --prompts "What is the capital of France?" --models anthropic.claude-3-sonnet-20240229 --repeat 5
+
+# Gemini mode
+parallm gemini --prompts "What is the capital of France?" --models gemini-2.0-flash --repeat 5
+```
+
+### Structured Output
+
+Get responses formatted according to a JSON schema or Pydantic model:
+
+```bash
+# Using a JSON schema
+parallm --prompts data/prompts.csv --models gpt-4 --schema '{
+  "type": "object",
+  "properties": {
+    "answer": {"type": "string"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+  },
+  "required": ["answer", "confidence"]
+}'
+
+# Using a schema from file
+parallm --prompts data/prompts.csv --models gpt-4 --schema schema.json
+
+# Using a Pydantic model
+parallm --prompts data/prompts.csv --models gpt-4 --pydantic models.py:ResponseModel
+```
+
+## Python API Usage
+
+### Batch Processing
+
+```python
+from parallm import query_model_all, bedrock_query_model_all, gemini_query_model_all
+
+# Default mode (OpenAI/llm)
+df = query_model_all("data/prompts.csv", ["gpt-4", "claude-3-sonnet-20240229"])
+print(df)
+
+# AWS Bedrock
+df = bedrock_query_model_all("data/prompts.csv", ["anthropic.claude-3-sonnet-20240229"])
+print(df)
+
+# Gemini
+df = gemini_query_model_all("data/prompts.csv", ["gemini-2.0-flash"])
+print(df)
+```
+
+### Single Prompt Processing
+
+```python
+from parallm import query_model_repeat, bedrock_query_model_repeat, gemini_query_model_repeat
+
+# Default mode (OpenAI/llm)
+df = query_model_repeat("What is the capital of France?", "gpt-4", repeat=5)
+print(df)
+
+# AWS Bedrock
+df = bedrock_query_model_repeat("What is the capital of France?", "anthropic.claude-3-sonnet-20240229", repeat=5)
+print(df)
+
+# Gemini
+df = gemini_query_model_repeat("What is the capital of France?", "gemini-2.0-flash", repeat=5)
+print(df)
+```
+
+### Structured Output
+
+```python
+from parallm import query_model_json
+from pydantic import BaseModel
+
+# Using a Pydantic model
+class Response(BaseModel):
+    answer: str
+    confidence: float
+
+result = query_model_json("What is the capital of France?", "gpt-4", schema=Response)
+print(result)
+```
+
+## Retrieval-Augmented Generation (RAG)
+
+ParaLLM now includes a modular RAG pipeline to allow querying language models with context retrieved from your own documents.
+
+### Overview
+
+The RAG system processes your documents through a configurable pipeline:
+
+1.  **Ingestion:** Loads documents from a specified directory. Supports `.txt`, `.pdf`, `.docx`, and `.html`/`.htm` files.
+2.  **Chunking:** Splits documents into smaller chunks using different strategies:
+    *   `fixed_size`: Overlapping chunks of a defined character size.
+    *   `semantic`: Groups sentences together (using NLTK).
+3.  **Embedding:** Generates vector embeddings for each chunk using a specified Sentence Transformer model (e.g., `all-MiniLM-L6-v2`).
+4.  **Indexing:** Stores the chunks, embeddings, and metadata in:
+    *   A vector store (currently ChromaDB) for semantic search.
+    *   A keyword index (using BM25) for lexical search.
+
+When querying, the system retrieves relevant chunks using vector search, keyword search, or a hybrid combination, augments the prompt with this context, and then sends it to the specified language model.
+
+### Configuration (`rag_config.yaml`)
+
+The entire RAG pipeline is configured using a YAML file (e.g., `rag_config.yaml`). This file defines the sequence of steps, parameters for each step (like source paths, chunking strategy, embedding model, index paths), and the retrieval strategy.
+
+See `examples/rag_config.yaml` for a detailed example.
+
+### RAG CLI Usage
+
+Use the `rag` subcommand for building indexes and querying.
+
+**1. Build the RAG Index:**
+
+This command runs the ingestion, chunking, embedding, and indexing pipeline defined in your config file.
+
+```bash
+python -m parallm rag build --config path/to/your_rag_config.yaml
+```
+
+*   Replace `path/to/your_rag_config.yaml` with the actual path to your configuration file.
+*   This needs to be run once initially and then again whenever your source documents or pipeline configuration change.
+*   Indexes (ChromaDB, BM25 pickle file) will be created/updated based on paths specified in the config.
+
+**2. Query the RAG System:**
+
+This command uses a previously built index to retrieve context, augment a prompt, and query an LLM.
+
+```bash
+python -m parallm rag query --config path/to/your_rag_config.yaml --query "Your question here?" --llm-model gpt-4o-mini
+```
+
+*   `--config`: Specifies the RAG configuration file (used to load the retriever and embedding models).
+*   `--query` / `-q`: The question you want to ask.
+*   `--llm-model`: (Optional) The language model to use for generating the final answer (defaults to the model specified in the script, e.g., `gpt-4o-mini`).
+
+### RAG Dependencies
+
+Using the RAG features requires additional dependencies:
+
+```
+PyYAML          # For parsing rag_config.yaml
+sentence-transformers # For embedding generation
+chromadb        # Vector store
+rank_bm25       # Keyword indexing
+pypdf           # PDF ingestion
+python-docx     # DOCX ingestion
+beautifulsoup4  # HTML ingestion
+lxml            # HTML parsing backend for beautifulsoup4
+nltk            # Semantic chunking (sentence tokenization)
+reportlab       # Required by test suite to generate test PDFs
+```
+
+Ensure NLTK's `punkt` tokenizer data is downloaded:
+`python -m nltk.downloader punkt`
+
+## CSV Format
+
+Your `prompts.csv` file should have a header row with "prompt" as the column name:
+
+```csv
+prompt
+What is machine learning?
+Explain quantum computing
+How does blockchain work?
+```
+
+## Dependencies
+
+- **pandas:** Data processing and CSV handling
+- **bodo:** Parallel execution for performance
+- **llm:** Simon Willison's LLM interface library
+- **python-dotenv:** Environment variable management
+- **pydantic:** Data validation for structured output
+- **boto3:** AWS SDK for Python (required for AWS Bedrock)
+- **google-generativeai:** Google's Gemini API client (required for Gemini)
+
+## Author
+
+Rohit Krishnan
