@@ -1,0 +1,73 @@
+[tool.poetry]
+authors = [
+  "Daniele Guido <daniele.guido@uni.lu>",
+  "Roman Kalyakin <roman@kalyakin.com",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
+description = "A Library to interact with the Impresso API"
+homepage = "https://github.com/impresso/impresso-py"
+license = "AGPL-3.0-or-later"
+name = "impresso"
+packages = [
+  {include = "impresso", from = "."},
+]
+readme = "README.md"
+repository = "https://github.com/impresso/impresso-py"
+version = "0.9.11"
+
+[tool.poetry.urls]
+Endpoint = "https://impresso-project.ch/public-api/v1"
+Issues = "https://github.com/impresso/impresso-py/issues"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+
+[virtualenvs]
+in-project = true
+
+[tool.poetry.dependencies]
+PyJWT = "^2.8.0"
+PyYAML = "^6.0.2"
+attrs = "^23.2.0"
+httpx = "^0.27.0"
+matplotlib = "^3.7.0"
+pandas = "^2.1.0"
+pandas-stubs = "^2.2.1.240316"
+protobuf = "^4.25.0"
+pydantic = "^2.6.4"
+python = "^3.10.0 || ^3.11.0 || ^3.12.0"
+python-dateutil = "^2.8.0"
+types-PyYAML = "^6.0.12.20240311"
+types-protobuf = "^5.27.0.20240626"
+
+[tool.poetry.group.dev.dependencies]
+black = "24.3.0"
+datamodel-code-generator = "0.25.6"
+flake8 = "7.0.0"
+mypy = "1.9.0"
+# openapi-python-client = "0.19.1"
+# Waiting for a PR to be accepted. Meanwhile update with:
+openapi-python-client = {git = "https://github.com/theorm/openapi-python-client.git#name=openapi-python-client", branch = "develop"}
+pytest = "8.1.1"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "1.6.1"
+mkdocs-material = "9.5.45"
+mkdocstrings = {version = "0.27.0", extras = ["python"]}
+
+[tool.mypy]
+exclude = ["impresso/api_client", "impresso/protobuf"]
+
+[tool.poetry.scripts]
+generate-client = "scripts.scripts:generate_api_client"
+generate-protobuf = "scripts.scripts:generate_protobuf"
