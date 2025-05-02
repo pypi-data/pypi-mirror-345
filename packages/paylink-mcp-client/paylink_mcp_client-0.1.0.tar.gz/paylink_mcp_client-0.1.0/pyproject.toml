@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "paylink-mcp-client"
+version = "0.1.0"
+description = "A client for interacting with the PayLink MCP Server"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "James Kanyiri", email = "jameskanyiridev@gmail.com"},
+]
+keywords = ["paylink", "mcp", "client", "api"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "build>=1.2.2.post1",
+    "hatchling>=1.27.0",
+    "mcp>=1.6.0",
+    "nest-asyncio>=1.6.0",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "python-dotenv>=1.1.0",
+    "twine>=6.1.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/paylink-mcp-client"
+"Bug Tracker" = "https://github.com/yourusername/paylink-mcp-client/issues"
+
+[project.optional-dependencies]
+dev = [
+    "ipykernel>=6.29.5",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.18.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["paylink_mcp_client"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "paylink_mcp_client",
+    "README.md",
+    "LICENSE",
+]
