@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=78.1.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+strict = true
+
+[project]
+name = "sentry-script-runner"
+version = "0.2.4"
+description = "A web application for running Python scripts."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dynamic = ["dependencies"]
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools]
+include-package-data = false
+packages = ["script_runner"]
+
+[tool.setuptools.package-data]
+script_runner = ["config.schema.json", "frontend/dist/**/*"]
+
+[project.scripts]
+script-runner = "script_runner.cli:main"
+
+[[tool.mypy.overrides]]
+module = "infra_event_notifier"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "googleapiclient.discovery"
+ignore_missing_imports = true
