@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: generalized-geography
+Version: 0.0.7
+Summary: Generalized Geography Game Solver
+Home-page: https://github.com/singrum/generalized-geography
+Author: Hyomin
+Author-email: miamiq0000@gmail.com
+Keywords: generalized geography,word chain,game,graph theory
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# Generalized Geography Game Solver
+
+## Install
+
+```console
+$ pip install generalized-geography
+```
+
+## Example
+
+```python
+import generalized_geography as gg
+graph = gg.UnlabeledMultiDiGraph()
+graph.add_edges_from([(0, 1), (0, 1), (1, 2), (2, 3),
+                     (3, 0), (1, 2), (2, 3), (0, 2)])
+solver = gg.DEGSolver(graph)
+solver.completely_classify()
+print(solver.winlose)
+# {0: 1, 1: 0, 2: 1, 3: 0}
+```
+
+## Documentation
+
+### RDG
+
+Directed Edge/Vertex Geography with Repetitions
+
+### DEG
+
+Directed Edge Geography
+
+### DVG
+
+Directed Vertex Geography
+
+### CDEG
+
+Changeable Directed Vertex Geography
