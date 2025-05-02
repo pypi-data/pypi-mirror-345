@@ -1,0 +1,62 @@
+[project]
+name = "octo-framework"
+version = "1.0.2"
+authors = [
+  { name="Octo Software", email="octo.team.dev@gmail.com" },
+]
+description = "Octo-Framework is a framework designed to simplify the setup and development process for Django projects. It is based on the Octo-Lunch template and provides a set of tools and features that help developers build robust and flexible web applications faster and more efficiently."
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE"}
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Framework :: Django",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 5.0",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+]
+dependencies = [
+    "django>=4",
+    "gitpython>=3",
+    "colorlog>=6",
+    "colorama>=0.4",
+    "requests>=2.32",
+    "appdirs>=1.4",
+    "pillow>=10.3",
+    "faker",
+    "djangorestframework",
+    "djangorestframework-simplejwt",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "sphinx>=7",
+    "pre-commit",
+    "ruff",
+    "tox",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/oc-to/octo-framework"
+"Bug Tracker" = "https://github.com/oc-to/octo-framework/issues"
+
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+octo = "octo.commands.manager:main"
+
+[tool.poetry.files]
+include = ["octo/*"]
