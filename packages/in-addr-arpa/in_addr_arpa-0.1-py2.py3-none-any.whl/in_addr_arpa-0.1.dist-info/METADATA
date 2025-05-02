@@ -1,0 +1,137 @@
+Metadata-Version: 2.4
+Name: in_addr_arpa
+Version: 0.1
+Summary: Do reverse DNS query on networks.
+Author-email: Julien Palard <julien@palard.fr>
+Description-Content-Type: text/markdown
+License-Expression: MIT
+License-File: LICENSE
+Project-URL: Home, https://git.afpy.org/mdk/in_addr_arpa
+
+# in-addr.arpa.py
+
+Do reverse DNS query on networks, en masse.
+
+
+## Installing
+
+`pip install in_addr_arpa`
+
+
+## Example
+
+Querying multiple hosts:
+
+```text
+$ in-addr.arpa 1.1.1.1 8.8.8.8 9.9.9.9
+1.1.1.1 one.one.one.one
+8.8.8.8 dns.google
+9.9.9.9 dns9.quad9.net
+```
+
+Querying networks:
+
+```text
+$ in-addr.arpa 145.242.11.100/24
+145.242.11.4 applications.dgfip.finances.gouv.fr
+145.242.11.2 concours.dgfip.finances.gouv.fr
+145.242.11.3 prxpusx100.dgfip.finances.gouv.fr
+145.242.11.6 teletd-test.impots.gouv.fr
+145.242.11.9 portail.dgfip.finances.gouv.fr
+145.242.11.10 dns0.dgfip.finances.gouv.fr
+145.242.11.12 cft.impots.gouv.fr
+145.242.11.11 dns1.dgfip.finances.gouv.fr
+145.242.11.22 dns1.impots.gouv.fr
+145.242.11.25 www.jepaiemesserviceslocaux.dgfip.finances.gouv.fr
+145.242.11.26 formuelassistanceteleprocedure.impots.gouv.fr
+145.242.11.27 payfip.impots.gouv.fr
+145.242.11.28 ensap.gouv.fr
+145.242.11.29 encheres-domaine.gouv.fr
+145.242.11.31 mail.dgfip.finances.gouv.fr
+145.242.11.32 spdc.dgfip.finances.gouv.fr
+145.242.11.34 ficobap.dgfip.finances.gouv.fr
+145.242.11.33 rdt.dgfip.finances.gouv.fr
+145.242.11.37 stgpe.dgi.minefi.gouv.fr
+145.242.11.36 apex.dgi.minefi.gouv.fr
+145.242.11.38 ficoba.dgfip.finances.gouv.fr
+145.242.11.40 ficobas.dgfip.finances.gouv.fr
+145.242.11.45 cfspro.impots.gouv.fr
+145.242.11.44 inscriptionpro.impots.gouv.fr
+145.242.11.43 formuelassistteleservice.impots.gouv.fr
+145.242.11.46 trevi.impots.gouv.fr
+145.242.11.47 cfsfc.impots.gouv.fr
+145.242.11.49 static.impots.gouv.fr
+145.242.11.51 mta1-milter-bp.dgfip.finances.gouv.fr
+145.242.11.52 mta2-milter-bp.dgfip.finances.gouv.fr
+145.242.11.53 mta3-milter-bp.dgfip.finances.gouv.fr
+145.242.11.54 mta4-milter-bp.dgfip.finances.gouv.fr
+145.242.11.58 cadastre.gouv.fr
+145.242.11.62 pf2pusi001-4.dgfip.finances.gouv.fr
+145.242.11.63 pf2pusi002-6.dgfip.finances.gouv.fr
+145.242.11.64 pf2pusi003-8.dgfip.finances.gouv.fr
+145.242.11.67 pf2pusi003-9.dgfip.finances.gouv.fr
+145.242.11.65 pf2pusi001-5.dgfip.finances.gouv.fr
+145.242.11.66 pf2pusi002-7.dgfip.finances.gouv.fr
+145.242.11.70 scppums2.cadastre.gouv.fr
+145.242.11.68 www4.impots.gouv.fr
+145.242.11.69 scppums1.cadastre.gouv.fr
+145.242.11.73 dns1.dgfip.finances.gouv.fr
+145.242.11.72 teletd.impots.gouv.fr
+145.242.11.74 poseidon1.impots.gouv.fr
+145.242.11.76 mmail.dgfip.finances.gouv.fr
+145.242.11.75 poseidon2.impots.gouv.fr
+145.242.11.80 www2.impots.gouv.fr
+145.242.11.81 api.impots.gouv.fr
+145.242.11.83 gw.impots.gouv.fr
+145.242.11.86 servicesenligne.impots.gouv.fr
+145.242.11.101 escalev3.dgfip.finances.gouv.fr
+145.242.11.103 pf2pusi001.dgfip.finances.gouv.fr
+145.242.11.104 pf2pusi002.dgfip.finances.gouv.fr
+145.242.11.105 pf2pusi003.dgfip.finances.gouv.fr
+145.242.11.108 formuelassistanceteleprocedurev2.impots.gouv.fr
+145.242.11.111 archives-bofip.impots.gouv.fr
+145.242.11.110 bofip.impots.gouv.fr
+145.242.11.116 otdin.impots.gouv.fr
+145.242.11.118 cesop.impots.gouv.fr
+145.242.11.119 ict.impots.gouv.fr
+145.242.11.128 mail-bdm-prod-001-128.dgfip.finances.gouv.fr
+145.242.11.129 mail-bdm-prod-001-129.dgfip.finances.gouv.fr
+145.242.11.131 mail-bdm-prod-001-131.dgfip.finances.gouv.fr
+145.242.11.130 mail-bdm-prod-001-130.dgfip.finances.gouv.fr
+145.242.11.133 mail-bdm-prod-002-133.dgfip.finances.gouv.fr
+145.242.11.132 mail-bdm-prod-002-132.dgfip.finances.gouv.fr
+145.242.11.134 mail-bdm-prod-002-134.dgfip.finances.gouv.fr
+145.242.11.135 mail-bdm-prod-002-135.dgfip.finances.gouv.fr
+145.242.11.151 mta5-milter-bp.dgfip.finances.gouv.fr
+145.242.11.152 mta6-milter-bp.dgfip.finances.gouv.fr
+145.242.11.153 mta7-milter-bp.dgfip.finances.gouv.fr
+145.242.11.154 mta8-milter-bp.dgfip.finances.gouv.fr
+145.242.11.183 mobile.dgfip.finances.gouv.fr
+145.242.11.188 bdmprod001-1.dgfip.finances.gouv.fr
+145.242.11.187 bdmprod001-0.dgfip.finances.gouv.fr
+145.242.11.189 bdmprod001-2.dgfip.finances.gouv.fr
+145.242.11.191 bdmprod001-4.dgfip.finances.gouv.fr
+145.242.11.192 bdmprod002-0.dgfip.finances.gouv.fr
+145.242.11.190 bdmprod001-3.dgfip.finances.gouv.fr
+145.242.11.194 bdmprod002-2.dgfip.finances.gouv.fr
+145.242.11.195 bdmprod002-3.dgfip.finances.gouv.fr
+145.242.11.193 bdmprod002-1.dgfip.finances.gouv.fr
+145.242.11.196 bdmprod002-4.dgfip.finances.gouv.fr
+145.242.11.197 Bdmqualif011-1.dgfip.finances.gouv.fr
+145.242.11.198 Bdmqualif012-1.dgfip.finances.gouv.fr
+145.242.11.200 Bdmprod022-1.dgfip.finances.gouv.fr
+145.242.11.199 Bdmprod021-1.dgfip.finances.gouv.fr
+145.242.11.201 Bdmprod023-1.dgfip.finances.gouv.fr
+145.242.11.203 dns2.dgfip.finances.gouv.fr
+145.242.11.204 dns2.impots.gouv.fr
+145.242.11.211 www.telepaiement.dgfip.finances.gouv.fr
+145.242.11.224 store.dgfip.finances.gouv.fr
+145.242.11.244 cfspart.impots.gouv.fr
+145.242.11.245 www.impots.gouv.fr
+145.242.11.249 Bdmqualif011-2.dgfip.finances.gouv.fr
+145.242.11.251 Bdmprod021-2.dgfip.finances.gouv.fr
+145.242.11.250 Bdmqualif012-2.dgfip.finances.gouv.fr
+145.242.11.253 Bdmprod023-2.dgfip.finances.gouv.fr
+145.242.11.252 Bdmprod022-2.dgfip.finances.gouv.fr
+```
+
