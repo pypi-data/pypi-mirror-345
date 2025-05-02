@@ -1,0 +1,135 @@
+Metadata-Version: 2.3
+Name: DDownloader
+Version: 0.4.1
+Summary: A downloader for DRM-protected & Non DRM-protected content.
+License: MIT License
+         
+         Copyright (c) [2024] [DDownloader]
+         
+         Permission is hereby granted, free of charge, to any person obtaining a copy
+         of this software and associated documentation files (the "Software"), to deal
+         in the Software without restriction, including without limitation the rights
+         to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+         copies of the Software, and to permit persons to whom the Software is
+         furnished to do so, subject to the following condition:
+         
+         The above copyright notice and this permission notice shall be included in
+         all copies or substantial portions of the Software.
+         
+         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+         IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+         FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+         AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+         FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+         IN THE SOFTWARE.
+Author: ThatNotEasy
+Author-email: apidotmy@proton.me
+Requires-Python: >=3.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Dist: colorama (>=0.4.5)
+Requires-Dist: coloredlogs (>=15.0)
+Requires-Dist: loguru (>=0.6.0)
+Requires-Dist: pymediainfo (>=6.1.0,<7.0.0)
+Requires-Dist: requests (>=2.26.0)
+Requires-Dist: tqdm (>=4.64.0)
+Project-URL: Homepage, https://github.com/ThatNotEasy/DDownloader
+Description-Content-Type: text/markdown
+
+# DDownloader
+_DDownloader is a powerful Python-based tool and library designed to download and decrypt DRM-protected content from DASH, HLS, and ISM manifests. It provides seamless support for encrypted media streams, extracting metadata and ensuring high compatibility with various DRM standards._
+
+## Features
+- **Download and Decrypt**: Supports DASH, HLS, and ISM manifests with seamless decryption using provided keys.
+- **Automatic Detection**: Automatically detects manifest types (.mpd, .m3u8, .ism) and processes accordingly.
+- **Media Information Extraction**: Extracts metadata (e.g., codec, resolution, duration) for .mp4 files and saves it in a `logs/` directory.
+- **CLI and Library Support**: Flexible usage via command-line or Python library.
+- **Detailed Logging**: Provides real-time progress and logs errors for debugging.
+
+## Requirements
+
+- **Python**: Version 3.7 or higher.
+- **Required binaries**:
+  
+    - `N_m3u8DL-RE` for downloading protected DRM content.
+    - `mp4decrypt` for decrypting protected media files.
+    - `ffmpeg` for re-encoding and muxer method
+    - a proper environment variable configuration for binaries.
+
+##  Installation
+- Install `DDownloader` using pip:
+  
+	```bash
+	pip install DDownloader
+	```
+
+##  Usage
+- Download Content:
+  
+	```python
+	from DDownloader.modules.downloader import DOWNLOADER
+
+	downloader = DOWNLOADER()
+	downloader.manifest_url = "https://example.com/path/to/manifest"  # DASH, HLS, or ISM manifest URL
+	downloader.output_name = "output.mp4"  # Desired output file name
+	downloader.decryption_keys = ["12345:678910"]  # Provide decryption keys if needed
+	downloader.download()  # Start the downloading and decryption process
+	```
+ 
+- Extract Media Information:
+  
+	```python
+	from DDownloader.modules.helper import get_media_info
+
+	file_path = "downloads/example.mp4"
+	media_info = get_media_info(file_path)
+	print(media_info)
+	```
+
+- Re-encoding:
+
+	```python
+	from DDownloader.modules.downloader import DOWNLOADER
+
+ 	re_encode = DOWNLOADER()
+	quality = ["HD", "FHD", "UHD"]
+	input_content = "downloads/example.mp4"
+	output_content = "/path/to/output.mp4"
+ 	re_encode.re_encode_content(input_file=input_content,quality=quality,codec="libx265",crf=20,preset="medium")
+	```
+  
+## CLI Usage
+- Download Media
+  
+	```bash
+	DDownloader -u https://example.com/path/to/manifest -o output.mp4
+	```
+ 
+- Specify Decryption Keys
+  
+	```bash
+	DDownloader -u https://example.com/path/to/manifest -o output.mp4 -k 12345:678910
+	```
+
+- Re-encoding
+
+	```bash
+ 	DDownloader -i "input.mp4" -o "output.mp4" -q "HD, FHD, UHD"
+ 	```
+
+
+- Display Help
+  
+	```bash
+	DDownloader -h
+	```
+
+- ![image](https://github.com/user-attachments/assets/8c73a79e-fcac-4bde-a07c-5628db0d19df)
+

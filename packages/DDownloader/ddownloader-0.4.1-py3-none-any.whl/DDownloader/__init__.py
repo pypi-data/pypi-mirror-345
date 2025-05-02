@@ -1,0 +1,1 @@
+from DDownloader.main import main
