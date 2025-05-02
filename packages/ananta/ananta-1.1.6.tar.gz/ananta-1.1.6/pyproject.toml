@@ -1,0 +1,42 @@
+[project]
+name = "ananta"
+version = "1.1.6"
+description = "A command-line tool to execute commands on multiple remote hosts"
+authors = [
+    {name = "Chaiwat Suttipongsakul",email = "cwt@bashell.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "asyncssh (>=2.20.0,<3.0.0)"
+]
+
+[project.optional-dependencies]
+speed = [
+    "uvloop (>=0.21.0,<0.22.0) ; sys_platform != \"win32\"",
+    "winloop (>=0.1.8,<0.2.0) ; sys_platform == \"win32\""
+]
+
+[tool.poetry]
+homepage = "https://sr.ht/~cwt/ananta"
+repository = "https://hg.sr.ht/~cwt/ananta"
+
+[tool.poetry.urls]
+"GitHub Mirror" = "https://github.com/cwt/ananta"
+
+[tool.poetry.scripts]
+ananta = "ananta.ananta:run_cli"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.15.0"
+black = "^25.1.0"
+pytest = "^8.3.0"
+pytest-asyncio = "^0.26.0"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
