@@ -1,0 +1,49 @@
+# Template Configuration Example
+# Place this file as 'template.yaml' in your template directory
+
+# Basic template information
+name: "Example Template"                    # Required: Display name of the template
+version: "1.0.0"                           # Required: Semantic version of the template
+description: "A detailed description of what this template provides and its use cases"  # Required
+
+# Template metadata
+author: "Your Name"                        # Optional: Template author
+website: "https://example.com"             # Optional: Related website
+repository: "https://github.com/user/repo"  # Optional: Source repository
+
+# Template categorization
+tags:                                      # Required: List of searchable tags
+  - php
+  - mysql
+  - nginx
+  - development
+
+# Template requirements
+requirements:                              # Optional: Minimum requirements
+  memory: "2GB"                           # Optional: Minimum RAM
+  disk: "1GB"                             # Optional: Minimum disk space
+  cpu: 1                                  # Optional: Minimum CPU cores
+
+# Service configuration
+services:                                  # Required: List of services in this template
+  web:                                    # Service identifier
+    port_range: "8000-8999"              # Port allocation range
+    required: true                       # Whether this service is required
+  db:
+    port_range: "3306-3399"
+    required: true
+  phpmyadmin:
+    port_range: "8080-8099"
+    required: false                      # Optional services can be disabled
+
+# Environment variables
+environment:                              # Optional: Default environment variables
+  PHP_VERSION: "8.1"
+  MYSQL_VERSION: "8.0"
+  NODE_VERSION: "18"
+
+# Post-creation hooks
+post_create:                              # Optional: Commands to run after creation
+  - "npm install"
+  - "composer install"
+  - "php artisan key:generate"
