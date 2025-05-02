@@ -1,0 +1,152 @@
+Metadata-Version: 2.4
+Name: moveck_bridge_btk
+Version: 2025.3.1
+Summary: Moveck Bridge is the new Biomechanical ToolKit for Python3 with an improved API identical to the original one proposed for Matlab.
+Author-email: Arnaud Barré <support@moveck.com>
+Maintainer-email: "Moveck Solution inc." <support@moveck.com>
+License: Last Updated:
+        Copyright (c) 2025, Moveck Solution. All rights reserved.
+        
+        1. Grant of Licence
+        This software, Moveck Bridge (the "Software"), is provided as freeware. You may download, install, and use the Software for personal or internal business purposes, subject to the terms of this agreement.
+        
+        2 INTELLECTUAL PROPERTY
+        2.1 Ownership of Intellectual Property
+        Moveck retains all right, title, and interest in and to the Software, including but not limited to all associated documentation, source code, object code, modifications, enhancements, updates, derivative works, trademarks, trade names, and other Intellectual Property Rights. This Agreement does not grant you any rights or ownership in the Software beyond the limited rights expressly stated herein.
+        2.2 Licence Grant
+        Subject to your compliance with the terms of this Agreement, Moveck grants you a non-exclusive, non-transferable, royalty-free licence to use the Software solely for personal, educational, or internal business purposes. Redistribution, resale, or sublicensing of the Software is strictly prohibited unless expressly authorized by Moveck in writing.
+        2.3 Restrictions
+        You may not:
+        Reverse engineer, decompile, or disassemble the Software, except as explicitly permitted by applicable law.
+        Modify, adapt, or create derivative works based on the Software.
+        Remove or alter any copyright, trademark, or proprietary notices included in the Software.
+        Use the Software in a manner that infringes on Moveck's Intellectual Property Rights.
+        2.4 Feedback
+        If you provide suggestions, ideas, or feedback regarding the Software ("Feedback"), Moveck shall be free to use, disclose, reproduce, license, or otherwise distribute and exploit the Feedback for any purpose, without any obligation or compensation to you. Any Intellectual Property Rights associated with such Feedback will belong solely to Moveck.
+        2.5 Trademarks and Branding
+        Nothing in this Agreement grants you the right to use Moveck's trademarks, trade names, or branding without prior written consent. All such rights are reserved by Moveck.
+        
+        3 Limitation of Liability and Disclaimer of Warranty
+        3.1 Freeware Liability Disclaimer
+        MOVECK PROVIDES THE SOFTWARE "AS IS" AND DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. MOVECK SHALL NOT BE HELD LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THE SOFTWARE, INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOSS OF PROFITS, DATA, OR OTHER INTANGIBLES.
+        3.2 Maximum Liability
+        In no event shall Moveck's liability exceed the amount you paid for the Software, which, in the case of freeware, is zero.
+        
+        4 Termination
+        4.1 Term
+        This Agreement will remain in effect for as long as you continue to use the Software. The Agreement may be terminated by Moveck if you violate any of its terms.
+        4.2 Effect of Termination
+        Upon termination:
+        You must cease all use of the Software.
+        Any provisions meant to survive termination, including Sections [Intellectual Property], [Limitation of Liability], and [Governing Law], shall remain in effect.
+        
+        5 Governing Law
+        5.1 Jurisdiction
+        This Agreement shall be governed by the laws of the Province of Quebec, Canada, without regard to its conflicts of law rules. All disputes arising out of or relating to this Agreement shall be resolved exclusively by the courts located in the judicial district of Quebec, province of Quebec, Canada. If the Software is distributed in other jurisdictions, the laws of that jurisdiction may apply, but this will not supersede the protections and disclaimers outlined in this Agreement.
+Project-URL: Homepage, https://www.moveck.com
+Project-URL: Documentation, https://www.moveck.com
+Project-URL: Changelog, https://www.moveck.com
+Keywords: Biomechanics,C3D,markers,mocap,Motion Capture,Motion Analysis,forceplate,force platform,EMG,electromyography,IMU,Inertial Measurement Unit,Marker-based,Markerless
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: Other/Proprietary License
+Classifier: Natural Language :: English
+Requires-Python: >=3.9.0
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=2.2.5
+Dynamic: requires-dist
+
+# Moveck Bridge
+
+Bridge proposes to reproduce the API of the Biomechanical-ToolKit (BTK) project as defined in its Matlab bindings and expose it to other programming languages like Python 3.
+
+## Releases
+
+The latest releases are available on the GitHub website. You can find them on the [Releases](https://github.com/moveck-community/moveck_bridge_btk/releases) page.
+
+## Usage/Examples
+
+### Python
+
+#### Verification
+
+> [!NOTE]  
+> The first time you import the package, it may take a few seconds to load it. This is because the Python  interpreter compiles it to bytecode first.
+
+To test the success of the installation, you can evaluate the function `btkGetVersion()` into a Python interpreter. The result will be a string with the version of the package (e.g., `2024.0.0`). 
+
+- One way can be to run the following script `python -c "from moveck_bridge_btk import btkGetVersion; print(btkGetVersion())"`.
+
+- Another way can be through an interactive console.
+
+## Features
+
+### Additions and improvements
+
+- The C3D reader was improved to get Rotation data type (Markerless!) with two new functions `btkGetRotation` and `btkGetRotations`.
+- Fix UTF-8 filename issues.
+- On a total of 111 functions listed in the original API, less than 10 are not planned to be implemented. Still, if this is a major issue, we will find a way to work on them.
+
+### Current Limitations
+By design, some of the original functions are not yet supported. We would like to discuss with the community what should be done.  You can open a [Discussion](https://github.com/moveck-community/moveck_bridge_btk/discussions) for that and explain.
+
+- The functions related to analysis parameters are not yet supported as this information is currently removed from the official documentation of the C3D file format. We want to discuss with the community to determine the needs for those functions (`btkAppendAnalysisParameter`, `btkClearAnalysis`, `btkGetAnalysis`, `btkRemoveAnalysisParameter`).
+- Several functions related to the access and modification of events are not implemented because they were too close to the internal C3D structure (`btkGetEventsValues`, `btkSetEventLabel`, `btkSetEventSubject`, `btkSetEventTime`).
+- The function `btkRemoveEvent` is not yet implemented.
+- `btkCloneAcquisition` and `btkCropAcquisition` are not supported. There is no plan to implement them as we did not receive any feedback on their current usage.
+- `btkEmulateC3Dserver` is not available because it was a migration function for c3dserver’s users. Because c3dserver is not supported anymore. This function was not planned to be implemented.
+- `btkSetMetaDataLabel` is not yet implemented but is planned for version 2025.2.0.
+- `btkTransformTDFToViconC3DFile` is not implemented as we did not receive any feedback on its usage.
+
+### Breaking Changes
+During the implementation of the functions and the porting to Python 3, several questions were asked about the way people used the original API and if all the functions should be implemented as-is. Feel free to open a [Discussion](https://github.com/moveck-community/moveck_bridge_btk/discussions) if you think we did some wrong choices or you want improvements.
+
+- The access and modification for residuals' points is not supported. Instead, invalid data is set to NaN (Not a Number) instead of 0 directly in points' values. The functions `btkGetMarkersResiduals`,  `btkSetMarkersResiduals`, `btkGetPointsResiduals`, `btkSetPointResiduals`, and `btkSetPointsResiduals` are not implemented. The parameters (inputs and outputs) of the functions `btkAppendPoint`, `btkGetMarkers`, `btkGetPoint`, and `btkGetPoints` were modified in consequence.
+- Metadata description is not supported as well as the lock/unlock feature. Thus, the functions `btkSetMetaDataDescription` and `btkSetMetaDataUnlock` are not implemented.
+- All variants of the functions with variadic arguments related to metadata (`btkFindMetaData`, `btkGetMetaData`, `btkRemoveMetaData`, `btkSetMetaData`, `btkSetMetaDataDimensions`, `btkSetMetaDataFormat`) are not implemented. Those variants were not used as the internal storage of the C3D format is only on two levels (group and parameters).
+
+## Documentation
+
+### API Documentation
+
+> [!NOTE]  
+> This is a work-in-progress online documentation. We are working on another website which will contain more examples and adapted to work on mobile devices and tablets.
+
+You can get access to the first draft of our [online documentation](https://moveckprodoc.z27.web.core.windows.net/bridge/matlab/nightly/api/main.html) for the Bridge API.
+
+## Contributing
+
+Contributions are always welcome!
+
+> The motivation behind the original project Biomechanical ToolKit was to help the motion analysis community to have an easy way to work together through various and mixed data coming from different acquisition systems. The benefit was, and is still, for lots of users, to create multicentric research, work together on raw data instead of thinking how to aggregate their data. Arnaud Barré, author of the Biomechanical ToolKit project.
+
+Still baked by Arnaud, through Moveck Bridge, this original motivation is still here. The team behind Moveck Bridge proposes to the community to centralize some of their discussions and issues in this repository. This will help to design new features together and help the community.
+
+See  [Contributing.md](https://github.com/moveck-community/moveck_bridge_btk/blob/main/Contributing.md) for ways to get started.
+
+## Support
+
+You can take a look into our contribution [Contributing.md](https://github.com/moveck-community/moveck_bridge_btk/blob/main/Contributing.md) guide for ways to get started.
+
+### Issues
+
+You can use the [Issues](https://github.com/moveck-community/moveck_bridge_btk/issues) page to report a crash, an unexpected behaviour or any improvement requests.
+
+### Discussions
+
+In case you have questions, you want more details on the documentation API or more examples, you can use the [Discussions](https://github.com/moveck-community/moveck_bridge_btk/discussions) page.
+
+## Related
+
+Here are some related projects
+
+[Biomechanical ToolKit](https://github.com/Biomechanical-ToolKit/BTKCore): The original project which is no longer maintained.
+
+## License
+
+See the [License.txt](https://github.com/moveck-community/moveck_bridge_btk/blob/main/License.txt) file available in the repository for more information.
