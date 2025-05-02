@@ -1,0 +1,160 @@
+Metadata-Version: 2.1
+Name: termux-api-python
+Version: 0.1.1
+Summary: A Python wrapper for the Termux API commands
+Home-page: https://github.com/Kamanati/termux-api-python
+Author: hasanfq6
+Author-email: hasanfq818@gmail.com
+Keywords: termux,android,api,wrapper
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Android
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Intended Audience :: Developers
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# Termux API Python Wrapper
+
+This is a Python wrapper for the Termux API commands, making it easier to use Termux API functionality in Python scripts.
+
+## Features
+
+- Provides a clean, Pythonic interface to Termux API commands
+- Handles command execution and error handling
+- Automatically parses JSON output from commands
+- Supports all available Termux API commands
+- Comprehensive documentation for each method
+
+## Installation
+
+### Manual Installation
+
+1. Make sure you have the Termux API app installed on your Android device
+2. Install the Termux API package in Termux:
+   ```
+   pkg install termux-api
+   ```
+3. Copy the `termux_api.py` file to your project or to a location in your Python path
+
+### PIP Installation
+
+```bash
+pip install termux-api-python
+
+```
+
+## Usage
+
+```python
+from termux_api_python import TermuxAPI
+
+# Create an instance of the TermuxAPI class
+termux = TermuxAPI()
+
+# Show a toast message
+termux.toast("Hello from Python!")
+
+# Get battery status
+battery = termux.battery_status()
+print(f"Battery level: {battery['percentage']}%")
+
+# Show a notification
+termux.notification(
+    title="Python Notification",
+    content="This notification was created using the Python Termux API wrapper",
+    id="python-example"
+)
+
+# Get device location
+location = termux.location()
+print(f"Location: {location}")
+
+# Text-to-speech
+termux.tts_speak("Hello, this is text to speech from Python")
+```
+
+## Advanced Notification Example
+
+The wrapper supports all notification features, including buttons with actions, media controls, and direct reply:
+
+```python
+# Interactive notification with buttons
+termux.notification(
+    title="Interactive Notification",
+    content="This notification has buttons with actions",
+    id="interactive-example",
+    button1="Toast",
+    button1_action="termux-toast 'Button 1 was pressed!'",
+    button2="Vibrate",
+    button2_action="termux-vibrate"
+)
+
+# Media notification
+termux.notification(
+    title="Media Controls",
+    content="Control media playback",
+    id="media-example",
+    type="media",
+    media_play="termux-toast 'Play pressed'",
+    media_pause="termux-toast 'Pause pressed'",
+    media_next="termux-toast 'Next pressed'",
+    media_previous="termux-toast 'Previous pressed'"
+)
+
+# Notification with direct reply (Android N+)
+termux.notification(
+    title="Reply Example",
+    content="This notification supports direct reply",
+    id="reply-example",
+    button1="Reply",
+    button1_action="termux-toast \"You said: $REPLY\""
+)
+```
+
+Check out `notification_example.py` for more notification examples.
+
+## Available Methods
+
+The wrapper provides methods for all Termux API commands, including:
+
+- `battery_status()` - Get battery status information
+- `brightness(level)` - Set the screen brightness
+- `call_log()` - Get the call log
+- `camera_info()` - Get information about device cameras
+- `camera_photo(output_file)` - Take a photo and save it to a file
+- `clipboard_get()` - Get the system clipboard text
+- `clipboard_set(text)` - Set the system clipboard text
+- `contact_list()` - Get a list of contacts
+- `dialog(dialog_type, **kwargs)` - Show a dialog
+- `download(url)` - Download a file
+- `fingerprint()` - Authenticate with a fingerprint
+- `location()` - Get the device location
+- `media_player(command)` - Control the media player
+- `notification(content, title, **kwargs)` - Display a system notification
+- `sms_list(**kwargs)` - List SMS messages
+- `sms_send(number, message)` - Send an SMS
+- `toast(message)` - Show a toast message
+- `torch(on)` - Toggle the torch
+- `tts_speak(text)` - Speak text using TTS
+- `vibrate(duration_ms)` - Vibrate the device
+- `volume(stream, volume)` - Get or set the volume
+- `wifi_enable(enable)` - Enable or disable WiFi
+- And many more...
+
+See the `termux_api_python.py` file for a complete list of available methods and their parameters.
+
+## Examples
+
+- `examples.py` - General usage examples for various API methods
+- `notification_example.py` - Comprehensive examples of notification features
+
+## Requirements
+
+- Android device with Termux app installed
+- Termux API app installed
+- Termux API package installed in Termux
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
