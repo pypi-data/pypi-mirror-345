@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name         = "energy-assistant-frontend"
+dynamic = ["version"]
+license      = {text = "Apache-2.0"}
+description  = "The Energy Assistant frontend"
+readme       = "README.md"
+authors = [{ name = "The Energy Assistant Creators", email = "pail23@users.noreply.github.com" }]
+requires-python = ">=3.12.0"
+
+[project.urls]
+"Homepage" = "https://github.com/music-assistant/frontend"
+
+[tool.hatch.build.targets.sdist]
+include = ["energy_assistant_frontend"]
+ignore-vcs = true
+
+[tool.hatch.build.targets.wheel]
+include = ["energy_assistant_frontend"]
+ignore-vcs = true
+
+[tool.hatch.version]
+path = "public/__init__.py"
+
+[dependency-groups]
+dev = [
+]
