@@ -1,0 +1,90 @@
+name: "setup"
+description: "Install dependencies"
+inputs:
+  aws-access-key-id:
+    required: true
+  aws-secret-access-key:
+    required: true
+  github-token:
+    required: true
+  python-version:
+    required: false
+    default: "3.10"
+  cuda-version:
+    required: false
+    default: "cpu"
+  kumo-install-options:
+    required: false
+    default: "[full,test,rest]"
+  os-version:
+    required: false
+    default: "20.04"
+  # Sync the version with Makefile
+  # Sync the version with docker build:
+  # https://github.com/kumo-ai/kumo-docker/blob/master/docker/install_graphengine#L11
+  graphengine-version:
+    required: false
+    default: "0.1.0"
+
+runs:
+  using: "composite"
+
+  steps:
+    # Remove apt repos that are known to break from time to time
+    # See https://github.com/actions/virtual-environments/issues/323
+    - name: Remove broken apt repos [Ubuntu]
+      run: |
+        for apt_file in `grep -lr microsoft /etc/apt/sources.list.d/`; do sudo rm $apt_file; done
+      shell: bash
+
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v4
+      with:
+        repository: kumo-ai/kumo
+        token: ${{ inputs.github-token }}
+        path: kumo-core
+
+    - name: Set up Python ${{ inputs.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install graphviz
+      run: |
+        sudo apt-get -y update
+        sudo apt-get install -y graphviz
+      shell: bash
+
+    - name: Get graphengine
+      run: |
+        export AWS_ACCESS_KEY_ID=${{ inputs.aws-access-key-id }}
+        export AWS_SECRET_ACCESS_KEY=${{ inputs.aws-secret-access-key }}
+        export AWS_DEFAULT_REGION=us-west-2
+        aws s3 cp s3://kumo-graphengine/packages/ubuntu-${{ inputs.os-version }}/py${{ inputs.python-version }}/latest/kumo_graphengine-${{ inputs.graphengine-version }}-py3-none-any.whl .
+        aws s3 cp s3://kumo-pyspark-venv/databricks-patch-wheel/pyspark-3.5.1.tar.gz .
+      shell: bash
+
+    - name: Install graphengine
+      run: |
+        pip install kumo_graphengine-${{ inputs.graphengine-version }}-py3-none-any.whl --force-reinstall
+        python -c "import kumo_graphengine"
+      shell: bash
+
+    # Do not install in editable mode so we can use other packages (e.g. `rest`):
+    - name: Install KUMO
+      run: |
+        cd kumo-core
+        TORCH=`sed -n 's/    "torch==\(.*\)",/\1/p' setup.py`
+        pip uninstall -y torch-geometric pyg-lib torch-scatter torch-sparse
+        pip install --verbose .${{ inputs.kumo-install-options }} --extra-index-url https://download.pytorch.org/whl/${{ inputs.cuda-version }} -f https://data.pyg.org/whl/torch-${TORCH}+${{ inputs.cuda-version }}.html -f https://data.pyg.org/whl/nightly/torch-${TORCH}+${{ inputs.cuda-version }}.html
+        pip uninstall snowflake-connector-python -y
+        pip uninstall snowflake-snowpark-python -y
+        # Uninstall databricks-connect to enable using local pyspark
+        # These 2 libraries conflict with each other
+        pip uninstall databricks-connect -y
+        pip uninstall pyspark -y
+        pip install snowflake-snowpark-python==1.11.0
+        # Install a patched version of Spark 3.5 to avoid test failures
+        # when using local spark connect session
+        cd .. ; pip install pyspark-3.5.1.tar.gz
+      shell: bash

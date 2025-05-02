@@ -1,0 +1,152 @@
+name: Cut New Release (Major or Minor)
+
+on:  # yamllint disable-line rule:truthy
+  workflow_dispatch:
+    inputs:
+      expected_major_minor_version:
+        description: 'Expected major and minor version (vX.Y)'
+        required: true
+        type: string
+      new_api_version:
+        description: 'New kumo-api version to pin at the same time (vX.Y.Z)'
+        required: true
+        type: string
+
+env:
+  REGISTRY_USER: kumo+kumo_internal
+  GH_TOKEN: ${{ github.token }}
+  NEW_VERSION_INPUT: ${{ inputs.expected_major_minor_version}}
+  NEW_API_VERSION: ${{ inputs.new_api_version }}
+
+
+jobs:
+  cut-release:
+    name: Cut New Release of Kumo SDK
+    runs-on: ubuntu-22.04
+    outputs:
+      release_success: ${{ steps.set-output.outputs.success }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Clone Kumo repository
+        uses: actions/checkout@v4
+        with:
+          repository: kumo-ai/kumo-sdk
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+
+      - name: Setup git user
+        run: |
+          git config --global user.email "github-action@users.noreply.github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Validate expected major and minor version
+        run: |
+          cd /home/runner/work/kumo-sdk/kumo-sdk
+          VERSION=$(awk '/^\[project\]/{p=1;next} p&&/^version/{match($0, /version="([0-9.]+)"/, arr); print arr[1];exit}' pyproject.toml)
+          echo "Current version from pyproject.toml: $VERSION"
+          # Extract vX.Y from vX.Y.Z using parameter expansion
+          BRANCH_NAME=v${VERSION%.*}
+          echo "Branch name from pyproject.toml: $BRANCH_NAME"
+          git fetch origin
+          # Check if the branch in pyproject.toml exists
+          if [[ -z  $(git branch -r | grep -E "origin/${BRANCH_NAME}$") ]]; then
+            echo "Branch origin/$BRANCH_NAME does not exist"
+            exit 1
+          fi
+          # verify next version does not exist (since we check it matches the input version next,
+          # this also covers that input version branch does not exist)
+          NEW_PYPROJECT_VERSION=$(echo ${BRANCH_NAME} | awk -F. -v OFS=. '{$NF += 1 ; print}')
+          # if new first-digit version, check for that
+          if [[ "$NEW_VERSION_INPUT" =~ ^v[0-9]+\.0$ ]];
+          then
+            NEW_PYPROJECT_VERSION=$NEW_VERSION_INPUT
+          fi
+          echo "New major version: $NEW_PYPROJECT_VERSION checking if it exists"
+          if [[ -n $(git branch -r | grep -E "origin/${NEW_PYPROJECT_VERSION}$") ]]; then
+            echo "Error: new major version based on pyproject.toml origin/$NEW_PYPROJECT_VERSION exists"
+            exit 1
+          fi
+          if [[ $NEW_PYPROJECT_VERSION != $NEW_VERSION_INPUT ]]; then
+            echo "Error: expected major version $NEW_VERSION_INPUT does not match next version $NEW_PYPROJECT_VERSION"
+            exit 1
+          fi
+          echo "Ready to create major version $NEW_PYPROJECT_VERSION for kumo-sdk."
+
+
+      - name: Update pyproject.toml and setup.py
+        run: |
+          cd /home/runner/work/kumo-sdk/kumo-sdk
+          git checkout -b "update-version-$NEW_VERSION_INPUT"
+          awk -v version_line="version=\"${NEW_VERSION_INPUT#v}.0\"" -i inplace '/^\[project\]/{p=1} p&&/^version/{if(!done){sub(/^version=.*/,version_line);done=1}} 1' pyproject.toml
+          sed -i "s/kumo_api_ver = .*/kumo_api_ver = '$NEW_API_VERSION'/" setup.py
+          git add setup.py
+          git add pyproject.toml
+          git commit -m "Update version to $NEW_VERSION_INPUT.0 and api version to $NEW_API_VERSION"
+          git pull origin main
+          git push origin "update-version-$NEW_VERSION_INPUT"
+          gh pr create --title "Update pyproject.toml and setup.py: $NEW_VERSION_INPUT" --body "Update pyproject.toml and setup.py: $NEW_VERSION_INPUT" --label github-actions
+
+
+      - name: Create Release Branch and Update setup.py
+        run: |
+          cd /home/runner/work/kumo-sdk/kumo-sdk
+          git checkout -b ${NEW_VERSION_INPUT}
+          cp release_setup_template.py setup.py
+          sed -i "s/kumo_api_ver/${NEW_API_VERSION#v}/g" setup.py
+          git add setup.py
+          git rm release_setup_template.py
+          git commit -m "Update api version in setup.py to $NEW_API_VERSION"
+          sed -i "s/__version__ = '0.0.0'/__version__ = '${NEW_VERSION_INPUT#v}'/g" kumoai/__init__.py
+          git add kumoai/__init__.py
+          git commit -m "Update fallback sdk version in __init__.py to $NEW_VERSION_INPUT"
+          git push origin ${NEW_VERSION_INPUT}
+
+      - name: Create and Tag Release
+        run: |
+          cd /home/runner/work/kumo-sdk/kumo-sdk
+          if [[ "$NEW_VERSION_INPUT" =~ ^v[0-9]+\.0$ ]];
+          then
+            PREV_PREFIX=$(echo ${NEW_VERSION_INPUT} | awk -F. '{print "v" substr($1, 2) - 1}')
+            PREV_VERSION=$(git tag -l | grep -E $PREV_PREFIX |  grep -E "^v[0-9]+\.[0-9]+\.[0]$" | sort -V | tail -n 1)
+          else
+            PREV_VERSION=$(echo ${NEW_VERSION_INPUT} | awk -F. -v OFS=. '{$NF -= 1 ; print}').0
+          fi
+          NOTES_ARG="--notes-start-tag ${PREV_VERSION}"
+
+
+          TAG=${NEW_VERSION_INPUT}.0
+          git checkout ${NEW_VERSION_INPUT}
+          git tag $TAG
+          git push origin $TAG
+          gh release create $TAG --verify-tag --generate-notes --title $TAG $NOTES_ARG
+
+
+      - name: publish to pypi
+        run: |
+          cd /home/runner/work/kumo-sdk/kumo-sdk
+          if [ -n "$GITHUB_TOKEN" ];
+          then
+            echo 'GITHUB_TOKEN is set, not safe to publish to pypi'
+            exit 1
+          fi
+          pipx install twine
+          pipx install build
+          echo [pypi] > $HOME/.pypirc
+          echo 'username = __token__' >> $HOME/.pypirc
+          echo 'password = ${{ secrets.PYPI_TOKEN }}' >> $HOME/.pypirc
+          pipx run build
+          TWINE_CHECK=$(twine check dist/* | grep "PASSED" | wc -l)
+          if [ $TWINE_CHECK -ne 2 ]; then
+            echo "twine check failed"
+            exit 1
+          fi
+          twine upload dist/*
+
+      - name: Set output
+        if: ${{ success() }}
+        id: set-output
+        run: echo "success=true" >> $GITHUB_OUTPUT

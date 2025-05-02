@@ -1,0 +1,50 @@
+name: Documentation
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ startsWith(github.ref, 'refs/pull/') || github.run_number }}  # yamllint disable-line
+  # Only cancel intermediate builds if on a PR:
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+jobs:
+  make_html:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Install Kumo SDK
+        run: |
+          pip install --verbose .[doc]
+        env:
+          GITHUB_TOKEN: ${{secrets.SDK_API_TOKEN}}
+
+      - name: Test documentation
+        working-directory: ./docs
+        run: |
+          make doctest
+
+      - name: Build documentation
+        working-directory: ./docs
+        run: |
+          make clean
+          make html SPHINXOPTS="-W --keep-going"
+
+      - name: Push documentation to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.SERVICES_PAT_REPO_PROJECT }}
+          publish_dir: docs/build/html
+          destination_dir: docs

@@ -1,0 +1,103 @@
+name: Linting
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ startsWith(github.ref, 'refs/pull/') || github.run_number }}  # yamllint disable-line
+  # Only cancel intermediate builds if on a PR:
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+jobs:
+  flake8:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install flake8
+
+      - name: Run linting
+        run: |
+          flake8 .
+
+  isort:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install isort==5.12.0
+
+      - name: Run linting
+        run: |
+          isort --check-only .
+
+  mypy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Install Kumo SDK
+        run: |
+          pip install --verbose .
+        env:
+          GITHUB_TOKEN: ${{secrets.SDK_API_TOKEN}}
+
+      - name: Install dependencies
+        run: |
+          pip install mypy
+
+      - name: Check type hints
+        run: |
+          mypy
+
+
+
+  setup_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for setup.py changes
+        id: setup-changes
+        uses: tj-actions/changed-files@c3a1bb2c992d77180ae65be6ae6c166cf40f857c   #  v45.0.3
+        with:
+          files: |
+            setup.py
+
+      - name: Check setup.py changes
+        if: steps.setup-changes.outputs.any_changed == 'true'
+        run: |
+          API_VERSION=$(cat setup.py | grep 'kumo_api_ver = ' | sed -E "s/.*=\s*['\"](.*)['\"].*/\1/")
+          echo "API_VERSION=$API_VERSION"
+          if echo $API_VERSION | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' > /dev/null; then
+              echo "Valid version format"
+          else
+              echo "Invalid version format: must be vX.Y.Z"
+              exit 1
+          fi

@@ -1,0 +1,103 @@
+name: Integration Testing
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ startsWith(github.ref, 'refs/pull/') || github.run_number }}  # yamllint disable-line
+  # Only cancel intermediate builds if on a PR:
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+env:
+  # Use x-repo github PAT:
+  GITHUB_TOKEN: ${{secrets.SERVICES_PAT_REPO_PROJECT}}
+  GITHUB_REF: ${{secrets.GITHUB_REF}}
+  GITHUB_API_URL: ${{secrets.GITHUB_API_URL}}
+  GITHUB_REPOSITORY: ${{secrets.GITHUB_REPOSITORY}}
+  GITHUB_REPOSITORY_OWNER: ${{secrets.GITHUB_REPOSITORY_OWNER}}
+  GITHUB_RUN_ID: ${{secrets.GITHUB_RUN_ID}}
+
+jobs:
+  pytest:
+    runs-on: ubuntu-20.04
+    continue-on-error: true
+
+    strategy:
+      matrix:
+        test_dir:
+          [
+            "--ignore=test/e2e/ test/",
+            "test/e2e/"
+          ]
+
+    steps:
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 40
+
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+
+      - name: Install Kumo Core
+        uses: ./.github/actions/install_kumo
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          python-version: "3.10"
+          github-token: ${{secrets.SERVICES_PAT_REPO_PROJECT}}
+
+      - name: Run Kumo Server
+        run: |
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          export AWS_DEFAULT_REGION=us-west-2
+          export DRIVER_RPC_TIMEOUT_SEC=120
+          cd kumo-core
+          export PATH=$PATH:$HOME/bin
+          ./scripts/install_stern.sh
+          make update-packages
+          DETACHED=1 DISABLE_AUTH=1 make devserver
+          sleep 120
+          cd ..
+        shell: bash
+
+      # Must be after "Run Kumo Server" since that installs whatever version
+      # of `kumo-api` is in latest:
+      - name: Install Kumo SDK
+        run: |
+          pip freeze |grep "pandas\|numpy\|pyarrow"
+          pip install --verbose --ignore-installed --force '.[test]'
+          pip freeze |grep "pandas\|numpy\|pyarrow"
+        shell: bash
+
+      - name: Run integration test suite
+        timeout-minutes: 20
+        run: |
+          set -o pipefail
+          INTEGRATION_TEST=1 GLOG_logtostdout=1 python -m pytest -o log_cli=true --durations=10 ${{ matrix.test_dir }}
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+
+      - name: Show Kumo server logs
+        if: always()
+        run: |
+          mkdir logs
+          cd logs
+          for i in 1 2 3 4 5 6 7 8 9 10; do (tmux -L devserver capture-pane -pt "$i" -S -1000000 > "pane_${i}.txt"); done
+          cd ..
+        shell: bash
+
+      - name: Export Kumo server logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: devserver-logs-${{ github.workflow }}-${{ github.event.pull_request.number || 'master' }}-${{ startsWith(github.ref, 'refs/pull/') || github.run_number }}
+          path: logs
+          retention-days: 2
+          overwrite: true
