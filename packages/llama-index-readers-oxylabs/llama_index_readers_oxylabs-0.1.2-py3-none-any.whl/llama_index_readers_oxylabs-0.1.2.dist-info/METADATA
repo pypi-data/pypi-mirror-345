@@ -1,0 +1,64 @@
+Metadata-Version: 2.4
+Name: llama-index-readers-oxylabs
+Version: 0.1.2
+Summary: llama-index readers oxylabs integration
+Author-email: Rostyslav Borovyk <rostyslav.borovyk@oxylabs.io>
+License-Expression: MIT
+License-File: LICENSE
+Requires-Python: <4.0,>=3.9
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: llama-index-core>=0.12.34.post1
+Requires-Dist: lxml-html-clean>=0.4.2
+Requires-Dist: lxml>=5.4.0
+Requires-Dist: markdownify>=1.1.0
+Requires-Dist: oxylabs>=2.0.0
+Description-Content-Type: text/markdown
+
+# LlamaIndex Oxylabs Reader Integration
+
+Use Oxylabs Reader to load the data from search engines, e-commerce sites, travel platforms, and any other website.
+For more information checkout out the [Oxylabs documentation](https://developers.oxylabs.io/scraper-apis/web-scraper-api).
+
+## Instructions for OxylabsReader
+
+### Setup and Installation
+
+Installation with `pip`
+
+```shell
+pip install llama-index-readers-oxylabs
+```
+
+Installation with `poetry`
+
+```shell
+poetry add llama-index-readers-oxylabs
+```
+
+Installation with `uv`
+
+```shell
+uv add llama-index-readers-oxylabs
+```
+
+### Get Oxylabs credentials
+
+[Set up](https://oxylabs.io/) your Oxylabs account and get the username and password.
+
+### Using OxylabsReader
+
+```python
+from llama_index.readers.oxylabs import OxylabsGoogleSearchReader
+
+
+reader = OxylabsGoogleSearchReader(
+    username="OXYLABS_USERNAME",
+    password="OXYLABS_PASSWORD",
+)
+
+docs = reader.load_data(
+    {"query": "Iphone 16", "parse": True, "geo_location": "Berlin, Germany"}
+)
+
+print(docs[0].text)
+```
