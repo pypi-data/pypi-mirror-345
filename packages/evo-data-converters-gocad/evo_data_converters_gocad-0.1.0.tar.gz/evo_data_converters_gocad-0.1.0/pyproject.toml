@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools >= 61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evo-data-converters-gocad"
+description = "Python data converters for GOCAD to Evo geoscience objects"
+version = "0.1.0"
+requires-python = ">=3.10"
+license-files = ["LICENSE.md"]
+readme = "README.md"
+authors = [
+    { name = "Seequent", email = "support@seequent.com" }
+]
+dependencies = [
+    "evo-data-converters-common"
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = true
+
+[tool.ruff]
+src = ["src", "tests"]
+line-length = 120
