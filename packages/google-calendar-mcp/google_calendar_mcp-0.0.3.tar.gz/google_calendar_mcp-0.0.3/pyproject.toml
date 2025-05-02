@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "google-calendar-mcp"
+dynamic = ["version"]
+description = "Google Calendar MCP Server with Service Account authentication"
+readme = "README.md"
+requires-python = ">=3.13"
+license = {text = "MIT"}
+authors = [
+    {name = "youyo"}
+]
+dependencies = [
+    "modelcontextprotocol",
+    "google-api-python-client",
+    "google-auth",
+]
+
+[project.scripts]
+google-calendar-mcp = "google_calendar_mcp.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "isort",
+    "mypy",
+    "setuptools",
+    "setuptools_scm",
+    "build",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py313"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+pythonpath = ["src"]
+
+[tool.setuptools.package-dir]
+google_calendar_mcp = "src/google_calendar_mcp"
+
+[tool.setuptools_scm]
+write_to = "src/google_calendar_mcp/_version.py"
