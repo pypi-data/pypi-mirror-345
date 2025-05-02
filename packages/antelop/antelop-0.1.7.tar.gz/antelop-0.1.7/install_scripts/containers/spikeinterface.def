@@ -1,0 +1,21 @@
+Bootstrap: docker
+From: python:3.8.18
+
+%post
+
+pip install numpy==1.24.1
+pip install hdbscan
+pip install networkx
+pip install spikeinterface[full,widgets]==0.99.1
+pip install numba
+pip install joblib
+pip install dask[dataframe,distributed]
+pip install pyarrow
+
+%help
+    This container provides an environment for running SpikeInterface, a toolkit for extracellular electrophysiology data analysis.
+
+%labels
+    Author="Rory Bedford"
+    Description="SpikeInterface container for electrophysiology data analysis"
+    Contact="rbedford@mrc-lmb.cam.ac.uk"

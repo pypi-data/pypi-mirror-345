@@ -1,0 +1,19 @@
+Bootstrap: docker
+From: ghcr.io/astral-sh/uv:python3.9-bookworm-slim
+
+%post
+    cd /
+    uv venv /caiman 
+    apt-get update
+    apt-get install -y build-essential curl software-properties-common unzip git
+    rm -rf /var/lib/apt/lists/*
+    source /caiman/bin/activate
+    uv pip install
+
+%help
+    This container provides an environment for running CaImAn, a tool for calcium imaging data analysis.
+
+%labels
+    Author="Rory Bedford"
+    Description="CaImAn container for calcium imaging analysis"
+    Contact="rbedford@mrc-lmb.cam.ac.uk"

@@ -1,0 +1,30 @@
+Bootstrap: docker
+From: deeplabcut/deeplabcut:2.3.5-core-cuda11.7.1-cudnn8-runtime-ubuntu20.04-latest
+
+%help
+    This container provides an environment for running DeepLabCut, a tool for markerless pose estimation.
+
+%labels
+    Author="Rory Bedford"
+    Description="DeepLabCut container for markerless pose estimation"
+    Contact="rbedford@mrc-lmb.cam.ac.uk"
+
+%post
+    pip install pyyaml
+    cd /usr/local/lib/python3.9/dist-packages/deeplabcut/pose_estimation_tensorflow/models/pretrained/
+
+    python << EOF
+import urllib.request
+import tarfile
+from io import BytesIO
+import yaml
+with open ('pretrained_model_urls.yaml','r') as f:
+    urls = yaml.load(f, Loader=yaml.FullLoader)
+for key, value in urls.items():
+    if key == 'efficientnet':
+        continue
+    print('Downloading:', key)
+    response = urllib.request.urlopen(value)
+    with tarfile.open(fileobj=BytesIO(response.read()), mode='r:gz') as tar:
+        tar.extractall(path='.')
+EOF

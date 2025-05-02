@@ -1,0 +1,70 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "antelop"
+version = "0.1.7"
+description = "Antelop is a data management and processing tool for systems neuroscientists"
+readme = "README.md"
+requires-python = "==3.9.*"
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy==1.23.5",
+    "datajoint==0.14.1",
+    "ipython==8.18.1",
+    "toml==0.10.2",
+    "networkx==2.6.3",
+    "hdmf==3.14.5",
+    "pynwb==2.5.0",
+    "probeinterface==0.2.19",
+    "paramiko==3.3.1",
+    "jsonschema==4.19.2",
+    "pyyaml==6.0.1",
+    "gitpython>=3.1.43",
+    "requests==2.32.3",
+    "joblib>=1.4.2",
+    "tabulate>=0.9.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/mtripodi/Antelop"
+
+[project.scripts]
+antelop = "antelop.scripts.run_gui:run"
+antelop-config = "antelop.scripts.make_config:run"
+antelop-python = "antelop.scripts.antelop_python:run"
+
+[project.optional-dependencies]
+gui = [
+    "urllib3==2.0.7",
+    "streamlit==1.29.0",
+    "streamlit-antd-components==0.3.2", # hopefully change to streamlit-antd-components > 0.3.2 once the fix is merged
+    "plotly==5.19.0"
+]
+
+phy = ["phy-poetry==0.1.4"]
+
+deeplabcut = [
+    "scikit-image==0.19.1",
+    "protobuf==3.20.3",
+    "deeplabcut[tf,gui]==2.3.9"
+]
+
+full = [
+    "urllib3==2.0.7",
+    "streamlit==1.29.0",
+    "streamlit-antd-components==0.3.2", # hopefully change to streamlit-antd-components > 0.3.2 once the fix is merged
+    "plotly==5.19.0",
+    "phy-poetry==0.1.4",
+    "scikit-image==0.19.1",
+    "protobuf==3.20.3",
+    "deeplabcut[tf,gui]==2.3.9"
+]
+
+[tool.uv]
+prerelease = "allow"
