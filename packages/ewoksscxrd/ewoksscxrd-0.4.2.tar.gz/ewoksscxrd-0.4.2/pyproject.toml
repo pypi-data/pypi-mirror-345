@@ -1,0 +1,85 @@
+[build-system]
+requires = [
+    "setuptools>=61",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ewoksscxrd"
+version = "0.4.2"
+keywords = ['orange3 add-on,ewoks']
+authors = [{name = "ESRF", email = "dau-pydev@esrf.fr"}]
+description = "Ewoks SC-XRD workflows"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE.md"}
+classifiers = [
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python :: 3',
+]
+requires-python = ">=3.8"
+dependencies = [
+    'numexpr',
+    'fabio',
+    'ewoks[orange]',
+    'cryio',
+    'pyicat-plus',
+]
+
+[project.urls]
+Homepage = "https://gitlab.esrf.fr/workflow/ewoksapps/ewoksscxrd/"
+Documentation = "https://ewoksscxrd.readthedocs.io/"
+Repository = "https://gitlab.esrf.fr/workflow/ewoksapps/ewoksscxrd/"
+Issues = "https://gitlab.esrf.fr/workflow/ewoksapps/ewoksscxrd/issues"
+Changelog = "https://gitlab.esrf.fr/workflow/ewoksapps/ewoksscxrd/-/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+test = [
+    'pytest >=7',
+    'pyqt5',
+]
+dev = [
+    'ewoksscxrd[test]',
+    'black >=25',
+    'flake8 >=4',
+]
+doc = [
+    'ewoksscxrd[test]',
+    'sphinx >=4.5',
+    'sphinx-autodoc-typehints >=1.16',
+    'pydata_sphinx_theme',
+]
+
+[tool.setuptools]
+package-dir = {''= 'src'}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"ewoksscxrd.tests.data"= ['*.h5', '*.esperanto']
+
+[tool.coverage.run]
+omit = ['*/tests/*']
+
+
+[project.entry-points."orange3.addon"]
+"ewoksscxrd" = "orangecontrib.ewoksscxrd"
+
+[project.entry-points."orange.widgets"]
+"Examples" = "orangecontrib.ewoksscxrd"
+
+[project.entry-points."orangecanvas.examples"]
+"Examples" = "orangecontrib.ewoksscxrd.tutorials"
+
+[project.entry-points."orange.widgets.tutorials"]
+"Examples" = "orangecontrib.ewoksscxrd.tutorials"
+
+[project.entry-points."orange.canvas.help"]
+"html-index" = "orangecontrib.ewoksscxrd:WIDGET_HELP_PATH"
+
+[project.entry-points."ewoks.tasks.class"]
+"ewoksscxrd.tasks.*" = "ewoksscxrd"
+
+
