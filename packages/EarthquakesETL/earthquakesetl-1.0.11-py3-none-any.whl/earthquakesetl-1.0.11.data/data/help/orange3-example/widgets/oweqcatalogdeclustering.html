@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>EQ Catalog Declustering &#8212; EarthquakesETL 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=279e0f84" />
+    <script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="EQ Feature Engineering" href="oweqfeatureengineering.html" />
+    <link rel="prev" title="EQ Catalog Download" href="oweqcatalogdownload.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="oweqfeatureengineering.html" title="EQ Feature Engineering"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="oweqcatalogdownload.html" title="EQ Catalog Download"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">EarthquakesETL 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">EQ Catalog Declustering</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="eq-catalog-declustering">
+<h1>EQ Catalog Declustering<a class="headerlink" href="#eq-catalog-declustering" title="Link to this heading">¶</a></h1>
+<p>Declustering is a process in seismology used to separate dependent events, such as foreshocks
+and aftershocks, from independent mainshock events within an earthquake catalog. This separation
+is crucial for accurate seismic hazard assessments, as it ensures that the analysis focuses on
+independent seismic events rather than clusters of related events.</p>
+<section id="gardner-knopoff-declustering-method">
+<h2>Gardner-Knopoff Declustering Method<a class="headerlink" href="#gardner-knopoff-declustering-method" title="Link to this heading">¶</a></h2>
+<p>The Gardner-Knopoff method identifies and removes aftershocks based on predefined time and
+spatial windows that are dependent on the magnitude of the mainshock.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><em>fs_time_prop</em>: This parameter represents the fraction of the time window used for aftershocks. It is a value between 0 and 1 that adjusts the duration considered for aftershock identification.</p></li>
+<li><p><em>time_distance_window</em>: This object calculates the time and distance windows for each event based on its magnitude. It is essential for determining the temporal and spatial range within which other events can be classified as aftershocks.</p></li>
+</ul>
+<p>Adjusting these parameters influences the number of events classified as aftershocks. A larger
+time window or higher fs_time_prop may result in more events being identified as aftershocks,
+thereby reducing the number of events classified as mainshocks.</p>
+</section>
+<section id="nearest-neighbor-declustering-method">
+<h2>Nearest Neighbor Declustering Method<a class="headerlink" href="#nearest-neighbor-declustering-method" title="Link to this heading">¶</a></h2>
+<p>The Nearest Neighbor method analyzes the spatial and temporal distances between events to
+distinguish between clustered events (foreshocks and aftershocks) and background seismicity.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><em>q_value</em>: This parameter controls the temporal sensitivity of the algorithm to clustered events. It is used to scale the time window based on the magnitude of the event, giving more weight to events that are closer in time.</p>
+<ul>
+<li><p>A higher q_value reduces the effective time window for larger magnitudes, making temporally close events less likely to form a cluster.</p></li>
+</ul>
+</li>
+<li><p><em>b_value</em>: This parameter is part of the Gutenberg-Richter law and describes the relationship between earthquake magnitude and frequency. In this method, b_value adjusts how magnitude influences both temporal and spatial distances.</p>
+<ul>
+<li><p>A higher b_value reduces the weight of smaller magnitude earthquakes, favoring their classification as independent events.</p></li>
+</ul>
+</li>
+<li><p><em>fractal_dimension</em>: This parameter describes the spatial complexity of the earthquake distribution. It affects how the spatial window is calculated to evaluate whether an event is part of a cluster.</p>
+<ul>
+<li><p>A higher fractal_dimension amplifies the influence of spatial distances between events, making event clustering more restrictive.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">EQ Catalog Declustering</a><ul>
+<li><a class="reference internal" href="#gardner-knopoff-declustering-method">Gardner-Knopoff Declustering Method</a></li>
+<li><a class="reference internal" href="#nearest-neighbor-declustering-method">Nearest Neighbor Declustering Method</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="oweqcatalogdownload.html"
+                          title="previous chapter">EQ Catalog Download</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="oweqfeatureengineering.html"
+                          title="next chapter">EQ Feature Engineering</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/widgets/oweqcatalogdeclustering.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="oweqfeatureengineering.html" title="EQ Feature Engineering"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="oweqcatalogdownload.html" title="EQ Catalog Download"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">EarthquakesETL 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">EQ Catalog Declustering</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Elena Carrasco Hurtado.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

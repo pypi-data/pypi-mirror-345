@@ -1,0 +1,119 @@
+Metadata-Version: 2.4
+Name: EarthquakesETL
+Version: 1.0.11
+Summary: EarthquakesETL add-on for Orange 3 data mining software.
+Home-page: https://github.com/gualbe/orange-earthquakes-etl
+Author: Elena Carrasco Hurtado
+Author-email: ecarrascohurtado@gmail.com
+License: GPL3+
+Keywords: orange3 add-on,earthquakes,etl,earthquakesetl,data mining,prediction,orange,addon,models,declustering,database,catalog
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Plugins
+Classifier: Programming Language :: Python
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: psycopg2-binary
+Requires-Dist: SQLAlchemy>=2.0.40
+Requires-Dist: bcrypt>=4.3.0
+Requires-Dist: geopandas>=1.0.1
+Requires-Dist: bs4>=0.0.2
+Requires-Dist: typing>=3.7.4.3
+Requires-Dist: openquake.engine>=3.23.1
+Requires-Dist: fiona>=1.10.1
+Requires-Dist: dataclasses>=0.6
+Requires-Dist: numpy>=1.26.4
+Requires-Dist: numba==0.58.1
+Requires-Dist: llvmlite==0.41.1
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+[![GitHub](https://img.shields.io/badge/GitHub-Orange--EarthquakesETL-gray?labelColor=white&style=flat&logo=GitHub&logoColor=black&link=https://github.com/gualbe/orange-earthquakes-etl)](https://github.com/gualbe/orange-earthquakes-etl) [![PyPI](https://img.shields.io/badge/PyPI-Orange--EarthquakesETL-gray?labelColor=white&style=flat&logo=PyPI&logoColor=blue&link=https://pypi.org/project/EarthquakesETL/)](https://pypi.org/project/EarthquakesETL/) ![Python](https://img.shields.io/badge/Python-3.10-grey?labelColor=yellow&style=flat&logo=Python) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-white?style=flat&logo=PostgreSQL&logoColor=blue&link=https://www.postgresql.org/)](https://www.postgresql.org/) [![Orange Data Mining](https://img.shields.io/badge/Orange%20Data%20Mining-3.38.1-grey?labelColor=orange&style=flat&link=https://orangedatamining.com/)](https://orangedatamining.com/)
+
+Orange3 EarthquakesETL
+===============
+
+EarthquakesETL add-on for [Orange] 3 data mining for acquiring global earthquake data via APIs, cleaning the data through a configurable node, and generating seismic attributes for machine learning modeling.
+
+[Orange]: https://orangedatamining.com/
+
+Installation
+------------
+
+### Orange add-on installer
+
+Install from Orange add-on installer through Options -> Add-ons.
+
+### Using pip
+
+To install the add-on with pip use
+
+    pip install EarthquakesETL
+
+To install the add-on from source, run
+
+    python setup.py install
+
+To register this add-on with Orange, but keep the code in the development directory (do not copy it to 
+Python's site-packages directory), run
+
+    python setup.py develop
+
+You can also run
+
+    pip install -e .
+
+which is sometimes preferable as you can *pip uninstall* packages later.
+
+### Anaconda
+
+If using Anaconda Python distribution, simply run
+
+    pip install EarthquakesETL
+
+**Required Dependencies**:
+* psycopg2-binary
+* SQLAlchemy>=2.0.40
+* bcrypt>=4.3.3
+* geopandas>=1.0.1
+* bs4>=0.0.2
+* typing>=3.7.4.3
+* openquake.engine>=3.23.1
+* fiona>=1.10.1
+* dataclasses>=0.6
+* numpy>=1.26.4
+* numba==0.58.1
+* llvmlite==0.41.1
+
+Usage
+-----
+
+After the installation, the widgets from this add-on are registered with Orange. To run Orange from the terminal,
+use
+
+    orange-canvas
+
+or
+
+    python3 -m Orange.canvas
+
+New widgets are in the toolbox bar under EarthquakesETL section.
+
+Workflow Example
+-----
+This is an example of how you can use this add-on.
+
