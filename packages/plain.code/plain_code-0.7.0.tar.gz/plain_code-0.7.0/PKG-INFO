@@ -1,0 +1,27 @@
+Metadata-Version: 2.4
+Name: plain.code
+Version: 0.7.0
+Summary: Code formatting and linting for Plain.
+Author-email: Dave Gaeddert <dave.gaeddert@dropseed.dev>
+License-File: LICENSE
+Requires-Python: >=3.11
+Requires-Dist: plain<1.0.0
+Requires-Dist: requests>=2.0.0
+Requires-Dist: ruff>=0.1.0
+Requires-Dist: tomlkit>=0.11.0
+Description-Content-Type: text/markdown
+
+# Biome JS Formatter Support
+
+This plugin now integrates [Biome](https://github.com/biomejs/biome) as a standalone binary.
+
+When enabled, `plain code check` will run `biome fmt --check <path>`, and
+`plain code fix` will run `biome fmt <path>` after Ruff.
+
+Configuration (in your project's `pyproject.toml`):
+
+```toml
+[tool.plain.code.biome]
+enabled = true    # whether to run Biome formatting (default: true)
+version = "1.9.4"  # optional; Biome version to install (without leading 'v')
+```
