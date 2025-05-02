@@ -1,0 +1,162 @@
+Metadata-Version: 2.4
+Name: chanx
+Version: 0.4.0
+Summary: The missing toolkit for Django Channels — auth, logging, consumers, and more.
+Project-URL: Documentation, https://chanx.readthedocs.io/
+Project-URL: Homepage, https://github.com/huynguyengl99/chanx
+Project-URL: Repository, https://github.com/huynguyengl99/chanx
+Author-email: Huy Nguyen <danghuy1999@gmail.com>
+License: 
+        
+        BSD License
+        
+        Copyright (c) 2025, Huy Nguyen
+        All rights reserved.
+        
+        Redistribution and use in source and binary forms, with or without modification,
+        are permitted provided that the following conditions are met:
+        
+        * Redistributions of source code must retain the above copyright notice, this
+          list of conditions and the following disclaimer.
+        
+        * Redistributions in binary form must reproduce the above copyright notice, this
+          list of conditions and the following disclaimer in the documentation and/or
+          other materials provided with the distribution.
+        
+        * Neither the name of the copyright holder nor the names of its
+          contributors may be used to endorse or promote products derived from this
+          software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+        ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+        WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+        IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+        INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+        BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+        DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+        OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+        OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+        OF THE POSSIBILITY OF SUCH DAMAGE.
+License-File: AUTHORS.rst
+License-File: LICENSE
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Requires-Python: <4.0,>=3.11
+Requires-Dist: channels-redis<5,>=4
+Requires-Dist: channels-stubs>=0.1.3
+Requires-Dist: channels<5,>=4
+Requires-Dist: django<6,>=5
+Requires-Dist: djangorestframework<4,>=3
+Requires-Dist: polyfactory>=2.20.0
+Requires-Dist: pydantic<3,>=2
+Requires-Dist: redis[hiredis]<6,>=5.2.1
+Requires-Dist: structlog>=25.2.0
+Provides-Extra: camel-case
+Requires-Dist: pyhumps>=3.8.0; extra == 'camel-case'
+Description-Content-Type: text/markdown
+
+# CHANX (CHANnels-eXtension)
+[![Image](https://chanx.readthedocs.io/en/latest/_static/interrogate_badge.svg)](https://github.com/huynguyengl99/chanx)
+[![codecov](https://codecov.io/gh/huynguyengl99/chanx/branch/main/graph/badge.svg?token=X8R3BDPTY6)](https://codecov.io/gh/huynguyengl99/chanx)
+
+The missing toolkit for Django Channels — authentication, logging, structured messaging, and more.
+
+## Installation
+
+```bash
+pip install chanx
+```
+
+For complete documentation, visit [chanx docs](https://chanx.readthedocs.io/).
+
+## Introduction
+
+Django Channels provides excellent WebSocket support for Django applications, but leaves gaps in authentication,
+ structured messaging, and developer tooling. Chanx fills these gaps with a comprehensive toolkit that makes
+ building WebSocket applications simpler and more maintainable.
+
+### Key Features
+
+- **REST Framework Integration**: Use DRF authentication and permission classes with WebSockets
+- **Structured Messaging**: Type-safe message handling with Pydantic validation
+- **WebSocket Playground**: Interactive UI for testing WebSocket endpoints
+- **Group Management**: Simplified pub/sub messaging with automatic group handling
+- **Comprehensive Logging**: Structured logging for WebSocket connections and messages
+- **Error Handling**: Robust error reporting and client feedback
+- **Testing Utilities**: Specialized tools for testing WebSocket consumers
+
+### Core Components
+
+- **AsyncJsonWebsocketConsumer**: Base consumer with authentication and structured messaging
+- **ChanxWebsocketAuthenticator**: Bridges WebSockets with DRF authentication
+- **Message System**: Type-safe message classes with automatic validation
+- **WebSocketTestCase**: Test utilities for WebSocket consumers
+
+## Configuration
+
+Chanx can be configured through the `CHANX` dictionary in your Django settings. Below is a complete list
+ of available settings with their default values and descriptions:
+
+```python
+# settings.py
+CHANX = {
+    # Message configuration
+    'MESSAGE_ACTION_KEY': 'action',  # Key name for action field in messages
+
+    # Completion messages
+    'SEND_COMPLETION': False,  # Whether to send completion message after processing messages
+
+    # Messaging behavior
+    'SEND_MESSAGE_IMMEDIATELY': True,  # Whether to yield control after sending messages
+    'SEND_AUTHENTICATION_MESSAGE': True,  # Whether to send auth status after connection
+
+    # Logging configuration
+    'LOG_RECEIVED_MESSAGE': True,  # Whether to log received messages
+    'LOG_SENT_MESSAGE': True,  # Whether to log sent messages
+    'LOG_IGNORED_ACTIONS': [],  # Message actions that should not be logged
+
+    # Playground configuration
+    'WEBSOCKET_BASE_URL': 'ws://localhost:8000'  # Default WebSocket URL for discovery
+}
+```
+
+## WebSocket Playground
+
+Add the playground to your URLs:
+
+```python
+urlpatterns = [
+    path('playground/', include('chanx.playground.urls')),
+]
+```
+
+Then visit `/playground/websocket/` to explore and test your WebSocket endpoints.
+
+## Testing
+
+Write tests for your WebSocket consumers:
+
+```python
+from chanx.testing import WebsocketTestCase
+
+class TestChatConsumer(WebsocketTestCase):
+    ws_path = "/ws/chat/room1/"
+
+    async def test_connect(self) -> None:
+        communicator = self.create_communicator()
+        connected, _ = await communicator.connect()
+        self.assertTrue(connected)
+```
