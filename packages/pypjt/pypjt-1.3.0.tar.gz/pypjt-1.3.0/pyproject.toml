@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=60.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "pypjt"
+version = "1.3.0"
+dynamic = ["dependencies", "optional-dependencies"]
+authors = [
+    { name = "sleeping-in-bed", email = "nyanyanyaworld@gmail.com" },
+]
+description = "A project to create python project template."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+pypjt = "pypjt:main"
+
+[tool.pypjt]
+created-by = "0.1.0"
+
+[tool.setuptools]
+packages = ["pypjt"]
+include-package-data = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = ""
+testpaths = [
+    "tests"
+]
+
+[tool.ruff]
+extend-exclude = [
+    "tests/resources",
+    "tests/tmp",
+    "containerdata"
+]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+
+[tool.mypy]
+exclude = [
+    "tests/resources",
+    "tests/tmp",
+    "containerdata"
+]

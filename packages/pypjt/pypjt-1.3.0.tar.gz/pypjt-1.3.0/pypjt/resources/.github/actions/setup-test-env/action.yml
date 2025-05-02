@@ -1,0 +1,23 @@
+name: Setup test env
+description: Setup Python, Rust, pip
+inputs:
+  python-version:
+    description: Python version to set up
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+      id: setup-python
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install Rust (for Rust-based Python packages)
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox pytest coverage
