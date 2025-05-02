@@ -1,0 +1,24 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+author = "Ciencia de Datos • GECI"
+author-email = "ciencia.datos@islas.org.mx"
+classifiers = [ "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",]
+description-file = "README.md"
+home-page = "https://github.com/IslasGECI/cat_data_tools"
+module = "cat_data_tools"
+requires = [
+    "numpy",
+    "pandas",
+    "typer[all]"
+]
+requires-python=">=3.9"
+
+[tool.flit.scripts]
+cat-data-tools = "cat_data_tools.cli:app"
+
+[tool.mutmut]
+paths_to_mutate = [ "cat_data_tools/" ]
+tests_dir = [ "tests/" ]
