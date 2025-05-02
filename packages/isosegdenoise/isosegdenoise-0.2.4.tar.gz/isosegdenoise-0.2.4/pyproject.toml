@@ -1,0 +1,42 @@
+[project]
+name = "isosegdenoise"
+version = "0.2.4"
+description = "A GUI for Deepcell and Cellpose segmentation / denoising, for integrating into PalmettoBUG without triggering GPL3 restrictions. Can be launched on its own to do denoising and cell segmentation separate from PalmettoBUG -- but requires / assumes a PalmettoBUG like directory structure."
+authors = [ 
+        {name = "Ben Caiello", email = "<caiello@musc.edu>"},
+            ]
+license = {text = "Multiple: BSD-3, MIT, academic / non-commercial"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "cellpose>=3.0.8",
+    "numpy<2.0.0",
+    "pandas>=2.0",
+    "napari",
+    "PySide6<6.5",  ## matches Napari's experimental pyside6 configuration
+    "scikit-image>=0.22.0",
+    "scikit-learn",
+    "scipy" ,
+    "tifffile>=2024.2.12" ,
+    "torch",
+    "customtkinter>=5.2.2",
+    "defusedxml",
+    "opencv-python-headless",
+                                    # tf2onnx = "*"
+    "onnx2torch"]
+
+[project.optional-dependencies]
+tensorflow = ["tensorflow>=2.8.0,<=2.13.*", "tensorflow-addons>=0.16.1", "keras<3.0.0"]
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.11"
+
+[tool.poetry.scripts]
+segdenoise = 'isosegdenoise.Executable:run_GUI'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+extend-exclude = [".onnx"]
