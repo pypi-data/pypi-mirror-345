@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: obr
+Version: 50
+Summary: object runtime
+Author-email: Bart Thate <bthate@dds.nl>
+License: Public Domain
+Project-URL: home, https://pypi.org/project/obr
+Project-URL: bugs, https://github.com/bthate/obr/issues
+Project-URL: source, https://github.com/bthate/obr
+Classifier: Development Status :: 1 - Planning
+Classifier: License :: Public Domain
+Classifier: Programming Language :: Python
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/x-rst
+
+OBR
+===
+
+
+**NAME**
+
+
+``OBR`` - object runtime
+
+
+**SYNOPSIS**
+
+::
+
+
+    >>> from obr.event import Event
+    >>> from obr.handler import Handler
+    >>>
+    >>> def hello(event):
+    >>>     event.reply("hello!")
+    >>>     event.ready()
+    >>>
+    >>> hdl = Handler()
+    >>> hdl.register("hello", hello)
+    >>> hdl.start()
+    >>>
+    >>> e = Event()
+    >>> e.type = "hello"
+    >>> hdl.put(e)
+    >>> e.wait()
+
+
+**DESCRIPTION**
+
+
+``OBR`` is a runtime that provides thread support and an event handler
+to handle (threaded) callbacks.
+
+
+**INSTALL**
+
+::
+
+    $ pip install obr
+
+
+**SOURCE**
+
+
+source is at https://github.com/bthate/obr
+
+
+**AUTHOR**
+
+
+Bart Thate <bthate@dds.nl>
+
+
+**COPYRIGHT**
+
+
+``OBR`` is Public Domain.
