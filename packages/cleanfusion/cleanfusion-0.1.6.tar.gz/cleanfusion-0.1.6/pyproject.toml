@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cleanfusion"
+version = "0.1.6"
+description = "A comprehensive data cleaning library"
+readme = "README.md"
+authors = [
+    {name = "Himanshu Chopade", email = "himanshuchopade97@gmail.com"},
+    {name = "Hriday Thaker", email = "hriday.thaker2604@gmail.com"},
+    {name = "Aryan Bachute", email = "bachutearyan@gmail.com"},
+    {name = "Gautam Rajhans", email = "gprajhans@gmail.com"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+requires-python = ">=3.7"
+dependencies = [
+    "pandas>=1.3.0",
+    "numpy>=1.20.0",
+    "scikit-learn>=1.0.0",
+    "matplotlib>=3.4.0",
+    "nltk>=3.6.0",
+    "PyPDF2>=2.0.0",
+    "pdfplumber>=0.7.0",
+    "scipy>=1.7.0",
+    "python-docx>=0.8.11",
+]
+
+[project.optional-dependencies]
+bert = ["sentence-transformers>=2.2.0"]
+pdf = ["pdfplumber>=0.7.0"]
+docx = ["python-docx>=0.8.11"]
+dev = ["pytest>=7.0.0", "black", "isort"]
+all = ["cleanfusion[bert,pdf,docx]"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cleanfusion*"]
+exclude = ["output*", "tests*"]
+
+
+[project.urls]
+"Homepage" = "https://github.com/himanshuchopade97/CleanFusion"
+"Bug Tracker" = "https://github.com/himanshuchopade97/CleanFusion/issues"
+
+[project.scripts]
+cleanfusion = "cleanfusion.cli:main"
