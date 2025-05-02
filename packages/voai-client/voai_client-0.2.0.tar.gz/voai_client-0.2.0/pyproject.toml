@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voai-client"
+version = "0.2.0"
+description = "Python SDK for voai.ai VoiceAPI (TTS / generate-voice / generate-dialogue)"
+authors = [{name="Your Name", email="you@example.com"}]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = ["requests>=2.31"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "requests-mock>=1.11",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourname/voai-client"
+
+[project.scripts]
+voai-cli = "voai_client.cli:main"
