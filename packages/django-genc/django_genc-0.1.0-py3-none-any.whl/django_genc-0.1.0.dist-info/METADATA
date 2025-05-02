@@ -1,0 +1,144 @@
+Metadata-Version: 2.4
+Name: django_genc
+Version: 0.1.0
+Summary: A django app for working with GENC country codes
+Project-URL: Homepage, https://github.com/makegov/django-genc
+Project-URL: Documentation, https://django-genc.readthedocs.io/
+Project-URL: Repository, https://github.com/makegov/django-genc
+Project-URL: Issues, https://github.com/makegov/django-genc/issues
+Author-email: "V. David Zvenyach" <dave@makegov.com>
+License-Expression: Apache-2.0
+License-File: LICENSE
+Keywords: codes,country,django,genc,iso
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.0
+Classifier: Framework :: Django :: 4.1
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.11
+Requires-Dist: django>=4.0
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: coverage; extra == 'dev'
+Requires-Dist: flake8; extra == 'dev'
+Requires-Dist: isort; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-django; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme; extra == 'docs'
+Description-Content-Type: text/markdown
+
+# django-genc
+
+A reusable Django app for working with GENC (Geopolitical Entities, Names, and Codes) country codes.
+
+Source data comes from the CIA World Fact Book: https://www.cia.gov/the-world-factbook/references/country-data-codes/
+https://nsgreg.nga.mil/registries/browse/results.jsp?registryType=genc&registerField=IE4&itemTypeField=ggp&gce=all&field=name&show=all&status=all&sort=nameasc
+
+## Features
+
+- Store and manage GENC country codes with their ISO equivalents
+- Custom `CountryField` that accepts both 2-character and 3-character ISO and 3-character GENC codes
+- REST API serialization support
+- Admin interface integration
+- Data loading from CSV
+
+## Installation
+
+1. Install the package:
+
+```bash
+pip install django-genc
+```
+
+2. Add 'genc' to your INSTALLED_APPS:
+
+```python
+INSTALLED_APPS = [
+    ...
+    'genc',
+    ...
+]
+```
+
+3. Run migrations:
+
+```bash
+python manage.py migrate
+```
+
+## Usage
+
+### Models
+
+```python
+from django.db import models
+from django_genc.models import CountryField
+
+class MyModel(models.Model):
+    country = CountryField()
+```
+
+### Serializers
+
+```python
+from rest_framework import serializers
+from django_genc.serializers import CountryFieldSerializer
+
+class MyModelSerializer(serializers.ModelSerializer):
+    country = CountryFieldSerializer()
+    
+    class Meta:
+        model = MyModel
+        fields = ['country']
+```
+
+## API
+
+### CountryField
+
+A custom field that can handle both 2-digit ISO and 3-digit GENC codes.
+
+```python
+from django_genc.models import CountryField
+
+class MyModel(models.Model):
+    country = CountryField()
+```
+
+The field will:
+- Store values as 3-digit GENC codes in the database
+- Accept both 2-digit ISO and 3-digit GENC codes as input
+- Automatically convert ISO codes to GENC codes
+- Validate that the code exists in the database
+
+### CountryCode Model
+
+The base model for storing country codes:
+
+```python
+from django_genc.models import CountryCode
+
+# Get a country by GENC code
+country = CountryCode.objects.get(genc_code='USA')
+
+# Get a country by ISO code
+country = CountryCode.objects.get(iso_code='US')
+
+# Look up a country by a code under either standard
+country = CountryCode.objects.get_by_code('US')
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the Apache 2.0 License - see the LICENSE file for details. 
