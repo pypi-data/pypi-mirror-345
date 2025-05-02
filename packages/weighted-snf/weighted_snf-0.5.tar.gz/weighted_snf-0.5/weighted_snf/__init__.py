@@ -1,0 +1,5 @@
+from .adaptive_weighted_snf import make_affinity_with_weight
+from .adaptive_weighted_snf import feature_selection
+from .adaptive_weighted_snf import SNF_modality_weights  
+from .adaptive_weighted_snf import make_affinity_with_weight
+from .adaptive_weighted_snf import process_feature_weights_and_mad

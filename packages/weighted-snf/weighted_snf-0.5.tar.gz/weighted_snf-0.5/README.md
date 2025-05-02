@@ -1,0 +1,114 @@
+
+# Weighted SNF Package
+
+**Weighted SNF** is a Python package designed to implement **Similarity Network Fusion (SNF)** with an **adaptive weighting mechanism**. This package is intended for use in computational biology, machine learning, and data science tasks that involve multi-view data, such as genomics, imaging, and clinical data.
+
+The package helps integrate heterogeneous data sources into a single, unified similarity network, which can be used for predictive modeling and analysis.
+
+---
+
+## Features
+
+- **Adaptive Weighted Similarity Network Fusion**: A flexible framework for integrating multi-modality.
+
+
+---
+
+## Installation
+
+To install the **weighted_snf** package, you can use **pip**.
+
+### Install via PyPI (if published)
+```bash
+pip install weighted_snf
+```
+
+### Install from Source
+
+If you'd like to install from source, first clone the repository or download the source files. Then, in the root directory (where `setup.py` is located), run the following command:
+
+```bash
+pip install .
+```
+
+This will install the package locally in your Python environment.
+
+---
+
+## Usage
+
+Once installed, you can use the **weighted_snf** package by importing its functions into your Python scripts. Below is an example usage:
+
+### Example
+
+```python
+from weighted_snf import feature_selection,make_affinity_with_weight, SNF_modality_weights
+import pandas as pd
+import numpy as np
+from sklearn.datasets import make_classification
+import snf
+
+# Example input data for affinity matrix calculation
+
+# Generate a dummy dataset for testing the boruta_top_n_features function
+# Creating a classification dataset with 100 samples, 20 features, and 2 informative features
+X, y = make_classification(n_samples=100, n_features=50, n_informative=2, n_classes=2, random_state=42)
+
+# Convert to pandas DataFrame for easier manipulation
+X_df1 = pd.DataFrame(X, columns=[f'Feat_mod1_{i+1}' for i in range(X.shape[1])])
+y_df1 = pd.DataFrame(y, columns=['Target'])
+
+X, y = make_classification(n_samples=100, n_features=60, n_informative=2, n_classes=2, random_state=42)
+
+# Convert to pandas DataFrame for easier manipulation
+X_df2 = pd.DataFrame(X, columns=[f'Feat_mod2_{i+1}' for i in range(X.shape[1])])
+y_df2 = pd.DataFrame(y, columns=['Target'])
+
+
+# Display the first few rows of the dummy dataset
+print(X_df1.head()), print(y_df1.head())
+
+
+num_features=10
+selected_genes1, feature_ranks1=feature_selection(X_df1,np.ravel(y_df1),num_features=num_features,n_estimators=100)
+feature_ranks1
+
+num_features=18
+selected_genes2, feature_ranks2=feature_selection(X_df2,np.ravel(y_df2),num_features=num_features,n_estimators=50)
+feature_ranks2
+
+X_df1=X_df1[selected_genes1]
+X_df2=X_df2[selected_genes2]
+
+sorted_weights = process_feature_weights_and_mad(
+    X_v2_list=[X_df1, X_df2],
+    feature_ranks_list=[feature_ranks1, feature_ranks2],
+    betta=0.5,
+)
+
+print(sorted_weights[0])
+
+similarity_view1_w = make_affinity_with_weight(X_df1,weight=sorted_weights[0]['feature_weight'].to_list())
+similarity_view2_w = make_affinity_with_weight(X_df2,weight=sorted_weights[1]['feature_weight'].to_list())
+
+fused_network = SNF_modality_weights([similarity_view1_w, similarity_view2_w], weight_modality=[0.8, 0.2])
+print('fused_network', fused_network)
+
+
+```
+
+
+
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## Author
+
+**Sevinj Yolchuyeva**  
+Email: [sevinj.yolchuyeva@crchudequebec.ulaval.ca](mailto:sevinj.yolchuyeva@crchudequebec.ulaval.ca)  
+Centre de Recherche du CHU de Québec - Université Laval
