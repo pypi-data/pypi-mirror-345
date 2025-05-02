@@ -1,0 +1,123 @@
+# FastAPI Auth Core
+
+A robust authentication package for FastAPI applications that provides JWT token management, user authentication, and middleware functionality.
+
+## Features
+
+- JWT token generation and validation
+- Password hashing and verification
+- User authentication middleware
+- Refresh token management
+- SQLAlchemy integration
+
+## Installation
+
+```bash
+pip install abs-auth-core
+```
+
+## Dependencies
+
+- Python >= 3.13,< 4.0
+- FastAPI >= 0.115.12
+- PyJWT >= 2.10.1
+- Passlib >= 1.7.4
+
+## Usage
+
+### Basic Setup
+
+```python
+from fastapi import FastAPI, Depends
+from abs_auth_core import AuthFunctions, JWTFunctions
+from sqlalchemy.orm import Session
+
+app = FastAPI()
+
+# Initialize JWT functions
+jwt_functions = JWTFunctions(
+    secret_key="your-secret-key",
+    algorithm="HS256",
+    expire_minutes=30
+)
+
+# Initialize Auth functions with your database session and User model
+auth_functions = AuthFunctions(
+    db_session=lambda: Session(),
+    User=YourUserModel
+)
+```
+
+### Authentication Middleware
+
+```python
+from abs_auth_core import auth_middleware
+
+# Create the authentication middleware
+auth = auth_middleware(
+    db_session=lambda: Session(),
+    Users=YourUserModel,
+    jwt_secret_key="your-secret-key",
+    jwt_algorithm="HS256"
+)
+
+# Use the middleware in your routes
+@app.get("/protected")
+async def protected_route(user = Depends(auth)):
+    return {"message": f"Hello, {user.username}!"}
+```
+
+### Token Generation
+
+```python
+# Generate access and refresh tokens
+tokens = jwt_functions.generate_tokens(
+    data={"sub": "user123"},
+    user_id=1,
+    db=lambda: Session(),
+    User=YourUserModel
+)
+
+# The tokens dictionary contains:
+# {
+#     "access_token": "...",
+#     "refresh_token": "...",
+#     "token_type": "bearer"
+# }
+```
+
+### Password Management
+
+```python
+# Hash a password
+hashed_password = jwt_functions.get_password_hash("user_password")
+
+# Verify a password
+is_valid = jwt_functions.verify_password("user_password", hashed_password)
+```
+
+### User Management
+
+```python
+# Get user by attribute
+user = auth_functions.get_user_by_attribute("email", "user@example.com")
+
+## Security Features
+
+- Secure password hashing using bcrypt
+- JWT token expiration
+- Refresh token rotation
+- Exception handling for authentication failures
+
+## Best Practices
+
+1. Always use HTTPS in production
+2. Store sensitive configuration (secret keys, etc.) in environment variables
+3. Implement proper error handling
+4. Use appropriate token expiration times
+5. Implement rate limiting for authentication endpoints
+
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
