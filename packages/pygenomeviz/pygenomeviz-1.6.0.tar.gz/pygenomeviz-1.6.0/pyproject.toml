@@ -1,0 +1,92 @@
+[project]
+name = "pygenomeviz"
+dynamic = ["version"]
+description = "A genome visualization python package for comparative genomics"
+authors = [{ name = "moshi4" }]
+license = "MIT"
+readme = "README.md"
+keywords = [
+    "bioinformatics",
+    "genomics",
+    "matplotlib",
+    "visualization",
+    "comparative-genomics",
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Framework :: Matplotlib",
+]
+requires-python = ">=3.9"
+dependencies = ["matplotlib>=3.6.3", "biopython>=1.80", "numpy>=1.21"]
+
+[project.optional-dependencies]
+gui = ["streamlit>=1.45.0"]
+
+[project.urls]
+homepage = "https://moshi4.github.io/pyGenomeViz/"
+repository = "https://github.com/moshi4/pyGenomeViz/"
+
+[project.scripts]
+pgv-blast = "pygenomeviz.scripts.blast:main"
+pgv-mummer = "pygenomeviz.scripts.mummer:main"
+pgv-mmseqs = "pygenomeviz.scripts.mmseqs:main"
+pgv-pmauve = "pygenomeviz.scripts.pmauve:main"
+pgv-download = "pygenomeviz.scripts.download:main"
+pgv-gui = "pygenomeviz.scripts.gui:main"
+
+[tool.hatch.version]
+path = "src/pygenomeviz/__init__.py"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ruff>=0.4.0",
+    "pre-commit>=3.5.0",
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0",
+    "ipykernel>=6.13.0",
+    # docs
+    "mkdocs>=1.2",
+    "mkdocstrings[python]>=0.19.0",
+    "mkdocs-jupyter>=0.21.0",
+    "mkdocs-material>=8.2",
+    "black>=22.3.0",
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cov=src --tb=long -vv --cov-report=xml --cov-report=term"
+testpaths = ["tests"]
+
+[tool.ruff]
+include = ["src/**.py", "tests/**.py"]
+line-length = 88
+
+# Lint Rules: https://docs.astral.sh/ruff/rules/
+[tool.ruff.lint]
+select = [
+    "F", # pyflakes
+    "E", # pycodestyle (Error)
+    "W", # pycodestyle (Warning)
+    "I", # isort
+    "D", # pydocstyle
+]
+ignore = [
+    "D100", # Missing docstring in public module
+    "D101", # Missing docstring in public class
+    "D104", # Missing docstring in public package
+    "D105", # Missing docstring in magic method
+    "D205", # 1 blank line required between summary line and description
+    "D400", # First line should end with a period
+    "D401", # First line should be in imperative mood
+    "D403", # First word of the first line should be properly capitalized
+    "D415", # First line should end with a period, question mark, or exclamation point
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[build-system]
+requires = ["hatchling==1.26.3"]
+build-backend = "hatchling.build"
