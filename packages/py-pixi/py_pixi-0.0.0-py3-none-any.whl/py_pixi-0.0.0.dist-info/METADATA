@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: py-pixi
+Version: 0.0.0
+Summary: A Python package for program analysis and custom instruction generation
+Home-page: https://github.com/JoyenBenitto/Pixi
+Author: Joyen Benitto
+Author-email: joyen.benitto12@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Pixi (Pass for Instruction eXtraction and Inference)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Publish Python Package](https://github.com/JoyenBenitto/Pixi/actions/workflows/publish.yml/badge.svg?branch=main)](https://github.com/JoyenBenitto/Pixi/actions/workflows/publish.yml)
+
+Pixi is a tool for analyzing LLVM IR and generating custom hardware instructions to optimize performance-critical code sections in the von-Neumann pipeline. The project follows the idea of everything is computation both hardware and software but they come with different computational cost models.
+
+## Requirements
+
+- Python 3.10+
+- LLVM and Clang (automatically set up by the installation process)
+- Ninja build system
+- CMake 3.13.4+
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/JoyenBenitto/Pixi.git
+cd Pixi
+
+# Install the package in development mode
+pip install -e .
+
+# Set up LLVM dependencies
+pixi setup -c <jobs>
+```
+
+>[!Note]
+>The setup process clones and configures the LLVM project, which may take some time during the initial setup. Subsequent setups will be much faster.
+
+## Usage
+
+Pixi provides a comprehensive command-line interface for analyzing code, generating LLVM IR, and creating custom hardware instructions.
+
+### Command Reference
+
+| Command | Description |
+|---------|-------------|
+| `setup` | Sets up the LLVM environment for Pixi |
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
