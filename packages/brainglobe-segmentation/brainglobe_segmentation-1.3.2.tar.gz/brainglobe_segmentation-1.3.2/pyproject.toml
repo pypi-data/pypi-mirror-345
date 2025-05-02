@@ -1,0 +1,114 @@
+[project]
+name = "brainglobe-segmentation"
+description = "Segmentation of anatomical structures in a common coordinate space"
+readme = "README.md"
+authors = [
+    { name = "Adam Tyson, Horst Obenhaus", email = "code@adamltyson.com" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: napari",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "brainglobe-atlasapi >=2.0.1",
+    "brainglobe-napari-io >=0.3.0",
+    "brainglobe-utils >=0.5.0",
+    "napari >=0.4.5,<0.6.0",
+    "numpy",
+    "pandas[hdf5]",
+    "qtpy",
+    "scikit-image",
+    "scipy",
+    "tifffile",
+    "qt-niu"
+]
+license = { text = "BSD-3-Clause" }
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://brainglobe.info/"
+"Source Code" = "https://github.com/brainglobe/brainglobe-segmentation"
+"Bug Tracker" = "https://github.com/brainglobe/brainglobe-segmentation/issues"
+Documentation = "https://brainglobe.info/documentation/brainglobe-segmentation/index.html"
+"User Support" = "https://forum.image.sc/tag/brainglobe"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "gitpython",
+    "pre-commit",
+    "pytest",
+    "coverage",
+    "pytest-cov",
+    "pytest-qt",
+    "napari-time-slicer", # to test non ndarray-types
+]
+
+[project.entry-points."napari.manifest"]
+brainglobe-segmentation = "brainglobe_segmentation:napari.yaml"
+
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["brainglobe_segmentation*"]
+
+[tool.setuptools_scm]
+
+[tool.black]
+target-version = ['py311','py312', 'py313']
+skip-string-normalization = false
+line-length = 79
+
+[tool.ruff]
+line-length = 79
+exclude = ["__init__.py", "build", ".eggs"]
+fix = true
+
+[tool.ruff.lint]
+select = ["I", "E", "F"]
+
+[tool.tox]
+legacy_tox_ini = """
+# For more information about tox, see https://tox.readthedocs.io/en/latest/
+[tox]
+envlist = py{311,312,313}
+
+[gh-actions]
+python =
+    3.11: py311
+    3.12: py312
+    3.13: py313
+
+[testenv]
+passenv =
+    CI
+    GITHUB_ACTIONS
+    DISPLAY
+    XAUTHORITY
+    NUMPY_EXPERIMENTAL_ARRAY_FUNCTION
+    PYVISTA_OFF_SCREEN
+deps =
+    pytest  # https://docs.pytest.org/en/latest/contents.html
+    pytest-cov  # https://pytest-cov.readthedocs.io/en/latest/
+    pytest-qt  # https://pytest-qt.readthedocs.io/en/latest/
+    coverage
+    napari
+    pyqt5
+    magicgui
+
+commands = pytest -v --color=yes --cov=brainglobe_segmentation --cov-report=xml
+"""
