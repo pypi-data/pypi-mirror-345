@@ -1,0 +1,113 @@
+
+# Story Recommender System based on LightFM
+
+## Overview
+
+This project implements a **personalized story recommendation system** using the [LightFM](https://making.lyst.com/lightfm/docs/home.html) library. The system is designed to recommend stories (books, comics, audiobooks, etc.) to users based on their explicit ratings, reading behavior, language and preferences.
+
+The code is structured in an object-oriented way, making it easy to maintain and extend. It uses Python type hints for clarity and robustness.
+
+---
+
+## Project Structure
+
+- **DataManager**: Handles loading, preprocessing, and validation of all datasets (stories, users, ratings, behavioral data).
+- **RecommenderSystem**: Builds the recommendation model, processes user-story interactions, trains the LightFM model, and generates recommendations.
+
+---
+
+## Data Sources
+
+1. **Story Dataset** (`story_dataset.csv`)
+    - Contains metadata for each story: genres, keywords, language, age rating, etc.
+
+2. **User Dataset** (`user_dataset.csv`)
+    - Contains user profiles: favorite genres, preferred keywords, language, age rating limitation, etc.
+
+3. **Rating Dataset** (`simple_rating_dataset.csv`)
+    - Contains explicit user ratings for stories, with timestamps.
+
+4. **Behavioral Dataset** (`behavioral_dataset.csv`)
+    - Contains user behavior logs, specifically:
+        - `reads`: List of strings in the format `story-uuid-language-percentage_finished` (e.g., `abc123-en-0.75`)
+        - `impressions`: List of story IDs the user has seen
+        - `timestamp`: When the behavior occurred
+
+---
+
+## Key Features
+
+- **Strict Language Enforcement**: Only recommends stories in the user's preferred language. (Can be disabled)
+- **Hybrid Recommendation**: Uses both explicit ratings (most important) and implicit behavioral signals (e.g., how much of a story was read).
+- **Completion Percentage Weighting**: For behavioral reads, the percentage of the story finished is used as the interaction strength.
+- **Time Decay**: More recent interactions are weighted more heavily.
+---
+
+## How It Works
+
+### 1. Data Loading and Preprocessing
+
+- **DataManager** loads all datasets.
+- Parses columns that contain lists (e.g., genres, keywords, reads).
+- Builds feature lists for each story and user for use in LightFM.
+- Validates that all stories are in a language supported by at least one user.
+
+### 2. Interaction Matrix Construction
+
+- **Explicit Ratings**: For each user-story pair with a rating, an interaction is created with the rating as the weight.
+- **Behavioral Reads**: For each read, the code extracts the story ID, language, and completion percentage. If the language matches both the user's preference and the story's language, and there is no explicit rating for that pair, an interaction is created with the completion percentage as the weight.
+- **Impressions**: Optionally included as weak implicit interactions.
+- **Time Decay**: All interactions are further weighted by recency, so recent interactions are more important.
+
+### 3. Model Training
+
+- The **RecommenderSystem** builds a LightFM dataset with all users, stories, and their features.
+- The interaction matrix (with weights) is used to train a LightFM model using the WARP loss function.
+- User and item features are included to help with cold-start scenarios.
+
+### 4. Generating Recommendations
+
+- For a given user, the system:
+    - Filters out stories in the wrong language.
+    - Removes stories the user has already interacted with (read or rated).
+    - Scores the remaining stories using the trained model.
+    - Returns the top-N recommendations, including story metadata.
+
+---
+
+## Example Usage
+
+```python
+dm = DataManager(
+story_path='story_dataset.csv',
+user_path='user_dataset.csv',
+rating_path='simple_rating_dataset.csv',
+behavior_path='behavioral_dataset.csv'
+)
+dm.load_data()
+
+recommender = RecommenderSystem(dm)
+recommender.prepare_dataset()
+recommender.train_model(epochs=30)
+
+example_user = dm.users.iloc['userId']
+recommendations = recommender.recommend(example_user, top_n=5)
+print(recommendations)
+
+```
+
+
+## Requirements
+
+- Python 3.9+
+- pandas
+- numpy
+- lightfm
+
+---
+
+## Authors
+**Adam Mitrenga**   
+**Jan Voracek**
+
+

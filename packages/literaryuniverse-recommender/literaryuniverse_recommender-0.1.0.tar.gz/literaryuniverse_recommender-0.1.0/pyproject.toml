@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=75.3.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "literaryuniverse-recommender"
+version = "0.1.0"
+description = "Story Recommender System based on LightFM"
+readme = "README.md"
+authors = [{name = "Adam Mitrenga", email = "edemsikk@gmail.com"}]
+requires-python = ">=3.12"
+dependencies = [
+    "lightfm",
+    "pandas==2.2.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+    "ruff>=0.11.8",
+]
+[tool.uv.sources]
+lightfm = { git = "https://github.com/Edems10/lightfm" }
