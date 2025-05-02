@@ -1,0 +1,55 @@
+[build-system]
+# The Apple linker does not recognise `-Bsymbolic-functions`, one of the
+# arguments passed to it on macOS when building wheels for PyPy. Using an older
+# version of setuptools fixes this problem.
+requires = ["setuptools==70.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pysorteddict"
+version = "0.4.1"
+authors = [
+    {name = "Vishal Pankaj Chandratreya"},
+]
+description = "Python sorted dictionary: a Python dictionary in which the keys are always in ascending order"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+[project.urls]
+"Repository" = "https://github.com/tfpf/pysorteddict"
+"Bug Tracker" = "https://github.com/tfpf/pysorteddict/issues"
+
+[tool.cibuildwheel]
+enable = ["pypy"]
+test-command = "pytest {package}"
+test-requires = ["pytest"]
+
+# No use of an editable installation. If the code is edited, it has to be
+# recompiled, and the package has to be reinstalled.
+[tool.hatch.envs.default]
+dev-mode = false
+dependencies = ["pytest"]
+
+[tool.ruff]
+line-length = 119
+
+[tool.ruff.lint.per-file-ignores]
+"examples/*" = ["S101", "T201"]
+"tests/*" = ["PLR2004", "S101", "S311"]
