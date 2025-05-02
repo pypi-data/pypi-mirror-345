@@ -1,0 +1,79 @@
+name: Build Wheels
+
+on: [workflow_dispatch]
+
+jobs:
+  build_wheels:
+    name: Build wheels on for ${{matrix.python.cp}}-${{ matrix.buildplat.sys }}
+    runs-on: ${{ matrix.buildplat.runs_on }}
+    strategy:
+      matrix:
+        buildplat:
+          - { runs_on: ubuntu-22.04, sys: manylinux, arch: x86_64, benv: "" }
+          - { runs_on: macos-14,     sys: macosx,    arch: arm64,  benv: "14.0" }
+        python:
+          - { cp: "cp310",  rel: "3.10" }
+          - { cp: "cp311",  rel: "3.11" }
+          - { cp: "cp312",  rel: "3.12" }          
+          - { cp: "cp313",  rel: "3.13" } 
+
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+      # Used to host cibuildwheel
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel
+
+      - name: Build wheels (Linux glibc)
+        if: ${{ matrix.buildplat.sys == 'manylinux' }}
+        run: python -m cibuildwheel --output-dir wheelhouse
+        env:
+           CIBW_BUILD: ${{ matrix.python.cp }}-${{ matrix.buildplat.sys }}*
+           CIBW_ARCHS_LINUX: "x86_64"
+           CIBW_BEFORE_ALL_LINUX: >
+              if command -v apt-get; then
+                apt-get -y git libicu-dev libxml2-dev libxslt1-dev libbz2-dev zlib1g-dev autoconf automake autoconf-archive libtool autotools-dev gcc g++ make libboost-dev
+              elif command -v yum; then
+                yum install -y git libicu-devel libxml2-devel libxslt-devel zlib-devel bzip2-devel libtool autoconf-archive autoconf automake m4 wget cmake
+              fi &&
+              ./build-deps.sh
+           CIBW_BEFORE_BUILD: ./build-boost-python.sh
+           CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux_2_28_x86_64
+           CIBW_SKIP: "*-win* *-manylinux_i686 pp*"
+
+      - name: Build wheels (Linux musl)
+        if: ${{ matrix.buildplat.sys == 'musllinux' }}
+        run: python -m cibuildwheel --output-dir wheelhouse
+        env:
+           CIBW_BUILD: ${{ matrix.python.cp }}-${{ matrix.buildplat.sys }}*
+           CIBW_ARCHS_LINUX: "x86_64"
+           CIBW_BEFORE_ALL_LINUX: >
+              apk add build-base git autoconf-archive autoconf automake libtool bzip2-dev icu-dev libxml2-dev boost-dev boost-python3 libtool rsync &&
+              mkdir -p /usr/local/share/aclocal/ && rsync -av --ignore-existing /usr/share/aclocal/*.m4 /usr/local/share/aclocal/ &&
+              ./build-deps.sh
+           CIBW_MUSLLINUX_X86_64_IMAGE: quay.io/pypa/musllinux_1_1_x86_64
+           CIBW_MUSLLINUX_AARCH64_IMAGE: quay.io/pypa/musllinux_1_1_aarch64
+           CIBW_SKIP: "*-win* *-manylinux_i686 pp*"
+
+      - name: Build wheels (macOS)
+        if: ${{ runner.os == 'macOS' && matrix.python.cp == 'cp313' }}
+        run: python -m cibuildwheel --output-dir wheelhouse
+        env:
+           CIBW_BUILD: ${{ matrix.python.cp }}-${{ matrix.buildplat.sys }}*
+           CIBW_ARCHS: ${{ matrix.buildplat.arch }}
+           CIBW_ENVIRONMENT: "MACOSX_DEPLOYMENT_TARGET=${{ matrix.buildplat.benv }}"
+           CIBW_BEFORE_ALL_MACOS: >
+              brew install boost boost-python3 &&
+              brew tap fbkarsdorp/homebrew-lamachine &&
+              brew install timbl &&
+              du -ah /opt/homebrew | grep boost_python
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ ! (runner.os == 'macOS' && matrix.python.cp != 'cp313') }}
+        with:
+          name: ${{matrix.python.cp}}-${{matrix.buildplat.sys}}-${{matrix.buildplat.arch}}
+          path: ./wheelhouse/*.whl
