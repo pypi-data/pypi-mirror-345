@@ -1,0 +1,10 @@
+__title__ = 'ka_uts_dic'
+__description__ = 'Dictionary Management.'
+__url__ = 'https://ka-uts_obj.readthedocs.io/en/latest'
+__version__ = '2.2.2.250502'
+__build__ = 0x022200
+__author__ = 'Bernd Stroehle'
+__author_email__ = 'bernd.stroehle@gmail.com'
+__license__ = 'Apache-2.0'
+__copyright__ = 'Copyright 2025 Bernd Stroehle'
+__cake__ = u'\u2728 \U0001f370 \u2728'
