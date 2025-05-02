@@ -1,0 +1,16 @@
+[package]
+name = "_sealwatch"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "_sealwatch"  # This is the module name, matching what Python will import
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+numpy = "0.21"
+
+[dependencies.pyo3]
+version = "0.21.1"
+features = ["extension-module", "abi3-py38"]
