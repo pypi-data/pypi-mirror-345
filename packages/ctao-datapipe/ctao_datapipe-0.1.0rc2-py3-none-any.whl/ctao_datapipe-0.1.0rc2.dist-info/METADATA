@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: ctao-datapipe
+Version: 0.1.0rc2
+Summary: CTAO Data Processing Pipeline Software
+Maintainer-email: Karl Kosack <karl.kosack@cta-observatory.org>, Maximilian Linhoff <maximilian.linhoff@cta-observatory.org>
+License-Expression: BSD-3-Clause
+Project-URL: repository, https://gitlab.cta-observatory.org/cta-computing/dpps/datapipe/datapipe
+Project-URL: documentation, http://cta-computing.gitlab-pages.cta-observatory.org/dpps/datapipe/datapipe
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: ctapipe~=0.25.0
+Requires-Dist: ctapipe-io-zfits~=0.2.0
+Requires-Dist: pyirf~=0.12
+Requires-Dist: eventio~=1.15.0
+Requires-Dist: iminuit>=2
+Requires-Dist: matplotlib~=3.0
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-requirements; extra == "test"
+Requires-Dist: cwltool; extra == "test"
+Provides-Extra: doc
+Requires-Dist: sphinx; extra == "doc"
+Requires-Dist: numpydoc; extra == "doc"
+Requires-Dist: ctao-sphinx-theme~=0.1.2; extra == "doc"
+Requires-Dist: sphinx-changelog; extra == "doc"
+Provides-Extra: dev
+Requires-Dist: setuptools_scm; extra == "dev"
+Requires-Dist: towncrier; extra == "dev"
+Provides-Extra: all
+Requires-Dist: ctao-datapipe[dev,doc,test]; extra == "all"
+Dynamic: license-file
+
+# DataPipe Software Integration and Release
+
+This repository defines a central python package `ctao-datapipe`, the software
+needed to run workflow steps for the DPPS _Data Processing Pipeline_. The
+package includes high-level documentation and specifies fixed dependencies for
+all associated DataPipe software such installing a release of this package will
+create a reproducible environment. A Docker container is also available, see the
+documentation.
+
+## Documentation
+
+-  [DataPipe documentation](http://cta-computing.gitlab-pages.cta-observatory.org/dpps/datapipe/datapipe/latest/)
+
+Documentation for DataPipe Dependencies:
+
+- [ctapipe documentation](ctapipe.readthedocs.io)
+- [pyirf documentation](https://cta-observatory.github.io/pyirf/)
