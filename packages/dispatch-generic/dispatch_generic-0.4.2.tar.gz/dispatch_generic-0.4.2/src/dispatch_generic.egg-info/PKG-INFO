@@ -1,0 +1,40 @@
+Metadata-Version: 2.4
+Name: dispatch-generic
+Version: 0.4.2
+Summary: A simple dispatch decorator for generic functions
+Author-email: HarryLHW <123lhw321@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/HarryLHW/dispatch-generic
+Project-URL: Issues, https://github.com/HarryLHW/dispatch-generic/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typeguard>=4.4.2
+Dynamic: license-file
+
+# dispatch-generic
+
+A simple dispatch decorator for generic functions.
+
+`pip install dispatch`
+
+```python
+from dispatch import dispatch
+
+
+@dispatch
+def test(i: int):
+    print('for int')
+
+
+@dispatch
+def test(s: str):
+    print('for str')
+
+
+test(5)  # for int
+test('s')  # for str
+test()  # TypeError
+```
