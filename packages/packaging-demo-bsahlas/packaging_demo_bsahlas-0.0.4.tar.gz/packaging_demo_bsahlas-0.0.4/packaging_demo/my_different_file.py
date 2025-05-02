@@ -1,0 +1,1 @@
+GREATINGS = "Howdy"
