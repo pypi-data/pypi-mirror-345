@@ -1,0 +1,33 @@
+Metadata-Version: 2.4
+Name: plain.support
+Version: 0.12.1
+Summary: Basic support tools for Plain.
+Author-email: Dave Gaeddert <dave.gaeddert@dropseed.dev>
+Requires-Python: >=3.11
+Requires-Dist: plain-auth<1.0.0
+Requires-Dist: plain-models<1.0.0
+Requires-Dist: plain<1.0.0
+Description-Content-Type: text/markdown
+
+# plain-support
+
+Provides support forms for your application.
+
+## Usage
+
+Include the support URLs in your `urls.py`:
+
+```python
+# app/urls.py
+from plain.urls import include, path
+import plain.support.urls
+
+urlpatterns = [
+    path("support/", include(plain.support.urls)),
+    # ...
+]
+```
+
+## Security considerations
+
+Most support forms allow you to type in an email address. Be careful, because anybody can pretend to be anybody else at this point. Conversations either need to continue over email (which confirms they have access to the email account), or include a verification step (emailing a code to the email address, for example).
