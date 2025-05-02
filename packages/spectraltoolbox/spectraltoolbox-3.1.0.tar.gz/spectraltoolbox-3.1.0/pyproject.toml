@@ -1,0 +1,37 @@
+[build-system]
+requires = [
+    "setuptools",
+    "numpy>=2.0",
+    "cython>=3.0"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spectraltoolbox"
+version = "3.1.0"
+license = {text = "LGPL"}
+description = "Toolbox for building spectral methods"
+authors = [
+    { name="Daniele Bigoni", email= "dabi@limitcycle.it" },
+]
+#license-files.paths = [
+#    "COPYING.LESSER",
+#    "COPYING"
+#]
+readme = "README.rst"
+requires-python = ">=3.10"
+
+dynamic = ["dependencies"]
+
+[project-urls]
+source = "https://bitbucket.org/dabi86/spectraltoolbox/src/master/"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["SpectralToolbox", "SpectralToolbox.tests", "SpectralToolbox.Spectral1D"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools]
+zip-safe = true
