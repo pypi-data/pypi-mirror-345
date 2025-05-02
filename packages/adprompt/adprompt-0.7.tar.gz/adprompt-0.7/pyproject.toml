@@ -1,0 +1,59 @@
+[project]
+name = "adprompt"
+version = "0.7"
+description = "A simple tool for LLM integration."
+readme = "README.rst"
+license = { file = "LICENSE.txt" }
+maintainers = [{ name = "jadbin", email = "jadbin.com@hotmail.com" }]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "pydantic>=1.10.18,<3",
+    "importlib-metadata>=3.6.0; python_version < '3.10'",
+]
+
+[project.optional-dependencies]
+openai = [
+    "openai>=1.43.0,<2",
+]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.module]
+name = "adprompt"
+
+[tool.flit.sdist]
+include = [
+    "requirements/",
+    "tests/",
+    "LICENSE.txt",
+    "README.rst",
+]
+exclude = [
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    "error",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["adprompt", "tests"]
+
+[tool.coverage.paths]
+source = ["adprompt"]
+
+[tool.pyright]
+pythonVersion = "3.8"
+include = ["adprompt", "tests"]
+typeCheckingMode = "basic"
