@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "mima-engine"
+dynamic = ["version"]
+authors = [
+  { name="Stephan Balduin", email="stephan.balduin@mailbox.org" },
+]
+description = "A game engine based on pygame."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = []
+
+[project.optional-dependencies]
+pygame = [
+  "pygame"
+]
+ce = [
+  "pygame-ce"
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "mima.__version__"}
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["F401"]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+docstring-code-format = true
+skip-magic-trailing-comma = true
