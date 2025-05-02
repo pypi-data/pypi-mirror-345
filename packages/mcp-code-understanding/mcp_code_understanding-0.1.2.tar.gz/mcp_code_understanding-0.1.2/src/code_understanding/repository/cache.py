@@ -1,0 +1,283 @@
+"""
+Repository caching functionality.
+"""
+
+from pathlib import Path
+from typing import Dict, Optional, Any, Set
+from dataclasses import dataclass
+import time
+from datetime import datetime
+import shutil
+import os
+import json
+import logging
+import fcntl
+from contextlib import contextmanager
+from filelock import FileLock
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class RepositoryMetadata:
+    path: str
+    url: Optional[str]
+    last_access: str  # Changed from float to str for ISO format
+    clone_status: Dict[str, Any] = None
+    repo_map_status: Optional[Dict[str, Any]] = None
+
+    def __post_init__(self):
+        if self.clone_status is None:
+            self.clone_status = {
+                "status": "not_started",
+                "started_at": None,
+                "completed_at": None,
+                "error": None,
+            }
+
+
+class RepositoryCache:
+    def __init__(
+        self, cache_dir: Path, max_cached_repos: int = 50, cleanup_interval: int = 86400
+    ):
+        # Expand ~ in cache_dir path
+        self.cache_dir = Path(os.path.expanduser(str(cache_dir)))
+        self.max_cached_repos = max_cached_repos
+        self.cleanup_interval = cleanup_interval
+        self.metadata_file = self.cache_dir / "metadata.json"
+        self.lock_file = self.cache_dir / "cache.lock"
+
+        # Create cache directory and lock file if they don't exist
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        if not self.lock_file.exists():
+            self.lock_file.touch()
+
+    @contextmanager
+    def _file_lock(self):
+        """File-based lock to handle concurrent operations"""
+        with open(self.lock_file, "r") as lock:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)  # Make it non-blocking
+                yield
+            except BlockingIOError:
+                # If we can't get the lock, read the metadata without locking
+                # This is safe because we're only reading
+                yield
+            finally:
+                try:
+                    fcntl.flock(lock, fcntl.LOCK_UN)
+                except BlockingIOError:
+                    pass  # We didn't get the lock, so nothing to unlock
+
+    def _get_actual_repos(self) -> Set[str]:
+        """Get set of actual repository paths on disk"""
+        repos = set()
+        # Walk through the cache directory structure
+        for host_dir in self.cache_dir.iterdir():
+            if not host_dir.is_dir() or host_dir.name in {".git", "__pycache__"}:
+                continue
+
+            if host_dir.name == "github":
+                # For GitHub repos, use org/repo structure
+                for org_dir in host_dir.iterdir():
+                    if not org_dir.is_dir():
+                        continue
+                    for repo_dir in org_dir.iterdir():
+                        if repo_dir.is_dir():
+                            repos.add(str(repo_dir.resolve()))
+            elif host_dir.name == "local":
+                # For local repos, only add the immediate subdirectories
+                for repo_dir in host_dir.iterdir():
+                    if repo_dir.is_dir():
+                        repos.add(str(repo_dir.resolve()))
+
+        return repos
+
+    def _write_metadata(self, metadata: Dict[str, RepositoryMetadata]):
+        """Write metadata to disk."""
+        data = {
+            path: {
+                "url": meta.url,
+                "last_access": meta.last_access,
+                "clone_status": meta.clone_status,
+                "repo_map_status": meta.repo_map_status,
+            }
+            for path, meta in metadata.items()
+        }
+
+        with open(self.metadata_file, "w") as f:
+            json.dump(data, f, indent=2)
+
+    def _read_metadata(self) -> Dict[str, RepositoryMetadata]:
+        """Read metadata from disk."""
+        if not self.metadata_file.exists():
+            return {}
+
+        with open(self.metadata_file, "r") as f:
+            data = json.load(f)
+
+        metadata = {}
+        for path, info in data.items():
+            metadata[path] = RepositoryMetadata(
+                path=path,
+                url=info.get("url"),
+                last_access=info.get("last_access", ""),
+                clone_status=info.get("clone_status"),
+                repo_map_status=info.get("repo_map_status"),
+            )
+        return metadata
+
+    def _sync_metadata(self) -> Dict[str, RepositoryMetadata]:
+        """Synchronize metadata with disk state"""
+        metadata = self._read_metadata()
+        actual_repos = self._get_actual_repos()
+
+        # Remove metadata for missing repos
+        for path in list(metadata.keys()):
+            if path not in actual_repos:
+                del metadata[path]
+
+        # Add missing repos to metadata
+        for path in actual_repos:
+            if path not in metadata:
+                metadata[path] = RepositoryMetadata(
+                    path=path, url=None, last_access=datetime.now().isoformat()
+                )
+
+        self._write_metadata(metadata)
+        return metadata
+
+    async def prepare_for_clone(self, target_path: str) -> bool:
+        """
+        Prepare cache for a new repository clone.
+        Returns True if clone can proceed, False if not.
+        """
+        with self._file_lock():
+            metadata = self._sync_metadata()
+
+            # If target already exists, treat as success
+            if target_path in metadata:
+                return True
+
+            # If we're at limit, cleanup oldest
+            if len(metadata) >= self.max_cached_repos:
+                sorted_repos = sorted(
+                    metadata.items(),
+                    key=lambda x: datetime.fromisoformat(x[1].last_access),
+                )
+
+                # Remove oldest repo
+                oldest_path, _ = sorted_repos[0]
+                try:
+                    repo_path = Path(oldest_path)
+                    if repo_path.exists():
+                        shutil.rmtree(repo_path)
+                    del metadata[oldest_path]
+                    self._write_metadata(metadata)
+                except Exception as e:
+                    logger.error(f"Failed to remove old repo {oldest_path}: {e}")
+                    return False
+
+            return True
+
+    async def add_repo(self, path: str, url: Optional[str] = None):
+        """Register a new repository after successful clone"""
+        with self._file_lock():
+            metadata = self._sync_metadata()
+            if path in metadata:
+                # Update existing metadata
+                metadata[path].url = url
+                metadata[path].last_access = datetime.now().isoformat()
+            else:
+                # Create new metadata only if it doesn't exist
+                metadata[path] = RepositoryMetadata(
+                    path=path,
+                    url=url,
+                    last_access=datetime.now().isoformat(),
+                    repo_map_status=None,
+                )
+            self._write_metadata(metadata)
+
+    async def update_access(self, path: str):
+        """Update access time for a repository"""
+        with self._file_lock():
+            metadata = self._sync_metadata()
+            if path in metadata:
+                metadata[path].last_access = datetime.now().isoformat()
+                self._write_metadata(metadata)
+
+    async def remove_repo(self, path: str):
+        """Remove a repository from cache"""
+        with self._file_lock():
+            metadata = self._sync_metadata()
+            if path in metadata:
+                try:
+                    repo_path = Path(path)
+                    if repo_path.exists():
+                        shutil.rmtree(repo_path)
+                    del metadata[path]
+                    self._write_metadata(metadata)
+                except Exception as e:
+                    logger.error(f"Failed to remove repo {path}: {e}")
+                    raise
+
+    async def cleanup_old_repos(self):
+        """Remove old cached repositories if over limit."""
+        with self._file_lock():
+            metadata = self._sync_metadata()
+
+            if len(metadata) <= self.max_cached_repos:
+                return
+
+            # Sort by last access time
+            sorted_repos = sorted(
+                metadata.items(), key=lambda x: datetime.fromisoformat(x[1].last_access)
+            )
+
+            # Remove oldest until under limit
+            while len(metadata) > self.max_cached_repos:
+                oldest_path, _ = sorted_repos.pop(0)
+                try:
+                    repo_path = Path(oldest_path)
+                    if repo_path.exists():
+                        shutil.rmtree(repo_path)
+                    del metadata[oldest_path]
+                except Exception as e:
+                    logger.error(f"Error removing repository {oldest_path}: {e}")
+
+            self._write_metadata(metadata)
+
+    async def update_clone_status(self, path: str, status: Dict[str, Any]):
+        """Update clone status while preserving repo map status"""
+        with self._file_lock():
+            metadata = self._read_metadata()
+            if path not in metadata:
+                metadata[path] = RepositoryMetadata(
+                    path=path, url=None, last_access=datetime.now().isoformat()
+                )
+            metadata[path].clone_status = status
+            self._write_metadata(metadata)
+
+    async def update_repo_map_status(self, path: str, status: Dict[str, Any]):
+        """Update repo map status while preserving clone status"""
+        with self._file_lock():
+            metadata = self._read_metadata()
+            if path not in metadata:
+                metadata[path] = RepositoryMetadata(
+                    path=path, url=None, last_access=datetime.now().isoformat()
+                )
+            metadata[path].repo_map_status = status
+            self._write_metadata(metadata)
+
+    async def get_repository_status(self, path: str) -> Dict[str, Any]:
+        """Get combined status information for a repository"""
+        with self._file_lock():
+            metadata = self._read_metadata()
+            if path not in metadata:
+                return {"status": "error", "error": "Repository not found in cache"}
+
+            repo_metadata = metadata[path]
+            return {
+                "clone_status": repo_metadata.clone_status,
+                "repo_map_status": repo_metadata.repo_map_status,
+            }
