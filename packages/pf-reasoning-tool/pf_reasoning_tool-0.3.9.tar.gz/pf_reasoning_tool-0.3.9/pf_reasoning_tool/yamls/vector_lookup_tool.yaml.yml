@@ -1,0 +1,68 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Tool.schema.json
+name: Vector Lookup Tool
+description: 'Portable vector search over Azure AI Search, Weaviate, FAISS, Chroma and more.'
+type: python
+tool_state: preview
+category: HW_PF_tools
+
+module: pf_reasoning_tool.tools.vector_lookup_tool
+function: vector_lookup
+
+inputs:
+  query:
+    type: [string]
+    description: 'Natural-language query or chunk of text.'
+
+  backend:
+    type: [string]
+    enum: ['azure_search', 'weaviate', 'faiss', 'chroma']
+    description: 'Vector store to query.'
+
+  connection:
+    type: [CustomConnection]
+    description: 'Backend credentials and config (keys vary by backend).'
+
+  index_name:
+    type: [string]
+    description: 'Index / collection / class name.'
+
+  top_k:
+    type: [int]
+    default: 5
+    ui_hints: {text_box_size: xs}
+
+  namespace:
+    type: [string]
+    description: 'Optional namespace for multi-tenant stores.'
+    optional: true
+
+  embeddings_connection:
+    type: [AzureOpenAIConnection, OpenAIConnection]
+    description: 'Connection used to embed the query.'
+
+  model_name:
+    type: [string]
+    default: 'text-embedding-ada-002'
+    description: 'Embedding deployment / model id.'
+    optional: true
+
+  include_scores:
+    type: [bool]
+    default: false
+    description: 'Return similarity score with each result.'
+
+  search_type:
+    type: [string]
+    enum: ['similarity', 'mmr', 'hybrid']
+    default: 'similarity'
+    description: 'Similarity search variant.  "hybrid" is Azure-only.'
+
+  score_threshold:
+    type: [double]
+    description: 'Ignore results below this similarity score (0-1).'
+    optional: true
+
+outputs:
+  output:
+    type: [list]
+    description: 'List of dicts: text, metadata and (optionally) score.'
