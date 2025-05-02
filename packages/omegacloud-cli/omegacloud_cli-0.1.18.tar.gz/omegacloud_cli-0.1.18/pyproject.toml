@@ -1,0 +1,43 @@
+[project]
+name = "omegacloud-cli"
+version = "0.1.18"
+description = "CLI for OmegaCloud.ai"
+authors = [
+    { name = "OmegaCloud", email = "hello@omegacloud.ai" }
+]
+dependencies = [
+    "click>=8.1.7",
+    "requests>=2.31.0",
+    "pyyaml>=6.0.1",
+    "rich>=13.9.4",
+    "inquirerpy>=0.3.4",
+    "pydantic>=2.10.6",
+    "httpx>=0.28.1",
+    "asyncclick>=8.1.7.2",
+    "aiofiles>=24.1.0",
+    "croniter>=6.0.0",
+    "cron-descriptor>=1.4.5",
+    "packaging>=23.2",
+    "toml>=0.10.2",
+]
+requires-python = ">=3.8"
+readme = "README.md"
+license = { text = "Custom" }
+
+[project.urls]
+Homepage = "https://omegacloud.ai"
+Documentation = "https://omegacloud.ai/"
+
+[project.scripts]
+omega = "omegacloud_cli.main:cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "build>=1.2.2.post1",
+    "hatchling>=1.27.0",
+    "twine>=6.1.0",
+]
