@@ -1,0 +1,51 @@
+Metadata-Version: 2.2
+Name: a2y_mew
+Version: 0.9.10
+Summary: A module that implements improved Mewtocol.
+Home-page: http://www.kersci.com/a2y/mew.html
+Author: Yu Han
+Author-email: hanjunyu@163.com
+License: Private
+Platform: Windows
+Platform: Linux
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: Free For Educational Use
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: POSIX :: Linux
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyserial>=3.0
+Requires-Dist: a2y-kcom>=0.8.4
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: platform
+Dynamic: requires-dist
+Dynamic: summary
+
+# Python Module: a2y_mew
+
+a2y_mew 模块实现了扩展的`Mewtocol`通信协议。原始的`Mewtocol`来自 Panasonic，用于其 FP 系列 PLC 与上位机、触摸屏等设备通信。
+本模块在以下方面对`Mewtocol`进行了扩展：
+
+- 地址空间从 8 位整数扩展为不定长，最高可达 32 位。为了兼容性，最小为 8 位，在报文中至少占两个字节。
+
+- 通讯方式从半双工增强为全双工，即主从双方可以同时发送数据。当从设备发生了某个事件（例如，输入点发生了变化），可以主动给主机发送报文。
+
+## ChangeLog
+
+- 2025-05-02 设计类`DualSerial`，以提供两个串口当一个串口用（一个用来写，另一个用来读）的功能。这样，就可以使用两个`RS485`组合端口跟一个`RS422`端口通信了。版本升级为 0.9.10。
+
+- 2024-07-20 解决以下两个 bug，版本升级为 0.9.8：
+    - `MewMaster` 对象构建时缺乏 `timeout` 参数，导致 `close` 无限等待。
+    - `MewBase` 无法使用 `KCOM` 类型串口。
+
+- 2024-07-08 修正依赖项，升级为 0.9.7
+
+- 2024-06-22 使用`kcom`取代`hidcom`，版本升级为 0.9.6。
