@@ -1,0 +1,180 @@
+{% extends "inc/base.j2" %}
+{% block content %}
+  <h3>system</h3>
+  <div class="grid">
+    <section>
+      <table>
+        <tr>
+          <td>openapi</td>
+          <td></td>
+          <td><a href="/system/openapi">view</a></td>
+        </tr>
+        <tr>
+          <td>dynamic configs</td>
+          <td></td>
+          <td><a href="/system/dynamic-configs">view</a></td>
+        </tr>
+        <tr>
+          <td>dynamic values</td>
+          <td></td>
+          <td><a href="/system/dynamic-values">view</a></td>
+        </tr>
+        <tr>
+          <td>system logs</td>
+          <td>{{ stats.system_logs }}</td>
+          <td><a href="/system/system-logs">view</a></td>
+        </tr>
+        {% if has_proxies_settings %}
+          <tr>
+            <td>proxies</td>
+            <td>{{ dynamic_values.proxies | length }}</td>
+            <td><a href="/api-post/system/update-proxies">update</a></td>
+          </tr>
+        {% endif %}
+        {% if has_telegram_settings %}
+          <tr>
+            <td>telegram</td>
+            <td></td>
+            <td>
+              {% if has_telegram_settings %}
+                <a href="/api-post/system/send-test-telegram-message">send test message</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endif %}
+        <tr>
+          <td>scheduler</td>
+          <td>
+            {{ "running" if stats.scheduler.running else "not running" }} /
+            {{ stats.scheduler.tasks | length }}
+          </td>
+          <td>
+            <nav>
+              <ul>
+                <li><a href="/api-post/system/scheduler/start">start</a></li>
+                <li><a href="/api-post/system/scheduler/stop">stop</a></li>
+                <li><a href="/api-post/system/scheduler/reinit">re-init</a></li>
+              </ul>
+            </nav>
+          </td>
+        </tr>
+        <tr>
+          <td>system stats</td>
+          <td></td>
+          <td><a href="/api/system/stats">view</a></td>
+        </tr>
+        <tr>
+          <td>logfile, app</td>
+          <td>{{ stats.logfile_app | filesizeformat }}</td>
+          <td>
+            <nav>
+              <ul>
+                <li><a href="/api/system/logfile/app">view</a></li>
+                <li><a href="/api-delete/system/logfile/app" {{ confirm }}>clean</a></li>
+              </ul>
+            </nav>
+          </td>
+        </tr>
+        <tr>
+          <td>logfile, access</td>
+          <td>{{ stats.logfile_access | filesizeformat }}</td>
+          <td>
+            <nav>
+              <ul>
+                <li><a href="/api/system/logfile/access">view</a></li>
+                <li><a href="/api-delete/system/logfile/access" {{ confirm }}>clean</a></li>
+              </ul>
+            </nav>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section>
+      <h5>db / {{ stats.db | length }}</h5>
+      <table>
+        {% for k,v in stats.db.items() %}
+          <tr>
+            <td>{{ k }}</td>
+            <td>{{ v }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+      <nav>
+        <ul>
+          <li><a href="/api/system/mongo/profile">profiling status</a></li>
+          <li><a href="/api/system/mongo/slow">slow queries</a></li>
+        </ul>
+      </nav>
+
+
+    </section>
+  </div>
+
+  <details>
+    <summary><h5>scheduler / {{ stats.scheduler.tasks | length }}</h5></summary>
+    <table>
+      <tr>
+        <th>task_id</th>
+        <th>interval</th>
+        <th>last_run</th>
+        <th>run_count</th>
+        <th>error_count</th>
+        <th>running</th>
+      </tr>
+      {% for t in stats.scheduler.tasks %}
+        <tr>
+          <td>{{ t.task_id }}</td>
+          <td>{{ t.interval }}</td>
+          <td>{{ t.last_run | dt }}</td>
+          <td>{{ t.run_count }}</td>
+          <td>{{ t.error_count }}</td>
+          <td>{{ t.running | yes_no }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </details>
+
+
+  <details>
+    <summary><h5>async tasks / {{ stats.async_tasks | length }}</h5></summary>
+    <table class="sortable">
+      <thead>
+      <tr>
+        <th>name</th>
+        <th>core</th>
+        <th>status</th>
+        <th>running time, seconds</th>
+      </tr>
+      </thead>
+      {% for t in stats.async_tasks %}
+        <tr>
+          <td>{{ t.name }}</td>
+          <td>{{ t.coro }}</td>
+          <td>{{ t.status }}</td>
+          <td> {% if t.running_time %}{{ t.running_time | round(2) }}{% endif %}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </details>
+
+  <details>
+    <summary>
+      <h5>threads / {{ stats.threads | length }}</h5>
+    </summary>
+    <table>
+      <tr>
+        <th>name</th>
+        <th>daemon</th>
+        <th>func</th>
+      </tr>
+      {% for t in stats.threads %}
+        <tr>
+          <td>{{ t.name }}</td>
+          <td>{{ t.daemon | yes_no }}</td>
+          <td>{{ t.func_name | empty }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </details>
+
+{% endblock %}
