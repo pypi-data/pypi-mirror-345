@@ -1,0 +1,1 @@
+# weatherstack-mcp-server
