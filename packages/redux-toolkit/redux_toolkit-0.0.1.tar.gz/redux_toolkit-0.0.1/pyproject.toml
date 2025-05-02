@@ -1,0 +1,58 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "redux-toolkit"
+description = ""
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = []
+keywords = []
+classifiers = []
+dependencies = ["pydantic>=2.11.2"]
+dynamic = ["version"]
+[[project.authors]]
+name = "Austin Yu"
+email = "austinyu@stanford.edu"
+
+[[project.maintainers]]
+name = "Austin Yu"
+email = "austinyu@stanford.edu"
+
+[dependency-groups]
+tests = ["pytest", "pytest-cov>=6.1.1"]
+static_checkers = ["flake8", "mypy", "pyright", "pylint"]
+formatters = ["ruff", "isort"]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings-python",
+    "pymdown-extensions",
+]
+
+[project.urls]
+homepage = "https://todo.com"
+source = "https://todo.com"
+download = "https://todo.com"
+changelog = "https://todo.com"
+releasenotes = "https://todo.com"
+documentation = "https://todo.com"
+issues = "https://todo.com"
+funding = "https://todo.com"
+
+[project.optional-dependencies]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/redux/*", "README.md", "LICENSE", "CHANGELOG.md"]
+exclude = []
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/redux"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/redux" = "redux"
