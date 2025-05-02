@@ -1,0 +1,128 @@
+/* Copyright (c) Juan-Pablo Scaletti <juanpablo@jpscaletti.com> */
+.jxui-alert[data-var="critical"],
+.jxui-alert[data-var="red"] {
+  --alert-bgColor: var(--ui-red-50);
+  --alert-borderColor: var(--ui-red-400);
+  --alert-iconColor: var(--ui-red-500);
+}
+.jxui-alert[data-var="info"],
+.jxui-alert[data-var="blue"] {
+  --alert-bgColor: var(--ui-blue-50);
+  --alert-borderColor: var(--ui-blue-400);
+  --alert-iconColor: var(--ui-blue-500);
+}
+.jxui-alert[data-var="success"],
+.jxui-alert[data-var="green"] {
+  --alert-bgColor: var(--ui-green-50);
+  --alert-borderColor: var(--ui-green-400);
+  --alert-iconColor: var(--ui-green-500);
+}
+.jxui-alert[data-var="option"],
+.jxui-alert[data-var="purple"] {
+  --alert-bgColor: var(--ui-purple-50);
+  --alert-borderColor: var(--ui-purple-400);
+  --alert-iconColor: var(--ui-purple-500);
+}
+.jxui-alert[data-var="warning"],
+.jxui-alert[data-var="yellow"] {
+  --alert-bgColor: var(--ui-yellow-50);
+  --alert-borderColor: var(--ui-yellow-300);
+  --alert-iconColor: var(--ui-yellow-500);
+}
+.jxui-alert[data-var="alert"],
+.jxui-alert[data-var="orange"] {
+  --alert-bgColor: var(--ui-orange-50);
+  --alert-borderColor: var(--ui-orange-300);
+  --alert-iconColor: var(--ui-orange-500);
+}
+.jxui-alert[data-var="note"],
+.jxui-alert[data-var="stone"] {
+  --alert-bgColor: var(--ui-stone-50);
+  --alert-borderColor: var(--ui-stone-300);
+  --alert-iconColor: var(--ui-stone-400);
+}
+
+.jxui-alert {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 10px;
+  background-color: var(--alert-bgColor, #fff);
+  border: 1px solid var(--alert-borderColor, #444);
+  opacity: 1;
+  margin-top: 0;
+  transition-duration: 0.3s;
+  transition-property: opacity, margin;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0s;
+}
+.jxui-alert.dismissed {
+  opacity: 0;
+  margin-top: -30px;
+}
+
+.jxui-alert-icon,
+.jxui-alert-dismiss {
+  color: var(--alert-iconColor, #222) !important;
+  line-height: 1;
+}
+.jxui-alert-icon {
+  font-size: var(--ui-font-size-xl);
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.jxui-alert-dismiss {
+  --font-size: var(--ui-font-size-lg);
+  margin-top: 2px;
+}
+
+.jxui-alert-content {
+  font-size: var(--ui-font-size-md);
+  padding: 0 10px 0 8px;
+  display: block;
+  flex-grow: 1;
+}
+
+.jxui-alert-title {
+  font-size: inherit;
+  font-weight: 600;
+  padding: 2px 10px 0;
+  margin: 0;
+}
+
+.jxui-alert-description {
+  padding: 0 10px;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.jxui-alert-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--4px);
+  flex-wrap: nowrap;
+  align-self: flex-start;
+  font-size: var(--ui-font-size-sm);
+  padding: 10px 0 5px;
+  flex-direction: row;
+}
+
+.jxui-alert{
+  container: alert / inline-size;
+}
+
+@container alert (min-width: 32rem) {
+  .jxui-alert-content:not(.jxui-alert--entitled .jxui-alert-content) {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .jxui-alert-actions:not(.jxui-alert--entitled .jxui-alert-actions) {
+    padding: 0;
+    flex-direction: row-reverse;
+  }
+}
