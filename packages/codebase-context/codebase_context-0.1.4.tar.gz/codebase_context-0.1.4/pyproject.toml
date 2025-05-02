@@ -1,0 +1,34 @@
+[project]
+name = "codebase-context"
+version = "0.1.4"
+description = ""
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Julian Kimmig", email = "julian.kimmig@gmx.net" }
+]
+license = { text = "MIT" }
+dependencies = [
+  "click>=8.1.8",
+  "gitpython>=3.1.44",
+  "wrapconfig[all]>=0.2.2,<0.3.0",
+]
+
+[project.scripts]
+codebase_context = "codebase_context.cli:main"
+codebase-context = "codebase_context.cli:main"
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
