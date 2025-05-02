@@ -1,0 +1,60 @@
+Metadata-Version: 2.4
+Name: grpc_orchestrator
+Version: 0.0.4
+Home-page: https://github.com/bunrongGithub/grpc_orchestrator/tree/backup/simple_python_sdk
+Author: Ron Saroeun
+Author-email: ronsaroeun668@gmail.com
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+
+# Grpc Orchestrator SDK
+A gRPC-based implementation of the Saga pattern for distributed transactions.
+
+## Features
+
+- Transaction orchestration
+- Automatic compensation
+- gRPC interface
+- gRPC Connection
+- Memory storage backends
+
+## Installation
+
+```bash
+pip install grpc_orchestrator
+```
+
+## Quick Start
+
+```python
+from grpc_orchestrator.core.client.client import GrpcOrchestratorClient
+
+client = GrpcOrchestratorClient(orchestrator_host="localhost")
+steps = [
+    {
+        "port": 50052,
+        "rpc_method": "CleateOrder",
+        "compensation_method": "RollbackOrder",
+        "timeout_seconds": 5,
+    },
+    {
+        "port": 50052,
+        "rpc_method": "CheckoutOrder",
+        "compensation_method": "CheckoutOrder",
+        "timeout_seconds": 5,
+    },
+]
+client.start_transaction(transaction_id="1234",steps=steps,payload={
+    "id": "1",
+    "name":"item1"
+})
+
+status = client.get_transaction_status(transaction_id="order_123")
+print(status)
+```
