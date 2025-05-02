@@ -1,0 +1,66 @@
+"""Species"""
+{% set species_data = data | unique_rows("species") %}
+{% set strain_data = data | unique_rows("strain") %}
+{% raw -%}
+from pydantic import BaseModel, Field, ConfigDict
+from typing import Literal, Union
+from typing_extensions import Annotated
+from aind_data_schema_models.registries import Registry
+{% endraw %}
+
+class StrainModel(BaseModel):
+    """Base model for a strain"""
+    model_config = ConfigDict(frozen=True)
+    name: str
+    species: str
+    registry: Registry.ONE_OF
+    registry_identifier: str
+
+{% for _, row in strain_data.iterrows() %}
+{% if row['strain'] != 'default' %}
+class {{ row['strain'] | to_class_name_underscored }}(StrainModel):
+    """Model {{row['strain']}}"""
+    name: Literal["{{ row['strain'] }}"] = "{{ row['strain'] }}"
+    species: Literal["{{ row['species'] }}"] = "{{ row['species'] }}"
+    registry: Registry.ONE_OF = Registry.{{ row['strain_registry_abbreviation'] | upper }}
+    registry_identifier: Literal["{{ row['strain_registry_identifier'] }}"] = "{{ row['strain_registry_identifier'] }}"
+{% endif %}
+{% endfor %}
+class Strain:
+    """Strain"""
+{% for _, row in strain_data.iterrows() %}
+{% if row['strain'] != 'default' %}
+    {{ row['strain'] | to_class_name | upper }} = {{ row['strain'] | to_class_name_underscored }}()
+{% endif %}
+{%- endfor %}
+
+    ALL = tuple(StrainModel.__subclasses__())
+
+    ONE_OF = Annotated[Union[tuple(StrainModel.__subclasses__())], Field(discriminator="name")]
+
+
+class SpeciesModel(BaseModel):
+    """Base model for species"""
+    model_config = ConfigDict(frozen=True)
+    name: str
+    registry: Registry.ONE_OF
+    registry_identifier: str
+
+{% for _, row in species_data.iterrows() %}
+class {{ row['species'] | to_class_name_underscored }}(SpeciesModel):
+    """Model {{row['species']}}"""
+    name: Literal["{{ row['species'] }}"] = "{{ row['species'] }}"
+    registry: Registry.ONE_OF = Registry.{{ row['species_registry_abbreviation'] | upper }}
+    registry_identifier: Literal["{{ row['species_registry_identifier'] }}"] = "{{ row['species_registry_identifier'] }}"
+
+{% endfor %}
+class Species:
+    """Species"""
+{% for _, row in species_data.iterrows() %}
+    {{ row['species'] | to_class_name | upper }} = {{ row['species'] | to_class_name_underscored }}()
+{%- endfor %}
+
+    ALL = tuple(SpeciesModel.__subclasses__())
+
+    ONE_OF = Annotated[Union[tuple(SpeciesModel.__subclasses__())], Field(discriminator="name")]
+
