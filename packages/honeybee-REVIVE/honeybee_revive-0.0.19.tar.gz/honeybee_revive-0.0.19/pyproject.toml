@@ -1,0 +1,97 @@
+[project]
+name = "honeybee-REVIVE"
+version = "0.0.19"
+description = "A Honeybee Extension for Phius REVIVE Modeling."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "GNU" }
+authors = [{ name = "Ed May", email = "phtools@bldgtyp.com" }]
+maintainers = [{ name = "Ed May", email = "phtools@bldgtyp.com" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+keywords = [
+    "Honeybee",
+    "Honeybee-Energy",
+    "Passive House",
+    "Building Retrofit",
+    "Architecture",
+    "Energy Modeling",
+    "PHIUS",
+    "ADORB",
+    "Carbon Emissions",
+    "Embodied Carbon",
+    "Embodied CO2",
+]
+dependencies = [
+    "honeybee-energy>=1.116.17",
+    "pandas>=2.2.3",
+    "ph-units>=1.5.25",
+    "plotly>=5.24.1",
+    "pydantic<=1.10.18",
+    "rich>=13.8.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "pytest",
+    "coverage",
+    "Grasshopper-stubs",
+    "Rhino-stubs",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = [
+    "honeybee_energy_revive",
+    "honeybee_revive",
+    "honeybee_revive_standards",
+    "honeybee_revive_measures",
+    "ladybug_revive",
+]
+
+[project.urls]
+homepage = "https://www.passivehousetools.com/"
+repository = "https://github.com/PH-Tools/honeybee_REVIVE/tree/main"
+
+[tool.coverage.run]
+command_line = "-m pytest tests"
+source = [
+    "honeybee_energy_revive",
+    "honeybee_revive",
+    "honeybee_revive_standards",
+    "honeybee_revive_measures",
+    "ladybug_revive",
+]
+branch = true
+cover_pylib = false
+omit = [
+    "*/__init__.py",
+    "*.venv/*",
+    "*.venv_mbair/*",
+    "honeybee_revive_standards/cambium_factors/_generate_json_files.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100
+
+[tool.coverage.html]
+directory = "_coverage_html"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    'ignore:function ham\(\) is deprecated:DeprecationWarning',
+]
+
+[tool.black]
+line-length = 120
