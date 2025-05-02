@@ -1,0 +1,276 @@
+/*
+  Copyright (C) 2023-2025 Cognizant Digital Business, Evolutionary AI.
+  All Rights Reserved.
+  Issued under the Academic Public License.
+ 
+  You can be released from the terms, and requirements of the Academic Public
+  License by purchasing a commercial license.
+  Purchase of a commercial license is mandatory for any use of the
+  neuro-san-web-client SDK Software in commercial settings.
+*/
+/* styles.css */
+
+/* Global body styling */
+body {
+    background-color: #e0e0e0;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Styling for page header and subtitle */
+header {
+    background: url('NeuroAI.jpg') no-repeat center center; /* Replace with the actual image path */
+    background-size: cover; /* Ensure the image covers the entire header */
+    color: white;
+    text-align: center;
+    padding: 20px 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Keep the subtle shadow */
+}
+
+header h1, header h5 {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add text shadow for readability over image */
+}
+
+header h5.subtitle {
+    font-size: 1.2rem; /* Set font size for the subtitle */
+    font-weight: 300; /* Lighter font weight for the subtitle */
+    margin-top: -5px; /* Reduce space between title and subtitle */
+}
+header h1 {
+    font-size: 2rem; /* Increase font size for the title */
+    font-weight: 700; /* Make the title bold */
+}
+
+header h5 {
+    font-size: 1.3rem; /* Increase font size for the subtitle */
+    font-weight: 400; /* Keep subtitle lighter for contrast */
+    margin-top: 10px;
+}
+
+/* Chat window and message styling */
+#chat-window {
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: #ffffff;
+    min-height: 300px; /* Set a minimum height for the chat window */
+}
+
+#messages {
+    padding: 20px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+/* Message bubble styling */
+.message {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.message .message-content {
+    max-width: 70%;
+    padding: 12px;
+    border-radius: 15px;
+    word-wrap: break-word;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.user-message .message-content {
+    background-color: #007bff;
+    color: white;
+    border-bottom-right-radius: 0;
+}
+
+.agent-response {
+    justify-content: flex-start;
+}
+
+.agent-response .message-content {
+    background-color: #f1f0f0;
+    color: black;
+    border-bottom-left-radius: 0;
+}
+
+/* Loading indicator */
+#loading-indicator {
+    display: flex;
+    align-items: center; /* Centers vertically */
+    justify-content: center; /* Centers horizontally */
+    gap: 10px; /* Adds spacing between spinner and text */
+    margin-top: 5px;
+    margin-bottom: 3px;
+}
+
+/* Input area styling */
+.input-group {
+    background-color: #f8f9fa;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+#user-input {
+    border-radius: 25px 0 0 25px;
+    padding: 15px; /* Increase padding for better text input feel */
+    border: 1px solid #ccc; /* Add a border for a clean look */
+    transition: border-color 0.3s ease-in-out; /* Smooth transition for focus effect */
+    flex-grow: 1; /* Allow the input box to grow and fill the available space */
+    width: 100%;
+}
+
+#user-input:focus {
+    border-color: #007bff; /* Change border color on focus */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Subtle shadow on focus */
+    outline: none;
+}
+
+.input-group-append .btn {
+    background: url('NeuroAI.jpg') no-repeat center center; /* Use the image as the button background */
+    background-size: cover; /* Ensure the image covers the button */
+    color: white; /* Keep the text color white for readability */
+    font-weight: 600; /* Make the button text slightly bolder */
+    border-radius: 0 25px 25px 0;
+    padding: 10px 15px;
+    font-size: 0.8rem;
+    border: none;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.input-group-append .btn:hover {
+    background-color: rgba(0, 0, 0, 0.5); /* Add a dark overlay on hover for better contrast */
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+/* Button styling */
+.btn {
+    font-weight: 500;
+    height: 100%;
+}
+
+/* Agent logs styling */
+#logs {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+#logs h2 {
+    margin-bottom: 15px;
+}
+
+/* Fix scrollbar for agent logs */
+#agent-logs {
+    background-color: #ffffff;
+    padding: 15px;
+    height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 14px;
+    color: #333;
+    max-width: 100%; /* Ensure the scrollbar stays within the container */
+    box-sizing: border-box; /* Prevent padding from extending beyond the element */
+}
+
+/* Scrollbar styling */
+#messages::-webkit-scrollbar,
+#agent-logs::-webkit-scrollbar {
+    width: 6px;
+}
+
+#messages::-webkit-scrollbar-thumb,
+#agent-logs::-webkit-scrollbar-thumb {
+    background-color: #cccccc;
+    border-radius: 3px;
+}
+
+/* Collapsible configuration form */
+.card-link.collapsed span {
+    transform: rotate(0deg);
+    transition: transform 0.2s;
+}
+
+.card-link span {
+    transform: rotate(-180deg);
+    transition: transform 0.2s;
+}
+
+/* Styling for code blocks */
+.message-content pre {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.message-content code {
+    background-color: #f1f1f1;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.input-group-append .btn:hover {
+    background-color: #0056b3; /* Darken the button on hover */
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+
+summary {
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+}
+
+summary:hover {
+    background-color: #e9ecef; /* Subtle color change on hover */
+}
+form label[for="agent_name"] {
+    font-size: 0.9rem;
+    padding-left: 10px;
+}
+form label[for="host"] {
+    font-size: 0.9rem;
+    padding-left: 10px;
+}
+form label[for="port"] {
+    font-size: 0.9rem;
+    padding-left: 10px;
+}
+form button[type="submit"] {
+    font-size: 0.9rem;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+footer {
+    position: fixed; /* Fix the footer to the bottom */
+    bottom: 0;
+    right: 10px;
+    font-size: 0.7rem;
+    color: #666;
+    z-index: 100;
+    background-color: transparent;
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+details {
+    background-color: #ffffff; /* Set background to white */
+    border: 1px solid #ccc; /* Add a subtle border */
+    border-radius: 5px; /* Optional: rounded corners */
+    padding: 10px; /* Add padding for spacing */
+}
+
+details[open] {
+    background-color: #ffffff; /* Ensure open details section stays white */
+}
