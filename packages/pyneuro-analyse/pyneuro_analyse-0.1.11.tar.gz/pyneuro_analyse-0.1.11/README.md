@@ -1,0 +1,1 @@
+A set of functions to facilitate commonly used analysis routines for electrophysiological, behavioral and fluorescent-imaging data formats.
