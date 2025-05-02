@@ -1,0 +1,256 @@
+=====================
+Appendix C. Changelog
+=====================
+:Info: This is the changelog for pysol_cards.
+:Author: Shlomi Fish <shlomif@cpan.org>
+:Copyright: © 2020, Shlomi Fish.
+:License: BSD (see /LICENSE or :doc:`Appendix B <LICENSE>`.)
+:Date: 2025-05-02
+:Version: 0.22.0
+
+.. index:: CHANGELOG
+
+GitHub holds releases, too
+==========================
+
+More information can be found on GitHub in the `releases section
+<https://github.com/shlomif/pysol_cards/releases>`_.
+
+Version History
+===============
+
+0.22.0
+------
+
+* Add tests and documentation for "pysol_cards.cwrap" .
+
+0.20.0
+------
+
+* Add "pysol_cards.cwrap" .
+
+0.18.1
+------
+
+* Remove some leftover files from the cookiecutter ( such as __main__.py ) - https://github.com/shlomif/pysol_cards/issues/9 ( Thanks to @denilsonsa ). Done by overriding entry_point in the new, version 0.0.12, pydistman.
+
+0.18.0
+------
+
+* Remove remaining Python 2.x compatibility layer ( Thanks to @a-detiste )
+* Remove some leftover files from the cookiecutter ( such as __main__.py ) - https://github.com/shlomif/pysol_cards/issues/9 ( Thanks to @denilsonsa )
+
+0.16.0
+------
+
+* Add support for dealing "binary_star".
+* Add tests.
+
+0.14.3
+------
+
+* Try to fix getstate() / setstate() ; with tests - https://github.com/shlomif/pysol_cards/issues/7 ( Thanks to @joeraz )
+
+0.14.2
+------
+
+* Avoid requiring optional deps - https://github.com/shlomif/pysol_cards/issues/4 .
+
+0.14.1
+------
+
+* Avoid comments in requirements.txt - https://github.com/shlomif/pysol_cards/issues/4 .
+
+0.14.0
+------
+
+* Convert from pbr to https://pypi.org/project/pydistman/ .
+
+0.12.0
+------
+
+* bump ver
+* enhance the README
+* 'id' is a builtin
+* add a test using named arguments
+* optimize into a class var
+* optimize
+* add an integration test
+
+0.10.2
+------
+
+* setup.cfg: use underscores for identifiers
+
+0.10.1
+------
+
+* bump version
+* allow accepting "ms[0-9]+" game nums
+
+0.10.0
+------
+
+* add single\_deal\_args\_parse
+
+0.8.18
+------
+
+* bump version
+* optimize
+* add tests
+
+0.8.17
+------
+
+* better PySol compat: fix reset()
+
+0.8.16
+------
+
+* better PySol compat: str2int+int2str
+
+0.8.15
+------
+
+* bump version
+* better PySol compat: getstate
+* Extract a method or a function
+
+0.8.14
+------
+
+* add setstate
+
+0.8.13
+------
+
+* bump version
+* better PySol compat: getstate
+* better PySol compat: increaseSeed
+
+0.8.12
+------
+
+* bump version
+* better PySol compat
+
+0.8.11
+------
+
+* bump ver for real this time
+
+0.8.10
+------
+
+* better PySol compat
+
+0.8.9
+-----
+
+* Python2 compatibility: add Game.next() (thanks to Travis-CI)
+
+0.8.8
+-----
+
+* Clarified the license and copyright ownership
+* Add random2 to the requirements
+
+0.8.7
+-----
+
+* add more
+* start adding \_\_init\_\_
+* add .reset()
+
+0.8.6
+-----
+
+* moved functionality to pysol-cards.py
+
+0.8.5
+-----
+
+* add more pysol functionality
+
+0.8.4
+-----
+
+* add pysol constants
+
+0.8.3
+-----
+
+* add version
+
+0.8.2
+-----
+
+* add some pysol methods
+
+0.8.1
+-----
+
+* add match\_ms\_deal\_prefix
+* add match\_ms\_deal\_prefix
+
+0.8.0
+-----
+
+* add seed-as-string
+
+0.6.2
+-----
+
+* fix out of range deals
+
+0.6.1
+-----
+
+* speedup
+
+0.6.0
+-----
+
+* Extract random\_base as an attempt for optimize
+
+0.4.3
+-----
+
+* fix super()
+* fix super() on python2
+
+0.4.2
+-----
+
+* update metadata and text
+
+0.4.1
+-----
+
+* fix print\_ in py v2
+
+0.4.0
+-----
+
+* add the deal\_game module
+
+0.2.2
+-----
+
+* fix oper sys cfg
+
+0.2.1
+-----
+
+* fix mit license cfg
+
+0.2.0
+-----
+
+* update meta data
+* change licence
+* add some tests
+* add the pysol\_cards.random module
+* add cards.py
+* Initial Cookiecutter Commit
