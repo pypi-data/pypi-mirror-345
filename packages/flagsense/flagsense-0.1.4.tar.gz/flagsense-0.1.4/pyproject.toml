@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flagsense"
+version = "0.1.4"
+description = "A simple package for running flag detection models on images"
+readme = "README.md"
+authors = [
+    {name = "Timothy Loftus", email = "tiloftus.4@gmail.com"},
+    {name = "Cantay Caliskan", email = "cantaycaliskan@gmail.com"}
+]
+dependencies = ["ultralytics", "torch", "torchvision", "numpy", "opencv-python"]
+
+[project.scripts]
+flagsense = "flagsense.__main__:main"
+
+[tool.setuptools]
+include-package-data = true
