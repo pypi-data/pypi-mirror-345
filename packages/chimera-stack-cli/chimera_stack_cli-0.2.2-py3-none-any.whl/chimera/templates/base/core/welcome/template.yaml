@@ -1,0 +1,58 @@
+name: "ChimeraStack Welcome"
+version: "1.0.0"
+description: "Core welcome page component for all templates"
+type: "core"
+
+# Component-specific configuration
+component:
+  type: "core"
+  required: true
+
+# Service definitions for port allocation
+services:
+  nginx:
+    type: "http"
+    port_range: "8000-8999"
+    required: true
+    env_prefix: "WEB" # Will create WEB_PORT
+    config:
+      port: "${WEB_PORT}"
+      template_dir: "/var/www/html"
+
+# Environment variables
+environment:
+  PROJECT_NAME: "${PROJECT_NAME}"
+  CREATED_AT: "${TIMESTAMP}"
+  TEMPLATE_NAME: "${TEMPLATE_NAME}"
+  TEMPLATE_VERSION: "${TEMPLATE_VERSION}"
+
+# Files that need variable substitution
+files:
+  - path: "docker/nginx/default.conf"
+    variables:
+      - WEB_PORT
+      - PROJECT_NAME
+  - path: "www/index.html"
+    variables:
+      - PROJECT_NAME
+      - CREATED_AT
+      - TEMPLATE_NAME
+      - TEMPLATE_VERSION
+      - WEB_PORT
+      # Service ports will be added dynamically based on template
+
+# Docker configuration
+docker:
+  image: "nginx:alpine"
+  volumes:
+    - type: "bind"
+      source: "./www"
+      target: "/var/www/html"
+    - type: "bind"
+      source: "./docker/nginx/default.conf"
+      target: "/etc/nginx/conf.d/default.conf"
+
+# Network configuration
+network:
+  name: "${PROJECT_NAME}_network"
+  driver: "bridge"
