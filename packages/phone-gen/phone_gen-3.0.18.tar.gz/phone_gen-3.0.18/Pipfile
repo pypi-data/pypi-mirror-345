@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+phonenumbers = "==9.0.4"
+pytest = "==8.3.5"
+pytest-cov = "==6.1.1"
+requests = "==2.32.3"
+ruff = "==0.11.2"
+
+[packages]
+phone-gen = { editable = true, path = "." }
+
+[requires]
+python_version = "3.12"
+
+[scripts]
+tests = "pytest ./tests"
+format = "ruff format"
+check = "ruff check --fix"
