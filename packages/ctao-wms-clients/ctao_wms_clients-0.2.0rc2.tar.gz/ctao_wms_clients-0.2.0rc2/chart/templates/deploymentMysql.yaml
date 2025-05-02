@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "wms.fullname" . }}-mysql
+  labels:
+    {{- include "wms.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "wms.name" . }}-mysql
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "wms.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/name: {{ include "wms.name" . }}-mysql
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "wms.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        app.kubernetes.io/name: {{ include "wms.name" . }}-mysql
+    spec:
+      hostname: dirac-db
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext: {}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+
+  #   volumes:
+  #     - dirac-db-data:/var/lib/mysql
+
+          image: "mysql:8"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          # command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+          ports:
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+
+          livenessProbe:
+            exec:
+              command: ["mysqladmin" ,"ping", "-h", "localhost"]
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 20
+
+          readinessProbe:
+            exec:
+              command: ["mysqladmin" ,"ping", "-h", "localhost"]
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            failureThreshold: 20
+
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: dirac-db-root
+            - name: MYSQL_USER
+              value: Dirac
+            - name: MYSQL_PASSWORD
+              value: dirac-db
+
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.volumeMounts }}
+
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: dirac-db
+  labels:
+    {{- include "wms.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "wms.name" . }}-mysql
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      targetPort: 3306
+      protocol: TCP
+  selector:
+    {{- include "wms.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "wms.name" . }}-mysql
+  type: ClusterIP
+  sessionAffinity: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800

@@ -1,0 +1,109 @@
+# Default values for wms.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+dev:
+  # -- run tests in the container
+  run_tests: true
+  # -- sleep after test to allow interactive development
+  sleep: false
+  # -- mount the repo volume to test the code as it is being developed
+  mount_repo: true
+
+  # -- tag of the image used to run helm tests
+  client_image_tag:
+
+cert-generator-grid:
+  enabled: true
+  generatePreHooks: true
+
+
+# -- Recreates DIRAC database from scratch. Useful at first installation, but destructive on update: should be changed immediately after the first installation.
+resetDatabase: true
+
+rucio:
+  enabled: false
+
+cvmfs:
+  enabled: true
+  publish_docker_images:
+    - "harbor.cta-observatory.org/proxy_cache/library/python:3.12-slim"
+
+# -- Compute Element (CE) used by DIRAC, likely only needed for testing
+CE:
+  enabled: true
+
+replicaCount: 1
+
+image:
+  repository_prefix: "harbor.cta-observatory.org/dpps/wms"
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag:
+
+imagePullSecrets:
+  - name: harbor-pull-secret
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 8080
+
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,168 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "wms.fullname" . }}-dirac-configure
+  labels:
+    {{- include "wms.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "wms.name" . }}-dirac-configure
+
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "wms.labels" . | nindent 8 }}
+        app.kubernetes.io/name: {{ include "wms.name" . }}-dirac-configure
+
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      restartPolicy: Never
+
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+
+      initContainers:
+      - name: wait-for-dirac-cs
+        image: "{{ .Values.image.repository_prefix }}-client:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command:
+          - bash
+          - -c
+          - |
+            set -x
+
+            while true; do
+              if python -c 'import socket; socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(("dirac-server", 9135))'; then
+                break
+              fi
+              echo "Waiting for dirac-server to be available"
+              sleep 10
+            done
+
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+
+      containers:
+      - name: configure
+
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          # allowPrivilegeEscalation: false
+          # readOnlyRootFilesystem: true
+          # capabilities:
+          #   drop:
+          #     - ALL
+
+        image: "{{ .Values.image.repository_prefix }}-client:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+        command:
+          - bash
+          - -c
+          - |
+            set -x
+
+            source /home/dirac/diracos/diracosrc
+
+            mkdir -pv /home/dirac/diracos/etc/grid-security/certificates/
+            cp -fv /etc/grid-security/certificates/* /home/dirac/diracos/etc/grid-security/certificates/
+
+
+            function wait-for-dirac-port {
+              local port=$1
+              while true; do
+                if python -c 'import socket; socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(("dirac-server", '"$port"'))'; then
+                  break
+                fi
+                echo "Waiting for dirac-server to be available on port $port"
+                sleep 10
+              done
+            }
+
+            wait-for-dirac-port 9145
+            wait-for-dirac-port 9135
+            wait-for-dirac-port 9132
+            wait-for-dirac-port 8080
+
+            while true; do
+              dirac-proxy-init --nocs && \
+              dirac-configure -C dips://dirac-server:9135/Configuration/Server -S DPPS-Tests && \
+              dirac-proxy-init -g dirac_admin && \
+              dirac-admin-allow-site CTAO.CI.de "add site" && break
+              echo "Failed to configure, retrying in 10 seconds"
+              sleep 10
+            done
+
+            echo "configured"
+
+
+
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+
+        volumeMounts:
+        # TODO: here and in all places, simplify, generalize, template/reuse mount section
+        - name: cafile
+          subPath: ca.pem
+          mountPath: /etc/grid-security/certificates/dpps_test_ca.pem
+        - name: cafile
+          subPath: ca.pem
+          mountPath: /etc/grid-security/certificates/74df993b.0
+        - name: cafile
+          subPath: dpps_test_ca.crl.r0
+          mountPath: /etc/grid-security/certificates/74df993b.r0
+        - name: cafile
+          subPath: dpps_test_ca.crl.r0
+          mountPath: /etc/grid-security/certificates/dpps_test_ca.crl.r0
+        - name: cafile
+          subPath: ca.pem
+          mountPath: /etc/grid-security/ca.pem
+        - name: dppsuser-certkey-400
+          mountPath: /home/dirac/.globus/userkey.pem
+          subPath: dppsuser.key.pem
+        - name: dppsuser-certkey-600
+          mountPath: /home/dirac/.globus/usercert.pem
+          subPath: dppsuser.pem
+
+      volumes:
+      - name: cafile
+        secret:
+          defaultMode: 420
+          secretName: {{ template "certprefix" . }}-server-cafile
+      - name: dppsuser-certkey-600
+        secret:
+          defaultMode: 0600
+          secretName: {{ template "certprefix" . }}-dppsuser-certkey
+      - name: dppsuser-certkey-400
+        secret:
+          defaultMode: 0400
+          secretName: {{ template "certprefix" . }}-dppsuser-certkey
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
