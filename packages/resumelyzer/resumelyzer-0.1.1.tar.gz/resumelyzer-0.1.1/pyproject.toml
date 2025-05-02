@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "resumelyzer"
+version = "0.1.1"
+description = "AI-powered PDF resume parser with skill and personality profiling."
+authors = ["Your Name <laafiasarl@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "resumelyzer"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pdfplumber = "^0.10.2"
+openai = "^1.14.1"
+python-dotenv = "^1.0.0"
+fpdf2 = "^2.7.4"
+matplotlib = "^3.7.0"
+
+[tool.poetry.scripts]
+resumelyzer = "resumelyzer.cli:main"  # Optional CLI entry point
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
