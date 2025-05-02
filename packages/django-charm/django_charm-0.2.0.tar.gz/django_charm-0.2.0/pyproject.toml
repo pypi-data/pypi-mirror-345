@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-charm"
+version = "0.2.0"
+description = "Easily create a Django project and app with a single command in seconds."
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+  "django>=4.2",
+  "requests>=2.31"
+]
+
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+django-charm = "django_charm.cli:main"
+
+
+
