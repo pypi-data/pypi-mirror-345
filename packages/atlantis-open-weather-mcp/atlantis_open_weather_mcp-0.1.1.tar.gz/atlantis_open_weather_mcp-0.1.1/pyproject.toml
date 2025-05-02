@@ -1,0 +1,27 @@
+[build-system]
+requires = ["uv_build >= 0.1.0"]
+build-backend = "uv_build"
+
+[project]
+name = "atlantis-open-weather-mcp"
+version = "0.1.1"
+description = "An MCP server for OpenWeather data using uvx."
+requires-python = ">=3.10"
+dependencies = [
+    "mcp-server>=0.1.4",
+    "modelcontextprotocol",
+    # Add other dependencies like fastapi, requests, etc. here
+]
+
+[project.urls]
+Homepage = "https://github.com/ProjectAtlantis-dev/atlantis-open-weather-mcp"
+Repository = "https://github.com/ProjectAtlantis-dev/atlantis-open-weather-mcp"
+
+[project.scripts]
+start-weather-server = "atlantis_open_weather_mcp.weather_mcp_server:main" # Or adjust if your entry point is different
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv]
+# uv specific configurations can go here
