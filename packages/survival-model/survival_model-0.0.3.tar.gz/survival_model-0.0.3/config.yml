@@ -1,0 +1,40 @@
+# Package overview
+
+package_name: "patient_survival_model"
+
+
+# Variables
+# The variable we are attempting to predict (price)
+target: DEATH_EVENT
+
+pipeline_name: patient_survival_model
+pipeline_save_file: patient_survival_model_output_v
+
+training_data_file: heart_failure_clinical_records_dataset.csv
+
+# Features that will go inside processing pipeline
+features:
+  - age
+  - anaemia
+  - creatinine_phosphokinase
+  - diabetes
+  - ejection_fraction
+  - high_blood_pressure
+  - platelets
+  - serum_creatinine
+  - serum_sodium
+  - sex
+  - smoking
+  - time
+
+
+ 
+# Set train/test split
+test_size: 0.20
+
+
+# Alogrithm parameters
+n_estimators: 200
+max_depth: 4
+max_leaves: 5
+random_state: 42
