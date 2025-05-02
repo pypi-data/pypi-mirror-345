@@ -1,0 +1,39 @@
+from testing_criterions.SimpleCycleCoverage import SimpleCycleCoverage
+from testing_criterions.SimplePathsCoverage import SimplePathsCoverage
+from testing_criterions.decorators import validate_source, validate_sink, validate_reachability
+
+
+class PrimePathCoverage:
+    @validate_reachability()
+    @validate_source()
+    @validate_sink()
+    def __init__(self, digraph_manager) -> None:
+        self.digraph_manager = digraph_manager
+
+    def get_test_cases(self, max_number_of_cycles_in_single_test_case):
+        scc = SimpleCycleCoverage(self.digraph_manager)
+        spc = SimplePathsCoverage(self.digraph_manager)
+
+        for test_case in scc.get_test_cases(max_number_of_cycles_in_single_test_case, 
+                                            double_cycle=True):
+            yield test_case
+        for test_case in spc.get_test_cases(max_number_of_cycles_in_single_test_case):
+            yield test_case
+
+
+from diblob.digraph_manager import DigraphManager
+digraph_manager = DigraphManager({'B0':{
+    "S": ["1"],
+    "1": ["2", "3", "4"],
+    "T": [],
+    "6": ["1"],
+    "4": ["5"],
+    "3": ["5"],
+    "5": ["6", "T"],
+    "2": ["5"],
+}})
+
+scc = PrimePathCoverage(digraph_manager)
+
+for x in scc.get_test_cases(1):
+    print(x)
