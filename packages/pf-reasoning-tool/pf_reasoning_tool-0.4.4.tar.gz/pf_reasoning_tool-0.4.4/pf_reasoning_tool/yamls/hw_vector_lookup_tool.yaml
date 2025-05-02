@@ -1,0 +1,44 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Tool.schema.json
+pf_reasoning_tool.tools.hw_vector_lookup_tool.hw_vector_lookup:
+  name: HW Vector Lookup Tool
+  description: 'Portable vector search over Azure AI Search, Weaviate, FAISS and Chroma.'
+  type: python
+  tool_state: preview
+  category: HW_PF_tools
+  module: pf_reasoning_tool.tools.hw_vector_lookup_tool
+  function: hw_vector_lookup
+  inputs:
+    query:
+      type: [string]
+    backend:
+      type: [string]
+      enum: ['azure_search', 'weaviate', 'faiss', 'chroma']
+    connection:
+      type: [CustomConnection]
+    index_name:
+      type: [string]
+    top_k:
+      type: [int]
+      default: 5
+    namespace:
+      type: [string]
+      optional: true
+    embeddings_connection:
+      type: [AzureOpenAIConnection, OpenAIConnection]
+    model_name:
+      type: [string]
+      default: 'text-embedding-ada-002'
+      optional: true
+    include_scores:
+      type: [bool]
+      default: false
+    search_type:
+      type: [string]
+      enum: ['similarity', 'mmr', 'hybrid']
+      default: 'similarity'
+    score_threshold:
+      type: [double]
+      optional: true
+  outputs:
+    output:
+      type: [list]
