@@ -1,0 +1,39 @@
+[project]
+name = "kafka-replay-cli"
+version = "0.3.0"
+description = "A CLI tool to dump and replay Kafka messages using Parquet"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{ name = "Konstantinas Mamonas" }]
+dependencies = [
+  "typer",
+  "confluent-kafka",
+  "pyarrow",
+  "duckdb",
+  "pandas",
+  "python-dateutil",
+]
+
+[project.optional-dependencies]
+dev = [
+  "build",
+  "twine",
+  "pytest",
+  "black",
+  "ruff",
+]
+
+[project.scripts]
+kafka-replay-cli = "kafka_replay_cli.cli:app"
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["kafka_replay_cli"]
+
+[tool.ruff]
+line-length = 120
+select = ["E", "F", "I"]
+target-version = "py313"
