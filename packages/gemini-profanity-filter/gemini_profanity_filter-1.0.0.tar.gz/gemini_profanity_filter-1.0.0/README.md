@@ -1,0 +1,115 @@
+# Gemini Profanity Filter
+
+A Python module for detecting and filtering profanity in text using Google's Gemini API.
+The module can identify standard and obfuscated profanity across multiple languages.
+
+## Features
+
+- Detects standard profanity in multiple languages
+- Identifies obfuscated profanity (character substitutions, leetspeak, etc.)
+- Handles stretched or repeated characters
+- Detects deliberately fragmented words
+- Works with mixed case patterns
+- Processes context-sensitive profanity
+- Language-specific profanity patterns including Cyrillic, Asian scripts, etc.
+
+## Installation
+
+```bash
+pip install gemini-profanity-filter
+```
+
+## Usage
+
+```python
+from profanity_filter import ProfanityFilter
+import pandas as pd
+import traceback
+
+def run_batch_tests(pf):
+    test_inputs = [
+        "Ebl@NiShe nahui ti che delaesh?",
+        "kon4ennyj ublYd0k idi nax",
+        "ty dur@k ili 4to?",
+        "suka bly@t idi v sr@ku",
+        "govn0ed pozornyj",
+        "pid0rasina ti proklyataya",
+        "naxui idi s etim",
+        "zh0p0lik bl9t",
+        "mraz0ta gnid@",
+        "hohol eb@n@y",
+        "4mo bly@dsk@ya",
+        "d@un ubly@dnij",
+        "pizd@nutij shelobok",
+        "ebanut@ya ovca",
+        "k@kazec ebanij",
+        "g0vni4e ty prost@k",
+        "nax d@unish4e",
+        "ni4ego ti ne ponim@esh",
+        "s0sni d@",
+        "nahu9 provalis"
+    ]
+
+    rows = []
+    for i, text in enumerate(test_inputs, 1):
+        try:
+            result = pf.filter_text(text)
+            if result and result.detected_profanity:
+                for entry in result.detected_profanity:
+                    rows.append({
+                        "Тест #": i,
+                        "Текст": text,
+                        "Оригинал": entry.original_form,
+                        "Нормализовано": entry.normalized_form,
+                        "Метод": entry.detection_method,
+                        "Уверенность": round(entry.confidence_score, 2),
+                        "Объяснение": entry.reasoning[:100] + "..." if entry.reasoning else ""
+                    })
+            else:
+                rows.append({
+                    "Тест #": i,
+                    "Текст": text,
+                    "Оригинал": "-",
+                    "Нормализовано": "-",
+                    "Метод": "-",
+                    "Уверенность": 0,
+                    "Объяснение": "Нецензурная лексика не найдена"
+                })
+        except Exception as e:
+            rows.append({
+                "Тест #": i,
+                "Текст": text,
+                "Оригинал": "❌ Ошибка",
+                "Нормализовано": "-",
+                "Метод": "-",
+                "Уверенность": 0,
+                "Объяснение": str(e)
+            })
+    
+    df = pd.DataFrame(rows)
+    print("\n=== Сводка по результатам ===\n")
+    print(df.to_string(index=False))
+
+def main():
+    try:
+        print("=== Запуск авто-тестов ===")
+        api_key = "AIzaSyCs3Bbjq_7PeGTAEHJkkSsUtYZvj4Fbbwo"
+        pf = ProfanityFilter(api_key)
+        run_batch_tests(pf)
+    except Exception as e:
+        print(f"❌ Ошибка: {e}")
+        traceback.print_exc()
+
+if __name__ == "__main__":
+    main()
+```
+
+## Requirements
+
+- Python 3.7 or higher
+- Google GenerativeAI Python library
+- A valid Google Gemini API key
+
+## License
+
+MIT
