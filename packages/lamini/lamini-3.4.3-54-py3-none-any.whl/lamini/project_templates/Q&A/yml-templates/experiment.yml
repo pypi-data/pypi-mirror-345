@@ -1,0 +1,59 @@
+Experiment:
+  topics:
+    value: null
+    description: topics to be included in chunking
+  batches:
+    description: Number of batches to process.
+    value: 1
+  breakpoint_percentile:
+    description: Percentile for determining breakpoints.
+    value: 90.0
+  chunk_filtering:
+    description: whether you want to have filter rich chunks to be around specific topics. please note that in case you change this to "yes" you need to add topics info within this yml file.
+    value: false
+  chunk_size:
+    description: Size of each chunk.
+    value: 500
+  chunk_strategy:
+    description: chunking strategy to be either "sentence" or "semantic"
+    value: semantic
+  experiment_name: kpmg-web-txt-sem1
+  loading_mode:
+    description: pdf loading mode to be either "text" or "multimodal"
+    value: text
+  recursive_chunk:
+    description: whether you want to have recursive chunk on top of rich chunks. please note that in case you change this to "yes" you need to add {{question_chunk}} field into your question generator.
+    value: true
+  combine_chunk:
+    description: whether you want to combine chunks that are relveant to each other coming from different pages.
+    value: true
+    similarity_threshold: 0.85
+  step_size:
+    description: Step size for processing.
+    value: 10
+  threshold:
+    description: Threshold value for processing.
+    value: 0.4
+  window_size:
+    description: Size of the window for processing.
+    value: 2
+memory_tuning:
+  learning_rate:
+    description: Learning rate for memory tuning.
+    value: 0.0001
+  max_gpus:
+    description: Maximum number of GPUs to use.
+    value: 6
+  max_nodes:
+    description: Maximum number of nodes to use.
+    value: 1
+  max_steps:
+    description: Maximum number of steps for memory tuning.
+    value: 125
+model:
+  default:
+    description: Default model to use.
+    value: meta-llama/Llama-3.1-8B-Instruct
+  memory_tuning:
+    description: Model to use for memory tuning.
+    value: meta-llama/Llama-3.1-8B-Instruct
