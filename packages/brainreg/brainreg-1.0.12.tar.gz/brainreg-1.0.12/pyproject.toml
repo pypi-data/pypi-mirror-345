@@ -1,0 +1,123 @@
+[project]
+name = "brainreg"
+description = "Automated multi-atlas whole-brain microscopy registration"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Adam Tyson, Charly Rousseau, Stephen Lenzi", email = "code@adamltyson.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: napari",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "brainglobe-atlasapi>=2.0.1",
+    "brainglobe-space>=1.0.0",
+    "brainglobe-utils>=0.5.0",
+    "fancylog",
+    "numpy",
+    "scikit-image>=0.24.0",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+napari = [
+    "brainglobe-napari-io >=0.3.2",
+    "brainglobe-segmentation >= 1.0.0",
+    "magicgui",
+    "napari-plugin-engine >= 0.1.4",
+    "napari[pyqt5]<0.6.0",
+    "pooch>1",                          # For sample data
+    "qtpy",
+]
+dev = [
+    "black",
+    "check-manifest",
+    "gitpython",
+    "napari[pyqt5]<0.6.0",
+    "pre-commit",
+    "pytest-cov",
+    "pytest-qt",
+    "pytest-mock",
+    "pytest",
+    "setuptools_scm",
+    "tox",
+]
+
+[project.entry-points."napari.manifest"]
+brainreg = "brainreg.napari:napari.yaml"
+
+[project.scripts]
+brainreg = "brainreg.core.cli:main"
+
+[project.urls]
+"Homepage" = "https://brainglobe.info"
+"Bug Tracker" = "https://github.com/brainglobe/brainreg/issues"
+"Documentation" = "https://docs.brainglobe.info/brainreg"
+"Source Code" = "https://github.com/brainglobe/brainreg"
+"User support" = "https://forum.image.sc/tag/brainglobe"
+"Twitter" = "https://twitter.com/brain_globe"
+
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["brainreg*"]
+
+[tool.setuptools.package-data]
+include = ["brainreg*"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=brainreg"
+
+[tool.black]
+line-length = 79
+skip-string-normalization = false
+target-version = ['py311','py312', 'py313']
+
+[tool.ruff]
+line-length = 79
+exclude = ["__init__.py", "build", ".eggs"]
+select = ["I", "E", "F"]
+fix = true
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py{311,312,313}
+isolated_build = True
+
+[gh-actions]
+python =
+    3.11: py311
+    3.12: py312
+    3.13: py313
+
+[testenv]
+extras =
+    dev
+    napari
+commands =
+    pytest -v --color=yes --cov=brainreg --cov-report=xml
+passenv =
+    CI
+    GITHUB_ACTIONS
+    DISPLAY
+    XAUTHORITY
+    NUMPY_EXPERIMENTAL_ARRAY_FUNCTION
+    PYVISTA_OFF_SCREEN
+"""
