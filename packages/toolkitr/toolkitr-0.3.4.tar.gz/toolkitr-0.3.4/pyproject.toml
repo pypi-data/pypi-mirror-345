@@ -1,0 +1,43 @@
+[project]
+name = "toolkitr"
+version = "0.3.4"
+description = "Tool calling made easy"
+authors = [{ name = "Manolo Santos", email = "manolo.santos@gmail.com" }]
+requires-python = "~=3.11"
+readme = "README.md"
+license = { text = "MIT" }
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/undo76/toolkitr"
+"Bug Tracker" = "https://github.com/undo76/toolkitr/issues"
+"Documentation" = "https://github.com/undo76/toolkitr#readme"
+
+[dependency-groups]
+test = ["openai>=1.58.1,<2", "pytest~=8.2", "pytest-asyncio>=0.25.0,<0.26"]
+
+[tool.uv]
+default-groups = ["test"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/toolkitr"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src/toolkitr"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/toolkitr" = "toolkitr"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
