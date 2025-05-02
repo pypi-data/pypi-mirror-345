@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-execute"
+version = "0.1.0"
+
+authors = [
+  {name="AlexanderJCS"},
+]
+
+description = "Use AI to generate terminal commands"
+readme = "README.md"
+
+requires-python = ">=3.9"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+dependencies = ["colorama~=0.4.6", "ollama~=0.4.8"]
+
+[project.urls]
+repository = "https://github.com/AlexanderJCS/aix"
+homepage = "https://github.com/AlexanderJCS/aix"
+issues = "https://github.com/AlexanderJCS/aix/issues"
+
+[project.scripts]
+aix = "aix.cli:main"
+
+[options.packages.find]
+where = "src"
+exclude = ["test"]
