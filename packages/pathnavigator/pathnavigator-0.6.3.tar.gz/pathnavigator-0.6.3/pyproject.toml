@@ -1,0 +1,64 @@
+[project]
+name = "pathnavigator"
+version = "0.6.3"
+authors = [
+    {name = "Chung-Yi Lin", email = "philip928lin@gmail.com"}
+]
+license = { text = "MIT" }
+description = "A Python library for efficient directory and file navigation"
+# readme = { file = "README.md", content-type = "text/markdown" }  # Specify README with content type
+readme = "README.md"
+dependencies = ["pyyaml"]
+keywords = [
+  "pathnavigator",
+  "PathNavigator",
+  "environment",
+  "path",
+  "project",
+  "manager",
+  "directory",
+  "file",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "ipython",
+]
+lint = [
+    "pre-commit>=2.20.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = [
+    "src/**/*",
+]
+
+[tool.hatch.build.package]
+# Force hatch to treat 'src' as the root. 
+# It ensures your top-level 'pathnavigator' inside 'src' is discovered.
+source = "src"
+packages = [
+    {include = "pathnavigator"}
+]
+
+[tool.hatch.build.targets.wheel]
+sources = ["src"]
+
+
+# tools
+[tool.black]
+line-length = 88
+target-version = ["py310", "py311", "py312"]
+
+[tool.hatch.envs.default]
+dependencies = [
+    "pytest",
+]
+
+# hatch build
+# twine upload dist/*
