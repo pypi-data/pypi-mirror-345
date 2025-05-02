@@ -1,0 +1,57 @@
+Metadata-Version: 2.4
+Name: nutribr
+Version: 0.1.0
+Summary: Biblioteca de dados nutricionais de alimentos brasileiros baseada na TACO/IBGE
+Author-email: Pedro Brito <seuemail@exemplo.com>
+License: MIT
+Project-URL: Homepage, https://github.com/seuusuario/nutribr
+Project-URL: Repository, https://github.com/seuusuario/nutribr
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Dynamic: license-file
+
+# nutribr
+
+📦 Biblioteca de dados nutricionais de alimentos brasileiros baseada na TACO (IBGE)
+
+## Visão Geral
+
+`nutribr` é uma biblioteca Python que fornece acesso estruturado aos dados nutricionais dos alimentos presentes na Tabela Brasileira de Composição de Alimentos (TACO), mantida pelo IBGE e outras instituições. Ideal para projetos de nutrição, saúde e alimentação.
+
+## Instalação
+
+```bash
+pip install nutribr
+```
+
+## Uso Básico
+
+```python
+from nutribr import TabelaNutricional
+
+tabela = TabelaNutricional()
+arroz = tabela.buscar("arroz")
+
+for item in arroz:
+    print(item)
+```
+
+## Funcionalidades
+
+- Busca por alimentos por nome
+- Listagem de todos os alimentos disponíveis
+- Acesso aos dados de energia, proteínas, lipídios e carboidratos
+
+## Estrutura dos Dados
+
+- `Alimento`: nome, categoria, energia (kcal), proteína (g), lipídios (g), carboidrato (g)
+
+## Fonte dos Dados
+
+Os dados são derivados da [Tabela Brasileira de Composição de Alimentos (TACO)](https://www.unicamp.br/nepa/taco/).
+
+## Licença
+
+MIT
