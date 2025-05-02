@@ -1,0 +1,105 @@
+site_name: mhanndalorian-bot
+site_description: Python wrapper for Mhanndalorian Bot API and Registry services
+site_url: https://github.com/MarTrepodi/mhanndalorian-bot-api
+
+nav:
+  - Introduction: 'index.md'
+  - API Reference:
+      - API: 'api.md'
+      - Registry: 'registry.md'
+  - Advanced:
+      - Logging: 'logging.md'
+
+repo_name: MarTrepodi/mhanndalorian-bot-api
+repo_url: https://github.com/MarTrepodi/mhanndalorian-bot-api
+
+theme:
+  name: 'material'
+  custom_dir: 'overrides'
+  palette:
+    - scheme: 'default'
+      media: '(prefers-color-scheme: light)'
+      toggle:
+        icon: 'material/lightbulb'
+        name: "Switch to dark mode"
+    - scheme: 'slate'
+      media: '(prefers-color-scheme: dark)'
+      primary: 'brown'
+      toggle:
+        icon: 'material/lightbulb-outline'
+        name: 'Switch to light mode'
+  features:
+    - toc.integrate
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+  extra:
+    version:
+      provider: mike
+  markdown_extensions:
+    - admonition
+    - codehilite:
+        css_class: highlight
+    - mkdocstrings
+    - pymdownx.arithmatex:
+        generic: true
+    - pymdownx.betterem:
+        smart_enable: all
+    - pymdownx.caret
+    - pymdownx.details
+    - pymdownx.emoji:
+        emoji_index: !!python/name:material.extensions.emoji.twemoji
+        emoji_generator: !!python/name:material.extensions.emoji.to_svg
+        options:
+          custom_icons:
+            - overrides/.icons
+    - pymdownx.highlight
+    - pymdownx.inlinehilite
+    - pymdownx.keys
+    - pymdownx.mark
+    - pymdownx.smartsymbols
+    - pymdownx.superfences
+    - pymdownx.tabbed:
+        alternate_style: true
+    - pymdownx.tasklist:
+        custom_checkbox: true
+    - pymdownx.tilde
+
+plugins:
+  - search
+  - autorefs
+  - git-revision-date-localized
+  - git-authors
+  - mike
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [ src ]
+          options:
+            show_bases: false
+            show_labels: true
+            heading_level: 3
+            inherited_members: false
+            group_by_category: true
+            show_category_heading: true
+            show_root_full_path: false
+            show_root_heading: true
+            show_root_members_full_path: false
+            show_root_toc_entry: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            docstring_style: google
+            docstring_options:
+              ignore_init_summary: false
+              trim_doctest_flags: false
+              docstring_section_style: Spacy
+            merge_init_into_class: true
+            separate_signature: true
+            filters:
+              - "!^_"
+
+extra_css:
+  - style/style.css
+  - style/mkdocstrings.css
+

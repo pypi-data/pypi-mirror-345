@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mhanndalorian-bot"
+dynamic = ["version"]
+authors = [
+    { name = "Mar Trepodi", email = "martrepodi@gmail.com" },
+]
+description = "Python 3 interface library for the Mhanndalorianbot authenticated endpoints API"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "httpx",
+    "sentinels"
+]
+
+[project.urls]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "module"
+asyncio_default_test_loop_scope = "class"
+addopts = [
+    "--import-mode=importlib",
+]
+testpaths = [
+    "tests",
+]
+
+[tool.hatch.version]
+path = 'mhanndalorian_bot/version.py'
+method = "semantic"
+style = "pep440"
+vsc = "git"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.semantic_release]
+version_variable = [
+    "mhanndalorian_bot/version.py"
+]
+build_command = "pip install hatch && hatch build"
+version_source = "commit"                                                    # Set version source to "commit" so that
+branch = "main"                                                              # branch to make releases of
+changelog_file = "CHANGELOG.md"                                              # changelog file
+dist_path = "dist/"                                                          # where to put dists
+upload_to_release = false                                                    # auto-create GitHub release
+upload_to_pypi = false                                                       # don't auto-upload to PyPI
+remove_dist = false                                                          # don't remove dists
+patch_without_tag = true                                                     # patch release by default
