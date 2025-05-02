@@ -1,0 +1,28 @@
+[project]
+name = "graphos"
+version = "0.2.4"
+description = "Terminal graph visualization tool."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "debugpy>=1.8.14",
+    "rich>=14.0.0",
+    "setuptools>=79.0.1",
+    "twine>=6.1.0",
+]
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "black",
+  "flake8",
+  "mypy",
+  "pylint"
+]
+
+[project.scripts]
+graphos = "graphos.src:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["graphos*"]
