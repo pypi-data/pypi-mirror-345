@@ -1,0 +1,50 @@
+Metadata-Version: 2.2
+Name: a2y_kcom
+Version: 0.8.4
+Summary: 此模块实现内核科技 USB（HID）转多通道UART 的驱动程序。
+Home-page: http://www.kersci.com/a2y/kcom.html
+Author: Yu Han
+Author-email: hanjunyu@163.com
+License: Private
+Platform: Windows
+Platform: Linux
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: Free For Educational Use
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: POSIX :: Linux
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyusb>=1.2
+Requires-Dist: libusb-package>=1.0.26.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: platform
+Dynamic: requires-dist
+Dynamic: summary
+
+# Python Module: a2y_kcom
+
+a2y_kcom 实现内核科技 USB（HID）转多通道UART 的驱动程序。从原先的 hidcom 模块更名而来，从 2024 年 6 月 15 日起，正式把串口名更改为 KCOM。
+原先的名字“HidCom”还将延续一段时间，以保持兼容性。
+
+## ChangeLog
+
+- 2025-05-02 增加接口`reset_input_buffer`，逐步修正之前对`flush`相关函数的误解。升级版本号为 0.8.4。
+
+- 2024-09-17 Fix bug in function `read_until`. Release version 0.8.3
+
+- 2024-08-24 Fix bug. Release version 0.8.2
+
+- 2024-08-09 升级版本号为 0.8.1。
+    - 加入接口`list_kcom_names`，以方便获取当前系统存在的所有`KCOM`串口通道名。
+但当前的实现有缺陷：仅仅是列出串口通道名，将导致进程打开并占用整个`KCOM`设备，以至所有的`KCOM`通道将只能由此进程打开使用。
+    - 给`Serial`构造函数加入`**kwargs`参数，以解决有多余参数造成不能打开串口通道的问题。
+
+- 2024-06-15 创建模块，发布版本 0.8.0
