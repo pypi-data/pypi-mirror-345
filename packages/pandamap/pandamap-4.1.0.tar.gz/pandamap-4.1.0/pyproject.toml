@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pandamap"
+version = "4.1.0"
+description = "A Python package for visualizing protein-ligand interactions with 2D ligand structure representation"
+readme = "README.md"
+authors = [
+    {name = "Dr. Pritam Kumar Panda", email = "pritam@stanford.edu"}
+]
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+keywords = ["bioinformatics", "protein-ligand", "interactions", "visualization", "drug-design", "3Dmol", "rich", "docking"]
+dependencies = [
+    "numpy>=1.20.0",
+    "matplotlib>=3.4.0",
+    "biopython>=1.79",
+    "requests>=2.25.0",
+]
+requires-python = ">=3.7"
+
+[project.optional-dependencies]
+fancy = ["rich>=13.0"]
+viz = ["py3Dmol"]  # For 3Dmol.js HTML generation
+full = ["rich>=13.0", "py3Dmol"]
+
+
+[project.urls]
+"Homepage" = "https://github.com/pritampanda15/PandaMap"
+"Bug Tracker" = "https://github.com/pritampanda15/PandaMap/issues"
+
+[project.scripts]
+pandamap = "pandamap.cli:main"
+
+[tool.long_description]
+long-description = "file:README.md"
+long-description-content-type = "text/markdown"
+
