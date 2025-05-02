@@ -1,0 +1,67 @@
+digraph G {
+concentrate=true;
+splines="ortho";
+rankdir="LR";
+subgraph legend{
+    rank = min;
+    label = "legend";
+    Legend [shape=none, margin=0, label = <
+        <table cellspacing="0" cellpadding="0" border="1"><tr><td>Code2flow Legend</td></tr><tr><td>
+        <table cellspacing="0">
+        <tr><td>Regular function</td><td width="50px" bgcolor='#cccccc'></td></tr>
+        <tr><td>Trunk function (nothing calls this)</td><td bgcolor='#966F33'></td></tr>
+        <tr><td>Leaf function (this calls nothing else)</td><td bgcolor='#6db33f'></td></tr>
+        <tr><td>Function call</td><td><font color='black'>&#8594;</font></td></tr>
+        </table></td></tr></table>
+        >];
+}node_5b3aea97 [label="0: (global)()" name="cli::(global)" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_987272f0 [label="44: main()" name="cli::main" shape="rect" style="rounded,filled" fillcolor="#cccccc" ];
+node_82ade7aa [label="0: (global)()" name="connection_manager::(global)" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_b9edf7f8 [label="35: add_or_update_connection()" name="connection_manager::add_or_update_connection" shape="rect" style="rounded,filled" fillcolor="#cccccc" ];
+node_d727efac [label="41: delete_connection()" name="connection_manager::delete_connection" shape="rect" style="rounded,filled" fillcolor="#cccccc" ];
+node_3049d928 [label="48: display_connections()" name="connection_manager::display_connections" shape="rect" style="rounded,filled" fillcolor="#cccccc" ];
+node_b54850f1 [label="23: load_connections()" name="connection_manager::load_connections" shape="rect" style="rounded,filled" fillcolor="#6db33f" ];
+node_3854cc62 [label="58: main()" name="connection_manager::main" shape="rect" style="rounded,filled" fillcolor="#cccccc" ];
+node_bdabd1b5 [label="30: save_connections()" name="connection_manager::save_connections" shape="rect" style="rounded,filled" fillcolor="#6db33f" ];
+node_b7b3a8d6 [label="0: (global)()" name="connection_utility::(global)" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_bcc23665 [label="51: choose_connection()" name="connection_utility::choose_connection" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_4e87cf60 [label="42: load_connections()" name="connection_utility::load_connections" shape="rect" style="rounded,filled" fillcolor="#6db33f" ];
+node_ff473c32 [label="21: make_string()" name="connection_utility::make_string" shape="rect" style="rounded,filled" fillcolor="#6db33f" ];
+node_5b3aea97 -> node_987272f0 [color="#CC79A7" penwidth="2"];
+node_987272f0 -> node_3854cc62 [color="#000000" penwidth="2"];
+node_82ade7aa -> node_3854cc62 [color="#56B4E9" penwidth="2"];
+node_b9edf7f8 -> node_b54850f1 [color="#000000" penwidth="2"];
+node_b9edf7f8 -> node_bdabd1b5 [color="#000000" penwidth="2"];
+node_d727efac -> node_b54850f1 [color="#F0E442" penwidth="2"];
+node_d727efac -> node_bdabd1b5 [color="#F0E442" penwidth="2"];
+node_3049d928 -> node_b54850f1 [color="#000000" penwidth="2"];
+node_3854cc62 -> node_b9edf7f8 [color="#56B4E9" penwidth="2"];
+node_3854cc62 -> node_b9edf7f8 [color="#56B4E9" penwidth="2"];
+node_3854cc62 -> node_d727efac [color="#56B4E9" penwidth="2"];
+node_3854cc62 -> node_3049d928 [color="#56B4E9" penwidth="2"];
+node_3854cc62 -> node_3049d928 [color="#56B4E9" penwidth="2"];
+node_3854cc62 -> node_3049d928 [color="#56B4E9" penwidth="2"];
+node_b7b3a8d6 -> node_4e87cf60 [color="#D55E00" penwidth="2"];
+node_bcc23665 -> node_ff473c32 [color="#0072B2" penwidth="2"];
+subgraph cluster_b46c4b83 {
+    node_987272f0 node_5b3aea97;
+    label="File: cli";
+    name="cli";
+    style="filled";
+    graph[style=dotted];
+};
+subgraph cluster_05cb1eaf {
+    node_b54850f1 node_bdabd1b5 node_b9edf7f8 node_d727efac node_3049d928 node_3854cc62 node_82ade7aa;
+    label="File: connection_manager";
+    name="connection_manager";
+    style="filled";
+    graph[style=dotted];
+};
+subgraph cluster_1a8bc1c4 {
+    node_ff473c32 node_4e87cf60 node_bcc23665 node_b7b3a8d6;
+    label="File: connection_utility";
+    name="connection_utility";
+    style="filled";
+    graph[style=dotted];
+};
+}
