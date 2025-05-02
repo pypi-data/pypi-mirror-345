@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "firscript"
+dynamic = ["version"]
+description = "A Python-based backtesting engine with a custom scripting system inspired by TradingView's Pine Script"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [
+    {name = "JungleDome"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["trading", "backtesting", "finance", "technical analysis", "pinescript"]
+dependencies = [
+    "colorama",
+    "numpy",
+    "pandas",
+    "python-dateutil",
+    "pytz",
+    "six",
+    "typing_extensions",
+    "tzdata",
+]
+
+[project.urls]
+"Documentation" = "https://github.com/JungleDome/FirScript"
+"Source" = "https://github.com/JungleDome/FirScript"
+"Tracker" = "https://github.com/JungleDome/FirScript/issues"
+
+[tool.setuptools]
+packages = {find = {exclude = ["tests*", "examples*"]}}
+
+[tool.setuptools.dynamic]
+version = {attr = "firscript.version.__version__"}
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203"]
+exclude = [".git", "__pycache__", "build", "dist"]
+
+[tool.bdist_wheel]
+universal = 1
