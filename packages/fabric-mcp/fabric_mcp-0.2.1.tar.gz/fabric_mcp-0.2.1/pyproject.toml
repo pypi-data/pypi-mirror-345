@@ -1,0 +1,102 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fabric-mcp"
+dynamic = ["version"]
+description = "MCP Server for Fabric AI Framework"
+authors = [{ name = "Kayvan Sylvan", email = "kayvan@sylvan.com" }]
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["requests>=2.28.0", "modelcontextprotocol>=0.1.0"]
+
+[project.urls]
+"Homepage" = "https://github.com/ksylvan/fabric-mcp"
+"Repository" = "https://github.com/ksylvan/fabric-mcp"
+"Bug Tracker" = "https://github.com/ksylvan/fabric-mcp/issues"
+"Documentation" = "https://github.com/ksylvan/fabric-mcp#readme"
+
+[project.scripts]
+fabric-mcp = "fabric_mcp.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    # "black>=25.1.0", # Removed, replaced by ruff format
+    "hatch>=1.14.1",
+    "hatchling>=1.27.0",
+    # "isort>=6.0.1", # Removed, replaced by ruff lint (I rule)
+    "pytest>=8.3.5",
+    "ruff>=0.5.0",
+    "uv>=0.7.2",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+
+# Tell hatchling where to find the version variable
+[tool.hatch.version]
+path = "fabric_mcp/__about__.py"
+
+[tool.ruff]
+# Match black's line length.
+line-length = 88
+# Assume Python 3.10+.
+target-version = "py310"
+
+[tool.ruff.lint]
+# Enable Pyflakes ("F") and pycodestyle ("E", "W") rules by default.
+# Adding "I" for isort compatibility checks.
+select = ["E", "F", "W", "I"]
+ignore = ["E203"]             # Ignore whitespace before ':' (compatible with black)
+
+# Exclude common directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+[tool.uv]
+index = [
+    { name = "testpypi", url = "https://test.pypi.org/simple/", publish-url = "https://test.pypi.org/legacy/", explicit = true },
+    { name = "pypi", url = "https://pypi.org/simple/", publish-url = "https://upload.pypi.org/legacy/", explicit = true },
+]
