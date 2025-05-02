@@ -1,0 +1,170 @@
+[build-system]
+# These are the assumed default build requirements from pip
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# Project metadata - automatically updated by setuptools_scm
+name = "rey.py"
+description = "Rey namespace package."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [
+    {name = "Szymon Talaga", email = "stalaga@protonmail.com"}
+]
+# Keywords and classifiers can be modified as needed
+keywords = ["python", "package"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+    "Typing :: Typed",  # Added to indicate package is typed
+]
+# Dynamic version management with setuptools_scm
+dynamic = ["version"]
+
+# Project dependencies
+dependencies = []
+
+# Optional dependencies
+[project.optional-dependencies]
+dev = [
+    "ipdb",
+    "ipython",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-sugar>=1.0.0",  # Added for improved test result display
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+    "nox>=2023.0.0",
+]
+docs = [
+    "sphinx>=5.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+    "myst-parser>=1.0.0",  # Added for Markdown support in Sphinx
+]
+
+# Project URLs
+[project.urls]
+Homepage = "https://github.com/reysci/rey"
+Issues = "https://github.com/reysci/rey/issues"
+Documentation = "https://rey.readthedocs.io"
+
+# Entry points (CLI commands)
+# [project.scripts]
+# my-command = "rey.cli:main"
+
+# Configure setuptools_scm for version management
+[tool.setuptools_scm]
+# Write the version to a Python file
+write_to = "rey/_version.py"
+version_scheme = "post-release"
+local_scheme = "node-and-timestamp"
+
+# Package discovery and package data
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["rey", "rey.*"]
+namespaces = true
+
+# Include py.typed marker to indicate package has type information
+[tool.setuptools.package-data]
+"rey" = ["py.typed"]
+
+# Pytest configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "--cov=rey --cov-report=term --cov-report=xml"
+
+# Ruff configuration
+[tool.ruff]
+# Line length and target Python version
+line-length = 88
+# Target version should not have dots in the version string (e.g., py312 instead of py3.12)
+target-version = "py312"
+
+# Ruff formatter configuration (similar to black)
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
+# Linter configuration - moved all linting settings to this section
+[tool.ruff.lint]
+# Selected rule sets
+# E/F: pycodestyle and Pyflakes (default)
+# I: isort
+# N: PEP8-naming
+# UP: pyupgrade (upgrade syntax to newer Python)
+# B: flake8-bugbear (common bugs/design problems)
+# C4: flake8-comprehensions (better list/dict/set comprehensions)
+# SIM: flake8-simplify (code simplification suggestions)
+# TCH: flake8-type-checking (better type checking)
+# D: pydocstyle (docstring style checking)
+# ERA: eradicate (commented out code detection)
+# PL: Pylint
+select = [
+    "E", "F", "I",  # Essential
+    "N", "UP", "B", "C4", "SIM",  # Code quality
+    "D",  # Documentation
+    "ERA",  # Eradicate commented out code
+    "PL"  # Pylint
+]
+
+# Ignored rules
+ignore = [
+    # Commonly ignored rules for better compatibility with formatter
+    "E203",  # Whitespace before ':'
+    "E501",  # Line too long (handled by formatter)
+
+    # Documentation related
+    "D203", "D213",  # Conflicts with D211
+    "D406", "D407", "D413",  # Section name formatting
+
+    # Type annotation related
+    "UP007",  # Use X | Y for union (Python 3.10+)
+
+    # Rules that might be too strict
+    "PLR0913",  # Too many arguments to function call
+    "PLR0915",  # Too many statements
+
+    "ERA001",  # Eradicate commented out code
+]
+
+# Per-file ignores - Fixed syntax to use proper TOML format
+[tool.ruff.lint.per-file-ignores]
+# Files in the tests directory allow certain violations
+"tests/*" = ["D", "PLR2004", "S101"]
+# Allow unused imports in __init__ files
+"__init__.py" = ["F401"]
+"*/__init__.py" = ["F401"]
+
+# Unfixable rules (don't auto-fix these)
+unfixable = ["F401"]  # Unused imports - require deliberate action
+
+# Import sorting settings moved to lint.isort
+[tool.ruff.lint.isort]
+known-first-party = ["rey"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+# MyPy configuration
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+# Exclude tests directory from type checking completely
+exclude = ["tests/"]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false

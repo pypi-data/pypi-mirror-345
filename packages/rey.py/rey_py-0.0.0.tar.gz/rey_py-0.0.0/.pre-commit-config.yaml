@@ -1,0 +1,62 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    # File format checks
+    -   id: trailing-whitespace
+        stages: [pre-commit]
+    -   id: end-of-file-fixer
+        stages: [pre-commit]
+    -   id: mixed-line-ending
+        stages: [pre-commit]
+    # Syntax validation
+    -   id: check-yaml
+        stages: [pre-commit]
+    -   id: check-json
+        stages: [pre-commit]
+    -   id: check-toml
+        stages: [pre-commit]
+    -   id: check-xml
+        stages: [pre-commit]
+    # Security and performance
+    -   id: check-added-large-files
+        args: ['--maxkb=1000']  # Set maximum file size to 1MB
+        stages: [pre-commit]
+    -   id: detect-private-key
+        stages: [pre-commit]
+    -   id: detect-aws-credentials
+        args: [--allow-missing-credentials]
+        stages: [pre-commit]
+    # Python-specific
+    -   id: check-ast
+        stages: [pre-commit]
+    -   id: debug-statements
+        stages: [pre-commit]
+    -   id: check-docstring-first
+        stages: [pre-commit]
+
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.0  # Use the latest version
+    hooks:
+    # Run the Ruff linter
+    -   id: ruff
+        args: [--fix]
+        stages: [pre-commit]
+    # Run the Ruff formatter
+    -   id: ruff-format
+        stages: [pre-commit]
+
+
+# -   repo: https://github.com/pre-commit/mirrors-mypy
+#     rev: v1.8.0
+#     hooks:
+#     -   id: mypy
+#         # Add explicit configuration to exclude tests
+#         # This ensures mypy uses the config from pyproject.toml
+#         args: [--config-file=pyproject.toml, --exclude=tests/]
+#         # The config-file argument ensures mypy reads our settings
+#         # The exclude argument provides an explicit pattern to exclude tests
+#         additional_dependencies: [types-setuptools]
+#         stages: [pre-commit]
