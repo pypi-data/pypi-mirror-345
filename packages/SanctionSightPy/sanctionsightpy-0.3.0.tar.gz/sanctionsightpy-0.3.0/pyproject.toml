@@ -1,0 +1,79 @@
+[tool.poetry]
+name = "SanctionSightPy"
+version = "0.3.0"
+description = "Demo description here."
+authors = ["DataDock-AI <api@datadock.ai>"]
+maintainers = ["Peter Mbachu <peter.mbachu@datadock.ai>"]
+license = "MIT"
+readme = "README.md"
+keywords = ["SanctionSightPy", "DataDock-AI", "python", "Sanctions", "Legal Case"]
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 5 - Production/Stable",
+    "Natural Language :: English",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+packages = [{include = "SanctionSightPy"}]
+
+[license]
+text = "Copyright ©2025 DataDock-AI"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/DataDock-AI/SanctionSightPy/issues"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyarrow = "^19.0.1"
+pandas = "^2.2.3"
+humanize = "^4.11.0"
+rich = "^13.8.1"
+fastcore = "^1.7.17"
+colorama = "^0.4.6"
+aiohttp = "^3.11.12"
+ipykernel = "^6.29.5"
+tenacity = "^9.1.2"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2"
+pylint = "^3.1"
+python-semantic-release = "^9.0"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0"
+pytest-cov = "^5.0"
+pytest-asyncio = "^0.23"
+pytest-mock = "^3.14.0"
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--doctest-modules"
+asyncio_mode = "auto"
+
+
+[tool.black]
+target-version = ['py310', 'py311']
+include = '\.pyi?$'
+
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:tool.poetry.version"]  # version location
+branch = "main"  # branch to make release of
+changelog_file = "CHANGELOG.md"  # changelog file
+build_command = "pip install poetry && poetry build"  # build dist
+
+# New configuration for release groups
+[tool.semantic_release.branches]
+main = { match = "main" }  # Releases from datadock-lib branch
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
