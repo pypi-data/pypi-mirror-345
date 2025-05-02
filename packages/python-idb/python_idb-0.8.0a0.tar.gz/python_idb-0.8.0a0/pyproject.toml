@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=42", "build>=1.2.2.post1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-idb"
+version = "0.8.0a0"
+description = "Pure Python parser for IDA Pro databases (.idb files)"
+readme = "readme.md"
+authors = [
+    { name = "Willi Ballenthin", email = "willi.ballenthin@gmail.com" },
+]
+license = "Apache-2.0"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Topic :: Security",
+    "Topic :: Software Development :: Disassemblers",
+]
+dependencies = [
+    "six",
+    "hexdump>=3.3",
+    "vivisect-vstruct-wb>=1.0.3",
+    "cached-property>=1.5.1",
+]
+
+[project.optional-dependencies]
+disassembly = [
+    "capstone>= 5.0.6",
+]
+
+[project.urls]
+Homepage = "https://github.com/williballenthin/python-idb"
+
+[tool.setuptools]
+packages = ["idb"]
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.ruff]
+line-length = 120
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "black>=25.1.0",
+    "isort>=6.0.1",
+    "ruff>=0.11.8",
+]
+build = [
+    "build>=1.2.2.post1"
+]
