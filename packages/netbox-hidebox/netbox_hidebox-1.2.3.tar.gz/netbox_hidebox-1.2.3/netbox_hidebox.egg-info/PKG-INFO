@@ -1,0 +1,136 @@
+Metadata-Version: 2.4
+Name: netbox_hidebox
+Version: 1.2.3
+Summary: Hide Unwanted Fields Based On User-Groups
+Home-page: 
+Author: Sofien Aouni
+Author-email: contact@sofien.meme
+Maintainer: AOS
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license-file
+Dynamic: maintainer
+Dynamic: summary
+
+# NetBox HideBox Plugin
+
+**NetBox HideBox** is a plugin for [NetBox](https://netbox.readthedocs.io/) that allows you to dynamically hide form fields based on the user’s group membership. This can be useful for restricting access to certain form fields depending on the user’s role or group in your organization.
+
+## Table of Contents
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Compatibility Matrix](#compatibility-matrix)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+
+## Features
+
+- Dynamically hide fields on NetBox forms based on user group membership.
+- Easy configuration.
+- Applies to any form related to a specific model in NetBox.
+- Granular control of field visibility for multiple user groups.
+
+## Requirements
+- netbox 4.0+
+- python 3.11+
+
+## Compatibility Matrix
+
+| NetBox Version | Plugin Version |
+|----------------|----------------|
+| 4.3+           | 1.2.3+         |
+| 4.0+           | 1.0+           |
+
+
+## Installation
+
+To install the NetBox HideBox plugin, follow these steps:
+
+1. **Clone the Repository** or add the plugin to your project’s requirements:
+
+   ```bash
+   pip install netbox-hidebox
+
+2. **Enable the Plugin** in your NetBox configuration file (configuration.py):
+    ```bash
+    PLUGINS = [
+       'netbox_hidebox',
+    ]
+   
+3. **Configure Plugin Settings** (see [Configuration](#configuration) for details).
+
+4. **Restart NetBox to apply** changes:
+    ```bash
+   sudo systemctl restart netbox
+   
+## Configuration
+The core of the plugin is controlled by the HIDDEN_FIELDS setting in your settings.py or configuration.py file. This is where you define which fields to hide for which models and specify the user groups that are exempt from hiding.
+
+### Plugin Configuration Structure
+In your NetBox configuration (configuration.py):
+```bash
+PLUGINS_CONFIG = {
+    'netbox_hidebox': {
+        'HIDDEN_FIELDS': {
+            # Model identifier: {'field_name': ['excluded_group1', 'excluded_group2']}
+            'app_label.model_name': {
+                'field_name1': ['Group A', 'Group B'],  # Field hidden if user not in Group A or Group B
+                'field_name2': ['Group C'],              # Field hidden if user not in Group C
+            },
+            'ipam.ipaddress': {
+                'status': [],          # Leave Empty to hide for all Groups
+            }
+        }
+    }
+}
+```
+
+In your NetBox setting (settings.py):
+```bash
+MIDDLEWARE = [
+    'netbox_hidebox.middleware.RequestMiddleware',  # Place it early in the list; recommended to place before the first netbox-middleware
+    # Other middleware...
+]
+```
+
+### Explanation
+- app_label.model_name: The full identifier of the model (e.g., ipam.ipaddress).
+- field_name: The name of the field you want to hide (e.g., status).
+- excluded_groups: A list of user group names. If the user is not in any of these groups, the field will be hidden.
+
+
+## Usage
+Once configured, the plugin will automatically hide fields on relevant forms based on the user’s group membership.
+
+### Example Scenario
+
+Suppose you have the following configuration:
+```bash
+PLUGINS_CONFIG = {
+    'netbox_hidebox': {
+        'HIDDEN_FIELDS': {
+            'ipam.ipaddress': {
+                'description': ['Network Engineers', 'Admins'],
+                'vrf': ['Admins'],
+            }
+        }
+    }
+}
+```
+
+- description field in the IP Address form will be hidden for users who are not in the "Network Engineers" or "Admins" group.
+- vrf field will only be visible to users in the "Admins" group.
+
+### Adding/Removing Fields
+
+To modify the configuration:
+
+- Edit the HIDDEN_FIELDS section in configuration.py.
+- Restart NetBox to apply the changes.
+
