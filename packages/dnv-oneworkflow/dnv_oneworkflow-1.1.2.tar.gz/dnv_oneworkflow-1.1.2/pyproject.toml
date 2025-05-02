@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dnv-oneworkflow"
+version = "1.1.2"
+authors = [
+    {name = "DNV AS", email = "software.support@dnv.com"},
+]
+description = "Python library for developing and running workflows locally or on the OneCompute cloud platform"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["onecompute", "oneworkflow", "workflow"]
+license = {file = "LICENSE"}
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+]
+
+dependencies = [
+    "dnv-onecompute",
+    "cryptography==44.0.1",
+    "ipywidgets==8.1.5",
+    "signify==0.5.2",  # Pinned version: Newer versions incompatible with package_manager's certificate validation
+    "tqdm==4.67.1",
+]
+
+[options]
+package_dir = "src"
+
+[tool.setuptools.package-data]
+"*" = ["*.pyi"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["docs*", "tests*"]
+
+[project.urls]
+Homepage = "https://myworkspace.dnv.com/knowledge-centre/sesam-workflows/usermanual/?document=sesam-workflows-ow-overview"
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.isort]
+profile = "black"
+skip = [
+    '.eggs', '.git', '.hg', '.mypy_cache', '.nox', '.pants.d', '.tox',
+    '.venv', '_build', 'buck-out', 'build', 'dist', 'node_modules', 'venv',
+]
+skip_gitignore = true
