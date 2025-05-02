@@ -1,0 +1,68 @@
+name: "PostgreSQL Database"
+version: "1.0.0"
+description: "PostgreSQL database server"
+type: "component"
+
+# Component-specific configuration
+component:
+  type: "database"
+  engine: "postgresql"
+  version: "15"
+
+# Service definitions for port allocation
+services:
+  db:
+    type: "postgresql"
+    port_range: "5432-5632"
+    required: true
+    env_prefix: "DB" # Will create DB_PORT
+    postgresql:
+      port: "${DB_PORT}"
+      database: "${DB_DATABASE}"
+      user: "${DB_USERNAME}"
+      password: "${DB_PASSWORD}"
+
+# Environment variables this component needs
+environment:
+  DB_DATABASE: "${PROJECT_NAME}"
+  DB_USERNAME: "${PROJECT_NAME}"
+  DB_PASSWORD: "secret"
+  POSTGRES_VERSION: "15"
+
+# Files that need variable substitution
+files:
+  - path: ".env"
+    variables:
+      - DB_PORT
+      - DB_DATABASE
+      - DB_USERNAME
+      - DB_PASSWORD
+
+# Docker configuration
+docker:
+  image: "postgres:${POSTGRES_VERSION}-alpine"
+  volumes:
+    - type: "volume"
+      name: "${PROJECT_NAME}_postgres"
+      target: "/var/lib/postgresql/data"
+
+# ----------------------------------------------------
+# Declarative cleanup tasks (executed only when PostgreSQL engine is chosen)
+# ----------------------------------------------------
+post_copy:
+  # Remove directories belonging to MySQL/MariaDB engines if present
+  - remove_dir: "docker/mysql"
+  - remove_dir: "docker/mariadb"
+
+  # Remove variant compose files that should not ship with a PostgreSQL project
+  - remove: "docker-compose.mysql.yml"
+  - remove: "docker-compose.mariadb.yml"
+
+  # Drop MySQL-specific init scripts if mistakenly copied
+  - remove: "database/init/01-schema.sql"
+  - remove: "database/init/00-init.sh" # script references mysql-specific behaviour
+
+  # Ensure PG specific schema keeps correct name if present
+  - rename:
+      from: "database/init/01-schema-pgsql.sql"
+      to: "database/init/01-schema.sql"
