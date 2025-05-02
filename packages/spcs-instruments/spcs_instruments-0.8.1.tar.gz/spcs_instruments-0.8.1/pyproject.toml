@@ -1,0 +1,43 @@
+[project]
+name = "spcs-instruments"
+version = "0.8.1"
+description = "A experiment manager and instrument control library written in Python and Rust"
+authors = [
+    { name = "Jamin Martin", email = "jamin.martin@canterbury.ac.nz" }
+]
+dependencies = [
+    "pyvisa>=1.14.1",
+    "pyvisa-py>=0.7.2",
+    "numpy>=2.0.0",
+    "scipy>=1.14.0",
+    "pandas>=2.2.3",
+    "pyusb>=1.2.1",
+    "toml>=0.10.2",
+    "pyserial>=3.5",
+    "requests>=2.32.3",
+    "sshtunnel>=0.4.0",
+    "seabreeze>=2.10.1",
+    "polars>=1.29.0",
+]
+readme = "README.md"
+requires-python = ">= 3.12"
+[project.scripts]
+"pfx" = "spcs_instruments.cli:runner"
+"pfxs" = "spcs_instruments.cli:runner_standalone"
+[build-system]
+requires = ["maturin>=1.2,<2.0"]
+build-backend = "maturin"
+ 
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "maturin>=1.8.2",
+    "pytest>=8.3.5",
+    "pip>=24.1.2",
+
+] 
+universal = true
+
+[tool.maturin]
+module-name = "spcs_instruments.pyfex"
+features = ["pyo3/extension-module"]
