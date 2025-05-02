@@ -1,0 +1,116 @@
+[project]
+name = "llm-probe"
+dynamic = ["version"]
+description = "Extracting Intermediate Activations and Parameters from Hugging Face Models"
+readme = "README.md"
+authors = [
+    {name = "Junsoo Kim", email = "js.kim@hyperaccel.ai"},
+]
+requires-python = ">=3.10"
+dependencies = [
+  "transformers>=4.45.0,<=4.48.0",
+  "torch==2.4.0",
+]
+
+[build-system]
+requires = ["setuptools>=45", "wheel", "tomli", "cmake>=3.18", "packaging"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["llm_probe"]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "packaging>=24.2",
+    "pre-commit>=4.1.0",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+    "pytest-xdist>=3.6.1",
+    "ruff>=0.9.10",
+]
+
+setup = ["rich>=13.9.4", "click>=8.1.8", "click-help-colors>=0.9.4"]
+build = ["setuptools>=45", "wheel", "tomli", "cmake>=3.18", "packaging"]
+
+[tool.uv]
+default-groups = ["dev", "build"]
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".git",
+    ".env",
+    ".venv",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    "__pycache__",
+    "build",
+    "dist",
+    "3rdparty/*",
+]
+
+line-length = 119
+indent-width = 4
+target-version = "py310"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.ruff.lint]
+# Enable all rules that match Google Python Style Guide
+select = [
+    "E",   # pycodestyle errors (PEP8)
+    "F",   # pyflakes - Python syntax errors and undefined names
+    "W",   # pycodestyle warnings
+    "I",   # isort - import sorting
+    "N",   # pep8-naming - Google Style Guide naming conventions
+    "D",   # pydocstyle - Google Style docstring conventions
+    "B",   # flake8-bugbear - Additional bug detection
+    "C4",  # flake8-comprehensions - Better list/set/dict comprehensions
+    "DTZ", # flake8-datetimez - Modern datetime practices
+    "T20", # flake8-print - Discourage print statements
+    "RET", # flake8-return - Consistent return statements
+    "SIM", # flake8-simplify - Code simplification suggestions
+    "ERA", # eradicate - Remove commented-out code
+]
+
+ignore = [
+    "E501",   # line too long (we keep 119 as specified)
+    "D203",   # one-blank-line-before-class (conflicts with D211)
+    "D213",   # multi-line-summary-second-line (conflicts with D212)
+    "D104",   # undocumented-public-package
+    "RET504", # return statement is redundant (not necessary)
+    "SIM108", # Use tenary operator instead of if-else block (if else block is more readable)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"] # Ignore unused imports in __init__ files
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+log_level = "INFO"
+addopts = [
+    "--durations=0",    # Show durations of each test
+    "--strict-markers", # Warn if unregistered markers are used
+    "--tb=short",       # Short traceback format
+    "-ra",              # Show all test results summary (failures, skips, etc.)
+    "--showlocals",     # Show local variables on failure
+    "-vv",              # Show verbose output
+    "--color=yes",
+]
+testpaths = ["tests/python"] # Directory containing test files
+python_files = ["test_*.py", "*_test.py"] # Test file patterns
+python_classes = ["Test*"]
+python_functions = ["test_*"]
