@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: urban_transit_network_analysis
+Version: 1.0.5
+Summary: Python module for urban network analysis
+Home-page: https://github.com/DanilPomortsev/Urban-Transit-Network-Analysis
+Author: DPomortsev
+Author-email: danul78969@gmail.com
+Description-Content-Type: text/markdown
+
+# Инструмент для анализа различных городских транспортных сетей
+
+## Возможности:
+
+1. Кластеризация дорожных сетей городов
+2. Вычиление метрик центральности(beweenessens, page rank) для сетей
+3. Кластеризация остановок общественного транспорта Российских городов
+4. Формирование различных графиков: Histogram, Heatmap на основании анализа сетей
+5. Формирование интерактивной карты с информацией о анализе
+
+## Необходимо:
+
+1. Установить зависимости `pip install urban-transit-network-analysis`.
+2. Установить Neo4j Desktop.
+3. Создать БД и вести имя, пароль, порт в файл .env . Параметры можно посмотреть в `neo4j_connection.py`.
+4. Установить плагин graph-data-science для работы с neo4j. Плагин можно установить или через интерфейс
+   Neo4j Desktop, или вручную, скачав совместимый с версией базы данных
+   [плагин](https://github.com/neo4j/graph-data-science/releases) и поместив его в папку с плагинами
+   созданного проекта. Также в файле конфигурации `neo4j.conf` проекта необходимо установить параметр со следующими
+   значениями `dbms.security.procedures.unrestricted=jwt.security.*, apoc.*, gds.*`
+6. Запустить базу данных
+7. Создать контекст - AnalisisContext.py в соответствии с вашими требованиями
+8. Запустить процесс анализа в AnalisisManager.py
+
+## Создание графов дорог и сети автобусных остановок:
+
+Для создания графов дорог данные берутся из OpenStreetMap с помощью библиотеки osmnx. Для сетей общественного транспорта
+берет данные из https://kudikina.ru. С этого сайта есть возможность получать данные о дорожных сетях более чем 200
+городов.
+
+Подробнее о данных сети общественного транспорта:
+
+- Вершины - остановки. Включает географическое положение остановки (могут быть не
+  точными - если информацию получить не удалось, то в таком случае данные будут приближенными и узел будет
+  иметь `isCoordinateApproximate = True`), название остановки, список автобусных маршрутов в которых включена
+  остановка;
+- Связи - маршруты между соседними остановками внутри одного автобусного маршрута (название маршрута, длительность
+  перемещения между соединяемыми остановками).
+
+## Визуализация данных
+
+Визуализация осуществляется с помощью библиотек plotly и folium
+
+## Источники информации используемые при разработке:
+
+1. https://neo4j.com/docs/python-manual/current/
+2. https://neo4j.com/docs
+3. https://neo4j.com/docs/graph-data-science/current/algorithms/louvain/
+4. https://neo4j.com/docs/graph-data-science/current/algorithms/leiden/
+5. https://en.wikipedia.org/wiki/Louvain_method
+6. https://proproprogs.ru/ml/ml-aglomerativnaya-ierarhicheskaya-klasterizaciya-dendogramma
