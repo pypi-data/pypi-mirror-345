@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]           # when with internet access
+build-backend = "hatchling.build"  # when with internet access
+# requires = ["setuptools", "wheel"]     # When offline
+# build-backend = "setuptools.build_meta"# When offline
+
+
+[project]
+name = "tidypolars4sci"
+version = "0.0.1.22"
+description = "Tidyverse-like functions for python polars with extended functionalities for science."
+authors = [{name = "Diogo Ferrari", email = "diogoferrari@gmail.com"}]
+maintainers = [{name = "Diogo Ferrari", email = "diogoferrari@gmail.com"}]
+license = "MIT"
+license-files = ["LICENSE"]
+readme = "README.md"
+requires-python = ">=3.6"
+keywords = ["polars", "tidyverse", "dataframe", "tidy data"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering"
+]
+dependencies = [
+	     "numpy",
+	     "pandas",
+	     "polars",
+	     "pyarrow",
+	     "pyreadr",
+	     "pyreadstat",
+]
+
+[tool.setuptools.package-data]
+tidypolars4sci.data = ["*.csv", "*.rda"]
+
+[project.urls]
+Homepage = "https://github.com/DiogoFerrari/tidypolars4sci"
+Documentation = "https://github.com/DiogoFerrari/tidypolars4sci"
+Changelog = "https://github.com/DiogoFerrari/tidypolars4sci/blob/master/CHANGELOG.md"
+Issues = "https://github.com/DiogoFerrari/tidypolars4sci/issues/"

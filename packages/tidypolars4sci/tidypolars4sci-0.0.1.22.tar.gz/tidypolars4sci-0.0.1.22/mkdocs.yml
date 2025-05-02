@@ -1,0 +1,132 @@
+
+# Project information
+site_name: TidyPolars(4sci) - User guide
+site_url: https://www.diogoferrari.com/tidypolars4sci
+repo_url: https://github.com/DiogoFerrari/tidypolars4sci
+repo_name: tidypolars4sci
+use_directory_urls: true
+
+nav:
+  - Overview: index.md
+  - User Guide:
+    - <font color="#2a9d8f">Installation</font>: usage/installation.md
+    - <font color="#2a9d8f">Basic usage</font>: usage/usage.md
+    - <font color="#2a9d8f">Data manipulation</font>:
+      - Mutate: usage/data-manipulation/mutate.md
+      - Read/Write Files: usage/data-manipulation/read-write.md
+    - <font color="#2a9d8f">Statistics</font>:
+      - Descriptive Statistics: usage/statistics/desc.md
+      - Frequency Tables: usage/statistics/freq.md
+      - Crosstables: usage/statistics/tab.md
+    - <font color="#2a9d8f">Reporting</font>:
+      - To LaTeX: usage/reporting/to-latex.md
+  - Case Studies:
+    - Pivot wide: case-studies/pivot-wide.md
+    - Regression Tables: case-studies/regression-table.md
+    - Standardizing Variables: case-studies/standardizing.md
+  - Performance:
+    - performance/overview.md
+    - performance/filter.md
+    - performance/pivot-wide.md
+    - performance/summarise.md
+  - API Reference: api.md
+  - Releases: releases.md
+
+theme:
+  name: material
+  locale: en
+  custom_dir: docs/_css
+  palette:
+  # Palette toggle for light mode
+  - media: "(prefers-color-scheme: light)"
+    scheme: white
+    primary: custom
+    toggle:
+      icon: material/brightness-7
+      name: Switch to dark mode
+  # Palette toggle for dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    toggle:
+      icon: material/brightness-4
+      name: Switch to light mode
+  logo: _css/tidypolars4sci-logo2.png
+  features:
+    - navigation.tracking
+    - navigation.instant
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.footer
+    - navigation.indexes
+    - content.tabs.link
+    - content.code.copy
+    - content.code.select
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    # - toc.integrate  # combine right ToC into the left ToC
+    - toc.follow
+    - content.code.copy
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.path
+    - navigation.sections
+    - content.code.annotate # (1)
+
+
+
+# Preview controls
+strict: true
+
+
+extra_css:
+  - _css/extra.css
+  - _css/stylesheets.css
+
+plugins:
+  - search
+  - charts
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: true
+            show_signature: true
+            docstring_style: numpy
+
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - extra
+  - tables
+  - mdx_math:
+      enable_dollar_delimiter: True
+  - fenced_code
+  - smarty
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.details
+  - md_in_html
+  - pymdownx.blocks.caption
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: vegalite
+          class: vegalite
+          format: !!python/name:mkdocs_charts_plugin.fences.fence_vegalite
+
+
+extra_javascript: 
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+  - https://cdn.jsdelivr.net/npm/vega@5
+  - https://cdn.jsdelivr.net/npm/vega-lite@5
+  - https://cdn.jsdelivr.net/npm/vega-embed@6
