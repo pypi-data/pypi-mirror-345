@@ -1,0 +1,33 @@
+paths:
+    include:
+    - flexhub/_version.py
+
+jobs:
+  - job: publish_package
+    displayName: Publish package
+
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.12"
+
+      - script: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.lock
+        displayName: "Install dependencies"
+
+      - script: |
+          pip install twine
+          pip install flit
+          flit build
+        displayName: "Build package"
+
+      - script: |
+          python -m twine upload dist/*
+        displayName: "Upload package to PyPI"
+        env:
+          TWINE_USERNAME: $(twineUsername)
+          TWINE_PASSWORD: $(twinePassword)
