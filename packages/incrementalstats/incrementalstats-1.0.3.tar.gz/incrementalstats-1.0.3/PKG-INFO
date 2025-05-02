@@ -1,0 +1,57 @@
+Metadata-Version: 2.4
+Name: incrementalstats
+Version: 1.0.3
+Summary: A few incremental statistics using numpy
+Author-email: Cees-Bart Breunesse <ceeesb@gmail.com>
+License-Expression: GPL-3.0-or-later
+Project-URL: Homepage, https://github.com/ceesb/python-incrementalstats
+Project-URL: Bug Tracker, https://github.com/ceesb/python-incrementalstats/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# Incremental stats
+
+`pip install incrementalstats`
+
+A few incremental 1st order statistics in numpy. Currently:
+
+- Correlation (Pearson)
+- Covariance
+- Variance
+- Mean
+- Welch-t
+
+## Setup a venv
+
+    mkdir venv
+    virtualenv -p `which python3` venv
+    source venv/bin/activate
+
+## Option 1: Checkout hackable project
+
+    python -m pip install --upgrade pip
+    git clone https://github.com/ceesb/python-incrementalstats
+    pip install -e python-incrementalstats
+    cd python-incrementalstats
+
+Now all the changes you make to this project source code are "live".
+
+## Option 2: Build a wheel
+
+    git clone https://github.com/ceesb/python-incrementalstats
+    cd python-incrementalstats
+    python -m build
+
+Now you can distribute or install the wheel created in the `dist` folder.
+
+    $ ls dist/
+    incrementalstats-0.0.1-py3-none-any.whl  incrementalstats-0.0.1.tar.gz
+    pip install dist/incrementalstats-0.0.1-py3-none-any.whl
+
+## Run the tests
+
+    python -m unittest
