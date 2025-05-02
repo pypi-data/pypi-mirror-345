@@ -1,0 +1,107 @@
+Metadata-Version: 2.3
+Name: hapideploy
+Version: 0.1.0.dev8
+Summary: HapiDeploy is a remote execution tool written in Python, inspired by DeployPHP.
+License: MIT
+Author: Quynh Nguyen
+Author-email: <seriquynh@gmail.com>
+Requires-Python: >=3.13,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: fabric (>=3.2.2,<4.0)
+Requires-Dist: pyyaml (>=6.0.2,<7.0)
+Requires-Dist: typer (>=0.15.2,<1.0)
+Requires-Dist: typing-extensions (>=4.12.2,<5.0)
+Description-Content-Type: text/markdown
+
+HapiDeploy (WIP)
+
+## Requirements
+
+- Python 3.13
+
+## Installation
+
+Create and go to the `.hapi` directory.
+
+```bash
+cd /path/to/your/project
+
+mkdir .hapi
+
+cd .hapi
+```
+
+Create an isolated Python virtual environment.
+
+```bash
+python -m venv .venv
+```
+
+Activate the virtual environment above.
+
+```bash
+./.venv/Scripts/activate
+```
+
+Install the `hapideploy` package via pip.
+
+```bash
+pip install hapideploy
+```
+
+## Usage
+
+Create `deploy.py` and `inventory.yml` files.
+
+```bash
+hapi init
+```
+
+Run the `deploy` command with default selector `all` and stage `dev`.
+
+```bash 
+hapi deploy 
+```
+
+Run the `deploy` command with explicit selector, stage and custom config.
+
+```bash
+hapi deploy all \
+    --stage=dev \
+    --config=python_version=3.13,node_version=20.18.0
+```
+
+## Development
+
+Install Poetry dependency manager
+
+```powershell
+pip install poetry
+```
+
+Install Python dependencies
+
+```powershell
+poetry install
+```
+
+Fix code style
+
+```bash
+poetry run autoflake --in-place --remove-unused-variables -r src/ tests/; poetry run black src/ tests/; poetry run isort src/ tests/;
+```
+
+Run static analysis
+
+```bash
+poetry run mypy src/ tests/
+````
+
+Run all tests
+
+```bash
+poetry run pytest
+```
+
