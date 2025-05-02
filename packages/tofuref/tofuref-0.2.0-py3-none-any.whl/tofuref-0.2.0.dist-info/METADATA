@@ -1,0 +1,70 @@
+Metadata-Version: 2.4
+Name: tofuref
+Version: 0.2.0
+Summary: Add your description here
+Project-URL: Homepage, https://github.com/DJetelina/tofuref
+Project-URL: Repository, https://github.com/DJetelina/tofuref.git
+Project-URL: Issues, https://github.com/DJetelina/tofuref/issues
+Author: David Jetelina
+License-Expression: MIT
+Keywords: cli,infra,opentofu,platform,sre,terraform,tofu,tool
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Documentation
+Classifier: Topic :: Software Development :: User Interfaces
+Classifier: Topic :: System :: Installation/Setup
+Classifier: Topic :: System :: Systems Administration
+Classifier: Topic :: Utilities
+Requires-Python: >=3.9
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: textual>=3.1.1
+Description-Content-Type: text/markdown
+
+# tofuref
+
+A terminal application to browse OpenTofu provider documentation from the terminal.
+
+![Screenshot](https://github.com/djetelina/tofuref/blob/main/screenshots/welcome.png?raw=true)
+
+## Installation
+
+```bash
+pipx install tofuref
+```
+
+## Usage
+
+Run the application:
+
+```bash
+tofuref
+```
+
+## Development
+
+### Provider Data Fetching
+
+tofuref uses git cloning to fetch provider data from the OpenTofu registry and provider repositories:
+
+1. **Provider List**: On startup, tofuref fetches the list of available providers
+   from the [OpenTofu Registry](https://github.com/opentofu/registry/tree/main/providers).
+
+2. **Provider Documentation**: When a provider is selected in the UI, tofuref fetches
+   documentation from the provider's GitHub repository. This is done lazily (on-demand).
+
+3. **Persistent Storage**: The application stores cloned repositories in the user's application data directory to avoid
+   re-cloning repositories on every startup.
+
+## License
+
+MIT
