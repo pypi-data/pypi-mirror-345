@@ -1,0 +1,24 @@
+[package]
+name = "media-server-ws-protocol"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "media_server_ws_protocol"
+crate-type = ["cdylib", "rlib"]
+
+
+[dependencies]
+flume = "0.11"
+anyhow = "1.0"
+async-trait = "0.1"
+
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+bitcode = { version = "0.6.5", features = ["serde"] }
+bytes = { version = "1.0", features = ["serde"] }
+serde = { version = "1.0", features = ["derive"] }
+dashmap = "5.5"
+once_cell = "1.19"
+tokio = { version = "1.0", features = ["full"] }
+tokio-tungstenite = "0.19"

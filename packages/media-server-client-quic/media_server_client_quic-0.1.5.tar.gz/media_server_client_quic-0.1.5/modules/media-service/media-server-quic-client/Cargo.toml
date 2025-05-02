@@ -1,0 +1,26 @@
+[package]
+name = "media-server-quic-client"
+version = "0.1.0"
+edition = "2021"
+readme = "README.md"
+
+[lib]
+name = "media_server_quic_client"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+
+pyo3-bytes = "0.1.2"
+pyo3 = { version = "0.23.4", features = [ "auto-initialize", "macros"] }
+tokio = { version = "1.0", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+protobuf-types = { path = "../../protobuf-types" }
+anyhow = "1.0"
+async-trait = "0.1" 
+flume = "0.11"
+quinn = "0.10"
+futures = "0.3.31"
+media-server-quic-protocol = {path = "../media-server-quic-protocol"}
+rustls = { version = "0.21", features = ["dangerous_configuration", "quic"] }
+reqwest = "0.12.12"

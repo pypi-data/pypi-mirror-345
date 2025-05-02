@@ -1,0 +1,53 @@
+[workspace]
+members = ["modules/media-service/media-server-client"]
+
+resolver = "2"
+
+[profile.release]
+opt-level = 3            # Maximum optimization
+lto = "fat"              # Full link-time optimization across crates
+codegen-units = 1        # Maximize optimization potential
+debug = false            # No debug info in release binary for size
+debug-assertions = false # Disable debug assertions
+overflow-checks = false  # Disable overflow checks
+panic = "abort"          # Remove panic unwinding code
+strip = true             # Strip symbols completely
+incremental = false      # Disable incremental compilation
+rpath = false            # Disable runtime path for dynamic libs
+
+
+[profile.release.package."*"]
+opt-level = 3     # Ensure all dependencies are fully optimized
+codegen-units = 1 # Single codegen unit for all deps
+strip = true      # Strip all dependencies
+
+[profile.dev]
+opt-level = 0           # No optimization for faster builds
+debug = 2               # Maximum debug information
+debug-assertions = true # Enable debug assertions
+overflow-checks = true  # Enable overflow checks
+lto = "off"             # Disable LTO for faster builds
+incremental = true      # Enable incremental compilation
+codegen-units = 64      # Many codegen units for parallel builds
+
+# Development dependency settings
+[profile.dev.package."*"]
+opt-level = 0 # No optimization for dependencies
+debug = 2     # Full debug info for dependencies
+strip = false # Keep all symbols for debugging
+
+# Custom profile for profiling/benchmarking
+[profile.bench]
+inherits = "release"
+debug = true         # Keep debug symbols for profiling
+strip = "debuginfo"  # Separate debug info into pdb/dSYM
+lto = "thin"         # Faster LTO for development profiling
+
+# For testing with optimizations
+[profile.test]
+opt-level = 2           # Some optimization for realistic testing
+debug = true            # Keep debug info for test analysis
+debug-assertions = true
+overflow-checks = true
+lto = "off"             # Disable LTO for faster test builds
+incremental = true      # Enable incremental compilation for tests
