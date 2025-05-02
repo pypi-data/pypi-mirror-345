@@ -1,0 +1,127 @@
+# ------------------------------------------------------------------------------
+[build-system]
+
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+# ------------------------------------------------------------------------------
+[tool.ruff]
+
+line-length = 100
+
+
+[tool.ruff.lint]
+
+# Is an auto-generated file with funky naming convention.
+exclude = ["doc/sphinx/conf.py", "tsfpga/examples/conf.py"]
+
+select = [
+    # Use all the standard rules.
+    # https://docs.astral.sh/ruff/settings/#lint_select
+    "ALL",
+    # Our convention: Docstring separators on separate lines.
+    # https://docs.astral.sh/ruff/rules/multi-line-summary-second-line/
+    "D213",
+]
+
+ignore = [
+    # Is not recommended when using the formatter.
+    # https://docs.astral.sh/ruff/rules/missing-trailing-comma/
+    "COM812",
+    # This rule makes a lot of sense actually.
+    # Would be nice if we could specify it for specific exceptions.
+    "TRY003",
+    # Makes one line and one variable, and adds little value.
+    "EM102",
+    "EM101",
+    # Breaks our convention.
+    "D200",
+    "D212",
+    "D413",
+    # Often the docstring is not a title line followed by behavior description,
+    # but simply a description.
+    # Suitable when function name is self-explanatory.
+    "D205",
+    # We are not so stingy about the docstring.
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D107",
+    # Not relevant to us.
+    "D400",
+    "D401",
+    "D415",
+    # Does not make any sense to us, since we use only keyword assignment in our calls.
+    "FBT001",
+    "FBT002",
+    # Does not make sense in a general case.
+    "PLR2004",
+    # Printouts are okay.
+    "T201",
+]
+
+per-file-ignores."tools/**/*.py" = [
+    # We import "tools_pythonpath" before external imports to set up the PYTHONPATH.
+    "E402",
+    # Tools are run during development and CI, and never with optimization.
+    "S101",
+]
+
+
+per-file-ignores."tsfpga/examples/*py" = [
+    # We import "tools_pythonpath" before external imports to set up the PYTHONPATH.
+    "E402",
+    # Tools are run during development and CI, and never with optimization.
+    "S101",
+]
+
+per-file-ignores."tsfpga/examples/modules/*/module_*.py" = [
+    # Is not really a python package namespace.
+    # Don't want to litter the module structure with "__init__.py".
+    "INP001",
+]
+
+per-file-ignores."**/test_*.py" = [
+    # No reason to waste time typing code that is not public.
+    "ANN",
+    # We can catch as broadly as we want.
+    "PT011",
+    # Allow a little more sloppy code.
+    "PLR0913",
+    # Are not run with optimization.
+    "S101",
+    # Allow some sloppier calls.
+    "FBT003"
+]
+
+per-file-ignores."**/test/**/*.py" = [
+    # Are not run with optimization.
+    "S101",
+]
+
+
+[tool.ruff.lint.isort]
+
+sections."example_pythonpath" = ["tsfpga.examples.example_pythonpath"]
+
+# No change in order except insertion of our custom section.
+# https://docs.astral.sh/ruff/settings/#lint_isort_sections
+section-order = [
+    "future",
+    "standard-library",
+    "example_pythonpath",
+    "third-party",
+    "first-party",
+    "local-folder",
+]
+
+
+[tool.ruff.lint.pylint]
+
+# Raise slightly.
+# https://docs.astral.sh/ruff/settings/#lint_pylint_max-args
+max-args = 6
