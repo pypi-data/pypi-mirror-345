@@ -1,0 +1,47 @@
+[project]
+name = "shadai"
+version = "0.1.25"
+description = "SHADAI Client"
+authors = [
+    {name = "SHADAI GROUP", email = "jaisir@shadai.ai"}
+]
+requires-python = ">=3.9"
+readme = "README.md"
+dependencies = [
+    "boto3==1.35.36",
+    "botocore==1.35.36",
+    "pydantic==2.9.2",
+    "python-dotenv==1.0.1",
+    "requests==2.32.3",
+    "setuptools==75.3.0",
+    "tqdm==4.67.1",
+    "rich==13.9.4",
+    "ruff==0.8.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.3",
+]
+
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["shadai"]
+
+[tool.black]
+line-length = 100
+target-version = ['py312']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = "E203, W503"
+max-complexity = 10
+
+[tool.uv.sources]
