@@ -1,0 +1,138 @@
+Metadata-Version: 2.4
+Name: google-calendar-mcp
+Version: 0.0.8
+Summary: Google Calendar MCP Server with Service Account authentication
+Author: youyo
+License: MIT
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mcp[cli]
+Requires-Dist: google-api-python-client
+Requires-Dist: google-auth
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: setuptools; extra == "dev"
+Requires-Dist: setuptools_scm; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Dynamic: license-file
+
+# Google Calendar MCP
+
+Google Calendar MCP is a Model Context Protocol (MCP) server implementation in Python with Service Account authentication.
+
+[日本語 README はこちら](README_ja.md)
+
+## Overview
+
+This project implements the Google Calendar API as an MCP server in Python. It is a port from the original TypeScript version, with authentication changed from OAuth 2.0 to Service Account.
+
+## Features
+
+- Python 3.13 support
+- MCP (Model Context Protocol) server implementation
+- Google Calendar API integration
+- Service Account authentication
+- Dependency management with uv
+
+## Requirements
+
+- Python 3.13 or higher
+- A Google Cloud Platform project and a valid Service Account
+- The Service Account must have access to the Google Calendar API
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/youyo/google-calendar-mcp.git
+cd google-calendar-mcp
+
+# Install dependencies
+uv pip install -r requirements.txt
+```
+
+## Configuration
+
+1. Create a project in Google Cloud Platform and enable the Google Calendar API.
+2. Create a Service Account and download the JSON key file.
+3. Set the environment variable `GOOGLE_APPLICATION_CREDENTIALS` to the path of the JSON key file.
+
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+```
+
+Optionally, you can set the default calendar ID via the environment variable:
+
+```bash
+export GOOGLE_CALENDAR_ID=your-calendar-id@example.com
+```
+
+If not specified in arguments, this value will be used as the default calendarId.
+
+### Example: MCP configuration file
+
+To use this server with an MCP client, add the following to your MCP configuration file.
+Set both `GOOGLE_APPLICATION_CREDENTIALS` and `GOOGLE_CALENDAR_ID` in the `env` section to specify authentication and the default calendar:
+
+```json
+{
+  "mcpServers": {
+    "google-calendar-mcp": {
+      "command": "uvx",
+      "args": ["google-calendar-mcp@latest"],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/service-account.json",
+        "GOOGLE_CALENDAR_ID": "your-calendar-id@example.com"
+      }
+    }
+  }
+}
+```
+
+If `calendarId` is not specified in tool arguments, the value of `GOOGLE_CALENDAR_ID` will be used as the default.
+
+## Usage
+
+```bash
+# Start the server
+uvx google-calendar-mcp
+```
+
+## Available Tools
+
+- `list-calendars`: List all available calendars
+- `list-events`: List events from a calendar
+- `search-events`: Search for events in a calendar by text query
+- `list-colors`: List available color IDs and their meanings for calendar events
+- `create-event`: Create a new calendar event
+- `update-event`: Update an existing calendar event
+- `delete-event`: Delete a calendar event
+
+### Tool Required Arguments
+
+| Tool           | Required Arguments  | Optional Arguments / Notes                                      |
+| -------------- | ------------------- | --------------------------------------------------------------- |
+| list-calendars | (none)              | -                                                               |
+| list-events    | calendarId          | timeMin, timeMax, maxResults                                    |
+| search-events  | calendarId, query   | timeMin, timeMax, maxResults                                    |
+| list-colors    | (none)              | -                                                               |
+| create-event   | calendarId, summary | start, end, timeZone, location, description, attendees, etc.    |
+| update-event   | calendarId, eventId | summary, start, end, timeZone (dateTime 時必須), location, etc. |
+| delete-event   | calendarId, eventId | -                                                               |
+
+#### Notes
+
+- `calendarId` はほぼ全てのカレンダー操作で必須です。
+- `eventId` はイベント更新・削除時に必須です。
+- `summary` はイベント作成時に必須です。
+- `timeZone` は start/end が dateTime 形式の場合に必須です。
+- その他のパラメータは Google Calendar API の仕様に準じます。
+
+## License
+
+MIT
