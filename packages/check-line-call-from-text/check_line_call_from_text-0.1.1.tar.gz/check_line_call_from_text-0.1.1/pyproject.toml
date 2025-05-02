@@ -1,0 +1,31 @@
+[project]
+name = "check-line-call-from-text"
+version = "0.1.1"
+description = ""
+authors = [{ name = "6vi7ms", email = "6vi7ms@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+check-line-call-from-text = "check_line_call_from_text.main:main"
+
+[tool.black]
+line-length = 2000
+target-version = ['py310']
+skip-string-normalization = true
+skip-magic-trailing-comma = true #
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | venv
+  | build
+  | dist
+)/
+'''
