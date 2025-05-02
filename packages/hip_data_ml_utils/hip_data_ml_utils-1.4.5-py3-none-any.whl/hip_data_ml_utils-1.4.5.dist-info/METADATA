@@ -1,0 +1,122 @@
+Metadata-Version: 2.3
+Name: hip_data_ml_utils
+Version: 1.4.5
+Summary: Common Python tools and utilities for Hipages ML work
+License: MIT
+Author: Hipages Tradie Marketplace Experience
+Author-email: shumingpeh@hipagesgroup.com.au
+Requires-Python: >=3.9,<3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: PyYAML (==6.0)
+Requires-Dist: Werkzeug (>=3.0.3,<4.0.0)
+Requires-Dist: aiobotocore (>=2.8.0,<3.0.0)
+Requires-Dist: appdirs (==1.4.4)
+Requires-Dist: attrs (>=22.2.0,<23.0.0)
+Requires-Dist: black (>=22.6.0,<23.0.0)
+Requires-Dist: boto3 (>=1.33.5,<2.0.0)
+Requires-Dist: botocore (>=1.34.15,<2.0.0)
+Requires-Dist: certifi (>=2023.7.22,<2024.0.0)
+Requires-Dist: cfgv (==3.2.0)
+Requires-Dist: coverage (==5.4)
+Requires-Dist: databricks-sql-connector (>=3.3.0,<4.0.0)
+Requires-Dist: distlib (>=0.3.8,<0.4.0)
+Requires-Dist: filelock (>=3.14.0,<4.0.0)
+Requires-Dist: flake8 (>=4.0.1,<5.0.0)
+Requires-Dist: identify (==1.5.13)
+Requires-Dist: iniconfig (==1.1.1)
+Requires-Dist: isort (>=5.10.1,<6.0.0)
+Requires-Dist: joblib (==1.2.0)
+Requires-Dist: mccabe (==0.6.1)
+Requires-Dist: mlflow (==2.22.0)
+Requires-Dist: mock (>=4.0.3,<5.0.0)
+Requires-Dist: moto (>=4.2.7,<5.0.0)
+Requires-Dist: mypy-extensions (==0.4.3)
+Requires-Dist: nodeenv (==1.5.0)
+Requires-Dist: numpy (==1.26.4)
+Requires-Dist: packaging (>=23.1,<24.0)
+Requires-Dist: pandas (==2.2.3)
+Requires-Dist: pluggy (==1.5.0)
+Requires-Dist: polling (==0.3.2)
+Requires-Dist: pre-commit (==2.10.0)
+Requires-Dist: py (>=1.11.0,<2.0.0)
+Requires-Dist: pyarrow (>=14.0.1,<15.0.0)
+Requires-Dist: pyathena (>=2.25.2,<3.0.0)
+Requires-Dist: pydantic (>=2.11.3,<3.0.0)
+Requires-Dist: pydantic-settings (>=2.9.1,<3.0.0)
+Requires-Dist: pyparsing (==2.4.7)
+Requires-Dist: pytest (>=8.3.3,<9.0.0)
+Requires-Dist: pytest-cov (>=3.0.0,<4.0.0)
+Requires-Dist: pytest-custom-exit-code (==0.3.0)
+Requires-Dist: regex (==2022.7.9)
+Requires-Dist: requests (>=2.32.0,<3.0.0)
+Requires-Dist: responses (==0.23.1)
+Requires-Dist: s3fs (>=2023.10.0,<2024.0.0)
+Requires-Dist: six (==1.15.0)
+Requires-Dist: toml (==0.10.2)
+Requires-Dist: torch (==2.3.1)
+Requires-Dist: typed-ast (>=1.5.3,<2.0.0)
+Requires-Dist: typing-extensions (>=4.4.0,<5.0.0)
+Description-Content-Type: text/markdown
+
+[![Link to data-ml-utils in hipages Developer Portal, Component: data-ml-utils](https://backyard.k8s.hipages.com.au/api/badges/entity/default/Component/data-ml-utils/badge/pingback "Link to data-ml-utils in hipages Developer Portal")](https://backyard.k8s.hipages.com.au/catalog/default/Component/data-ml-utils)
+[![Entity owner badge, owner: data-platform](https://backyard.k8s.hipages.com.au/api/badges/entity/default/Component/data-ml-utils/badge/owner "Entity owner badge")](https://backyard.k8s.hipages.com.au/catalog/default/Component/data-ml-utils)
+# data-ml-utils
+A utility python package that covers the common libraries we use
+
+## Installation
+This is an open source library hosted on pypi. Run the following command to install the library.
+```
+pip install hip-data-ml-utils --upgrade
+```
+
+## Documentation
+Head over to https://hip-data-ml-utils.readthedocs.io/en/latest/index.html# to read our library documentation
+
+## Feature
+### Pyathena client initialisation
+Almost one liner
+```python
+import os
+from hip_data_ml_utils.pyathena_client.client import PyAthenaClient
+
+os.environ["AWS_ACCESS_KEY_ID"] = "xxx"
+os.environ["AWS_SECRET_ACCESS_KEY"] = "xxx" # pragma: allowlist secret
+os.environ["S3_BUCKET"] = "xxx"
+
+pyathena_client = PyAthenaClient()
+```
+![Pyathena client initialisation](docs/_static/initialise_pyathena_client.png)
+
+### Pyathena query
+Almost one liner
+```python
+query = """
+    SELECT
+        *
+    FROM
+        dev.example_pyathena_client_table
+    LIMIT 10
+"""
+
+df_raw = pyathena_client.query_as_pandas(final_query=query)
+```
+![Pyathena query](docs/_static/query_pyathena_client.png)
+
+### MLflow utils
+Visit [link](https://data-ml-utils.readthedocs.io/en/latest/index.html#mlflow-utils)
+
+### More to Come
+* You suggest, raise a feature request issue and we will review!
+
+## Tutorials
+### Pyathena
+There is a jupyter notebook to show how to use the package utility package for `pyathena`: [notebook](tutorials/[TUTO]%20pyathena.ipynb)
+
+### MLflow utils
+There is a jupyter notebook to show how to use the package utility package for `mlflow_databricks`: [notebook](tutorials/[TUTO]%20mlflow_databricks.ipynb)
+
