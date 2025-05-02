@@ -1,0 +1,39 @@
+[project]
+name = "davia"
+version = "0.1.10"
+description = "A CLI tool for the Davia no-code platform to test and deploy AI-native interfaces"
+readme = "README.md"
+authors = [{ name = "Davia", email = "contact@davia.ai" }]
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = [
+    "fastapi[standard]>=0.115.12",
+    "langchain-core>=0.3.40",
+    "langgraph>=0.3.2",
+    "langgraph-cli[inmem]>=0.1.74",
+    "langgraph_api==0.0.38",
+    "typer>=0.15.1",
+]
+
+[project.scripts]
+davia = "davia.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "pytest>=8.3.4",
+    "ruff>=0.9.8",
+]
+langchain = [
+    "anthropic[vertex]>=0.48.0",
+    "langchain-google-vertexai>=2.0.14",
+    "langchain-openai>=0.3.7",
+]
+
+[tool.uv]
+default-groups = ["dev", "langchain"]
