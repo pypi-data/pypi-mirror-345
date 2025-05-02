@@ -1,0 +1,77 @@
+[tool.poetry]
+name = "smoothdev-commit-message-cli"
+version = "1.0.4"
+description = "SmoothDev AI-powered commit message generator CLI tool"
+authors = ["SmoothDev Technologies Inc <info@smoothdev.io>"]
+readme = "PYPI_README.md"
+packages = [{include = "commit_message_cli"}]
+license = "MIT"
+homepage = "https://github.com/smoothdev-io/commit-message-cli"
+repository = "https://github.com/smoothdev-io/commit-message-cli"
+keywords = ["git", "commit", "ai", "cli", "smoothdev"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.31.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+ruff = "^0.3.0"
+mypy = "^1.8.0"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.12.0"
+types-requests = "^2.32.0.20250306"
+
+[tool.poetry.scripts]
+smoothdev-commit-message-cli = "commit_message_cli.cli:main"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=commit_message_cli --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["commit_message_cli"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "pass",
+    "raise ImportError",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+exclude = [".venv", "build", "dist", "node_modules", "**/node_modules"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "W",   # pycodestyle warnings
+]
+ignore = ["E203"]  # For black compatibility
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
