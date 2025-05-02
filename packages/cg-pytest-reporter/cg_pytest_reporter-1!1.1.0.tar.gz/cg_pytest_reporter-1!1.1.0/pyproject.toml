@@ -1,0 +1,74 @@
+[tool.poetry]
+name = "cg-pytest-reporter"
+version = "1!1.1.0"
+description = ""
+authors = ["CodeGrade <info@codegrade.com>"]
+readme = "README.md"
+packages = [{ include = "cg_pytest_reporter" }]
+license = "MIT"
+
+[tool.poetry.plugins.pytest11]
+cg_pytest_reporter = "cg_pytest_reporter.plugin"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytest = ">=7.0.0"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.2.0"
+pylint = "^2.17.4"
+yapf = "^0.40.0"
+isort = "^5.12.0"
+pytest-cov = "^4.0.0"
+nox = "^2023.4.22"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+# This should be the default value, but Pytest did not find the test classes
+# without this rule...
+python_classes = "Test*"
+
+[tool.yapf]
+based_on_style = "pep8"
+coalesce_brackets = true
+dedent_closing_brackets = true
+indent_dictionary_value = true
+spaces_around_power_operator = true
+space_between_ending_comma_and_closing_bracket = true
+split_arguments_when_comma_terminated = true
+each_dict_entry_on_separate_line = false
+split_before_logical_operator = false
+spaces_around_default_or_named_assign = false
+allow_split_before_dict_value = false
+split_penalty_after_opening_bracket = 30
+blank_line_before_nested_class_or_def = false
+
+[tool.isort]
+line_length = 79
+indent = "    "
+multi_line_output = 5
+length_sort = "1"
+default_section = "FIRSTPARTY"
+old_finders = true
+float_to_top = true
+
+[tool.pylint.main]
+load-plugins = [
+    "pylint.extensions.bad_builtin",
+    "pylint.extensions.no_self_use"
+]
+disable = ["too-many-instance-attributes", "no-else-return"]
+docstring-min-length = 2
+max-args = 10
+good-names = "fd"
+max-branches = 13
+notes = "FIXME"
+function-rgx = "[a-z_][a-z0-9_]{2,}$"
+ignore-imports = true
+bad-functions = "apply,reduce,print"
+max-public-methods = 25
+const-rgx = "_?(([A-Z_][A-Z0-9_]*)|(__.*__))$"
+class-const-naming-style = "any"
