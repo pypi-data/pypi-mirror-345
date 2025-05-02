@@ -1,0 +1,59 @@
+[project]
+name = "argclz"
+version = "1.0.0"
+requires-python = ">=3.10"
+description = "Create commandline interface via dataclass-like class"
+authors = [
+    { name = "Yu-Ting Wei", email = "ytsimon2004@gmail.com" },
+    { name = "Ta-Shun Su", email = "antoniost29@gmail.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+keywords = ["commandline"]
+classifiers = [
+    # https://pypi.org/classifiers/
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Utilities",
+    'Intended Audience :: Developers',
+    "Typing :: Typed",
+]
+
+dependencies = ['typing_extensions']
+
+
+[project.optional-dependencies]
+
+dev = ['pytest', 'pytest-cov']
+doc = ['sphinx', 'pydata-sphinx-theme', 'sphinx_prompt', 'sphinx_copybutton']
+
+
+[project.urls]
+Homepage = "https://github.com/ytsimon2004/argclz"
+Documentation = "https://argclz.readthedocs.io/en/latest/"
+Repository = "https://github.com/ytsimon2004/argclz"
+Issues = "https://github.com/ytsimon2004/argclz/issues"
+
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0"]
+
+[tool.coverage.run]
+source = ['src']
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    '@overload',
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == \"__main__\":",
+    "@abc.abstractmethod"
+]
