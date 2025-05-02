@@ -1,0 +1,316 @@
+import numpy as np
+from tqdm import tqdm
+from sklearn.ensemble import RandomForestRegressor
+from collections import Counter
+from pathlib import Path
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+def are_all_features_non_eo(features):
+    """
+    Check if all the features are non-EO features
+
+    Args:
+        features: iterable of feature names
+
+    Returns:
+        bool: True if every feature is in the non-EO list
+    """
+    non_eo_features = [
+        'Median Yield (tn per ha)',
+        'Analogous Year',
+        'Analogous Year Yield',
+        'lon',
+        'lat',
+        't -1 Yield (tn per ha)',
+        't -2 Yield (tn per ha)',
+        't -3 Yield (tn per ha)',
+        't -4 Yield (tn per ha)',
+        't -5 Yield (tn per ha)',
+    ]
+    return all(f in non_eo_features for f in features)
+
+
+def select_features(
+    X, y,
+    method="RFE",
+    min_features_to_select=3,
+    threshold_nan=0.2,
+    threshold_unique=0.6
+):
+    """
+    Feature-selection wrapper supporting many methods plus a new 'multi' option.
+
+    Parameters
+    ----------
+    X : pd.DataFrame
+    y : array-like
+    method : str
+        One of {"SHAP", "stabl", "feature_engine", "mrmr", "RFECV", "lasso",
+        "BorutaPy", "Leshy", "PowerShap", "BorutaShap", "Genetic", "RFE", "multi"}
+    min_features_to_select : int
+    threshold_nan : float
+        Drop columns with > threshold_nan proportion of NaNs
+    threshold_unique : float
+        (Reserved for future use)
+
+    Returns
+    -------
+    selector : fitted selector object or None (for multi)
+    X_filtered : pd.DataFrame of selected features
+    selected_features : list[str]
+    """
+
+    # copy original for multi-mode recursion
+    X_clean = X.copy()
+
+    # 1) drop columns with too many NaNs
+    nan_prop = X_clean.isna().mean()
+    X_clean = X_clean.loc[:, nan_prop <= threshold_nan]
+
+    # 2) fill NaNs with median
+    X_clean = X_clean.fillna(X_clean.median())
+
+    # --- multi-method ensemble -------------------------------
+    if method.lower() == "multi":
+        counter = Counter()
+        # run three selectors and count feature picks
+        for sub_m in ["BorutaPy", "mrmr", "lasso"]:
+            _, _, feats = select_features(
+                X_clean, y,
+                method=sub_m,
+                min_features_to_select=min_features_to_select,
+                threshold_nan=threshold_nan,
+                threshold_unique=threshold_unique
+            )
+            counter.update(feats)
+
+        # union of all features
+        combined = sorted(counter.keys())
+        X_out = X_clean.loc[:, combined]
+
+        # plot and save histogram
+        freq = pd.Series(counter).sort_values(ascending=False)
+        fig = freq.plot(kind="bar", width=0.9).get_figure()
+        plt.title("Feature selection frequency across methods")
+        plt.xlabel("Feature")
+        plt.ylabel("Times selected (out of 3)")
+        plt.tight_layout()
+
+        out_dir = Path("feature_selection_multi")
+        out_dir.mkdir(parents=True, exist_ok=True)
+        fig.savefig(out_dir / "feature_selection_frequency.png", dpi=300)
+        plt.close(fig)
+
+        return None, X_out, combined
+
+    # define forest for methods that need it
+    forest = RandomForestRegressor(
+        n_estimators=500,
+        n_jobs=8,
+        max_depth=5,
+        random_state=1,
+    )
+
+    # patch numpy deprecation
+    np.int = np.int32
+    np.float = np.float64
+    np.bool = np.bool_
+
+    if method == "SHAP":
+        import pandas as pd
+        from catboost import CatBoostRegressor
+        from fasttreeshap import TreeExplainer as FastTreeExplainer
+        from sklearn.model_selection import cross_val_score
+
+        model = CatBoostRegressor(n_estimators=500, verbose=0, use_best_model=False)
+        model.fit(X_clean, y)
+        explainer = FastTreeExplainer(model)
+        shap_values = explainer.shap_values(X_clean)
+        shap_importances = np.mean(np.abs(shap_values), axis=0)
+        shap_df = pd.DataFrame({
+            "feature": X_clean.columns,
+            "importance": shap_importances
+        }).sort_values("importance", ascending=False)
+
+        def eval_n(N):
+            top = shap_df["feature"].head(N)
+            sel = CatBoostRegressor(n_estimators=500, random_state=42, verbose=0)
+            scores = cross_val_score(sel, X_clean[top], y,
+                                     cv=5, scoring="neg_mean_squared_error",
+                                     n_jobs=-1)
+            return np.mean(scores)
+
+        nrange = [5,10,15,20,25,30]
+        scores = [eval_n(N) for N in tqdm(nrange)]
+        best = nrange[np.argmax(scores)]
+        selected = shap_df["feature"].head(best).tolist()
+
+    elif method == "stabl":
+        from stabl.stabl import Stabl
+        from sklearn.linear_model import Lasso
+
+        st = Stabl(
+            base_estimator=Lasso(alpha=0.001),
+            n_bootstraps=10,
+            artificial_type="knockoff",
+            artificial_proportion=0.5,
+            replace=False,
+            fdr_threshold_range=np.arange(0.1,1,0.01),
+            sample_fraction=0.5,
+            random_state=42,
+            lambda_grid="auto",
+            verbose=1
+        )
+        st.fit(X_clean, y)
+        selected = st.get_feature_names_out()
+
+    elif method == "feature_engine":
+        from feature_engine.selection import SmartCorrelatedSelection
+        sel = SmartCorrelatedSelection(
+            method="pearson",
+            threshold=0.7,
+            selection_method="model_performance",
+            estimator=forest,
+            scoring="neg_mean_squared_error",
+        )
+        X_fe = sel.fit_transform(X_clean, y)
+        selected = X_fe.columns.tolist()
+
+    elif method == "mrmr":
+        from mrmr import mrmr_regression
+        selected = mrmr_regression(X=X_clean, y=y, K=10)
+
+    elif method == "RFECV":
+        from sklearn.feature_selection import RFECV
+        from sklearn.model_selection import KFold
+
+        class RFECVProg(RFECV):
+            def _fit(self, X, y):
+                with tqdm(total=X.shape[1]) as p:
+                    orig = self.scorer_
+                    def wrap(*a, **k):
+                        p.update(1)
+                        return orig(*a, **k)
+                    self.scorer_ = wrap
+                    super()._fit(X, y)
+
+        cv = KFold(n_splits=5)
+        sel = RFECVProg(
+            estimator=forest,
+            step=1,
+            cv=cv,
+            scoring="neg_mean_squared_error",
+            n_jobs=-1,
+            verbose=0
+        )
+        sel.fit(X_clean, y)
+        mask = sel.get_support()
+        selected = X_clean.columns[mask].tolist()
+
+    elif method == "lasso":
+        from sklearn.linear_model import LassoLarsCV
+        from sklearn.feature_selection import SelectFromModel
+
+        lr = LassoLarsCV(cv=5)
+        lr.fit(X_clean, y)
+        sfm = SelectFromModel(lr, prefit=True)
+        selected = X_clean.columns[sfm.get_support()].tolist()
+
+    elif method == "BorutaPy":
+        from boruta import BorutaPy
+        sel = BorutaPy(forest, n_estimators="auto", random_state=42, verbose=0)
+        sel.fit(X_clean.values, y)
+        mask = sel.support_ | sel.support_weak_
+        selected = X_clean.columns[mask].tolist()
+
+    elif method == "Leshy":
+        import arfs.feature_selection.allrelevant as arfsgroot
+        from catboost import CatBoostRegressor
+        model = CatBoostRegressor(n_estimators=350, verbose=0, use_best_model=False)
+        sel = arfsgroot.Leshy(
+            model,
+            n_estimators="auto",
+            verbose=1,
+            max_iter=10,
+            random_state=42,
+            importance="fastshap",
+        )
+        sel.fit(X_clean, y)
+        selected = sel.get_feature_names_out()
+
+    elif method == "PowerShap":
+        from powershap import PowerShap
+        from catboost import CatBoostRegressor
+        sel = PowerShap(
+            model=CatBoostRegressor(n_estimators=500, verbose=0),
+            power_alpha=0.05,
+        )
+        sel.fit(X_clean, y)
+        selected = sel.transform(X_clean).columns.tolist()
+
+    elif method == "BorutaShap":
+        from BorutaShap import BorutaShap
+        from catboost import CatBoostRegressor
+        params = {
+            "depth": 6,
+            "learning_rate": 0.05,
+            "iterations": 500,
+            "subsample": 1.0,
+            "random_strength": 0.5,
+            "reg_lambda": 0.001,
+            "loss_function": "RMSE",
+            "early_stopping_rounds": 25,
+            "random_seed": 42,
+            "verbose": False,
+        }
+        model = CatBoostRegressor(**params)
+        sel = BorutaShap(model=model, importance_measure="shap", classification=False)
+        sel.fit(X=X_clean, y=y, n_trials=100, sample=False,
+                train_or_test="test", normalize=True, verbose=False)
+        selected = sel.Subset().columns.tolist()
+
+    elif method == "Genetic":
+        from sklearn_genetic import GAFeatureSelectionCV
+        sel = GAFeatureSelectionCV(
+            estimator=forest,
+            cv=5,
+            scoring="neg_mean_squared_error",
+            population_size=100,
+            generations=40,
+            max_features=max(len(X_clean.columns)//3, min_features_to_select),
+            crossover_probability=0.9,
+            mutation_probability=0.1,
+            keep_top_k=2,
+            elitism=True,
+            n_jobs=-1,
+            verbose=1,
+        )
+        sel.fit(X_clean, y)
+        selected = X_clean.columns[sel.support_].tolist()
+
+    elif method == "RFE":
+        from sklearn.feature_selection import RFE
+        sel = RFE(forest, n_features_to_select=min_features_to_select, step=1, verbose=1)
+        sel = sel.fit(X_clean, y)
+        selected = X_clean.columns[sel.support_].tolist()
+
+    else:
+        raise ValueError(f"Unknown method: {method}")
+
+    # post-filtering: non-EO fallback to SelectKBest
+    non_eo = are_all_features_non_eo(selected)
+    if non_eo or method == "SelectKBest":
+        from sklearn.feature_selection import SelectKBest, f_regression
+        k = 15
+        skb = SelectKBest(score_func=f_regression, k=k)
+        skb.fit(X_clean, y)
+        selected = X_clean.columns[skb.get_support()].tolist()
+
+    # return selector (if exists), filtered DataFrame, and feature list
+    try:
+        return sel, X_clean.loc[:, selected], selected
+    except NameError:
+        # for methods that didn't create `sel`
+        return None, X_clean.loc[:, selected], selected
