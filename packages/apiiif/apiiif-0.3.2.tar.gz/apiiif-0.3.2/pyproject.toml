@@ -1,0 +1,66 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[project]
+authors = [{ name = "David Flood", email = "d-flood@users.noreply.github.com" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["pydantic==2.11.4"]
+description = ''
+dynamic = ["version"]
+keywords = []
+license = "MIT"
+name = "apiiif"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[project.urls]
+Documentation = "https://github.com/d-flood/apiiif#readme"
+Issues = "https://github.com/d-flood/apiiif/issues"
+Source = "https://github.com/d-flood/apiiif"
+
+[tool.hatch.version]
+path = "src/apiiif/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = ["coverage[toml]>=6.5", "pytest", "rich", "yapf"]
+[tool.hatch.envs.default.scripts]
+cov = ["test-cov", "cov-report"]
+cov-report = ["- coverage combine", "coverage report"]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.lint]
+dependencies = []
+detached = true
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/.github", "/docs", "/tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/apiiif"]
+
+[tool.coverage.run]
+branch = true
+omit = ["src/apiiif/__about__.py"]
+parallel = true
+source_pkgs = ["apiiif", "tests"]
+
+[tool.coverage.paths]
+apiiif = ["src/apiiif", "*/apiiif/src/apiiif"]
+tests = ["tests", "*/apiiif/tests"]
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
