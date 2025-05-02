@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}📚 Список тем{% endblock %}
+
+{% block content %}
+    <h1>📚 Список вивчених тем</h1>
+
+    {% if errors %}
+        <div class="alert alert-warning">
+            <h4>⚠️ Увага! Знайдено помилки в даних:</h4>
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <label for="sort_by">Сортувати за:</label>
+    <select id="sort_by" class="form-select" onchange="sortTopics()">
+        <option value="score">Оцінкою</option>
+        <option value="time">Часом навчання</option>
+    </select>
+
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>📌 Тема</th>
+                <th>⏱ Час навчання (хв)</th>
+                <th>📊 Оцінка</th>
+                <th>🔗 Посилання</th>
+            </tr>
+        </thead>
+        <tbody id="topics_table">
+            {% for abbr, topic in topics.items() %}
+                <tr>
+                    <td>{{ topic.theme }}</td>
+                    <td data-time="{{ topic.actual if topic.actual is not none else 0 }}">{{ topic.actual if topic.actual is not none else 'Невідомо' }}</td>
+                    <td data-score="{{ topic.score if topic.score is not none else 0 }}">{{ topic.score if topic.score is not none else 'Невідомо' }}/10</td>
+                    <td><a href="{{ url_for('topic_detail', abbr=abbr) }}">Переглянути</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function sortTopics() {
+            let table = document.getElementById("topics_table");
+            let rows = Array.from(table.rows);
+            let sortBy = document.getElementById("sort_by").value;
+
+            rows.sort((a, b) => {
+                let valA = parseInt(a.cells[sortBy === "time" ? 1 : 2].dataset[sortBy]) || 0;
+                let valB = parseInt(b.cells[sortBy === "time" ? 1 : 2].dataset[sortBy]) || 0;
+                return valB - valA;
+            });
+
+            rows.forEach(row => table.appendChild(row));
+        }
+    </script>
+{% endblock %}

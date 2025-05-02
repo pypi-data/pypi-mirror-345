@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}📌 {{ topic.theme }}{% endblock %}
+
+{% block content %}
+    <h1>📌 {{ topic.theme }}</h1>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>📌 Скорочення</th>
+            <td>{{ topic.abbr }}</td>
+        </tr>
+        <tr>
+            <th>⏳ Плановий час</th>
+            <td>{{ topic.planned or 'Не вказано' }} хв</td>
+        </tr>
+        <tr>
+            <th>⏱ Фактично витрачений час</th>
+            <td>{{ topic.actual or 'Не вказано' }} хв</td>
+        </tr>
+        <tr>
+            <th>📊 Оцінка розуміння</th>
+            <td>{{ topic.score if topic.score is not none else 'Невідомо' }}/10</td>
+        </tr>
+        <tr>
+            <th>✅ Рекомендація</th>
+            <td>{{ recommendation }}</td>
+        </tr>
+    </table>
+
+    <a href="{{ url_for('topics') }}" class="btn btn-secondary">🔙 Назад до списку тем</a>
+{% endblock %}
