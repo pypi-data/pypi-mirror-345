@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: paven
+Version: 0.1.2
+Summary: Partial vendoring for Python packages.
+Author-email: Tim Hörmann <pypi@audivir.de>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/audivir/paven
+Project-URL: Repository, https://github.com/audivir/paven
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: eval_type_backport
+Requires-Dist: doctyper
+Requires-Dist: deprive
+Requires-Dist: msgspec[toml]
+Provides-Extra: dev
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: coverage[toml]; extra == "dev"
+Requires-Dist: vulture; extra == "dev"
+Dynamic: license-file
+
+# paven
+
+# Installation
+
+```bash
+pip install paven
+```
+
+# Configuration
+
+```toml
+[tool.paven]
+root = "paven"
+destination = "paven/_vendor/"
+requirements = "paven/_vendor/vendor.txt"
+namespace = "paven._vendor"
+
+[tool.paven.transformations]
+drop = ["*.dist-info", "*.egg-info"] # should not be required
+```
+
+# Usage
+
+```bash
+cd /path/to/your/project
+python -m paven
+```
+
+To switch back to the non-vendored versions:
+```bash
+python -m paven --revert
+```
