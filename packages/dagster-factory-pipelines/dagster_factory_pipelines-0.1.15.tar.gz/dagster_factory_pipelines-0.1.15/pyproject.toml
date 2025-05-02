@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dagster-factory-pipelines"
+license = {text = "MIT"}
+version = "0.1.15"
+description = "Create dagster pipelines by using reuseable modules and yaml configuration"
+authors = [{ name = "Oleg Savik", email = "oleg.savik@ut.ee" }]
+readme = "README.md"
+dependencies = [
+    "dagster",
+    "requests",
+    "aiohttp",
+    "dagster_aws"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["dagster_factory_pipelines*"] 
