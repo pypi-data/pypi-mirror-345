@@ -1,0 +1,136 @@
+## 0.9.0 (2025-05-01)
+
+### Feat
+
+- SparseCCFs and support in SVAR files
+
+## 0.8.0 (2025-04-29)
+
+### Feat
+
+- index filtering for SVAR. feat: svartools CLI for writing SVAR files
+
+### Fix
+
+- bugfixes in handling start > contig end
+- handle starts > contig ends for SVAR
+- constrain python for cyvcf2 builds
+
+## 0.7.1 (2025-04-25)
+
+### Fix
+
+- bump seqpro version
+- only filter the pyranges, not record info
+
+## 0.7.0 (2025-04-21)
+
+### Fix
+
+- rename SparseVar.samples to SparseVar.available_samples for consistency
+
+## 0.6.0 (2025-04-21)
+
+### Feat
+
+- **wip**: SVAR file format prototyped and is very fast!
+- **wip**: sparse variant file format
+
+### Fix
+
+- pass all tests
+
+## 0.5.1 (2025-04-19)
+
+### Fix
+
+- handle >1d arrays for lengths_to_offsets
+- str memory parsing
+
+## 0.5.0 (2025-04-17)
+
+### Feat
+
+- convenience methods for automatically writing a gvl-compat index
+- make with_length methods private/experimental
+
+### Fix
+
+- correct output index when vcf filter is applied
+- type error in pgen.n_vars
+- bug in computing var_idx offsets for ranges with no variants
+
+### Perf
+
+- faster reads by avoiding re-opening the VCF for each query
+
+## 0.4.4 (2025-04-16)
+
+### Fix
+
+- with_length methods need to return where end was extended to
+
+## 0.4.3 (2025-04-16)
+
+### Fix
+
+- relax set_samples type to be array-like
+
+## 0.4.2 (2025-04-16)
+
+### Fix
+
+- set and test minimum dependencies
+
+## 0.4.1 (2025-04-16)
+
+### Fix
+
+- relax typing-extensions version
+
+## 0.4.0 (2025-04-15)
+
+### Feat
+
+- chunk_ranges_with_length and everything passes all tests
+
+## 0.3.0 (2025-04-14)
+
+### Feat
+
+- multi-allelics, PGEN dosages, more precise typing and API
+- improve pbar injection via context manager
+- prototype for PGEN dosages
+- prototype for PGEN dosages
+- prototype for injecting a progress bar
+
+### Fix
+
+- make pbar context behavior match docstring
+
+### Refactor
+
+- clarify default for end/ends to be max value of np.int32
+
+## 0.2.0 (2025-04-12)
+
+### Feat
+
+- change read_ranges to return offsets which are more immediately useful
+
+## 0.1.0 (2025-04-12)
+
+### Feat
+
+- sketching out support for PGEN dosages
+- refactor readers to be type safe. pass all tests.
+- **wip**: reasonable output from PGEN in notebook
+- initial PGEN support
+- rename package to genoray
+- rename package to genoray
+- **wip**: initial prototype of VCF reader
+- **wip**: VCF support
+
+### Fix
+
+- use future annotations for union types

@@ -1,0 +1,47 @@
+[project]
+name = "genoray"
+version = "0.9.0"
+description = "Add your description here"
+authors = [{ name = "David Laub", email = "dlaub@ucsd.edu" }]
+readme = "README.md"
+license = { file = "LICENSE.txt" }
+requires-python = ">=3.9,<3.13" # blocked by cyvcf2
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.2.2",
+    "hirola>=0.3.0",
+    "pgenlib>=0.92.0",
+    "cyvcf2>=0.31.1",
+    "polars>=1.26",
+    "pyranges>=0.1.3",
+    "typing-extensions>=4.11",
+    "pyarrow>=16",
+    "tqdm>=4.65",
+    "phantom-types>=3",
+    "more-itertools>=10",
+    "loguru>=0.7.0",
+    "attrs",
+    "awkward",
+    "numba",
+    "seqpro>=0.3.0",
+    "cyclopts",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "semver2"
+version_provider = "pep621"
+update_changelog_on_bump = true
+major_version_zero = true
+annotated_tag = true
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[project.scripts]
+svartools = "svartools.__main__:app"
+
+[tool.pytest.ini_options]
+filterwarnings = ["ignore::DeprecationWarning:sorted_nearest.*"]
