@@ -1,0 +1,125 @@
+Metadata-Version: 2.4
+Name: transportmaps
+Version: 3.1.1
+Summary: Tools for the construction of transport maps
+Author-email: Daniele Bigoni <dabi@limitcycle.it>
+License: LGPL
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8
+Description-Content-Type: text/x-rst
+License-File: COPYING
+License-File: COPYING.LESSER
+Requires-Dist: click
+Requires-Dist: numpy>=2.0
+Requires-Dist: SpectralToolbox>=3.1.0
+Requires-Dist: scipy
+Requires-Dist: scikit-learn
+Requires-Dist: sortedcontainers
+Requires-Dist: semilattices>=1.0
+Requires-Dist: tqdm
+Requires-Dist: fasteners
+Requires-Dist: h5py
+Requires-Dist: matplotlib
+Requires-Dist: statsmodels
+Provides-Extra: dolfin
+Requires-Dist: dolfin; extra == "dolfin"
+Requires-Dist: dolfin_adjoint; extra == "dolfin"
+Requires-Dist: petsc4py; extra == "dolfin"
+Provides-Extra: suitesparse
+Requires-Dist: scikit-sparse; extra == "suitesparse"
+Provides-Extra: hmc
+Requires-Dist: pyhmc; extra == "hmc"
+Dynamic: license-file
+
+==============
+Transport Maps
+==============
+
+This package provides basic functionalities for the construction of monotonic transport maps.
+
+* `Binary (PyPi) <https://pypi.python.org/pypi/TransportMaps>`_
+* `Source (Bitbucket) <https://bitbucket.org/dabi86/transportmaps>`_
+* `Homepage <http://transportmaps.mit.edu/docs/>`_
+* `Q&A & Bug-tracking <https://bitbucket.org/dabi86/transportmaps/issues?status=new&status=open>`_
+
+Supported systems
+-----------------
+
+* \*nix like OS (Linux, Unix, ...)
+* Mac OS
+
+Other operating systems have not been tested and they likely require a more complex procedure for the installation (this includes the Microsoft Windows family..).
+
+We reccommend to work in a virtual environment using `virtualenv <https://virtualenv.readthedocs.io/en/latest/>`_ or `Anaconda <https://www.continuum.io/why-anaconda>`_.
+
+Installation requirements
+-------------------------
+
+* `gcc <https://gcc.gnu.org/>`_ (or an alternative C/C++ compiler)
+* `gfortran <https://gcc.gnu.org/fortran/>`_ (or an alternative Fortran compiler)
+
+Automatic installation
+----------------------
+
+First of all make sure to have the latest version of `pip <https://pypi.python.org/pypi/pip>`_ installed
+
+ $ pip install --upgrade pip
+
+The package and its python dependencies can be installed running the command:
+
+ $ pip install --upgrade TransportMaps
+
+If one whish to enable some of the optional dependencies:
+
+ $ pip install --upgrade TransportMaps[SUITESPARSE]
+
+These options will install the following modules:
+
+* DOLFIN -- dolfin package for Partial Differential Equations
+
+* SUITESPARSE -- scikit-sparse
+
+    * This requires `scitik-sparse <https://github.com/scikit-sparse/scikit-sparse>`_ and the package `libsuitesparse-dev <https://packages.ubuntu.com/focal/libsuitesparse-dev>`_
+
+* HMC -- Hamiltonian Monte Carlo `pyhmc <https://pythonhosted.org/pyhmc/>`_ (it requires having numpy and cython already installed)
+
+Running the Unit Tests
+----------------------
+
+Unit tests are available and can be run through the commands:
+
+   >>> import TransportMaps as TM
+   >>> TM.tests.run_tests()
+
+Or directly using the bash command:
+
+   $ tmap-run-tests
+
+The Git repository also contains a docker-compose configuration file to test the whole suite on several
+versions of python.
+
+There are >2000 unit tests, and it will take some time to run all of them.
+
+Credits
+-------
+
+This sofware has been developed and is being maintained by the `Uncertainty Quantification Group <http//uqgroup.mit.edu>`_ at MIT, under the guidance of Prof. Youssef Marzouk.
+
+**Developing team**
+
+| Daniele Bigoni – [`www <http://limitcycle.it/dabi/>`_]
+| Alessio Spantini
+| Rebecca Morrison
+| Ricardo M. Baptista
+|

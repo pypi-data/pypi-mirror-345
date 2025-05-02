@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+
+#
+# This file is part of TransportMaps.
+#
+# TransportMaps is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# TransportMaps is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with TransportMaps.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Transport Maps Library
+# Copyright (C) 2015-2018 Massachusetts Institute of Technology
+# Uncertainty Quantification group
+# Department of Aeronautics and Astronautics
+#
+# Author: Transport Map Team
+# Website: transportmaps.mit.edu
+# Support: transportmaps.mit.edu/qa/
+#
+
+from ..ObjectBase import TMO
+
+__all__ = [
+    'MapFactory',
+    'MapListFactory'
+]
+
+
+class MapFactory(TMO):
+    r""" Abstract factory for maps.
+
+    It provides a function :func:`MapFactory.generate`
+    which returns the generated map.
+    """
+    def __init__(self, *args, **kwargs):
+        super(MapFactory, self).__init__()
+
+    def generate(self, *args, **kwargs):
+        r""" [abstract] generates maps.
+        """
+        raise NotImplementedError("To be implemented in sub-classes")
+
+
+class MapListFactory(MapFactory):
+    r""" Abstract factory for lists of maps.
+
+    It provides a function :func:`MapFactory.generate`
+    which returns the generated list of maps.
+    """
+    def __init__(self, n_maps, *args, **kwargs):
+        super(MapListFactory, self).__init__()
+        self._n_maps = n_maps
+    
+    def __len__(self):
+        return self._n_maps
+
+    @property
+    def n_maps(self):
+        return self._n_maps
