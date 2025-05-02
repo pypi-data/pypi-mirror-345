@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rhjira"
+dynamic = ["version"]
+description = "CLI for Red Hat Jira (https://issues.redhat.com)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "GPL-2.0-or-later"
+keywords = ["redhat", "jira"]
+authors = [{ name = "Prarit Bhargava", email = "prarit@redhat.com" }]
+maintainers = [{ name = "Prarit Bhargava", email = "prarit@redhat.com" }]
+dependencies = [
+    "keyring",
+    "jira>=3.2.0",
+    "requests>=2.0.0",
+    "pillow>=8.0.0",
+    "tabulate"
+]
+
+[tool.setuptools_scm]
+version_file = "src/rhjira/_version.py"
+
+[project.urls]
+"Homepage" = "https://gitlab.com/prarit/rhjira-python"
+
+[project.scripts]
+rhjira = "rhjira.cli:main"
