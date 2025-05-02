@@ -1,0 +1,31 @@
+[project]
+name = "ephor-cli"
+version = "0.3.4"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "amandal-cn", email = "mandal.ashish@codenation.co.in" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "click>=8.1.8",
+    "colorama>=0.4.6",
+    "google-a2a",
+    "google-adk>=0.3.0",
+    "langchain>=0.3.24",
+    "langchain-anthropic>=0.3.12",
+    "langchain-mcp-adapters>=0.0.9",
+    "langchain-ollama>=0.3.2",
+    "langgraph>=0.3.34",
+    "python-dotenv>=1.1.0",
+]
+
+[project.scripts]
+ephor-cli = "ephor_cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+google-a2a = { git = "https://github.com/djsamseng/A2A", subdirectory = "samples/python", branch = "prefixPythonPackage" }
