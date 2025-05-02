@@ -1,0 +1,78 @@
+Metadata-Version: 2.4
+Name: mcp-connection-checker
+Version: 0.1.1
+Summary: MCPサーバーと対話し、定義されたツールを実行するためのコマンドラインインターフェース。
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: twine>=6.1.0
+
+# mcp-connection-checker
+
+`mcp-connection-checker` は、Model Context Protocol (MCP) サーバーと対話し、定義されたツールを実行するためのコマンドラインインターフェースです。
+
+## インストール
+
+`pipx` を使用してインストールすることを推奨します。
+
+```bash
+pipx install mcp-connection-checker
+```
+
+または `pip` を使用する場合:
+
+```bash
+pip install mcp-connection-checker
+```
+
+## 使い方
+
+### ツールリストの表示
+
+指定したMCPサーバーで利用可能なツールの一覧を表示します。
+
+```bash
+mcp-connection-checker --mcp-def <MCPサーバー定義ファイルのパス>
+```
+
+例:
+
+```bash
+mcp-connection-checker --mcp-def ./mcp_server_definition.json
+```
+
+### ツールの実行
+
+指定したMCPサーバー上で、定義ファイルに従ってツールを実行します。
+
+```bash
+mcp-connection-checker --mcp-def <MCPサーバー定義ファイルのパス> --tool-def <ツール定義ファイルのパス>
+```
+
+例:
+
+```bash
+mcp-connection-checker --mcp-def ./mcp_server_definition.json --tool-def ./list_directory.json
+```
+
+### 詳細ログの表示
+
+`-v` または `--verbose` オプションを使用すると、実行時の詳細なログが表示されます。
+
+```bash
+mcp-connection-checker --mcp-def <MCPサーバー定義ファイルのパス> -v
+```
+
+## 開発者向け情報
+
+依存関係管理には `uv` を使用しています。
+
+依存関係の追加:
+
+```bash
+uv add <package_name>
+```
+
+ローカルでの実行:
+
+```bash
+uv python test_mcp_connection.py [OPTIONS]
