@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: sim800l-gsm-module
+Version: 2.0.5
+Summary: Raspberry Pi SIM800L GSM module
+Home-page: https://github.com/Ircama/sim800l-gsm-module
+Author: Ircama
+License: CC-BY-NC-SA-4.0
+Keywords: Raspberry Pi SIM800L GSM module
+Classifier: Operating System :: POSIX :: Linux
+Classifier: License :: Other/Proprietary License
+Classifier: Topic :: Communications
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Telecommunications Industry
+Classifier: Intended Audience :: Developers
+Requires-Python: >3.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyserial
+Requires-Dist: gsm0338
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Raspberry Pi SIM800L, SIM800C and SIM800H GSM module
+
+[![PyPI](https://img.shields.io/pypi/v/sim800l-gsm-module.svg?maxAge=2592000)](https://pypi.org/project/sim800l-gsm-module)
+[![Python Versions](https://img.shields.io/pypi/pyversions/sim800l-gsm-module.svg)](https://pypi.org/project/sim800l-gsm-module/)
+[![PyPI download month](https://img.shields.io/pypi/dm/sim800l-gsm-module.svg)](https://pypi.python.org/pypi/sim800l-gsm-module/)
+[![GitHub license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-blue)](https://raw.githubusercontent.com/Ircama/raspberry-pi-sim800l-gsm-module/master/LICENSE)
+
+[SIM800L GSM module](https://www.simcom.com/product/SIM800.html) library for Linux systems like the Raspberry Pi. This library was also successfully tested with SIM800C and should also support SIM800H.
+
+This library provides a driver for SIMCom GSM modules (SIM800L, SIM800C, SIM800H) via AT commands over a serial interface. It supports SMS (including multipart), HTTP/HTTPS GET and POST requests, DNS resolution, RTC synchronization, and access to module information. SMS messaging can be done in TEXT, HEX, or PDU mode (default: PDU). Possibly the driver is also compatible with newer modules like SIM7100 and SIM5300.
+
+Key features include:
+
+- `send_sms()`: Sends SMS messages, automatically handling multipart when necessary.
+- `read_next_message()`: Retrieves the next SMS, abstracting message type and reassembling multipart content.
+- `http()`: Executes HTTP and HTTPS GET/POST requests, returning response status and payload.
+- `dns_query()`: Resolves domain names to IPs via the module’s DNS functionality.
+- `ping()`: ICMP ping of a domain name or IP address.
+- `internet_sync_time()`: syncronize the RTC time with the NTP time server and returns the current NTP time.
+
+The library also exposes over 30 methods to configure and query the SIM module, enabling robust control and integration.
+
+## AT Protocol issues
+
+The SIMCom SIM800 series (including models such as SIM800L, SIM800C, and SIM800H) supports a broad set of cellular and Internet features, all accessible through a proprietary AT command set over the module’s asynchronous serial interface. This software utilizes only a limited subset of these AT commands.
+
+The AT command protocol is fundamentally inadequate for reliable and verifiable communication and presents intrinsic limitations when employed for robust operations. Originally designed for simple control of modems, the AT protocol is inherently textual and lacks the formal structure of communication protocols that utilize packetized data exchange.
+
+One critical drawback lies in the nature of message formatting. AT commands are plain-text strings without explicit framing mechanisms. Unlike packet-based protocols, AT messages do not encapsulate data within headers that define payload length, type, or integrity information such as checksums or CRCs. Consequently, parsing and verifying the completeness and correctness of messages becomes error-prone.
+
+Moreover, AT-based communication lacks a standardized state machine or signaling mechanisms to indicate distinct phases of a connection lifecycle. Commands that initiate, maintain, or terminate connections must be issued and interpreted in a predefined order, but the protocol itself does not return the transition between these states. This absence of inherent session management results in brittle implementations, where the client must continually probe the status of operations.
+
+This deficiency becomes even more critical with vendor-specific instructions, which introduce proprietary connection setup sequences requiring polling or conditional branching based on context-sensitive responses, and may also include asynchronous "Unsolicited Result Codes" within the textual communication that needs special processing while managing the workflow. Without structured feedback or flags denoting session phases, the client application must rely on loosely coupled, often ambiguous responses to maintain protocol correctness.
+
+Through an accurately tested heuristic approach, this software attempts to handle all supported operations via the AT protocol in the most robust manner possible, aiming to automatically recover from errors when feasible.
+
+## Setup
+
+This module only installs on Linux (not on Windows).
+
+## Hw Requirements
+
+- Linux system with a UART serial port, or Raspberry Pi with [Raspberry Pi OS](https://en.wikipedia.org/wiki/Raspberry_Pi_OS) (this library has been tested with Buster and Bullseye).
+- External power supply for the SIM800L (using the Raspberry Pi 5V power supply, a standard diode (1N4007) with voltage drop of about 0.6 volts and a 1 F capacitor might work).
+
+
+Full information, installation notes, API reference and usage details at the [sim800l-gsm-module GitHub repository](https://github.com/Ircama/sim800l-gsm-module).
