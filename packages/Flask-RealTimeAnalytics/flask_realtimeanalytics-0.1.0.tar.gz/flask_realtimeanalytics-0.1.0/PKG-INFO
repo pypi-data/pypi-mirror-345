@@ -1,0 +1,191 @@
+Metadata-Version: 2.4
+Name: Flask-RealTimeAnalytics
+Version: 0.1.0
+Summary: A Flask extension for real-time analytics dashboards
+Home-page: https://github.com/TonyRolfe/flask-realtime-analytics
+Author: Tony Rolfe
+Author-email: tony.rolfe@ibm.com
+Project-URL: Homepage, https://github.com/TonyRolfe/flask-realtime-analytics
+Project-URL: Documentation, https://flask-realtime-analytics.readthedocs.io
+Project-URL: Repository, https://github.com/TonyRolfe/flask-realtime-analytics
+Project-URL: Issues, https://github.com/TonyRolfe/flask-realtime-analytics/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Framework :: Flask
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Flask>=2.0.0
+Requires-Dist: Flask-SocketIO>=5.3.0
+Requires-Dist: python-socketio>=5.7.0
+Requires-Dist: SQLAlchemy>=1.4.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary
+
+# Flask-RealTimeAnalytics
+A Flask extension for real-time analytics dashboards, tracking user behavior, API usage, and performance metrics with WebSocket updates. Integrates seamlessly with SQLAlchemy-supported databases.
+
+---
+## Features
+
+- Real-time tracking of requests, response times, and user data.
+- WebSocket-powered dashboard for live analytics.
+- Database-agnostic (PostgreSQL, MySQL, SQLite, etc.) via SQLAlchemy.
+- Easy integration with existing Flask applications.
+
+---
+
+## Installation
+Install via pip:
+```bash
+pip install Flask-RealTimeAnalytics
+```
+
+---
+
+## Setup
+### Prerequisites
+
+- Python 3.8+ (Tested up to 3.12)
+- Flask 3.1.0+
+- SQLAlchemy 2.0.40+ (e.g., via Flask-SQLAlchemy)
+- A configured database (PostgreSQL, MySQL, SQLite, etc.)
+
+### Inline Flask Setup
+For simple Flask applications without an application factory:
+```python
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_realtime_analytics import FlaskRealTimeAnalytics
+
+app = Flask(__name__, template_folder='flask_realtime_analytics/templates')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:pass@localhost/dbname'
+db = SQLAlchemy(app)
+analytics = FlaskRealTimeAnalytics(app, db)
+
+@app.route('/')
+def index():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    analytics.socketio.run(app, debug=True)
+```
+Visit /analytics to view the real-time dashboard.
+
+### Application Factory Setup
+For Flask applications using the application factory pattern (create_app()):
+```python
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_realtime_analytics import FlaskRealTimeAnalytics
+
+db = SQLAlchemy()
+analytics = FlaskRealTimeAnalytics()
+
+def create_app():
+    app = Flask(__name__, template_folder='flask_realtime_analytics/templates')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:pass@localhost/dbname'
+    
+    db.init_app(app)    
+    analytics.init_app(app, db)
+    
+    @app.route('/')
+    def index():
+        return 'Hello, World!'
+    
+    return app
+
+if __name__ == '__main__':
+    app = create_app()
+    with app.app_context():
+        db.create_all()  # Create tables
+    FlaskRealTimeAnalytics(app, db).socketio.run(app, debug=True)
+```
+
+Visit /analytics to view the real-time dashboard.
+
+### Configuration
+
+- Database: Ensure SQLALCHEMY_DATABASE_URI is set to your database (e.g., postgresql://user:pass@localhost/dbname or sqlite:///analytics.db).
+- Templates: Place analytics.html (included in the package) in your Flask template_folder.
+- SocketIO: Runs with analytics.socketio.run() instead of app.run() to support WebSockets.
+
+---
+
+## Documentation
+Full documentation is available on ReadTheDocs.
+
+---
+
+## Contributing
+We welcome contributions! Follow these steps to contribute:
+
+1. Fork the Repository: Fork Flask-RealTimeAnalytics on GitHub.
+2. Create a Branch: Create a feature or bugfix branch (git checkout -b feature/new-feature).
+3. Make Changes: Implement your changes, ensuring code style consistency (use black or flake8).
+4. Write Tests: Add or update tests in tests/ using pytest.
+5. Commit Changes: Write clear commit messages (e.g., "Add support for X feature").
+6. Submit a Pull Request: Open a pull request with a detailed description of your changes.
+7. Report Issues: Submit bugs or feature requests via GitHub Issues.
+
+Please follow the [Code of Conduct](CODE_OF_CONDUCT.md) and ensure your contributions align with the project's MIT License.
+
+---
+
+## Development
+To set up a development environment:
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/flask-realtime-analytics.git
+cd flask-realtime-analytics
+```
+2. Create and activate a virtual environment: 
+```bash 
+python3.12 -m venv .venv
+source .venv/bin/activate
+```
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+4. Run tests:
+```bash
+pytest tests/
+```
+5. Build documentation:
+```bash
+cd docs && make html
+```
+
+---
+
+## License
+This project is licensed under the MIT License.
+
+___
+
+## Acknowledgements
+
+Built with [Flask](https://flask.palletsprojects.com/), [Flask-SocketIO](https://flask-socketio.readthedocs.io/), and [SQLAlchemy](https://www.sqlalchemy.org/).
+Inspired by the Flask community's open-source contributions.
+
+___
+
+## Contact
+For questions or support, open an issue on [GitHub](https://github.com/TonyRolfe/flask-realtime-analytics/issues) or reach out via tony.rolfe@ibm.com.
