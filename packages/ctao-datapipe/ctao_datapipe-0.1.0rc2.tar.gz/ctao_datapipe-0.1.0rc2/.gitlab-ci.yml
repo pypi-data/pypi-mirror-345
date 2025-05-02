@@ -1,0 +1,83 @@
+include:
+  - project: 'cta-computing/dpps/aiv/dpps-aiv-toolkit'
+    ref: ff3b2136038df7eb88712f7d523acafdc074f660
+    file: "ci-functions.yml"
+  - "aiv-config.yml"
+
+stages:
+  - prepare
+  - lint
+  - build
+  - sign
+  - tests
+  - sonarqube
+  - publish
+  - report
+
+
+#  full test for report, including summary and coverage xml artifacts
+test:
+  stage: tests
+  image: harbor.cta-observatory.org/proxy_cache/python:3.12
+
+  before_script:
+    - python --version
+    - pip install -e .[test]
+    - apt update --yes && apt install --yes nodejs
+
+  script:
+    - >-
+      pytest -v --color=yes
+      --doctest-modules --doctest-glob='docs/**/*.rst'
+      --ignore-glob='src/datapipe/_dev_version/*'
+      --cov --cov-report=xml:test/coverage.xml
+      --junitxml=test/report.xml
+      --log-cli-level=INFO
+
+  after_script: []
+
+  artifacts:
+    paths:
+      - test/coverage.xml
+      - test/report.xml
+
+
+collect-test-artifacts:
+  needs:
+    - job: collect-manual-tests
+      artifacts: true
+    - job: test
+      artifacts: true
+
+# unit tests using a matrix of python versions
+unittests:
+  stage: tests
+  parallel:
+    matrix:
+      - PYTHON_VERSION:
+        - "3.11"
+        - "3.12"
+        - "3.13"
+
+  image: "harbor.cta-observatory.org/proxy_cache/python:$PYTHON_VERSION"
+
+  before_script:
+    - apt update --yes
+    - apt install --yes nodejs # needed for cwl with JS
+    - python --version
+    - pip install -e .[test]
+
+  script:
+    - >-
+      pytest -v --color=yes
+      --doctest-modules
+      --doctest-glob='docs/**/*.rst' --ignore-glob='src/datapipe/_dev_version/*'
+
+
+k8s-integration-tests:
+  rules:
+    - when: never
+
+publish-chart:
+  rules:
+    - when: never

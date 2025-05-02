@@ -1,0 +1,24 @@
+\subsubsection{UC-DPPS-130-1.2}
+
+This UC describes the general features of the \texttt{ctapipe-process}
+command-line tool that implements it and all of its child use cases. The
+features described in the use case are implemented as part of the design of the
+\texttt{ctapipe.core.Tool} framework, upon which this tool is based. Therefore
+by inspection, and unit tests within the \texttt{ctapipe} package itself, we can
+verify:
+
+\begin{itemize}
+  \item The tool uses standard return codes, and reports status in logs as well as in structured provenance information
+  \item It generates local provenance log info in a structured format, including the exit status
+  \item The exit status includes the case where the user or system stopped the job with a signal
+  \item Logs are written to stdout or to files, with user-specified levels
+  \item Configuration is handled by config files and command-line options for
+        all exposed parameters.
+  \item It defines an output data format that includes the necessary output data and metadata
+  \item It is able to read simulation data, and has a plugin system  with packages to read other required inputs, currently including the ACADA ZFITS format.
+  \item The user has an option to choose the target data level
+  \item The tool contains a standardized analysis workflow that can be configured in detail that loops over events in the input and transforms them to the desired output.
+  \item The user can get a sample configuration file (via a second tool), or get detailed help information on all potential parameters via the \texttt{--help} or \texttt{--help-all} options.
+\end{itemize}
+
+Therefore, along with the automatic tests for this UC, we can consider it verified.
