@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>EQ Feature Engineering</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="prev" title="EQ Feature Engineering" href="oweqfeatureengineering.html" />
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" >
+          <a href="oweqfeatureengineering.html" title="EQ Feature Engineering"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">EarthquakesETL 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">EQ Feature Engineering</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <section id="eq-feature-engineering">
+<h1>EQ Feature Engineering</h1>
+<p>The EQ Feature Engineering node generates earthquake-related attributes from a dataset of seismic events.
+It uses different approaches to compute seismic indicators that can be used in machine learning models for earthquake prediction.</p>
+<p>This node takes a table of seismic events as input and generates seismic attributes based on configurable parameters.</p>
+<section id="input-parameters">
+<h2>Input Parameters</h2>
+<p><strong>1. Events for b-value Morales (nMorales)</strong>:</p>
+<ul class="simple">
+<li><p>Number of previous events considered for calculating the b-value using Morales&rsquo; method.</p></li>
+<li><p>Recommended values: 10 - 100 (default: 10).</p></li>
+</ul>
+<p><strong>2. Events for b-value Adeli (nAdeli)</strong>:</p>
+<ul class="simple">
+<li><p>Number of previous events considered for calculating the b-value using Adeli&rsquo;s method.</p></li>
+<li><p>Recommended values: 1 - 10 (default: 1).</p></li>
+</ul>
+<p><strong>3. Reference Magnitude (referenceMagnitude)</strong>:</p>
+<ul class="simple">
+<li><p>Reference magnitude used in b-value calculation.</p></li>
+<li><p>Recommended value: 3.0.</p></li>
+</ul>
+<p><strong>4. Days for Prediction (dayspred)</strong>:</p>
+<ul class="simple">
+<li><p>Number of future days considered for prediction.</p></li>
+<li><p>Recommended value: 5 - 7 (default: 6).</p></li>
+</ul>
+<p><strong>5. Classification: From (classFrom)</strong>:</p>
+<ul class="simple">
+<li><p>Minimum magnitude for discrete class creation.</p></li>
+<li><p>Recommended value: 2.0 - 5.0.</p></li>
+</ul>
+<p><strong>6. Classification: To (classTo)</strong>:</p>
+<ul class="simple">
+<li><p>Maximum magnitude for discrete class creation.</p></li>
+<li><p>Recommended value: 2.0 - 6.0.</p></li>
+</ul>
+<p><strong>7. Classification Step (classStep)</strong>:</p>
+<ul class="simple">
+<li><p>Increment between magnitude classes.</p></li>
+<li><p>Recommended values: 0.05 - 0.5.</p></li>
+</ul>
+<p><strong>8. Threshold for mu and c (chth)</strong>:</p>
+<ul class="simple">
+<li><p>Characteristic threshold used in the calculation of mu and c attributes.</p></li>
+<li><p>Recommended values: 0.01 - 1.0.</p></li>
+</ul>
+<p><strong>9. Attribute Sets</strong>:</p>
+<ul class="simple">
+<li><p>Defines the set of generated attributes.</p></li>
+<p>Options:</p><ul>
+<li> attYorch/bM - Yorch attributes with Morales&rsquo; b-value.</li>
+<li> attYorch/bA - Yorch attributes with Adeli&rsquo; b-value.</li>
+<li> attAdeli/bM - Adeli attributes with Morales&rsquo; b-value.</li>
+<li> attAdeli/bA - Adeli attributes with Adeli&rsquo;s b-value.</li></ul>
+</ul>
+</section>
+<section id="output-attributes">
+<h2>Output Attributes</h2>
+<p>The generated attributes include seismic indicators based on b-value calculations and other factors:</p>
+<ul class="simple">
+<li><p><strong>b-value (bM, bA):</strong> Based on Morales&rsquo; (bM) or Adeli&rsquo;s (bA) method.</p></li>
+<li><p><strong>a-value:</strong> Gutenberg-Richter law value.</p></li>
+<li><p><strong>b-value increments (x1 - x5):</strong> Variation of b-value in previous events.</p></li>
+<li><p><strong>Weekly maximum magnitude (x6):</strong> Highest magnitude recorded in the last week.</p></li>
+<li><p><strong>Probability of magnitude &gt;=6.0 (x7):</strong> Calculated using probability density distribution.</p></li>
+<li><p><strong>Elapsed time (T):</strong> Time since the last significant seismic event.</p></li>
+<li><p><strong>Coefficient of variation (c):</strong> Ratio between standard deviation and mean time between events.</p></li>
+<li><p><strong>Mean square deviation (&eta;):</strong> Variability in seismic activity.</p></li>
+<li><p><strong>Magnitude deficit (&#8710;M):</strong> Difference between observed and expected magnitudes.</p></li>
+    <li><p><strong>dE12:</strong> This parameter represents the rate of the square root of seismic energy, measuring the speed at which seismic energy is released after applying a square root transformation to reduce its dispersion.</p></li>
+<li><p><strong>Mmean:</strong> This is the mean magnitude, calculated as the average of the magnitudes of the events recorded in the catalog.</p></li>
+<li><p><strong>μ:</strong> This parameter denotes the mean time, representing the average time interval between seismic events.</p></li>
+</ul>
+</section>
+<section id="errors-and-messages">
+<h2>Errors and Messages</h2>
+<ul class="simple">
+<li><p><strong>&ldquo;No data input provided&rdquo;:</strong> A data source must be connected.</p></li>
+<li><p><strong>&ldquo;Missing columns in input data&rdquo;:</strong> The dataset must contain time, latitude, longitude, and mag.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" >
+          <a href="oweqcatalogdeclustering.html" title="EQ Catalog Declustering"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">EarthquakesETL 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">EQ Feature Engineering</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Elena Carrasco Hurtado.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>
