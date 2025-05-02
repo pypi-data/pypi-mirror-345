@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "radcompressor"
+version = "1.0.1"
+description = "A mean-line analysis model for radial compressors"
+readme = "README.md"
+license = {text = "MIT License"}
+authors = [
+  {name = "Cyril Picard", email = "cyrilp@mit.edu"}
+]
+
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "scipy",
+    "CoolProp >= 6.4.3",
+]
+
+[project.optional-dependencies]
+generate = [
+    "click >= 8.0.0",
+    "dask >= 2.0.0",
+    "dask_mpi",
+    "pandas >= 1.4.0",
+    "pyarrow >= 11.0.0",
+]
+test = ["pytest >= 6.0.0"]
+
+[project.urls]
+Homepage = "https://github.com/cyrilpic/radcomp"
+Repository = "https://github.com/cyrilpic/radcomp.git"
+
+[tool.setuptools.packages.find]
+include = ["radcompressor*"]
+exclude = ["tests*"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
