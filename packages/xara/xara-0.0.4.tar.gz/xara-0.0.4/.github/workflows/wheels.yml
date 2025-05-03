@@ -1,0 +1,101 @@
+# https://github.com/pybind/python_example/blob/master/.github/workflows/wheels.yml
+name: Wheels
+
+# workflow_dispatch:
+on:
+# push:
+#   branches:
+#    - master
+
+  pull_request:
+     branches: [master]
+# release:
+#   types:
+#     - published
+
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}
+#   cancel-in-progress: true
+
+jobs:
+# build_sdist:
+#   name: Build SDist
+#   runs-on: ubuntu-latest
+#   steps:
+#   - uses: actions/checkout@v4
+
+#   - name: Build SDist
+#     run: pipx run build --sdist
+
+#   - name: Check metadata
+#     run: pipx run twine check dist/*
+
+#   - uses: actions/upload-artifact@v3
+#     with:
+#       path: dist/*.tar.gz
+
+
+  build_wheels:
+    name: Wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest] #ubuntu-latest, windows-latest]
+        toolchain:
+          - {compiler: gcc, version: 13}
+#         - {compiler: intel, version: '2023.2'}
+#         - {compiler: intel-classic, version: '2021.10'}
+#         - {compiler: nvidia-hpc, version: '23.11'}
+#       include:
+#         - os: ubuntu-latest
+#           toolchain: {compiler: gcc, version: 12}
+        exclude:
+          - os: macos-latest
+            toolchain: {compiler: intel, version: '2023.2'}
+          - os: macos-latest
+            toolchain: {compiler: nvidia-hpc, version: '23.11'}
+#         - os: windows-latest
+#           toolchain: {compiler: nvidia-hpc, version: '23.11'}
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    
+    - uses: fortran-lang/setup-fortran@v1
+      id: setup-fortran
+      with:
+        compiler: ${{ matrix.toolchain.compiler }}
+        version: ${{ matrix.toolchain.version }}
+
+    - uses: pypa/cibuildwheel@v2.16
+      env:
+        CIBW_ARCHS_MACOS: x86_64 # auto universal2
+
+#   - name: Verify clean directory
+#     run: git diff --exit-code
+#     shell: bash
+
+    - name: Upload wheels
+      uses: actions/upload-artifact@v3
+      with:
+        path: wheelhouse/*.whl
+
+
+  upload_all:
+    name: Upload if release
+    needs: [build_wheels] #, build_sdist]
+    runs-on: ubuntu-latest
+#   if: github.event_name == 'release' && github.event.action == 'published'
+
+    steps:
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: artifact
+        path: dist
+
