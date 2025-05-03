@@ -1,0 +1,179 @@
+<Project>
+  <Target Name="PrepareForBuild">
+    <MakeDir Directories="$(IntDir);$(OutDir)" />
+  </Target>
+
+  <Target Name="GetTargetPath" Returns="$(TargetPath)">
+  </Target>
+
+  <Target Name="_CalculateClCompileItems">
+    <PropertyGroup>
+      <_DefaultOptimization Condition="$(Configuration) == 'Debug'">Disabled</_DefaultOptimization>
+      <_DefaultOptimization Condition="$(_DefaultOptimization) == ''">MaximizeSpeed</_DefaultOptimization>
+    </PropertyGroup>
+    <ItemGroup>
+      <ClCompile>
+        <ObjectFile Condition="%(ClCompile.ObjectFile) == ''">$([msbuild]::MakeRelative($(SourceRootDir), %(FullPath))).o</ObjectFile>
+        <Optimization Condition="%(ClCompile.Optimization) == ''">$(_DefaultOptimization)</Optimization>
+        <_OptOption>-Og</_OptOption>
+      </ClCompile>
+      <ClCompile>
+        <_ResolvedOutput>$([System.IO.Path]::Combine($(IntDir), %(ObjectFile)))</_ResolvedOutput>
+        <_OptOption Condition="%(Optimization) == 'Full'">-O2</_OptOption>
+        <_OptOption Condition="%(Optimization) == 'MaximizeSpeed'">-O2</_OptOption>
+        <_OptOption Condition="%(Optimization) == 'MinimizeSize'">-O1</_OptOption>
+      </ClCompile>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_CalculateLinkerInputsItems">
+    <ItemGroup>
+      <_LinkerInputs_WithDups Include="@(Link);%(ClCompile._ResolvedOutput)" />
+    </ItemGroup>
+    <RemoveDuplicates Inputs="@(_LinkerInputs_WithDups)">
+      <Output TaskParameter="Filtered" ItemName="_LinkerInputs" />
+    </RemoveDuplicates>
+  </Target>
+
+  <Target Name="_CalculateFlags">
+    <Message Text="Executing $(PythonConfig). If this fails, you may need to set PYTHON_CONFIG to the correct command." />
+    <PropertyGroup>
+      <_Embed Condition="$(ConfigurationType) == 'Application'">--embed</_Embed>
+    </PropertyGroup>
+    <Exec Command="$(PythonConfig) --cflags $(_Embed)" ConsoleToMsBuild="true" Condition="$(PythonCFlags) == ''"
+          StandardOutputImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="PythonCFlags" />
+    </Exec>
+    <Exec Command="$(PythonConfig) --ldflags $(_Embed)" ConsoleToMsBuild="true" Condition="$(PythonLDFlags) == ''"
+          StandardOutputImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="PythonLDFlags" />
+    </Exec>
+    <Message Text="Calculated CFLAGS=$(PythonCFlags)" />
+    <Message Text="Calculated LDFLAGS=$(PythonLDFlags)" />
+  </Target>
+
+  <Target Name="_ClCompile" Inputs="@(ClCompile)" Outputs="%(ClCompile._ResolvedOutput)">
+    <Message Text="%(ClCompile.Identity) -> %(ClCompile.ObjectFile)" Importance="high" />
+    <ItemGroup>
+      <_IncludeSpec Remove="@(_IncludeSpec)" />
+      <_IncludeSpec Include="%(ClCompile.AdditionalIncludeDirectories)" />
+      <_Preprocessor Remove="@(_Preprocessor)" />
+      <_Preprocessor Include="%(ClCompile.PreprocessorDefinitions)" />
+      <_Preprocessor>
+        <Spec>'-D%(Identity)'</Spec>
+      </_Preprocessor>
+    </ItemGroup>
+    <PropertyGroup>
+      <!-- Base command -->
+      <_Cmd>$(CC_Cmd) -c</_Cmd>
+      <!-- Output file -->
+      <_Cmd>$(_Cmd) -o %(ClCompile._ResolvedOutput)</_Cmd>
+      <!-- Optimization -->
+      <_Cmd>$(_Cmd) %(ClCompile._OptOption)</_Cmd>
+      <!-- Source file -->
+      <_Cmd>$(_Cmd) %(ClCompile.Identity)</_Cmd>
+      <!-- Include directories -->
+      <_IncludeSpec>@(_IncludeSpec, ' -I')</_IncludeSpec>
+      <_Cmd Condition="$(_IncludeSpec) != ''">$(_Cmd) -I$(_IncludeSpec)</_Cmd>
+      <!-- Python flags -->
+      <_Cmd>$(_Cmd) $(PythonCFlags)</_Cmd>
+      <!-- Preprocessor definitions -->
+      <_PreprocessorSpec>@(_Preprocessor->'%(Spec)', ' ')</_PreprocessorSpec>
+      <_Cmd Condition="$(_PreprocessorSpec) != ''">$(_Cmd) $(_PreprocessorSpec)</_Cmd>
+    </PropertyGroup>
+    <Message Importance="Normal" Text="Executing $(_Cmd)" />
+    <Exec Command="$(_Cmd)" />
+    <ItemGroup>
+      <FileWrites Include="%(ClCompile._ResolvedOutput)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="ClCompile" DependsOnTargets="$(BeforeClCompileTargets);_CalculateClCompileItems;_ClCompile">
+  </Target>
+
+  <Target Name="_Link" Inputs="@(_LinkerInputs)" Outputs="$(TargetPath)">
+    <Message Text="-> $([msbuild]::MakeRelative($(OutDir), $(TargetPath)))" Importance="high" />
+    <ItemGroup>
+      <_LibSpec Remove="@(_LibSpec)" />
+      <_LibSpec Include="%(_LinkerInputs.AdditionalLibraryDirectories)" />
+    </ItemGroup>
+    <PropertyGroup>
+      <!-- Base command -->
+      <_Cmd>$(Link_Cmd)</_Cmd>
+      <!-- Output file -->
+      <_Cmd>$(_Cmd) -o $(TargetPath)</_Cmd>
+      <!-- Lib directories -->
+      <_LibSpec>@(_LibSpec, ' -L')</_LibSpec>
+      <_Cmd Condition="$(_LibSpec) != ''">$(_Cmd) -L$(_LibSpec)</_Cmd>
+      <!-- Source files -->
+      <_Cmd>$(_Cmd) @(_LinkerInputs, ' ')</_Cmd>
+      <!-- Python flags -->
+      <_Cmd>$(_Cmd) $(PythonLDFlags)</_Cmd>
+    </PropertyGroup>
+    <Message Importance="Normal" Text="Executing $(_Cmd)" />
+    <Exec Command="$(_Cmd)" />
+    <ItemGroup>
+      <FileWrites Include="$(TargetPath)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="Link" DependsOnTargets="$(BeforeLinkTargets);_CalculateLinkerInputsItems;_Link">
+  </Target>
+
+  <Target Name="GetCopyToOutputDirectoryItems"
+          DependsOnTargets="$(GetCopyToOutputDirectoryItemsDependsOn)"
+          Returns="@(CopyToOutputItems)">
+    <ItemGroup>
+      <CopyToOutputItems Include="@(Content)" Condition="%(Content.CopyToOutputDirectory) == 'Always'" />
+      <CopyToOutputItems_Update Include="@(Content)" Condition="%(Content.CopyToOutputDirectory) == 'PreserveNewest'" />
+
+      <CopyToOutputItems Include="@(None)" Condition="%(None.CopyToOutputDirectory) == 'Always'" />
+      <CopyToOutputItems_Update Include="@(None)" Condition="%(None.CopyToOutputDirectory) == 'PreserveNewest'" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_AssignCopyToOutputDirectoryItems">
+    <ItemGroup>
+      <CopyToOutputItems>
+        <_CopyTo Condition="%(TargetDir) != ''">$(OutDir)/%(TargetDir)/%(TargetNem)%(TargetExt)</_CopyTo>
+        <_CopyTo Condition="%(TargetDir) == ''">$(OutDir)/%(TargetNem)%(TargetExt)</_CopyTo>
+      </CopyToOutputItems>
+      <CopyToOutputItems_Update>
+        <_CopyTo Condition="%(TargetDir) != ''">$(OutDir)/%(TargetDir)/%(TargetNem)%(TargetExt)</_CopyTo>
+        <_CopyTo Condition="%(TargetDir) == ''">$(OutDir)/%(TargetNem)%(TargetExt)</_CopyTo>
+      </CopyToOutputItems_Update>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_MaybeCopyToOutputDirectory"
+          Inputs="@(CopyToOutputItems_Update)"
+          Outputs="%(CopyToOutputItems_Update._CopyTo)">
+    <Copy SourceFiles="@(CopyToOutputItems_Update)"
+          DestinationFiles="%(CopyToOutputItems_Update._CopyTo)"
+          OverwriteReadOnlyFiles="true"
+          Retries="$(CopyRetryCount)" />
+    <ItemGroup>
+      <FileWrites Include="%(CopyToOutputItems_Update._CopyTo)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_ForceCopyToOutputDirectory">
+    <Copy SourceFiles="@(CopyToOutputItems)"
+          DestinationFiles="%(CopyToOutputItems._CopyTo)"
+          OverwriteReadOnlyFiles="true"
+          Retries="$(CopyRetryCount)" />
+    <ItemGroup>
+      <FileWrites Include="%(CopyToOutputItems._CopyTo)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_CopyToOutputDirectory"
+          DependsOnTargets="GetCopyToOutputDirectoryItems;_AssignCopyToOutputDirectoryItems;_MaybeCopyToOutputDirectory;_ForceCopyToOutputDirectory">
+  </Target>
+
+  <Target Name="CoreBuild" DependsOnTargets="_CalculateFlags;PrepareForBuild;$(BeforeBuildGenerateSourcesTargets);ClCompile;Link;_CopyToOutputDirectory" />
+  <Target Name="Build" DependsOnTargets="CoreBuild;_SaveFileWrites" />
+  <Target Name="Clean" DependsOnTargets="_CleanFileWrites">
+    <RemoveDir Directories="$(IntDir)" />
+  </Target>
+</Project>

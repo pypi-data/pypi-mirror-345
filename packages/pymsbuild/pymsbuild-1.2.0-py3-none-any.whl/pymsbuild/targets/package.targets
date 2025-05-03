@@ -1,0 +1,158 @@
+<Project>
+  <!-- Managing dependencies -->
+  <Target Name="_AssignProjectProperties">
+    <ItemGroup>
+      <Project>
+        <Properties Condition="%(Project.Properties) == ''"></Properties>
+        <IntDir Condition="%(Project.IntDir) == ''">$([msbuild]::EnsureTrailingSlash(`$(IntDir)`))%(Project.TargetName)</IntDir>
+        <ParentNamespace Condition="%(Project.ParentNamespace) == ''">$(RootNamespace)</ParentNamespace>
+        <PyMSBuild_Properties>
+        _ProjectBuildTarget=$(_ProjectBuildTarget);
+        IntDir=$([msbuild]::EnsureTrailingSlash(`%(IntDir)`));
+        SourceRootDir=$([msbuild]::EnsureTrailingSlash(`$(SourceRootDir)`));
+        _TargetDir=%(TargetDir);
+        SourceDir=$([msbuild]::EnsureTrailingSlash($([msbuild]::EnsureTrailingSlash($(SourceDir)))%(TargetDir)));
+        OutDir=$([msbuild]::EnsureTrailingSlash($([msbuild]::EnsureTrailingSlash($(OutDir)))%(TargetDir)))
+        </PyMSBuild_Properties>
+      </Project>
+      <Project>
+        <PyMSBuild_Properties Condition="%(Project.ParentNamespace) != ''">_ParentNamespace=%(Project.ParentNamespace);%(PyMSBuild_Properties)</PyMSBuild_Properties>
+        <PyMSBuild_Properties Condition="%(Project.RootNamespace) != ''">RootNamespace=%(Project.RootNamespace);%(PyMSBuild_Properties)</PyMSBuild_Properties>
+      </Project>
+    </ItemGroup>
+    <ItemGroup>
+      <Project>
+        <Properties Condition="%(Properties) != ''">%(PyMSBuild_Properties);%(Properties)</Properties>
+        <Properties Condition="%(Properties) == ''">%(PyMSBuild_Properties)</Properties>
+      </Project>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="BuildDependencies" DependsOnTargets="_AssignProjectProperties" Condition="@(Project) != ''">
+    <Message Text="Building %(Project.Name) with %(Project.Properties)" Importance="$(_Low)" />
+    <MSBuild Projects="@(Project)" Targets="Build" Properties="%(Project.Properties)" />
+  </Target>
+
+  <Target Name="CleanDependencies" DependsOnTargets="_AssignProjectProperties" Condition="@(Project) != ''">
+    <MSBuild Projects="@(Project)" Targets="Clean" Properties="%(Project.Properties)" />
+  </Target>
+
+  <!-- pyproject.toml support -->
+  <Target Name="_WritePyprojectToml" Condition="$(_PyprojectTomlContent) != ''">
+    <ItemGroup Condition="@(PyprojectToml) == ''">
+      <FileWrites Include="$(IntDir)pyproject.toml" />
+      <PyprojectToml Include="$(IntDir)pyproject.toml" />
+    </ItemGroup>
+    <ItemGroup>
+      <PyprojectToml>
+        <_Existing></_Existing>
+        <_Existing Condition="Exists(%(FullPath))">$([System.IO.File]::ReadAllText('%(FullPath)'))</_Existing>
+      </PyprojectToml>
+    </ItemGroup>
+    <WriteLinesToFile Lines="$(_PyprojectTomlContent)"
+                      File="@(PyprojectToml)"
+                      Overwrite="true"
+                      Condition="$(_PyprojectTomlContent) != %(_Existing)" />
+    <Message Text="Updated @(PyprojectToml)" Importance="$(_Low)"
+             Condition="$(_PyprojectTomlContent) != %(_Existing)" />
+  </Target>
+  
+  <Target Name="_GetPyprojectToml" DependsOnTargets="_WritePyprojectToml"
+          Condition="$(IncludePyprojectToml) == 'true'">
+    <ItemGroup>
+      <Sdist Include="@(PyprojectToml)">
+        <RelativeSource>pyproject.toml</RelativeSource>
+      </Sdist>
+      <Sdist Include="$(SourceRootDir)/pyproject.toml" Condition="@(PyprojectToml) == ''">
+        <RelativeSource>pyproject.toml</RelativeSource>
+      </Sdist>
+    </ItemGroup>
+  </Target>
+
+  <!-- Layout support -->
+  <Target Name="_Layout_Mkdir">
+    <ItemGroup>
+      <_Outputs Include="%(_DistFiles.Destination)" />
+    </ItemGroup>
+    <MakeDir Directories="%(_Outputs.RootDir)%(_Outputs.Directory)" />
+  </Target>
+
+  <Target Name="_Layout_Copy" Inputs="@(_DistFiles)" Outputs="%(_DistFiles.Destination)">
+    <ItemGroup>
+      <FileWrites Include="%(_DistFiles.Destination)" />
+    </ItemGroup>
+    <Copy SourceFiles="%(_DistFiles.FullPath)"
+          DestinationFiles="%(_DistFiles.Destination)"
+          UseHardLinksIfPossible="true">
+      <Output TaskParameter="CopiedFiles" ItemName="_CopiedDistFiles" />
+    </Copy>
+  </Target>
+
+  <Target Name="_Layout_Calculate">
+    <ItemGroup>
+      <_DistFiles Remove="@(_DistFiles)" />
+      <_DistFiles Include="@(PyMSBuild_PackageFiles)">
+        <Destination Condition="%(PyMSBuild_PackageFiles.Destination) == ''">$([msbuild]::EnsureTrailingSlash($([msbuild]::EnsureTrailingSlash($(LayoutDir)))%(TargetDir)))%(TargetName)%(TargetExt)</Destination>
+      </_DistFiles>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_LayoutSdist_Calculate">
+    <ItemGroup>
+      <_DistFiles Remove="@(_DistFiles)" />
+      <_DistFiles Include="@(PyMSBuild_SDistFiles)">
+        <Destination Condition="%(PyMSBuild_SDistFiles.Destination) == ''">$([msbuild]::EnsureTrailingSlash($(SdistDir)))%(RelativeSource)</Destination>
+      </_DistFiles>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_LayoutInPlace_Calculate">
+    <ItemGroup>
+      <_DistFiles Remove="@(_DistFiles)" />
+      <_DistFiles Include="@(PyMSBuild_LayoutFiles)" Condition="%(IncludeInLayout) == 'true'">
+        <Destination Condition="%(PyMSBuild_LayoutFiles.Destination) == ''">$([msbuild]::EnsureTrailingSlash($([msbuild]::EnsureTrailingSlash($(_SourceLayoutDir)))%(TargetDir)))%(TargetName)%(TargetExt)</Destination>
+      </_DistFiles>
+      <!-- Remove anything that is being copied directly from the source tree -->
+      <_Removing Include="@(_DistFiles)" Condition="%(FullPath) == %(Destination)" />
+      <_DistFiles Remove="@(_Removing)" />
+    </ItemGroup>
+  </Target>
+
+
+  <PropertyGroup>
+    <CoreBuildTargetName Condition="$(CoreBuildTargetName) == ''">CoreBuild</CoreBuildTargetName>
+  </PropertyGroup>
+
+  <Target Name="Layout"
+          DependsOnTargets="
+            PrepareForBuild;BuildDependencies;$(CoreBuildTargetName);GetPackageFiles;
+            _Layout_Calculate;
+            _Layout_Mkdir;_Layout_Copy;_SaveFileWrites">
+    <Message Text="Copied to layout:" Importance="high" Condition="@(_CopiedDistFiles) != ''" />
+    <Message Text=" - %(_CopiedDistFiles.Identity)" Importance="high" Condition="@(_CopiedDistFiles) != ''" />
+  </Target>
+
+  <Target Name="LayoutSdist"
+          DependsOnTargets="
+            PrepareForBuild;_GetPyprojectToml;GetSdistFiles;
+            _LayoutSdist_Calculate;
+            _Layout_Mkdir;_Layout_Copy;_SaveFileWrites">
+    <Message Text="Copied to layout:" Importance="high" Condition="@(_CopiedDistFiles) != ''" />
+    <Message Text=" - %(_CopiedDistFiles.Identity)" Importance="high" Condition="@(_CopiedDistFiles) != ''" />
+  </Target>
+
+  <Target Name="LayoutInPlace"
+          DependsOnTargets="
+            PrepareForBuild;BuildDependencies;$(CoreBuildTargetName);GetLayoutFiles;
+            _LayoutInPlace_Calculate;
+            _Layout_Mkdir;_Layout_Copy;_SaveFileWrites">
+    <Message Text="Copied to source tree:" Importance="high" Condition="@(_CopiedDistFiles) != ''" />
+    <Message Text=" - %(_CopiedDistFiles.Identity)" Importance="high" Condition="@(_CopiedDistFiles) != ''" />
+  </Target>
+
+  <Target Name="Relayout" DependsOnTargets="Clean;Layout" />
+  <Target Name="RelayoutSdist" DependsOnTargets="Clean;LayoutSdist" />
+  <Target Name="RelayoutInPlace" DependsOnTargets="Clean;LayoutInPlace" />
+
+  <Import Project="$(MSBuildThisFileDirectory)package.override.targets" Condition="$(SuppressBasicTargetOverrides) != 'true'" />
+</Project>

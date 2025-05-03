@@ -1,0 +1,20 @@
+<Project>
+  <PropertyGroup>
+    <_Low>low</_Low>
+    <_Sep>\</_Sep>
+    <_Sep Condition="$([msbuild]::IsOSUnixLike())">/</_Sep>
+    <!-- Use EscapeSep after an EnsureTrailingSlash to double the backslash when needed -->
+    <_EscapeSep Condition="$([msbuild]::EnsureTrailingSlash(`a`)) == 'a\'">\</_EscapeSep>
+    <_PathSep>;</_PathSep>
+    <_PathSep Condition="$([msbuild]::IsOSUnixLike())">:</_PathSep>
+
+    <LayoutDir Condition="$(LayoutDir) == ''">layout$(_Sep)</LayoutDir>
+    <OutDir Condition="$(OutDir) == ''">bin$(_Sep)</OutDir>
+    <IntDir Condition="$(IntDir) == ''">temp$(_Sep)</IntDir>
+
+    <BuildInPlaceDependsOn>$(BuildInPlaceDependsOn);Build;CalculateInPlace;_MkdirInPlace;_CopyInPlace</BuildInPlaceDependsOn>
+    <BuildSdistDependsOn>$(BuildSdistDependsOn);BuildDependencies</BuildSdistDependsOn>
+    <GetPackageFilesTargets>$(GetPackageFilesTargets);_GetPackageFilesFromProjects</GetPackageFilesTargets>
+    <GetSdistFilesTargets>$(GetSdistFilesTargets);_GetSdistFilesFromProjects</GetSdistFilesTargets>
+  </PropertyGroup>
+</Project>
