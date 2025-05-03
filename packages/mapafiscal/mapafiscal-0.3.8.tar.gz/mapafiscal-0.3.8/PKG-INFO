@@ -1,0 +1,116 @@
+Metadata-Version: 2.1
+Name: mapafiscal
+Version: 0.3.8
+Summary: Gerador de mapa fiscal com base em regras fiscais
+Home-page: https://github.com/ismaelnjr/mapafiscal-project.git
+Author: Ismael Nascimento
+Author-email: ismaelnjr@icloud.com
+License: MIT
+Keywords: mapa fiscal tributario receita federal
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+
+# Mapa Fiscal TributÃ¡rio
+
+## DescriÃ§Ã£o
+O projeto **Mapa Fiscal TributÃ¡rio** Ã© uma soluÃ§Ã£o desenvolvida para gerenciar cenÃ¡rios e operaÃ§Ãµes fiscais, considerando diferentes contextos tributÃ¡rios como classe fiscal do produto, natureza da operaÃ§Ã£o e estados de origem e destino. Ele foi projetado para ser altamente configurÃ¡vel e modular, permitindo o uso em diversos regimes tributÃ¡rios e perfis de contribuintes.
+
+---
+
+## Principais Componentes
+
+### 1. **Modelos de Dados**
+- **`MapaFiscal`**: Representa o mapa fiscal, com classes fiscais, cenÃ¡rios e operaÃ§Ãµes.
+- **`ClasseFiscal`**: Detalha a classificaÃ§Ã£o fiscal de produtos, como NCM, origem, segmento e alÃ­quotas.
+- **`CenarioFiscal`**: Representa configuraÃ§Ãµes especÃ­ficas para operaÃ§Ãµes fiscais em determinado contexto.
+- **`OperacaoFiscal`**: Define detalhes operacionais como CFOP, CST, alÃ­quotas de ICMS, PIS, COFINS e IPI.
+
+### 2. **Regras Fiscais**
+- **`RegraFiscalProcessor`**: Processa as regras tributÃ¡rias com base no contexto fiscal e nos parÃ¢metros fornecidos, calculando alÃ­quotas de ICMS, PIS, COFINS e IPI.
+
+### 3. **Contextos Fiscais**
+- **`ContextoFiscal`**: Interface base para diferentes fontes de dados fiscais.
+- **`JSONContexto`**: ImplementaÃ§Ã£o que carrega dados fiscais a partir de arquivos JSON.
+- **`ContextoFiscalFactory`**: Fabrica contextos fiscais dinamicamente com base em registros.
+
+---
+
+## Casos de Uso
+
+### CenÃ¡rio: Gerar um Mapa Fiscal com Base em um Arquivo JSON
+
+#### 1. Inicializar repositorio,
+Registre um contexto fiscal baseado no formato JSON:
+```python
+    from mapafiscal.infrastructure.persistence import JSONRepositorio
+    from mapafiscal.infrastructure.admin import iniciar_repositorio
+
+    repositorio = JSONRepositorio(".\\etc")        
+    iniciar_repositorio(repositorio)   
+```
+
+#### 2. Construir o Mapa Fiscal
+Use o processador de regras fiscais para criar um mapa fiscal:
+```python
+from mapafiscal.application.cenario_builder import CenarioBuilder
+
+builder = CenarioBuilder(repositorio)
+mapa_fiscal = builder.build_from_file("cenario_example.json")     
+```
+
+#### 3. Exportar Resultado
+Exporte os resultados para um arquivo Excel:
+```python
+from mapafiscal.application import ExcelExporter
+
+excel = ExcelExporter(mapa_fiscal)
+excel.to_excel("output.xlsx")
+```
+
+---
+
+## Como Executar
+
+### Executar via Linha de Comando
+O script 'create_env.py' permite criar o repositorio de dados via terminal:
+```bash
+python create_env.py -r caminho/para/repositorio
+```
+A execuÃ§Ã£o tambÃ©m irÃ¡ criar o arquivo cenario_example.json.
+Este arquivo pode ser utilizado para efetuar seus primeiros testes com o mapa fiscal.
+
+O script `build_cenario.py` permite gerar um mapa fiscal diretamente via terminal:
+```bash
+python build_cenario.py --filename caminho/para/dados.json
+```
+Este comando gerarÃ¡ um arquivo `mapafiscal.xlsx` contendo os cenÃ¡rios processados.
+
+---
+
+## Estrutura de Arquivos do Projeto
+- **`common.py`**: ContÃ©m enums e classes comuns usadas em todo o projeto.
+- **`model.py`**: Define os modelos de dados principais.
+- **`contexto_fiscal.py`**: Define a interface base e funcionalidades gerais para contextos fiscais.
+- **`contexto_factory.py`**: Permite criar contextos fiscais dinamicamente.
+- **`contexto_registry.py`**: Gerencia registros de diferentes implementaÃ§Ãµes de contexto.
+- **`json_contexto.py`**: ImplementaÃ§Ã£o de contexto fiscal baseado em JSON.
+- **`mapa_fiscal_processor.py`**: Processa cenÃ¡rios e operaÃ§Ãµes fiscais.
+- **`build_cenario.py`**: Script para gerar mapas fiscais via terminal.
+
+---
+
+## ContribuiÃ§Ãµes
+ContribuiÃ§Ãµes sÃ£o bem-vindas! Para relatar problemas ou sugerir melhorias, crie uma issue ou envie um pull request.
+
+---
+
+## LicenÃ§a
+Este projeto estÃ¡ licenciado sob a LicenÃ§a MIT. Veja o arquivo LICENSE para mais detalhes.
