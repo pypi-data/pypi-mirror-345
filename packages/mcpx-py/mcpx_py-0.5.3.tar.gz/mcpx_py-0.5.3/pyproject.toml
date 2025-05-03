@@ -1,0 +1,27 @@
+[project]
+name = "mcpx-py"
+version = "0.5.3"
+description = "An mcp.run client for Python"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mcpx-pydantic-ai>=0.5.0",
+    "psutil>=7.0.0",
+    "python-dotenv>=1.0.1",
+]
+
+[tool.uv]
+package = true
+dev-dependencies = [
+    "python-lsp-ruff>=2.2.2",
+    "python-lsp-server>=1.12.0",
+    "ruff>=0.8.1",
+]
+
+[project.scripts]
+mcpx-client = "mcpx_py.__main__:main"
+
+# Workaround for uv/setuptools version mismatch
+# https://github.com/astral-sh/uv/issues/9513#issuecomment-2519527822
+[tool.setuptools]
+license-files = []
