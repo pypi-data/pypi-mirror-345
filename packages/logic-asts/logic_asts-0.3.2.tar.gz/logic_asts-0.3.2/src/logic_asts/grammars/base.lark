@@ -1,0 +1,32 @@
+?start: expr
+
+?expr: impl_expr
+
+?impl_expr: xor_expr 
+          | xor_expr "->" impl_expr  -> implies
+          | xor_expr "<->" impl_expr -> equiv
+
+?xor_expr: sum
+         | xor_expr ("^"|"xor") sum  -> xor
+
+?sum: product
+    | sum ("|"|"||") product         -> add
+
+?product: unary
+        | product ("&"|"&&") unary    -> mul
+
+?unary: atom
+      | ("!"|"~") unary        -> neg
+
+?atom: ("0"|"1"|"TRUE"|"FALSE")      -> literal
+     | identifier                    -> var
+     | "(" expr ")"
+
+identifier: CNAME | ESCAPED_STRING
+
+ESCAPED_STRING:  /(".*?(?<!\\)(\\\\)*?"|'.*?(?<!\\)(\\\\)*?')/i
+
+%import common.CNAME
+%import common.WS
+
+%ignore WS
