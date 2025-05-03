@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Regex matching UUID-4 with either dashes or underscores
+UUID_REGEX='[0-9a-f]{8}([-_][0-9a-f]{4}){3}[-_][0-9a-f]{12}'
+
+print_help() {
+    cat <<EOF
+Usage: $(basename "$0") [-u|--uuid] [-U|--no-uuid] [-l|--min-length N] [-L|--max-length N] [regex]
+
+Get a list of table names from QuestDB.
+
+Options:
+  -h, --help           Show this help message and exit
+  -u, --uuid           Only tables containing a UUID-4 in their name
+  -U, --no-uuid        Only tables NOT containing a UUID-4 in their name
+  -l, --min-length N   Only tables with name length >= N
+  -L, --max-length N   Only tables with name length <= N
+
+You may combine one UUID flag with length filters and/or an additional regex.
+-u and -U are mutually exclusive.
+
+Examples:
+  # list all table names
+  $(basename "$0")
+
+  # list only tables containing a UUID-4
+  $(basename "$0") -u
+
+  # list only tables NOT containing a UUID-4
+  $(basename "$0") -U
+
+  # list tables with name length between 5 and 20
+  $(basename "$0") -l 5 -L 20
+
+  # combine regex, UUID, and length filters
+  $(basename "$0") -u -l 10 equities_
+EOF
+}
+
+# Default flags and filters
+uuid_flag=false
+no_uuid_flag=false
+min_length=""
+max_length=""
+
+# Parse options
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+    -h | --help)
+        print_help
+        exit 0
+        ;;
+    -u | --uuid)
+        uuid_flag=true
+        shift
+        ;;
+    -U | --no-uuid)
+        no_uuid_flag=true
+        shift
+        ;;
+    -l | --min-length)
+        if [[ -n "${2:-}" ]]; then
+            min_length="$2"
+            shift 2
+        else
+            echo "Error: --min-length requires a number" >&2
+            exit 1
+        fi
+        ;;
+    -L | --max-length)
+        if [[ -n "${2:-}" ]]; then
+            max_length="$2"
+            shift 2
+        else
+            echo "Error: --max-length requires a number" >&2
+            exit 1
+        fi
+        ;;
+    --)
+        shift
+        break
+        ;;
+    -*)
+        echo "Unknown option: $1" >&2
+        print_help
+        exit 1
+        ;;
+    *)
+        break
+        ;;
+    esac
+
+done
+
+# Enforce mutual exclusivity of UUID flags
+if [[ "$uuid_flag" == true && "$no_uuid_flag" == true ]]; then
+    echo "Error: options -u|--uuid and -U|--no-uuid are mutually exclusive." >&2
+    exit 1
+fi
+
+# Positional regex (if any)
+regex="${1:-}"
+
+# Build WHERE clauses
+conds=()
+if [[ -n "$regex" ]]; then
+    conds+=("table_name ~ '${regex}'")
+fi
+if [[ "$uuid_flag" == true ]]; then
+    conds+=("table_name ~ '${UUID_REGEX}'")
+elif [[ "$no_uuid_flag" == true ]]; then
+    conds+=("table_name !~ '${UUID_REGEX}'")
+fi
+if [[ -n "$min_length" ]]; then
+    conds+=("length(table_name) >= ${min_length}")
+fi
+if [[ -n "$max_length" ]]; then
+    conds+=("length(table_name) <= ${max_length}")
+fi
+
+# Assemble WHERE clause
+if ((${#conds[@]})); then
+    joined=$(printf '%s AND ' "${conds[@]}")
+    joined=${joined% AND }
+    where_clause="WHERE ${joined}"
+else
+    where_clause=""
+fi
+
+# Construct final query
+query="SELECT table_name FROM tables ${where_clause}"
+
+# Execute and clean up output
+qdb-cli exp "$query" |
+    tail -n +2 | # drop header row
+    tr -d '"' |  # strip quotes
+    tr -d '\r'
