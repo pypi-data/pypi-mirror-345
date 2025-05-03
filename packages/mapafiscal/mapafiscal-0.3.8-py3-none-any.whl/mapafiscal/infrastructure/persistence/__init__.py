@@ -1,0 +1,1 @@
+from mapafiscal.infrastructure.persistence.json_repository import JSONRepository
