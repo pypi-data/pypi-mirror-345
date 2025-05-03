@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "importspy"
+version = "0.3.3"
+description = "ImportSpy ensures structural integrity, runtime compliance, and security for external modules, preventing inconsistencies and enforcing controlled execution."  
+license = "MIT"
+authors = ["Luca Atella <atellaluca@outlook.it>"]
+readme = "README.rst"
+packages = [{include = "importspy", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.9.2"
+ruamel-yaml = "^0.18.10"
+typer = "^0.15.2"
+
+
+[tool.poetry.group.dev.dependencies]
+furo = "^2024.8.6"
+sphinx = ">=5,<9"
+pytest = "^8.3.3"
+sphinx-tabs = "^3.4.7"
+
+[tool.poetry.urls]
+Repository = "https://github.com/atellaluca/importspy"
+Documentation = "https://importspy.readthedocs.io"
+
+[tool.poetry.scripts]
+importspy = "importspy.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
