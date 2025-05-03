@@ -1,0 +1,98 @@
+Metadata-Version: 2.1
+Name: ovos-plugin-common-play
+Version: 1.2.0a1
+Summary: OVOS common play audio service adapter plugin
+Home-page: https://github.com/OpenVoiceOS/ovos-ocp-audio-plugin
+Author: JarbasAi
+Author-email: jarbasai@mailfence.com
+License: Apache-2.0
+Keywords: ovos audio plugin
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.0
+Classifier: Programming Language :: Python :: 3.1
+Classifier: Programming Language :: Python :: 3.2
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ovos-plugin-manager<1.0.0,>=0.0.26
+Requires-Dist: ovos-bus-client<2.0.0,>=0.0.7
+Requires-Dist: ovos-utils<1.0.0,>=0.1.0
+Requires-Dist: ovos-workshop<4.0.0,>=2.4.2
+Requires-Dist: padacioso<2.0.0,>=0.1.1
+Requires-Dist: dbus-next
+Provides-Extra: extractors
+Requires-Dist: ovos-ocp-youtube-plugin<1.0.0,>=0.0.1; extra == "extractors"
+Requires-Dist: ovos-ocp-rss-plugin<1.0.0,>=0.0.2; extra == "extractors"
+Requires-Dist: ovos-ocp-m3u-plugin<1.0.0,>=0.0.1; extra == "extractors"
+Requires-Dist: ovos-ocp-news-plugin<1.0.0,>=0.1.0; extra == "extractors"
+Requires-Dist: ovos-audio-plugin-simple<1.0.0,>=0.0.1; extra == "extractors"
+Requires-Dist: ovos-ocp-files-plugin~=0.13; extra == "extractors"
+
+# OCP - OVOS Common Play
+
+![](./ovos_plugin_common_play/ocp/res/desktop/OCP.png) 
+
+
+OVOS Common Play is a full-fledged voice media player packaged as a mycroft audio plugin.
+
+OCP handles the whole voice integration and playback functionality, it also integrates with external players via MPRIS
+
+Skills provide search results, think about them as media providers/catalogs for OCP
+
+You can find OCP skills in the [awesome-ocp-skills](https://github.com/OpenVoiceOS/awesome-ocp-skills) list 
+
+
+## Configuration
+
+mycroft.conf
+
+```json
+{
+  "Audio": {
+    "backends": {
+      "local": {
+        "type": "ovos_common_play",
+        "active": true
+      },
+      "simple": {
+        "type": "ovos_audio_simple",
+        "active": true
+      }
+    },
+    "default-backend": "local"
+  }
+}
+```
+
+## Standalone Mode
+
+> **DEPRECATED**: valid for ovos-core 0.0.7 only!
+
+Normally OCP is initialized and started by [ovos-audio](https://github.com/OpenVoiceOS/ovos-audio).
+
+However, in some situations you may want to run OCP in standalone mode.
+
+For example, when running Hivemind Core with Hivemind Satellites, you want to
+run OCP at the Core, not the Satellite. You cannot run OCP on the satellite
+because it cannot register its intents. So you want to run OCP in standalone
+mode near to the Core.
+
+How you do this depends on your setup. This packages provides the console script
+`ovos-ocp-standalone`. So running in standalone mode could be as simple as:
+
+``` shell
+pip install ovos-plugin-common-play
+ovos-ocp-standalone
+```
+
+It will read the configuration from `~/.config/mycroft/mycroft.conf` just like
+all other OVOS applications.
