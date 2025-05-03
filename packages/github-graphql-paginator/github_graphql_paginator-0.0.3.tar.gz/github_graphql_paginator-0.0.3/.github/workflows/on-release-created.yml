@@ -1,0 +1,49 @@
+name: On Release Created
+
+on:
+  push:
+    tags: ['*']
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash -v {0}
+
+jobs:
+  publish-to-pypi:
+    # push can be on branch or tag; we want only tags
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Get all to be sure we can always grab the latest tag
+
+      - name: Checkout Latest Tag
+        id: tag
+        run: |-
+          git fetch --tags;
+          latestTag=$(git describe --tags "$(git rev-list --tags --max-count=1)");
+          git checkout $latestTag
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install Dependencies
+        run: pip install --upgrade build twine packaging
+
+      - name: Build
+        run: python -m build
+
+      - name: Check Package
+        run: twine check dist/*
+
+      - name: Publish to PyPi
+        run: twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
