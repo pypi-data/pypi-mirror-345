@@ -1,0 +1,3445 @@
+openapi: 3.0.1
+info:
+  version: wbd
+  title: Wildberries cifrovoi
+  description: |
+    Po voprosam raboty s WBD API, obrahaites v <a href="https://digital.wildberries.ru/support" target="_blank">tehniheskuu podderhku</a>.
+  x-file-name: wbd
+security:
+  - ApiKeyAuth: []
+tags:
+  - name: Vvedenie WBD
+    description: ''
+  - name: Avtorizacia WBD
+    description: ''
+  - name: Predlohenia
+    description: ''
+  - name: Kontent
+    description: ''
+  - name: Kluhi aktivacii
+    description: ''
+paths:
+  /api/v1/keys-api/keys:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Dobavit kluhi aktivacii
+      description: |
+        Maksimum 50 zaprosov v sekundu
+
+        Metod pozvolaet dobavit kluhi dla predlohenia po ID.
+
+        <div class="description_important">
+          Predlohenie dolhno byt iz kategorii (<code>section</code>):
+          <ul>
+              <li>Kluhi aktivacii — <code>3</code></li>
+              <li>Kupony i razvlehenia — <code>12</code></li>
+              <li>Podarohnye sertifikaty — <code>13</code></li>
+          </ul>
+        </div>
+      operationId: LoadKeys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Spisok kluhei i ID predlohenia
+              $ref: '#/components/schemas/KeysLoadRequest'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kluhi aktivacii
+      responses:
+        '200':
+          description: Kluhi uspehno dobavleny.
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '403':
+          description: Dostup zaprehen.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails403'
+        '404':
+          description: Predlohenie ne naĭdeno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails404'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+    delete:
+      summary: Udalit kluhi aktivacii
+      description: |
+        Maksimum 100 zaprosov v sekundu
+
+        Metod pozvolaet udalit kluhi aktivacii po ih identifikatoram
+
+        <div class="description_important">
+          Dostup k metodu predostavlaetsa herez zaavku v <a href="https://digital.wildberries.ru/support" target="_black">tehniheskuu podderhku</a>.
+        </div>
+      operationId: DeleteKeysByIDs
+      parameters:
+        - name: ids
+          description: Spisok identifikatorov kluhei
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kluhi aktivacii
+      responses:
+        '200':
+          description: Kluhi uspehno udaleny.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeysDeleteResponse'
+              example:
+                statuses:
+                  - id: 12345
+                    code: '200'
+                    message: ok
+                    status: true
+                  - id: 12346
+                    code: '200'
+                    message: ok
+                    status: true
+        '207':
+          description: Nekotorye kluhi ne udalos udalit.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeysDeleteResponse'
+              example:
+                statuses:
+                  - id: 42
+                    code: '200'
+                    message: ok
+                    status: true
+                  - id: 58
+                    code: '409'
+                    message: Kluh uhe byl prodan.
+                    status: false
+                  - id: 59
+                    code: '409'
+                    message: Kluh uhe byl zarezervirovan.
+                    status: false
+                  - id: 78
+                    code: '200'
+                    message: Kluh uhe byl udalen.
+                    status: true
+        '400':
+          description: Nevernye dannye v zaprose.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '403':
+          description: Dostup zaprehen.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails403'
+        '404':
+          description: Resurs ne naĭden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails404'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/keys-api/keys/redeemed:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    get:
+      summary: Poluhit kuplennye kluhi
+      description: |
+        Maksimum 100 zaprosov v sekundu
+
+        Metod pozvolaet poluhit spisok kuplennyh kluhei s ispolzovaniem filtracii.
+
+        ### Opisanie parametrov filtracii:
+
+        - `offer_id` — Filtracia po ID predlohenia. Pozvolaet vybrat kluhi, svazannye s opredelennym predloheniem.
+        - `skip` — Smehenie. Ukazyvaet, skolko zapisei nuhno propustit v rezultiruuhem nabore.<br/>
+        **Naprimer**, esli `skip` ravno 20, to vyborka nahnetsa s 21-i zapisi.
+        - `take` — Kolihestvo zapisei dla poluhenia. Ukazyvaet, skolko kluhei dolhno byt vozvraheno v otvete.<br/>
+        **Naprimer**, esli `take` ravno 10, to v otvete budet ne bolee 10 zapisei.
+        - `date_from` — Filtracia po date pokupki nahinaa s ukazannoi daty (vkluhitelno).<br/> Format daty: **RFC3339**.
+        - `date_to` — Filtracia po date pokupki do ukazannoi daty (ne vkluhitelno).<br/> 
+        Format daty: **RFC3339**.
+      operationId: GetRedeemedKeys
+      parameters:
+        - name: offer_id
+          description: Filtracia po ID predlohenia. Pozvolaet vybrat kluhi, svazannye s opredelennym predloheniem.
+          in: query
+          schema:
+            type: integer
+            format: int64
+            x-nullable: false
+        - name: skip
+          description: Smehenie. Ukazyvaet, skolko zapisei nuhno propustit v rezultiruuhem nabore. Ispolzuetsa dla realizacii paginacii.
+          in: query
+          schema:
+            default: 0
+            type: integer
+            format: int64
+          x-nullable: false
+        - name: take
+          description: Kolihestvo zapisei dla poluhenia. Ukazyvaet, skolko kluhei dolhno byt vozvraheno v otvete.
+          in: query
+          schema:
+            default: 50
+            type: integer
+            format: int64
+          x-nullable: false
+        - name: date_from
+          description: |
+            Filtracia po date pokupki nahinaa s ukazannoi daty (vkluhitelno).
+
+            Format daty: **RFC3339** (`2023-06-17T19:20:30Z`).
+          in: query
+          schema:
+            type: string
+            x-nullable: false
+        - name: date_to
+          description: |
+            Filtracia po date pokupki do ukazannoi daty (ne vkluhitelno).
+
+            Format daty: **RFC3339** (`2024-10-18T19:20:30Z`).
+          in: query
+          schema:
+            type: string
+            x-nullable: false
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kluhi aktivacii
+      responses:
+        '200':
+          description: |
+            Zapros uspehno vypolnen.</br>
+            Otvet soderhit spisok kuplennyh kluhei.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeysRedeemedResponseList'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/offer/keys/{offer_id}:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    get:
+      summary: Poluhit kolihestvo kluhei dla predlohenia
+      description: |
+        Maksimum 100 zaprosov v sekundu
+
+        Metod pozvolaet poluhit informaciu o kolihestve kluhei u konkretnogo predlohenia.
+      operationId: offerKeysCountGet
+      parameters:
+        - name: offer_id
+          required: true
+          description: ID predlohenia
+          in: path
+          schema:
+            type: integer
+            format: int64
+            x-nullable: false
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kluhi aktivacii
+      responses:
+        '200':
+          description: |
+            Zapros uspehno vypolnen.</br>
+            Otvet soderhit informaciu o kolihestve kluhei.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeysCountResponse'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '404':
+          description: Predlohenie ne naĭdeno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails404'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/offer/keys/{offer_id}/list:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    get:
+      summary: Poluhit spisok kluhei
+      description: |
+        Maksimum 100 zaprosov v sekundu
+
+        Metod pozvolaet poluhit spisok zagruhennyh vami kluhei dla konkretnogo predlohenia.
+
+        <div class="description_important">
+          Dostup k metodu predostavlaetsa herez zaavku v <a href="https://digital.wildberries.ru/support" target="_black">tehniheskuu podderhku</a>.
+        </div>
+      operationId: offerKeysGet
+      parameters:
+        - name: offer_id
+          description: ID predlohenia
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+            x-nullable: false
+        - name: take
+          description: Kolihestvo zapisei dla poluhenia. Ukazyvaet, skolko kluhei dolhno byt vozvraheno v otvete
+          in: query
+          schema:
+            default: 50
+            type: integer
+            format: uint32
+            x-nullable: false
+        - name: skip
+          description: Smehenie. Ukazyvaet, skolko zapisei nuhno propustit v rezultiruuhem nabore. Ispolzuetsa dla realizacii paginacii
+          in: query
+          schema:
+            default: 0
+            type: integer
+            format: uint32
+            x-nullable: false
+        - name: deleted
+          in: query
+          description: Ukazyvaet, budut li v otvete prisutstvovat udalennye kluhi
+          schema:
+            default: true
+            type: boolean
+            x-nullable: false
+        - name: sold
+          in: query
+          description: Ukazyvaet, budut li v otvete prisutstvovat prodannye kluhi
+          schema:
+            default: true
+            type: boolean
+            x-nullable: false
+        - name: reserved
+          in: query
+          description: Ukazyvaet, budut li v otvete prisutstvovat zarezervirovannye kluhi
+          schema:
+            default: true
+            type: boolean
+            x-nullable: false
+        - name: expired
+          in: query
+          description: Ukazyvaet, budut li v otvete prisutstvovat kluhi s istekhim srokom deĭstvia
+          schema:
+            default: true
+            type: boolean
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kluhi aktivacii
+      responses:
+        '200':
+          description: |
+            Zapros uspehno vypolnen.</br>
+            Otvet soderhit spisok kluhei.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeysResponseList'
+        '400':
+          description: Nevernye dannye v zaprose.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '403':
+          description: Dostup zaprehen.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails403'
+        '404':
+          description: Predlohenie ne naĭdeno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails404'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/offers:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Sozdat novoe predlohenie
+      description: |
+        Maksimum 50 zaprosov v sekundu
+
+        Metod pozvolaet sozdat novoe predlohenie.</br>
+
+        #### Obazatelnye pola:
+        - `title` — Nazvanie predlohenia
+        - `description` — Opisanie predlohenia
+        - `tags` — Tegi predlohenia
+        - `section` — Kategoria predlohenia
+        - `catalog_path` — Podkategoria predlohenia.
+        - `age_rating` — Vozrastnoe ogranihenie predlohenia
+        - `price` — cena predlohenia 
+
+        #### Dobavit oblohku
+
+        Oblohka dla predlohenia zagruhaetsa **otdelno posle sozdania predlohenia**.</br>
+        Vam neobhodimo vospolzovatsa metodom [Dobavit ili obnovit oblohku predlohenia](#operation/offersUploadThumbnail).
+
+        #### Dobavit dopolnitelnye media-faily 
+        1. Zagruzit mediafaily s pomohu metoda [Zagruzit media-fail dla predlohenia](#operation/contentGallery), metod vozvrahaet spisok URI adresov zagruhennyh media-failov
+        2. Dobavit URI media-failov v pole `gallery`
+
+        #### Kategoria i podkateogria predlohenia
+        Vospolzuites metodom [Poluhit kategorii i ih podkategorii](#operation/GetCatalog) dla poluhenia ID podkategorii i pravilnogo sopostavlenia s kategoriei.
+
+
+        ### Predlohenie iz kategorii "Uslugi"
+
+        `section` — `8`
+
+        Dostup k publikacii kontenta etoi kategorii predostavlaetsa herez zaavku v <a href="https://digital.wildberries.ru/support" target="_blank">tehniheskuu podderhku</a>.
+
+        ### Predlohenie c unikalnymi kluhami 
+
+        Predlohenie c unikalnymi kluhami otnosatsa k kategoriam (`section`):
+        - **Kluhi aktivacii** — `3`
+        - **Kupony i razvlehenia** — `12`
+        - **Podarohnye sertifikaty** — `13`
+
+        Obazatelnye dannye:
+        - Kluhi k predloheniu 
+        - Instrukcia po aktivacii kluha
+
+        #### Zagruzka kluhei
+        Spisok kluhei peredaetsa v pole `keys` vahego zaprosa pri sozdanii predlohenia.</br>
+
+        V dalneihem vy mohete dobavlat kluhi s pomohu metoda [Dobavit kluhi aktivacii](#operation/LoadKeys).
+
+        #### Dobavlenie instrukcii po aktivacii kluha
+        Instrukciu po aktivacii kluha neobhodimo dobavit v pole `meta` v formate **JSON** ispolzua sleduuhii primer.</br>
+        htoby sdelat tekst bolee privlekatelnym i udobohitaemym, **ispolzuite perenos stroki** `\n`.
+
+        **Primer:**</br>
+        ```json
+        {
+            "meta":{
+                "key_instruction": "Instrukcia po aktivacii\n1. Zaidite na sait ...\n2.Vstavte kluh v pole ..."
+            }
+        }
+        ``` 
+        ### Predlohenie s kontentom
+
+        Predlohenie s kontentom otnositsa k kategoriam (`section`):
+        - **Videokontent** — `1`
+        - **Audiokontent** — `2`
+        - **Elektronnye knigi** — `4`
+        - **Audioknigi** — `5`
+        - **cifrovye tovary** — `6`
+
+        Obazatelnye dannye:
+        - Kontent dla predlohenia
+
+        #### Dobavlenie kontenta 
+        Esli vy ehe ne dobavili kontent v lihnyi kabinet prodavca, to vy mohete eto sdelat po [instrukcii](#add-content).
+
+        Dla dobavlenia kontenta vam neobhodimo peredat v pole `content` spisok dannyh ispolzua primer nihe.</br>
+
+        **Primer:**</br>
+        ```json
+        "content": [
+            {
+                "category_id": 1,
+                "content": 8942
+            },
+            {
+                "category_id": 1,
+                "content": 4211
+            }
+        ]
+        ```
+
+        gde:
+        - `category_id` — ID kategorii kontenta
+        - `content` — ID kontenta
+
+        Etu informaciu vy mohete poluhit s pomohu metod [Poluhit spisok svoego kontenta](#operation/contentAuthorGet).
+      operationId: offerCreate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Novoe predlohenie
+              $ref: '#/components/schemas/OfferCreateRequest'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Predlohenia
+      responses:
+        '200':
+          description: |
+            Zapros uspehno vypolnen.</br>
+            Otvet soderhit dannye o sozdannom predlohenii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+          description: Nevernye dannye v zaprose.
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/offers/thumb:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Dobavit ili obnovit oblohku predlohenia
+      description: |
+        Maksimum 10 zaprosov v sekundu
+
+        Metod pozvolaet dobavit ili obnovit oblohku predlohenia.</br>
+        Dla dobavlenia bolee privlekatelnoi kartohki predlohenia, my rekomenduem:</br>
+            1. Dobavlat izobrahenia s sootnoheniem storon 1:1</br>
+            2. Minimalnyi razmer izobrahenia 1200h1200 pikselei</br>
+            3. Fon kontrastnyi belomu</br>
+
+        <div class="description_important">
+          Maksimalnyi razmer faila: 5 Mb.</br>
+          Dopustimye formaty: .png, .jpeg
+        </div>
+      operationId: offersUploadThumbnail
+      parameters:
+        - name: X-Content-Type
+          description: Tip izobrahenia
+          in: header
+          schema:
+            enum:
+              - image/jpeg
+              - image/png
+            type: string
+          required: true
+          x-nullable: false
+        - name: X-Wbd-OfferId
+          description: ID predlohenia
+          in: header
+          schema:
+            type: integer
+            format: int64
+          required: true
+          x-nullable: false
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              description: Baity faila
+              type: string
+              format: binary
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Predlohenia
+      responses:
+        '200':
+          description: Oblohka uspehno zagruhena.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+          description: Nevernye dannye v zaprose.
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/offers/{offer_id}:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Redaktirovat predlohenie
+      description: |
+        Maksimum 50 zaprosov v sekundu
+
+        Metod pozvolaet redaktirovat informaciu o predlohenii.
+
+        #### Kategoria i podkateogria predlohenia
+        Vospolzuites metodom [Poluhit kategorii i ih podkategorii](#operation/GetCatalog) dla poluhenia ID podkategorii i pravilnogo sopostavlenia s kategoriei.
+      operationId: offerUpdate
+      parameters:
+        - name: offer_id
+          description: ID predlohenia
+          in: path
+          schema:
+            type: integer
+            format: int64
+          required: true
+          x-nullable: false
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: harakteristika predlohenia
+              $ref: '#/components/schemas/OfferUpdateRequest'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Predlohenia
+      responses:
+        '200':
+          description: Informacia o predlohenii uspehno obnovlena.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+          description: Nevernye dannye v zaprose.
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '403':
+          description: Dostup zaprehen.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails403'
+        '404':
+          description: Predlohenie ne naĭdeno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails404'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+    get:
+      summary: Poluhit informaciu o predlohenii
+      description: |
+        Maksimum 100 zaprosov v sekundu
+
+        Metod pozvolaet poluhit informaciu o konkretnom predlohenii.
+      operationId: offerGet
+      parameters:
+        - name: offer_id
+          description: ID predlohenia
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          x-nullable: false
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Predlohenia
+      responses:
+        '200':
+          description: |
+            Zapros uspehno vypolnen.</br>
+            Otvet soderhit informaciu o predlohenii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferResponse'
+        '400':
+          description: Nevernye dannye v zaprose.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '404':
+          description: Predlohenie ne naĭdeno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails404'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/offers/author:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    get:
+      summary: Poluhit spisok svoih predlohenii
+      description: |
+        Maksimum 100 zaprosov v sekundu
+
+        Metod pozvolaet poluhit spisok svoih predlohenii s ispolzovaniem filtracii.
+
+        ### Opisanie parametrov filtracii:
+
+        - `search` — Poisk predlohenii po nazvaniu. Ukahite hast ili polnoe nazvanie predlohenia dla poiska.
+        - `category` — Filtracia predlohenii po kategorii kontenta. Spisok kategorii nahoditsa v [tablice](#content-categories).
+        - `status` — Filtracia predlohenii po statusu. Vozmohnye znahenia:
+            - `0` — hernovik
+            - `1` — Opublikovan
+            - `2` — Priostanovlen
+        - `sort` — Sortirovka predlohenii po date sozdania ili obnovlenia. Ukahite `created` dla sortirovki po date sozdania i `updated` dla sortirovki po date obnovlenia.
+        - `sort_dir` — Napravlenie sortirovki. Ukahite `asc` dla sortirovki po vozrastaniu ili `desc` dla sortirovki po ubyvaniu.             
+        - `skip` — Smehenie. Pozvolaet **propustit** opredelennoe kolihestvo predlohenii v rezultiruuhem nabore.</br>
+        **Naprimer**, esli `skip` ravno 20, to vyborka nahnetsa s 21-i zapisi.                
+        - `take` — Kolihestvo predlohenii, kotoroe nuhno vernut v otvete.</br>
+        **Naprimer**, esli `take` ravno 10, to v otvete budet ne bolee 10 zapisei.
+      operationId: offersAuthorGet
+      parameters:
+        - name: search
+          description: Poisk po nazvaniu predlohenia
+          in: query
+          schema:
+            type: string
+          x-nullable: false
+        - name: category
+          description: |
+            Filtracia po kategorii kontenta:
+            - `1` — Videokontent
+            - `2` — Audiokontent
+            - `4` — Dokument
+          in: query
+          schema:
+            enum:
+              - 1
+              - 2
+              - 4
+            type: integer
+            format: int64
+          x-nullable: false
+        - name: status
+          description: |
+            Filtracia po statusu:
+            - `0` — hernovik
+            - `1` — Opublikovan
+            - `2` — Priostanovlen
+          in: query
+          schema:
+            enum:
+              - 0
+              - 1
+              - 2
+            type: integer
+            format: int32
+          x-nullable: false
+        - name: sort
+          description: Sortirovka predlohenii po date sozdania ili obnovlenia
+          in: query
+          schema:
+            enum:
+              - created
+              - updated
+            type: string
+          x-nullable: false
+        - name: sort_dir
+          description: |
+            Napravlenie sortirovki:
+            - `asc` — po vozrastaniu
+            - `desc` — po ubyvaniu
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+          x-nullable: false
+        - name: skip
+          description: Smehenie. Kolihestvo predlohenii, kotorye nuhno propustit v rezultiruuhem nabore.
+          in: query
+          schema:
+            default: 0
+            type: integer
+            format: int64
+          x-nullable: false
+        - name: take
+          description: Kolihestvo predlohenii dla poluhenia
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 50
+          x-nullable: false
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Predlohenia
+      responses:
+        '200':
+          description: |
+            Zapros uspehno vypolnen.</br>
+            Otvet soderhit spisok predlohenii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferResponseList'
+        '400':
+          description: Nevernye dannye v zaprose.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/offer/price/{offer_id}:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Obnovit cenu
+      description: |
+        Maksimum 50 zaprosov v sekundu
+
+        Metod pozvolaet izmenit cenu predlohenia i cenu s uhetom skidok. 
+
+        Esli vy ne hotite vystavlat skidku, to v zaprose neobhodimo **ne peredavat** parametr `discount_price` ili vystavit u nego znahenie `0`.
+      operationId: offerUpdatePrice
+      parameters:
+        - name: offer_id
+          description: ID predlohenia
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          x-nullable: false
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Novaa cena dla predlohenia
+              $ref: '#/components/schemas/OfferPriceUpdateRequest'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Predlohenia
+      responses:
+        '200':
+          description: cena dla predlohenia uspehno obnovlena.
+        '400':
+          description: Nevernye dannye v zaprose.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/offer/{offer_id}:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Obnovit status
+      description: |
+        Maksimum 50 zaprosov v sekundu
+
+        Metod pozvolaet obnovit status vahego predlohenia.
+
+        Status mohet byt:
+        - `0` — hernovik
+        - `1` — Opublikovan
+        - `2` — Priostanovlen
+        - `3` — Udalen
+      operationId: offerUpdateStatus
+      parameters:
+        - name: offer_id
+          description: ID predlohenia
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            x-nullable: false
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Novyi status
+              $ref: '#/components/schemas/OfferStatusUpdateRequest'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Predlohenia
+      responses:
+        '200':
+          description: Status predlohenia uspehno obnovlen.
+        '400':
+          description: Nevernye dannye v zaprose.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/catalog:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    get:
+      summary: Poluhit kategorii i ih podkategorii
+      description: |
+        Maksimum 100 zaprosov v sekundu
+
+        Metod pozvolaet poluhit derevo(struktura dannyh) s kategoriam i ih podkategoriami.</br>
+
+        ### Ierarhia struktury dannyh
+
+        #### V nahei strukture est tri urovna ierarhii:
+        1. **Kornevoi uzel** — suhnost **Katalog**
+        2. **Vnehnie uzly** predstavlaut soboi kategorii (`section`):
+        - `1` — Videokontent
+        - `2` — Audiokontent
+        - `3` — Kluhi aktivacii
+        - `4` — Elektronnye knigi
+        - `5` — Audioknigi
+        - `6` — cifrovye tovary
+        - `8` — Uslugi
+        - `12` — Kupony i razvlehenia
+        - `13` — Podarohnye sertifikaty
+        3. **Lista dereva** avlautsa podkategoriami (`catalog_path`):
+        - `65` — Obuhauhie video
+        - `66` — Sport
+        - `67` — Master-klass
+        - `68` — Ioga
+        - `69` — Meditacii
+      operationId: GetCatalog
+      tags:
+        - Predlohenia
+      responses:
+        '200':
+          description: Zapros uspehno vypolnen.</br> Otvet soderhit derevo(struktura dannyh) s kategoriami i ih podkategoriami
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFullCatalogResponse'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/content/illustration:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Zagruzit oblohku kontenta
+      description: |
+        Maksimum 10 zaprosov v sekundu
+
+        Metod pozvolaet zagruzit oblohku kontenta.
+
+        <div class="description_important">
+          Maksimalnyi razmer faila: 5 Mb.</br>
+          Dopustimye formaty: .png, .jpeg</br>
+          Rekomendacii:
+          <ul>
+              <li>Sootnohenie storon 1:1</li>      
+          </ul>
+        </div>
+
+        ### Kratkaa instrukcia po primeneniu:
+        1. Ubedites, hto vah fail sootvetstvuet ukazannym ograniheniam i rekomendaciam.
+        2. Vyzovite etot metod.
+        3. Pri zagruzke oblohki vy poluhite spisok URI adresov dla novogo kontenta.
+        4. Vospolzuites metodom [Inicializirovat novyi kontent](#operation/contentUploadInit) i peredaite spisok URI adresov v pole `meta` v formate **JSON** ispolzua sleduuhii primer.
+
+        **Primer:**</br>
+        ```json
+        {
+            "meta": {
+                "thumbnail": [
+                    "vol6/529/013cfs7f229183179aj53d2b3bbb839a/480.jpg",
+                    "vol6/529/013cfs7f229183179aj53d2b3bbb839a/1280.jpg",
+                    "vol6/529/013cfs7f229183179aj53d2b3bbb839a/1920.jpg"
+                ]
+            }
+        }
+        ```
+      operationId: contentUploadIllustration
+      parameters:
+        - name: X-Content-Type
+          description: Tip faila
+          in: header
+          schema:
+            type: string
+            enum:
+              - image/png
+              - image/jpeg
+          required: true
+          x-nullable: false
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              description: Baity faila
+              type: string
+              format: binary
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kontent
+      responses:
+        '200':
+          description: |
+            Zapros uspehno vypolnen.</br>
+            Otvet soderhit spisok URI adresov dla kontenta, neobhodimyi dla metoda [Inicializirovat novyi kontent](#operation/contentUploadInit).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IllustrationResponse'
+        '400':
+          description: V zaprose peredany nekorrektnye dannye.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/content/upload/init:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Inicializirovat novyi kontent
+      description: |
+        Maksimum 10 zaprosov v sekundu
+
+        Metod pozvolaet inicializirovat (zagruzit) informaciu novogo kontenta.
+
+
+        Tipy kontenta i trebovania k nim vy mohete posmotret v oglavlenii [Rabota s kontentom](#tag/Rabota-s-kontentom).
+
+        ### Podgotovka faila k posleduuhei zagruzki:
+        - Vam neobhodimo razbit fail na hasti (freimy) ne bolee 2 Mb.
+        - Peredat razmer (v baitah) kahdoi hasti i poradkovyi nomer v pole `parts`
+
+        **Primer:**</br>
+        Fail razmerom 5 Mb, nuhno razbit na 3 hasti — 2 Mb, 2 Mb i 1 Mb.
+        ```json
+        {
+            "parts": [
+                {
+                  "index": 1,
+                  "size": 2097152
+                },
+                {
+                  "index": 2,
+                  "size": 2097152
+                },
+                {
+                  "index": 3,
+                  "size": 1048576
+                }
+            ],
+        }
+        ```
+        V metode [Zagruzit kontent (fail)](#operation/contentUploadChunk) vam nuhno budet zagruzit 3 hasti faila s ukazaniem ih poradkovogo nomera herez `X-Wbd-Part-Index`.
+
+        ### Obazatelnye pola v metadannyh (`meta`) dla zagruzki kontenta:
+
+        Obhie pola:
+        - `thumbnail`
+        - `rating`  
+
+        Audiokontent:
+        - `author`
+            
+        Dokument:
+        - `author`
+        - `pages`
+
+        ### Kratkaa instrukcia po primeneniu:
+        1. Podgotovte metadannye i informaciu o vahem kontente.
+        2. Ubedites, hto vah kontent sootvetstvuet [trebovaniam](#content-requirements) (format i razmer faila).
+        3. Vyzovite etot metod dla inicializacii novogo kontenta.
+        4. V otvete vy poluhite `uuid` kontenta, neobhodimyi dla posleduuhei zagruzki samogo faila.
+        5. Ispolzuite metod [Zagruzit fail kontenta](#operation/contentUploadChunk), htoby zagruzit fail.
+      operationId: contentUploadInit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Fail
+              in: body
+              required: true
+              $ref: '#/components/schemas/UploadInitRequest'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kontent
+      responses:
+        '200':
+          description: |
+            Zapros uspehno vypolnen.</br>
+            Otvet soderhit UUID kontenta, neobhodimyi dla metoda [Zagruzit kontent (fail)](#operation/contentUploadChunk).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadInitResponse'
+        '400':
+          description: V zaprose peredany nekorrektnye dannye.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/content/upload/chunk:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Zagruzit kontent (fail)
+      description: |
+        Maksimum 10 zaprosov v sekundu
+
+        Metod pozvolaet zagruzit kontent (fail) po hastam.
+
+        ### Kratkaa instrukcia po primeneniu:
+        1. Razbeite fail na hasti razmerom ne bolee 2 Mb.
+        2. Dla kahdoi hasti faila:
+        - Ubedites, hto zagolovok `X-Content-Type` sootvetstvuet tipu vahego kontenta (naprimer, `video/mp4`, `audio/mpeg`, `application/pdf` i t.d.).
+        - Ustanovite zagolovok `X-Wbd-Part-Index` v sootvetstvii s indeksom tekuhei hasti (nahinaa s 1).
+        - Ukahite `uuid` kontenta v zagolovke `X-Wbd-Content-Uuid`, kotoryi vy poluhili pri [inicializacii novogo kontenta](#operation/contentUploadInit).
+        - Otpravte baity (hast faila) v tele zaprosa.
+        3. Povtoraite hag 2 dla vseh hastei faila do zaverhenia zagruzki.
+      operationId: contentUploadChunk
+      parameters:
+        - name: X-Content-Type
+          description: Tip faila
+          in: header
+          required: true
+          schema:
+            enum:
+              - video/mp4
+              - audio/mpeg
+              - text/plain
+              - application/pdf
+              - application/zip
+              - application/epub+zip
+            type: string
+          x-nullable: false
+        - name: X-Wbd-Part-Index
+          description: Indeks freima (hasti kontenta)
+          in: header
+          required: true
+          schema:
+            type: integer
+            format: int64
+          x-nullable: false
+        - name: X-Wbd-Content-Uuid
+          description: Unikalnyi ID poluhennyi v [inicializacii novogo kontenta](#operation/contentUploadInit)
+          in: header
+          schema:
+            type: string
+          x-nullable: false
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              description: Baity faila
+              type: string
+              format: binary
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kontent
+      responses:
+        '200':
+          description: |
+            Fail uspehno zagruhen.</br>
+            Otvet soderhit URI adres kontenta.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadChunkResponse'
+        '400':
+          description: V zaprose peredany nekorrektnye dannye.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/content/author/{content_id}:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Redaktirovat kontent
+      description: |
+        Maksimum 50 zaprosov v sekundu
+
+        Metod pozvolaet redaktirovat informaciu o kontente.
+      operationId: contentUpdate
+      parameters:
+        - name: content_id
+          description: ID kontenta
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          x-nullable: false
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Obnovlennye dannye
+              $ref: '#/components/schemas/UpdateContentRequest'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kontent
+      responses:
+        '200':
+          description: Informacia o kontente uspehno obnovlena.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Content'
+        '400':
+          description: V zaprose peredany nekorrektnye dannye.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+    get:
+      summary: Poluhit informaciu o kontente
+      description: |
+        Maksimum 100 zaprosov v sekundu
+
+        Metod pozvolaet poluhit informaciu o konkretnom kontente.
+      operationId: contentIdGet
+      parameters:
+        - in: path
+          name: content_id
+          description: ID kontenta
+          required: true
+          schema:
+            type: integer
+            format: int64
+            x-nullable: false
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kontent
+      responses:
+        '200':
+          description: |
+            Zapros uspehno vypolnen.</br>
+            Otvet soderhit informaciu o kontente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Content'
+        '400':
+          description: V zaprose peredany nekorrektnye dannye.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '404':
+          description: Kontent ne naĭden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails404'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/content/author:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    get:
+      summary: Poluhit spisok svoego kontenta
+      description: |
+        Maksimum 100 zaprosov v sekundu
+
+        Metod pozvolaet poluhit spisok svoego kontenta s ispolzovaniem filtracii.
+
+        **Opisanie parametrov filtracii:**
+
+        - `search` — Poisk kontenta po nazvaniu. Ukahite hast ili polnoe nazvanie kontenta dla poiska.
+        - `category` — Filtracia kontenta po kategorii. Spisok kategorii nahoditsa v [tablice](#content-categories), kolonka — "`catalog_id` — Identificirovat kategorii".
+        - `status` — Filtracia kontenta po statusu. Vozmohnye znahenia:
+            - `0` — Sozdan
+            - `1` — Zagruheno na server
+            - `2` — Opublikovan
+            - `3` — Ohibka v obrabotke ili publikacii
+            - `4` — Obrabatyvaetsa
+            - `5` — Otpravleno na server
+        - `sort` — Sortirovka kontenta po date sozdania ili obnovlenia. Ukahite `created` dla sortirovki po date sozdania i `updated` dla sortirovki po date obnovlenia.
+        - `sort_dir` — Napravlenie sortirovki. Ukahite `asc` dla sortirovki po vozrastaniu ili `desc` dla sortirovki po ubyvaniu.             
+        - `skip` — Smehenie. Pozvolaet **propustit** opredelennoe kolihestvo kontenta v rezultiruuhem nabore.</br>
+        **Naprimer**, esli `skip` ravno 20, to vyborka nahnetsa s 21-i zapisi.                
+        - `take` — Kolihestvo kontenta, kotoroe nuhno vernut v otvete.</br>
+        **Naprimer**, esli `take` ravno 10, to v otvete budet ne bolee 10 zapisei.
+      operationId: contentAuthorGet
+      parameters:
+        - name: search
+          description: Poisk po nazvaniu kontenta
+          in: query
+          schema:
+            type: string
+            x-nullable: false
+        - name: category
+          description: |
+            Filtracia po kategorii:
+            - `1` — Videokontent
+            - `2` — Audiokontent
+            - `4` — Dokument
+          in: query
+          schema:
+            enum:
+              - 1
+              - 2
+              - 4
+            type: integer
+            format: int64
+            x-nullable: false
+        - name: status
+          description: |
+            Filtracia po statusu:
+            - `0` — Sozdan
+            - `1` — Zagruheno na server
+            - `2` — Opublikovan
+            - `3` — Ohibka v obrabotke ili publikacii
+            - `4` — Obrabatyvaetsa
+            - `5` — Otpravleno na server
+          in: query
+          schema:
+            enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+            type: integer
+            format: int32
+          x-nullable: false
+        - name: sort
+          description: Sortirovka kontenta po date sozdania ili obnovlenia
+          in: query
+          schema:
+            type: string
+            enum:
+              - created
+              - updated
+          x-nullable: false
+        - name: sort_dir
+          description: |
+            Napravlenie sortirovki:
+            - `asc` — po vozrastaniu
+            - `desc` — po ubyvaniu
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+          x-nullable: false
+        - name: skip
+          description: Smehenie. Kolihestvo predlohenii, kotorye nuhno propustit v rezultiruuhem nabore.
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 0
+          x-nullable: false
+        - name: take
+          description: Kolihestvo kontenta dla poluhenia
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 50
+          x-nullable: false
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kontent
+      responses:
+        '200':
+          description: |
+            Zapros uspehno vypolnen.</br>
+            Otvet soderhit spisok kontenta.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentList'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/content/download/{uri}:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    get:
+      summary: Skahat kontent
+      description: |
+        Maksimum 10 zaprosov v sekundu
+
+        Metod pozvolaet skahat kontent po URI.</br>
+
+        ### Poluhenie URI-adresa kontenta:
+        1. Vospolzuites odnim iz metodov dla poluhenia informacii o kontente.</br>
+            - [Poluhit informaciu o kontente](#operation/contentIdGet)</br>
+            - [Poluhit spisok svoego kontenta](#operation/contentAuthorGet)</br>
+        2. V informacii o kontente vozmite URI-adres iz pola `uri` ili `files`.</br>
+
+
+        ### Skahivanie kontenta hastami:
+        Vy mohete skahat fail hastami s ispolzovaniem zagolovka `Range`.
+
+        **Primer**: `Range: bytes=0-524287999`
+
+        Otvet soderhit zagolovok `Content-Range` s informaciei o skahennom faile.
+
+        **Primer**: `Content-Range: bytes 0-524287999/1073741824`
+      operationId: contentDownloadGet
+      parameters:
+        - name: uri
+          required: true
+          description: URI-adres kontenta
+          in: path
+          schema:
+            type: string
+        - name: Range
+          required: false
+          description: |
+            Pozvolat skahivat fail hastami.
+
+            **Primer**: `bytes=0-524287999`
+          in: header
+          schema:
+            type: string
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kontent
+      responses:
+        '200':
+          description: Kontent uspehno skahan.
+        '206':
+          description: Kontent uspehno skahan hastihno.
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '404':
+          description: Kontent ne naĭden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails404'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+        '502':
+          description: Nevozmohno skahat kontent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails502'
+  /api/v1/content/delete:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Udalit kontent
+      description: |
+        Maksimum 50 zaprosov v sekundu
+
+        Metod pozvolaet udalit kontent po ID.
+      operationId: contentDelete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content_id:
+                  description: ID kontenta
+                  type: integer
+                  format: int64
+                  example: 493292
+                  x-nullable: false
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Kontent
+      responses:
+        '200':
+          description: Kontent uspehno udalen.
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '404':
+          description: Kontent ne naĭden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails404'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+  /api/v1/content/gallery:
+    servers:
+      - url: https://devapi-digital.wildberries.ru
+    post:
+      summary: Zagruzit mediafaily dla predlohenia
+      description: |
+        Maksimum 10 zaprosov v sekundu
+
+        Metod pozvolaet zagruhat mediafaily na server. 
+        Posle uspehnoi zagruzki vozvrahaet spisok URI-adresov, kotorye mohno ispolzovat dla dobavlenia dopolnitelnyh mediafailov v predlohenie.
+
+        Dannyi metod pomohet vam dobavit dopolnitelnye mediafaily pri sozdanii ili obnovlenii predlohenia.
+        - [Sozdat novoe predlohenie](#operation/offerCreate)
+        - [Redaktirovat predlohenie](#operation/offerUpdate)
+
+
+        <div class="description_important">
+          Ogranihenia po razmeru:
+          <ul>
+              <li>izobrahenie: <b>5 Mb</b></li>
+              <li>video: <b>50 Mb</b></li>
+              <li>obhii razmer vseh failov: <b>100 Mb</b></li>
+          </ul>
+          Dopustimye formaty: 
+          <ul>
+              <li>izobrahenie: <b>.png, .jpeg</b></li>  
+              <li>video: <b>.mp4</b></li>      
+          </ul>
+          Mohno peredat <b>do 8 mediafailov</b>.
+        </div>
+      operationId: contentGallery
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+              required:
+                - files
+      tags:
+        - Kontent
+      responses:
+        '200':
+          description: |
+            Faily uspehno zagruhen.</br>
+            Otvet soderhit spisok URI adresov mediafailov.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadGalleryResponse'
+        '400':
+          description: V zaprose peredany nekorrektnye dannye.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails400'
+        '401':
+          description: V zaprose ne ukazany dannye dla avtorizacii.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails401'
+        '500':
+          description: Vnutrennaa ohibka servera.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails500'
+components:
+  schemas:
+    KeysDeleteResponse:
+      type: object
+      required:
+        - statuses
+      properties:
+        statuses:
+          description: Statusy udalenia kluhei
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - code
+              - message
+              - status
+            properties:
+              id:
+                description: Identifikator kluha
+                type: integer
+                format: int64
+                x-nullable: false
+              code:
+                description: HTTP status-kod dla kahdoi operacii nad kluhom
+                type: string
+                x-nullable: false
+              message:
+                description: Opisanie k statusu udalenia
+                type: string
+                x-nullable: false
+              status:
+                description: Flag statusa udalenia (`true` - uspehno udalen, `false` - ohibka)
+                type: boolean
+                x-nullable: false
+    OfferResponse:
+      type: object
+      properties:
+        id:
+          description: ID predlohenia
+          example: 42
+          type: integer
+          format: int64
+          x-nullable: false
+        title:
+          type: string
+          description: Nazvanie predlohenia
+          example: Kniga `Sportivnoe pitanie`
+          x-nullable: false
+        description:
+          description: Opisanie predlohenia
+          example: Ohen horohaa kniga o sportivnom pitanii.
+          type: string
+          x-nullable: false
+        section:
+          description: |
+            ID kategorii tovara:
+            - `1` — Videokontent
+            - `2` — Audiokontent
+            - `3` — Kluhi aktivacii
+            - `4` — Elektronnye knigi
+            - `5` — Audioknigi
+            - `6` — cifrovye tovary
+            - `8` — Uslugi
+            - `12` — Kupony i razvlehenia
+            - `13` — Podarohnye sertifikaty
+          example: 4
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 8
+            - 9
+            - 10
+            - 12
+            - 13
+          type: integer
+          format: int32
+          x-nullable: false
+        catalog_path:
+          description: Massiv ID podkategorii, v kotorom nahoditsa predlohenie
+          example:
+            - 10
+          type: array
+          items:
+            type: integer
+            format: int64
+        price:
+          description: cena predlohenia v rublah
+          example: 849
+          type: integer
+          format: int64
+          x-nullable: false
+        discount_price:
+          description: cena s uhetom skidki v rublah
+          example: 799
+          type: integer
+          format: int64
+          x-nullable: false
+        gallery:
+          description: Spisok URL-adresov dopolnitelnyh izobrahenii, a tak he video prevu
+          example:
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/video.mp4
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/0_1280.jpg
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/1_1280.png
+          items:
+            type: string
+            x-nullable: false
+          type: array
+        meta:
+          description: Metadannye predlohenia
+          type: string
+          x-nullable: false
+        tags:
+          description: Spisok tegov. Tegi nuhny dla gruppirovania, ranhirovania i obleghenia poiska vahego tovara.
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+          x-nullable: true
+        thumbnail:
+          description: Oblohka predlohenia
+          example:
+            - vol6/842/900bec865s329db6c0efbf0f1a61ebee/480.jpg
+            - vol6/842/900bec865s329db6c0efbf0f1a61ebee/1280.jpg
+            - vol6/842/900bec865s329db6c0efbf0f1a61ebee/1920.jpg
+          type: array
+          items:
+            type: string
+            x-nullable: false
+        content:
+          description: Kontent predlohenia
+          type: array
+          items:
+            $ref: '#/components/schemas/OfferContent'
+        created:
+          description: Data sozdania, UTC +3 (Moskva)
+          example: '2024-06-10T07:29:30Z'
+          type: string
+          x-nullable: false
+        updated:
+          description: Data obnovlenia, UTC +3 (Moskva)
+          example: '2024-06-17T22:12:13Z'
+          type: string
+          x-nullable: false
+        deleted:
+          description: Data udalenia, UTC +3 (Moskva). 1970-01-01T00:00:00Z — avlaetsa nulevym znahenie.
+          example: '2024-06-19T22:12:13Z'
+          type: string
+          x-nullable: false
+        status:
+          description: |
+            Status vahego predlohenia:
+            - `0` — Dobavit v hernovik
+            - `1` — Opublikovat
+          example: 1
+          enum:
+            - 0
+            - 1
+          type: integer
+          format: int32
+          x-nullable: true
+          x-omitempty: false
+        view_count:
+          description: Kolihestvo prosmotrov
+          example: 47
+          type: integer
+          format: int64
+          x-nullable: false
+        purchase_count:
+          description: Kolihestvo pokupok
+          example: 10
+          type: integer
+          format: int64
+          x-nullable: false
+        adult:
+          description: Flag, kotoryi otvehaet za ogranihenie kontenta dla vzroslyh (blur kontenta)
+          example: false
+          type: boolean
+          x-nullable: false
+          x-omitempty: false
+        age_rating:
+          description: Vozrastnoe ogranihenie. Eto sistema, kotoraa ispolzuetsa dla opredelenia, podhodit li vahe predlohenie dla opredelennoi vozrastnoi gruppy.
+          example: 16+
+          enum:
+            - 0+
+            - 6+
+            - 12+
+            - 14+
+            - 16+
+            - 18+
+          type: string
+          x-nullable: false
+        rating:
+          description: Reĭting predlohenia
+          example: 50
+          type: number
+          format: float64
+          x-nullable: false
+    OfferCreateRequest:
+      type: object
+      required:
+        - title
+        - description
+        - tags
+        - section
+        - catalog_path
+        - age_rating
+        - price
+      properties:
+        title:
+          description: Nazvanie predlohenia.</br>Maksimalnaa dlina — **500 simvolov.**
+          example: Kniga `Sportivnoe pitanie`
+          maxLength: 500
+          type: string
+          x-nullable: false
+        description:
+          description: Opisanie predlohenia. Eto tekst, kotoryi opisyvaet vahe predlohenie i pomogaet ludam ponat, hto imenno predstavlaet iz seba prodavaemyi vami tovar i hem on mohet byt polezen. Vahno pravilno nazvat predlohenie i bolee podrobno propisat ego opisanie, htoby polzovateli uznali kak mohno bolhe informacii ehe do pokupki.</br>Maksimalnaa dlina — **5000 simvolov.**
+          example: Ohen horohaa kniga o sportivnom pitanii.
+          maxLength: 5000
+          type: string
+          x-nullable: false
+        tags:
+          description: |
+            Massiv tegov. Tegi nuhny dla gruppirovania, ranhirovania i obleghenia poiska vahego tovara.
+
+            **Ogranihenia**:
+            - Maksimalnoe kolihestvo tegov — **5**
+            - Maksimalnaa dlina tega — **45 simvolov**
+          type: array
+          minItems: 1
+          maxItems: 5
+          items:
+            maxLength: 45
+            type: string
+          example:
+            - life
+            - work
+            - gym
+        section:
+          description: |
+            ID kategorii predlohenia:
+            - `1` — Videokontent
+            - `2` — Audiokontent
+            - `3` — Kluhi aktivacii
+            - `4` — Elektronnye knigi
+            - `5` — Audioknigi
+            - `6` — cifrovye tovary
+            - `8` — Uslugi
+            - `12` — Kupony i razvlehenia
+            - `13` — Podarohnye sertifikaty
+          example: 4
+          type: integer
+          format: int32
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 8
+            - 9
+            - 12
+            - 13
+          x-nullable: false
+        catalog_path:
+          description: |
+            Massiv ID podkategorii, v kotorom nahoditsa predlohenie.</br>
+            Vospolzuites metodom [Poluhit kategorii i ih podkategorii](#operation/GetCatalog) dla poluhenia ID i pravilnogo sopostavlenia s kategoriei.
+          example:
+            - 10
+          type: array
+          minItems: 1
+          items:
+            type: integer
+            format: int64
+          x-nullable: false
+        age_rating:
+          description: Vozrastnoe ogranihenie. Eto sistema, kotoraa ispolzuetsa dla opredelenia, podhodit li vahe predlohenie dla opredelennoi vozrastnoi gruppy.
+          example: 16+
+          enum:
+            - 0+
+            - 6+
+            - 12+
+            - 14+
+            - 16+
+            - 18+
+          type: string
+          x-nullable: false
+        price:
+          description: cena predlohenia v rublah
+          example: 849
+          type: integer
+          format: int64
+          x-nullable: false
+        discount_price:
+          description: cena s uhetom skidki v rublah
+          example: 799
+          type: integer
+          format: int64
+          x-nullable: false
+        gallery:
+          description: |
+            Spisok URL-adresov dopolnitelnyh izobrahenii, a tak he video prevu.</br>
+            **Mohno peredat do 8 media-failov.**</br>
+            **Vahno, htoby vse izobrahenia byli v formate .jpg ili .png, a video v formate .mp4**
+          example:
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/video.mp4
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/0_1280.jpg
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/1_1280.png
+          type: array
+          maxItems: 8
+          items:
+            type: string
+            x-nullable: false
+        keys:
+          description: |
+            Spisok kluheĭ.</br>
+            Eto **obazatelnoe pole**, esli vy hotite sozdat predlohenie iz kategorii (`section`): 
+            - **Kluhi aktivacii** — `3`
+            - **Kupony i razvlehenia** — `12`
+            - **Podarohnye sertifikaty** — `13`
+
+            **Ogranihenia:**
+            - Maksimalnoe kolihestvo kluhei — **1000**
+            - Maksimalnaa dlina kluha — **200 simvolov**
+          example:
+            - 0181-c2a38--6379-69d8ae
+            - 1983-454e4--5379-0edbbc
+            - 6860-f1f20--8421-c1e6a1
+          type: array
+          maxItems: 1000
+          items:
+            maxLength: 200
+            type: string
+            x-nullable: false
+        status:
+          description: |
+            Zadaetsa status vahego predlohenia:
+            - `0` — Dobavit v hernovik
+            - `1` — Opublikovat
+          example: 1
+          default: 0
+          enum:
+            - 0
+            - 1
+          type: integer
+          format: int32
+          x-nullable: false
+        content:
+          description: Spisok kontenta
+          type: array
+          items:
+            $ref: '#/components/schemas/OfferCreateContent'
+          example:
+            - category_id: 4
+              content: 8942
+            - category_id: 4
+              content: 4211
+        meta:
+          description: Metadannye predlohenia
+          $ref: '#/components/schemas/OfferMetaRequest'
+    OfferUpdateRequest:
+      type: object
+      properties:
+        title:
+          description: Nazvanie predlohenia.</br>Maksimalnaa dlina — **500 simvolov.**
+          example: Kniga `Sportivnoe pitanie`
+          maxLength: 500
+          type: string
+          x-nullable: false
+        description:
+          description: Opisanie predlohenia. Eto tekst, kotoryi opisyvaet vahe predlohenie i pomogaet ludam ponat, hto imenno predstavlaet iz seba prodavaemyi vami tovar i hem on mohet byt polezen. Vahno pravilno nazvat predlohenie i bolee podrobno propisat ego opisanie, htoby polzovateli uznali kak mohno bolhe informacii ehe do pokupki.</br>Maksimalnaa dlina — **5000 simvolov.**
+          example: Ohen horohaa kniga o sportivnom pitanii.
+          maxLength: 5000
+          type: string
+          x-nullable: false
+        price:
+          description: cena predlohenia v rublah
+          example: 849
+          type: integer
+          format: int64
+          x-nullable: false
+        discount_price:
+          description: cena s uhetom skidki v rublah
+          example: 799
+          type: integer
+          format: int64
+          x-nullable: true
+        gallery:
+          description: |
+            Spisok URL-adresov dopolnitelnyh izobrahenii, a tak he video prevu.</br>
+            **Mohno peredat do 8 media-failov.**</br>
+            **Vahno, htoby vse izobrahenia byli v formate .jpg ili .png, a video v formate .mp4**
+          example:
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/video.mp4
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/0_1280.jpg
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/1_1280.png
+          type: array
+          maxItems: 8
+          x-nullable: true
+          items:
+            type: string
+            x-nullable: false
+        age_rating:
+          description: Vozrastnoe ogranihenie. Eto sistema, kotoraa ispolzuetsa dla opredelenia, podhodit li vahe predlohenie dla opredelennoi vozrastnoi gruppy.
+          example: 16+
+          enum:
+            - 0+
+            - 6+
+            - 12+
+            - 14+
+            - 16+
+            - 18+
+          type: string
+          x-nullable: false
+        tags:
+          type: array
+          description: |
+            Massiv tegov. Tegi nuhny dla gruppirovania, ranhirovania i obleghenia poiska vahego tovara.
+
+            **Ogranihenia**:
+            - Maksimalnoe kolihestvo tegov — **5**
+            - Maksimalnaa dlina tega — **45 simvolov**
+          minItems: 1
+          maxItems: 5
+          items:
+            maxLength: 45
+            type: string
+          example:
+            - life
+            - work
+            - gym
+        status:
+          description: |
+            Status vahego predlohenia: 
+            - `0` — Dobavit v hernovik 
+            - `1` — Opublikovat 
+            - `2` — Priostanovit prodahu 
+            - `3` — Udalit
+          example: 1
+          type: integer
+          format: int32
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+          x-nullable: true
+        catalog_path:
+          description: |
+            Massiv ID podkategorii, v kotorom nahoditsa predlohenie.</br>
+            Vospolzuites metodom [Poluhit kategorii i ih podkategorii](#operation/GetCatalog) dla poluhenia ID i pravilnogo sopostavlenia s kategoriei.
+          example:
+            - 10
+          type: array
+          items:
+            type: integer
+            format: int64
+        meta:
+          $ref: '#/components/schemas/OfferMetaRequest'
+    OfferPriceUpdateRequest:
+      type: object
+      properties:
+        regular_price:
+          description: cena v rublah
+          type: integer
+          format: int64
+          example: 5432
+        discount_price:
+          description: cena v rublah s uhetom skidki
+          type: integer
+          format: int64
+          example: 5000
+    KeysCountResponse:
+      type: object
+      required:
+        - total
+        - reserved
+        - available
+        - deleted
+      properties:
+        total:
+          description: Obhee kolihestvo kluhei
+          example: 10
+          type: integer
+          format: int64
+          x-nullable: false
+        available:
+          description: Kolihestvo svobodnyh kluhei
+          example: 5
+          type: integer
+          format: int64
+          x-nullable: false
+        reserved:
+          description: Kolihestvo zarezervirovannyh kluhei
+          example: 2
+          type: integer
+          format: int64
+          x-nullable: false
+        deleted:
+          description: Kolihestvo udalennyh kluhei
+          example: 2
+          type: integer
+          format: int64
+          x-nullable: false
+    OfferStatusUpdateRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: integer
+          format: int32
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+    OfferMetaRequest:
+      type: object
+      description: Metadannye predlohenia
+      properties:
+        addresses:
+          description: Adresa gde mohno vospolzovatsa kuponami, podarohnymi sertifikatami
+          example: Moskva, Nagatinskaa d. 1
+          maxLength: 1000
+          type: string
+          x-nullable: true
+        key_instruction:
+          description: Instrukcia po aktivacii kluha
+          example: |-
+            Instrukcia po aktivacii
+            1. Zaidite na sait ...
+            2.Vstavte kluh v pole ...
+          maxLength: 5000
+          type: string
+          x-nullable: true
+    OfferResponseList:
+      type: object
+      required:
+        - total
+        - items
+      properties:
+        items:
+          description: Spisok predlohenii
+          items:
+            $ref: '#/components/schemas/OfferResponse'
+          type: array
+        total:
+          $ref: '#/components/schemas/Total'
+    KeyResponse:
+      type: object
+      required:
+        - id
+        - value
+        - created_at
+      properties:
+        id:
+          description: ID kluha
+          example: 42
+          type: integer
+          format: int64
+          x-nullable: false
+        value:
+          description: Znahenie kluha
+          example: 0181-c2a38--6379-69d8ae
+          type: string
+          x-nullable: false
+        created_at:
+          description: Data i vrema sozdania kluha
+          type: string
+          example: '2022-06-15T09:19:02Z'
+          x-nullable: false
+        buyed_at:
+          description: Data i vrema pokupki kluha
+          type: string
+          example: 2022-07-03T011:30:30Z
+          x-omitempty: false
+          x-nullable: true
+        deleted_at:
+          description: Data i vrema udalenia kluha
+          type: string
+          example: 2022-07-03T011:30:30Z
+          x-omitempty: false
+          x-nullable: true
+    OfferContent:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          description: ID kontenta
+          format: int64
+          x-nullable: false
+          example: 542342523
+          type: integer
+        title:
+          description: Nazvanie kontenta
+          example: 'Kniga ''Ivan Turgenev: Otcy i deti'''
+          type: string
+          x-nullable: false
+        description:
+          description: Opisanie kontenta
+          example: Ohen horohaa kniga.
+          type: string
+          x-nullable: false
+        files:
+          description: Spisok s informaciei o dopolnitelnyh failah
+          type: array
+          items:
+            type: object
+            properties:
+              contentType:
+                description: Tip kontenta
+                example: application/fb2
+                type: string
+              size:
+                description: Razmer faila
+                example: 3665547
+                type: integer
+                format: int64
+              uri:
+                description: URI adres na fail
+                example: vol13/689/98235be67bdefcew2a33c5f0e55b17eb/output.fb2
+                type: string
+        meta:
+          description: |
+            hranit v sebe metadannye kontenta:
+            - `bisac` —  ISBN (Mehdunarodnyi standartnyi knihnyi nomer)
+            - `voice` — Akter ozvuhivauhii audiokontent
+            - `author` — Avtor kontenta
+            - `rating` — Vozrastnoe ogranihenie
+            - `preview` — Korotkii otrezok kontenta dla predvaritelnogo prosmotra 
+            - `duration` — Prodolhitelnost kontenta 
+            - `thumbnail` — Spisok oblohki dla kontenta raznogo razrehenia
+            - `dimensions` — Spisok razrehenii video
+            - `duration_ms` — Prodolhitelnost kontenta v millisekundah
+            - `translator` — Avtor perevoda
+            - `original_name` — Originalnoe nazvanie kontenta
+            - `pages` — Kolihestvo stranic v kontente
+            - `encoded_videos` — Spisok informacii (razmer, razrehenie) dla dekodirovannogo video
+            - `encoded_audios` — Spisok informacii (razmer, bitreit) dla dekodirovannogo audio
+          type: string
+          x-nullable: false
+        playlist:
+          description: |
+            URI adres na pleilist kontenta.
+
+            Esli kontent avlaetsa audio ili video kontentom, to fail dekodiruetsa v pleilist.
+          example: vol14/147/f2671cfb67bd8c200b9464vd6f0dd97d/output.m3u8
+          type: string
+          x-nullable: false
+        category_id:
+          description: |
+            ID kategorii kontenta:
+            - `1` — Videokontent 
+            - `2` — Audiokontent
+            - `4` — Dokument
+          enum:
+            - 1
+            - 2
+            - 4
+          example: 4
+          type: integer
+          format: int64
+          x-nullable: false
+    GetFullCatalogResponse:
+      type: object
+      required:
+        - total
+        - items
+      properties:
+        items:
+          description: Derevo s kategoriam i ih podkategoriami
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogNode'
+        total:
+          type: integer
+          format: int64
+          x-nullable: false
+    CatalogNode:
+      type: object
+      properties:
+        children:
+          description: Spisok dohernih uzlov
+          type: array
+          example:
+            - id: 1
+              img: vol0/catalog/icons/1.svg
+              is_section: true
+              name: VIDEO
+              node_order: 0
+              parent_id: 0
+              section_id: 1
+              total: 6482
+              children:
+                - id: 65
+                  img: ''
+                  is_section: false
+                  name: Obuhauhie video
+                  node_order: 1
+                  parent_id: 0
+                  section_id: 1
+                  total: 0
+                  children: []
+                - id: 66
+                  img: ''
+                  is_section: false
+                  name: Sport
+                  node_order: 2
+                  parent_id: 0
+                  section_id: 1
+                  total: 0
+                  children: []
+                - id: 67
+                  img: ''
+                  is_section: false
+                  name: Master-klass
+                  node_order: 3
+                  parent_id: 0
+                  section_id: 1
+                  total: 0
+                  children: []
+            - id: 2
+              img: vol0/catalog/icons/2.svg
+              is_section: true
+              name: AUDIO
+              node_order: 0
+              parent_id: 0
+              section_id: 2
+              total: 1983
+              children:
+                - id: 73
+                  img: ''
+                  is_section: false
+                  name: Obuhenie
+                  node_order: 1
+                  section_id: 2
+                  total: 0
+                  children: []
+                - id: 74
+                  img: ''
+                  is_section: false
+                  name: Meditacii
+                  node_order: 2
+                  parent_id: 0
+                  section_id: 2
+                  total: 0
+                  children: []
+                - id: 75
+                  img: ''
+                  is_section: false
+                  name: Master-klass
+                  node_order: 3
+                  parent_id: 0
+                  section_id: 2
+                  total: 0
+                  children: []
+          items:
+            $ref: '#/components/schemas/CatalogNode'
+        img:
+          type: string
+          description: |
+            URI adres na ikonku kategorii
+          example: ''
+          x-nullable: false
+          x-omitempty: false
+        name:
+          description: Nazvanie uzla
+          example: Katalog
+          type: string
+          x-nullable: false
+          x-omitempty: false
+        parent_id:
+          type: integer
+          description: |
+            Ukazyvaet na id roditela podkategorii.
+          format: int64
+          x-nullable: false
+          x-omitempty: false
+        path:
+          type: array
+          description: |
+            Spisok `id` (ID uzla). Put do elementa kataloga.
+          example: null
+          x-nullable: true
+          items:
+            x-omitempty: false
+            type: integer
+            format: int64
+        id:
+          description: |
+            ID uzla. 
+
+            Esli `is_section` = `true`, to `id` avlaetsa ID katagorii(`section`). 
+
+            Esli `is_section` = `false`, to `id` avlaetsa ID podkateogrii(`is_path`).
+          type: integer
+          format: int64
+          x-nullable: false
+          x-omitempty: false
+        is_section:
+          description: Priznak, avlaetsa li uzel kategoriei(`section`)
+          example: false
+          x-nullable: false
+          x-omitempty: false
+          type: boolean
+        node_order:
+          type: integer
+          description: |
+            Poradok elementov podkategorii, kotorye nahodatsa na odnom urovne
+          format: int64
+          x-nullable: false
+          x-omitempty: false
+        section_id:
+          description: ID kategorii (`section`). Esli `is_section` = `false`, to `section_id` ukazyvaet na roditelskuu kategoriu.
+          type: integer
+          format: int64
+          x-nullable: false
+          x-omitempty: false
+        total:
+          description: Obhee kolihestvo predlohenii v etoi kategorii. Pole zapolnaetsa tolko u kategorii (`section`).
+          type: integer
+          format: int64
+          x-nullable: false
+          x-omitempty: false
+    Tag:
+      type: object
+      properties:
+        id:
+          description: ID tega
+          type: integer
+          format: int64
+          example: 1
+          x-nullable: false
+        value:
+          description: Nazvanie tega
+          example: biznes
+          type: string
+          x-nullable: false
+        value_translit:
+          description: Perevod nazvania tega
+          example: biznes
+          type: string
+          x-nullable: false
+        weight:
+          description: Ves tega
+          example: 100
+          type: number
+          format: float64
+          x-nullable: false
+    OfferCreateContent:
+      type: object
+      required:
+        - content
+        - category_id
+      properties:
+        category_id:
+          description: |
+            ID kategorii kontenta:
+            - `1` — Video
+            - `2` — Audiokontent
+            - `4` — Dokument
+          type: integer
+          format: int64
+          example: 1
+          x-nullable: false
+        content:
+          description: ID kontenta</br>
+          type: integer
+          format: int64
+          example: 8942
+          x-nullable: false
+    KeysLoadRequest:
+      type: object
+      required:
+        - offer_id
+        - keys
+      properties:
+        keys:
+          type: array
+          description: |
+            Spisok kluhei.
+
+            **Ogranihenia:**
+            - Maksimalnoe kolihestvo kluhei — **1000**
+            - Maksimalnaa dlina kluha — **200 simvolov**
+          example:
+            - 0181-c2a38--6379-69d8ae
+            - 4444-m2d2--5555-77f7ff
+            - 21fd-1234--3333-4444ff
+          maxItems: 1000
+          items:
+            maxLength: 200
+            type: string
+            x-nullable: false
+        offer_id:
+          description: ID predlohenia
+          example: 4251
+          type: integer
+          format: int64
+          x-nullable: false
+    KeysResponseList:
+      type: object
+      required:
+        - total
+        - items
+      properties:
+        items:
+          description: Spisok kluhei
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyResponse'
+          example:
+            - id: 42
+              value: 0181-c2a38--6379-69d8ae
+              created_at: '2022-06-15T09:19:02Z'
+              buyed_at: 2022-07-03T011:30:30Z
+            - id: 43
+              value: 4444-m2d2--5555-77f7ff
+              created_at: '2022-06-15T12:19:02Z'
+              deleted_at: '2023-02-03T16:22:02Z'
+        total:
+          description: Obhee kolihestvo kluhei
+          example: 10
+          type: integer
+          format: int64
+    IllustrationResponse:
+      type: object
+      required:
+        - uris
+        - userId
+      properties:
+        uris:
+          description: Spisok URI adresov oblohki raznogo razrehenia
+          type: array
+          example:
+            - vol4/id_48361197/fc99358aedea2a0cf68c8dcd7f2a3696/480.jpg
+            - vol4/id_48361197/fc99358aedea2a0cf68c8dcd7f2a3696/1280.jpg
+            - vol4/id_48361197/fc99358aedea2a0cf68c8dcd7f2a3696/1920.jpg
+          items:
+            type: string
+            x-nullable: false
+        userId:
+          description: ID polzovatela
+          example: 483611
+          type: integer
+          format: int64
+          x-nullable: false
+    UploadInitRequest:
+      type: object
+      required:
+        - title
+        - description
+        - catalog_id
+        - content_type
+        - meta
+        - parts
+      properties:
+        title:
+          description: Nazvanie kontenta.</br>Maksimalnaa dlina — **500 simvolov.**
+          example: 'Kniga `Ivan Turgenev: Otcy i deti'''
+          type: string
+          maxLength: 500
+          x-nullable: false
+        description:
+          description: Opisanie kontenta.</br>Maksimalnaa dlina — **1000 simvolov.**
+          example: Ohen horohaa kniga.
+          type: string
+          maxLength: 1000
+          x-nullable: false
+        catalog_id:
+          description: |
+            ID kategorii kontenta:
+            - `1` — Videokontent 
+            - `2` — Audiokontent
+            - `4` — Dokument
+          enum:
+            - 1
+            - 2
+            - 4
+          example: 4
+          type: integer
+          x-nullable: false
+        content_type:
+          description: |
+            Tip faila:
+            - Videokontent:
+                - `video/mp4`
+            - Audiokontent:
+                - `audio/mpeg`
+            - Dokument:
+                - `application/pdf`
+                - `application/epub+zip`
+                - `text/plain`
+          enum:
+            - video/mp4
+            - audio/mpeg
+            - text/plain
+            - application/pdf
+            - application/epub+zip
+          example: application/epub+zip
+          type: string
+          x-nullable: false
+        parts:
+          description: |
+            Dla optimalnoi skorosti zagruzki kontenta sleduet razbit fail na freimy po 2 Mb. V massive ukazyvautsa indeks kahdogo freima i ego razmer.</br>
+          example:
+            - index: 1
+              size: 2097152
+            - index: 2
+              size: 2097152
+            - index: 3
+              size: 1048576
+          type: array
+          items:
+            $ref: '#/components/schemas/ChunkPart'
+        meta:
+          $ref: '#/components/schemas/ContentMeta'
+    UploadInitResponse:
+      type: object
+      properties:
+        content_id:
+          description: ID kontenta
+          example: 493292
+          type: integer
+          format: int64
+          x-nullable: false
+        uuid:
+          description: |
+            Unikalnyi ID. Etot ID neobhodim dla zagruzki samogo faila v metode [Zagruzka kontenta (faila)](#operation/contentUploadChunk) 
+          example: 25f5e4c9-2cac-11ef-adbf-9cc2c45608a
+          type: string
+          x-nullable: false
+    UploadChunkResponse:
+      type: object
+      properties:
+        chunk:
+          description: Kolihestvo peredannyh freimov (hastei kontenta)
+          type: integer
+          example: 3
+          x-nullable: false
+        uri:
+          description: |
+            URI adresa zagruhennogo faila
+          example: vol19/924/e9e5d152ea3d9018bd061c62f75efbdf/content
+          type: string
+          x-nullable: false
+    ContentMeta:
+      type: object
+      x-nullable: true
+      required:
+        - thumbnail
+      description: |
+        Metadannye. Dopolnitelnaa informacia o kontente.
+      properties:
+        thumbnail:
+          description: URI adresa oblohki kontenta
+          example:
+            - vol4/id_48361197/fc99358aedea2a0cf68c8dcd7f2a3696/480.jpg
+            - vol4/id_48361197/fc99358aedea2a0cf68c8dcd7f2a3696/1280.jpg
+            - vol4/id_48361197/fc99358aedea2a0cf68c8dcd7f2a3696/1920.jpg
+          type: array
+          items:
+            type: string
+            x-nullable: false
+        source_file_name:
+          description: Ima ishodnogo faila
+          example: Ivan_Turgenev:_Otcy_i_deti.epub
+          type: string
+          maxLength: 100
+          x-nullable: false
+        rating:
+          description: Vozrastnoe ogranihenie
+          example: 16+
+          enum:
+            - 0+
+            - 6+
+            - 12+
+            - 14+
+            - 16+
+            - 18+
+          type: string
+          x-nullable: false
+        original_name:
+          description: Originalnoe nazvanie kontenta
+          example: Ivan_Turgenev:_Otcy_i_deti
+          maxLength: 100
+          type: string
+          x-nullable: false
+        voice:
+          description: Akter ozvuhivauhii audiokontent
+          example: Kuznecov V.B.
+          type: string
+          maxLength: 100
+          x-nullable: false
+        bisac:
+          description: |
+            [ISBN](https://en.wikipedia.org/wiki/ISBN) (Mehdunarodnyi standartnyi knihnyi nomer)
+            - Kahdyi ISBN unikalen
+            - Sostoit iz 13 simvolov, nahinaa s prefiksa "978" ili "979"
+          example: 978-5-389-04996-3
+          type: string
+          x-nullable: false
+        pages:
+          description: Kolihestvo stranic v knige (faile)
+          example: 354
+          type: integer
+          format: int32
+          x-nullable: false
+        author:
+          description: Avtor kontenta
+          example: Ivan Turgenev
+          type: string
+          maxLength: 100
+          x-nullable: false
+        translator:
+          description: |
+            Avtor perevoda, takhe izvestnyi kak perevodhik, eto helovek, kotoryi zanimaetsa perevodom teksta iz odnogo azyka na drugoi.
+          example: Hare Richard
+          type: string
+          maxLength: 100
+          x-nullable: false
+        duration:
+          description: Prodolhitelnost kontenta
+          type: string
+          example: '00:05:11'
+          x-nullable: false
+    ProblemDetails400:
+      type: object
+      required:
+        - title
+        - requestId
+      properties:
+        status:
+          description: Dublikat HTTP status-kod
+          example: 400
+          type: integer
+          format: int32
+          x-omitempty: true
+          x-nullable: false
+        title:
+          description: Korotkoe opisanie ohibki
+          example: bad request
+          type: string
+          x-nullable: false
+        detail:
+          description: Razvernutoe opisanie ohibki
+          example: value 'five' is invalid for parameter offer_id
+          type: string
+          x-omitempty: true
+          x-nullable: false
+        code:
+          description: Sluhebnaa informacia ohibki
+          type: string
+          x-omitempty: true
+          x-nullable: false
+        errors:
+          description: |
+            Massiv ohibok.
+
+            Dla peredahi neskolkih ohibok.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetails400'
+          x-omitempty: true
+          x-nullable: false
+        requestId:
+          description: |
+            ID zaprosa.
+
+            Dublikat zagolovka `X-Request-Id`.
+          example: b709d59bd0791513350332ffe5f813c1
+          type: string
+          x-nullable: false
+        origin:
+          description: Ima servisa
+          example: gateway-dev
+          type: string
+          x-nullable: false
+          x-omitempty: true
+    ProblemDetails401:
+      type: object
+      required:
+        - title
+        - requestId
+      properties:
+        status:
+          description: Dublikat HTTP status-kod
+          example: 401
+          type: integer
+          format: int32
+          x-omitempty: true
+          x-nullable: false
+        title:
+          description: Korotkoe opisanie ohibki
+          example: unauthorized
+          type: string
+          x-nullable: false
+        detail:
+          description: Razvernutoe opisanie ohibki
+          example: authorization required
+          type: string
+          x-omitempty: true
+          x-nullable: false
+        code:
+          description: Sluhebnaa informacia ohibki
+          type: string
+          x-omitempty: true
+          x-nullable: false
+        requestId:
+          description: |
+            ID zaprosa.
+
+            Dublikat zagolovka `X-Request-Id`.
+          example: b709d59bd0791513350332ffe5f813c1
+          type: string
+          x-nullable: false
+        origin:
+          description: Ima servisa
+          example: gateway-dev
+          type: string
+          x-nullable: false
+          x-omitempty: true
+    ProblemDetails403:
+      type: object
+      required:
+        - title
+        - requestId
+      properties:
+        status:
+          description: Dublikat HTTP status-kod
+          example: 400
+          type: integer
+          format: int32
+          x-omitempty: true
+          x-nullable: false
+        title:
+          description: Korotkoe opisanie ohibki
+          example: forbidden
+          type: string
+          x-nullable: false
+        code:
+          description: Sluhebnaa informacia ohibki
+          type: string
+          x-omitempty: true
+          x-nullable: false
+        requestId:
+          description: |
+            ID zaprosa.
+
+            Dublikat zagolovka `X-Request-Id`.
+          example: b709d59bd0791513350332ffe5f813c1
+          type: string
+          x-nullable: false
+        origin:
+          description: Ima servisa
+          example: gateway-dev
+          type: string
+          x-nullable: false
+          x-omitempty: true
+    ProblemDetails404:
+      type: object
+      required:
+        - title
+        - requestId
+      properties:
+        status:
+          description: Dublikat HTTP status-kod
+          example: 404
+          type: integer
+          format: int32
+          x-omitempty: true
+          x-nullable: false
+        title:
+          description: Korotkoe opisanie ohibki
+          example: not found
+          type: string
+          x-nullable: false
+        detail:
+          description: Razvernutoe opisanie ohibki
+          example: content with id 789 not found
+          type: string
+          x-omitempty: true
+          x-nullable: false
+        code:
+          description: Sluhebnaa informacia ohibki
+          type: string
+          x-omitempty: true
+          x-nullable: false
+        requestId:
+          description: |
+            ID zaprosa.
+
+            Dublikat zagolovka `X-Request-Id`.
+          example: b709d59bd0791513350332ffe5f813c1
+          type: string
+          x-nullable: false
+        origin:
+          description: Ima servisa
+          example: gateway-dev
+          type: string
+          x-nullable: false
+          x-omitempty: true
+    ProblemDetails500:
+      type: object
+      required:
+        - title
+        - requestId
+      properties:
+        status:
+          description: Dublikat HTTP status-kod
+          example: 500
+          type: integer
+          format: int32
+          x-omitempty: true
+          x-nullable: false
+        title:
+          description: Korotkoe opisanie ohibki
+          example: internal server error
+          type: string
+          x-nullable: false
+        code:
+          description: Sluhebnaa informacia ohibki
+          type: string
+          x-omitempty: true
+          x-nullable: false
+        errors:
+          description: |
+            Massiv ohibok.
+
+            Dla peredahi neskolkih ohibok.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetails500'
+          x-omitempty: true
+          x-nullable: false
+        requestId:
+          description: |
+            ID zaprosa.
+
+            Dublikat zagolovka `X-Request-Id`.
+          example: b709d59bd0791513350332ffe5f813c1
+          type: string
+          x-nullable: false
+        origin:
+          description: Ima servisa
+          example: gateway-dev
+          type: string
+          x-nullable: false
+          x-omitempty: true
+    ProblemDetails502:
+      type: object
+      required:
+        - title
+        - requestId
+      properties:
+        status:
+          description: Dublikat HTTP status-kod
+          example: 502
+          type: integer
+          format: int32
+          x-omitempty: true
+          x-nullable: false
+        title:
+          description: Korotkoe opisanie ohibki
+          example: bad gateway
+          type: string
+          x-nullable: false
+        code:
+          description: Sluhebnaa informacia ohibki
+          type: string
+          x-omitempty: true
+          x-nullable: false
+        errors:
+          description: |
+            Massiv ohibok.
+
+            Dla peredahi neskolkih ohibok.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetails502'
+          x-omitempty: true
+          x-nullable: false
+        requestId:
+          description: |
+            ID zaprosa.
+
+            Dublikat zagolovka `X-Request-Id`.
+          example: b709d59bd0791513350332ffe5f813c1
+          type: string
+          x-nullable: false
+        origin:
+          description: Ima servisa
+          example: gateway-dev
+          type: string
+          x-nullable: false
+          x-omitempty: true
+    KeyRedeemedResponse:
+      type: object
+      required:
+        - id
+        - value
+        - buyed_at
+        - created_at
+        - offer_id
+        - offer_title
+        - offer_price
+      properties:
+        id:
+          description: ID kluha
+          example: 54321
+          type: integer
+          format: int64
+          x-nullable: false
+        value:
+          description: Kluh
+          example: 0181-c2a38--6379-69d8ae
+          type: string
+          x-nullable: false
+        created_at:
+          description: Data sozdania kluha
+          type: string
+          x-nullable: false
+          example: '2024-05-10T09:25:50Z'
+        buyed_at:
+          description: Data pokupki kluha
+          example: '2024-05-13T11:08:46Z'
+          type: string
+          x-nullable: false
+        offer_id:
+          description: ID predlohenia
+          example: 42124
+          type: integer
+          format: int64
+          x-nullable: false
+        offer_title:
+          description: Nazvanie predlohenia
+          example: Igra Red Dead Redemption (Steam)
+          type: string
+          x-nullable: false
+        offer_price:
+          description: cena predlohenia
+          example: 2490
+          type: integer
+          format: int64
+          x-nullable: false
+    UpdateContentRequest:
+      type: object
+      properties:
+        title:
+          description: Nazvanie kontenta.</br>Maksimalnaa dlina — **500 simvolov.**
+          example: 'Kniga ''Ivan Turgenev: Otcy i deti'''
+          type: string
+          maxLength: 500
+          x-nullable: true
+        description:
+          description: Opisanie kontenta.</br>Maksimalnaa dlina — **1000 simvolov.**
+          example: Ohen horohaa kniga.
+          type: string
+          maxLength: 1000
+          x-nullable: true
+    ChunkPart:
+      type: object
+      required:
+        - index
+        - size
+      properties:
+        index:
+          description: Indeks freima (fragmenta)
+          x-nullable: false
+          type: integer
+          format: int64
+        size:
+          description: Razmer freima (fragmenta) v baĭtah
+          type: integer
+          format: int64
+          x-nullable: false
+    Content:
+      type: object
+      required:
+        - id
+        - author_id
+        - title
+        - uri
+        - category_id
+        - status
+        - description
+        - created
+        - updated
+        - content_type
+        - playlist
+        - files
+      properties:
+        id:
+          description: ID kontenta
+          example: 5321
+          type: integer
+          format: int64
+          x-nullable: false
+        author_id:
+          description: ID avtora
+          example: 93224
+          type: integer
+          format: int64
+          x-nullable: false
+        title:
+          description: Nazvanie kontenta
+          example: 'Kniga ''Ivan Turgenev: Otcy i deti'''
+          type: string
+          x-nullable: false
+        description:
+          description: Opisanie kontenta
+          example: Ohen horohaa kniga.
+          type: string
+          x-nullable: false
+        content_type:
+          description: |
+            Tip faila:
+            - Videokontent:
+                - `video/mp4`
+            - Audiokontent:
+                - `audio/mpeg`
+            - Dokument:
+                - `application/pdf`
+                - `application/epub+zip`
+                - `text/plain`
+                
+          enum:
+            - video/mp4
+            - audio/mpeg
+            - text/plain
+            - application/pdf
+            - application/epub+zip
+          example: application/epub+zip
+          x-nullable: false
+          type: string
+        uri:
+          description: URI adres kontenta
+          example: vol19/924/e9e55159ea3d9018bd061c62f75efbdf/content
+          type: string
+          x-nullable: false
+        files:
+          description: Spisok s informaciei o dopolnitelnyh failah
+          type: array
+          items:
+            type: object
+            properties:
+              contentType:
+                description: Tip kontenta
+                example: application/fb2
+                type: string
+              size:
+                description: Razmer faila
+                example: 3665547
+                type: integer
+                format: int64
+              uri:
+                description: URI adres na fail
+                example: vol13/689/98235be67bdefcew2a33c5f0e55b17eb/output.fb2
+                type: string
+        playlist:
+          type: string
+          description: |
+            URI adres na pleilist kontenta.
+
+            Esli kontent avlaetsa audio ili video kontentom, to fail dekodiruetsa v pleilist.
+          example: vol14/147/f2671cfb67bd8c200b9464vd6f0dd97d/output.m3u8
+          x-nullable: false
+        meta:
+          description: |
+            hranit v sebe metadannye kontenta:
+            - `bisac` —  ISBN (Mehdunarodnyi standartnyi knihnyi nomer)
+            - `voice` — Akter ozvuhivauhii audiokontent
+            - `author` — Avtor kontenta
+            - `rating` — Vozrastnoe ogranihenie
+            - `preview` — Korotkii otrezok kontenta dla predvaritelnogo prosmotra 
+            - `duration` — Prodolhitelnost kontenta 
+            - `thumbnail` — Spisok oblohki dla kontenta raznogo razrehenia
+            - `dimensions` — Spisok razrehenii video
+            - `duration_ms` — Prodolhitelnost kontenta v millisekundah
+            - `translator` — Avtor perevoda
+            - `original_name` — Originalnoe nazvanie kontenta
+            - `pages` — Kolihestvo stranic v kontente
+            - `encoded_videos` — Spisok informacii (razmer, razrehenie) dla dekodirovannogo video
+            - `encoded_audios` — Spisok informacii (razmer, bitreit) dla dekodirovannogo audio 
+        category_id:
+          description: |
+            ID kategorii kontenta:
+            - `1` — Videokontent 
+            - `2` — Audiokontent
+            - `4` — Dokument
+          enum:
+            - 1
+            - 2
+            - 4
+          example: 4
+          type: integer
+          format: int64
+          x-nullable: false
+        status:
+          description: |
+            Status kontenta:
+            - `0` — Sozdan
+            - `1` — Zagruheno na server
+            - `2` — Opublikovan
+            - `3` — Ohibka v obrabotke ili publikacii
+            - `4` — Obrabatyvaetsa
+            - `5` — Otpravleno na server
+          example: 2
+          type: integer
+          format: int32
+          x-nullable: false
+        created:
+          description: Data sozdania, UTC +3 (Moskva)
+          example: '2024-06-10T07:29:30Z'
+          type: string
+          x-nullable: false
+        updated:
+          description: Data obnovlenia, UTC +3 (Moskva)
+          example: '2024-06-17T22:12:13Z'
+          type: string
+          x-nullable: false
+    ContentList:
+      type: object
+      required:
+        - total
+        - items
+      properties:
+        items:
+          description: Spisok kontenta
+          type: array
+          items:
+            $ref: '#/components/schemas/Content'
+        total:
+          $ref: '#/components/schemas/Total'
+    UploadGalleryResponse:
+      type: object
+      properties:
+        uris:
+          description: Spisok URI adresov na mediafaily
+          type: array
+          items:
+            type: string
+            x-nullable: false
+          example:
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/video.mp4
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/0_1280.jpg
+            - vol42/352/91b751bfb753ff365afbc8dca21b7f87/1_1280.png
+    KeysRedeemedResponseList:
+      type: object
+      required:
+        - total
+        - items
+      properties:
+        items:
+          description: Spisok prodannyh kluhei
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyRedeemedResponse'
+        total:
+          $ref: '#/components/schemas/Total'
+    Total:
+      description: |
+        Obhee kolihestvo zapisei, sootvetstvuuhih zadannym kriteriam vyborki.
+
+        Parametry:
+        - `take` (integer): Kolihestvo zapisei, kotorye neobhodimo vernut v tekuhem otvete. Naprimer, esli `take` ravno 10, to v otvete budet ne bolee 10 zapisei.
+        - `skip` (integer): Kolihestvo zapisei, kotorye neobhodimo propustit pered nahalom vyborki. Naprimer, esli `skip` ravno 20, to vyborka nahnetsa s 21-i zapisi.
+
+        Pole `total` pokazyvaet polnoe kolihestvo zapisei, sootvetstvuuhih usloviam filtracii, bez uheta parametrov `take` i `skip`.
+      example: 10
+      type: integer
+      format: int64
+      x-nullable: false
+  securitySchemes:
+    ApiKeyAuth:
+      name: Authorization
+      description: |
+        Dobavte v zagolovok zaprosa "Authorization: Bearer api_token".</br>
+        V razdele [Avtorizacia](#tag/Avtorizaciya) vy mohete oznakomitsa s instrukciei po poluheniu i primeneniu tokena.
+      type: apiKey
+      in: header

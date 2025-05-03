@@ -1,0 +1,13 @@
+from __future__ import absolute_import
+
+# flake8: noqa
+
+# import apis into api package
+from wildberries_api_client.products.api.kartohki_tovarov_api import KartohkiTovarovApi
+from wildberries_api_client.products.api.kategorii_predmety_i_harakteristiki_api import KategoriiPredmetyIHarakteristikiApi
+from wildberries_api_client.products.api.mediafaily_api import MediafailyApi
+from wildberries_api_client.products.api.ostatki_na_skladah_prodavca_api import OstatkiNaSkladahProdavcaApi
+from wildberries_api_client.products.api.sklady_prodavca_api import SkladyProdavcaApi
+from wildberries_api_client.products.api.sozdanie_kartohek_tovarov_api import SozdanieKartohekTovarovApi
+from wildberries_api_client.products.api.arlyki_api import ArlykiApi
+from wildberries_api_client.products.api.ceny_i_skidki_api import CenyISkidkiApi

@@ -1,0 +1,1390 @@
+openapi: 3.0.1
+info:
+  title: Zakazy Samovyvoz
+  x-file-name: in-store-pickup
+  description: |
+    Upravlenie [sborohnymi zadaniami](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz) i [metadannymi](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz) zakazov shemy Samovyvoz.
+  version: instorepickup
+servers:
+  - url: https://marketplace-api.wildberries.ru
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Sborohnye zadania Samovyvoz
+    description: ''
+  - name: Metadannye Samovyvoz
+    description: ''
+paths:
+  /api/v3/click-collect/orders/new:
+    get:
+      tags:
+        - Sborohnye zadania Samovyvoz
+      summary: Poluhit spisok novyh sborohnyh zadanii
+      description: |
+        Metod predostavlaet spisok vseh novyh [sborohnyh zadanii](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz), kotorye est u prodavca na moment zaprosa.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov shemy <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Samovyvoz</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.NewOrders'
+              examples:
+                NewOrderClick:
+                  $ref: '#/components/examples/NewOrderClick'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/{orderId}/confirm:
+    patch:
+      tags:
+        - Sborohnye zadania Samovyvoz
+      summary: Perevesti na sborku
+      description: |
+        Metod perevodit sborohnoe zadanie v status `confirm` — na sborke.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov shemy <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Samovyvoz</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Podtverhdeno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka obnovlenia statusa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                StatusMismatch:
+                  $ref: '#/components/examples/StatusMismatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/{orderId}/prepare:
+    patch:
+      tags:
+        - Sborohnye zadania Samovyvoz
+      summary: Soobhit, hto sborohnoe zadanie gotovo k vydahe
+      description: |
+        Metod perevodit sborohnoe zadanie v status `prepare` — gotovo k vydahe.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov shemy <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Samovyvoz</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Podtverhdeno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka obnovlenia statusa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                StatusMismatch:
+                  $ref: '#/components/examples/StatusMismatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/client:
+    post:
+      tags:
+        - Sborohnye zadania Samovyvoz
+      summary: Informacia o pokupatele
+      description: |
+        Metod predostavlaet informaciu o pokupatele po ID sborohnogo zadania. 
+        Ogranihenia:
+          - Informaciu mohno poluhit tolko dla sborohnyh zadanii, nahodahihsa na sborke — status `confirm` i gotovyh k poluheniu — status `prepare`. 
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov shemy <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Samovyvoz</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequest'
+        required: true
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.OrderClientInfoResp'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/client/identity:
+    post:
+      tags:
+        - Sborohnye zadania Samovyvoz
+      summary: Proverit, hto sborohnoe zadanie prinadlehit pokupatelu
+      description: |
+        Metod soobhaet, prinadlehit li proveraemoe sborohnoe zadanie pokupatelu ili net po peredannomu kodu.
+
+        <div class="description_limit">  
+          Maksimum 3 zaprosa v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> na odin akkaunt prodavca
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.CheckIdentityRequest'
+        required: true
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.CheckedIdentity'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '409':
+          description: Vveden nevernyi proverohnyi kod
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Error'
+              examples:
+                InvalidPasscode:
+                  $ref: '#/components/examples/InvalidPasscode'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/{orderId}/receive:
+    patch:
+      tags:
+        - Sborohnye zadania Samovyvoz
+      summary: Soobhit, hto zakaz prinat pokupatelem
+      description: |
+        Metod perevodit sborohnoe zadanie v status `receive` — poluheno pokupatelem.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov shemy <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Samovyvoz</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Podtverhdeno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka obnovlenia statusa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                StatusMismatch:
+                  $ref: '#/components/examples/StatusMismatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/{orderId}/reject:
+    patch:
+      tags:
+        - Sborohnye zadania Samovyvoz
+      summary: Soobhit, hto pokupatel otkazalsa ot zakaza
+      description: |
+        Metod perevodit sborohnoe zadanie v status `reject` — otkaz pri poluhenii.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov shemy <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Samovyvoz</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Podtverhdeno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka obnovlenia statusa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                StatusMismatch:
+                  $ref: '#/components/examples/StatusMismatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/status:
+    post:
+      tags:
+        - Sborohnye zadania Samovyvoz
+      summary: Poluhit statusy sborohnyh zadanii
+      description: "Metod predostavlaet statusy sborohnyh zadanii po ih ID.\n<br><br>\n`supplierStatus` — status sborohnogo zadania. Trigger ego izmenenia — sam prodavec.\n\nVozmohnye znahenia `supplierStatus`:\n| Status   | Opisanie            | Kak perevesti sborohnoe zadanie v dannyi status |\n| -------  | ---------           | --------------------------------------|\n| `new`      | Novoe sborohnoe zadanie |  \n| `confirm`  | Na sborke  | \tPATCH /api/v3/click-collect/orders/{orderId}/confirm \n| `prepare`  | Gotov k vydahe | \tPATCH /api/v3/click-collect/orders/{orderId}/prepare \n| `receive`  | Poluheno pokupatelem   | PATCH /api/v3/click-collect/orders/{orderId}/receive \n| `reject`  | Otkaz pokupatela    |  \tPATCH /api/v3/click-collect/orders/{orderId}/reject \n| `cancel`   | Otmeneno prodavcom    |  \tPATCH /api/v3/click-collect/orders/{orderId}/cancel \n| `cancel_shelf_life` | Otmena po istehenii sroka hranenia    |  \tPerevoditsa avtomatiheski po vozniknoveniu sobytia \n\n<br><br>\n`wbStatus` — status sborohnogo zadania v sisteme WB.\n\nVozmohnye znahenia `wbStatus`:\n- **waiting** - sborohnoe zadanie v rabote\n- **sorted** - sborohnoe zadanie otsortirovano\n- **sold** - sborohnoe zadanie poluheno pokupatelem\n- **canceled** - otmena sborohnogo zadania\n- **canceled_by_client** - pokupatel otmenil zakaz pri poluhenii\n- **declined_by_client** - pokupatel otmenil zakaz v pervyi hac \n<br> Otmena dostupna pokupatelu v pervyi has s momenta zakaza, esli zakaz ne pereveden na sborku\n- **defect** - otmena sborohnogo zadania po prihine braka\n- **ready_for_pickup** - sborohnoe zadanie pribylo na PVZ\n- **canceled_by_missed_call** - otmena zakaza po prihine nedozvona\n\n<div class=\"description_limit\">  \n  Maksimum 300 zaprosov v <a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">minutu</a> dla vseh metodov shemy <a href=\"/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token\">Samovyvoz</a> na odin akkaunt prodavca.\n  <br><br>\n  Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov\n</div>\n"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequest'
+        required: true
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.OrderStatuses'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders:
+    get:
+      tags:
+        - Sborohnye zadania Samovyvoz
+      summary: Poluhit informaciu o zaverhennyh sborohnyh zadaniah
+      description: |
+        Metod predostavlaet informaciu o zaverhennyh sborohnyh zadaniah posle prodahi ili otmeny zakaza. 
+
+        Mohno poluhit dannye za zadannyi period, maksimum 30 kalendarnyh dnei.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov shemy <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Samovyvoz</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: limit
+          in: query
+          description: |
+            Parametr paginacii. Ustanavlivaet predelnoe kolihestvo vozvrahaemyh
+            dannyh.
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: next
+          in: query
+          description: |
+            Parametr paginacii. Ustanavlivaet znahenie, s kotorogo neobhodimo poluhit
+            sleduuhii paket dannyh. Dla poluhenia polnogo spiska dannyh dolhen
+            byt raven 0 v pervom zaprose. Dla sleduuhih zaprosov neobhodimo
+            brat znahenia iz odnoimennogo pola v otvete
+          required: true
+          schema:
+            type: integer
+        - name: dateFrom
+          in: query
+          description: Data nahala perioda v formate Unix timestamp
+          required: true
+          schema:
+            type: integer
+        - name: dateTo
+          in: query
+          description: Data konca perioda v formate Unix timestamp
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Orders'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/{orderId}/meta:
+    get:
+      tags:
+        - Metadannye Samovyvoz
+      summary: Poluhit metadannye sborohnogo zadania
+      description: |
+        Metod predostavlaet metadannye sborohnogo zadania.
+
+        Vozmohnye metadannye: `imei`, `uin`, `gtin`, `sgtin`
+
+        V otvete metoda vozvrahautsa metadannye, dostupnye dla sborohnogo
+        zadania. Esli otvet vernulsa s pustoi strukturoi `meta`, znahit, u
+        sborohnogo zadania net metadannyh, i dobavlenie ih nedostupno.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov shemy <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Samovyvoz</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.OrdersMeta'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      tags:
+        - Metadannye Samovyvoz
+      summary: Udalit metadannye sborohnogo zadania
+      description: |
+        Metod udalaet znahenie metadannyh sborohnogo zadania dla peredannogo kluha.
+        Vozmohnye metadannye: `imei`, `uin`, `gtin`, `sgtin`
+        Peredaetsa tolko odno znahenie.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov shemy <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Samovyvoz</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+        - name: key
+          in: query
+          description: |
+            Nazvanie metadannyh dla udalenia (`imei`, `uin`, `gtin`, `sgtin`).
+            Peredaetsa tolko odno znahenie.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Udaleno
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/{orderId}/cancel:
+    patch:
+      tags:
+        - Sborohnye zadania Samovyvoz
+      summary: Otmenit sborohnoe zadanie
+      description: |
+        Metod otmenaet sborohnoe zadanie i perevodit v status `cancel` — otmeneno prodavcom.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov shemy <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Samovyvoz</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Otmeneno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka obnovlenia statusa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                StatusMismatch:
+                  $ref: '#/components/examples/StatusMismatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/{orderId}/meta/sgtin:
+    put:
+      tags:
+        - Metadannye Samovyvoz
+      summary: Zakrepit za sborohnym zadaniem kod markirovki tovara
+      description: |
+        Metod zakreplaet za sborohnym zadaniem kod markirovki [hestnyi znak](https://hestnyiznak.rf).
+        <br><br>
+        Zakrepit kod markirovki mohno tolko, esli v [metadannyh sborohnogo zadania](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get) est pole `sgtins`, a sborohnoe zadanie nahoditsa v [statuse](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1status/post) `confirm`.
+        <br><br>
+        Poluhit zagruhennye markirovki mohno v [metadannyh sborohnogo zadania](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get).
+
+        <div class="description_limit">
+          Maksimum 1 000 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> summarno na odin akkaunt prodavca dla metodov:
+            <br>
+            1. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1uin/put">Zakrepit za sborohnym zadaniem UIN</a><br>
+            2. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1imei/put">Zakrepit za sborohnym zadaniem IMEI</a><br>
+            3. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1gtin/put">Zakrepit za sborohnym zadaniem GTIN</a><br>
+            4. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1sgtin/put">Zakrepit za sborohnym zadaniem kod markirovki</a>
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.SGTINsRequest'
+        required: true
+      responses:
+        '204':
+          description: Obnovleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka dobavlenia markirovki.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                FailedToUpdateMeta:
+                  $ref: '#/components/examples/FailedToUpdateMeta'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/{orderId}/meta/uin:
+    put:
+      tags:
+        - Metadannye Samovyvoz
+      summary: Zakrepit za sborohnym zadaniem UIN (unikalnyi identifikacionnyi nomer)
+      description: |
+        Metod obnovlaet UIN sborohnogo zadania. U odnogo sborohnogo zadania mohet byt
+        tolko odin UIN. Dobavlat markirovku mohno tolko dla sborohnyh zadanii v statuse
+        `confirm` i dostavka kotoryh osuhestvlaetsa silami WB.
+
+        <div class="description_limit">
+          Maksimum 1 000 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> summarno na odin akkaunt prodavca dla metodov:
+            <br>
+            1. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1uin/put">Zakrepit za sborohnym zadaniem UIN</a><br>
+            2. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1imei/put">Zakrepit za sborohnym zadaniem IMEI</a><br>
+            3. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1gtin/put">Zakrepit za sborohnym zadaniem GTIN</a><br>
+            4. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1sgtin/put">Zakrepit za sborohnym zadaniem kod markirovki</a>
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.UINRequest'
+        required: true
+      responses:
+        '204':
+          description: Obnovleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka dobavlenia markirovki.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                FailedToUpdateMeta:
+                  $ref: '#/components/examples/FailedToUpdateMeta'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/{orderId}/meta/imei:
+    put:
+      tags:
+        - Metadannye Samovyvoz
+      summary: Zakrepit za sborohnym zadaniem IMEI
+      description: |
+        Metod obnovlaet IMEI sborohnogo zadania. U odnogo sborohnogo zadania mohet
+        byt tolko odin IMEI. Dobavlat markirovku mohno tolko dla sborohnyh zadanii v
+        statuse `confirm` i dostavka kotoryh osuhestvlaetsa silami WB.
+
+        <div class="description_limit">
+          Maksimum 1 000 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> summarno na odin akkaunt prodavca dla metodov:
+            <br>
+            1. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1uin/put">Zakrepit za sborohnym zadaniem UIN</a><br>
+            2. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1imei/put">Zakrepit za sborohnym zadaniem IMEI</a><br>
+            3. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1gtin/put">Zakrepit za sborohnym zadaniem GTIN</a><br>
+            4. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1sgtin/put">Zakrepit za sborohnym zadaniem kod markirovki</a>
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.IMEIRequest'
+        required: true
+      responses:
+        '204':
+          description: Obnovleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka dobavlenia markirovki.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                FailedToUpdateMeta:
+                  $ref: '#/components/examples/FailedToUpdateMeta'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/{orderId}/meta/gtin:
+    put:
+      tags:
+        - Metadannye Samovyvoz
+      summary: Zakrepit za sborohnym zadaniem GTIN
+      description: |
+        Metod obnovlaet GTIN (unikalnyi ID tovara v Belarusi) sborohnogo
+        zadania. U odnogo sborohnogo zadania mohet byt tolko odin GTIN.
+        Dobavlat markirovku mohno tolko dla sborohnyh zadanii v statuse `confirm` i
+        dostavka kotoryh osuhestvlaetsa silami WB.
+
+        <div class="description_limit">
+          Maksimum 1 000 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> summarno na odin akkaunt prodavca dla metodov:
+            <br>
+            1. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1uin/put">Zakrepit za sborohnym zadaniem UIN</a><br>
+            2. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1imei/put">Zakrepit za sborohnym zadaniem IMEI</a><br>
+            3. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1gtin/put">Zakrepit za sborohnym zadaniem GTIN</a><br>
+            4. <a href="/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1meta~1sgtin/put">Zakrepit za sborohnym zadaniem kod markirovki</a>
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          description: ID sborohnogo zadania
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.GTINRequest'
+        required: true
+      responses:
+        '204':
+          description: Obnovleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka dobavlenia markirovki.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                FailedToUpdateMeta:
+                  $ref: '#/components/examples/FailedToUpdateMeta'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header
+  examples:
+    NewOrderClick:
+      value:
+        orders:
+          - ddate: 29.10.2024
+            salePrice: 14000
+            requiredMeta:
+              - sgtin
+            article: wb1702fyjh
+            rid: 1234567673554519872.0.0
+            createdAt: '2024-10-29T10:19:30Z'
+            warehouseAddress: Moskva, raion akimanka, Sofiiskaa naberehnaa, 4 s1
+            orderCode: 23457822-6667
+            skus:
+              - '2041546265353'
+            id: 1234567890
+            warehouseId: 1234567
+            nmId: 123456789
+            chrtId: 987654321
+            price: 14000
+            currencyCode: 643
+            cargoType: 1
+            isZeroOrder: false
+    IncorrectRequestBody:
+      value:
+        code: IncorrectRequestBody
+        message: Nekorrektnoe telo zaprosa
+    InvalidPasscode:
+      description: Vveden nepravilnyi proverohnyi kod
+      value:
+        code: InvalidPasscode
+    StatusMismatch:
+      value:
+        code: StatusMismatch
+        message: Nesootvetstvie statusov, proverte ih pravilnost
+    FailedToUpdateMeta:
+      value:
+        code: FailedToUpdateMeta
+        message: Ne udalos obnovit metadannye sborohnogo zadania. Ubedites, hto sborohnoe zadanie udovletvoraet vsem neobhodimym trebovaniam (sborohnoe zadanie suhestvuet, nahoditsa v statuse "Na sborke", sborohnomu zadaniu dostupny metadannye sm. opisanie metoda **Poluhit metadannye sborohnogo zadania**)
+    IncorrectParameter:
+      value:
+        code: IncorrectParameter
+        message: Peredan nekorrektnyi parametr
+    IncorrectRequest:
+      value:
+        code: IncorrectRequest
+        message: Peredany nekorrektnye dannye
+  schemas:
+    api.CheckedIdentity:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: |
+            Prinadlehit li sborohnoe zadanie pokupatelu:
+              - `true` — prinadlehit
+              - `false` — znahenie ne primenaetsa. Esli sborohnoe zadanie ne prinadlehit pokupatelu, vy poluhite otvet so status-kodom `409`
+    Error:
+      type: object
+      nullable: false
+      properties:
+        code:
+          type: string
+          description: Kod ohibki
+          nullable: false
+        message:
+          type: string
+          description: Opisanie ohibki
+          nullable: false
+        data:
+          type: object
+          description: Dopolnitelnye dannye, obogahauhie ohibku
+          nullable: true
+    api.CheckIdentityRequest:
+      type: object
+      properties:
+        orderCode:
+          type: string
+          description: Unikalnyi ID zakaza pokupatela
+        passcode:
+          type: string
+          description: Kod podtverhdenia
+      example:
+        orderCode: 170046918-0011
+        passcode: '4567'
+    api.Error:
+      type: object
+      properties:
+        code:
+          type: string
+        data:
+          type: object
+        message:
+          type: string
+    api.GTINRequest:
+      type: object
+      properties:
+        gtin:
+          type: string
+          description: GTIN
+      example:
+        gtin:
+          - '1234567890123456'
+    api.IMEIRequest:
+      type: object
+      properties:
+        imei:
+          type: string
+          description: IMEI
+      example:
+        imei:
+          - '123456789012345'
+    api.NewOrder:
+      type: object
+      properties:
+        ddate:
+          type: string
+          description: Planiruemaa data dostavki
+        salePrice:
+          description: |
+            cena prodavca v valute prodahi s uhetom skidki prodavca, bez uheta skidki WB Kluba, umnohennaa na 100
+          type: integer
+          nullable: true
+          example: 504600
+        requiredMeta:
+          type: array
+          nullable: true
+          description: |
+            Perehen metadannyh, kotorye neobhodimo dobavit v sborohnoe
+            zadanie. Na dannyi moment obazatelnym k dobavleniu avlaetsa tolko
+            UIN, pri ego nalihii v perehne.
+          items:
+            type: string
+        article:
+          type: string
+          description: Artikul prodavca
+        rid:
+          type: string
+          description: ID sborohnogo zadania v sisteme WB
+        createdAt:
+          type: string
+          description: Data i vrema sozdania sborohnogo zadania
+          format: RFC3339
+        warehouseAddress:
+          type: string
+          description: |
+            Adres magazina (sklada prodavca), na kotoryi postupilo sborohnoe
+            zadanie
+        orderCode:
+          type: string
+          description: |
+            Unikalnyi ID, po kotoromu pokupatel mohet poluhit svoi
+            zakaz
+        skus:
+          type: array
+          description: Massiv barkodov tovara
+          items:
+            type: string
+        id:
+          type: integer
+          description: ID sborohnogo zadania
+        warehouseId:
+          type: integer
+          description: |
+            ID sklada prodavca, na kotoryi postupilo sborohnoe
+            zadanie
+        nmId:
+          type: integer
+          description: Artikul WB
+        chrtId:
+          type: integer
+          description: ID razmera tovara v sisteme WB
+        payMode:
+          description: |
+            Rehim oplaty: 
+              - `prepaid` — predoplatnyi
+              - `postpaid` — postoplatnyi
+              - `unknown` — neizvestnyi 
+          type: string
+          example: prepaid
+        price:
+          type: integer
+          description: |
+            cena v valute prodahi s uhetom vseh skidok, umnohennaa na 100. Kod
+            valuty prodahi — v pole `currencyCode`.
+        currencyCode:
+          type: integer
+          description: Kod valuty prodahi
+          format: ISO 4217
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            <dl> <dt>Tip tovara:</dt> <dd>1 - standartnyi</dd> <dd>2 - SGT (Sverhgabaritnyi tovar)</dd> <dd>3 - KGT+ (Krupnogabaritnyi tovar)</dd> </dl>
+          enum:
+            - 1
+            - 2
+            - 3
+        isZeroOrder:
+          type: boolean
+          description: Priznak zakaza, sdelannogo na nulevoi ostatok tovara. (`false` - zakaz sdelan na tovar s nenulevym ostatkom, `true` - zakaz sdelan na tovar s ostatkom ravnym nulu. Sborohnoe zadanie mohno otmenit bez htrafa za otmenu)
+    api.NewOrders:
+      type: object
+      properties:
+        orders:
+          type: array
+          description: Spisok sborohnyh zadanii
+          items:
+            $ref: '#/components/schemas/api.NewOrder'
+    api.Order:
+      type: object
+      properties:
+        article:
+          type: string
+          description: Artikul prodavca
+          example: wb6scpbwvp
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            <dl> <dt>Tip tovara:</dt> <dd>1 - standartnyi</dd> <dd>2 - SGT (Sverhgabaritnyi tovar)</dd> <dd>3 - KGT+ (Krupnogabaritnyi tovar)</dd> </dl>
+          enum:
+            - 1
+            - 2
+            - 3
+          example: 1
+        chrtId:
+          type: integer
+          description: ID razmera tovara v sisteme WB
+          example: 12345676
+        createdAt:
+          type: string
+          description: Data i vrema sozdania sborohnogo zadania
+          format: RFC3339
+          example: '2025-03-21T09:53:31Z'
+        currencyCode:
+          type: integer
+          description: Kod valuty prodahi
+          format: ISO 4217
+          example: 643
+        id:
+          type: integer
+          description: ID sborohnogo zadania
+          example: 123456789
+        isZeroOrder:
+          type: boolean
+          description: |
+            Priznak zakaza, sdelannogo na nulevoi ostatok tovara. (`false` - zakaz
+            sdelan na tovar s nenulevym ostatkom, `true` - zakaz sdelan na tovar s
+            ostatkom ravnym nulu. Sborohnoe zadanie mohno otmenit bez htrafa za
+            otmenu)
+          example: false
+        nmId:
+          type: integer
+          description: Artikul WB
+          example: 1234567898765
+        orderCode:
+          type: string
+          description: |
+            Unikalnyi ID, po kotoromu pokupatel mohet poluhit svoi
+            zakaz
+          example: 21117866-0006
+        orderUid:
+          type: string
+          description: |
+            ID tranzakcii dla gruppirovki sborohnyh zadanii.
+            Sborohnye zadania v odnoi korzine pokupatela budut imet odinakovyi
+            orderUID
+          example: 165918930_629fbc924b984618a44354475ca58675
+        payMode:
+          description: |
+            Rehim oplaty: 
+              - `prepaid` — predoplatnyi
+              - `postpaid` — postoplatnyi
+              - `unknown` — neizvestnyi 
+          type: string
+          example: prepaid
+        price:
+          type: integer
+          description: |
+            cena v valute prodahi s uhetom vseh skidok, umnohennaa na 100. Kod
+            valuty prodahi — v pole `currencyCode`
+          example: 5000
+        rid:
+          type: string
+          description: ID sborohnogo zadania v sisteme WB
+          example: 5044304527347733263.0.0
+        skus:
+          type: array
+          description: Massiv barkodov tovara
+          items:
+            type: string
+          example:
+            - '2043227963145'
+        warehouseAddress:
+          type: string
+          description: Adres magazina (sklada prodavca), na kotoryi postupilo sborohnoe zadanie
+          example: Moskva, raion akimanka, Sofiiskaa naberehnaa, 4 s1
+        warehouseId:
+          type: integer
+          description: ID sklada prodavca, na kotoryi postupilo sborohnoe zadanie
+          example: 1162157
+    api.OrderClientInfo:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: |
+            Telefon dla svazi s pokupatelem. htoby svazatsa s pokupatelem naberite
+            etot nomer i vvedite dobavohnyi kod. Dannyi nomer ne avlaetsa pramym
+            nomerom pokupatela.
+        firstName:
+          type: string
+          description: Ima pokupatela
+        orderID:
+          type: integer
+          description: Nomer zakaza
+        phoneCode:
+          type: integer
+          description: Dobavohnyi kod
+      example:
+        orders:
+          - phone: '+71111111111'
+            firstName: Ivan
+            orderID: 1234567
+            phoneCode: 1234567
+    api.OrderClientInfoResp:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.OrderClientInfo'
+    api.OrderStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID sborohnogo zadania
+        supplierStatus:
+          type: string
+          description: Status sborohnogo zadania prodavca (ustanavlivaetsa prodavcom)
+        wbStatus:
+          type: string
+          description: Status sborohnogo zadania v sisteme WB
+      example:
+        orders:
+          - supplierStatus: confirm
+            wbStatus: waiting
+            id: 1234567
+    api.OrderStatuses:
+      type: object
+      properties:
+        orders:
+          type: array
+          description: Spisok statusov sborohnyh zadanii
+          items:
+            $ref: '#/components/schemas/api.OrderStatus'
+    api.Orders:
+      type: object
+      properties:
+        next:
+          type: integer
+          description: |
+            Parametr paginacii. Soderhit znahenie, kotoroe neobhodimo ukazat v
+            zaprose dla poluhenia sleduuhego paketa dannyh
+          example: 12345566
+        orders:
+          type: array
+          description: Spisok sborohnyh zadanii
+          items:
+            $ref: '#/components/schemas/api.Order'
+    api.OrdersMeta:
+      type: object
+      properties:
+        meta:
+          type: object
+          description: Metadannye sborohnogo zadania
+          allOf:
+            - $ref: '#/components/schemas/api.baseMeta'
+    api.OrdersRequest:
+      type: object
+      properties:
+        orders:
+          type: array
+          description: Spisok ID sborohnyh zadanii
+          items:
+            type: integer
+      example:
+        orders:
+          - 1234567
+    api.SGTINsRequest:
+      type: object
+      properties:
+        sgtins:
+          type: array
+          description: Massiv kodov markirovki. Dopuskaetsa ot 16 do 135 simvolov dla koda odnoi markirovki
+          items:
+            type: string
+      example:
+        sgtins:
+          - '1234567890123456'
+    api.UINRequest:
+      type: object
+      properties:
+        uin:
+          type: string
+          description: UIN
+      example:
+        uin:
+          - '1234567890123456'
+    api.baseMeta:
+      type: object
+      properties:
+        gtin:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: '123456789012345'
+          description: GTIN
+        imei:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: '123456789012345'
+          description: IMEI
+        sgtin:
+          type: object
+          properties:
+            value:
+              type: array
+              items:
+                type: string
+              example:
+                - '123456789012345'
+              nullable: true
+          description: Kod markirovki hestnogo znaka
+        uin:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: '123456789012345'
+          description: UIN
+  responses:
+    '401':
+      description: Polzovatel ne avtorizovan
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              detail:
+                type: string
+                description: Detali ohibki
+              code:
+                type: string
+                description: Vnutrennii kod ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+              status:
+                type: number
+                description: HTTP status-kod
+              statusText:
+                type: string
+                description: Rashifrovka HTTP status-koda
+              timestamp:
+                type: string
+                format: RFC3339
+                description: Data i vrema zaprosa
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '429':
+      description: Slihkom mnogo zaprosov
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              detail:
+                type: string
+                description: Detali ohibki
+              code:
+                type: string
+                description: Vnutrennii kod ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+              status:
+                type: number
+                description: HTTP status-kod
+              statusText:
+                type: string
+                description: Rashifrovka HTTP status-koda
+              timestamp:
+                type: string
+                format: RFC3339
+                description: Data i vrema zaprosa
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'
+    AccessDenied:
+      description: Dostup zaprehen
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: AccessDenied
+            message: Dostup zaprehen
+    NotFound:
+      description: Ne naideno
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: NotFound
+            message: Not Found

@@ -1,0 +1,10 @@
+from __future__ import absolute_import
+
+# flake8: noqa
+
+# import apis into api package
+from wildberries_api_client.analytics.api.analitika_prodavca_csv_api import AnalitikaProdavcaCSVApi
+from wildberries_api_client.analytics.api.istoria_ostatkov_api import IstoriaOstatkovApi
+from wildberries_api_client.analytics.api.poiskovye_zaprosy_api import PoiskovyeZaprosyApi
+from wildberries_api_client.analytics.api.statistika_po_prodviheniu_api import StatistikaPoProdviheniuApi
+from wildberries_api_client.analytics.api.voronka_prodah_api import VoronkaProdahApi

@@ -1,0 +1,10 @@
+from __future__ import absolute_import
+
+# flake8: noqa
+
+# import apis into api package
+from wildberries_api_client.communications.api.otzyvy_api import OtzyvyApi
+from wildberries_api_client.communications.api.voprosy_api import VoprosyApi
+from wildberries_api_client.communications.api.vozvraty_pokupatelami_api import VozvratyPokupatelamiApi
+from wildberries_api_client.communications.api.hablony_otvetov_api import HablonyOtvetovApi
+from wildberries_api_client.communications.api.hat_s_pokupatelami_api import HatSPokupatelamiApi

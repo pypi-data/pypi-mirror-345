@@ -1,0 +1,1013 @@
+openapi: 3.0.1
+info:
+  version: finances
+  title: Dokumenty i buhgalteria
+  description: |
+    <div class="description_important">  
+        Uznat bolhe o dokumentah i buhgalterii mohno v <a href="https://seller.wildberries.ru/instructions/category/ba929b64-1f89-4426-82d7-ce998ee552bd?goBackOption=prevRoute&categoryId=3c971375-9939-45e8-ab82-376019be8942">spravohnom centre</a>
+    </div>
+
+    Prosmotr [finansovyh othetov](/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty) i [dokumentov](/openapi/financial-reports-and-accounting#tag/Dokumenty) prodavca.
+  x-file-name: finances
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Finansovye othety
+    description: ''
+  - name: Dokumenty
+    description: ''
+paths:
+  /api/v5/supplier/reportDetailByPeriod:
+    servers:
+      - url: https://statistics-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Othet o prodahah po realizacii
+      description: "Metod predostavlaet detalizacii k [ehenedelnym othetam realizacii](https://seller.wildberries.ru/suppliers-mutual-settlements/reports-implementations/reports-weekly-new).\n<br><br>\nDannye dostupny s 29 anvara 2024 goda.\n\n<div class=\"description_important\">  \n  Vy mohete vygruzit dannye v <a href=\"https://dev.wildberries.ru/ru/cases/1\">Google Tablicy</a>\n</div>\n\n<div class=\"description_limit\">  \n  Maksimum 1 zapros v\_<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">minutu</a> na odin akkaunt prodavca\n</div> \n"
+      tags:
+        - Finansovye othety
+      parameters:
+        - name: dateFrom
+          in: query
+          schema:
+            type: string
+            format: RFC3339
+          required: true
+          description: |
+            Nahalnaa data otheta.<br>
+            Data v formate RFC3339. Mohno peredat datu ili datu so vremenem. 
+            Vrema mohno ukazyvat s tohnostu do sekund ili millisekund. <br>
+            Vrema peredaetsa v hasovom poase Msk (UTC+3).
+            <br>Primery:
+              - `2019-06-20`
+              - `2019-06-20T23:59:59`
+              - `2019-06-20T00:00:00.12345`
+              - `2017-03-25T00:00:00`
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 100000
+          required: false
+          description: Maksimalnoe kolihestvo strok otveta, vozvrahaemyh metodom. Ne mohet byt bolee 100000.
+        - in: query
+          name: dateTo
+          schema:
+            type: string
+            format: date
+          required: true
+          description: Konehnaa data otheta
+        - in: query
+          name: rrdid
+          schema:
+            type: integer
+          required: false
+          description: |
+            Unikalnyi ID stroki otheta. Neobhodim dla poluhenia otheta hastami. 
+            <br>
+            Zagruzku otheta nuhno nahinat s `rrdid = 0` i pri posleduuhih vyzovah API peredavat v zaprose znahenie `rrd_id` iz poslednei stroki, poluhennoi v rezultate predyduhego vyzova. 
+            <br>
+            Takim obrazom, dla zagruzki odnogo otheta mohet ponadobitsa vyzyvat API do teh por, poka v otvete ne budet otdan pustoi massiv <code>[]</code>.
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DetailReportItem'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/responseErrorStatistics'
+                  - $ref: '#/components/schemas/responseErrorStatistics2'
+              examples:
+                DateFromFieldRequired:
+                  $ref: '#/components/examples/DateFromFieldRequired'
+                DateFromValueNotValidated:
+                  $ref: '#/components/examples/DateFromValueNotValidated'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/documents/categories:
+    servers:
+      - url: https://documents-api.wildberries.ru
+    get:
+      tags:
+        - Dokumenty
+      security:
+        - HeaderApiKey: []
+      summary: Kategorii dokumentov
+      description: |
+        Metod predostavlaet kategorii dokumentov dla poluhenia [spiska dokumentov prodavca](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get).
+
+        <div class="description_limit">  
+          Maksimum 1 zapros v 10 <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">sekund</a> na odin akkaunt prodavca
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/LocaleCat'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCategories'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/documents/list:
+    servers:
+      - url: https://documents-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Dokumenty
+      summary: Spisok dokumentov
+      description: |
+        Metod predostavlaet spisok dokumentov prodavca. Vy mohete poluhit [odin](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1download/get) ili [neskolko](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1download~1all/post) dokumentov iz poluhennogo spiska.
+
+        <div class="description_limit">  
+          Maksimum 1 zapros v 10 <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">sekund</a> na odin akkaunt prodavca
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/LocaleList'
+        - in: query
+          name: beginTime
+          schema:
+            type: string
+            format: date
+            description: Nahalo perioda. Tolko vmeste s `endTime`
+            example: '2024-07-09'
+        - in: query
+          name: endTime
+          schema:
+            type: string
+            format: date
+            description: Konec perioda. Tolko vmeste s `beginTime`
+            example: '2024-07-15'
+        - in: query
+          name: sort
+          schema:
+            type: string
+            description: |
+              Sortirovka:
+                - `date` — po date sozdania dokumenta
+                - `category` — po kategorii (tolko pri `locale=ru`)
+
+              Tolko vmeste s `order`
+            enum:
+              - date
+              - category
+            default: date
+            example: category
+        - in: query
+          name: order
+          schema:
+            type: string
+            description: |
+              Poradok dannyh:
+                - `desc` — ot pozdnei daty k rannei, ot pervoi do poslednei bukvy alfavita po nazvaniam kategorii
+                - `asc` — ot rannei daty k pozdnei, ot poslednei do pervoi bukvy alfavita po nazvaniam kategorii
+
+              Tolko vmeste s `sort`
+            enum:
+              - desc
+              - asc
+            default: desc
+            example: asc
+        - in: query
+          name: category
+          schema:
+            type: string
+            description: ID [kategorii dokumentov](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1categories/get) iz pola `name`
+            example: redeem-notification
+        - in: query
+          name: serviceName
+          schema:
+            type: string
+            description: Unikalnyi ID dokumenta
+            example: redeem-notification-44841941
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetList'
+        '400':
+          $ref: '#/components/responses/Responses400List'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/documents/download:
+    servers:
+      - url: https://documents-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Dokumenty
+      summary: Poluhit dokument
+      description: |
+        Metod zagruhaet odin dokument iz [spiska dokumentov prodavca](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get).
+
+        <div class="description_limit">  
+          Maksimum 1 zapros v 10 <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">sekund</a> na odin akkaunt prodavca
+        </div>
+      parameters:
+        - in: query
+          required: true
+          name: serviceName
+          schema:
+            type: string
+            description: Unikalnyi ID dokumenta
+            example: redeem-notification-44841941
+        - in: query
+          required: true
+          name: extension
+          schema:
+            type: string
+            description: Format dokumenta
+            example: zip
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDoc'
+        '400':
+          $ref: '#/components/responses/Responses400Download'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/documents/download/all:
+    servers:
+      - url: https://documents-api.wildberries.ru
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Dokumenty
+      summary: Poluhit dokumenty
+      description: |
+        Metod zagruhaet neskolko dokumentov iz [spiska dokumentov prodavca](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get). Kolihestvo dokumentov ne ograniheno.
+
+        <div class="description_limit">  
+          Maksimum 1 zapros v 5 <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minut</a> na odin akkaunt prodavca
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestDownload'
+            example:
+              params:
+                - extension: zip
+                  serviceName: redeem-notification-44841941
+                - extension: xlsx
+                  serviceName: act-income-mp-392460936
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDocs'
+        '400':
+          $ref: '#/components/responses/Responses400DownloadAll'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  parameters:
+    LocaleCat:
+      name: locale
+      in: query
+      schema:
+        type: string
+        example: ru
+        default: en
+      description: |
+        azyk pola `title`:  
+          - `ru` — russkii
+          - `en` — angliiskii
+          - `zh` — kitaiskii
+    LocaleList:
+      name: locale
+      in: query
+      schema:
+        type: string
+        example: ru
+        default: en
+      description: |
+        azyk pola `category`:  
+          - `ru` — russkii
+          - `en` — angliiskii
+          - `zh` — kitaiskii         
+  schemas:
+    requestDownload:
+      type: object
+      properties:
+        params:
+          type: array
+          items:
+            type: object
+            properties:
+              extension:
+                type: string
+                description: Format dokumenta
+              serviceName:
+                type: string
+                description: Unikalnyi ID dokumenta
+    GetCategories:
+      properties:
+        data:
+          type: object
+          properties:
+            categories:
+              description: |
+                Kategorii dokumentov
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: redeem-notification
+                    description: ID kategorii dokumenta iz parametra [zaprosa](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get) `category`
+                  title:
+                    type: string
+                    example: Uvedomlenie o vykupe
+                    description: Nazvanie kategorii dokumenta iz pola [otveta](./financial-reports-and-accounting#tag/Dokumenty/~1api~1v1~1documents~1list/get) `category`
+    GetList:
+      properties:
+        data:
+          type: object
+          properties:
+            documents:
+              description: Kategorii dokumentov
+              type: array
+              items:
+                type: object
+                properties:
+                  serviceName:
+                    type: string
+                    example: redeem-notification-44841941
+                    description: Unikalnyi ID dokumenta
+                  name:
+                    type: string
+                    example: redeem-notification
+                    description: Nazvanie dokumenta
+                  category:
+                    type: string
+                    example: Uvedomlenie o vykupe
+                    description: Nazvanie [kategorii dokumentov](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1categories/get) iz pola otveta `title`
+                  extensions:
+                    type: array
+                    items:
+                      type: string
+                      example: zip
+                    description: Formaty dokumenta
+                  creationTime:
+                    type: string
+                    example: '2023-10-03T00:18:06.879Z'
+                    description: Data i vrema sozdania dokumenta
+                  viewed:
+                    type: boolean
+                    example: false
+                    description: Vygruhen li dokument v lihnom kabinete
+    GetDoc:
+      properties:
+        data:
+          type: object
+          properties:
+            fileName:
+              type: string
+              example: Notice of redemption 44841941.zip
+              description: Nazvanie dokumenta
+            extension:
+              type: string
+              example: zip
+              description: Format dokumenta
+            document:
+              type: string
+              example: UEsDBBQACAgIAAAAAAAAAAAAAAAAAAAAAABHAAAA0KPQstC10LTQvtC80LvQtdC90LjQtSDQviDQstGL0LrRg9C/0LUg4oSWNDQ4NDE5NDEg0L7RgiAyNS4wOS4yMDIzLnhsc3jsnQk0lP3f/0dEUiRkNwmVECI7o0WS7EklxprdkH2bKVkqISRkGSlkaxRlN2TPnmzJvu/Gzmz/Uz33fY/L8/Q8zrn/x/07565zcjrn9f1cn/V6f69v53zTVCWnYATtA+0DAX/Rg0AgM5ip5l2Yg5OwKeyu+Wl3O1vbcA3YV5FDVfPej2vXKptOK1V9LjycmPDG72uW4vcG9xdsOI1V2wj86sk6+4nHJeZ92NFgC/He3gmDlccFXSyumXYUGSKK4hLLsqu5aBTspu5lqlcGB/JNlQVn1Eumj6o8ZEWPRotEVGkH9/kf457totEKj2N2P4dSZWAIaC0ajy5J+VL5fen1YOhcGMxvvUw+XOKFOHL...LSL/tC77s0GzTi2iBuHorbMpcOaw0Hmsc/gpk7ty3/cdDYRmhkRUPAIC37P94CA8oiP/fIvpPK8n9l43YARWRgH/tI6E3ntD/nfOfPyj9jxxDwn+b8/8dZqBDQPjPNSAACJgBAAD21P9s/y8AAP//UEsHCFHrudyQEwAASxQAAFBLAQIUABQACAgIAAAAAACH4v2BaSgAAGNjAABHAAAAAAAAAAAAAAAAAAAAAADQo9Cy0LXQtNC+0LzQu9C10L3QuNC1INC+INCy0YvQutGD0L/QtSDihJY0NDg0MTk0MSDQvtGCIDI1LjA5LjIwMjMueGxzeFBLAQIUABQACAgIAAAAAADTmLxwRQcAAGAPAABLAAAAAAAAAAAAAAAAAN4oAADQo9Cy0LXQtNC+0LzQu9C10L3QuNC1INC+INCy0YvQutGD0L/QtSDihJY0NDg0MTk0MSDQvtGCIDI1LjA5LjIwMjMueGxzeC5zaWdQSwECFAAUAAgACAAAAAAAUeu53JATAABLFAAACAAAAAAAAAAAAAAAAACcMAAAbWNoZC56aXBQSwUGAAAAAAMAAwAkAQAAYkQAAAAA
+              description: Dokument v kodirovke base64
+    GetDocs:
+      properties:
+        data:
+          type: object
+          properties:
+            fileName:
+              type: string
+              example: documents.zip
+              description: Nazvanie dokumenta
+            extension:
+              type: string
+              example: zip
+              description: Format dokumenta
+            document:
+              type: string
+              example: UEsDBBQACAgIAAAAAAAAAAAAAAAAAAAAAABHAAAA0KPQstC10LTQvtC80LvQtdC90LjQtSDQviDQstGL0LrRg9C/0LUg4oSWNDQ4NDE5NDEg0L7RgiAyNS4wOS4yMDIzLnhsc3jsnQk0lP3f/0dEUiRkNwmVECI7o0WS7EklxprdkH2bKVkqISRkGSlkaxRlN2TPnmzJvu/Gzmz/Uz33fY/L8/Q8zrn/x/07565zcjrn9f1cn/V6f69v53zTVCWnYATtA+0DAX/Rg0AgM5ip5l2Yg5OwKeyu+Wl3O1vbcA3YV5FDVfPej2vXKptOK1V9LjycmPDG72uW4vcG9xdsOI1V2wj86sk6+4nHJeZ92NFgC/He3gmDlccFXSyumXYUGSKK4hLLsqu5aBTspu5lqlcGB/JNlQVn1Eumj6o8ZEWPRotEVGkH9/kf457totEKj2N2P4dSZWAIaC0ajy5J+VL5fen1YOhcGMxvvUw+XOKFOHL...LSL/tC77s0GzTi2iBuHorbMpcOaw0Hmsc/gpk7ty3/cdDYRmhkRUPAIC37P94CA8oiP/fIvpPK8n9l43YARWRgH/tI6E3ntD/nfOfPyj9jxxDwn+b8/8dZqBDQPjPNSAACJgBAAD21P9s/y8AAP//UEsHCFHrudyQEwAASxQAAFBLAQIUABQACAgIAAAAAACH4v2BaSgAAGNjAABHAAAAAAAAAAAAAAAAAAAAAADQo9Cy0LXQtNC+0LzQu9C10L3QuNC1INC+INCy0YvQutGD0L/QtSDihJY0NDg0MTk0MSDQvtGCIDI1LjA5LjIwMjMueGxzeFBLAQIUABQACAgIAAAAAADTmLxwRQcAAGAPAABLAAAAAAAAAAAAAAAAAN4oAADQo9Cy0LXQtNC+0LzQu9C10L3QuNC1INC+INCy0YvQutGD0L/QtSDihJY0NDg0MTk0MSDQvtGCIDI1LjA5LjIwMjMueGxzeC5zaWdQSwECFAAUAAgACAAAAAAAUeu53JATAABLFAAACAAAAAAAAAAAAAAAAACcMAAAbWNoZC56aXBQSwUGAAAAAAMAAwAkAQAAYkQAAAAA
+              description: Dokument v kodirovke base64
+    DetailReportItem:
+      type: object
+      properties:
+        realizationreport_id:
+          example: 1234567
+          type: integer
+          description: Nomer otheta
+        date_from:
+          example: '2022-10-17'
+          type: string
+          format: date
+          description: Data nahala othetnogo perioda
+        date_to:
+          example: '2022-10-23'
+          type: string
+          format: date
+          description: Data konca othetnogo perioda
+        create_dt:
+          example: '2022-10-24'
+          type: string
+          format: date
+          description: Data formirovania otheta
+        currency_name:
+          example: rub
+          type: string
+          description: Valuta otheta
+        suppliercontract_code:
+          example: null
+          type: object
+          description: Dogovor
+        rrd_id:
+          example: 1232610467
+          type: integer
+          description: Nomer stroki
+        gi_id:
+          example: 123456
+          type: integer
+          description: Nomer postavki
+        dlv_prc:
+          example: 1.8
+          type: number
+          description: Fiksirovannyi koefficient sklada po postavke
+        fix_tariff_date_from:
+          example: '2024-10-23'
+          type: string
+          format: date
+          description: Data nahala deistvia fiksacii
+        fix_tariff_date_to:
+          example: '2024-11-18'
+          type: string
+          format: date
+          description: Data okonhania deistvia fiksacii
+        subject_name:
+          example: Mini-pehi
+          type: string
+          description: Predmet
+        nm_id:
+          example: 1234567
+          type: integer
+          description: Artikul WB
+        brand_name:
+          example: BlahBlah
+          type: string
+          description: Brend
+        sa_name:
+          example: MAB123
+          type: string
+          description: Artikul prodavca
+        ts_name:
+          example: '0'
+          type: string
+          description: Razmer
+        barcode:
+          example: '1231312352310'
+          type: string
+          description: Barkod
+        doc_type_name:
+          example: Prodaha
+          type: string
+          description: Tip dokumenta
+        quantity:
+          type: integer
+          example: 1
+          description: Kolihestvo
+        retail_price:
+          example: 1249
+          type: number
+          description: cena roznihnaa
+        retail_amount:
+          example: 367
+          type: number
+          description: Vaildberriz realizoval Tovar (Pr)
+        sale_percent:
+          example: 68
+          type: integer
+          description: Soglasovannaa skidka, %
+        commission_percent:
+          example: 0.1324
+          type: number
+          description: Razmer kVV, %
+        office_name:
+          example: Koledino
+          type: string
+          description: Sklad
+        supplier_oper_name:
+          example: Prodaha
+          type: string
+          description: Obosnovanie dla oplaty
+        order_dt:
+          example: '2022-10-13T00:00:00Z'
+          type: string
+          format: date-time
+          description: Data zakaza. <br>Prisylaetsa s avnym ukazaniem hasovogo poasa
+        sale_dt:
+          example: '2022-10-20T00:00:00Z'
+          type: string
+          format: date-time
+          description: Data prodahi. <br>Prisylaetsa s avnym ukazaniem hasovogo poasa
+        rr_dt:
+          example: '2022-10-20'
+          type: string
+          format: date
+          description: Data operacii. <br> Prisylaetsa s avnym ukazaniem hasovogo poasa
+        shk_id:
+          example: 1239159661
+          type: integer
+          description: htrihkod
+        retail_price_withdisc_rub:
+          example: 399.68
+          type: number
+          description: cena roznihnaa s uhetom soglasovannoi skidki
+        delivery_amount:
+          example: 0
+          type: integer
+          description: Kolihestvo dostavok
+        return_amount:
+          example: 0
+          type: integer
+          description: Kolihestvo vozvrata
+        delivery_rub:
+          example: 0
+          type: number
+          description: Uslugi po dostavke tovara pokupatelu
+        gi_box_type_name:
+          example: Monopalleta
+          type: string
+          description: Tip korobov
+        product_discount_for_report:
+          example: 399.68
+          type: number
+          description: Soglasovannyi produktovyi diskont, %
+        supplier_promo:
+          example: 0
+          type: number
+          description: Promokod
+        rid:
+          example: 123722249253
+          type: integer
+          description: Unikalnyi ID zakaza
+        ppvz_spp_prc:
+          example: 0.1581
+          type: number
+          description: Skidka WB, %
+        ppvz_kvw_prc_base:
+          example: 0.15
+          type: number
+          description: Razmer kVV bez NDS, % bazovyi
+        ppvz_kvw_prc:
+          example: -0.0081
+          type: number
+          description: Itogovyi kVV bez NDS, %
+        sup_rating_prc_up:
+          type: number
+          description: Razmer snihenia kVV iz-za reitinga, %
+        is_kgvp_v2:
+          type: number
+          description: Razmer snihenia kVV iz-za akcii, %
+        ppvz_sales_commission:
+          example: -3.74
+          type: number
+          description: Voznagrahdenie s prodah do vyheta uslug poverennogo, bez NDS
+        ppvz_for_pay:
+          example: 376.99
+          type: number
+          description: K perehisleniu prodavcu za realizovannyi tovar
+        ppvz_reward:
+          example: 0
+          type: number
+          description: Vozmehenie za vydahu i vozvrat tovarov na PVZ
+        acquiring_fee:
+          example: 14.89
+          type: number
+          description: Ekvairing/Komissii za organizaciu platehei
+        acquiring_percent:
+          example: 4.06
+          type: number
+          description: Razmer komissii za ekvairing/Komissii za organizaciu platehei, %
+        payment_processing:
+          example: Komissia za organizaciu plateha s NDS
+          type: string
+          description: Tip plateha za Ekvairing/Komissii za organizaciu platehei
+        acquiring_bank:
+          example: Tinkoff
+          type: string
+          description: Naimenovanie banka-ekvaiera
+        ppvz_vw:
+          example: -3.74
+          type: number
+          description: Voznagrahdenie Vaildberriz (VV), bez NDS
+        ppvz_vw_nds:
+          example: -0.75
+          type: number
+          description: NDS s voznagrahdenia WB
+        ppvz_office_name:
+          example: Punkt samovyvoza (PVZ)
+          type: string
+          description: Naimenovanie ofisa dostavki
+        ppvz_office_id:
+          example: 105383
+          type: integer
+          description: Nomer ofisa
+        ppvz_supplier_id:
+          example: 186465
+          type: integer
+          description: Nomer partnera
+        ppvz_supplier_name:
+          example: IP hasmin
+          type: string
+          description: Naimenovanie partnera
+        ppvz_inn:
+          example: '010101010101'
+          type: string
+          description: INN partnera
+        declaration_number:
+          example: ''
+          type: string
+          description: Nomer tamohennoi deklaracii
+        bonus_type_name:
+          example: htraf MP. Nevypolnennyi zakaz (otmena klientom posle nedovoza)
+          type: string
+          description: |
+            Vidy logistiki, htrafov i doplat.<br>
+            Pole budet v otvete pri nalihii znahenia
+        sticker_id:
+          example: '1964038895'
+          type: string
+          description: cifrovoe znahenie stikera, kotoryi kleitsa na tovar v processe sborki zakaza po sheme "Marketpleis"
+        site_country:
+          example: Rossia
+          type: string
+          description: Strana prodahi
+        srv_dbs:
+          example: true
+          type: boolean
+          description: Priznak uslugi platnoi dostavki
+        penalty:
+          example: 231.35
+          type: number
+          description: Obhaa summa htrafov
+        additional_payment:
+          example: 0
+          type: number
+          description: Doplaty
+        rebill_logistic_cost:
+          example: 1.349
+          type: number
+          description: Vozmehenie izderhek po perevozke/po skladskim operaciam s tovarom
+        rebill_logistic_org:
+          example: IP Ivanov Ivan Ivanovih(123456789012)
+          type: string
+          description: |
+            Organizator perevozki.<br>
+            Pole budet v otvete pri nalihii znahenia
+        storage_fee:
+          type: number
+          description: Stoimost hranenia
+          example: 12647.29
+        deduction:
+          type: number
+          description: Prohie uderhania/vyplaty
+          example: 6354
+        acceptance:
+          type: number
+          description: Stoimost platnoi priemki
+          example: 865
+        assembly_id:
+          type: integer
+          description: Nomer sborohnogo zadania
+          example: 2816993144
+        kiz:
+          example: "0102900000376311210G2CIS?ehge)S\x1D91002A\x1D92F9Qof4FDo/31Icm14kmtuVYQzLypxm3HWkC1vQ/+pVVjm1dNAth1laFMoAGn7yEMWlTjxIe7lQnJqZ7TRZhlHQ=="
+          type: string
+          description: |
+            Kod markirovki.<br>
+            Pole budet v otvete pri nalihii znahenia
+        srid:
+          example: 0f1c3999172603062979867564654dac5b702849
+          type: string
+          description: |
+            Unikalnyi ID zakaza.
+
+            Primehanie dla ispolzuuhih API Marketplace: `srid` raven `rid` v otvetah metodov sborohnyh zadanii.
+        report_type:
+          type: integer
+          description: "Tip otheta:\n\n  * `1`\_— standartnyi\n  * `2`\_— dla uvedomlenia o\_vykupe\n"
+          example: 1
+        is_legal_entity:
+          type: boolean
+          description: Priznak B2B-prodahi
+          example: false
+        trbx_id:
+          type: string
+          description: Nomer koroba dla platnoi priemki
+          example: WB-TRBX-1234567
+        installment_cofinancing_amount:
+          type: number
+          description: Skidka po programme sofinansirovania
+          example: 0
+        wibes_wb_discount_percent:
+          type: number
+          description: Skidka Wibes, %
+          example: 1
+    responseErrorStatistics:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+    responseErrorStatistics2:
+      type: object
+      properties:
+        errors:
+          type: string
+  responses:
+    '401':
+      description: Polzovatel ne avtorizovan
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              detail:
+                type: string
+                description: Detali ohibki
+              code:
+                type: string
+                description: Vnutrennii kod ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+              status:
+                type: number
+                description: HTTP status-kod
+              statusText:
+                type: string
+                description: Rashifrovka HTTP status-koda
+              timestamp:
+                type: string
+                format: RFC3339
+                description: Data i vrema zaprosa
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '429':
+      description: Slihkom mnogo zaprosov
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              detail:
+                type: string
+                description: Detali ohibki
+              code:
+                type: string
+                description: Vnutrennii kod ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+              status:
+                type: number
+                description: HTTP status-kod
+              statusText:
+                type: string
+                description: Rashifrovka HTTP status-koda
+              timestamp:
+                type: string
+                format: RFC3339
+                description: Data i vrema zaprosa
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'
+    Responses401:
+      description: Polzovatel ne avtorizovan
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              detail:
+                type: string
+                description: Detali ohibki
+              code:
+                type: string
+                description: Vnutrennii kod ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+              status:
+                type: number
+                description: HTTP status-kod
+              statusText:
+                type: string
+                description: Tekst HTTP status-koda
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2sauth-ca
+            status: 401
+            statusText: Unauthorized
+    Responses429:
+      description: Slihkom mnogo zaprosov
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              detail:
+                type: string
+                description: Detalizacia ohibki
+              code:
+                type: string
+                description: Vnutrennii kod ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+              status:
+                type: number
+                description: HTTP status-kod
+              statusText:
+                type: string
+                description: Tekst HTTP status-koda
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-stat
+            status: 429
+            statusText: Too Many Requests
+    Responses400List:
+      description: Nepravilnyi zapros
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              status:
+                type: number
+                description: HTTP status-kod
+              detail:
+                type: string
+                description: Detalizacia ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+          example:
+            title: Bad Request
+            status: 400
+            detail: sort and order must be both set or both not set
+            requestId: 41fc3b08-051d-4871-9991-6502977912ad
+            origin: docs-public-api
+    Responses400Download:
+      description: Nepravilnyi zapros
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              status:
+                type: number
+                description: HTTP status-kod
+              detail:
+                type: string
+                description: Detalizacia ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+          example:
+            title: Bad Request
+            status: 400
+            detail: serviceName and extension are required
+            requestId: 7c500a19-f531-4639-b0a4-53d6d296c349
+            origin: docs-public-api
+    Responses400DownloadAll:
+      description: Nepravilnyi zapros
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              status:
+                type: number
+                description: HTTP status-kod
+              detail:
+                type: string
+                description: Detalizacia ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+          example:
+            title: Bad Request
+            status: 400
+            detail: request body must contain at least one element with serviceName and extension
+            requestId: 6c364410-625c-4493-a434-8cbe79dfbf18
+            origin: docs-public-api
+  examples:
+    DateFromFieldRequired:
+      description: Ohibka v zaprose
+      value:
+        errors:
+          - 'dateFrom: field required'
+    DateFromValueNotValidated:
+      description: Ohibka v zaprose
+      value:
+        errors: 'dateFrom: Value not validated'
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header
