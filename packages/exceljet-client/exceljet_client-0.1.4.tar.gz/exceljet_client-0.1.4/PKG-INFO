@@ -1,0 +1,127 @@
+Metadata-Version: 2.4
+Name: exceljet-client
+Version: 0.1.4
+Summary: Client library for the ExcelJet API
+Author-email: Exceljet Team <kurt@exceljet.net>
+License: MIT
+Project-URL: Homepage, https://github.com/exceljet2/exceljet-client
+Project-URL: Documentation, https://docs.exceljet.com/api
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.32.3
+Requires-Dist: pydantic>=2.11.3
+Provides-Extra: dev
+Requires-Dist: pytest>=8.3.5; extra == "dev"
+Requires-Dist: build>=1.2.2; extra == "dev"
+Requires-Dist: responses>=0.25.7; extra == "dev"
+Requires-Dist: twine>=6.1.0; extra == "dev"
+Requires-Dist: bump2version>=1.0.1; extra == "dev"
+
+# ExcelJet API Client
+
+A Python client for the ExcelJet API. This client library provides convenient access to the ExcelJet API from Python applications.
+
+## Installation
+
+```bash
+# Install the package
+pip install exceljet-client
+
+# For developers: Install with development dependencies
+pip install "exceljet-client[dev]"
+
+# For local development from source
+git clone https://github.com/exceljet2/exceljet-client.git
+cd exceljet-client
+pip install -e ".[dev]"
+```
+
+## Usage
+
+```python
+from exceljet_client import ExceljetClient
+from exceljet_client.models import ContentType
+
+# Initialize the client
+client = ExceljetClient(api_key="your_api_key")
+
+# List nodes with optional filtering
+nodes = client.list_nodes(content_type=ContentType.FUNCTION, limit=10)
+print(f"Found {nodes.count} nodes")
+
+# Get a specific node
+node = client.get_node(node_id=123)
+print(f"Node title: {node.title}")
+
+# Get node as markdown
+markdown = client.get_node_markdown(node_id=123)
+print(markdown)
+
+# Create a new node
+from exceljet_client.models import BackdropNode
+
+new_node = BackdropNode(
+    nid=456,
+    title="New Function Example",
+    type="function",
+    path="functions/new-example",
+    created=int(time.time()),
+    changed=int(time.time()),
+    status=True,
+    body="Example function body"
+)
+
+created_node = client.create_node(new_node)
+print(f"Created node: {created_node.nid}")
+
+# Update an existing node
+updated_node = client.update_node(node_id=456, node=new_node)
+
+# Delete a node
+client.delete_node(node_id=456)
+```
+
+## Bulk Operations
+
+The client supports bulk operations for creating, updating, and deleting multiple nodes:
+
+```python
+# Bulk create nodes
+nodes_to_create = [node1, node2, node3]
+result = client.create_nodes_bulk(nodes_to_create)
+print(f"Created {result.created} nodes")
+
+# Bulk update nodes
+result = client.update_nodes_bulk(nodes_to_update)
+print(f"Updated {result.updated} nodes")
+
+# Bulk delete nodes
+result = client.delete_nodes_bulk([123, 456, 789])
+print(f"Deleted {result.deleted} nodes")
+```
+
+## Error Handling
+
+The client raises typed exceptions for different error cases:
+
+```python
+from exceljet_client.exceptions import ExceljetApiError, NodeNotFoundError
+
+try:
+    node = client.get_node(node_id=999999)
+except NodeNotFoundError:
+    print("Node not found")
+except ExceljetApiError as e:
+    print(f"API error: {e.status_code} - {e.detail}")
+```
+
+## API Reference
+
+See the [full API reference](https://docs.exceljet.com/api) for detailed documentation.
+
+## License
+
+MIT 
