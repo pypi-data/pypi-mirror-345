@@ -1,0 +1,4 @@
+stopuhr
+=================
+
+.. autofunction:: stopuhr.stopuhr

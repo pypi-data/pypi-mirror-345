@@ -1,0 +1,4 @@
+Chronometer
+=================
+
+.. autoclass:: stopuhr.Chronometer

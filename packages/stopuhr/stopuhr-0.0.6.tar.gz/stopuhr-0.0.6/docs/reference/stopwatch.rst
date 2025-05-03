@@ -1,0 +1,4 @@
+stopwatch
+=================
+
+.. autodata:: stopuhr.stopwatch

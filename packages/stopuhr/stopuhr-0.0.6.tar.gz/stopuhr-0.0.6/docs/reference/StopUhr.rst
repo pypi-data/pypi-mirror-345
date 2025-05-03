@@ -1,0 +1,4 @@
+StopUhr
+=================
+
+.. autoclass::  stopuhr.StopUhr
