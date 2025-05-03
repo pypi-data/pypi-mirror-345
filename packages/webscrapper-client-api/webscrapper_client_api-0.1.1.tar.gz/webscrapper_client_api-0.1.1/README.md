@@ -1,0 +1,148 @@
+# Webscrapper Client API
+
+An asynchronous and synchronous Python client for the Webscrapper API service. This client provides methods for retrieving web pages through proxies and checking URLs against the Russian internet regulator (RKN).
+
+## Features
+
+- Fully asynchronous API built with aiohttp
+- Support for both regular HTTP and Selenium-based web scraping
+- Cookie management for both HTTP and Selenium requests
+- Custom user agent and referer support
+- Mobile and country-specific proxy support
+- RKN checking functionality
+- Context manager support for proper resource management
+
+## Installation
+
+```bash
+pip install webscrapper-client-api
+```
+
+Or install directly from the repository:
+
+```bash
+pip install git+https://github.com/yourusername/webscrapper-client-api.git
+```
+
+## Usage
+
+### Basic Example
+
+```python
+import asyncio
+from webscrapper_client_api import WebscrapperClientAPIAsync
+
+async def main():
+    async with WebscrapperClientAPIAsync("your_api_key") as client:
+        # Basic page retrieval
+        result = await client.get_page(url="https://example.com")
+        print(f"Status: {result['status_code']}")
+        print(f"Content length: {len(result['html'])}")
+        
+        # RKN check
+        rkn_result = await client.check_rkn(url="https://example.com")
+        print(f"RKN check result: {rkn_result}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+
+### Using Cookies with Selenium
+
+```python
+async with WebscrapperClientAPIAsync("your_api_key") as client:
+    # Define cookies for Selenium
+    cookies = [
+        {"name": "session_id", "value": "abc123"},
+        {"name": "user_preferences", "value": "dark_mode=1"}
+    ]
+    
+    # Request with Selenium and cookies
+    result = await client.get_page(
+        url="https://example.com/login",
+        use_selenium=True,
+        cookies=cookies
+    )
+```
+
+### Using Cookies with Regular HTTP
+
+```python
+async with WebscrapperClientAPIAsync("your_api_key") as client:
+    # Define cookies for HTTP request
+    cookies = {
+        "session_id": "abc123",
+        "user_preferences": "dark_mode=1"
+    }
+    
+    # Request with HTTP and cookies
+    result = await client.get_page(
+        url="https://example.com/dashboard",
+        cookies=cookies,
+        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        referer="https://example.com/login"
+    )
+```
+
+### Manual Session Management
+
+```python
+async def example():
+    # Create client
+    client = WebscrapperClientAPIAsync("https://fetch.webnova.one", "your_api_key")
+    
+    try:
+        # Make requests
+        result = await client.get_page(url="https://example.com")
+    finally:
+        # Always close the session when done
+        await client.close()
+```
+
+## API Methods
+
+### get_page
+
+Retrieves a web page through a proxy.
+
+Parameters:
+- `url` (str): URL to retrieve
+- `use_selenium` (bool, optional): Use Selenium for request. Default: False
+- `use_mobile` (bool, optional): Use mobile proxy. Default: False
+- `user_agent` (str, optional): Custom User-Agent header
+- `referer` (str, optional): Custom referer (not used for Selenium)
+- `method` (str, optional): Request method, 'get' or 'head'. Default: 'get'
+- `country` (int, optional): Proxy country ID
+- `cookies` (dict or list, optional): Cookies to send with the request
+
+Returns a dictionary with:
+- `html`: HTML content of the page
+- `status_code`: HTTP status code
+- `url`: Final URL (may differ from requested URL after redirects)
+- `error`: Error message if any
+- `selenium`: Boolean indicating if Selenium was used (only in Selenium responses)
+
+### check_rkn
+
+Checks if a domain is blocked by RKN (Russian internet regulator).
+
+Parameters:
+- `url` (str): URL to check
+
+Returns a dictionary with the RKN check results.
+
+## Exception Handling
+
+The client defines a custom exception `WebscrapperAPIError` for handling API errors:
+
+```python
+try:
+    result = await client.get_page(url="https://example.com")
+except WebscrapperAPIError as e:
+    print(f"API Error: {e.message}, Status code: {e.status_code}")
+```
+
+## License
+
+This project is licensed under the WTFPL License.
