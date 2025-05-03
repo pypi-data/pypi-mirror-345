@@ -1,0 +1,3 @@
+PRESSED: int
+RELEASED: int
+SAMPLE_PERIOD: int

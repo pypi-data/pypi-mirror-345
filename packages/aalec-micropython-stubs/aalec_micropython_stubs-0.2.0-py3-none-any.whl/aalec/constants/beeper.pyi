@@ -1,0 +1,11 @@
+t_off: int
+t_c_1: int
+t_d_1: int
+t_e_1: int
+t_f_1: int
+t_g_1: int
+t_a_1: int
+t_h_1: int
+t_c_2: int
+t_a_2: int
+DUTY50: int
