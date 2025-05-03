@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django_recurring"
+version = "1.3.1"
+description = "Complex recurring datetimes in django using dateutil rrulesets, exportable as ical files"
+readme = "README.rst"
+authors = [
+  {name = "Boosh", email = "boosh@example.com"}
+]
+maintainers = [
+  {name = "Boosh", email = "boosh@example.com"}
+]
+classifiers = [
+
+]
+license = {text = "MIT license"}
+dependencies = [
+    "icalendar==6.0.0",
+    "python-dateutil>=2.0.0,<3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "coverage",  # testing
+    "mypy",  # linting
+    "pytest",  # testing
+    "pytest-django",  # testing
+    "django",
+    "ruff",  # linting
+    "pre-commit",
+    "build",
+    "twine",
+    "sphinx==8.0.2", # docs
+    "watchdog==5.0.3",  # docs
+    "aider-chat", # coding assistant
+]
+
+[project.urls]
+
+bugs = "https://github.com/boosh/django_recurring/issues"
+changelog = "https://github.com/boosh/django_recurring/blob/master/changelog.md"
+homepage = "https://github.com/boosh/django_recurring"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+"*" = ["*.*"]
+
+
+
+
+# Mypy
+# ----
+
+[tool.mypy]
+files = "."
+
+# Use strict defaults
+strict = true
+warn_unreachable = true
+warn_no_return = true
+
+[[tool.mypy.overrides]]
+# Don't require test functions to include types
+module = "tests.*"
+allow_untyped_defs = true
+disable_error_code = "attr-defined"
