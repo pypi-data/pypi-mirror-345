@@ -1,0 +1,15 @@
+[Unit]
+Description=Fleetspeak Server Service
+After=syslog.target network.target
+After=mysql.service
+Documentation=https://github.com/google/fleetspeak
+ConditionPathExists=!/etc/fleetspeak-server/disabled
+
+[Service]
+User=fleetspeak
+Group=fleetspeak
+ExecStart=/usr/bin/fleetspeak-server --services_config /etc/fleetspeak-server/server.services.config --components_config /etc/fleetspeak-server/server.components.config
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
