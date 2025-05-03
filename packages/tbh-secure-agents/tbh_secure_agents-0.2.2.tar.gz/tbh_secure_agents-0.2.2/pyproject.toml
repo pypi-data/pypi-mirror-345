@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tbh_secure_agents"
+version = "0.2.2"
+authors = [
+  { name="Saish", email="saish.shinde15@gmail.com" },
+]
+description = "A secure multi-agent framework by TBH.AI with enhanced security features, guardrails, and protection against AI attacks."
+readme = "README.md"
+license = "Apache-2.0" # Changed from MIT to Apache 2.0
+# license-files = ["LICENSE"] # Removed license-files field
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Security",
+    "License :: OSI Approved :: Apache Software License",
+]
+dependencies = [
+    "google-generativeai>=0.4.0",
+    # Add other core dependencies here if needed
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=6.0", "flake8>=3.8", "black>=20.8b1"]
+
+[project.urls]
+"Homepage" = "https://github.com/tbh-ai/SecureAgents.git"
+"Bug Tracker" = "https://github.com/tbh-ai/SecureAgents/issues"
+"Repository" = "https://github.com/tbh-ai/SecureAgents.git"
+
+# If you have console scripts:
+# [project.scripts]
+# tbh-agent = "tbh_secure_agents.cli:main"
+
+[tool.hatch.metadata]
+# Attempt to prevent inclusion of license file content in wheel metadata
+# Rely solely on the license SPDX identifier in the [project] section
+allow-direct-references = true
+include-license-file = false
+
+[tool.setuptools.packages.find]
+# Explicitly find packages only within the 'tbh_secure_agents' directory
+# This prevents finding 'test_venv' at the top level.
+where = ["."] # Look in the current directory
+include = ["tbh_secure_agents*"] # Include only things starting with tbh_secure_agents
+exclude = ["test_venv*"] # Explicitly exclude test_venv just in case
