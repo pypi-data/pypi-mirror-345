@@ -1,0 +1,255 @@
+Metadata-Version: 2.4
+Name: sinapsis-langchain-readers
+Version: 0.1.4
+Summary: Package that provides support for Langchain community data loaders.
+Author-email: SinapsisAI <dev@sinapsis.tech>
+Project-URL: Homepage, https://sinapsis.tech
+Project-URL: Documentation, https://docs.sinapsis.tech/docs
+Project-URL: Tutorials, https://docs.sinapsis.tech/tutorials
+Project-URL: Repository, https://github.com/Sinapsis-AI/sinapsis-langchain.git
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: langchain-community>=0.3.5
+Requires-Dist: sinapsis>=0.1.1
+Provides-Extra: langchain-webpages-readers
+Requires-Dist: apify-client>=1.8.1; extra == "langchain-webpages-readers"
+Requires-Dist: arxiv>=2.1.3; extra == "langchain-webpages-readers"
+Requires-Dist: beautifulsoup4>=4.12.3; extra == "langchain-webpages-readers"
+Requires-Dist: browserbase>=1.0.0; extra == "langchain-webpages-readers"
+Requires-Dist: dgml-utils>=0.3.0; extra == "langchain-webpages-readers"
+Requires-Dist: firecrawl-py>=1.4.0; extra == "langchain-webpages-readers"
+Requires-Dist: geopandas>=1.0.1; extra == "langchain-webpages-readers"
+Requires-Dist: librosa>=0.11.0; extra == "langchain-webpages-readers"
+Requires-Dist: llvmlite>=0.44.0; extra == "langchain-webpages-readers"
+Requires-Dist: pyairtable>=2.3.5; extra == "langchain-webpages-readers"
+Requires-Dist: pydub>=0.25.1; extra == "langchain-webpages-readers"
+Requires-Dist: pymupdf>=1.24.13; extra == "langchain-webpages-readers"
+Requires-Dist: sodapy>=2.2.0; extra == "langchain-webpages-readers"
+Requires-Dist: yt-dlp>=2024.11.4; extra == "langchain-webpages-readers"
+Provides-Extra: langchain-wikipedia-readers
+Requires-Dist: wikipedia>=1.4.0; extra == "langchain-wikipedia-readers"
+Provides-Extra: langchain-pdfs-readers
+Requires-Dist: bibtexparser>=1.4.2; extra == "langchain-pdfs-readers"
+Requires-Dist: pymupdf>=1.24.13; extra == "langchain-pdfs-readers"
+Requires-Dist: pypdf>=5.1.0; extra == "langchain-pdfs-readers"
+Provides-Extra: langchain-unstructured-readers
+Requires-Dist: langchain-unstructured>=0.1.5; extra == "langchain-unstructured-readers"
+Requires-Dist: unstructured[pdf]>=0.16.5; extra == "langchain-unstructured-readers"
+Requires-Dist: unstructured-client>=0.25.9; extra == "langchain-unstructured-readers"
+Requires-Dist: python-magic>=0.4.27; extra == "langchain-unstructured-readers"
+Provides-Extra: langchain-cloud-readers
+Requires-Dist: amazon-textract-caller>=0.2.4; extra == "langchain-cloud-readers"
+Requires-Dist: assemblyai>=0.35.1; extra == "langchain-cloud-readers"
+Requires-Dist: atlassian-python-api>=3.41.16; extra == "langchain-cloud-readers"
+Requires-Dist: azure-ai-generative>=1.0.0b11; extra == "langchain-cloud-readers"
+Requires-Dist: azure-storage-blob>=12.23.1; extra == "langchain-cloud-readers"
+Requires-Dist: azureml-fsspec>=1.3.1; extra == "langchain-cloud-readers"
+Requires-Dist: boto3>=1.35.57; extra == "langchain-cloud-readers"
+Requires-Dist: dropbox>=12.0.2; extra == "langchain-cloud-readers"
+Requires-Dist: google-api-python-client>=2.151.0; extra == "langchain-cloud-readers"
+Requires-Dist: google-auth-httplib2>=0.2.0; extra == "langchain-cloud-readers"
+Requires-Dist: google-auth-oauthlib>=1.2.1; extra == "langchain-cloud-readers"
+Requires-Dist: html2text>=2024.2.26; extra == "langchain-cloud-readers"
+Requires-Dist: langchain-community>=0.3.5; extra == "langchain-cloud-readers"
+Requires-Dist: langchain-google-bigtable>=0.4.1; extra == "langchain-cloud-readers"
+Requires-Dist: langchain-google-community[gcs]>=2.0.2; extra == "langchain-cloud-readers"
+Requires-Dist: langchain-openai>=0.2.6; extra == "langchain-cloud-readers"
+Requires-Dist: playwright>=1.48.0; extra == "langchain-cloud-readers"
+Requires-Dist: pyodps>=0.12.1; extra == "langchain-cloud-readers"
+Requires-Dist: python-dotenv>=1.0.1; extra == "langchain-cloud-readers"
+Provides-Extra: langchain-social-readers
+Requires-Dist: mastodon-py>=1.8.1; extra == "langchain-social-readers"
+Requires-Dist: pandas>=2.2.3; extra == "langchain-social-readers"
+Requires-Dist: tweepy>=4.14.0; extra == "langchain-social-readers"
+Provides-Extra: langchain-productivity-tools-readers
+Requires-Dist: lxml>=4.30; extra == "langchain-productivity-tools-readers"
+Requires-Dist: py-trello>=0.20.1; extra == "langchain-productivity-tools-readers"
+Provides-Extra: langchain-common-readers
+Requires-Dist: bs4>=0.0.2; extra == "langchain-common-readers"
+Requires-Dist: jq>=1.8.0; extra == "langchain-common-readers"
+Provides-Extra: langchain-database-readers
+Requires-Dist: fauna>=2.3.0; extra == "langchain-database-readers"
+Requires-Dist: langchain>=0.3.7; extra == "langchain-database-readers"
+Requires-Dist: langchain-google-alloydb-pg>=0.8.0; extra == "langchain-database-readers"
+Requires-Dist: langchain-google-community[bigquery]>=2.0.2; extra == "langchain-database-readers"
+Requires-Dist: pyowm>=3.3.0; extra == "langchain-database-readers"
+Provides-Extra: langchain-productivity-tools
+Requires-Dist: gitpython>=3.1.43; extra == "langchain-productivity-tools"
+Provides-Extra: all
+Requires-Dist: sinapsis-langchain-readers[langchain-productivity-tools]; extra == "all"
+Requires-Dist: sinapsis-langchain-readers[langchain-database-readers]; extra == "all"
+Requires-Dist: sinapsis-langchain-readers[langchain-common-readers]; extra == "all"
+Requires-Dist: sinapsis-langchain-readers[langchain-productivity-tools-readers]; extra == "all"
+Requires-Dist: sinapsis-langchain-readers[langchain-social-readers]; extra == "all"
+Requires-Dist: sinapsis-langchain-readers[langchain-cloud-readers]; extra == "all"
+Requires-Dist: sinapsis-langchain-readers[langchain-unstructured-readers]; extra == "all"
+Requires-Dist: sinapsis-langchain-readers[langchain-pdfs-readers]; extra == "all"
+Requires-Dist: sinapsis-langchain-readers[langchain-wikipedia-readers]; extra == "all"
+Requires-Dist: sinapsis-langchain-readers[langchain-webpages-readers]; extra == "all"
+Provides-Extra: langchain-wepages-readers
+Requires-Dist: youtube-transcript-api>=1.0.0; extra == "langchain-wepages-readers"
+
+<h1 align="center">
+<br>
+<a href="https://sinapsis.tech/">
+  <img
+    src="https://github.com/Sinapsis-AI/brand-resources/blob/main/sinapsis_logo/4x/logo.png?raw=true"
+    alt="" width="300">
+</a><br>
+Sinapsis Langchain Readers
+<br>
+</h1>
+
+<h4 align="center">Templates for easy integration of LangChain document loaders within Sinapsis.</h4>
+
+<p align="center">
+<a href="#installation">🐍 Installation</a> •
+<a href="#features">🚀 Features</a> •
+<a href="#usage">📚 Usage example</a> •
+<a href="#documentation">📙 Documentation</a> •
+<a href="license"> 🔍 License</a>
+</p>
+
+The `sinapsis-langchain-readers` module adds support for the LangChain library, in particular, LangChain community data loaders.
+
+<h2 id="installation">🐍 Installation</h2>
+Install using your package manager of choice. We encourage the use of <code>uv</code>
+
+Example with <code>uv</code>:
+
+```bash
+  uv pip install sinapsis-langchain-readers --extra-index-url https://pypi.sinapsis.tech
+```
+ or with raw <code>pip</code>:
+```bash
+  pip install sinapsis-langchain-readers --extra-index-url https://pypi.sinapsis.tech
+```
+
+
+
+> [!IMPORTANT]
+> The langchain readers templates may require extra dependencies. For development, we recommend installing the package with all the optional dependencies:
+>
+```bash
+  uv pip install sinapsis-langchain-readers[all] --extra-index-url https://pypi.sinapsis.tech
+```
+> [!IMPORTANT]
+> Some langchain templates require additional system dependencies. Please refer to the official [LangChain Document Loaders documentation](https://python.langchain.com/docs/integrations/document_loaders/) for additional requirements.
+>
+
+
+<h2 id="features">🚀 Features</h2>
+
+<h3> Templates Supported</h3>
+
+The **Sinapsis Langchain** module provides wrapper templates for **LangChain's community data loaders**, making them seamlessly usable within Sinapsis.
+> [!NOTE]
+> Each loader template supports one attribute:
+> - **`add_document_as_text_packet`** (`bool`, default: `False`): Whether to add the loaded document as a text packet.
+> Other attributes can be dynamically assigned through the class initialization dictionary (`class init attributes`).
+
+> [!TIP]
+> Use CLI command ``` sinapsis info --all-template-names``` to show a list with all the available Template names installed with Sinapsis Langchain.
+
+> [!TIP]
+> Use CLI command ```sinapsis info --example-template-config TEMPLATE_NAME``` to produce an example Agent config for the Template specified in ***TEMPLATE_NAME***.
+
+
+For example, for ***WikipediaLoaderWrapper*** use ```sinapsis info --example-template-config WikipediaLoaderWrapper``` to produce the following example config:
+
+```yaml
+agent:
+  name: agent to load Wikipedia documents using WikipediaLoaderWrapper template
+templates:
+- template_name: InputTemplate
+  class_name: InputTemplate
+  attributes: {}
+- template_name: WikipediaLoaderWrapper
+  class_name: WikipediaLoaderWrapper
+  template_input: InputTemplate
+  attributes:
+    add_document_as_text_packet: false
+    wikipedialoader_init:
+        query: the query for wikipedia
+        lang: en
+        load_max_docs: 5000
+        load_all_available_meta: False
+        doc_content_chars_max: 4000,
+```
+
+A complete list of available document loader classes in LangChain can be found at:
+[LangChain Community Document Loaders](https://python.langchain.com/api_reference/community/document_loaders.html#langchain-community-document-loaders)
+
+<details>
+<summary><strong><span style="font-size: 1.25em;">🚫 Excluded Loaders</span></strong></summary>
+
+Some base classes or loaders that required additional configuration have been excluded and support for this will be included in future releases.
+
+- **Blob**
+- **BlobLoader**
+- **OracleTextSplitter**
+- **OracleDocLoader**
+- **TrelloLoaderExecute**
+- **TwitterTweetLoader**
+- **TrelloLoader**
+- **GoogleApiYoutubeLoader**
+- **GoogleApiClient**
+- **DiscordChatLoader**
+- **AssemblyAIAudioTranscriptLoader**
+- **ArcGISLoader**
+
+For all other supported loaders, refer to the LangChain API reference linked above.
+</details>
+<h2 id="usage">📚 Usage example</h2>
+
+
+The following example demonstrates how to use the **WikipediaLoaderWrapper** template for loading documents from Wikipedia within Sinapsis. Below is the full YAML configuration, followed by a breakdown of each component.
+<details>
+<summary><strong><span style="font-size: 1.25em;">configuration </span></strong></summary>
+
+```yaml
+agent:
+  name: my_test_agent
+  description: "Wikipedia loader example"
+
+templates:
+
+- template_name: InputTemplate
+  class_name: InputTemplate
+  attributes: {}
+
+- template_name: WikipediaLoaderWrapper
+  class_name: WikipediaLoaderWrapper
+  template_input: InputTemplate
+  attributes:
+    add_document_as_text_packet: false
+    wikipedialoader_init:
+      query: GenAI
+      lang: en
+      load_max_docs: 1
+      load_all_available_meta: false
+      doc_content_chars_max: 4000
+```
+To run, simply use:
+
+```bash
+sinapsis run name_of_the_config.yml
+```
+
+
+</details>
+
+<h2 id="documentation">📙 Documentation</h2>
+
+Documentation for this and other sinapsis packages is available on the [sinapsis website](https://docs.sinapsis.tech/docs)
+
+Tutorials for different projects within sinapsis are available at [sinapsis tutorials page](https://docs.sinapsis.tech/tutorials)
+
+<h2 id="license">🔍 License</h2>
+
+This project is licensed under the AGPLv3 license, which encourages open collaboration and sharing. For more details, please refer to the [LICENSE](LICENSE) file.
+
+For commercial use, please refer to our [official Sinapsis website](https://sinapsis.tech) for information on obtaining a commercial license.
+
+
+
