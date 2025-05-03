@@ -1,0 +1,36 @@
+# Include essential files for the package
+include README.md
+include LICENSE
+include pyproject.toml
+include setup.cfg
+
+# Include all Python files in the package directory
+recursive-include mypackage *.py
+
+# Include any data files needed by the package (e.g., JSON, CSV)
+recursive-include mypackage/data *.json *.csv
+
+# Exclude sensitive files and directories
+exclude .env
+exclude *.key
+exclude *.pem
+exclude secrets/*
+exclude config.ini
+exclude local_settings.py
+
+# Exclude development and testing files
+recursive-exclude tests *
+exclude pytest.ini
+exclude .tox/*
+exclude *.log
+
+# Exclude build and temporary files
+recursive-exclude _pycache_ *
+exclude *.pyc
+exclude *.pyo
+exclude .DS_Store
+
+# Exclude version control and CI/CD files
+exclude .gitignore
+exclude .github/*
+exclude .travis.yml
