@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chargedPlanner"
+version = "0.5.0"
+description = "A tool allowing to planify the work of developers"
+authors = [
+    { name="Daniele TRIMARCHI", email="daniele.trimarchi@iconeus.com" }
+]
+dependencies = [
+    "colorama==0.4.6",
+    "holidays==0.71",
+    "keyring==25.6.0",
+    "numpy==2.2.4",
+    "pandas==2.2.3",
+    "plotly==6.0.1",
+    "ratelimit==2.2.1",
+    "requests==2.32.3"
+]
+license = { file="LICENSE.txt" }
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.package-data]
+chargedPlanner = ["data/*.json"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
