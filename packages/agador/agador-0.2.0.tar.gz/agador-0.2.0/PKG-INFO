@@ -1,0 +1,108 @@
+Metadata-Version: 2.3
+Name: agador
+Version: 0.2.0
+Summary: UMnet network data gatherer
+License: MIT
+Author: Amy Liebowitz
+Author-email: amylieb@umich.edu
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: cron-converter (>=1.2.1,<2.0.0)
+Requires-Dist: gitpython (>=3.1.44,<4.0.0)
+Requires-Dist: nornir (>=3.5.0)
+Requires-Dist: nornir-netbox (>=0.3.0,<0.4.0)
+Requires-Dist: python-decouple (>=3.8,<4.0)
+Requires-Dist: python-slugify (>=8.0.4,<9.0.0)
+Requires-Dist: pyyaml (>=6.0.2,<7.0.0)
+Requires-Dist: umnet-db (>=0.3.1)
+Requires-Dist: umnet-napalm (>=1.1.7)
+Description-Content-Type: text/markdown
+
+# Agador
+Agador is a tool that collects operational data from the network and stores it in a database. It's intended to be a replacement for rancid
+and other perl tools that currently handle this for us.
+
+Note that the name isn't an acronym for anything, I just needed to not call this code "new rancid" anymore so I named it after Agador Sparticus - my favorite character
+from one of my favorite movies.
+
+## Overview
+Agador brings together several different tools:
+* **Netbox** is used as an inventory source for devices
+* **Cyberark** is used as the source for credentials
+* **[umnet-napalm](https://github.com/umich-its-networking/umnet-napalm)** is custom code based on [NAPALM](https://github.com/napalm-automation/napalm) that runs data-gathering commands against the routers and returns normalized data.
+* **[umnet-db](https://github.com/umich-its-networking/umnet-db)** is the custom database where this normalized data is stored. Note this repo defines the database model as well as
+provides scripts to query the data.
+* **git** is how we store versioned data in files - stuff that we don't want to put in umnet-db. Currently this is just [config backups](https://github.com/umich-its-networking/umnet-config-backups), but could be expanded to include other things if applicable.
+* **[Nornir](https://github.com/nornir-automation/nornir)** manages this whole process. This is a public library that provides Ansible-like functionality - it runs a series of tasks across a set of devices and do stuff with the results.
+
+
+## Command Map
+The heart of Agador is the command map file. On wintermute this is located at `/etc/agador/command_map.yml`. This file specifices what data to gather, how often, from what subset of devices, and how
+to store that data. All of those components tie together to define an Agador `command`. Here is an example snippet from a command map file:
+```
+commands:
+
+  config:
+    frequency: 0 0 * * *
+    getter: get_config
+    save_to_file:
+      mapper: SaveConfig
+      destination: ${FILES_DIR}/umnet-config-backups
+
+  lldp_neighbors:
+    frequency: 0 0 * * *
+    getter: get_lldp_neighbors
+    inventory_filter: non_security_filter
+    save_to_db: UpdateNeighbor
+```
+
+Let's talk about the components of each command:
+| Command  | Required | Description |
+| ------------- | ------------- | ------------- |
+| frequency  | Yes | How often to run this command in crontab format |
+| getter  | Yes | The [umnet-napalm getter](https://github.com/umich-its-networking/umnet-napalm/blob/main/umnet_napalm/abstract_base.py) to run for this command |
+| inventory_filter | No | A [Nornir inventory filter function](https://nornir.readthedocs.io/en/latest/tutorial/inventory.html#Filter-functions) in `agador.nornir.inventory_filters` that defines which types of devices this command should run against |
+| save_to_file | No* | If the resulting data should be saved to a file, specify how this should be done with the following required sub-arguments:<br>    _mapper_ - name of mapper class in `agador.mappers.save_to_file` to use<br>    _destination_ - destination directory for the data<br> |
+| save_to_db | No* | If the resulting data should be saved to umnetdb, the name of the mapper class in `agador.mappers.save_to_db` to use to save the data. Note that before a new mapper can be created, a corresponding model must be built in [umnet-db](https://github.com/umich-its-networking/umnet-db) |
+
+*Note: You must specify at least one of `save_to_file` or `save_to_db` so Agador knows what to do with the data it pulls. You can specify both if applicable.
+
+
+## Running Agador
+#### agador-run
+`agador-run` runs everything once, ignoring the `frequency` value for each command in the command map. You can restrict the run to a specific device, a specific Netbox device role, or a
+subset of commands. For example, the following command will pull lldp neighbors off of dl-arbl-1 and store them in the umnet-db.
+```
+agador-run --cmds lldp_neighbors --device dl-arbl-1
+```
+This command will pull the arp and route tables off of all the non-legacy DLs and store them in the umnet-db. The `role` must match a Netbox device role.
+```
+agador-run --cmds arp_table,route  --role distribution
+```
+Note that this command does consult the **command_map** to tell it what commands are relevant for what devices. If you try to
+run a command on a device or a role that does not match the `inventory_filter` function (ie like running `arp_table` for an AL), you won't get any results.
+
+Use `--help` to see all options, you'll see a lot of logging options as well.
+
+#### agador-run-with-schedule
+`agador-run-with-schedule` is designed to run forever as a background process. It pulls data from the network at regular intervals based on the **command_map** file.
+
+## Configuration
+Agador requires you to provide it with a path to a configuration file, either on the cli when you invoke it, or as the environment variable `AGADOR_CFG`.
+On wintermute this config file is located at `/etc/agador/agador.conf`. `/etc/profile.d/agador.sh` sets `AGADOR_CFG` to this file for all users when they log in.
+Look at the example config file in the `examples` folder of this repo for details on what parameters are required.
+
+## Credentials
+After pulling its device inventory from Netbox into Nornir, Agador then updates the Nornir inventory credentials based on the `credential_map.yml` file embedded in this package at `agador/credentials/credential_map.yml`.
+This file maps hostname regexes to cyberark queries. If a device's hostname matches a regex, that device will get a custom credential configured in Nornir. Otherwise the
+default credential specified at the top of `credential_map.yml` is used.
+Note that Cyberark is slated to go away over the next year or so, so this code is expected to be replaced relatively soon.
+
+
+
+
