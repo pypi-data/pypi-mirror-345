@@ -1,0 +1,105 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools-rust>=1.0.0", "cibuildwheel>=2.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neurenix"
+version = "2.0.1"
+description = "Empowering Intelligent Futures, One Edge at a Time."
+readme = "README.md"
+authors = [
+    {name = "Neurenix Team", email = "packages@milesonerd.8shield.net"}
+]
+license = {text = "Apache-2.0"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Rust",
+    "Programming Language :: C++",
+    "Programming Language :: Go",
+    "Programming Language :: C#",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Scientific/Engineering :: Quantum Computing",
+    "Topic :: System :: Clustering",
+    "Topic :: System :: Distributed Computing",
+    "Topic :: System :: Hardware",
+    "Environment :: GPU",
+    "Environment :: WebAssembly",
+]
+keywords = ["machine learning", "deep learning", "neural networks", "AI", "edge computing", "reinforcement learning", "agents", "AGI"]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.24.0",
+    "typing-extensions>=4.7.0",
+    "scipy>=1.10.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.7.0",
+    "isort>=5.12.0",
+    "mypy>=1.5.0",
+]
+cuda = [
+    "pycuda>=2022.1",
+]
+distributed = [
+    "ray>=2.0.0",
+]
+agents = [
+    "gymnasium>=0.28.0",
+]
+huggingface = [
+    "transformers>=4.0.0",
+    "datasets>=2.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://neurenix.github.io"
+"Source Code" = "https://github.com/MilesONerd/neurenix"
+"Download" = "https://pypi.org/project/neurenix/#files"
+"Bug Tracker" = "https://github.com/MilesONerd/neurenix/issues"
+"Documentation" = "https://neurenix.readthedocs.io/en/latest/"
+"Community" = "https://discord.gg/Eqnhr8tK2G"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["dist", "build", "*.egg-info"]
+
+[project.scripts]
+init = "neurenix.cli.init:main"
+run = "neurenix.cli.run:main"
+save = "neurenix.cli.save:main"
+predict = "neurenix.cli.predict:main"
+eval = "neurenix.cli.eval:main"
+export = "neurenix.cli.export:main"
+hardware = "neurenix.cli.hardware:main"
+preprocess = "neurenix.cli.preprocess:main"
+monitor = "neurenix.cli.monitor:main"
+optimize = "neurenix.cli.optimize:main"
+dataset = "neurenix.cli.dataset:main"
+serve = "neurenix.cli.serve:main"
+help = "neurenix.cli.help:main"
+
+[tool.setuptools-rust]
+rust-extensions = [
+    { path = "src/phynexus/rust", binding = "pyo3", features = ["pyo3/extension-module"] }
+]
