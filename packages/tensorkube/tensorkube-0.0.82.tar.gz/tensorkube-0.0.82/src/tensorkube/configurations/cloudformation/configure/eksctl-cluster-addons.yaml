@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "vpc-cni, kube-proxy, coredns addons for EKS cluster"
+Parameters:
+  ClusterName:
+    Type: String
+    Description: "Cluster Name"
+  VpcCniRoleArn:
+    Type: String
+    Description: "VPC CNI Role ARN"
+
+Resources:
+  VpcCniAddon:
+    Type: AWS::EKS::Addon
+    Properties:
+      ClusterName: !Ref ClusterName
+      AddonName: vpc-cni
+      AddonVersion: v1.19.0-eksbuild.1 # Change version to be compatible with the EKS version. Refer https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html#vpc-cni-latest-available-version
+      ResolveConflicts: OVERWRITE
+      ServiceAccountRoleArn: !Ref VpcCniRoleArn
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}/CNIAddon'
+        - Key: CreatedBy
+          Value: Tensorfuse
+        - Key: ClusterName
+          Value: !Ref ClusterName
+
+  CoreDnsAddon:
+    Type: AWS::EKS::Addon
+    Properties:
+      ClusterName: !Ref ClusterName
+      AddonName: coredns
+      AddonVersion: v1.11.4-eksbuild.2 # Change version to be compatible with the EKS version. Refer https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html
+      ResolveConflicts: OVERWRITE
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}/CoreDNSAddon'
+        - Key: CreatedBy
+          Value: Tensorfuse
+        - Key: ClusterName
+          Value: !Ref ClusterName
+
+  KubeProxyAddon:
+    Type: AWS::EKS::Addon
+    Properties:
+      ClusterName: !Ref ClusterName
+      AddonName: kube-proxy
+      AddonVersion: v1.29.10-eksbuild.3 # Change version to be compatible with the EKS version. Refer https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html
+      ResolveConflicts: OVERWRITE
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}/KubeProxyAddon'
+        - Key: CreatedBy
+          Value: Tensorfuse
+        - Key: ClusterName
+          Value: !Ref ClusterName
+
+  PodIdentityAgentAddon:
+    Type: AWS::EKS::Addon
+    Properties:
+      ClusterName: !Ref ClusterName
+      AddonName: eks-pod-identity-agent
+      AddonVersion: v1.3.4-eksbuild.1 # get using  aws eks describe-addon-versions --addon-name eks-pod-identity-agent --kubernetes-version
+      ResolveConflicts: OVERWRITE
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}/PodIdentityAgentAddon'
+        - Key: CreatedBy
+          Value: Tensorfuse
+        - Key: ClusterName
+          Value: !Ref ClusterName
