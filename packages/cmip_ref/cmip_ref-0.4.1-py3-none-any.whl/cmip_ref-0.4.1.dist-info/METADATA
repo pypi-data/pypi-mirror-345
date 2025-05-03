@@ -1,0 +1,99 @@
+Metadata-Version: 2.4
+Name: cmip_ref
+Version: 0.4.1
+Summary: Application which runs the CMIP Rapid Evaluation Framework
+Author-email: Jared Lewis <jared.lewis@climate-resource.com>
+License: Apache-2.0
+License-File: LICENCE
+License-File: NOTICE
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.11
+Requires-Dist: alembic>=1.13.3
+Requires-Dist: attrs>=24.2.0
+Requires-Dist: cattrs>=24.1.2
+Requires-Dist: cmip-ref-core
+Requires-Dist: ecgtools>=2024.7.31
+Requires-Dist: environs>=11.0.0
+Requires-Dist: loguru>=0.7.2
+Requires-Dist: platformdirs>=4.3.6
+Requires-Dist: setuptools>=75.8.0
+Requires-Dist: sqlalchemy>=2.0.36
+Requires-Dist: tomlkit>=0.13.2
+Requires-Dist: typer>=0.12.5
+Provides-Extra: celery
+Requires-Dist: cmip-ref-celery>=0.4.1; extra == 'celery'
+Provides-Extra: metrics
+Requires-Dist: cmip-ref-metrics-esmvaltool>=0.4.1; extra == 'metrics'
+Requires-Dist: cmip-ref-metrics-ilamb>=0.4.1; extra == 'metrics'
+Requires-Dist: cmip-ref-metrics-pmp>=0.4.1; extra == 'metrics'
+Provides-Extra: postgres
+Requires-Dist: psycopg2-binary>=2.9.2; extra == 'postgres'
+Description-Content-Type: text/markdown
+
+# ⚠️ Package Has Been Renamed! ⚠️
+
+**This package, `cmip_ref`, is deprecated and no longer maintained.**
+
+It has been renamed to **`climate-ref`**.
+
+---
+
+## Please Update Your Dependencies
+
+To continue receiving updates and ensure compatibility, please switch to the new package.
+
+**Reason for rename:**
+The rename was necessary to better reflect the purpose and scope of the package.
+
+### How to Switch
+
+1.  **Uninstall the old package:**
+    ```bash
+    pip uninstall cmip_ref
+    ```
+
+2.  **Install the new package:**
+    ```bash
+    pip install climate-ref
+    ```
+
+3.  **Update your code/requirements:**
+    *   Change any import statements from `import cmip_ref` to `import climate_ref`.
+    *   Update your `requirements.txt`, `pyproject.toml`, `setup.py`, or other dependency management files to list `climate-ref` instead of `cmip_ref`.
+
+---
+
+## Project Links
+
+*   **New Package on PyPI:** [https://pypi.org/project/climate-ref/](https://pypi.org/project/climate-ref/)
+
+---
+
+
+# REF (Rapid Evaluation Framework)
+
+**Status**: This project is in active development. We expect to be ready for beta releases in Q2 2025.
+
+The Rapid Evaluation Framework(REF) is a set of Python packages that provide the ability to manage the execution of calculations against climate datasets.
+The aim is to be able to evaluate climate data against a set of reference data in near-real time as datasets are published,
+and to update any produced data and figures as new datasets become available.
+This is somewhat analogous to a CI/CD pipeline for climate data.
+
+REF is a community project, and we welcome contributions from anyone.
+
+
+## Usage
+
+The `ref` package exposes a command line interface (CLI) that can be used to
+interact with the
+
+````
