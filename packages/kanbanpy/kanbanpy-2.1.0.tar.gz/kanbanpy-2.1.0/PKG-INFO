@@ -1,0 +1,162 @@
+Metadata-Version: 2.3
+Name: kanbanpy
+Version: 2.1.0
+Summary: A console-based Kanban task manager created in Python.
+License: MIT License
+         
+         Copyright (c) 2023 Óscar Miranda
+         
+         Permission is hereby granted, free of charge, to any person obtaining a copy
+         of this software and associated documentation files (the "Software"), to deal
+         in the Software without restriction, including without limitation the rights
+         to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+         copies of the Software, and to permit persons to whom the Software is
+         furnished to do so, subject to the following conditions:
+         
+         The above copyright notice and this permission notice shall be included in all
+         copies or substantial portions of the Software.
+         
+         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+         IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+         FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+         AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+         SOFTWARE.
+Keywords: kanban,project,management
+Author: Óscar Miranda
+Author-email: oscarmiranda3615@gmail.com
+Requires-Python: >=3.9
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development
+Classifier: Topic :: Utilities
+Requires-Dist: platformdirs (>=4.3.7,<5.0.0)
+Requires-Dist: rich (>=13.9.4,<14.0.0)
+Project-URL: Homepage, https://github.com/OscarM3615/kanbanpy
+Project-URL: Repository, https://github.com/OscarM3615/kanbanpy
+Description-Content-Type: text/markdown
+
+# kanbanpy
+
+A console-based Kanban task manager created in Python.
+
+Create and manage tasks visually in your terminal using simple commands.
+
+## Features
+
+- Simple CLI commands
+- ASCII based kanban board
+- Easy setup
+- Stores tasks in a readable format (JSON).
+
+## Installation
+
+Install using pip running the following command in the terminal:
+
+```sh
+pip install kanbanpy
+```
+
+## Usage
+
+If you installed the library, you can use the CLI as a system command:
+
+```sh
+kanbanpy [...args]
+```
+
+Or call it as a Python import:
+
+```sh
+python -m kanbanpy [...args]
+```
+
+### Examples
+
+Here are some examples of the commands available:
+
+```sh
+# Just display the kanban board
+kanbanpy
+
+# Create a new task
+kanbanpy create "A new todo"
+
+# Move task with id 1 to the next status
+kanbanpy next 1
+
+# Revert a task with id 1 to the previous status
+kanbanpy prev 1
+
+# Remove task with id 1
+kanbanpy remove 1
+```
+
+Commands also have convenient aliases:
+
+- `create`: `c`
+- `next`: `n`
+- `prev`: `p`
+- `remove`: `r`
+
+To explore the full list of commands, run:
+
+```sh
+kanbanpy --help
+```
+
+### Tips
+
+#### Aliases
+
+A handful technique is to define a shell alias to call the cli and take
+advantage of the command aliases defined by the package.
+
+```sh
+# Instead of running:
+kanbanpy create "my new todo"
+
+# Define an alias in your .bashrc or .zshrc:
+alias kb="kanbanpy"
+
+# And type shorter commands:
+kb c "my new todo"
+```
+
+#### Important tasks
+
+Include a '!' in a task todo to mark it as important. The task will be
+highlighted when displaying the board:
+
+```sh
+kanbanpy create "an important todo!"
+
+kanbanpy create "project!: todo title"
+
+kanbanpy create "(!) new todo"
+```
+
+## Contributing
+
+Thank you for considering contributing to my project! Any pull requests are
+welcome and greatly appreciated. If you encounter any issues while using
+the project, please feel free to post them on the issue tracker.
+
+To contribute to the project, please follow these steps:
+
+1. Fork the repository.
+2. Add a new feature or bug fix.
+3. Commit them using descriptive messages, using
+   [conventional commits](https://www.conventionalcommits.org/) is recommended.
+4. Submit a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file
+for more details.
+
