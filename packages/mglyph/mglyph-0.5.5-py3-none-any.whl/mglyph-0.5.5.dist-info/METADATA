@@ -1,0 +1,44 @@
+Metadata-Version: 2.4
+Name: mglyph
+Version: 0.5.5
+Summary: The Malleable Glyph package
+Home-page: https://github.com/adamherout/mglyph
+Author: Adam Herout, Vojtech Bartl
+Author-email: herout@vutbr.cz, ibartl@fit.vut.cz
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: skia-python
+Requires-Dist: colour
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: qoi
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+Malleable Glyph is a **small graphical design**, fitting exactly to a square of 1in Ã— 1in. It is **"shaped" by a numerical parameter** $x$ ranging from $0.0$ to $100.0$.
+
+This is the `mglyph` library that offers an easy way how to design and preview malleable glyphs:
+```
+def simple_line(x: float, canvas:mg.Canvas) -> None:
+    canvas.line((mg.lerp(x, 0, -1), 0), (mg.lerp(x, 0, 1), 0),
+                width='50p', color='navy', linecap='round')
+mg.show(simple_line)
+```
+
+### To start with `mglyph`
+* check out **[the tutorial](tutorials/mglyph&#32;tutorial.ipynb)** (just download the Jupyter Notebook and run it, or explore the same one [in Google Colab](https://colab.research.google.com/drive/1T8DHWpUBLNbo-QB5o6SXDjZrHjSVp4vv))
+* see the library **[homepage at GitHub](https://github.com/adamherout/mglyph?tab=readme-ov-file#introduction)**
+* read **[the paper](https://arxiv.org/abs/2503.16135)**
