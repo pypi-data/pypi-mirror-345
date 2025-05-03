@@ -1,0 +1,139 @@
+Metadata-Version: 2.4
+Name: turnkeyml
+Version: 6.2.2
+Summary: TurnkeyML Tools and Models
+Author-email: turnkeyml@amd.com
+Requires-Python: >=3.8, <3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: NOTICE.md
+Requires-Dist: invoke>=2.0.0
+Requires-Dist: onnx>=1.11.0
+Requires-Dist: onnxmltools==1.10.0
+Requires-Dist: torch>=1.12.1
+Requires-Dist: pyyaml>=5.4
+Requires-Dist: typeguard>=2.3.13
+Requires-Dist: packaging>=20.9
+Requires-Dist: numpy<2.0.0
+Requires-Dist: pandas>=1.5.3
+Requires-Dist: fasteners
+Requires-Dist: GitPython>=3.1.40
+Requires-Dist: psutil
+Requires-Dist: wmi
+Requires-Dist: pytz
+Requires-Dist: tqdm
+Requires-Dist: zstandard
+Requires-Dist: matplotlib
+Requires-Dist: tabulate
+Requires-Dist: onnxruntime>=1.10.1; platform_system == "Linux" and extra != "llm-oga-cuda"
+Requires-Dist: onnxruntime-directml>=1.19.0; platform_system == "Windows" and extra != "llm-oga-cuda"
+Requires-Dist: onnxruntime-gpu>=1.19.1; extra == "llm-oga-cuda"
+Provides-Extra: llm
+Requires-Dist: torch>=2.0.0; extra == "llm"
+Requires-Dist: transformers; extra == "llm"
+Requires-Dist: accelerate; extra == "llm"
+Requires-Dist: py-cpuinfo; extra == "llm"
+Requires-Dist: sentencepiece; extra == "llm"
+Requires-Dist: datasets; extra == "llm"
+Requires-Dist: human-eval-windows==1.0.4; extra == "llm"
+Requires-Dist: fastapi; extra == "llm"
+Requires-Dist: uvicorn[standard]; extra == "llm"
+Requires-Dist: openai; extra == "llm"
+Requires-Dist: lm-eval[api]; extra == "llm"
+Provides-Extra: llm-oga-cpu
+Requires-Dist: onnxruntime-genai==0.6.0; extra == "llm-oga-cpu"
+Requires-Dist: torch<2.4,>=2.0.0; extra == "llm-oga-cpu"
+Requires-Dist: turnkeyml[llm]; extra == "llm-oga-cpu"
+Provides-Extra: llm-oga-igpu
+Requires-Dist: onnxruntime-genai-directml==0.6.0; extra == "llm-oga-igpu"
+Requires-Dist: torch<2.4,>=2.0.0; extra == "llm-oga-igpu"
+Requires-Dist: transformers<4.45.0; extra == "llm-oga-igpu"
+Requires-Dist: turnkeyml[llm]; extra == "llm-oga-igpu"
+Provides-Extra: llm-oga-cuda
+Requires-Dist: onnxruntime-genai-cuda==0.6.0; extra == "llm-oga-cuda"
+Requires-Dist: torch<2.4,>=2.0.0; extra == "llm-oga-cuda"
+Requires-Dist: transformers<4.45.0; extra == "llm-oga-cuda"
+Requires-Dist: turnkeyml[llm]; extra == "llm-oga-cuda"
+Provides-Extra: llm-oga-npu
+Requires-Dist: onnx==1.16.0; extra == "llm-oga-npu"
+Requires-Dist: onnxruntime==1.18.0; extra == "llm-oga-npu"
+Requires-Dist: numpy==1.26.4; extra == "llm-oga-npu"
+Requires-Dist: protobuf>=6.30.1; extra == "llm-oga-npu"
+Requires-Dist: turnkeyml[llm]; extra == "llm-oga-npu"
+Provides-Extra: llm-oga-hybrid
+Requires-Dist: onnx==1.16.1; extra == "llm-oga-hybrid"
+Requires-Dist: numpy==1.26.4; extra == "llm-oga-hybrid"
+Requires-Dist: protobuf>=6.30.1; extra == "llm-oga-hybrid"
+Requires-Dist: turnkeyml[llm]; extra == "llm-oga-hybrid"
+Provides-Extra: llm-oga-unified
+Requires-Dist: turnkeyml[llm-oga-hybrid]; extra == "llm-oga-unified"
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Welcome to ONNX TurnkeyML
+
+[![Lemonade tests](https://github.com/onnx/turnkeyml/actions/workflows/test_lemonade.yml/badge.svg)](https://github.com/onnx/turnkeyml/tree/main/test "Check out our tests")
+[![Turnkey tests](https://github.com/onnx/turnkeyml/actions/workflows/test_turnkey.yml/badge.svg)](https://github.com/onnx/turnkeyml/tree/main/test "Check out our tests")
+[![OS - Windows | Linux](https://img.shields.io/badge/OS-windows%20%7C%20linux-blue)](https://github.com/onnx/turnkeyml/blob/main/docs/install.md "Check out our instructions")
+[![Made with Python](https://img.shields.io/badge/Python-3.8,3.10-blue?logo=python&logoColor=white)](https://github.com/onnx/turnkeyml/blob/main/docs/install.md "Check out our instructions")
+
+We are on a mission to make it easy to use the most important tools in the ONNX ecosystem. TurnkeyML accomplishes this by providing a full SDK for LLMs with the Lemonade SDK, as well as a no-code CLIs for general ONNX workflows with `turnkey`.
+
+## 🍋 Lemonade SDK: Quickly serve, benchmark and deploy LLMs
+
+The [Lemonade SDK](https://github.com/onnx/turnkeyml/blob/main/docs/lemonade/README.md) is designed to make it easy to serve, benchmark, and deploy large language models (LLMs) on a variety of hardware platforms, including CPU, GPU, and NPU. 
+
+<div align="center">
+  <img src="https://download.amd.com/images/lemonade_640x480_1.gif" alt="Lemonade Demo" title="Lemonade in Action">
+</div>
+
+The [Lemonade SDK](https://github.com/onnx/turnkeyml/blob/main/docs/lemonade/README.md) is comprised of the following:
+
+- 🌐 **Lemonade Server**: A server interface that uses the standard Open AI API, allowing applications to integrate with local LLMs.
+- 🐍 **Lemonade Python API**: Offers High-Level API for easy integration of Lemonade LLMs into Python applications and Low-Level API for custom experiments.
+- 🖥️ **Lemonade CLI**: The `lemonade` CLI lets you mix-and-match LLMs, frameworks (PyTorch, ONNX, GGUF), and measurement tools to run experiments. The available tools are:
+  - Prompting an LLM.
+  - Measuring the accuracy of an LLM using a variety of tests.
+  - Benchmarking an LLM to get the time-to-first-token and tokens per second.
+  - Profiling the memory usage of an LLM.
+
+### [Click here to get started with Lemonade.](https://github.com/onnx/turnkeyml/blob/main/docs/lemonade/README.md)
+
+## 🔑 Turnkey: A Complementary Tool for ONNX Workflows
+
+While Lemonade focuses on LLMs, [Turnkey](https://github.com/onnx/turnkeyml/blob/main/docs/turnkey/README.md) is a no-code CLI designed for general ONNX workflows, such as exporting and optimizing CNNs and Transformers.
+
+To see the list of supported tools, using the following command:
+
+```bash
+turnkey -h
+```
+
+<div align="center">
+  <img src="https://download.amd.com/images/tkml_640x480_1.gif" alt="Turnkey Demo" title="Turnkey CLI">
+</div>
+
+### [Click here to get started with `turnkey`.](https://github.com/onnx/turnkeyml/blob/main/docs/turnkey/README.md)
+
+## Contributing
+
+We are actively seeking collaborators from across the industry. If you would like to contribute to this project, please check out our [contribution guide](https://github.com/onnx/turnkeyml/blob/main/docs/contribute.md).
+
+## Maintainers
+
+This project is sponsored by the [ONNX Model Zoo](https://github.com/onnx/models) special interest group (SIG). It is maintained by @danielholanda @jeremyfowers @ramkrishna @vgodsoe in equal measure. You can reach us by filing an [issue](https://github.com/onnx/turnkeyml/issues) or emailing `turnkeyml at amd dot com`.
+
+## License
+
+This project is licensed under the [Apache 2.0 License](https://github.com/onnx/turnkeyml/blob/main/LICENSE).
+
+## Attribution
+
+TurnkeyML used code from other open source projects as a starting point (see [NOTICE.md](NOTICE.md)). Thank you Philip Colangelo, Derek Elkins, Jeremy Fowers, Dan Gard, Victoria Godsoe, Mark Heaps, Daniel Holanda, Brian Kurtz, Mariah Larwood, Philip Lassen, Andrew Ling, Adrian Macias, Gary Malik, Sarah Massengill, Ashwin Murthy, Hatice Ozen, Tim Sears, Sean Settle, Krishna Sivakumar, Aviv Weinstein, Xueli Xao, Bill Xing, and Lev Zlotnik for your contributions to that work.
+
