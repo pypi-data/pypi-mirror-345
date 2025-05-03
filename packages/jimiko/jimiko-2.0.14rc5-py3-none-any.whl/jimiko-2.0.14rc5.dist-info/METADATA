@@ -1,0 +1,497 @@
+Metadata-Version: 2.4
+Name: jimiko
+Version: 2.0.14rc5
+Summary: High-performance SSH and SFTP client for network automation
+Author: Jimiko Team
+Author-email: James Hill <jmhill2@gmail.com>
+License: MIT
+Keywords: ssh,networking,automation,libssh2,openssl,paramiko,netmiko
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Topic :: System :: Networking
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: test
+Requires-Dist: pytest>=7.0.0; extra == "test"
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-python
+
+# Jimiko
+
+A high-performance SSH and SFTP client for network automation, built with LibSSH2 and OpenSSL. Inspired by Paramiko. Focused on performance and non-blocking operations.
+
+
+## Why Jimiko?
+
+Jimiko similar high-performance C++ implementation bundled in python:
+
+- **Performance**: Built on libssh2/openssl with C++ for speed and scaling
+- **Non-blocking**: All operations are non-blocking by default
+- **Timeouts**: Fine-grained timeout control for all operations
+- **Device Support**: Support for devices including non-authenicated ssh sessions
+- **Error Handling**: Robust error handling with specific exceptions
+- **Cross-Platform**: macOS and Linux
+
+## Installation
+
+### Installing the Package 
+
+```bash
+# No prerequisites required 
+pip install jimiko
+```
+
+**Platform Compatibility:**
+- **Linux:** Supports Python 3.9+ with appropriate OpenSSL versions bundled for each Python version
+- **macOS:** Bundled wheels support Python 3.12+ only. For older versions, install dependencies via Homebrew and build from source.
+- **Windows:** Currently requires building from source with dependencies installed via vcpkg
+
+| Python Version | Required OpenSSL | Linux Support | macOS Support |
+|----------------|------------------|---------------|---------------|
+| Python 3.9-3.11| OpenSSL 1.1.1    | ✅            | ❌            |
+| Python 3.12+   | OpenSSL 3.0+     | ✅            | ✅            |
+
+## API Documentation
+
+### SSH Client (PyJimikoClient)
+
+#### Constructor Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| ip | string | required | IP address or hostname of the SSH server |
+| username | string | "" | Username for authentication |
+| password | string | "" | Password for authentication |
+| prompt | string | "" | Expected prompt pattern (regex) |
+| auth | bool | False | Whether to authenticate (set to True for regular SSH) |
+| port | int | 22 | SSH server port |
+| command_timeout_ms | int | 2000 | Timeout for command execution in milliseconds |
+| read_timeout_ms | int | 2000 | Timeout for reading responses in milliseconds |
+| pty_type | string | "vt100" | Terminal type to use for PTY requests |
+| use_pty | bool | True | Whether to request PTY allocation |
+
+#### Main Methods
+
+| Method | Parameters | Return | Description |
+|--------|------------|--------|-------------|
+| connect() | None | bool | Establishes connection to the server |
+| disconnect() | None | None | Closes the connection |
+| send(command, command_timeout_ms, read_timeout_ms, prompt) | string, uint32, uint32, string | string | Sends a command and returns output |
+| get_initial_output(timeout_ms) | uint32 | string | Captures initial banner output |
+
+#### PTY Options
+
+When using shell connections, the SSH client uses a PTY (Pseudo Terminal). The available terminal types include:
+
+- "vt100" - DEC VT100 terminal (default, recommended)
+- "vt102" - DEC VT102 terminal
+- "vt220" - DEC VT220 terminal
+- "xterm" - X Window System terminal
+- "ansi" - ANSI terminal
+- "linux" - Linux console
+- "vanilla" - Basic terminal
+- "dumb" - Minimal terminal
+
+Different network devices may require different terminal types for optimal compatibility.  
+Default "vt100" 
+
+### SFTP Client (PyJimikoSFTPClient)
+
+#### Constructor Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| ip | string | Required | IP address or hostname of the remote server |
+| username | string | Required | Username for authentication |
+| password | string | Required | Password for authentication |
+| port | int | 22 | SSH port number |
+| operation_timeout_ms | uint32 | 30000 | Operation timeout in milliseconds |
+
+#### Main Methods
+
+| Method | Parameters | Return | Description |
+|--------|------------|--------|-------------|
+| connect() | None | bool | Establishes SFTP connection |
+| disconnect() | None | None | Closes the connection |
+| put(local_path, remote_path, mode) | string, string, int | bool | Uploads file to remote server |
+| get(remote_path, local_path) | string, string | bool | Downloads file from remote server |
+| list_dir(path) | string | vector<SFTPFileInfo> | Lists directory contents |
+| file_exists(path) | string | bool | Checks if file exists |
+| file_info(path) | string | SFTPFileInfo | Gets file information |
+| make_dir(path, mode) | string, int | bool | Creates a directory |
+| remove_file(path) | string | bool | Deletes a file |
+| remove_dir(path) | string | bool | Removes a directory |
+| rename(old_path, new_path) | string, string | bool | Renames a file or directory |
+
+## Usage Examples
+
+### SSH Client (Authenticated)
+
+```python
+from jimiko import PyJimikoClient
+
+# Create SSH client with authentication
+client = PyJimikoClient(
+    ip="192.168.1.1",
+    username="admin",
+    password="password123",
+    prompt="#",  # Expected prompt
+    auth=True,   # Enable authentication
+    port=22,
+    command_timeout_ms=5000,  # 5 second timeout
+    read_timeout_ms=2000,     # 2 second read timeout
+    pty_type="vt100"      
+)
+
+# Connect to device
+if client.connect():
+    # Basic command - uses the default prompt
+    result = client.send("show version")
+    print(result)
+    
+    # Configure command with custom prompt
+    config_result = client.send("configure terminal", prompt="\\(config\\)#")
+    interface_result = client.send("interface GigabitEthernet0/1", prompt="\\(config-if\\)#")
+    
+    # Return to enable mode
+    client.send("end", prompt="#")
+    
+    # Command with longer timeout
+    result = client.send("show tech-support", command_timeout_ms=60000)
+    print(result)
+    
+    # Disconnect when done
+    client.disconnect()
+```
+
+### SSH Client (Non-Authenticated)
+
+```python
+from jimiko import PyJimikoClient
+
+# Create SSH client without authentication (for legacy devices)
+client = PyJimikoClient(
+    ip="192.168.1.2",
+    auth=False,
+    port=22,
+    pty_type="vt100"  # Using vt100 terminal type
+)
+
+# Connect to device
+if client.connect():
+    # Get initial banner/login prompt
+    initial_output = client.get_initial_output(timeout_ms=5000)
+    print(initial_output)
+    
+    # Send login credentials 
+    if "login:" in initial_output:
+        result = client.send("admin")
+        result = client.send("password123")
+    
+    # Now send commands as normal
+    result = client.send("rtrv-hdr:::;")
+    print(result)
+    
+    # Disconnect when done
+    client.disconnect()
+```
+
+### SFTP Client
+
+```python
+from jimiko import PyJimikoSFTPClient
+import os
+
+# Create SFTP client
+sftp = PyJimikoSFTPClient(
+    ip="127.0.0.1",
+    username="admin",
+    password="password123",
+    port=22,
+    operation_timeout_ms=30000  # 30 second timeout
+)
+
+# Connect to server
+if sftp.connect():
+    # Upload a file (with mode 0644)
+    sftp.put("local_file.txt", "/remote/path/file.txt", 0o644)
+    
+    # Download a file
+    sftp.get("/remote/path/file.txt", "downloaded_file.txt")
+    
+    # List directory contents
+    files = sftp.list_dir("/remote/path")
+    for file_info in files:
+        print(f"Name: {file_info.name}, Size: {file_info.size} bytes")
+    
+    # Check if file exists
+    if sftp.file_exists("/remote/path/file.txt"):
+        # Get file info
+        info = sftp.file_info("/remote/path/file.txt")
+        print(f"File size: {info.size}, Modified: {info.mtime}")
+        
+        # Create directory
+        sftp.make_dir("/remote/path/new_dir", 0o755)
+        
+        # Rename file
+        sftp.rename("/remote/path/file.txt", "/remote/path/new_file.txt")
+        
+        # Delete file
+        sftp.remove_file("/remote/path/new_file.txt")
+        
+        # Remove directory
+        sftp.remove_dir("/remote/path/new_dir")
+    
+    # Disconnect when done
+    sftp.disconnect()
+```
+
+## Development Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/jameshill/jimiko.git
+cd jimiko
+```
+
+2. Install development dependencies:
+```bash
+pip install -r requirements-dev.txt
+```
+
+3. Build the extension:
+```bash
+python setup.py build_ext --inplace
+```
+
+## Building from Source
+
+### Building from Source (Prerequisites)
+
+#### Windows
+```bash
+# Using vcpkg
+vcpkg install libssh2:x64-windows openssl:x64-windows
+```
+
+#### macOS
+```bash
+# Using Homebrew
+brew install libssh2 openssl@3
+```
+
+#### Linux (Debian/Ubuntu)
+```bash
+sudo apt-get install libssh2-1-dev libssl-dev
+```
+
+#### Linux (CentOS/RHEL)
+```bash
+sudo yum install libssh2-devel openssl-devel
+```
+
+### Windows
+```bash
+# Set VCPKG_ROOT environment variable
+# See github workflow
+set VCPKG_ROOT=C:\vcpkg\installed\x64-windows
+python setup.py build
+```
+
+# Docker Build Environment for Jimiko
+
+This section describes how to build Jimiko using Docker containers for maximum compatibility across Linux distributions.
+
+## OpenSSL Version Requirements
+
+Different Python versions require specific OpenSSL versions for compatibility:
+
+| Python Version | Required OpenSSL | Build Script |
+|----------------|-----------------|--------------|
+| Python 3.8.x, 3.9.x, 3.10.x, 3.11.x | OpenSSL 1.1.1 | `build_ssl111.sh` |
+| Python 3.12.x, 3.13.x | OpenSSL 3.0 | `build_ssl300.sh` |
+
+The build system automatically uses the appropriate OpenSSL version based on the Python version being built.
+
+## Dynamic Linking and Binary Portability
+
+Jimiko uses a hybrid approach for library dependencies:
+
+- **Static linked dependencies**: OpenSSL and libssh2 libraries are bundled
+
+
+This approach ensures that:
+1. The correct OpenSSL version is always used regardless of the system's installed version
+2. Wheels are portable across different Linux distributions
+3. No system-level library installations are required
+
+## Building with Docker
+
+The easiest way to build Jimiko for all supported Python versions is to use the sequential build script:
+
+```bash
+# From the project root directory
+./docker/manylinux/build_sequential.sh
+```
+
+This script:
+1. Builds Jimiko for all supported Python versions (3.6 through 3.13)
+2. Uses separate Docker containers with the appropriate OpenSSL version for each Python version
+3. Creates wheels and extracts platform-specific binaries into `output/jimiko_py{version}/`
+4. Generates a build summary in `build_summary.txt`
+
+### Building for a Specific Python Version
+
+To build for a specific Python version only:
+
+```bash
+# Build only for Python 3.8.20
+./docker/manylinux/build_sequential.sh 3.8.20
+```
+
+### Build Scripts
+
+The build process is managed by several scripts:
+
+- `build_sequential.sh`: Main entry point that orchestrates the entire build process
+- `build_ssl102.sh`: Builds Jimiko for Python 3.6-3.7 with OpenSSL 1.0.2
+- `build_ssl111.sh`: Builds Jimiko for Python 3.8-3.11 with OpenSSL 1.1.1
+- `build_ssl300.sh`: Builds Jimiko for Python 3.12-3.13 with OpenSSL 3.0
+- `build.sh`: The core build script that runs inside the Docker container
+
+## macOS Builds
+
+For macOS, use the included build script:
+
+```bash
+# Build for latest Python versions installed via pyenv
+./build_macos.sh
+```
+
+**Important Note:** The bundled macOS version only supports Python 3.12 and 3.13. This is because these Python versions require OpenSSL 3.0, which is bundled with the wheel. For older Python versions on macOS, users will need to install the appropriate system dependencies (via Homebrew) and build from source.
+
+The macOS build uses the system's dynamic linker with @rpath to find bundled libraries, similar to the Linux approach.
+
+## Customizing the Build
+
+If you need to customize the build process:
+
+1. Modify the Docker images in `docker/manylinux/Dockerfile_*` for container configuration
+2. Adjust the `build.sh` script for changes to the build process inside the container
+3. Update the output handling in the platform-specific build scripts
+
+## Troubleshooting
+
+- If you encounter issues with the static libraries, check that the paths in `build.sh` match the actual paths in the container.
+- Make sure your project is properly mounted as a volume in the container.
+- For debugging, you can run the container with an interactive shell and execute build steps manually.
+- For relocation errors when linking static libraries, ensure they were compiled with -fPIC.
+
+
+## What Gets Created
+
+The build process creates several artifacts:
+
+1. A standard Python wheel in the `dist/` directory
+2. A specific wheel with "-manylinux" in the filename (also in `dist/`)
+3. A platform-specific binary file in `src/jimiko/` named `_jimiko_wrapper.cpython-<python-version>-manylinux2014_x86_64.so`
+
+The extracted binary file is used when creating a universal wheel that includes binaries for multiple platforms.
+
+## Additional Examples
+
+
+1. **Disable PTY allocation**:
+   ```python
+   # Connect to device without PTY allocation
+   client = PyJimikoClient(
+       ip="192.168.1.1",
+       username="admin",
+       password="password123",
+       prompt="#",
+       use_pty=False  # Skip PTY allocation entirely 
+   )
+   ```
+
+2. **Adjust timeouts**:
+   ```python
+   client = PyJimikoClient(
+       ip="192.168.1.1",
+       username="admin",
+       password="password123",
+       prompt="#",
+       command_timeout_ms=60000,   # 60 seconds
+       read_timeout_ms=30000       # 30 seconds
+   )
+   ```
+
+3. **Disable pagination on devices**:
+   ```python
+   client.connect()
+   client.send("terminal length 0")
+   ```
+
+4. **Try different terminal types** if PTY is required:
+   ```python
+   client = PyJimikoClient(
+       ip="192.168.1.1",
+       username="admin",
+       password="password123",
+       prompt="#",
+       pty_type="vanilla"  # Try alternative terminal types
+   )
+   ```
+
+### Command Prompt Handling
+
+By default, the SSH client uses the prompt pattern specified during initialization to detect when a command has completed. However, for specific commands, you can override this behavior:
+
+1. **Default prompt handling**: The prompt pattern from the constructor is used to detect command completion:
+   ```python
+   client = PyJimikoClient(
+       ip="192.168.1.1",
+       username="admin",
+       password="password123",
+       prompt="#",  # This will be used for all commands by default
+   )
+   ```
+
+2. **Per-command prompt override**: For special commands that have different output patterns, you can specify a command-specific prompt:
+   ```python
+   # Use the default prompt
+   result = client.send("show version")
+   
+   # Use a custom prompt for a specific command
+   result = client.send("configure terminal", prompt="\\(config\\)#")
+   
+   # Use a specific prompt for a yes/no prompt
+   result = client.send("reload", prompt="\\[yes/no\\]")
+   ```
+
+3. **Prompt matching**: Both default and override prompts support:
+   - Regular expressions (preferred for more complex patterns)
+   - Simple string matching (as fallback if regex parsing fails)
+
+
+## License
+
+MIT License
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request 
