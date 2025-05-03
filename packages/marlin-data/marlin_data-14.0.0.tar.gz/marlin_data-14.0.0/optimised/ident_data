@@ -1,0 +1,72 @@
+#!/usr/bin/env/pyhton3
+
+"""
+MARLIN IDent
+c. Rahul Tandon, R.S. Aqua, 2024
+E: r.tandon@rsaqua.co.uk
+
+Optimised IDent data srtucture for optimised data statistics and data reporting.
+"No python" approach in order to compile to machine code with native datatypes. 
+
+
+"""
+
+# Standard imports
+import numpy as np
+import time as t
+
+# Optmisied imports
+from numba import int32, float32
+from numba.experimental import jitclass
+
+IdentDataClassSpec = [      # a simple scalar field
+    ('array', float32[:]),         # an array field
+]
+
+@jitclass(IdentDataClassSpec)
+class IdentData(object):
+    
+    def __init__(self, data_source : np.ndarray = None):
+        self.data_source = None
+    
+    def fft_it(self):
+        n = len(self.data_source) / 2
+        Y = np.fft.fft(self.data_source)/n
+        Y = Y[:n//2]
+        amplitudes =  abs(Y) 
+        max_power = np.max(amplitudes)
+
+if __name__ == "__main__":
+    print ("Debug Tester")
+    print ("################")
+    
+    source_data = None
+    #load source data
+    streamedfile_999876447769858733241497.dat
+    source_data = np.load()
+    source_filepath = "/home/vixen/rs/dev/marlin_hp/marlin_hp/data/sim/streamedfile_999876447769858733241497.dat"
+    with open(data_filepath, 'rb') as fr:
+        c = fr.read()
+        np_data = None
+        dtype = np.dtype("float32")
+        source_data  = np.frombuffer(c, dtype=dtype)
+    
+    print (source_data)
+    exit()
+     
+
+
+    tester = IdentData(source_data)
+
+    print ('Building fft - np.nfft')
+    fft_start = t.time()
+
+    fff_end = t.time()
+    fft_run_time = fff_end - fft_start
+    print (f'FFT took {fft_run_time} (s)')
+    print ("################")
+
+   
+    
+
+
