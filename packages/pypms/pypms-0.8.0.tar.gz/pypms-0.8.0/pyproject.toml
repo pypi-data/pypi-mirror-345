@@ -1,0 +1,187 @@
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pypms"
+dynamic = ["version"]
+description = "Data acquisition and logging for Air Quality Sensors with UART interface"
+authors = [{ name = "Alvaro Valdebenito", email = "avaldebe@gmail.com" }]
+requires-python = ">=3.9,<4.0"
+readme = "README.md"
+keywords = ["air quality", "particulate matter"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Natural Language :: English",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Topic :: Terminals :: Serial",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pyserial >=3.5",
+    "typer-slim >=0.12.0",
+    "loguru >=0.7.0",
+    "importlib-metadata >=3.6 ; python_version < '3.10'",
+]
+
+[project.optional-dependencies]
+mqtt = ["paho-mqtt >=2.1.0"]
+influxdb = ["influxdb >=5.2.0"]
+
+[project.urls]
+Homepage = "https://avaldebe.github.io/PyPMS"
+Repository = "https://github.com/avaldebe/PyPMS"
+
+[project.scripts]
+pms = "pms.cli:main"
+
+[project.entry-points."pypms.sensors"]
+# docs/sensors/Plantower.md
+PMSx003 = "pms.sensors.plantower.pmsx003"
+PMS3003 = "pms.sensors.plantower.pms3003"
+PMS5003S = "pms.sensors.plantower.pms5003s"
+PMS5003ST = "pms.sensors.plantower.pms5003st"
+PMS5003T = "pms.sensors.plantower.pms5003t"
+# docs/sensors/NovaFitness.md
+SDS01x = "pms.sensors.novafitness.sds01x"
+SDS198 = "pms.sensors.novafitness.sds198"
+# docs/sensors/Honeywell.md
+HPMA115S0 = "pms.sensors.honeywell.hpma115s0"
+HPMA115C0 = "pms.sensors.honeywell.hpma115c0"
+SPS30 = "pms.sensors.sensirion.sps30"
+# docs/sensors/mcu680.md
+MCU680 = "pms.sensors.bosch_sensortec.mcu680"
+# docs/sensors/Winsen.md
+MHZ19B = "pms.sensors.winsen.mhz19b"
+ZH0xx = "pms.sensors.winsen.zh0xx"
+
+[project.entry-points."pypms.extras"]
+influxdb = "pms.extra.influxdb:cli"
+mqtt = "pms.extra.mqtt:cli"
+bridge = "pms.extra.bridge:cli"
+
+[dependency-groups]
+dev = [
+    { include-group = "test" },
+    "pytest-sugar >=1.0.0",
+    "mypy >=1.15.0",
+    "types-pyserial",
+]
+test = [
+    "pytest >=8.3.5",
+    "pytest-cov >=6.1.1",
+    "packaging >=25.0",
+    "mock_serial",
+]
+docs = ["mkdocs>=1.2.3", "mkdocs-material>=8.2.5", "pymdown-extensions>=9.5"]
+
+[tool.hatch]
+build.targets.sdist.include = ["src/pms"]
+build.targets.wheel.packages = ["src/pms"]
+build.hooks.version.path = "src/pms/_version.py"
+version.source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+fallback-version = "0.0.0"
+pattern = "default-unprefixed"
+
+[tool.uv]
+environments = ["sys_platform == 'linux'"]
+cache-keys = [{ file = "pyproject.toml" }, { file = "src/pms/_version.py" }]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = lint, docs, py39, py310, py311, py312, py313
+skip_missing_interpreters = True
+isolated_build = True
+requires = 
+    tox >=4.22
+    tox-uv >=1.25
+
+[testenv]
+description = 
+     py39: test with lowest dependency versions
+    !py39: test with {base_python}
+uv_resolution =
+    py39: lowest
+commands =
+    pytest -ra -q {posargs:--cov --no-cov-on-fail}
+dependency_groups =
+    test
+
+[testenv:lint]
+description = code quality
+skip_install=True
+commands =
+    pre-commit autoupdate
+    pre-commit run --all-files --show-diff-on-failure
+deps =
+    pre-commit
+    pre-commit-uv
+
+[testenv:docs{,-serve,-deploy}]
+description = build docs
+commands =
+    docs:        mkdocs build --clean
+    docs-serve:  mkdocs serve
+    docs-deploy: mkdocs gh-deploy {posargs:--clean}
+dependency_groups =
+    docs
+"""
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--lf -Werror"
+
+[tool.coverage.run]
+source = ["pms"]
+omit = ["*/__init__.py", "*/__main__.py", "*/core/types.py"]
+
+[tool.coverage.report]
+exclude_also = [
+    "@overload",
+    "@abstractmethod",
+    "ModuleNotFoundError",
+    "def __repr__",
+    "def __str__",
+    'if spec == "":',
+]
+show_missing = true
+skip_covered = true
+fail_under = 100
+
+[tool.ruff]
+line-length = 100
+lint.select = ["E", "F", "I", "UP", "FA"]
+
+[tool.ruff.lint.per-file-ignores]
+"cli.py" = [
+    "FA100", # https://docs.astral.sh/ruff/rules/future-rewritable-type-annotation/
+]
+
+[tool.mypy]
+python_version = "3.9"
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_return_any = false
+warn_unreachable = true
+show_error_codes = true
+pretty = true
+sqlite_cache = true
+exclude = "site"
+
+[[tool.mypy.overrides]]
+module = ["pms.extra.mqtt", "pms.extra.influxdb"]
+warn_unused_ignores = false
