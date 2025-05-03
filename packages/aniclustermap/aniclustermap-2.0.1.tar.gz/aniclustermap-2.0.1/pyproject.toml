@@ -1,0 +1,81 @@
+[project]
+name = "aniclustermap"
+dynamic = ["version"]
+description = "A tool for drawing ANI clustermap between all-vs-all microbial genomes"
+authors = [{ name = "moshi4" }]
+license = "MIT"
+readme = "README.md"
+keywords = [
+    "bioinformatics",
+    "genomics",
+    "phylogenetics",
+    "visualization",
+    "clustermap",
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "pandas>=1.4.1",
+    "seaborn>=0.11.2",
+    "scipy>=1.9.0",
+    "typer>=0.15.2",
+]
+
+[project.urls]
+repository = "https://github.com/moshi4/ANIclustermap/"
+
+[project.scripts]
+ANIclustermap = "aniclustermap.scripts.aniclustermap:app"
+
+[tool.hatch.version]
+path = "src/aniclustermap/__init__.py"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ruff>=0.4.0",
+    "pre-commit>=3.5.0",
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0",
+    "ipykernel>=6.13.0",
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cov=src --tb=long -vv --cov-report=xml --cov-report=term"
+testpaths = ["tests"]
+
+[tool.ruff]
+include = ["src/**.py", "tests/**.py"]
+line-length = 88
+
+# Lint Rules: https://docs.astral.sh/ruff/rules/
+[tool.ruff.lint]
+select = [
+    "F", # pyflakes
+    "E", # pycodestyle (Error)
+    "W", # pycodestyle (Warning)
+    "I", # isort
+    "D", # pydocstyle
+]
+ignore = [
+    "D100", # Missing docstring in public module
+    "D101", # Missing docstring in public class
+    "D104", # Missing docstring in public package
+    "D105", # Missing docstring in magic method
+    "D205", # 1 blank line required between summary line and description
+    "D400", # First line should end with a period
+    "D401", # First line should be in imperative mood
+    "D403", # First word of the first line should be properly capitalized
+    "D415", # First line should end with a period, question mark, or exclamation point
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[build-system]
+requires = ["hatchling==1.26.3"]
+build-backend = "hatchling.build"
