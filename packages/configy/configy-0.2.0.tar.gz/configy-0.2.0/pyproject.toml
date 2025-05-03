@@ -1,0 +1,143 @@
+[project]
+name = "configy"
+version = "0.2.0"
+description = "Simple Configuration manager, plays well with testing"
+readme = "README.rst"
+license = "MIT"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "PyYAML>=6.0.2",
+]
+
+[[project.authors]]
+name = "Nickolas Grigoriadis"
+email = "nagrigoriadis@proton.me"
+
+[project.urls]
+Repository = "https://codeberg.org/grigi/configy"
+
+[tool.tox]
+requires = [
+    "tox>=4.25.0",
+]
+env_list = [
+    "lint",
+    "3.8",
+    "3.9",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+    "cov",
+]
+
+[tool.tox.env_run_base]
+description = "Run test under {base_python}"
+package = "skip"
+deps = [
+    "PyYAML",
+]
+commands = [
+    ["python", "-m", "unittest", "-b"],
+]
+
+
+[tool.tox.env.cov]
+description = "Coverage"
+package = "skip"
+base_python = ["3.13"]
+deps = [
+    "coverage",
+    "PyYAML",
+]
+commands = [
+    ["coverage", "run", "--branch", "--omit=configy/test*", "--source=configy", "-m", "unittest", "-b"],
+    ["coverage", "report"],
+]
+
+[tool.tox.env.lint]
+description = "Run linting and type checking"
+package = "skip"
+base_python = ["3.13"]
+deps = [
+    "ruff>=0.11",
+    "mypy>=1.15",
+    "types-PyYAML>=6.0",
+]
+commands = [
+    ["ruff", "check", "configy", "tests"],
+    ["mypy", "configy", "tests"],
+]
+
+[tool.mypy]
+pretty = true
+ignore_missing_imports = true
+check_untyped_defs = true
+strict_equality = true
+show_error_context = true
+allow_redefinition = false
+no_implicit_optional = true
+no_implicit_reexport = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 120
+
+[tool.ruff.lint]
+# See: https://docs.astral.sh/ruff/rules/
+select = [
+    "F",
+    "E",
+    "W",
+    "UP",
+    "ASYNC",
+    "C4",
+    "I",
+    "SIM",
+    "PLE",
+    "PGH",
+]
+ignore = [
+]
+exclude = [
+]
+explicit-preview-rules = true
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+line-ending = "lf"
+
