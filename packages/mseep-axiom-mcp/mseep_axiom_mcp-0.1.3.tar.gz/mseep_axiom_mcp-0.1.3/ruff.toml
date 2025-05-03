@@ -1,0 +1,22 @@
+[lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101",    # Allow assert statements in tests
+    "PLR2004", # Allow magic numbers in tests
+    "S105",    # Allow possible hardcoded passwords in tests
+    "S106",    # Allow possible hardcoded passwords in tests
+    "S107",    # Allow possible hardcoded passwords in tests
+    "ARG001",  # Allow unused function arguments (for fixtures)
+    "ARG002",  # Allow unused method arguments (for overrides/fixtures)
+    "FBT001",  # Allow boolean positional arguments
+    "FBT002",  # Allow boolean default values
+    "E501",    # Line length for test data can sometimes be longer
+    "PT004",   # Allow pytest fixtures without explicit return annotation
+    "PT005",   # Allow pytest fixtures without docstrings
+    "PT011",   # Allow pytest raises without exception match
+    "PT019",   # Allow fixture with same name as test
+    "TRY003", # Long exception message, why is this a problem?
+]
+"examples/**/*.py" = ["ALL"] # Ignore all rules for examples folder
+
+[lint.isort]
+known-first-party = ["axiom_mcp"]
