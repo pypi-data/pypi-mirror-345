@@ -1,0 +1,118 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "canvy"
+dynamic = ["version"]
+description = "Sync files from Canvas courses"
+readme = "README.md"
+license = "MIT"
+requires-python = "==3.12.*"
+authors = [{ name = "James K.", email = "jameskowal10@gmail.com" }]
+dependencies = [
+  "agno>=1.3.1",
+  "canvasapi>=3.3.0",
+  "duckduckgo-search>=8.0.1",
+  "hatch>=1.14.1",
+  "ollama>=0.4.8",
+  "openai>=1.75.0",
+  "platformdirs>=4.3.7",
+  "pydantic>=2.11.3",
+  "pypdf>=5.4.0",
+  "pytest>=8.3.5",
+  "pytest-cov>=6.1.1",
+  "qdrant-client>=1.13.3",
+  "rich>=14.0.0",
+  "textual>=3.1.1",
+  "textual-dev>=1.7.0",
+  "toml>=0.10.2",
+  "typer>=0.15.2",
+  "typst>=0.13.2",
+]
+
+[project.scripts]
+canvy = "canvy.main:main"
+
+[tool.hatch.version]
+path = "src/canvy/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+packages = ["src/canvy"]
+
+[tool.mypy]
+disallow_untyped_defs = false
+follow_imports = "normal"
+pretty = true
+disable_error_code = "import-untyped"
+show_column_numbers = true
+warn_no_return = false
+warn_unused_ignores = true
+ignore_missing_imports = true
+
+[tool.black]
+line-length = 88
+
+[tool.ruff]
+line-length = 95
+lint.select = [
+  "A",
+  "B",
+  "C",
+  "DTZ",
+  "E",
+  "EM",
+  "F",
+  "FBT",
+  "I",
+  "ICN",
+  "N",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "Q",
+  "RUF",
+  "S",
+  "SIM",
+  "T",
+  "TID",
+  "UP",
+  "W",
+  "YTT",
+]
+lint.ignore = [
+  "A001",
+  "A002",
+  "A003", # shadowing built-in functions
+]
+lint.unfixable = [
+  # Don't touch unused imports
+  # "F401",
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --cov=src --import-mode=importlib"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.per-file-ignores]
+# Tests can use relative imports and assertions
+"tests/**/*" = ["TID252", "S101"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
