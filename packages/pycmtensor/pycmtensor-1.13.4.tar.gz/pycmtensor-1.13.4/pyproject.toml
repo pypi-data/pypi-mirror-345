@@ -1,0 +1,129 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "pycmtensor"
+version = "1.13.4"
+description = "A robust and efficient Python package leveraging tensor computations for advanced discrete choice modelling."
+authors = ["Melvin Wong"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/mwong009/pycmtensor"
+keywords = ["tensor", "discrete choice modelling", "transportation", "economics", "python", "data analysis", "machine learning", "artificial intelligence", "scientific computing"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.9",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+aesara = "2.9.3"
+numpy = "<1.26.0"
+scipy = "<1.12.0"
+pandas = "<2.1.0"
+seaborn = "<0.14.0"
+scikit-learn = "<1.6.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = ">=1.4.3"
+mkdocs-material = ">=9.1.0"
+pymdown-extensions = ">=10.0.1"
+mkdocstrings = ">=0.15.0"
+mkdocstrings-python = ">=0.15.0"
+mknotebooks = "<1.0.0" 
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=7.4.3"
+pytest-cov = ">=4.1.0"
+
+[tool.poetry.group.lint]
+optional = true
+
+[tool.poetry.group.lint.dependencies]
+black = ">=22.1.0"
+isort = ">=5.9.3"
+commitizen = ">=3.0.0"
+pre-commit = ">=3.4.0"
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+skip_glob = ".pytest_cache/*"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "1.13.4"
+tag_format = "v$version"
+bump_message = "Bump version: $current_version → $new_version"
+version_files = [
+    "pyproject.toml:version",
+    "pycmtensor/__init__.py",
+]
+
+
+[tool.pytest.ini_options]
+addopts = ["--cov=pycmtensor", "--cov-report=xml", "--cov-report=term", "--junitxml=test-reports/junit.xml"]
+filterwarnings = ["error", "ignore::UserWarning", "ignore::DeprecationWarning"]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+
+[tool.coverage.run]
+source = ["pycmtensor"]
+omit = ["tests/*", "docs/*", "samples/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "raise KeyError",
+    "raise ValueError",
+    "raise TypeError",
+    "debug",
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
+show_missing = true
