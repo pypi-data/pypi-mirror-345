@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "logging-ext2"
+dynamic = ["version"]
+description = 'extend python logging library'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Xiang Wang", email = "ramwin@qq.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["filelock"]
+
+[project.urls]
+Documentation = "https://github.com/ramwin/logging-ext#readme"
+Issues = "https://github.com/ramwin/logging-ext/issues"
+Source = "https://github.com/ramwin/logging-ext"
+
+[tool.hatch.version]
+path = "src/logging_ext2/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/logging_ext2 tests}"
+
+[tool.coverage.run]
+source_pkgs = ["logging_ext2", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/logging_ext2/__about__.py",
+]
+
+[tool.coverage.paths]
+logging_ext2 = ["src/logging_ext2", "*/logging-ext2/src/logging_ext2"]
+tests = ["tests", "*/logging-ext2/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
