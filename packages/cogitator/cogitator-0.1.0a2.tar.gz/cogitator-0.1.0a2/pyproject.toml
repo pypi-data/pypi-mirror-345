@@ -1,0 +1,136 @@
+[tool.poetry]
+name = "cogitator"
+version = "0.1.0a2"
+description = "A Python toolkit for chain-of-thought prompting"
+authors = ["Hassan Abedi <hassan.abedi.t+cogitator@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "cogitator" }]
+repository = "https://github.com/habedi/cogitator"
+documentation = "https://github.com/habedi/cogitator/blob/main/docs/README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["prompt engineering", "chain-of-thought", "artificial intelligence", "machine learning"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+scikit-learn = "^1.6.1"
+openai = "^1.76.2"
+ollama = "^0.4.8"
+pydantic = "^2.11.4"
+sentence-transformers = "^4.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.1"
+pytest-cov = "^6.0.0"
+pytest-mock = "^3.14.0"
+pytest-asyncio = "^0.26.0"
+mypy = "^1.11.1"
+ruff = "^0.11.7"
+griffe = "^1.7.3"
+polars = "^1.28.1"
+datasets = "^3.5.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = ["cogitator"]
+testpaths = ["tests"]
+addopts = [
+    "--tb=short",
+    #"--disable-warnings",
+    "--cov=cogitator",
+    "--cov-branch",
+    "--cov-report=term",
+    "--cov-report=xml",
+]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source = ["cogitator"]
+omit = [
+    "tests/*",
+    "benches/*",
+    "examples/*",
+]
+
+[tool.coverage.report]
+show_missing = false
+skip_empty = true
+precision = 2
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+disallow_untyped_defs = true
+disallow_untyped_calls = true
+strict_optional = true
+warn_redundant_casts = true
+exclude = "^(benches/|examples/|tests/)"
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    # Additional directories to exclude
+    "tests",
+    "benches",
+]
+line-length = 100
+indent-width = 4
+src = ["cogitator", "examples"]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["ANN", "E", "F", "I"]
+ignore = [
+    # Ignore docstring errors
+    "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107",
+]
+fixable = ["ALL"]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = []
