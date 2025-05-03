@@ -1,0 +1,2 @@
+class BigGraphQlApi:
+    pass
