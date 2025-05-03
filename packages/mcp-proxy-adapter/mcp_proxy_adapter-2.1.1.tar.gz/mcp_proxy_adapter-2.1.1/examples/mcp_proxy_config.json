@@ -1,0 +1,175 @@
+{
+  "version": "1.0",
+  "tools": [
+    {
+      "name": "mcp_get_items",
+      "description": "Get list of all items",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "mcp_get_item",
+      "description": "Get item by ID",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "integer",
+            "description": "Item ID to search for"
+          }
+        },
+        "required": [
+          "item_id"
+        ]
+      }
+    },
+    {
+      "name": "mcp_create_item",
+      "description": "Create new item",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "object",
+            "description": "Item data"
+          }
+        },
+        "required": [
+          "item"
+        ]
+      }
+    },
+    {
+      "name": "mcp_update_item",
+      "description": "Update item by ID",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "integer",
+            "description": "Item ID to update"
+          },
+          "updated_data": {
+            "type": "object",
+            "description": "Updated data"
+          }
+        },
+        "required": [
+          "item_id",
+          "updated_data"
+        ]
+      }
+    },
+    {
+      "name": "mcp_delete_item",
+      "description": "Delete item by ID",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "integer",
+            "description": "Item ID to delete"
+          }
+        },
+        "required": [
+          "item_id"
+        ]
+      }
+    },
+    {
+      "name": "mcp_search_items",
+      "description": "Search items by keyword",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "Search keyword"
+          }
+        },
+        "required": [
+          "keyword"
+        ]
+      }
+    },
+    {
+      "name": "mcp_execute",
+      "description": "Universal command for executing queries",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query to execute"
+          },
+          "subcommand": {
+            "type": "string",
+            "description": "Subcommand to execute"
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "routes": [
+    {
+      "tool_name": "mcp_get_items",
+      "endpoint": "/cmd",
+      "method": "post",
+      "json_rpc": {
+        "method": "get_items"
+      }
+    },
+    {
+      "tool_name": "mcp_get_item",
+      "endpoint": "/cmd",
+      "method": "post",
+      "json_rpc": {
+        "method": "get_item"
+      }
+    },
+    {
+      "tool_name": "mcp_create_item",
+      "endpoint": "/cmd",
+      "method": "post",
+      "json_rpc": {
+        "method": "create_item"
+      }
+    },
+    {
+      "tool_name": "mcp_update_item",
+      "endpoint": "/cmd",
+      "method": "post",
+      "json_rpc": {
+        "method": "update_item"
+      }
+    },
+    {
+      "tool_name": "mcp_delete_item",
+      "endpoint": "/cmd",
+      "method": "post",
+      "json_rpc": {
+        "method": "delete_item"
+      }
+    },
+    {
+      "tool_name": "mcp_search_items",
+      "endpoint": "/cmd",
+      "method": "post",
+      "json_rpc": {
+        "method": "search_items"
+      }
+    },
+    {
+      "tool_name": "mcp_execute",
+      "endpoint": "/cmd",
+      "method": "post",
+      "json_rpc": {
+        "method": "execute"
+      }
+    }
+  ]
+}
