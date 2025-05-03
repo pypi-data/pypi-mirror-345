@@ -1,0 +1,34 @@
+{% load i18n %}
+<section class="front-page">
+    <h3>{% trans "Public registrations" %}</h3>
+    {% if not public_registrations %}
+    <div>
+        <div class="col-md-12">
+            <p>{% trans "No public registrations yet." %}</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="table-responsive">
+    <table class="table table-striped sortable">
+        <thead>
+            <tr>
+                <th scope="col" class="sorttable_nosort"></th>
+                {% for h in headers %}
+                <th scope="col">{{ h }} <i class="fa fa-caret-up"></i><i class="fa fa-caret-down"></i></th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for pr in public_registrations %}
+            <tr>
+                <th scope="row"><img class="gravatar" src="{{ pr.gr_url }}" /></th>
+                {% for f in pr.fields %}
+                <td title="{{ f }}">{{ f|truncatechars:200 }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% endif %}
+</section>

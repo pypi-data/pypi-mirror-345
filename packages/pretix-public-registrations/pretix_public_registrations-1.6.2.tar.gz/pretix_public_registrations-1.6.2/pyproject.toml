@@ -1,0 +1,53 @@
+[project]
+name = "pretix-public-registrations"
+dynamic = ["version"]
+description = """
+This plugin will give the option to attendees of an event to mark their
+registration as public. Public registrations will be shown along their answers
+to questions marked as public by the organizers on a world-readable page.
+"""
+readme = "README.rst"
+license = {text = "MIT License"}
+keywords = ["pretix", "public registrations"]
+authors = [
+    { name = "Felix Schäfer", email = "admin@kif.rocks"},
+    { name = "Dominik Weitz"},
+]
+maintainers = [
+    { name = "Felix Schäfer", email = "admin@kif.rocks"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Plugins",
+    "Framework :: Django",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+
+[project.entry-points."pretix.plugin"]
+pretix_public_registrations = "pretix_public_registrations:PretixPluginMeta"
+
+[project.entry-points."distutils.commands"]
+build = "pretix_plugin_build.build:CustomBuild"
+
+[build-system]
+requires = [
+    "setuptools",
+    "pretix-plugin-build",
+]
+
+[project.urls]
+Homepage = "https://gitlab.fachschaften.org/kif/pretix-public-registrations"
+Repository = "https://gitlab.fachschaften.org/kif/pretix-public-registrations"
+Tracker = "https://gitlab.fachschaften.org/kif/pretix-public-registrations/-/issues"
+"pretix Marketplace" = "https://marketplace.pretix.eu/products/public-registrations/"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "pretix_public_registrations.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["pretix*"]
+namespaces = false
