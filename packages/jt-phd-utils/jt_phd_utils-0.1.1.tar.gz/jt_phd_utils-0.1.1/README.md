@@ -1,0 +1,1 @@
+Assorted helper functions for my PhD, not generaly useful enough for their own packages.
