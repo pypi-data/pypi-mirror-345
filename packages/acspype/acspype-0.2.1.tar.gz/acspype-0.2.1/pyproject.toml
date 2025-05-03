@@ -1,0 +1,63 @@
+[project]
+name = "acspype"
+version = "0.2.1"
+description = "A Python package for serial data acquisition and advanced processing for the Sea-Bird Scientific ACS."
+authors = [
+    {name = "Ian Black", email = "iantimothyblack@gmail.com"},
+]
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ['ACS', 'Sea-Bird Scientific', 'SBS','WETLabs','oceanography','absorption', 'attenuation']
+readme = "README.md"
+dependencies = [
+    "bottleneck",
+    "netCDF4",
+    "numpy",
+    "pandas",
+    "pyserial",
+    "requests",
+    "scipy",
+    "serial",
+    "xarray",
+]
+
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+
+
+[project.optional-dependencies]
+dev_tools = [
+    "fsspec",
+    "gsw",
+    "jupyter",
+    "ipykernel",
+    "ipympl",
+    "matplotlib",
+    "pytest",
+    "uv"]
+
+
+
+[project.urls]
+Repository = 'https://github.com/IanTBlack/acspype'
+Issues = 'https://github.com/IanTBlack/acspype/issues'
+Discussions = 'https://github.com/IanTBlack/acspype/discussions'
+"Additional Information" = 'https://github.com/IanTBlack/acspype/tree/main/info'
+
+
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+
+[tool.setuptools.packages.find]
+exclude = ["info*","dev_tools*","examples*"]
