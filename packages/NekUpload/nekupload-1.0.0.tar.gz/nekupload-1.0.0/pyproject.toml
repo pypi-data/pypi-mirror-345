@@ -1,0 +1,84 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "NekUpload"
+version = "1.0.0"
+authors = [
+    { name="Stephen Liu", email="stephen.liu21@imperial.ac.uk" },
+]
+description = "Upload and validation pipeline for Nektar++ datasets to an online repository"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.11"
+keywords = ["nektar++","nekpy","nekrdm","data-processing","data-validation","file-upload","ae-datastore","invenio-rdm","automation","GUI","CLI"]
+dependencies = [
+    "numpy",
+    "h5py",
+    "lxml",
+    "requests",
+    "sympy",
+    "python-dotenv",
+    "click",
+    "packaging",
+    "pyyaml",
+    "ruamel.yaml",
+    "ttkbootstrap",
+    "psutil"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Archiving :: Backup",
+    "Topic :: Utilities",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"NekUpload" = ["validate/schemas/*","frontend/assets/*","frontend/config/*"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-mock",
+    "memory_profiler",
+    "sphinx==8.2",
+    "sphinx-rtd-theme==3.0.2",
+    "iniconfig",
+]
+
+[project.urls]
+Nektar = "https://www.nektar.info"
+Documentation = "https://nekupload.readthedocs.io/en/latest/"
+Repository = "https://gitlab.nektar.info/shl21/NekUpload"
+
+[project.scripts]
+nekupload-cli = "NekUpload.cli:main"
+
+[project.gui-scripts]
+nekupload = "NekUpload.index:main"
+
+[tool.pytest.ini_options]
+log_cli = false
+log_cli_level = "DEBUG"
+testpaths = ["tests"]
+markers = [
+    "unit: Mark tests as unit tests",
+    "integration: Marks tests as integration tests",
+    "internet: Marks tests as requiring internet connection"
+]
+filterwarnings = [
+    "ignore::DeprecationWarning"
+]

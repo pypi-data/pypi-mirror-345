@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- PARAMETERS -->
+<xs:complexType name="ParameterType">
+    <xs:sequence>
+        <xs:element name="P" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<!-- SOLVER INFO-->
+<xs:complexType name="SolverInfoType">
+    <xs:sequence>
+        <xs:element name="I" maxOccurs="unbounded" minOccurs="1">
+            <xs:complexType>
+                <xs:attribute name="PROPERTY" type="xs:string" use="required"/>
+                <xs:attribute name="VALUE" type="xs:string" use="required"/>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<!-- VARIABLES -->
+<xs:complexType name="VariableType">
+    <xs:sequence>
+        <xs:element name="V" minOccurs="1" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                        <xs:attribute name="ID" type="xs:int" use="required"/>
+                    </xs:extension>
+                </xs:simpleContent>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<!-- BOUNDARYREGIONS -->
+<xs:complexType name="BoundaryRegionType">
+    <xs:sequence>
+        <xs:element name="B" minOccurs="1" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                        <xs:attribute name="ID" type="xs:int" use="required"/>
+                    </xs:extension>
+                </xs:simpleContent>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<!-- Global System Solution Algorithm-->
+<xs:complexType name="GlobalSysSolInfoType">
+    <xs:sequence>
+        <xs:element name="V" minOccurs="1" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:sequence>
+                    <xs:element name="I" maxOccurs="unbounded">
+                        <xs:complexType>
+                            <xs:attribute name="PROPERTY" type="xs:string" use="required"/>
+                            <xs:attribute name="VALUE" type="xs:string" use="required"/>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="VAR" type="xs:string" use="required"/>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<!-- BOUNDARYCONDITIONS-->
+<xs:complexType name="BoundaryConditionsRegionType">
+    <xs:attribute name="VAR" type="xs:string" use="required"/>
+    <xs:attribute name="VALUE" type="xs:string"/> <!-- either this is present -->
+    <xs:attribute name="USERDEFINEDTYPE" type="xs:string"/>
+    <xs:attribute name="FILE" type="xs:string"/> <!-- or this -->
+</xs:complexType>
+
+<xs:complexType name="BoundaryConditionsType">
+    <xs:sequence>
+        <xs:element name="REGION" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:choice maxOccurs="unbounded">
+                    <xs:element name="D" type="BoundaryConditionsRegionType" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="N" type="BoundaryConditionsRegionType" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="P" type="BoundaryConditionsRegionType" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="R" minOccurs="0" maxOccurs="unbounded">
+                        <xs:complexType>
+                            <xs:attribute name="PRIMCOEFF" type="xs:string"/>
+                            <xs:attribute name="VAR" type="xs:string"/>
+                            <xs:attribute name="VALUE" type="xs:string"/>
+                            <xs:attribute name="FILE" type="xs:string"/>
+                            <xs:attribute name="USERDEFINEDTYPE" type="xs:string"/>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:choice>
+                <xs:attribute name="REF" type="xs:int" use="required"/>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<!-- Functions NOTE: seems to be a lot more function definitions than expected-->
+<!-- Should separate out into different choices, like with expansions E-->
+<xs:complexType name="FunctionType">
+    <xs:sequence>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="E">
+                <xs:complexType>
+                    <xs:attribute name="VAR" type="xs:string" use="required"/>
+                    <xs:attribute name="VALUE" type="xs:string" use="required"/>
+                    <xs:attribute name="EVARS" type="xs:string"/>
+                    <xs:attribute name="TIMEDEPENDENT" type="xs:int"/>
+                </xs:complexType>                
+            </xs:element>
+            <xs:element name="F">
+                <xs:complexType>
+                    <xs:attribute name="VAR" type="xs:string" use="required"/>
+                    <xs:attribute name="TIMEDEPENDENT" type="xs:int"/>
+                    <xs:attribute name="FILE" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="NAME" type="xs:string"/>
+</xs:complexType>
+
+<!-- Zones for Movements -->
+<xs:complexType name="ZonesType">
+    <xs:choice maxOccurs="unbounded">
+        <xs:element name="FIXED">
+            <xs:complexType> 
+                <xs:attribute name="ID" type="xs:int" use="required"/>
+                <xs:attribute name="DOMAIN" type="xs:string" use="required"/>
+            </xs:complexType> 
+        </xs:element>
+        <xs:element name="ROTATE">
+            <xs:complexType> 
+                <xs:attribute name="ID" type="xs:int" use="required"/>
+                <xs:attribute name="DOMAIN" type="xs:string" use="required"/>
+                <xs:attribute name="ORIGIN" type="xs:string" use="required"/>
+                <xs:attribute name="AXIS" type="xs:string" use="required"/>
+                <xs:attribute name="ANGVEL" type="xs:string" use="required"/>
+            </xs:complexType> 
+        </xs:element>
+        <xs:element name="TRANSLATE">
+            <xs:complexType> 
+                <xs:attribute name="ID" type="xs:int" use="required"/>
+                <xs:attribute name="DOMAIN" type="xs:string" use="required"/>
+                <xs:attribute name="VELOCITY" type="xs:string" use="required"/>
+                <xs:attribute name="DISPLACEMENT" type="xs:string" use="required"/>
+            </xs:complexType> 
+        </xs:element>
+    </xs:choice>
+</xs:complexType>
+
+<!-- Interfaces for Movement -->
+<xs:complexType name="InterfacesType">
+    <xs:sequence>
+        <xs:element name="INTERFACE" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:all>
+                    <xs:element name="LEFT">
+                        <xs:complexType>
+                            <xs:attribute name="ID" type="xs:int" use="required"/>
+                            <xs:attribute name="BOUNDARY" type="xs:string" use="required"/>
+                            <xs:attribute name="SKIPCHECK" type="xs:boolean"/>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="RIGHT">
+                        <xs:complexType>
+                            <xs:attribute name="ID" type="xs:int" use="required"/>
+                            <xs:attribute name="BOUNDARY" type="xs:string" use="required"/>
+                            <xs:attribute name="SKIPCHECK" type="xs:boolean"/>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:all>
+                <xs:attribute name="NAME" type="xs:string"/>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<!-- Time Integration Scheme -->
+<xs:complexType name="TimeIntegrationSchemeType">
+    <xs:all>
+        <xs:element name="METHOD" type="xs:string" minOccurs="1"/>
+        <xs:element name="VARIANT" type="xs:string" minOccurs="0"/>
+        <xs:element name="ORDER" type="xs:int" minOccurs="1"/>
+        <xs:element name="FREEPARAMETERS" type="xs:string" minOccurs="0"/>
+    </xs:all>
+</xs:complexType>
+
+<!-- Absorption Force Definition -->
+<xs:group name="AbsorptionForceGroup">
+    <xs:sequence>
+        <xs:choice maxOccurs="4">
+            <xs:element name="COEFF" type="xs:string" minOccurs="0"/>
+            <xs:element name="REFFLOW" type="xs:string" minOccurs="0"/>
+            <xs:element name="REFFLOWTIME" type="xs:string" minOccurs="0"/>
+            <xs:element name="BOUNDARYREGIONS" type="xs:string" minOccurs="0"/>
+        </xs:choice>
+    </xs:sequence>
+</xs:group>
+
+<!-- Body Force Definition -->
+<xs:group name="BodyForceGroup">
+    <xs:sequence>
+        <xs:element name="BODYFORCE" type="xs:string"/>
+    </xs:sequence>
+</xs:group>
+
+<!-- Synthetic Turbulence Definition -->
+<xs:group name="SyntheticTurbulenceGroup">
+    <xs:sequence>
+        <xs:choice maxOccurs="5">
+            <xs:element name="BoxOfEddies" type="xs:string"/>
+            <xs:element name="Sigma" type="xs:string"/>
+            <xs:element name="BulkVelocity" type="xs:string"/>
+            <xs:element name="ReynoldsStresses" type="xs:string"/>
+            <xs:element name="CharLengthScales" type="xs:string"/>
+        </xs:choice>
+    </xs:sequence>
+</xs:group>
+
+<!-- Moving Reference Frame Definition -->
+<xs:group name="MovingReferenceFrameGroup">
+    <xs:sequence>
+        <xs:choice maxOccurs="11">
+            <xs:element name="FRAMEVELOCITY" type="xs:string"/>
+            <xs:element name="PIVOTPOINT" type="xs:string"/>
+            <xs:element name="EXTERNALFORCE" type="xs:string"/>
+            <xs:element name="MOTIONPRESCRIBED" type="xs:string"/>
+            <xs:element name="MASS" type="xs:string"/>
+            <xs:element name="DAMPING" type="xs:string"/>
+            <xs:element name="RIGIDITY" type="xs:string"/>
+            <xs:element name="INITIALDISPLACEMENT" type="xs:string"/>
+            <xs:element name="TRAVELINGWAVESPEED" type="xs:string"/>
+            <xs:element name="OutputFile" type="xs:string"/>
+            <xs:element name="OutputFrequency" type="xs:string"/>
+        </xs:choice>
+    </xs:sequence>
+</xs:group>
+
+<!-- Programmatic Force Definition -->
+<xs:group name="ProgrammaticGroup">
+    <xs:sequence>
+        <xs:element name="PROGRAMMATIC" type="xs:string"/>
+    </xs:sequence>
+</xs:group>
+
+<!-- Noise Force Definition -->
+<xs:group name="NoiseGroup">
+    <xs:sequence>
+        <xs:choice maxOccurs="3">
+            <xs:element name="WHITENOISE" type="xs:string" minOccurs="1"/>
+            <xs:element name="UPDATEFREQ" type="xs:string" minOccurs="1"/>
+            <xs:element name="NSTEPS" type="xs:string" minOccurs="1"/>
+        </xs:choice>
+    </xs:sequence>
+</xs:group>
+
+<!-- Field Force Definition -->
+<xs:group name="FieldForceGroup">
+    <xs:sequence>
+        <xs:choice maxOccurs="1">
+            <xs:element name="FIELDFORCE" type="xs:string" minOccurs="1"/>
+        </xs:choice>
+    </xs:sequence>
+</xs:group>
+
+<!-- This is the root element -->
+<xs:element name="NEKTAR">
+    <xs:complexType>
+        <xs:all>
+
+            <!-- Metadata could appear if NekMesh used -->
+            <xs:element name="Metadata" minOccurs="0">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="Provenance">
+                            <xs:complexType>
+                                <xs:all>
+                                    <xs:element name="GitBranch" type="xs:string"/>
+                                    <xs:element name="GitSHA1" type="xs:string"/>
+                                    <xs:element name="Hostname" type="xs:string"/>
+                                    <xs:element name="NektarVersion" type="xs:string"/>
+                                    <xs:element name="Timestamp" type="xs:string"/>
+                                </xs:all>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="NekMeshCommandLine" type="xs:string"/>
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+
+            <!-- Only allow geometry as HDF5 File. Note that this is for enforcement of Nektar++ best practices -->
+            <xs:element name="GEOMETRY" minOccurs="1">
+                <xs:complexType>
+                    <xs:annotation>
+                        <xs:documentation>Define where the HDF5 geometry file is located</xs:documentation>
+                    </xs:annotation>
+                    <xs:attribute name="DIM" type="xs:string" use="required"/>
+                    <xs:attribute name="SPACE" type="xs:string" use="required"/>
+                    <xs:attribute name="HDF5FILE" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        
+            <!-- Expansions can be defined here -->
+            <xs:element name="EXPANSIONS" minOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <!--Allow both user and standard type expansions to be specified-->
+                        <xs:element name="E" maxOccurs="unbounded">
+                            <xs:complexType>
+                                    <xs:attribute name="COMPOSITE" type="xs:string" use="required"/>
+                                    <xs:attribute name="NUMMODES" type="xs:string" use="required"/>
+                                    <xs:attribute name="TYPE" type="xs:string"/>
+                                    <xs:attribute name="FIELDS" type="xs:string"/>
+
+                                    <!-- For more complex user-defined definitions -->
+                                    <xs:attribute name="BASISTYPE" type="xs:string"/>
+                                    <xs:attribute name="NUMPOINTS" type="xs:string"/>
+                                    <xs:attribute name="POINTSTYPE" type="xs:string"/>
+                                    <xs:attribute name="REFIDS" type="xs:string"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        
+            <!-- Conditions can be defined here-->
+            <xs:element name="CONDITIONS" minOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:choice maxOccurs="unbounded">
+                            <xs:element name="PARAMETERS" type="ParameterType"/>
+                            <xs:element name="SOLVERINFO" type="SolverInfoType"/>
+                            <xs:element name="VARIABLES" type="VariableType"/>
+                            <xs:element name="BOUNDARYREGIONS" type="BoundaryRegionType"/>
+                            <xs:element name="BOUNDARYCONDITIONS" type="BoundaryConditionsType"/>
+                            <xs:element name="FUNCTION" type="FunctionType"/>
+                            <xs:element name="TIMEINTEGRATIONSCHEME" type="TimeIntegrationSchemeType"/>
+                            <xs:element name="GLOBALSYSSOLNINFO" type="GlobalSysSolInfoType"/>
+                        </xs:choice>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <!-- Filters here -->
+            <xs:element name="FILTERS" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FILTER" minOccurs="1" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="PARAM" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                            <xs:simpleContent>
+                                                <xs:extension base="xs:string">
+                                                    <xs:attribute name="NAME" type="xs:string" use="required"/>
+                                                </xs:extension>
+                                            </xs:simpleContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="TYPE" type="xs:string" use="required"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <!-- Coupling here -->
+            <xs:element name="COUPLING" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="I" minOccurs="1" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:attribute name="PROPERTY" type="xs:string" use="required"/>
+                                <xs:attribute name="VALUE" type="xs:string" use="required"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="TYPE" type="xs:string" use="required"/>
+                    <xs:attribute name="NAME" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+
+            <!-- REFINEMENTS here -->
+            <xs:element name="REFINEMENTS" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="R" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:attribute name="REF" type="xs:int" use="required"/>
+                                <xs:attribute name="TYPE" type="xs:string" use="required"/>
+                                <xs:attribute name="RADIUS" type="xs:double" use="required"/>
+                                <xs:attribute name="COORDINATE1" type="xs:string" use="required"/>
+                                <xs:attribute name="COORDINATE2" type="xs:string" use="required"/>
+                                <xs:attribute name="NUMMODES" type="xs:string" use="required"/>
+                                <xs:attribute name="NUMPOINTS" type="xs:string" use="required"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <!-- MOVEMENTS here -->
+            <xs:element name="MOVEMENT" minOccurs="0">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="ZONES" type="ZonesType"/>
+                        <xs:element name="INTERFACES" type="InterfacesType"/>
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+
+            <!-- Forcing -->
+            <xs:element name="FORCING" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FORCE" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:choice>
+                                    <xs:group ref="AbsorptionForceGroup"/>
+                                    <xs:group ref="BodyForceGroup"/>
+                                    <xs:group ref="SyntheticTurbulenceGroup"/>
+                                    <xs:group ref="MovingReferenceFrameGroup"/>
+                                    <xs:group ref="ProgrammaticGroup"/>
+                                    <xs:group ref="NoiseGroup"/>
+                                    <xs:group ref="FieldForceGroup"/>
+                                </xs:choice>
+                                <xs:attribute name="TYPE" type="xs:string" use="required"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+        </xs:all>
+    </xs:complexType>
+</xs:element>
+
+</xs:schema>
