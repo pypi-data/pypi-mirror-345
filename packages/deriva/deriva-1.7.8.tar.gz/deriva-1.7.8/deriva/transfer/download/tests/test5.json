@@ -1,0 +1,28 @@
+{
+  "bag": {
+    "bag_name": "synapse-test-bag",
+    "bag_archiver": "zip",
+    "bag_metadata": {
+      "Source-Organization": "USC Information Sciences Institute, Informatics Systems Research Division"
+    }
+  },
+  "catalog":
+  {
+    "query_processors":
+    [
+      {
+        "processor": "fetch",
+        "processor_params": {
+          "query_path": "/attribute/Zebrafish:Image Region/Segmentation Mode=synaptic&!Npz URL=null/url:=Npz URL,*@sort(RID::desc::)"
+        }
+      },
+      {
+        "processor": "download",
+        "processor_params": {
+          "query_path": "/attribute/Zebrafish:Image Region/Status=\"processed\"/url:=Segments Filtered URL,*@sort(RID::desc::)",
+          "output_path": "Source Image - {Source Image}"
+        }
+      }
+    ]
+  }
+}
