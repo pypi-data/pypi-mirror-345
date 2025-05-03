@@ -1,0 +1,90 @@
+Metadata-Version: 2.4
+Name: sshsync
+Version: 0.2.0
+Summary: sshsync is a CLI tool to run shell commands across multiple servers via SSH, either on specific groups or all servers. Upcoming features include file push/pull support.
+Project-URL: Homepage, https://github.com/Blackmamoth/sshsync
+Project-URL: Issues, https://github.com/Blackmamoth/sshsync/issues
+Author-email: Blackmamoth <blackmamoth83@gmail.com>
+License: MIT
+License-File: LICENSE
+Requires-Python: >=3.12
+Requires-Dist: asyncssh>=2.20.0
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: rich>=14.0.0
+Requires-Dist: typer>=0.15.3
+Description-Content-Type: text/markdown
+
+# sshsync ⚡🔐
+
+**sshsync** is a fast, minimal CLI tool to run shell commands across multiple remote servers via SSH. Easily target all servers or just a specific group — great for sysadmins, developers, and automation workflows.
+
+> 🔜 *File push/pull support is coming soon!*
+
+---
+
+## Features ✨
+
+- 🔁 Run shell commands on **all hosts** or **specific groups**
+- 🚀 Executes commands **concurrently** across servers
+- 🧠 Group-based configuration for easy targeting
+- 🕒 Adjustable SSH timeout settings
+- 📁 Coming soon: **push/pull files from remote hosts**
+
+---
+
+## Installation 📦
+
+Install with `pip` (Python 3.12+):
+
+```bash
+pip install sshsync
+```
+
+Or clone and install manually:
+
+```bash
+git clone https://github.com/Blackmamoth/sshsync.git
+cd sshsync
+pipx install .
+```
+
+## Usage 🚀
+
+Basic usage:
+
+```bash
+sshsync [COMMAND] [OPTIONS]
+```
+
+### Run a Command on All Hosts
+
+```bash
+sshsync all "uptime"
+```
+
+### Run a Command on a Specific Group
+
+```bash
+sshsync group web-servers "sudo systemctl restart nginx"
+```
+
+### Add a Host or Group
+
+```bash
+sshsync add host 
+sshsync add group
+```
+
+### List Hosts and Groups
+
+```bash
+sshsync list
+```
+
+### Show Version
+
+```bash
+sshsync version
+```
+
+
