@@ -1,0 +1,42 @@
+# LLMPool Project
+
+LLMPool is a Python project designed to efficiently manage API keys and rate limiting for LLM (Large Language Model) calls. It dynamically selects an available API key/model combination based on configurable per-minute and per-day usage limits. The project leverages the [`pyrate_limiter.Limiter`](https://github.com/r1dl/pyrate-limiter) library for rate limiting and integrates with LLM clients like [`ChatGroq`](src/main.py) from [`src/main.py`](src/main.py).
+
+## Project Structure
+
+- **requirements.txt**  
+  Lists Python dependencies.
+
+- **src/**  
+  Contains the source code:
+  - **main.py**: Application entry point that sets up API keys, model limits, and demonstrates an LLM call using the pool.
+  - **pool/**: Core components for API key and rate-limit management:
+    - [`pool/pool.py`](src/pool/pool.py): Implements the [`LLMPool`](src/pool/pool.py) class which manages API keys, tracks usage, and enforces rate limiting.
+    - [`pool/ratelimiter.py`](src/pool/ratelimiter.py): Contains the [`NoRateLimiter`](src/pool/ratelimiter.py) class, a dummy limiter used when no rate limit is desired.
+    - [`pool/exceptions.py`](src/pool/exceptions.py): Defines custom exceptions such as `RateLimitException`.
+
+## Installation
+
+1. Ensure you are running Python 3.9 or later.
+2. Install project dependencies using:
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+## Configuration
+
+- **API Keys**:  
+  Define your API keys in the `api_keys` list within [`src/main.py`](src/main.py).
+
+- **Model Limits**:  
+  Configure rate limits per model in the `model_limits` dictionary in [`src/main.py`](src/main.py). Each model limit includes:
+  - `requests_min`: Maximum requests allowed per minute.
+  - `tokens_min`: Maximum tokens allowed per minute.
+  - `requests_day`: Maximum requests allowed per day.
+  - `tokens_day`: Maximum tokens allowed per day (set to `None` for unlimited usage).
+
+## Usage
+
+Run the project using:
+```sh
+python [main.py](http://_vscodecontentref_/0)
