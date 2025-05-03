@@ -1,0 +1,26 @@
+{% load i18n %}
+
+<table>
+  <tr>
+    <td>{% trans "IP address" %}</td>
+    <td>{{ address }}</td>
+  </tr>
+  <tr>
+    <td>{% trans "User agent" %}</td>
+    <td>{{ user_agent }}</td>
+  </tr>
+  <tr>
+    <td>{{ site_title }}</td>
+    <td>
+      <a href="{{ current_site_url }}">{{ current_site_url }}</a>
+    </td>
+  </tr>
+</table>
+
+<p>
+  {% blocktrans %}If you didn’t initiate this, please report it to the server administrators by clicking the button below.{% endblocktrans %}
+</p>
+
+<div class="line buttons">
+  <a class="button" href="{% url 'contact' %}?t=account">{% trans "Report" %}</a>
+</div>
