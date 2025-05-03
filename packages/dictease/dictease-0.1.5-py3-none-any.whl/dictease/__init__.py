@@ -1,0 +1,1 @@
+from .dictease import fetch
