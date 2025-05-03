@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="NEKTAR">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Metadata appears once (optional) -->
+        <!-- Note that this order is imposed -->
+        <xs:element name="Metadata" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+            <!--Currently forces provenance first, followed by other items, may need restructuring in future-->
+              <xs:element name="Provenance">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="GitBranch" type="xs:string" minOccurs="0"/>
+                    <xs:element name="GitSHA1" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Hostname" type="xs:string" minOccurs="0"/>
+                    <xs:element name="NektarVersion" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Timestamp" type="xs:string" minOccurs="0"/>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+              <!--Allow anything, too many different metadata items can be here-->
+              <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- ELEMENTS appears any number of times (optional) -->
+        <xs:element name="ELEMENTS" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="FIELDS" type="xs:string" use="required"/>
+                <xs:attribute name="SHAPE" type="xs:string" use="required"/>
+                <xs:attribute name="BASIS" type="xs:string" use="required"/>
+                <xs:attribute name="NUMMODESPERDIR" type="xs:string" use="required"/>
+                <xs:attribute name="ID" type="xs:string" use="required"/>
+                <xs:attribute name="COMPRESSED" type="xs:string" use="optional"/>
+                <xs:attribute name="BITSIZE" type="xs:int" use="optional"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
