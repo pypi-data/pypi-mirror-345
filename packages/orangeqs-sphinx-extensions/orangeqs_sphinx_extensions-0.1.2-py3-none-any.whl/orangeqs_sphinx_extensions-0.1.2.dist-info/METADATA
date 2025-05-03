@@ -1,0 +1,97 @@
+Metadata-Version: 2.4
+Name: orangeqs-sphinx-extensions
+Version: 0.1.2
+Summary: Sphinx theme and custom extensions used internally by Orange Quantum Systems
+Author-email: Orange Quantum Systems <support@orangeqs.com>
+License: Copyright 2024 Orange Quantum Systems Operational B.V.
+        
+        Redistribution and use in source and binary forms, with or without modification,
+        are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice,
+           this list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation and/or
+           other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its contributors may be
+           used to endorse or promote products derived from this software without specific
+           prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY
+        EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+        OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+        SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+        INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+        PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+        INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+        STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+        THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+Project-URL: repository, https://code.orangeqs.com/opensource/oqs-sphinx-theme
+Classifier: Framework :: Sphinx :: Theme
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Documentation
+Classifier: Topic :: Documentation :: Sphinx
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: pydata-sphinx-theme
+Provides-Extra: autodoc2
+Requires-Dist: sphinx-autodoc2; extra == "autodoc2"
+Requires-Dist: numpydoc; extra == "autodoc2"
+Dynamic: license-file
+
+# OrangeQS Sphinx Extensions
+
+Common Sphinx theme and extensions used internally by [Orange Quantum Systems](https://orangeqs.com) for building product documentation.
+
+The Sphinx theme is an extension to [Pydata Sphinx Theme](https://pydata-sphinx-theme.readthedocs.io/) with adaptations to company branding.
+
+## Usage
+
+### Theme
+
+- Add `orangeqs-sphinx-extensions` to your requirements.
+- Copy the content of [`conf_default.py`](https://code.orangeqs.com/opensource/oqs-sphinx-theme/-/blob/main/conf_default.py)
+  to your Sphinx's `conf.py` file, modifying where needed.
+  In particular, replace `PATH_TO_YOUR_REPO` by the URL of your Gitlab repository. It should have the format `internal/wiki`.
+
+### Generated API documentation
+
+This package contains a Numpydoc parser for [`sphinx-autodoc2`](https://sphinx-autodoc2.readthedocs.io/en/latest/)
+taken from [this issue comment](https://github.com/sphinx-extensions2/sphinx-autodoc2/issues/33#issuecomment-1817348449).
+To use it, install this package with extra enabled:
+
+```
+pip install orangeqs-sphinx-extensions[autodoc2]
+```
+
+After that, configure `autodoc2` in Sphinx `conf.py`, for example:
+
+```python
+extensions = [
+    ...,
+    "autodoc2",
+]
+autodoc2_packages = ["../../PACKAGENAME"]
+autodoc2_output_dir = "./api_reference"
+autodoc2_render_plugin = "myst"
+autodoc2_docstring_parser_regexes = [
+    (
+        ".*",
+        "orangeqs.sphinx.autodoc2.numpydoc",
+    ),
+]
+```
+
+and add `api_reference/index` to toctree.
+
+For more details on configuration, see [documentation](https://sphinx-autodoc2.readthedocs.io/en/latest/) of `sphinx-autodoc2`
+
+## License and copyright
+
+This package is licensed under [BSD 3-clause license](https://code.orangeqs.com/opensource/oqs-sphinx-theme/-/blob/main/LICENSE.txt),
+unless other license and copyright is explicitly specified in the header comment or module docstring
+of the respective source code file.
