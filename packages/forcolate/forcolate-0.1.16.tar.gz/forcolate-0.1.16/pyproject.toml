@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forcolate"
+version = "0.1.16"
+description = "A library for semantic search in local environment"
+readme = "README.md"
+requires-python = ">=3.6"
+authors = [
+    { name="FOR Team", email="jonathan.sprauel@irt-saintexupery.com" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pywin32; platform_system=='Windows'",
+    "sentence-transformers",
+    "docling",
+    "py7zr"
+]
+
+[tool.setuptools.package-data]
+forcolate = ["vendors/ms-marco-MiniLM-L6-v2/*"]
+
+[project.urls]
+"Homepage" = "https://github.com/FOR-sight-ai/FORcolate"
+"Bug Tracker" = "https://github.com/FOR-sight-ai/FORcolate/issues"
