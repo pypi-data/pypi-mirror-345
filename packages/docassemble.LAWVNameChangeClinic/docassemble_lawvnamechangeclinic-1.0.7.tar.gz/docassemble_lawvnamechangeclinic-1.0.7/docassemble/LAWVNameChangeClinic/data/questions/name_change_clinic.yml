@@ -1,0 +1,492 @@
+metadata:
+  title: |
+    LAWV Name Change Clinic
+  short title: |
+    LAWV Name Change Clinic
+  description: |
+    This interview produces a Petitioner's Name Change Packet in a clinic setting.
+  authors:
+    - name: Dane W. Henry, Esq.
+      organization: Legal Aid of West Virginia, Inc.
+  revision_date: 2025-05-02
+  unlisted: True
+---
+features:
+  javascript: docassemble.LAWVCommon:data/static/force_lightmode.js
+  css: docassemble.LAWVCommon:data/static/lawv.css
+  cache documents: False
+  suppress autofill: True
+---
+include:
+  - docassemble.LAWVCommon:common_info.yml
+---
+imports:
+  - itertools
+  - geopy.distance
+---
+modules:
+  - docassemble.LAWVCommon.progressivedisclosure
+---
+objects:
+  - endpoint: DADict
+  - p: Individual
+  - birth: Individual
+  - new_name: Individual
+  - court_preference: DADict
+---
+features:
+  question back button: True
+---
+question: |
+  Are you seeking a name change for yourself or
+  your child?
+field: target
+buttons:
+  - Myself: myself
+  - My Child: child
+---
+prevent going back: True
+ga id: nameChangeResidency
+question: |
+  Have you lived in your county for at least one year?
+subquestion: |
+  In order to be eligible for a name change, you must file
+  in the county and state where you have lived for at least one year.
+yesno: residency
+---
+ga id: nameChangeEligibility
+question: |
+  Name changes cannot be granted if sought for an improper reason.
+subquestion: |
+  You must agree that:
+
+  * You are not trying to **avoid debt or creditors**;
+  * You are not a **registered sex offender** under any state or federal law;
+  * You are not trying to avoid any state or federal law regarding **identity**;
+  * You are not filing for any improper or **illegal purpose**;
+  * You are not a **convicted felon** in any jurisdiction; and
+  * You are not attempting to **evade detection, identification, or arrest** by
+  any law enforcement agency;
+field: proper
+buttons:
+  - I Agree: agree
+  - Exit: exit
+---
+ga id: nameChangeInformation
+question: |
+  Please enter some information about you:
+fields:
+  - note: |
+      **Current Personal Information**
+  - First Name: p.name.first
+  - Middle Name: p.name.middle
+  - Last Name: p.name.last
+  - Suffix: p.name.suffix
+    required: False
+    code: name_suffix()
+  - Birthdate: p.birthdate
+    datatype: date
+    max: ${ today().minus(years=18) }
+    min: ${ today().minus(years=100) }
+  - Email Address: p.email
+    datatype: email
+  - Phone: p.phone_number
+  - Address: p.address.address
+    address autocomplete: True
+  - Unit/Apt.: p.address.unit
+    required: False
+  - City: p.address.city
+  - State: p.address.state
+    code: states_list()
+    default: WV
+  - Zip: p.address.zip
+  - field: p.address.county
+    input type: hidden
+  - note: |
+      **Past Information**
+  - State where you were born: p.birth_state
+    code: states_list()
+    default: WV
+validation code: |
+  if not phone_number_is_valid(p.phone_number):
+    validation_error('Please enter a valid phone number.', field='p.phone_number')
+  else:
+    p.phone_number = phone_number_formatted(p.phone_number)
+---
+ga id: nameChangeCourtSelect
+question: |
+  Will this be Family or Circuit Court?
+subquestion: |
+  Some counties do not allow Name Changes to be filed in either Family or Circuit court.
+
+  If you are unsure, default to Family Court.
+field: court
+choices:
+  - Family: FAMILY
+    default: True
+  - Circuit: CIRCUIT
+---
+ga id: nameChangeBirthName
+question: |
+  ${ p.name.full(middle="full") }
+subquestion: |
+  Was this the name on your birth certificate?
+fields:
+  - no label: name_at_birth
+    datatype: yesnoradio
+  - note: |
+      **Please provide the name on your birth certificate**
+    show if:
+      variable: name_at_birth
+      is: False
+  - First Name at Birth: birth.name.first
+    show if:
+      variable: name_at_birth
+      is: False
+  - Middle Name at Birth: birth.name.middle
+    show if:
+      variable: name_at_birth
+      is: False
+  - Last Name at Birth: birth.name.last
+    show if:
+      variable: name_at_birth
+      is: False
+  - Suffix at Birth: birth.name.suffix
+    required: False
+    code: name_suffix()
+    show if:
+      variable: name_at_birth
+      is: False
+---
+ga id: nameChangeNewName
+question: |
+  What is your desired new name?
+fields:
+  - First: new_name.name.first
+  - Middle: new_name.name.middle
+  - Last: new_name.name.last
+  - Suffix at Birth: new_name.name.suffix
+    required: False
+    code: name_suffix()
+---
+question: |
+  Please provide a detailed reasoning for seeking a name change.
+subquestion: |
+  Examples Include:
+
+  - I never changed my name when I got married and I want my name to match my spouse.
+  - My partner and I are adopting a child and we are creating a new last name to represent our new family.
+  - My step-parent never adopted me but I want to show them how much they impacted me by taking their last name.
+  - I would like my name to match the gender I identify with.
+fields: 
+  - no label: change_reason
+    datatype: area
+  - note: |
+      *Whatever is entered in the box above is exactly what will appear on the Petition, so please explain as best you can.*
+---
+question: |
+  Identity Protection
+subquestion: |
+  You can ask the court to only publish your current name, not your new name.
+
+  Do you need to protect your new identity?
+fields: 
+  - no label: protection
+    datatype: yesnoradio
+  - "Please provide support for why your identity needs to be protected": protect_reason
+    datatype: area
+    show if: protection
+    hint: |
+      Example: domestic violence, harassment, stalking, etc.
+  - note: |
+      *The Petition will ask the judge to withhold your new name from publication.  If you have concerns with publishing your current name, please contact an attorney.*
+
+      *[WV Lawyer Referral Service](https://wvlawyerreferral.org/)*  
+      *[Legal Aid of West Virginia](https://legalaidwv.org)*
+    show if: protection
+---
+question: |
+  Do you require any accommodations in the courtroom?
+subquestion: |
+  Wheelchair, visual/hearing/speech impairment, interpreter, etc.
+fields:
+  - no label: accommodations
+    datatype: yesnoradio
+  - Describe your accommodation: accom_detail
+    datatype: checkboxes
+    choices:
+      - Wheelchair accessible hearing room and other facilites: wheelchair
+      - Reader or other auxiliary aid for the visually impaired: visual
+      - Interpreter or other auxiliary aid for the deaf and hard of hearing: hearing
+      - Spokesperson or other auxiliary aid for the speech impaired: speech
+      - Foreign language interpreter: language
+      - Other: other
+    none of the above: False
+    minlength: 1
+    show if: accommodations
+  - Specify Language: accom_language
+    show if: accom_detail['language']
+  - Specify: accom_other
+    show if: accom_detail['other']
+---
+question: |
+  It appears you are ineligible for a name change
+subquestion: |  
+  Reason: ${ failure_reason }
+  
+  Even so, please do not hestiate to contact [Legal Aid of West Virginia](http://www.lawv.net) 
+  or an attorney to review the details of your case.
+field: endpoint['ineligible']
+buttons: 
+  - Exit: exit
+  - Restart: restart
+under: |
+  [Feedback](mailto:training@lawv.net?subject=Name Change Form Feedback)
+---
+ga id: nameChangeEndpoint
+question: Final Information
+subquestion: |
+  You can download the PDFs for your **Name Change Packet** below.  
+
+  ${ prog_open(name_change_step_one) }
+attachment code: name_change_documents
+manual attachment list: True
+allow emailing: False
+allow downloading: True
+always include editable files: True
+zip filename: Name_Change_Packet.zip
+field: generate_adult_name_change
+---
+ga id: successExit
+event: success_exit
+question: |
+  Thank you for using the tool!
+subquestion: |
+  We hope this tool was useful.  Once you click exit below, your information will be purged
+  from our system.  Please be sure you have downloaded the document.
+buttons:
+  - Exit Completely: exit
+back button: True
+back button label: |
+  Wait, go back
+---
+attachment:
+  - name: Name Change Instructions
+    filename: Name Change Instructions
+    pdf template file: name_change_instructions.pdf
+    editable: False
+    variable name: name_change_instructions
+    fields:
+      - court_address: ${ p.address.county + " County Circuit Clerk\n" + cir_address[p.address.county] }
+      - library_address: ${ closest_library + "\n" + libraries[closest_library]["address"] }
+---
+attachment:
+  - name: ${ p.name.full(middle="full") } Civil Case Information Statement
+    filename: ${ p.name.full(middle="full") } Civil Case Information Statement
+    pdf template file: docassemble.LAWVCommon:data/templates/civil_case_info.pdf
+    editable: False
+    variable name: civil_information_statement
+    fields:
+      - upper_county: ${ upper_county }
+      - full_name: ${ p.name.full(middle="full") }
+      - address: ${ p.address.line_one() }
+      - second_address_line: ${ p.address.line_two() }
+      - p_phone: ${ p.phone_number }
+      - case_type: "other"      
+      - other_detail: "Adult Name Change"
+      - jury: "jury_no"
+      - accommodation: |
+          ${'yes' if accommodations else 'no'}
+      - accom#wheelchair: |
+          ${accom_detail['wheelchair'] if accommodations else 'No'}
+      - accom#visual: |
+          ${accom_detail['visual'] if accommodations else 'No'}
+      - accom#hearing: |
+          ${accom_detail['hearing'] if accommodations else 'No'}
+      - accom#speech: |
+          ${accom_detail['speech'] if accommodations else 'No'}
+      - accom#language: |
+          ${accom_detail['language'] if accommodations else 'No'}
+      - accom#other: |
+          ${accom_detail['other'] if accommodations else 'No'}
+      - accom_language: |
+          ${accom_language if accommodations and accom_detail['language'] else ''}
+      - accom_other: |
+          ${accom_other if accommodations and accom_detail['other'] else ''}
+      - without_attorney: Yes
+---
+attachment:
+  - name: ${ p.name.full(middle="full") } Civil Case Information Statement
+    filename: ${ p.name.full(middle="full") } Civil Case Information Statement
+    pdf template file: docassemble.LAWVCommon:data/templates/dom_civil_case_info.pdf
+    editable: False
+    variable name: domestic_civil_information_statement
+    fields:
+      - "upper_county": ${ upper_county }
+      - "full_name": ${ p.name.full(middle="full") }
+      - "confidential": No
+      - "address": ${ p.address.line_one() }
+      - "second_address_line": ${ p.address.line_two() }
+      - "p_phone": ${ p.phone_number }
+      - "p_dob": ${ p.birthdate }
+      - "accommodations": |
+          ${'yes' if accommodations else 'no'}
+      - "wheelchair": |
+          ${accom_detail['wheelchair'] if accommodations else 'No'}
+      - "interpreter": |
+          ${accom_detail['hearing'] if accommodations else 'No'}
+      - "reader": |
+          ${accom_detail['visual'] if accommodations else 'No'}
+      - "spokesperson": |
+          ${accom_detail['speech'] if accommodations else 'No'}
+      - "other_detail": |
+          ${accom_other if accommodations and accom_detail['other'] else ''}
+      - "other": |
+          ${accom_detail['other'] if accommodations else 'No'}
+      - "other_relief": Yes
+      - "other_relief_detail": "Adult Name Change"
+      - "attorney": "no"
+---
+attachment:
+  - name: ${ p.name.full(middle="full") } Name Change Petition
+    filename: ${ p.name.full(middle="full") } Name Change Petition
+    docx template file: name_change_petition_adult.docx
+    editable: False
+    variable name: name_change_petition
+    valid formats:
+      - docx
+      - pdf
+---
+attachment:
+  - name: ${ p.name.full(middle="full") } Name Change Order of Publication
+    filename: ${ p.name.full(middle="full") } Name Change Order of Publication
+    docx template file: name_change_order_of_publication.docx
+    editable: False
+    variable name: name_change_order_of_publication
+    valid formats:
+      - docx
+      - pdf
+---
+attachment:
+  - name: ${ p.name.full(middle="full") } Name Change Order Filing Petition
+    filename: ${ p.name.full(middle="full") } Name Change Order Filing Petition
+    docx template file: name_change_order_filing_petition.docx
+    editable: False
+    variable name: name_change_order_filing_petition
+    valid formats:
+      - docx
+      - pdf
+---
+attachment:
+  - name: ${ p.name.full(middle="full") } Name Change Order
+    filename: ${ p.name.full(middle="full") } Name Change Order
+    docx template file: name_change_order.docx
+    editable: False
+    variable name: name_change_order
+    valid formats:
+      - docx
+      - pdf
+---
+template: name_change_step_one
+subject: |
+  Step One: Download or Email
+content: |
+  Here are the documents in your packet:
+
+  * <i class="file-pdf"></i> Instructions
+  * <i class="file-pdf"></i> Case Information Statement
+  * <i class="file-pdf"></i> Petition for Name Change
+  * <i class="file-pdf"></i> Order Filing Petition
+  * <i class="file-pdf"></i> Order of Publication
+  * <i class="file-pdf"></i> Order
+
+  Below you will find a button to download all the files as a single PDF, email that PDF to the client, **OR** you can choose the option further below to download all the .docx Word files if edits are needed.
+
+  ${ action_button_html(name_change_bundle.url_for(), classname='btn btn-da btn-primary', label='Download PDF Packet', icon='file-pdf') }
+  ${ action_button_html(url_action('send_name_change_files'), classname='btn btn-da btn-primary', label='Email these to me', icon='envelope') }
+---
+event: send_name_change_files
+code: |
+  send_email(to=p, attachments=name_change_bundle,template=email_all_files)
+---
+template: email_all_files
+subject: |
+  Name Change Packet
+content: |
+  Your document packet is attached.  Included in the packet are instructions for the next steps.
+
+  Additional information can always be found at [Legal Aid of West Virginia](https://legalaidwv.org/).
+
+  *NOTE: This email address is not monitored.  Please do not reply to this message.*
+---
+mandatory: true
+code: |
+  failure_reason = ""
+  closest = 999999
+  closest_library = ""
+  date = current_datetime()
+  target = "myself"
+
+  if target == "myself":
+    if not residency:
+      failure_reason += "You must be a resident of the state and county for one year prior to filing for a name change."
+      endpoint['ineligible']
+      if endpoint['ineligible'] == 'exit':
+        command('exit')
+      elif endpoint['ineligible'] == 'restart':
+        command('restart')
+    if proper != "agree":
+      failure_reason += "You cannot seek a name change for one of the prohibited reasons."
+      endpoint['ineligible']
+      if endpoint['ineligible'] == 'exit':
+        command('exit')
+      elif endpoint['ineligible'] == 'restart':
+        command('restart')
+    change_reason
+    p.name.first
+    p.address.geocode()
+
+    ## County
+    p.address.county = p.address.county.rsplit(" ")[0]
+    p.address.county = p.address.county.capitalize()
+    upper_county = p.address.county.upper()
+
+    ## Setting Family/Circuit
+    court = name_change_court[p.address.county]
+
+    ## Library
+    cords = (p.address.location.latitude,p.address.location.longitude)
+    for library in libraries:
+      distance = geopy.distance.geodesic(cords, (libraries[library]["lat"], libraries[library]["long"])).miles
+      if distance < closest:
+        closest = distance
+        closest_library = library
+
+    name_at_birth
+    new_name.name.first
+    
+    protection
+
+    accommodations
+
+    generate_adult_name_change
+    success_exit
+  else:
+    endpoint['ineligible']
+    if endpoint['ineligible'] == 'exit':
+        command('exit')
+    elif endpoint['ineligible'] == 'restart':
+        command('restart')
+---
+code: |
+  name_change_documents = [name_change_instructions]
+  if court == "CIRCUIT":
+    name_change_documents.append(civil_information_statement)
+  else:
+    name_change_documents.append(domestic_civil_information_statement)
+  name_change_documents.append(name_change_petition)
+  name_change_documents.append(name_change_order_filing_petition)
+  name_change_documents.append(name_change_order_of_publication)
+  name_change_documents.append(name_change_order)
+
+  name_change_bundle = pdf_concatenate(name_change_documents, filename=p.name.full(middle="full") + "Name Change Packet.pdf")

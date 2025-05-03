@@ -1,0 +1,1 @@
+A guided interview for creating an adult Name Change Petition Packet for a LAWV Name Change Clinic. The interview assumes that it is going to be completed by an attorney or paralegal assisting in the clinic.  The interview produces PDF and Word documents to allow for final edits.
