@@ -1,0 +1,49 @@
+Metadata-Version: 2.4
+Name: mml-drive
+Version: 0.2.2
+Summary: This is the MML drive plugin, providing fast DKFZ indoor data sharing.
+Home-page: https://git.dkfz.de/imsy/ise/mml
+Author: Patrick Godau
+Author-email: patrick.godau@dkfz-heidelberg.de
+License: MIT
+Classifier: Natural Language :: English
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: Version Control :: Git
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Environment :: GPU
+Classifier: Intended Audience :: Science/Research
+Classifier: Typing :: Typed
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: mml-core>=1.0.0
+Dynamic: license-file
+
+# MML drive plugin
+
+This plugin provides support for fast data installation via a shared network drive. It extends the create scheduler 
+to look for respective downloaded files there first. This might be useful if a team works jointly with `mml` and you 
+want to avoid redundant downloading of raw datasets.  
+
+# Install
+
+After installing this plugin via `pip` you need to mount a network drive. On that network drive there needs to reside 
+the following file structure: `MedicalMetaLearner/DOWNLOADS`. You may copy contents of your local 
+`MML_DATA_PATH/DOWNLOADS` into that folder to provide the downloaded files to others. Every user that wants to download 
+is required to add `export MML_NW_DRIVE=path/to/drive/root` to their `mml.env` file.
+
+# Usage
+
+Just use `mml create` as usual. If the network drive offers a benefit, `mml` will download data from there.
