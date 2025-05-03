@@ -1,0 +1,103 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     lang="en"
+     xml:lang="en"
+     i18n:domain="plone"
+>
+
+  <div class="linkModal">
+
+    <div class="pat-autotoc autotabs"
+         data-pat-autotoc="section:span.linkType;levels:span.linkLabel;"
+    >
+
+      <span class="${python:'linkType internal' + (' active' if value else '')}"
+            data-linktype="internal"
+            tal:define="
+              value view/value/internal | nothing;
+            "
+      >
+        <span class="linkLabel d-none"
+              i18n:translate="label_internal_url"
+        >Internal</span>
+        <div>
+          <div class="mb-3 main">
+            <!-- this gives the name to the "linkType" -->
+            <input class="pat-contentbrowser"
+                   name="${view/name}.internal"
+                   type="text"
+                   value="${value}"
+                   data-pat-contentbrowser="${view/pattern_data}"
+            />
+          </div>
+        </div>
+      </span>
+
+      <span class="${python:'linkType external' + (' active' if value else '')}"
+            data-linktype="external"
+            tal:define="
+              value view/value/external | nothing;
+            "
+      >
+        <span class="linkLabel d-none"
+              i18n:translate="label_external_url"
+        >External</span>
+        <div class="mb-3 main">
+          <label class="form-label"
+                 for="external"
+                 i18n:translate="help_external_url"
+          >External URL (can be relative within this site or absolute if it starts with http:// or https://)</label>
+          <input class="form-control"
+                 name="${view/name}.external"
+                 placeholder="https://domain.com"
+                 type="text"
+                 value="${value}"
+                 i18n:attributes="placeholder"
+          />
+        </div>
+      </span>
+
+      <span class="${python:'linkType email' + (' active' if value else '')}"
+            data-linktype="email"
+            tal:define="
+              value view/value/email | nothing;
+            "
+      >
+        <span class="linkLabel d-none"
+              i18n:translate="label_email_url"
+        >Email</span>
+        <div class="form-inline">
+          <div class="mb-3 main">
+            <label class="form-label"
+                   i18n:translate="help_email_url"
+            >Email Address</label>
+            <input class="form-control"
+                   name="${view/name}.email"
+                   placeholder="name@domain.com"
+                   type="email"
+                   value="${value}"
+                   i18n:attributes="placeholder"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label"
+                   i18n:translate="help_email_url_subject"
+            >Email Subject (optional)</label>
+            <input class="form-control"
+                   name="${view/name}.subject"
+                   type="text"
+                   value="${value}"
+                   tal:define="
+                     value view/value/email_subject | nothing;
+                   "
+            />
+          </div>
+        </div>
+      </span>
+
+    </div><!-- / tabs -->
+
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      tal:define="
+        items view/items;
+        items python:list(items);
+        single_checkbox python:len(items) == 1;
+      "
+      tal:omit-tag=""
+>
+  <div id="${view/id}"
+       tal:condition="python:len(items) &gt; 0"
+       tal:omit-tag="single_checkbox"
+  >
+    <div class="form-check"
+         id="${python:view.id if single_checkbox else None}"
+         tal:repeat="item items"
+    >
+      <input class="${view/klass}"
+             id="${item/id}"
+             checked="${python:'checked' if item['checked'] else None}"
+             name="${item/name}"
+             type="checkbox"
+             value="${item/value}"
+      />
+      <label class="form-check-label"
+             for="${item/id}"
+      >
+        <span tal:content="item/label">Label</span>
+        <span class="required horizontal"
+              title="Required"
+              tal:condition="item/required"
+              i18n:attributes="title title_required;"
+        >&nbsp;</span>
+      </label>
+      <div class="form-text"
+           tal:content="structure item/description"
+      >Description</div>
+    </div>
+
+  </div>
+
+  <input name="field-empty-marker"
+         type="hidden"
+         value="1"
+         tal:attributes="
+           name string:${view/name}-empty-marker;
+         "
+  />
+</html>

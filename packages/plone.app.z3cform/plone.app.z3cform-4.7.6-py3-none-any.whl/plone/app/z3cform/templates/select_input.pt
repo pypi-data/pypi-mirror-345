@@ -1,0 +1,35 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     tal:omit-tag=""
+><!--! NOTE: since this template is also used for Select2Widget
+       we have to make sure that the ":list" isn't set in that case.
+       "pat-select2" refactors the input value for multiple selects
+       to separator concated text input.
+       This behavior hopefully will be gone soon when "pat-select2"
+       is upgraded to Select2 >= 4.x -->
+  <select id="${view/id}"
+          name="${view/name}${python:':list' if view.pattern != 'select2' else ''}"
+          tal:define="
+            items view/items;
+            is_tree python:isinstance(items, dict);
+          "
+          tal:attributes="
+            view/attributes;
+          "
+  ><tal:block repeat="item items"><optgroup label="${item}"
+                tal:condition="is_tree"
+      ><option id="${group_item/id}"
+                selected="${python:'selected' if group_item['selected'] else None}"
+                value="${group_item/value}"
+                tal:repeat="group_item python:items[item]"
+        >${group_item/content}</option></optgroup><option id="${item/id}"
+              selected="${python:'selected' if item['selected'] else None}"
+              value="${item/value}"
+              tal:condition="not:is_tree"
+      >${item/content}</option></tal:block>
+  </select>
+  <input name="${view/name}-empty-marker"
+         type="hidden"
+         value="1"
+  />
+</div>
