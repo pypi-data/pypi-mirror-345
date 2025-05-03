@@ -1,0 +1,74 @@
+Metadata-Version: 2.4
+Name: koolbox
+Version: 0.1.2
+Summary: A collection of utility functions designed to simplify training machine learning models for Kaggle competitions.
+Author: Mahdi Ravaghi
+Maintainer: Mahdi Ravaghi
+License: Apache Software License 2.0
+Project-URL: Homepage, https://github.com/ravaghi/koolbox
+Project-URL: Bug Tracker, https://github.com/ravaghi/koolbox/issues
+Project-URL: Documentation, https://github.com/ravaghi/koolbox#readme
+Project-URL: Repository, https://github.com/ravaghi/koolbox.git
+Keywords: machine-learning,kaggle,training,cross-validation,model-evaluation
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas>=1.0.0
+Requires-Dist: scikit-learn>=0.24.0
+Requires-Dist: numpy>=1.19.0
+Dynamic: license-file
+
+# Kaggle Toolbox
+
+Koolbox is a collection of helper functions and utilities designed to simplify training  machine learning models in Kaggle competitions. This library abstracts away repetitive boilerplate code, allowing competitors to focus on more important tasks.
+
+## Installation
+
+```bash
+pip install koolbox
+```
+
+## Usage
+
+### Trainer
+
+```python
+import pandas as pd
+from sklearn.model_selection import KFold
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import roc_auc_score
+
+from koolbox import Trainer
+
+X = pd.DataFrame(...)
+y = pd.Series(...)
+
+trainer = Trainer(
+    estimator=RandomForestClassifier(random_state=42),
+    cv=KFold(n_splits=5, shuffle=True, random_state=42),
+    metric=roc_auc_score,
+    task="binary",
+    verbose=True
+)
+
+trainer.fit(X, y)
+
+X_test = pd.DataFrame(...)
+preds = trainer.predict(X_test)
+
+oof_preds = trainer.oof_preds
+overall_score = trainer.overall_score
+fold_scores = trainer.fold_scores
+```
