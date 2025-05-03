@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "zmp-md-translator"
+version = "0.2.7"
+description = "A high-performance markdown translator that supports multiple languages and preserves markdown formatting."
+authors = ["stiron <lesch1@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.110.0"
+uvicorn = "^0.27.1"
+pydantic = "^2.0.0"
+python-dotenv = "^1.0.1"
+openai = "^1.12.0"
+httpx = "^0.26.0"
+python-multipart = "^0.0.9"
+pydantic-settings = "^2.2.1"
+colorlog = "^6.9.0"
+aiofiles = "^24.1.0"
+
+[tool.poetry.group.quality.dependencies]
+pre-commit = "^4.1.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.0"
+pytest-asyncio = "^0.23.5"
+pytest-cov = "^4.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+zmp-md-translator = "zmp_md_translator.main:app"
+test = "zmp_md_translator.scripts:test"
+watch = "zmp_md_translator.scripts:watch"
+zmp-translate = "zmp_md_translator.main:run_cli"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=zmp_md_translator --cov-report=term-missing"
