@@ -1,0 +1,89 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "tempor"
+authors = [
+    {name = "Wh1t3Fox", email = "dev@exploit.design"}
+]
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE"}
+requires-python = ">=3.11"
+dynamic = ["version", "description"]
+classifiers=[
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+    "Environment :: Console",
+]
+dependencies = [
+        "ansible==11.5.0",
+        "ansible_runner==2.4.1",
+        "appdirs==1.4.4",
+        "boto3==1.38.0",
+        "google-api-python-client==2.167.0",
+        "jsonschema==4.23.0",
+        "PyYAML==6.0.2",
+        "python-terraform==0.10.1",
+        "requests==2.32.3",
+        "rich==14.0.0",
+        "ssh-config==0.1.5"
+]
+
+[project.urls]
+Documentation = "https://github.com/Wh1t3Fox/tempor"
+Source = "https://github.com/Wh1t3Fox/tempor"
+
+[project.scripts]
+tempor = "tempor.__main__:main"
+
+[tool.black]
+line-length = 88
+exclude = '''
+
+(
+  /(
+      \.eggs        
+    | \.git        
+    | \.ruff_cache
+    | \.tox
+    | \.venv
+    | __pypackages__
+    | _build
+    | build
+    | dist
+    | venv
+  )/
+  | tempor/playbooks
+                     
+)
+'''
+
+[tool.ruff]
+line-length = 88
+exclude = [
+    ".eggs",
+    ".git",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "build",
+    "dist",
+    "venv",
+]
+
+[tool.ruff.lint]
+select = ["D", "E", "F", "W", "B", "ISC", "C4", "UP"]
+fixable = ["D", "E", "F", "W", "B", "ISC", "C4", "UP"]
+ignore = ["B006", "B009", "B024", "B027", "D205", "D209"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"

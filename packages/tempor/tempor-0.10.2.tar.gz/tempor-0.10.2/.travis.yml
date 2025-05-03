@@ -1,0 +1,15 @@
+---
+language: python
+python:
+  - "3.11"
+  - "3.12"
+  - "3.13"
+  - "nightly"
+before_install:
+  - python3 -m pip install --upgrade pip
+  - python3 -m pip install pytest-cov
+install:
+  - python3 -m pip install -e .
+script: pytest --cov=./
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
