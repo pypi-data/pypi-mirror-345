@@ -1,0 +1,1 @@
+The `bad_alignments` test set consists of two highly divergent phage genomes (`MGV-GENOME-0264574.fas` and `MGV-GENOME-0357962.fna`) with no shared regions, resulting in no alignments. This test set ensures that `pyANI-plus` correctly detects and handles such comparisons, which are recorded in the database as ``NULL``.

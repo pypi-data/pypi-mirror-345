@@ -1,0 +1,1 @@
+The `viral_example` test set consists of three phage genomes that share similar regions, resulting in aligned regions. These viral genomes are the main test set due to the short runtime of the methods.

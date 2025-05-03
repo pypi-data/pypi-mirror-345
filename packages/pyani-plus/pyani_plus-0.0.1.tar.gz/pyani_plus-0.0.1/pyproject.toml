@@ -1,0 +1,69 @@
+[project]
+name = "pyani-plus"
+dynamic = ["version"]
+authors = [
+    { name = "Leighton Pritchard", email = "leighton.pritchard@strath.ac.uk" },
+    { name = "Angelika Kiepas", email = "angelika.kiepas@strath.ac.uk" },
+    { name = "Peter J. A. Cock", email = "peter.cock@strath.ac.uk" },
+]
+description = "pyANI-plus is an application and Python module for whole-genome classification of microbes using Average Nucleotide Identity and similar methods."
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = [
+    "intervaltree",
+    "snakemake>=8.24",
+    "snakemake-executor-plugin-slurm",
+    "rich",
+    "sqlalchemy>=2.0",
+    "typer>=0.12",
+    "networkx>=3.4.2",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["pyani_plus"]
+
+[tool.setuptools.dynamic]
+version = {attr = "pyani_plus.__version__"}
+
+[tool.ruff.lint]
+select = ["ALL"]
+pycodestyle.max-line-length = 120
+ignore = ["COM812", "D203", "D213", "S603"]
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore assert statements here:
+"tests/*" = ["S101"]
+# Ignore print and assert statements here:
+"tests/generate_fixtures/*" = ["T201", "S101"]
+# Ignore print statements in our CLI code here:
+"pyani_plus/private_cli.py" = ["T201"]
+"pyani_plus/public_cli.py" = ["T201"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = ["--doctest-modules", "--ignore=tests/generate_fixtures/"]
+testpaths = [
+    "tests",
+    "pyani_plus",
+]
+doctest_optionflags = ["ELLIPSIS"]
+
+[project.scripts]
+".pyani-plus-private-cli" = "pyani_plus.private_cli:app"
+"pyani-plus" = "pyani_plus.public_cli:app"
+
+[project.urls]
+homepage = "https://github.com/pyani-plus/pyani-plus"
+source = "https://github.com/pyani-plus/pyani-plus"
+issues = "https://github.com/pyani-plus/pyani-plus/issues"
+documentation = "https://pyani-plus.github.io/pyani-plus-docs/"

@@ -1,0 +1,79 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+    - id: check-added-large-files
+    - id: check-case-conflict
+    - id: check-executables-have-shebangs
+    - id: check-json
+    - id: check-merge-conflict
+    - id: check-shebang-scripts-are-executable
+    - id: check-symlinks
+    - id: check-yaml
+    - id: debug-statements
+    - id: destroyed-symlinks
+    - id: end-of-file-fixer
+      files: \.(py|sh|smk|md|yml|yaml)$
+    - id: mixed-line-ending
+    - id: trailing-whitespace
+      files: \.(py|sh|smk|md|yml|yaml)$
+- repo: https://github.com/scop/pre-commit-shfmt
+  rev: v3.11.0-1
+  hooks:
+    - id: shfmt  # prebuilt upstream executable
+      args: [
+        '-sr',  # redirect operators will be followed by a space
+        '-i=4',  # indent with four spaces
+        '-w',  # write changes in place
+      ]
+- repo: https://github.com/shellcheck-py/shellcheck-py
+  rev: v0.10.0.1
+  hooks:
+    - id: shellcheck
+      args: [
+        '--severity=info',
+      ]
+- repo: https://github.com/asottile/pyupgrade
+  rev: v3.19.1
+  hooks:
+    - id: pyupgrade
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  # Ruff version.
+  rev: v0.11.7
+  hooks:
+    # Run the formatter.
+    - id: ruff-format
+      types_or: [ python, pyi, jupyter ]
+      args: [
+        '--config=format.docstring-code-format=true'
+      ]
+    # Run the linter.
+    - id: ruff
+      types_or: [ python, pyi, jupyter ]
+      args: [ --fix ]
+- repo: https://github.com/snakemake/snakefmt
+  rev: v0.11.0
+  hooks:
+    - id: snakefmt
+- repo: https://github.com/codespell-project/codespell
+  rev: v2.4.1
+  hooks:
+    - id: codespell
+      files: \.(py|smk|md)$
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: v1.15.0
+  hooks:
+    - id: mypy
+      # equivalent to "files" in .mypy.ini
+      files: '^(pyani_plus|tests)/'
+- repo: https://github.com/Lucas-C/pre-commit-hooks
+  rev: v1.5.5
+  hooks:
+    - id: insert-license
+      name: Check MIT license
+      files: \.(py|sh|smk)$
+      args:
+        - "--license-filepath=LICENSE"
+        - "--use-current-year"
+        - "--detect-license-in-X-top-lines=20"
+        - "--no-extra-eol"
