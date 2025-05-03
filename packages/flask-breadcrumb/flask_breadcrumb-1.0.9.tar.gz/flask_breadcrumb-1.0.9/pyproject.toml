@@ -1,0 +1,21 @@
+[project]
+name = "flask-breadcrumb"
+version = "1.0.9"
+description = "None"
+authors = [{ name = "Coulton Fraser", email = "cjrfraser@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["Flask>=3.0.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-v --cov=flask_breadcrumb --cov-report=term-missing"
+filterwarnings = ["ignore::DeprecationWarning", "ignore::UserWarning"]
+
+[dependency-groups]
+dev = ["coveralls>=4.0.1", "pytest>=8.3.5", "pytest-cov>=6.1.1"]
