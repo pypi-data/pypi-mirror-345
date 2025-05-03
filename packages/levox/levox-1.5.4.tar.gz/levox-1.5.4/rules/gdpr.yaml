@@ -1,0 +1,82 @@
+# GDPR Compliance Rules
+# These rules identify potential GDPR violations in code
+
+- id: GDPR33
+  title: "Data Transfer Outside EU"
+  pattern: |
+    CallExpression[callee.property.name='post'] 
+    > Identifier[name=/aws\.eu-west-1|azure\.germany/]
+  severity: HIGH
+  gdpr_article: "Article 44"
+  description: "Data transfer to non-EU region without safeguards"
+  remediation: "Implement appropriate safeguards for non-EU transfers (SCCs, BCRs)"
+
+- id: GDPR5-DATA-MINIMIZATION
+  title: "Lack of Data Minimization"
+  pattern: |
+    CallExpression[callee.property.name='collect'] 
+    > ObjectExpression[properties.length>10]
+  severity: MEDIUM
+  gdpr_article: "Article 5(1)(c)"
+  description: "Collecting excessive data - violates data minimization principle"
+  remediation: "Only collect data that is necessary for your specified purposes"
+
+- id: GDPR7-CONSENT
+  title: "Invalid Consent Mechanism"
+  pattern: |
+    AssignmentExpression[left.property.name='checked'] 
+    > Literal[value=true]
+  severity: HIGH
+  gdpr_article: "Article 7"
+  description: "Pre-checked consent box - consent must be freely given"
+  remediation: "Remove default selections for consent mechanisms"
+
+- id: GDPR30-PROCESSING-RECORD
+  title: "Missing Processing Record"
+  pattern: |
+    FunctionDeclaration[id.name=/process|collect|store/] 
+    > BlockStatement:not(CallExpression[callee.property.name=/log|record|document/])
+  severity: MEDIUM
+  gdpr_article: "Article 30"
+  description: "No record of processing activities found"
+  remediation: "Implement logging for all data processing activities"
+
+- id: GDPR25-DESIGN
+  title: "Missing Data Protection by Design"
+  pattern: |
+    ClassDeclaration[id.name=/User|Customer|Person|Profile/]
+    > MethodDefinition:not([key.name=/anonymize|pseudonymize|encrypt|protect/])
+  severity: HIGH
+  gdpr_article: "Article 25"
+  description: "User data class without privacy protection methods"
+  remediation: "Implement privacy by design with anonymization/pseudonymization"
+
+- id: GDPR17-ERASURE
+  title: "Missing Right to Erasure"
+  pattern: |
+    ClassDeclaration[id.name=/User|Customer|Person|Profile/]
+    > ClassBody:not(MethodDefinition[key.name=/delete|remove|erase/])
+  severity: HIGH
+  gdpr_article: "Article 17"
+  description: "No method for data erasure found in user class"
+  remediation: "Implement method to permanently delete all user data"
+
+- id: GDPR32-SECURITY
+  title: "Insufficient Security Measures"
+  pattern: |
+    CallExpression[callee.name=/hash|encrypt/]
+    > Identifier[name=/md5|sha1/]
+  severity: CRITICAL
+  gdpr_article: "Article 32"
+  description: "Weak cryptographic algorithm used for personal data"
+  remediation: "Use strong encryption algorithms and proper key management"
+
+- id: GDPR15-ACCESS
+  title: "Missing Data Access Rights"
+  pattern: |
+    ClassDeclaration[id.name=/User|Customer|Person|Profile/]
+    > ClassBody:not(MethodDefinition[key.name=/export|access|getData|getAll/])
+  severity: MEDIUM
+  gdpr_article: "Article 15"
+  description: "No method for data subject access found"
+  remediation: "Implement method for users to access all their personal data" 
