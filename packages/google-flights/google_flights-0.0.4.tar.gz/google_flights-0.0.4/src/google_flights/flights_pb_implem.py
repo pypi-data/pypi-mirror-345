@@ -1,0 +1,215 @@
+import base64
+from typing import Any, List, Optional, TYPE_CHECKING, Literal, Union # for better readability and maintainability
+import google_flights.flights_pb2 as PB
+from dataclasses import dataclass
+
+if TYPE_CHECKING:
+    import flights_pb2 as PB
+
+class FlightData:
+    """
+    Representation of flight data.
+
+    Args:
+        date (str): Date of the flight.
+        from_airport (List[str]): Departure airports.
+        to_airport (List[str]): Arrival airports.
+        airlines (List[str], optional): List of airline codes. Default is null List.
+        max_stops (int, optional): Maximum number of stops. Default is None.
+
+    
+    """
+    # Attributes of the class (restricting all other atributees of a class)
+    __slots__ = ("date", "from_airport", "to_airport", "airlines", "max_stops")
+    date: str
+    from_airport: List[str]
+    to_airport: List[str]
+    airlines: Optional[List[str]]
+    max_stops: Optional[int]
+
+    def __init__( 
+        self,
+        *,
+        date: str,
+        from_airport: Union[List[str]],
+        to_airport: Union[List[str]],
+        airlines: Optional[List[str]] = None,
+        max_stops: Optional[int] = None,
+    ):
+        self.date = date
+
+        self.airlines =[
+             airline 
+             for airline in airlines
+        ]
+        self.from_airport = [
+            airport 
+            for airport in from_airport
+        ]
+        self.to_airport = [
+            airport
+            for airport in to_airport
+        ]
+        self.max_stops = max_stops
+
+    def attach(self, info: PB.Info) -> None: 
+        
+        data = info.data.add()
+        data.date = self.date
+
+        for from_airport in self.from_airport:
+            from_flight = data.from_flight.add()
+            from_flight.airport = from_airport
+
+        for to_airport in self.to_airport:
+            to_flight = data.to_flight.add()
+            to_flight.airport = to_airport
+
+        if self.airlines:
+            data.airlines.extend(self.airlines)
+
+
+        if self.max_stops is not None:
+            data.max_stops = self.max_stops
+        else:
+            data.max_stops = 0
+        
+
+    def __repr__(self) -> str:
+        print (
+            f"FlightData(date={self.date!r}, "
+            f"from_airport={self.from_airport}, "
+            f"to_airport={self.to_airport}, "
+            f"max_stops={self.max_stops})"
+        )
+    
+
+class Passengers:
+    def __init__(
+        self,
+        *,
+        adults: int = 0,
+        children: int = 0,
+        infants_in_seat: int = 0,
+        infants_on_lap: int = 0,
+    ):
+        assert (
+            sum((adults, children, infants_in_seat, infants_on_lap)) <= 9
+        ), "Too many passengers (> 9)"
+        assert (
+            infants_on_lap <= adults
+        ), "You must have at least one adult per infant on lap"
+
+        self.pb = []
+        self.pb += [PB.Passenger.ADULT for _ in range(adults)]
+        self.pb += [PB.Passenger.CHILD for _ in range(children)]
+        self.pb += [PB.Passenger.INFANT_IN_SEAT for _ in range(infants_in_seat)]
+        self.pb += [PB.Passenger.INFANT_ON_LAP for _ in range(infants_on_lap)]
+
+        self._data = (adults, children, infants_in_seat, infants_on_lap)
+
+    def attach(self, info: PB.Info) -> None:  # type: ignore
+        for p in self.pb:
+            info.passengers.append(p)
+
+    def __repr__(self) -> str:
+        return f"Passengers({self._data})"
+
+
+class TFSData:
+    """``?tfs=`` data. (internal)
+
+    Use `TFSData.from_interface` instead.
+    """
+
+    def __init__(
+        self,
+        *,
+        flight_data: List[FlightData],
+        seat: PB.Seat,  # type: ignore
+        trip: PB.Trip,  # type: ignore
+        passengers: Passengers,
+        max_stops: Optional[int] = None,  # Add max_stops to the constructor
+    ):
+        self.flight_data = flight_data
+        self.seat = seat
+        self.trip = trip
+        self.passengers = passengers
+        self.max_stops = max_stops  # Store max_stops
+
+    def pb(self) -> PB.Info:  # type: ignore
+        info = PB.Info()
+        info.seat = self.seat
+        info.trip = self.trip
+
+        self.passengers.attach(info)
+
+        for fd in self.flight_data:
+            fd.attach(info)
+
+        # If max_stops is set, attach it to all flight data entries
+        if self.max_stops is not None:
+            for flight in info.data:
+                flight.max_stops = self.max_stops     
+                
+        return info
+
+    def to_string(self) -> bytes:
+        return self.pb().SerializeToString()
+
+    def as_b64(self) -> bytes:
+        return base64.b64encode(self.to_string())
+
+    @staticmethod
+    def from_interface(
+        *,
+        flight_data: List[FlightData],
+        trip: Literal["round-trip", "one-way", "multi-city"],
+        passengers: Passengers,
+        seat: Literal["economy", "premium-economy", "business", "first"],
+        max_stops: Optional[int] = None,  # Add max_stops to the method signature
+    ):
+        """Use ``?tfs=`` from an interface.
+
+        Args:
+            flight_data (list[FlightData]): Flight data as a list.
+            trip ("one-way" | "round-trip" | "multi-city"): Trip type.
+            passengers (Passengers): Passengers.
+            seat ("economy" | "premium-economy" | "business" | "first"): Seat.
+            max_stops (int, optional): Maximum number of stops.
+        """
+        trip_t = {
+            "round-trip": PB.Trip.ROUND_TRIP,
+            "one-way": PB.Trip.ONE_WAY,
+            "multi-city": PB.Trip.MULTI_CITY,
+        }[trip]
+        seat_t = {
+            "economy": PB.Seat.ECONOMY,
+            "premium-economy": PB.Seat.PREMIUM_ECONOMY,
+            "business": PB.Seat.BUSINESS,
+            "first": PB.Seat.FIRST,
+        }[seat]
+
+        return TFSData(
+            flight_data=flight_data,
+            seat=seat_t,
+            trip=trip_t,
+            passengers=passengers,
+            max_stops=max_stops  # Pass max_stops into TFSData
+        )
+
+    def __repr__(self) -> str:
+                return f"TFSData(flight_data={self.flight_data!r}, max_stops={self.max_stops!r})"
+
+@dataclass
+class ItinerarySummary:
+    flights: str
+    price: int
+    currency: str
+
+    @classmethod
+    def from_b64(cls, b64_string: str) -> 'ItinerarySummary':
+        raw = base64.b64decode(b64_string)
+        pb = PB.ItinerarySummary()
+        pb.ParseFromString(raw)
+        return cls(pb.flights, pb.price.price / 100, pb.price.currency)
