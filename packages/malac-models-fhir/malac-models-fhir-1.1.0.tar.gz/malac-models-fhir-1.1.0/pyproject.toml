@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0.0,<69.3.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "malac-models-fhir"
+dynamic = ["version"]
+requires-python = ">= 3.10"
+dependencies = [
+    'lxml>=5.1.0',
+]
+authors = [
+  {name = "cdeHealth-Team", email = "contact-project+cdehealth-malac-hd-52276676-issue-@incoming.gitlab.com"}
+]
+description = "Mapping Language Compiler for Health Data."
+readme = "README.md"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: Healthcare Industry",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Topic :: Software Development :: Code Generators",
+  "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+Homepage = "https://gitlab.com/cdehealth/malac-hd"
+Documentation = "https://gitlab.com/cdehealth/malac-hd"
+"Release notes" = "https://gitlab.com/cdehealth/malac-hd/-/releases"
+Source = "https://gitlab.com/cdehealth/malac-hd"
+Tracker = "https://gitlab.com/cdehealth/malac-hd/-/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "malac.models.fhir.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["malac*"]
