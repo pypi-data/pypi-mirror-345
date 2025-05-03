@@ -1,0 +1,76 @@
+{
+    "version": "2.0.0",
+    "tasks": 
+    [
+        {
+            "label": "Update App",
+            "detail": "Update the app",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} src/build/build.py",
+            "args": [
+                "update"
+            ],
+        },
+        {
+            "label": "Run App",
+            "detail": "Update the app",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} -m fbs",
+            "args": [
+                "run"
+            ],
+        },
+        {
+            "label": "Build exe",
+            "detail": "Compiles the app to an exe",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} src/build/build.py",
+            "args": [
+                "build",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build exe --debug",
+            "detail": "Compiles the app to an exe",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} src/build/build.py",
+            "args": [
+                "build",
+                "--debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Compiled App",
+            "detail": "Update the app",
+            "type": "shell",
+            "command": "target\\${config:project_name}\\${config:project_name}.exe",
+            "args": [
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+        },
+        {
+            "label": "Designer",
+            "detail": "Open QT Designer",
+            "type": "shell",
+            "command": ".venv\\Scripts\\pyside6-designer.exe",
+            "args": [
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+        }
+        
+    ]
+}

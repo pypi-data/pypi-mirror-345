@@ -1,0 +1,23 @@
+modules:
+  - hermes_core.built_in.test_nodes
+  - hermes_core.built_in.operation_nodes
+  - hermes_core.built_in.output
+
+nodes:
+  worker:
+    type: worker
+
+    nodes:
+      sine:
+        type: sine
+        amplitude: 1
+        frequency: 1
+        offset: 21
+
+      print:
+        type: simple_print
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - worker.sine

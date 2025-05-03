@@ -1,0 +1,110 @@
+modules:
+  - hermes_core.built_in.test_nodes
+  - hermes_core.built_in.operation_nodes
+  - hermes_core.built_in.output
+  - hermes_qt.nodes
+
+nodes:
+  worker1:
+    type: worker
+    interval: 0.01
+
+    nodes:
+      sine_1:
+        type: sine
+        amplitude: 1
+        frequency: 1
+        offset: 0
+
+  worker2:
+    type: worker
+    interval: 0.11
+
+    nodes:
+      sine_2:
+        type: sine
+        amplitude: 1
+        frequency: 0.9
+        offset: 0
+
+  worker3:
+    type: worker
+    interval: 0.03
+
+    nodes:
+      sine_3:
+        type: sine
+        amplitude: 1
+        frequency: 1.1
+        offset: 0
+
+  worker4:
+    type: worker
+    interval: 1
+
+    nodes:
+      sine_4:
+        type: sine
+        amplitude: 1
+        frequency: 0.1
+        offset: 0
+
+      sine_5:
+        type: batch_sine
+        amplitude: 1
+        frequency: 0.1
+        offset: 0
+        batch_size: 500
+
+  worker:
+    type: worker
+    interval: 0.5
+    nodes:
+      
+      aggregator:
+        type: aggregator
+
+        interpolation:
+          mode: linear
+
+        resampling:
+          interval: 10us
+
+        source: 
+          type: queued_link
+          queue_size: 5000
+          nodes:
+            - worker1.sine_1
+            - worker2.sine_2
+            - worker3.sine_3
+            - worker4.sine_4
+            - worker4.sine_5
+
+      csv_writer:
+        type: csv_writer
+        filename: "test_data.csv"
+        startup_delay: 2
+        separator: ";"
+        add_prefix: true
+        time_format: relative
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - worker.aggregator
+
+  worker_ui:
+    type: worker
+    interval: 0.1
+    nodes:
+      data_list:
+        type: data_viewer
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - worker.aggregator
+            - worker1.*
+            - worker2.*
+            - worker3.*
+            - worker4.*
