@@ -1,0 +1,41 @@
+trigger: none
+
+resources:
+- repo: self
+
+jobs:
+
+- job: UnitTests
+  displayName: Run Unit Tests
+  pool:
+    vmImage: ubuntu-latest
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+
+  - task: UsePythonVersion@0
+    displayName: Use Python 3.12
+    inputs:
+      versionSpec: '3.12'
+
+  - script: |
+      pip install -r requirements-dev.lock
+    displayName: Installing Requirements
+
+  - script: |
+      python -m mypy flextream/
+    displayName: Static Type Checking
+
+  - script: |
+      python -m coverage run -m pytest tests
+    displayName: Unit Testing
+
+  - script: |
+      python -m coverage report --fail-under=100
+    displayName: Test coverage
+
+  - script: |
+      python -m pylint --fail-under=10 flextream/**
+    displayName: Linting Check
+

@@ -1,0 +1,66 @@
+name: Publish package to PyPI
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+      include:
+      - flexhub/_version.py
+
+jobs:
+  - job: publish_package
+    displayName: Publish package
+
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.12"
+
+      - script: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.lock
+        displayName: "Install dependencies"
+
+      - script: |
+          pip install twine
+          pip install flit
+          flit build
+        displayName: "Build package"
+
+      - script: |
+          python -m twine upload dist/*
+        displayName: "Upload package to PyPI"
+        env:
+          TWINE_USERNAME: $(twineUsername)
+          TWINE_PASSWORD: $(twinePassword)
+
+  - job: build_and_deploy_docs
+    displayName: Build and deploy docs
+
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+      - checkout: self
+        submodules: true
+
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.12"
+
+      - script: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.lock
+          pdoc --output-directory docs flextream
+        displayName: "Install pdoc & build HTML docs"
+
+      - task: AzureStaticWebApp@0
+        inputs:
+          azure_static_web_apps_api_token: $(STATIC_WEB_APP_API_TOKEN)
+          app_location: "/docs"
+          api_location: ""
+          output_location: ""
