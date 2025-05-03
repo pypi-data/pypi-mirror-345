@@ -1,0 +1,179 @@
+Metadata-Version: 2.2
+Name: githubInteract
+Version: 0.2.15
+Summary: # GitHub Automation Toolkit
+Author: Brigham Turner
+Author-email: brighamturner@narratebay.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: PyGithub
+Requires-Dist: gitpython
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# GitHub Automation Toolkit Overview
+This package provides a Python class `gh` for automating common GitHub and Git tasks using the GitHub API and the Git command-line interface. This is designed to shorten and simplify github commands.
+
+## why this is different and needed:
+I created it to simplify using github: many things i wish I could do in github with one command actually require several commands. For example:
+- uploading an entire folder (which beforehand wasn't initiated into github) to a repo is one command in this package: `uploadFolderFileAsCommitToRepo(...)`. In normal git this would have been surprisingly complicated: first you would need to initiate the folder, but to initiate the folder you would need to pull from the original github repo, but that would then wipe all the contents of that folder or require a merging procedure.
+- in this package you can push with one command: `uploadFolderFileAsCommitToRepo(...)`. Normally using github pushing requires 3 steps: 1) adding, committing, and pushing.
+- Ultimately, there is a reason why github is so complex: it is intended to allow multiple users to work on the same project - but when you are just a single user this complexity is burdensome.
+
+## Capabilities:
+- **Repository Management**: Create and delete GitHub repositories.
+- **Branch Management**: Create, checkout, and delete branches both locally and on GitHub.
+- **Commit & Upload**: Upload a local folder to a GitHub repository as a commit, with support for automatic initialization and remote setup.
+- **Version Comparison**: Compare differences between two Git commits based on timestamps using Git's internal log and diff mechanisms.
+
+# Docs
+## __init__( self, access_token ):
+**Initialize GitHub access**
+
+Authenticates the user using a personal access token.
+
+**Parameters:**
+- `access_token` *(str)*: Your GitHub personal access token.
+
+**Example:**
+```python
+g = gh("your_github_access_token")
+```
+
+## createRepository( self, repo_name = "new-repository" , repo_description = "This is a description for the new repository", is_private=True ):
+**Create a new GitHub repository.**
+
+**Parameters:**
+- `repo_name` (str): Name of the repository.
+- `repo_description` (str): Description of the repository.
+- `is_private` (bool): Whether the repository is private.
+
+**Returns:**
+- None
+
+**Example:**
+```python
+g = gh("your_github_access_token")
+g.createRepository(repo_name="test-repo", repo_description="Testing", is_private=False)
+```
+
+## create_branch_in_repo(self, repo_path, branch_name):
+**Create or checkout a branch in a local Git repository**
+
+**Parameters:**
+- `repo_path` *(str)*: Local path to the repository.
+- `branch_name` *(str)*: Name of the branch to create or checkout.
+
+**Example:**
+```python
+g.create_branch_in_repo("/path/to/repo", "feature-branch")
+```
+
+## uploadFolderFileAsCommitToRepo( self, repo_name="your_repo_name", folder_path="path/to/your/folder", commit_message="Add folder content", branch="main", force=True):
+**Upload an entire folder as a commit to a GitHub repo**
+
+**Parameters:**
+- `repo_name` *(str)*: Name of the GitHub repository.
+- `folder_path` *(str)*: Path to the local folder.
+- `commit_message` *(str)*: Commit message.
+- `branch` *(str)*: Branch name.
+- `force` *(bool)*: Force push if conflicts occur.
+
+**Example:**
+```python
+g.uploadFolderFileAsCommitToRepo(
+repo_name="test-repo",
+folder_path="./local_folder",
+commit_message="Initial upload",
+branch="main",
+force=True
+)
+```
+
+## delete_github_repository(self, repo_name):
+**Delete a GitHub repository**
+
+**Parameters:**
+- `repo_name` *(str)*: Name of the repository to delete.
+
+**Example:**
+```python
+g.delete_github_repository("test-repo")
+```
+
+## delete_github_branch( self, repo_name, branch_name ):
+**Delete a branch from a GitHub repository**
+
+**Parameters:**
+- `repo_name` *(str)*: Repository name.
+- `branch_name` *(str)*: Name of the branch to delete.
+
+**Example:**
+```python
+g.delete_github_branch("test-repo", "feature-branch")
+```
+
+## displayDifferences( self, repo_path, time1, time2, time_choice):
+**Display differences between two commits based on timestamps**
+
+Finds two Git commits near given times and shows their `git diff`.
+
+**Parameters:**
+- `repo_path` *(str)*: Path to the local repository.
+- `time1` *(datetime)*: Timestamp near the first commit.
+- `time2` *(datetime)*: Timestamp near the second commit.
+- `time_choice` *(str)*: Strategy for selecting commits - `'closest'`, `'before'`, `'after'`.
+
+**Example:**
+```python
+from datetime import datetime
+
+t1 = datetime(2023, 5, 1, 12, 0)
+t2 = datetime(2023, 5, 2, 12, 0)
+
+g.displayDifferences("/path/to/repo", t1, t2, "closest")
+
+** explaining time_choice (str):**
+Strategy for selecting which commit to use based on the provided times.
+Options:
+- 'closest': Picks the commit whose timestamp is closest to the given time (either before or after).
+- 'before': Picks the most recent commit before the given time. If no earlier commit exists, selects the earliest available commit.
+- 'after': Picks the first commit after the given time. If no later commit exists, selects the latest available commit.
+
+** How It Works:**
+1. For both time1 and time2, it runs a Git command to list all commits along with their timestamps.
+2. It chooses a commit near each provided time according to the selected time_choice option.
+3. It then runs git diff between the two selected commits and prints the differences to the console.
+
+## upload_file(self, repo_name, file_path, target_path=None, commit_message="Add file"):
+** Upload a single file to a GitHub repository using the GitHub API**
+
+This method uploads a **single file** to a GitHub repository. If the file already exists, it is updated; 
+otherwise, a new file is created. The commit includes a user-defined commit message.
+
+** Parameters:**
+- `repo_name` (`str`): Full name of the repository (e.g. `"username/repo"`).
+- `file_path` (`str`): Local path to the file you want to upload.
+- `target_path` (`str`, optional): Target path inside the repo (e.g. `"folder/file.txt"`). Defaults to the file’s basename.
+- `commit_message` (`str`, optional): The commit message to use. Defaults to `"Add file"`.
+
+** Example:**
+```python
+gh.upload_file(
+repo_name="octocat/Hello-World",
+file_path="local/path/to/file.txt",
+target_path="docs/file.txt",
+commit_message="Upload documentation file"
+)
+```
