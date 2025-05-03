@@ -1,0 +1,16 @@
+from __future__ import absolute_import
+
+# flake8: noqa
+
+# import apis into api package
+from wildberries_api_client.reports.api.dinamika_oborahivaemosti_api import DinamikaOborahivaemostiApi
+from wildberries_api_client.reports.api.dola_brenda_v_prodahah_api import DolaBrendaVProdahahApi
+from wildberries_api_client.reports.api.osnovnye_othety_api import OsnovnyeOthetyApi
+from wildberries_api_client.reports.api.othet_o_tovarah_c_obazatelnoi_markirovkoi_api import OthetOTovarahCObazatelnoiMarkirovkoiApi
+from wildberries_api_client.reports.api.othet_o_vozvratah_i_peremehenii_tovarov_api import OthetOVozvratahIPeremeheniiTovarovApi
+from wildberries_api_client.reports.api.othet_ob_ostatkah_na_skladah_api import OthetObOstatkahNaSkladahApi
+from wildberries_api_client.reports.api.othety_ob_uderhaniah_api import OthetyObUderhaniahApi
+from wildberries_api_client.reports.api.platnaa_priemka_api import PlatnaaPriemkaApi
+from wildberries_api_client.reports.api.platnoe_hranenie_api import PlatnoeHranenieApi
+from wildberries_api_client.reports.api.prodahi_po_regionam_api import ProdahiPoRegionamApi
+from wildberries_api_client.reports.api.skrytye_tovary_api import SkrytyeTovaryApi

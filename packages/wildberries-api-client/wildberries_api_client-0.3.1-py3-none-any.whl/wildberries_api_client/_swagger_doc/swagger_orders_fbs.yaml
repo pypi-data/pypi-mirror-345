@@ -1,0 +1,3377 @@
+openapi: 3.0.1
+info:
+  title: Zakazy FBS
+  version: order
+  description: |
+    <div class="description_important">  
+        Uznat bolhe o zakazah FBS mohno v <a href="https://seller.wildberries.ru/instructions/category/b3e60238-fd4c-49ce-8668-ff688725a12d?goBackOption=prevRoute&categoryId=5a8e1202-0865-45b7-acae-5d0afc7add56">spravohnom centre</a>
+    </div>
+
+    V razdele zakazov FBS (Fulfillment by Seller) vam dostupny metody:
+      1. Upravlenia [sborohnymi zadaniami](/openapi/orders-fbs#tag/Sborochnye-zadaniya): informacia o sborohnyh zadaniah, metadannye, stikery i tak dalee.
+      2. Upravlenia [postavkami zakazov](/openapi/orders-fbs#tag/Postavki-FBS) prodavca na sklady WB.
+      3. Zakaza [propuskov](/openapi/orders-fbs#tag/Propuska) na sklady WB.
+      4. Dostavki zakazov [kurerom WB](/openapi/orders-fbs#tag/Dostavka-kurerom-WB-(DBW)) (DBW).
+  x-file-name: orders-fbs
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Sborohnye zadania
+    description: ''
+  - name: Metadannye
+    description: ''
+  - name: Postavki FBS
+    description: ''
+  - name: Propuska
+    description: ''
+  - name: Dostavka kurerom WB (DBW)
+    description: ''
+paths:
+  /api/v3/passes/offices:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Propuska
+      summary: Poluhit spisok skladov, dla kotoryh trebuetsa propusk
+      description: |
+        Metod predostavlaet spisok skladov dla privazki k [propusku prodavca](/openapi/orders-fbs#tag/Propuska/paths/~1api~1v3~1passes/get).
+
+        <div class="description_important">
+          Dannye, kotorye vozvrahaet metod, mogut menatsa. Rekomenduem periodiheski sinhronizirovat spisok
+        </div>
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: array
+                nullable: false
+                description: Spisok skladov
+                items:
+                  $ref: '#/components/schemas/PassOffice'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/passes:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Propuska
+      summary: Poluhit spisok propuskov
+      description: |
+        Metod predostavlaet spisok vseh [sozdannyh](/openapi/orders-fbs#tag/Propuska/paths/~1api~1v3~1passes/post) propuskov prodavca.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: array
+                nullable: false
+                description: Spisok propuskov prodavca
+                items:
+                  $ref: '#/components/schemas/Pass'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Propuska
+      summary: Sozdat propusk
+      description: |
+        Metod sozdaet [propusk prodavca](/openapi/orders-fbs#tag/Propuska/paths/~1api~1v3~1passes/get) s privazkoi k skladu WB.
+
+        Propusk deistvuet 48 hasov so vremeni sozdania.
+
+        <div class="description_limit">  
+          Maksimum 1 zapros v 10 <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minut</a> na odin akkaunt prodavca
+        </div>
+      requestBody:
+        required: true
+        description: Obhaa dlina FIO ogranihena ot 6 do 100 simvolov. V nomere mahiny mogut byt tolko bukvy i cifry.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  description: Ima voditela
+                  example: Aleksandr
+                lastName:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  description: Familia voditela
+                  example: Petrov
+                carModel:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  maxLength: 100
+                  description: Marka mahiny
+                  example: Lamborghini
+                carNumber:
+                  type: string
+                  nullable: false
+                  minLength: 6
+                  maxLength: 9
+                  description: Nomer mahiny
+                  example: A456BC123
+                officeId:
+                  type: integer
+                  format: int64
+                  nullable: false
+                  minimum: 1
+                  description: ID sklada
+                  example: 15
+              required:
+                - firstName
+                - lastName
+                - carModel
+                - carNumber
+                - officeId
+      responses:
+        '201':
+          description: Sozdano
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    nullable: false
+                    description: ID propuska prodavca
+                    example: 2
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/passes/{passId}:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Propuska
+      summary: Obnovit propusk
+      description: |
+        Metod obnovlaet dannye [propuska prodavca](/openapi/orders-fbs#tag/Propuska/paths/~1api~1v3~1passes/get). V tom hisle, mohno obnovit dannye privazannogo sklada WB.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Pass'
+      requestBody:
+        required: true
+        description: Obhaa dlina FIO ogranihena ot 6 do 100 simvolov. V nomere mahiny mogut byt tolko bukvy i cifry.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  description: Ima voditela
+                  example: Aleksandr
+                lastName:
+                  type: string
+                  nullable: false
+                  minLength: 6
+                  description: Familia voditela
+                  example: Petrov
+                carModel:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  maxLength: 100
+                  description: Marka mahiny
+                  example: Lamborghini
+                carNumber:
+                  type: string
+                  nullable: false
+                  minLength: 6
+                  maxLength: 9
+                  description: Nomer mahiny
+                  example: A456BC123
+                officeId:
+                  type: integer
+                  format: int64
+                  nullable: false
+                  minimum: 1
+                  description: ID sklada
+                  example: 15
+              required:
+                - firstName
+                - lastName
+                - carModel
+                - carNumber
+                - officeId
+      responses:
+        '204':
+          description: Obnovleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                WarehouseNameInvalid:
+                  $ref: '#/components/examples/WarehouseNameInvalid'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Propuska
+      summary: Udalit propusk
+      description: |
+        Metod udalaet propusk prodavca [iz spiska](/openapi/orders-fbs#tag/Propuska/paths/~1api~1v3~1passes/get).
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Pass'
+      responses:
+        '204':
+          description: Udaleno
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/new:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Sborohnye zadania
+      summary: Poluhit spisok novyh sborohnyh zadanii
+      description: |
+        Metod predostavlaet spisok vseh novyh [sborohnyh zadanii](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), kotorye est u prodavca na moment zaprosa.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                properties:
+                  orders:
+                    type: array
+                    nullable: false
+                    description: Spisok novyh sborohnyh zadanii
+                    items:
+                      $ref: '#/components/schemas/OrderNew'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Sborohnye zadania
+      summary: Poluhit informaciu o sborohnyh zadaniah
+      description: |
+        Metod predostavlaet informaciu o sborohnyh zadaniah bez ih aktualnogo [statusa](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post).
+
+        Mohno poluhit dannye za zadannyi period, maksimum 30 kalendarnyh dnei.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Next'
+        - name: dateFrom
+          in: query
+          schema:
+            type: integer
+          description: |
+            Data nahala perioda v formate Unix timestamp. Po umolhaniu — data za 30 dnei do zaprosa
+        - name: dateTo
+          in: query
+          schema:
+            type: integer
+          description: Data konca perioda v formate Unix timestamp
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                properties:
+                  next:
+                    $ref: '#/components/schemas/Next'
+                  orders:
+                    type: array
+                    nullable: false
+                    items:
+                      $ref: '#/components/schemas/Order'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/status:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Sborohnye zadania
+      summary: Poluhit statusy sborohnyh zadanii
+      description: |
+        Metod predostavlaet statusy [sborohnyh zadanii](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) po ih ID.
+        <br><br>
+        `supplierStatus` — status sborohnogo zadania. Trigger ego izmenenia — sam prodavec.
+
+        Vozmohnye znahenia `supplierStatus`:
+
+        | Status   | Opisanie            | Kak perevesti sborohnoe zadanie v dannyi status |
+        |-------|----------------------|--------------------------------------|
+        | **new**      | Novoe sborohnoe zadanie |  |
+        | **confirm**  | Na sborke <br>Dla dostavki silami Wildberries `fbs` |[Dobavit sborohnoe zadanie k postavke](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1orders~1%7BorderId%7D/patch)
+        | **complete** | V dostavke <br> Dla dostavki silami Wildberries `fbs` i kurerom WB `wbgo`  | Dla `fbs` — [peredat postavku v dostavku](/openapi/orders-fbs#tag/Postavki/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1deliver/patch) <br> Dla `wbgo` — [perevesti sborohnoe zadanie v dostavku](/openapi/orders-fbs#tag/Dostavka-kurerom-WB-(DBW)/paths/~1api~1v3~1orders~1%7BorderId%7D~1assemble/patch) |
+        | **cancel**   | Otmeneno prodavcom   | [Otmenit sborohnoe zadanie](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1cancel/patch)
+        | **receive**  | Poluheno klientom<br> Dla dostavki kurerom WB `wbgo`   | Status menaetsa avtomatiheski
+        | **reject**   | Otkaz klienta pri poluhenii<br>  Dla dostavki kurerom WB `wbgo`  |  Status menaetsa avtomatiheski
+
+        <br><br>
+        `wbStatus` — status sborohnogo zadania v sisteme WB.
+
+        Vozmohnye znahenia `wbStatus`:
+        - `waiting` — sborohnoe zadanie v rabote
+        - `sorted` — sborohnoe zadanie otsortirovano
+        - `sold` — sborohnoe zadanie poluheno pokupatelem
+        - `canceled` — otmena sborohnogo zadania
+        - `canceled_by_client` — pokupatel otmenil zakaz pri poluhenii
+        - `declined_by_client` — pokupatel otmenil zakaz. Otmena dostupna pokupatelu v pervyi has s momenta zakaza, esli zakaz ne pereveden na sborku
+        - `defect` — otmena sborohnogo zadania po prihine braka
+        - `ready_for_pickup` — sborohnoe zadanie pribylo na punkt vydahi zakazov (PVZ)
+        - `postponed_delivery` — kurerskaa dostavka otlohena   
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orders
+              properties:
+                orders:
+                  type: array
+                  minItems: 1
+                  maxItems: 1000
+                  description: Spisok ID sborohnyh zadanii
+                  items:
+                    type: integer
+                    format: int64
+                    example: 5632423
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    nullable: false
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          format: int64
+                          nullable: false
+                          description: ID sborohnogo zadania
+                          example: 5632423
+                        supplierStatus:
+                          type: string
+                          nullable: false
+                          description: Status sborohnogo zadania prodavca (ustanavlivaetsa prodavcom)
+                          enum:
+                            - new
+                            - confirm
+                            - complete
+                            - cancel
+                          example: new
+                        wbStatus:
+                          type: string
+                          nullable: false
+                          description: Status sborohnogo zadania v sisteme WB
+                          enum:
+                            - waiting
+                            - sorted
+                            - sold
+                            - canceled
+                            - canceled_by_client
+                            - declined_by_client
+                            - defect
+                            - ready_for_pickup
+                            - postponed_delivery
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies/orders/reshipment:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Sborohnye zadania
+      summary: Poluhit vse sborohnye zadania dla povtornoi otgruzki
+      description: |
+        Metod predostavlaet vse [sborohnye zadania](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), trebuuhie povtornoi otgruzki. 
+        <br><br>
+        Povtornaa otgruzka trebuetsa, esli postavka byla otskanirovana v punkte priemki, no pri etom v nei vse ehe est neotskanirovannye tovary. Spusta opredelennoe vrema neobhodimo dostavit eti tovary zanovo. Dannye sborohnye zadania mohno perevesti v [druguu aktivnuu postavku](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1orders~1%7BorderId%7D/patch).
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    description: Spisok zakazov
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        supplyID:
+                          description: ID postavki
+                        orderID:
+                          description: ID sborohnogo zadania
+              example:
+                orders:
+                  - supplyID: WB-GI-1234567
+                    orderID: 5632423
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/{orderId}/cancel:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Sborohnye zadania
+      summary: Otmenit sborohnoe zadanie
+      description: |
+        Metod otmenaet [sborohnoe zadanie](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) i perevodit v [status](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `cancel` — otmeneno prodavcom.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Order'
+      responses:
+        '204':
+          description: Otmeneno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka obnovlenia statusa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                StatusMismatch:
+                  $ref: '#/components/examples/StatusMismatch'
+                StatusChangeNotAllowed:
+                  $ref: '#/components/examples/StatusChangeNotAllowed'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/stickers:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Sborohnye zadania
+      summary: Poluhit stikery sborohnyh zadanii
+      description: |
+        Metod predostavlaet spisok stikerov dla [sborohnyh zadanii](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get).
+
+        Mohno poluhit stiker v formatah:
+          - SVG
+          - ZPLV (vertikalnyi)
+          - ZPLH (gorizontalnyi)
+          - PNG
+
+        Ogranihenia:
+          - Za odin zapros mohno poluhit maksimum 100 stikerov.
+          - Mohno poluhit stikery tolko dla sborohnyh zadanii, nahodahihsa na sborke — [status](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+
+        Dostupny razmery:
+          - 580x400 px pri parametrah `"width": 58`, `"height": 40`
+          - 400x300 px pri parametrah `"width": 40`, `"height": 30`
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - name: type
+          in: query
+          required: true
+          description: Tip stikera
+          schema:
+            type: string
+            enum:
+              - svg
+              - zplv
+              - zplh
+              - png
+        - name: width
+          in: query
+          required: true
+          description: hirina stikera
+          schema:
+            type: integer
+            enum:
+              - 58
+              - 40
+        - name: height
+          in: query
+          required: true
+          description: Vysota stikera
+          schema:
+            type: integer
+            enum:
+              - 40
+              - 30
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orders:
+                  type: array
+                  minItems: 1
+                  maxItems: 100
+                  description: Massiv ID sborohnyh zadanii
+                  items:
+                    type: integer
+                    format: int64
+                    example: 5346346
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stickers:
+                    type: array
+                    nullable: false
+                    items:
+                      type: object
+                      properties:
+                        orderId:
+                          type: integer
+                          format: int64
+                          nullable: false
+                          description: ID sborohnogo zadania
+                          example: 5346346
+                        partA:
+                          type: integer
+                          nullable: false
+                          description: Pervaa hast ID stikera (dla pehati podpisi)
+                          example: 231648
+                        partB:
+                          type: integer
+                          nullable: false
+                          description: Vtoraa hast ID stikera
+                          example: 9753
+                        barcode:
+                          type: string
+                          nullable: false
+                          description: Zakodirovannoe znahenie stikera
+                          example: '!uKEtQZVx'
+                        file:
+                          type: string
+                          format: byte
+                          nullable: false
+                          description: Polnoe predstavlenie stikera v zadannom formate. (kodirovka base64)
+                          example: PD94bWwgdmVyc2lvbj0iMS4wIj8+CjwhLS0gR2VuZXJhdGVkIGJ5IFNWR28gLS0+Cjxzdmcgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiCiAgICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICAgIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjQwMCIgaGVpZQiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzE4IiB5PSIyMCIgd2lkdGg9IjYiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzI2IiB5PSIyMCIgd2lkdGg9IjIiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzMwIiB5PSIyMCIgd2lkdGg9IjQiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMjAiIHk9IjIwMCIgd2lkdGg9IjM1MCIgaGVpZ2h0PSI5MCIgc3R5bGU9ImZpbGw6YmxhY2siIC8+Cjx0ZXh0IHg9IjMwIiB5PSIyNDAiIHN0eWxlPSJmaWxsOndoaXRlO2ZvbnQtc2l6ZTozMHB0O3RleHQtYW5jaG9yOnN0YXJ0IiA+MjMxNjQ4PC90ZXh0Pgo8dGV4dCB4PSIzNTAiIHk9IjI3MCIgc3R5bGU9ImZpbGw6d2hpdGU7Zm9udC1zaXplOjUwcHQ7dGV4dC1hbmNob3I6ZW5kIiA+OTc1MzwvdGV4dD4KPC9zdmc+Cg==
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/{orderId}/meta:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Metadannye
+      summary: Poluhit metadannye sborohnogo zadania
+      description: |
+        Metod predostavlaet metadannye zakaza, dostupnye dla [sborohnogo zadania](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get). 
+        <br><br>
+        Vozmohnye metadannye: 
+          - `imei` — [IMEI](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put)
+          - `uin` — [UIN](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1uin/put)
+          - `gtin` — [GTIN](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put)
+          - `sgtin` — [kod markirovki](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put)
+
+        Esli otvet vernulsa s pustoi strukturoi `meta`, znahit u sborohnogo zadania net metadannyh i dobavit ih nelza.  
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Order'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Metadannye
+      summary: Udalit metadannye sborohnogo zadania
+      description: |
+        Metod udalaet znahenie [metadannyh sborohnogo zadania](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) dla peredannogo kluha.
+        <br><br>
+        Vozmohnye metadannye: 
+          - `imei` — [IMEI](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put)
+          - `uin` — [UIN](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1uin/put)
+          - `gtin` — [GTIN](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put)
+          - `sgtin` — [kod markirovki](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put)
+
+        Mohno peredat tolko odin kluh.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Order'
+        - name: key
+          in: query
+          schema:
+            type: string
+          description: Nazvanie metadannyh dla udalenia (`imei`, `uin`, `gtin`, `sgtin`). Peredaetsa tolko odno znahenie.
+      responses:
+        '204':
+          description: Udaleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '409':
+          description: Ohibka udalenia metadannyh
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/{orderId}/meta/sgtin:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Metadannye
+      summary: Zakrepit za sborohnym zadaniem kod markirovki tovara
+      description: |
+        Metod pozvolaet zakrepit za [sborohnym zadaniem](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) kod markirovki [hestnyi znak](https://hestnyiznak.rf).
+        <br><br>
+        Zakrepit kod markirovki mohno tolko esli v [metadannyh sborohnogo zadania](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) est pole `sgtin`, a sborohnoe zadanie nahoditsa v [statuse](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+        <br><br>
+        Poluhit zagruhennye markirovki mohno v [metadannyh sborohnogo zadania](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get).
+
+        <div class="description_limit">
+          Maksimum 1 000 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> summarno na odin akkaunt prodavca dla metodov:
+            <br>
+            1. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1uin/put">Zakrepit za sborohnym zadaniem UIN</a><br>
+            2. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put">Zakrepit za sborohnym zadaniem IMEI</a><br>
+            3. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put">Zakrepit za sborohnym zadaniem GTIN</a><br>
+            4. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put">Zakrepit za sborohnym zadaniem kod markirovki</a>
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Order'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sgtins:
+                  type: array
+                  description: Massiv kodov markirovki. Dopuskaetsa ot 16 do 135 simvolov dla koda odnoi markirovki.
+                  minItems: 1
+                  maxItems: 24
+                  items:
+                    type: string
+                    description: Kod markirovki na upakovke. Ot 16 do 135 simvolov.
+                    example: '1234567890123456'
+      responses:
+        '204':
+          description: Otpravleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+                FailedToUpdateMeta:
+                  $ref: '#/components/examples/FailedToUpdateMeta'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka dobavlenia markirovki
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/{orderId}/meta/uin:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Metadannye
+      summary: Zakrepit za sborohnym zadaniem UIN
+      description: |
+        Metod obnovlaet UIN v [metadannyh sborohnogo zadania](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) — unikalnyi identifikacionnyi nomer. 
+        <br><br>
+        U odnogo sborohnogo zadania mohet byt tolko odin UIN. 
+
+        Dobavlat markirovku mohno tolko dla zakazov, kotorye dostavlautsa WB i nahodatsa v [statuse](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+
+        <div class="description_limit">
+          Maksimum 1 000 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> summarno na odin akkaunt prodavca dla metodov:
+            <br>
+            1. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1uin/put">Zakrepit za sborohnym zadaniem UIN</a><br>
+            2. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put">Zakrepit za sborohnym zadaniem IMEI</a><br>
+            3. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put">Zakrepit za sborohnym zadaniem GTIN</a><br>
+            4. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put">Zakrepit za sborohnym zadaniem kod markirovki</a>
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Order'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uin:
+                  type: string
+                  minLength: 16
+                  maxLength: 16
+                  description: UIN
+                  example: '1234567890123456'
+              required:
+                - uin
+      responses:
+        '204':
+          description: Obnovleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+                FailedToUpdateMeta:
+                  $ref: '#/components/examples/FailedToUpdateMeta'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '409':
+          description: Ohibka obnovlenia metadannyh
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/{orderId}/meta/imei:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Metadannye
+      summary: Zakrepit za sborohnym zadaniem IMEI
+      description: |
+        Metod obnovlaet IMEI v [metadannyh sborohnogo zadania](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get).
+        <br><br>
+        U odnogo sborohnogo zadania mohet byt tolko odin IMEI. Esli u ustroistva dva IMEI — <strong>IMEI i IMEI2</strong> ili <strong>IMEI1 i IMEI2</strong> — ukahite tolko <strong>IMEI</strong> ili <strong>IMEI1</strong>. <strong>IMEI2</strong> ukazyvat ne nuhno.
+        <br><br>
+        Dobavlat markirovku mohno tolko dla zakazov, kotorye dostavlautsa WB i nahodatsa v [statuse](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+
+        <div class="description_limit">
+          Maksimum 1 000 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> summarno na odin akkaunt prodavca dla metodov:
+            <br>
+            1. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1uin/put">Zakrepit za sborohnym zadaniem UIN</a><br>
+            2. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put">Zakrepit za sborohnym zadaniem IMEI</a><br>
+            3. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put">Zakrepit za sborohnym zadaniem GTIN</a><br>
+            4. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put">Zakrepit za sborohnym zadaniem kod markirovki</a>
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Order'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imei:
+                  type: string
+                  minLength: 15
+                  maxLength: 15
+                  description: IMEI
+                  example: '123456789012345'
+              required:
+                - imei
+      responses:
+        '204':
+          description: Obnovleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+                FailedToUpdateMeta:
+                  $ref: '#/components/examples/FailedToUpdateMeta'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '409':
+          description: Ohibka obnovlenia metadannyh
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/{orderId}/meta/gtin:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Metadannye
+      summary: Zakrepit za sborohnym zadaniem GTIN
+      description: |
+        Metod obnovlaet GTIN v [metadannyh sborohnogo zadania](/openapi/orders-fbs#tag/Metadannye/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) — unikalnyi ID tovara v Belarusi.
+        <br><br>
+        U odnogo sborohnogo zadania mohet byt tolko odin GTIN. 
+
+        Dobavlat markirovku mohno tolko dla zakazov, kotorye dostavlautsa WB i nahodatsa v [statuse](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+
+        <div class="description_limit">
+          Maksimum 1 000 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> summarno na odin akkaunt prodavca dla metodov:
+            <br>
+            1. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1uin/put">Zakrepit za sborohnym zadaniem UIN</a><br>
+            2. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put">Zakrepit za sborohnym zadaniem IMEI</a><br>
+            3. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put">Zakrepit za sborohnym zadaniem GTIN</a><br>
+            4. <a href="/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put">Zakrepit za sborohnym zadaniem kod markirovki</a>
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Order'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gtin:
+                  type: string
+                  minLength: 13
+                  maxLength: 13
+                  description: GTIN
+                  example: '1234567890123'
+              required:
+                - gtin
+      responses:
+        '204':
+          description: Obnovleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+                FailedToUpdateMeta:
+                  $ref: '#/components/examples/FailedToUpdateMeta'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '409':
+          description: Ohibka obnovlenia metadannyh
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/files/orders/external-stickers:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Sborohnye zadania
+      summary: Poluhit spisok ssylok na stikery sborohnyh zadanii, kotorye trebuutsa pri krossbordere
+      description: |
+        Metod predostavlaet spisok ssylok na stikery [sborohnyh zadanii](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), kotorye trebuutsa pri krossbordere.
+
+        Ogranihenia:
+          - Za odin zapros mohno poluhit maksimum 100 stikerov.
+          - Mohno poluhit stikery tolko dla sborohnyh zadanii, nahodahihsa v dostavke — [status](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `complete`.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orders:
+                  type: array
+                  minItems: 1
+                  maxItems: 100
+                  description: Massiv ID sborohnyh zadanii
+                  items:
+                    type: integer
+                    format: int64
+                    example: 5346346
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stickers:
+                    type: array
+                    nullable: false
+                    items:
+                      type: object
+                      properties:
+                        orderID:
+                          type: integer
+                          format: int64
+                          nullable: false
+                          description: ID sborohnogo zadania
+                          example: 5346346
+                        url:
+                          type: string
+                          nullable: false
+                          description: Ssylka, po kotoroi mohno poluhit stiker dla sborohnogo zadania
+                          example: https://.../some-sticker
+                        parcelID:
+                          type: string
+                          nullable: false
+                          description: Trek-nomer v stikere dla otslehivania sborohnogo zadania
+                          example: WB0000000001
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/status/history:
+    post:
+      servers:
+        - url: https://marketplace-api.wildberries.ru
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Sborohnye zadania
+      summary: Istoria statusov dla sborohnyh zadanii krossbordera
+      description: |
+        Metod predostavlaet istoriu [statusov](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) dla [sborohnyh zadanii](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) krossbordera.
+
+          <div class="description_limit">  
+            Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+          </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orders:
+                  description: ID sborohnyh zadanii
+                  type: array
+                  items:
+                    type: integer
+                  maxItems: 100
+                  minItems: 1
+                  example:
+                    - 123456789
+                    - 987654321
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    description: Sborohnye zadania
+                    items:
+                      type: object
+                      properties:
+                        deliveryDate:
+                          type: string
+                          description: Planiruemaa data dostavki, [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339)
+                        statuses:
+                          description: Statusy
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              date:
+                                type: string
+                                description: Data prisvoenia statusa
+                                example: null
+                              code:
+                                type: string
+                                description: |
+                                  Status-kod sborohnogo zadania/zakaza:
+                                    - `accepted_by_carrier` — Tovar prinat perevozhikom
+                                    - `assembling` — Otpravlen na sborku
+                                    - `assembled` — Sobran na sklade
+                                    - `sorted` — Otsortirovan
+                                    - `replaced_at_warehouse` — Zamena na sklade
+                                    - `prepared_for_shipment` — Podgotovlen k otgruzke
+                                    - `in_search` — Na poiske
+                                    - `arrived_at_dct` — Postupil v raspredelitelnyi centr-tranzit
+                                    - `arrived_at_sct` — Postupil v sortirovohnyi centr-tranzit
+                                    - `arrived_at_dc` — Postupil v raspredelitelnyi centr
+                                    - `arrived_at_sc` — Postupil v sortirovohnyi centr
+                                    - `prepared_for_shipment_at_sc` — Podgotovlen k otgruzke v sortirovohnom centre
+                                    - `shipped_at_sc` — Otgruheno sortirovohnym centrom
+                                    - `shipped_at_dct` — Otgruhen raspredelitelnym centrom — tranzit
+                                    - `shipped_at_dc` — Otgruhen raspredelitelnym centrom
+                                    - `delivered_at_sc` — Dostavlen v sortirovohnyi/raspredelitelnyi centr (Sc/Rc)
+                                    - `on_way_to_sc` — V puti v sortirovohnyi centr
+                                    - `on_way_to_dc` — V puti v raspredelitelnyi centr
+                                    - `on_way_to_pp` — V puti na punkt vydahi
+                                    - `arrived_at_pp` — Pribyl na punkt vydahi
+                                    - `accepted_at_pp` — Priemka v punkte vydahi
+                                    - `ready_for_pick_up` — Gotov k vydahe
+                                    - `arrived_at_pp` — Postupil na punkt vydahi zakazov (PVZ)
+                                    - `received_by_client` — Poluhen klientom
+                                    - `delivered_at_parcel_locker` — Dostavlen v postamat
+                                    - `canceled_by_client` — Pokupatel otmenil zakaz pri poluhenii
+                                    - `cancel_after_expiration` — Otmena po sroku hranenia
+                                    - `at_courier` — Peredan kureru
+                                    - `moved_to_return_box` — Peremehen v vozvratnuu korobku
+                                    - `accepted_for_return` — Prinat k vozvratu na PVZ
+                                    - `created` — Oformlen
+                                    - `canceled_by_seller` — Otmenen prodavcom
+                                    - `dispatched_by_seller` — Otgruheno po dannym prodavca
+                                    - `delivered` — Zakaz vydan
+                                    - `on_way` — V puti
+                                    - `arrived_at_wb_wh` — Postupil na sklad WB
+                                    - `dispatched_from_wh` — Otpravlen so sklada
+                                    - `customs_clearance` — Tamohennoe oformlenie
+                                    - `customs_clearance_completed` — Vypuhen tamohnei
+                                    - `departed_from_origin_country` — Otpravlen iz strany prodavca
+                                    - `arrived_in_destination_country` — Pribytie v stranu naznahenia
+                                    - `on_way_to_wb_sc` — Otpravlen do sortirovohnogo centra (Sc) WB
+                                    - `accepted_at_wb_sc` — Prinat Sc WB
+                                    - `canceled` — Otmena
+                                    - `failed_to_reach_client` — Ne dozvonilis do klienta
+                                example: SORTED
+                        orderID:
+                          description: ID sborohnogo zadania
+                          type: integer
+                          example: 123456789
+        '400':
+          description: Nepravilnyi zapros
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/client:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      security:
+        - HeaderApiKey: []
+      summary: Zakazy s informaciei po klientu
+      description: |
+        Metod pozvolaet poluhat informaciu o pokupatele po ID sborohnogo zadania.
+
+        Tolko dla krossbordera iz **Turcii**.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      tags:
+        - Sborohnye zadania
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdersRequestAPI'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/CrossborderTurkeyClientInfoResp'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Sozdat novuu postavku
+      description: |
+        Metod sozdaet novuu [postavku](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get).
+
+        Ogranihenia:
+        - Tolko dla [sborohnyh zadanii](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) po sheme FBS.
+        - Pri dobavlenii v postavku vse peredavaemye sborohnye zadania v [statuse](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `new` budut avtomatiheski perevedeny v status `confirm` — na sborke.
+        - Esli vy perevedete sborohnoe zadanie v status `cancel` — otmena prodavcom, prikreplennoe sborohnoe zadanie avtomatiheski udalitsa iz postavki.
+        - Postavku mohno sobrat tolko iz sborohnyh zadanii (zakazov) odnogo gabaritnogo tipa `cargoType`. Novaa postavka ne obladaet gabaritnym priznakom, ona priobretaet gabaritnyi priznak pervogo zakaza, dobavlennogo v postavku.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 128
+                  description: Naimenovanie postavki
+                  example: Testovaa postavka
+      responses:
+        '201':
+          description: Sozdano
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    nullable: false
+                    description: ID postavki
+                    example: WB-GI-1234567
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Poluhit spisok postavok
+      description: |
+        Metod predostavlaet spisok [postavok](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get).
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Next'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                properties:
+                  next:
+                    $ref: '#/components/schemas/Next'
+                  supplies:
+                    type: array
+                    nullable: false
+                    description: Spisok postavok
+                    items:
+                      $ref: '#/components/schemas/Supply'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies/{supplyId}/orders/{orderId}:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Dobavit sborohnoe zadanie k postavke
+      description: |
+        Metod dobavlaet [sborohnoe zadanie](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) k postavke i perevodit ego v [status](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm` — na sborke. 
+
+        Mohet peremehat sborohnoe zadanie:
+          - mehdu aktivnymi postavkami.
+          - iz zakrytoi postavki v aktivnuu, esli sborohnoe zadanie trebuet [povtornoi otgruzki](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1supplies~1orders~1reshipment/get).
+
+        <div class="description_important">
+          V pustuu postavku mohno dobavit sborohnoe zadanie lubogo gabaritnogo tipa. Postavka priobretaet gabaritnyi tip pervogo dobavlennogo sborohnogo zadania <a href ="./orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get">iz pola</a> <code>cargoType</code>.<br>Posle etogo v postavku mohno dobavit sborohnye zadania tolko togo he gabaritnogo tipa, hto i u postavki.
+        </div>
+
+        <div class="description_limit">  
+          Maksimum 1 000 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+        - $ref: '#/components/parameters/Order'
+      responses:
+        '204':
+          description: Zadanie zakrepleno za postavkoi
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka dobavlenia sborohnogo zadania k postavke
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                FailedToAddSupplyOrder:
+                  $ref: '#/components/examples/FailedToAddSupplyOrder'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies/{supplyId}:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Poluhit informaciu o postavke
+      description: |
+        Metod predostavlaet podrobnuu informaciu o postavke.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supply'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Udalit postavku
+      description: |
+        Metod udalaet [postavku](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get), esli ona aktivna i za nei ne zakrepleno ni odno [sborohnoe zadanie](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get).
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+      responses:
+        '204':
+          description: Udaleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Za postavkoi zakrepleny sborohnye zadania
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SupplyHasOrders:
+                  $ref: '#/components/examples/SupplyHasOrders'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies/{supplyId}/orders:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Poluhit sborohnye zadania v postavke
+      description: |
+        Metod predostavlaet [sborohnye zadania](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), zakreplennye za [postavkoi](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get).
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                properties:
+                  orders:
+                    type: array
+                    nullable: false
+                    items:
+                      $ref: '#/components/schemas/SupplyOrder'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies/{supplyId}/deliver:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Peredat postavku v dostavku
+      description: |
+        Metod zakryvaet [postavku](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get) i perevodit vse [sborohnye zadania](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) v nei v [status](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `complete` — v dostavke. Posle zakrytia postavki dobavit novye sborohnye zadania k nei nelza.
+        <br><br>
+        Esli postavka ne byla peredana v dostavku, to pri skanirovanii ee htrihkoda ili priemke pervogo tovara postavka avtomatiheski zakroetsa.
+        <br><br>
+        Peredat postavku v dostavku mohno tolko esli v nei:
+          - est hota by odno sborohnoe zadania
+          - otsutstvuut pustye koroba
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+      responses:
+        '204':
+          description: Peredano v dostavku
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka zakrytia postavki
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SupplyHasZeroOrders:
+                  $ref: '#/components/examples/SupplyHasZeroOrders'
+                UinIsNotFilled:
+                  $ref: '#/components/examples/UinIsNotFilled'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies/{supplyId}/barcode:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Poluhit QR-kod postavki
+      description: |
+        Metod predostavlaet QR-kod [postavki](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get) v formatah:
+          - SVG
+          - ZPLV (vertikalnyi)
+          - ZPLH (gorizontalnyi)
+          - PNG
+
+        QR-kod postavki mohno poluhit tolko esli postavka [peredana v dostavku](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1deliver/patch).
+        <br><br>
+        Razmer — 580x400 px.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+        - name: type
+          in: query
+          required: true
+          description: Tip stikera
+          schema:
+            type: string
+            enum:
+              - svg
+              - zplv
+              - zplh
+              - png
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                properties:
+                  barcode:
+                    type: string
+                    nullable: false
+                    description: Zakodirovannoe znahenie stikera (ID postavki)
+                    example: WB-GI-12345678
+                  file:
+                    type: string
+                    format: byte
+                    nullable: false
+                    description: Polnoe predstavlenie stikera v zadannom formate. (kodirovka base64)
+                    example: U3dhZ2dlciByb2Nrcw==
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka zaprosa dannyh
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SupplyNotClosed:
+                  $ref: '#/components/examples/SupplyNotClosed'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies/{supplyId}/trbx:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Poluhit spisok korobov postavki
+      description: |
+        Metod predostavlaet spisok korobov i ID [zakazov](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), vhodahih v eti koroba.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trbxes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SupplyTrbx'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Dobavit koroba k postavke
+      description: |
+        Metod dobavlaet trebuemoe kolihestvo [korobov](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1trbx/get) v [postavku](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get). 
+        <br><br>
+        Mohno dobavit tolko poka postavka na sborke.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+              properties:
+                amount:
+                  type: integer
+                  minimum: 1
+                  maximum: 1000
+                  description: Kolihestvo korobov, kotorye neobhodimo dobavit k postavke.
+                  example: 4
+      responses:
+        '201':
+          description: Sozdano
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trbxIds:
+                    type: array
+                    description: Spisok ID korobov, kotorye byli sozdany.
+                    minItems: 1
+                    items:
+                      type: string
+                      example: WB-TRBX-1234567
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Udalit koroba iz postavki
+      description: |
+        Metod ubiraet zakazy iz perehislennyh [korobov](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1trbx/get) [postavki](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get) i udalaet koroba. 
+        <br><br>
+        Mohno udalit tolko poka postavka na sborke.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - trbxIds
+              properties:
+                trbxIds:
+                  type: array
+                  description: Spisok ID korobov, kotorye neobhodimo udalit.
+                  items:
+                    type: string
+                    example: WB-TRBX-1234567
+      responses:
+        '204':
+          description: Udaleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies/{supplyId}/trbx/{trbxId}:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Dobavit zakazy v korob
+      description: |
+        Metod dobavlaet zakazy v [korob](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1trbx/get) dla vybrannoi [postavki](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get).
+        <br><br>
+        Mohno dobavit tolko poka postavka na sborke.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+        - $ref: '#/components/parameters/Trbx'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orderIds
+              properties:
+                orderIds:
+                  type: array
+                  description: Spisok zakazov, kotorye neobhodimo dobavit v korob.
+                  items:
+                    type: integer
+                    example: 1234567
+      responses:
+        '204':
+          description: Dobavleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies/{supplyId}/trbx/{trbxId}/orders/{orderId}:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    delete:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Udalit zakaz iz koroba
+      description: |
+        Metod udalaet zakaz iz [koroba](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1trbx/get) vybrannoi [postavki](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get).
+        <br><br>
+        Mohno udalit tolko poka postavka na sborke.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+        - $ref: '#/components/parameters/Trbx'
+        - $ref: '#/components/parameters/Order'
+      responses:
+        '204':
+          description: Udaleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/supplies/{supplyId}/trbx/stickers:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Postavki FBS
+      summary: Poluhit stikery korobov postavki
+      description: |
+        Metod predostavlaet QR-stikery v formatah:
+          - SVG
+          - ZPLV (vertikalnyi)
+          - ZPLH (gorizontalnyi)
+          - PNG
+
+        Mohno poluhit tolko esli v [korobe](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1trbx/get) est zakazy.
+        <br><br>
+        Razmer stikerov — 580x400 px.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Supply'
+        - name: type
+          in: query
+          required: true
+          description: Tip stikera
+          schema:
+            type: string
+            enum:
+              - svg
+              - zplv
+              - zplh
+              - png
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - trbxIds
+              properties:
+                trbxIds:
+                  type: array
+                  description: Spisok ID korobov, po kotorym neobhodimo vernut stikery.
+                  items:
+                    type: string
+                    example: WB-TRBX-1234567
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                properties:
+                  stickers:
+                    type: array
+                    minItems: 1
+                    items:
+                      $ref: '#/components/schemas/TrbxStickers'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/{orderId}/confirm:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Dostavka kurerom WB (DBW)
+      summary: Perevesti na sborku
+      description: |
+        Metod perevodit [sborohnoe zadanie](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) v [status](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm` — na sborke.
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/OrderID'
+      responses:
+        '204':
+          description: Podtverhdeno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka obnovlenia statusa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                StatusMismatch:
+                  $ref: '#/components/examples/StatusMismatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/{orderId}/assemble:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Dostavka kurerom WB (DBW)
+      summary: Perevesti v dostavku
+      description: |
+        Metod perevodit [sborohnoe zadanie](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) v [status](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `complete` — v dostavke.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Order'
+      responses:
+        '204':
+          description: Podtverhdeno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ohibka obnovlenia statusa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                StatusMismatch:
+                  $ref: '#/components/examples/StatusMismatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/warehouses/{warehouseId}/contacts:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Dostavka kurerom WB (DBW)
+      summary: Spisok kontaktov
+      description: |
+        Metod predostavlaet spisok kontaktov, privazannyh k [skladu prodavca](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get).
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Warehouse'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                type: array
+                nullable: false
+                description: Spisok kontaktov sklada prodavca
+                items:
+                  $ref: '#/components/schemas/StoreContactResponseBody'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Dostavka kurerom WB (DBW)
+      summary: Obnovit spisok kontaktov
+      parameters:
+        - $ref: '#/components/parameters/Warehouse'
+      description: |
+        Metod obnovlaet spisok kontaktov [sklada prodavca](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get).
+
+        <div class="description_important">
+          Spisok kontaktov perezapisyvaetsa pri obnovlenii. Poetomu v zaprose nuhno peredat <strong>vse</strong> parametry spiska kontaktov, v tom hisle te, kotorye vy ne sobiraetes obnovlat.
+        </div>
+
+        Tolko dla skladov s tipom dostavki `3` — kurerom WB.
+        <br><br>
+        K skladu mohno dobavit maksimum 5 kontaktov. htoby udalit kontakty, otpravte pustoi massiv `contacts`.
+
+        <div class="description_limit">  
+          Maksimum 300 zaprosov v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> dla vseh metodov kategorii <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">Marketpleis</a> na odin akkaunt prodavca.
+          <br><br>
+          Odin zapros s kodom otveta <code>409</code> uhityvaetsa kak 5 zaprosov
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreContactRequestBody'
+      responses:
+        '204':
+          description: Obnovleno
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                UploadDataLimit:
+                  $ref: '#/components/examples/UploadDataLimit'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header
+  parameters:
+    OrderID:
+      name: orderId
+      in: path
+      required: true
+      description: ID sborohnogo zadania
+      schema:
+        type: integer
+        format: int64
+        example: 5632423
+    Warehouse:
+      name: warehouseId
+      in: path
+      required: true
+      description: ID sklada prodavca
+      schema:
+        type: integer
+        format: int64
+        example: 1
+    Supply:
+      name: supplyId
+      in: path
+      required: true
+      description: ID postavki
+      schema:
+        type: string
+        example: WB-GI-1234567
+    Trbx:
+      name: trbxId
+      in: path
+      required: true
+      description: ID koroba
+      schema:
+        type: string
+        example: WB-TRBX-1234567
+    Order:
+      name: orderId
+      in: path
+      required: true
+      description: ID sborohnogo zadania
+      schema:
+        type: integer
+        format: int64
+        example: 5632423
+    Pass:
+      name: passId
+      in: path
+      required: true
+      description: ID propuska
+      schema:
+        type: integer
+        format: int64
+        example: 45
+    Next:
+      name: next
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int64
+      description: Parametr paginacii. Ustanavlivaet znahenie, s kotorogo nado poluhit sleduuhii paket dannyh. Dla poluhenia polnogo spiska dannyh dolhen byt raven 0 v pervom zaprose. Dla sleduuhih zaprosov neobhodimo brat znahenia iz odnoimennogo pola v otvete.
+    Limit:
+      name: limit
+      in: query
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+      description: Parametr paginacii. Ustanavlivaet predelnoe kolihestvo vozvrahaemyh dannyh.
+  examples:
+    UploadDataLimit:
+      value:
+        code: UploadDataLimit
+        message: Prevyhen limit zagruhaemyh dannyh
+    IncorrectRequestBody:
+      value:
+        code: IncorrectRequestBody
+        message: Nekorrektnoe telo zaprosa
+    WarehouseNameInvalid:
+      value:
+        code: WarehouseNameInvalid
+        message: Nekorrektnoe ima sklada
+    IncorrectRequest:
+      value:
+        code: IncorrectRequest
+        message: Peredany nekorrektnye dannye
+    IncorrectParameter:
+      value:
+        code: IncorrectParameter
+        message: Peredan nekorrektnyi parametr
+    FailedToUpdateMeta:
+      value:
+        code: FailedToUpdateMeta
+        message: Ne udalos obnovit metadannye sborohnogo zadania. Ubedites, hto sborohnoe zadanie udovletvoraet vsem neobhodimym trebovaniam (sborohnoe zadanie suhestvuet, nahoditsa v statuse "Na sborke", sborohnomu zadaniu dostupny metadannye sm. opisanie metoda **Poluhit metadannye sborohnogo zadania**)
+    SupplyHasOrders:
+      value:
+        code: SupplyHasOrders
+        message: Ne udalos obrabotat postavku. Ubedites, hto za nei ne ostalos zakreplennyh sborohnyh zadanii.
+    SupplyHasZeroOrders:
+      value:
+        code: SupplyHasZeroOrders
+        message: Ne udalos obrabotat postavku. Ubedites, hto za nei zakreplen hota by odno sborohnoe zadanie.
+    UinIsNotFilled:
+      value:
+        code: UinIsNotFilled
+        message: Perevod v status "v dostavke" nevozmohen. Vvedite UINy dla vseh sborohnyh zadanii, gde eto neobhodimo.
+    SupplyNotClosed:
+      value:
+        code: SupplyNotClosed
+        message: Postavka ne peredana v dostavku
+    FailedToAddSupplyOrder:
+      value:
+        code: FailedToAddSupplyOrder
+        message: Ne udalos zakrepit sborohnoe zadanie za postavkoi. Ubedites, hto sborohnoe zadanie i postavka udovletvoraut vsem neobhodimym trebovaniam.
+    StatusMismatch:
+      value:
+        code: StatusMismatch
+        message: Nesootvetstvie statusov, proverte ih pravilnost
+    StatusChangeNotAllowed:
+      value:
+        code: StatusChangeNotAllowed
+        message: Zadanie pereidet v zaverhennye posle skanirovania na punte vydahi zakazov (PVZ)
+  responses:
+    '401':
+      description: Polzovatel ne avtorizovan
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              detail:
+                type: string
+                description: Detali ohibki
+              code:
+                type: string
+                description: Vnutrennii kod ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+              status:
+                type: number
+                description: HTTP status-kod
+              statusText:
+                type: string
+                description: Rashifrovka HTTP status-koda
+              timestamp:
+                type: string
+                format: RFC3339
+                description: Data i vrema zaprosa
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '429':
+      description: Slihkom mnogo zaprosov
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              detail:
+                type: string
+                description: Detali ohibki
+              code:
+                type: string
+                description: Vnutrennii kod ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+              status:
+                type: number
+                description: HTTP status-kod
+              statusText:
+                type: string
+                description: Rashifrovka HTTP status-koda
+              timestamp:
+                type: string
+                format: RFC3339
+                description: Data i vrema zaprosa
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'
+    NotFound:
+      description: Ne naideno
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: NotFound
+            message: Ne naideno
+    AccessDenied:
+      description: Dostup zaprehen
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: AccessDenied
+            message: Dostup zaprehen
+  schemas:
+    PassOffice:
+      type: object
+      description: Dannye o sklade, dla kotorogo trebuetsa propusk
+      properties:
+        name:
+          type: string
+          nullable: false
+          description: Nazvanie
+          example: Koledino
+        address:
+          type: string
+          nullable: false
+          description: Adres
+          example: g. Podolsk, d. Koledino, ul. Troickaa
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID
+          example: 1
+    Error:
+      type: object
+      nullable: false
+      properties:
+        code:
+          type: string
+          description: Kod ohibki
+          nullable: false
+        message:
+          type: string
+          description: Opisanie ohibki
+          nullable: false
+        data:
+          type: object
+          description: Dopolnitelnye dannye, obogahauhie ohibku
+          nullable: true
+    Next:
+      type: integer
+      format: int64
+      nullable: false
+      description: Parametr paginacii. Soderhit znahenie, kotoroe neobhodimo ukazat v zaprose dla poluhenia sleduuhego paketa dannyh
+      example: 13833711
+    Order:
+      type: object
+      properties:
+        address:
+          type: object
+          nullable: true
+          description: Detalizovannyi adres pokupatela dla dostavki (esli primenimo). Nekotorye iz polei mogut priiti pustymi iz-za specifiki adresa
+          properties:
+            fullAddress:
+              description: Adres dostavki.
+              type: string
+              example: helabinskaa oblast, g. helabinsk, 51-a ulica Arabkira, d. 10A, kv. 42
+            longitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Koordinata dolgoty
+              example: 44.519068
+            latitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Koordinaty hiroty
+              example: 40.20192
+        scanPrice:
+          type: number
+          format: uint32
+          description: cena priemki v kopeikah. Poavlaetsa posle faktiheskoi priemki zakaza
+          example: 1500
+        deliveryType:
+          type: string
+          nullable: false
+          description: |
+            <dl>
+            <dt>Tip dostavki:</dt>
+            <dd>fbs - dostavka na sklad Wildberries (FBS)</dd>
+            <dd>wbgo - dostavka kurerom WB (DBW)</dd>
+            </dl>
+          enum:
+            - fbs
+            - wbgo
+        supplyId:
+          type: string
+          description: ID postavki. Vozvrahaetsa, esli zakaz zakreplen za postavkoi
+          example: WB-GI-92937123
+        orderUid:
+          type: string
+          description: ID tranzakcii dla gruppirovki sborohnyh zadanii. Sborohnye zadania v odnoi korzine pokupatela budut imet odinakovyi orderUID
+          example: 165918930_629fbc924b984618a44354475ca58675
+        article:
+          type: string
+          nullable: false
+          description: Artikul prodavca
+          example: one-ring-7548
+        colorCode:
+          type: string
+          nullable: false
+          description: Kod cveta (tolko dla koleruemyh tovarov)
+          example: RAL 3017
+        rid:
+          type: string
+          nullable: false
+          description: ID sborohnogo zadania v sisteme Wildberries
+          example: f884001e44e511edb8780242ac120002
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+          description: Data sozdania sborohnogo zadania (RFC3339)
+          example: '2022-05-04T07:56:29Z'
+        offices:
+          type: array
+          nullable: true
+          description: Spisok ofisov, kuda sleduet privezti tovar
+          items:
+            type: string
+            example: Kaluga
+        skus:
+          type: array
+          nullable: false
+          description: Massiv barkodov tovara
+          items:
+            type: string
+            example: '6665956397512'
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID sborohnogo zadania v Marketpleise
+          example: 13833711
+        warehouseId:
+          type: integer
+          nullable: false
+          description: ID sklada prodavca, na kotoryi postupilo sborohnoe zadanie
+          example: 658434
+        nmId:
+          type: integer
+          nullable: false
+          description: Artikul WB
+          example: 12345678
+        chrtId:
+          type: integer
+          nullable: false
+          description: ID razmera tovara v sisteme Wildberries
+          example: 987654321
+        price:
+          type: integer
+          nullable: false
+          description: |
+            cena v valute prodahi s uhetom vseh skidok, krome summy po WB Kohelku, umnohennaa na 100. Kod valuty prodahi — v pole `currencyCode`
+          example: 1014
+        convertedPrice:
+          type: integer
+          nullable: false
+          description: cena v valute strany prodavca s uhetom vseh skidok, krome summy po WB Kohelku, umnohennaa na 100. Predostavlaetsa v informacionnyh celah.
+          example: 28322
+        currencyCode:
+          type: integer
+          nullable: false
+          description: Kod valuty prodahi (ISO 4217)
+          example: 933
+        convertedCurrencyCode:
+          type: integer
+          nullable: false
+          description: Kod valuty strany prodavca (ISO 4217)
+          example: 643
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            <dl> <dt>Tip tovara:</dt> <dd>1 - MGT (malogabaritnyi, to est obyhnyi tovar)</dd> <dd>2 - SGT (Sverhgabaritnyi tovar)</dd> <dd>3 - KGT+ (Krupnogabaritnyi tovar)</dd> </dl>
+          enum:
+            - 1
+            - 2
+            - 3
+        comment:
+          description: Kommentarii pokupatela
+          type: string
+          nullable: false
+          maxLength: 300
+          example: Upakuite v plenku, pohaluista
+        isZeroOrder:
+          description: Priznak zakaza sdelannogo na nulevoi ostatok tovara. (<code>false</code> - zakaz sdelan na tovar s nenulevym ostatkom, <code>true</code> - zakaz sdelan na tovar s ostatkom ravnym nulu. Takoi zakaz mohno otmenit bez htrafa za otmenu)
+          example: false
+        options:
+          type: object
+          description: Opcii zakaza
+          properties:
+            isB2b:
+              type: boolean
+              description: |
+                Priznak B2B-prodahi:
+                  - <code>false</code> — ne B2B-prodaha
+                  - <code>true</code> — B2B-prodaha
+    Supply:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: false
+          description: ID postavki
+          example: WB-GI-1234567
+        done:
+          type: boolean
+          nullable: false
+          description: Flag zakrytia postavki
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+          description: Data sozdania postavki (RFC3339)
+          example: '2022-05-04T07:56:29Z'
+        closedAt:
+          type: string
+          format: date-time
+          nullable: false
+          description: Data zakrytia postavki (RFC3339)
+          example: '2022-05-04T07:56:29Z'
+        scanDt:
+          type: string
+          nullable: false
+          format: date-time
+          description: Data skana postavki (RFC3339)
+          example: '2022-05-04T07:56:29Z'
+        name:
+          type: string
+          nullable: false
+          description: Naimenovanie postavki
+          example: Testovaa postavka
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            <dl> <dt>Tip postavki:</dt> <dd>0 - priznak otsutstvuet</dd> <dd>1 - MGT (Soderhit malogabaritnye tovary)</dd> <dd>2 - SGT (Soderhit sverhgabaritnye tovary)</dd> <dd>3 - KGT+ (Soderhit krupnogabaritnye tovary)</dd> </dl>
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+    OrderNew:
+      type: object
+      properties:
+        address:
+          type: object
+          nullable: true
+          description: Detalizovannyi adres pokupatela dla dostavki (esli primenimo). Nekotorye iz polei mogut priiti pustymi iz-za specifiki adresa
+          properties:
+            fullAddress:
+              description: Adres dostavki.
+              type: string
+              example: helabinskaa oblast, g. helabinsk, 51-a ulica Arabkira, d. 10A, kv. 42
+            longitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Koordinata dolgoty
+              example: 44.519068
+            latitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Koordinaty hiroty
+              example: 40.20192
+        ddate:
+          type: string
+          description: |
+            Planiruemaa data dostavki.<br> 
+            Pole otobrahaetsa dla shem:
+              - `wbgo` — dostavka kurerom WB (DBW)
+              - `SGT` — zakazy sverhgabaritnyh tovarov (<code>cargoType: 2</code>) dla shemy FBS — dostavka na sklad Wildberries.
+          nullable: false
+          example: 17.05.2024
+        salePrice:
+          description: |
+            cena prodavca v valute prodahi s uhetom skidki prodavca, bez uheta skidki WB Kluba, umnohennaa na 100
+          type: integer
+          nullable: true
+          example: 504600
+        requiredMeta:
+          description: |
+            Perehen metadannyh, kotorye neobhodimo dobavit v sborohnoe zadanie.  <br> Na dannyi moment obazatelnymi k dobavleniu avlautsa UIN i IMEI pri ih nalihii v perehne.             
+          type: array
+          nullable: true
+          items:
+            type: string
+          example:
+            - uin
+        deliveryType:
+          type: string
+          nullable: false
+          description: |
+            <dl>
+            <dt>Tip dostavki:</dt>
+            <dd>fbs - dostavka na sklad Wildberries (FBS)</dd>
+            <dd>wbgo - dostavka kurerom WB (DBW)</dd>
+            </dl>
+          enum:
+            - fbs
+            - wbgo
+        comment:
+          description: Kommentarii pokupatela
+          type: string
+          nullable: false
+          maxLength: 300
+          example: Upakuite v plenku, pohaluista
+        scanPrice:
+          description: cena priemki v kopeikah. Poavlaetsa posle faktiheskoi priemki zakaza. Dla dannogo metoda vsegda budet vozvrahatsa null
+          type: number
+          format: uint32
+          nullable: true
+          example: null
+        orderUid:
+          type: string
+          description: ID tranzakcii dla gruppirovki sborohnyh zadanii. Sborohnye zadania v odnoi korzine pokupatela budut imet odinakovyi orderUID
+          example: 165918930_629fbc924b984618a44354475ca58675
+        article:
+          type: string
+          nullable: false
+          description: Artikul prodavca
+          example: one-ring-7548
+        colorCode:
+          description: Kod cveta (tolko dla koleruemyh tovarov)
+          type: string
+          nullable: false
+          example: RAL 3017
+        rid:
+          type: string
+          nullable: false
+          description: ID sborohnogo zadania v sisteme Wildberries
+          example: f884001e44e511edb8780242ac120002
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+          description: Data sozdania sborohnogo zadania (RFC3339)
+          example: '2022-05-04T07:56:29Z'
+        offices:
+          type: array
+          nullable: true
+          description: Spisok ofisov, kuda sleduet privezti tovar
+          items:
+            type: string
+            example: Kaluga
+        skus:
+          type: array
+          nullable: false
+          description: Massiv barkodov tovara
+          items:
+            type: string
+            example: '6665956397512'
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID sborohnogo zadania v Marketpleise
+          example: 13833711
+        warehouseId:
+          type: integer
+          nullable: false
+          description: ID sklada prodavca, na kotoryi postupilo sborohnoe zadanie
+          example: 658434
+        nmId:
+          type: integer
+          nullable: false
+          description: Artikul WB
+          example: 123456789
+        chrtId:
+          type: integer
+          nullable: false
+          description: ID razmera tovara v sisteme Wildberries
+          example: 987654321
+        price:
+          type: integer
+          nullable: false
+          description: |
+            cena v valute prodahi s uhetom vseh skidok, krome summy po WB Kohelku, umnohennaa na 100. Kod valuty prodahi — v pole `currencyCode`
+          example: 1014
+        convertedPrice:
+          type: integer
+          nullable: false
+          description: cena v valute strany prodavca s uhetom vseh skidok, krome summy po WB Kohelku, umnohennaa na 100. Predostavlaetsa v informacionnyh celah.
+          example: 28322
+        currencyCode:
+          type: integer
+          nullable: false
+          description: Kod valuty prodahi (ISO 4217)
+          example: 933
+        convertedCurrencyCode:
+          type: integer
+          nullable: false
+          description: Kod valuty strany prodavca (ISO 4217)
+          example: 643
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            <dl> <dt>Tip tovara:</dt> <dd>1 - MGT (malogabaritnyi, to est obyhnyi tovar)</dd> <dd>2 - SGT (Sverhgabaritnyi tovar)</dd> <dd>3 - KGT+ (Krupnogabaritnyi tovar)</dd> </dl>
+          enum:
+            - 1
+            - 2
+            - 3
+        isZeroOrder:
+          description: Priznak zakaza sdelannogo na nulevoi ostatok tovara. (<code>false</code> - zakaz sdelan na tovar s nenulevym ostatkom, <code>true</code> - zakaz sdelan na tovar s ostatkom ravnym nulu. Takoi zakaz mohno otmenit bez htrafa za otmenu)
+          example: false
+        options:
+          type: object
+          description: Opcii zakaza
+          properties:
+            isB2b:
+              type: boolean
+              description: |
+                Priznak B2B-prodahi:
+                  - <code>false</code> — ne B2B-prodaha
+                  - <code>true</code> — B2B-prodaha
+    SupplyOrder:
+      type: object
+      properties:
+        scanPrice:
+          description: cena priemki v kopeikah. Poavlaetsa posle faktiheskoi priemki zakaza. Dla dannogo metoda vsegda budet vozvrahatsa null
+          type: number
+          format: uint32
+          nullable: true
+          example: null
+        orderUid:
+          type: string
+          description: ID tranzakcii dla gruppirovki sborohnyh zadanii. Sborohnye zadania v odnoi korzine pokupatela budut imet odinakovyi orderUID
+          example: 165918930_629fbc924b984618a44354475ca58675
+        article:
+          type: string
+          nullable: false
+          description: Artikul prodavca
+          example: one-ring-7548
+        colorCode:
+          description: Kod cveta (tolko dla koleruemyh tovarov)
+          type: string
+          nullable: false
+          example: RAL 3017
+        rid:
+          type: string
+          nullable: false
+          description: ID sborohnogo zadania v sisteme Wildberries
+          example: f884001e44e511edb8780242ac120002
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+          description: Data sozdania sborohnogo zadania (RFC3339)
+          example: '2022-05-04T07:56:29Z'
+        offices:
+          type: array
+          nullable: true
+          description: Spisok ofisov, kuda sleduet privezti tovar
+          items:
+            type: string
+            example: Kaluga
+        skus:
+          type: array
+          nullable: false
+          description: Massiv barkodov tovara
+          items:
+            type: string
+            example: '6665956397512'
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID sborohnogo zadania v Marketpleise
+          example: 13833711
+        warehouseId:
+          type: integer
+          nullable: false
+          description: ID sklada prodavca, na kotoryi postupilo sborohnoe zadanie
+          example: 658434
+        nmId:
+          type: integer
+          nullable: false
+          description: Artikul WB
+          example: 123456789
+        chrtId:
+          type: integer
+          nullable: false
+          description: ID razmera tovara v sisteme Wildberries
+          example: 987654321
+        price:
+          type: integer
+          nullable: false
+          description: |
+            cena v valute prodahi s uhetom vseh skidok, krome summy po WB Kohelku, umnohennaa na 100. Kod valuty prodahi — v pole `currencyCode`
+          example: 1014
+        convertedPrice:
+          type: integer
+          nullable: false
+          description: cena v valute strany prodavca s uhetom vseh skidok, krome summy po WB Kohelku, umnohennaa na 100. Predostavlaetsa v informacionnyh celah.
+          example: 28322
+        currencyCode:
+          type: integer
+          nullable: false
+          description: Kod valuty prodahi (ISO 4217)
+          example: 933
+        convertedCurrencyCode:
+          type: integer
+          nullable: false
+          description: Kod valuty strany prodavca (ISO 4217)
+          example: 643
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            <dl> <dt>Tip tovara:</dt> <dd>1 - MGT (malogabaritnyi, to est obyhnyi tovar)</dd> <dd>2 - SGT (Sverhgabaritnyi tovar)</dd> <dd>3 - KGT+ (Krupnogabaritnyi tovar)</dd> </dl>
+          enum:
+            - 1
+            - 2
+            - 3
+        isZeroOrder:
+          description: Priznak zakaza sdelannogo na nulevoi ostatok tovara. (<code>false</code> - zakaz sdelan na tovar s nenulevym ostatkom, <code>true</code> - zakaz sdelan na tovar s ostatkom ravnym nulu. Takoi zakaz mohno otmenit bez htrafa za otmenu)
+          example: false
+    SupplyTrbx:
+      type: object
+      properties:
+        id:
+          description: ID koroba.
+          type: string
+          example: WB-TRBX-1234567
+        orders:
+          type: array
+          nullable: false
+          description: Massiv ID sborohnyh zadanii.
+          items:
+            type: integer
+            example: 1234567
+    TrbxStickers:
+      type: object
+      properties:
+        barcode:
+          type: string
+          minLength: 1
+          description: Zakodirovannoe znahenie stikera.
+          example: $WBMP:1:123:1234567
+        file:
+          type: string
+          format: byte
+          minLength: 1
+          description: Polnoe predstavlenie stikera v zadannom formate. (kodirovka base64)
+          example: U3dhZ2dlciByb2Nrcw==
+    Meta:
+      type: object
+      description: Metadannye zakaza
+      properties:
+        imei:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: '123456789012345'
+          description: IMEI
+        uin:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: '123456789012345'
+          description: UIN
+        gtin:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: '123456789012345'
+          description: GTIN
+        sgtin:
+          type: object
+          properties:
+            value:
+              type: array
+              items:
+                type: string
+              example:
+                - '123456789012345'
+              nullable: true
+          description: Kod markirovki hestnogo znaka
+    Pass:
+      type: object
+      description: Dannye o propuske prodavca
+      properties:
+        firstName:
+          type: string
+          nullable: false
+          description: Ima voditela
+          example: Aleksandr
+        dateEnd:
+          type: string
+          nullable: false
+          description: Data okonhania deistvia propuska
+          example: '2022-07-31 17:53:13+00:00'
+        lastName:
+          type: string
+          nullable: false
+          description: Familia voditela
+          example: Petrov
+        carModel:
+          type: string
+          nullable: false
+          description: Marka mahiny
+          example: Lamborghini
+        carNumber:
+          type: string
+          nullable: false
+          description: Nomer mahiny
+          example: A456BC123
+        officeName:
+          type: string
+          nullable: false
+          description: Nazvanie sklada
+          example: Koledino
+        officeAddress:
+          type: string
+          nullable: false
+          description: Adres sklada
+          example: g. Podolsk, d. Koledino, ul. Troickaa
+        officeId:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID sklada
+          example: 15
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID propuska
+          example: 1
+    StoreContactResponseBody:
+      type: object
+      description: Kontakty sklada prodavca
+      properties:
+        contacts:
+          type: array
+          items:
+            type: object
+            properties:
+              comment:
+                type: string
+                nullable: false
+                description: Kommentarii
+                example: Ivanov Ivan Ivanovih. Zvonit s 10 do 21 hasa.
+                maxLength: 1000
+              phone:
+                type: string
+                nullable: false
+                description: Nomer telefona
+                example: '+79998887766'
+    StoreContactRequestBody:
+      type: object
+      description: Kontakty sklada prodavca
+      properties:
+        contacts:
+          type: array
+          maxItems: 5
+          items:
+            type: object
+            properties:
+              comment:
+                type: string
+                nullable: false
+                description: Kommentarii
+                example: Ivanov Ivan Ivanovih. Zvonit s 10 do 21 hasa.
+                maxLength: 1000
+              phone:
+                type: string
+                nullable: false
+                description: |
+                  Nomer telefona.<br>Podderhivautsa kody stran: 
+                    - `+7` — Rossia, Kazahstan 
+                    - `+374` — Armenia
+                    - `+375` — Belorus
+                    - `+996` — Kyrgyzstan
+                example: '+79998887766'
+    CrossborderTurkeyClientInfo:
+      properties:
+        firstName:
+          type: string
+          description: Ima klienta
+          example: Ivan
+        fullName:
+          type: string
+          description: Familia, Ima, Othestvo
+          example: Andreev Ivan Vasilevih
+        lastName:
+          type: string
+          description: Familia klienta
+          example: Andreev
+        middleName:
+          type: string
+          description: Othestvo klienta
+          example: Vasilevih
+        orderID:
+          type: integer
+          description: Nomer zakaza
+          example: 134567
+        phone:
+          type: string
+          description: Telefon dla svazi s klientom
+          example: 79871234567
+        phoneCode:
+          type: string
+          description: Ne ispolzuetsa
+          example: 0
+    CrossborderTurkeyClientInfoResp:
+      properties:
+        orders:
+          description: Informacia po klientu dla krossborder-zakaza iz Turcii
+          items:
+            $ref: '#/components/schemas/CrossborderTurkeyClientInfo'
+          type: array
+      type: object
+    OrdersRequestAPI:
+      properties:
+        orders:
+          description: Spisok zakazov
+          items:
+            type: integer
+          type: array
+      type: object
+      example:
+        orders:
+          - 987654321
+          - 123456789

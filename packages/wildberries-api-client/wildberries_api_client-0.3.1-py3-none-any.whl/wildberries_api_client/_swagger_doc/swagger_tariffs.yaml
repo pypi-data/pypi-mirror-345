@@ -1,0 +1,653 @@
+openapi: 3.0.0
+info:
+  title: Tarify
+  version: tariffs
+  description: |
+    <div class="description_important">  
+        Uznat bolhe o komissiah i tarifah mohno v <a href="https://seller.wildberries.ru/instructions/category/a04560b5-256d-48cb-8f09-60e283b5d493">spravohnom centre</a>
+    </div>
+
+    V dannom razdele dostupny metody poluhenia:
+      1. [Komissii](/openapi/wb-tariffs#tag/Komissii)
+      2. [Koefficientov skladov](/openapi/wb-tariffs#tag/Koefficienty-skladov)
+      3. [Tarifov na vozvrat tovarov prodavcu](/openapi/wb-tariffs#tag/Stoimost-vozvrata-prodavcu) 
+  x-file-name: tariffs
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Komissii
+    description: ''
+  - name: Koefficienty skladov
+    description: ''
+  - name: Stoimost vozvrata prodavcu
+    description: ''
+paths:
+  /api/v1/tariffs/commission:
+    servers:
+      - url: https://common-api.wildberries.ru
+    get:
+      summary: Komissia po kategoriam tovarov
+      tags:
+        - Komissii
+      description: |
+        Metod predostavlaet dannye o [komissii](https://seller.wildberries.ru/dynamic-product-categories/commission) WB po [roditelskim kategoriam tovarov](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1parent~1all/get) soglasno modeli prodah.
+
+        <div class="description_limit">  
+          Maksimum 1 zapros v <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">minutu</a> na odin akkaunt prodavca
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Commission'
+                  - $ref: '#/components/schemas/CommissionChina'
+                  - $ref: '#/components/schemas/CommissionTurkey'
+                  - $ref: '#/components/schemas/CommissionUzbekistan'
+              examples:
+                Commission:
+                  $ref: '#/components/examples/Commission'
+                CommissionChina:
+                  $ref: '#/components/examples/CommissionChina'
+                CommissionTurkey:
+                  $ref: '#/components/examples/CommissionTurkey'
+                CommissionUzbekistan:
+                  $ref: '#/components/examples/CommissionUzbekistan'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+              example:
+                detail: 'parameter "locale" in query has an error: value is not one of the allowed values ["ru","en","zh"]'
+                origin: tariffs
+                requestId: 102d2641a931c41bed60649d6c99d80a
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/tariffs/box:
+    servers:
+      - url: https://common-api.wildberries.ru
+    get:
+      summary: Tarify dla korobov
+      tags:
+        - Koefficienty skladov
+      description: "Dla tovarov, kotorye postavlautsa na\_sklad v korobah, metod predostavlaet [stoimost](https://seller.wildberries.ru/dynamic-product-categories):\n  - dostavki so sklada ili punkta priema do pokupatela\n  - dostavki ot pokupatela do punkta priema\n  - hranenia na\_sklade WB\n\n<div class=\"description_limit\">  \n  Maksimum 60 zaprosov v <a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">minutu</a> na odin akkaunt prodavca\n</div>\n"
+      parameters:
+        - $ref: '#/components/parameters/Date'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TariffsBoxResponse'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+              example:
+                detail: Invalid date param
+                origin: tariffs
+                requestId: 70da980b108e6f52ce7630921bd05b1a
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/tariffs/pallet:
+    servers:
+      - url: https://common-api.wildberries.ru
+    get:
+      summary: Tarify dla monopallet
+      tags:
+        - Koefficienty skladov
+      description: "Dla tovarov, kotorye postavlautsa na\_sklad WB na\_monopalletah, metod predostavlaet [stoimost](https://seller.wildberries.ru/dynamic-product-categories):\n  - dostavki so sklada do pokupatela\n  - dostavki ot pokupatela do sklada\n  - hranenia na\_sklade WB\n\n<div class=\"description_limit\">  \n  Maksimum 60 zaprosov v <a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">minutu</a> na odin akkaunt prodavca\n</div>\n"
+      parameters:
+        - $ref: '#/components/parameters/Date'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TariffsPalletResponse'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+              example:
+                detail: 'parameter "date" in query has an error: value is required but missing'
+                origin: tariffs
+                requestId: 7bc5c30d95933058d0e0bddc79b9da547
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/tariffs/return:
+    servers:
+      - url: https://common-api.wildberries.ru
+    get:
+      summary: "Tarify na\_vozvrat"
+      tags:
+        - Stoimost vozvrata prodavcu
+      description: "Metod predostavlaet [tarify](https://seller.wildberries.ru/dynamic-product-categories/return-cost):\n  - na\_perevozku tovarov so sklada WB ili iz punkta priema do prodavca\n  - na\_obratnuu perevozku vozvratov, kotorye ne zabral prodavec\n\n<div class=\"description_limit\">  \n  Maksimum 60 zaprosov v <a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">minutu</a> na odin akkaunt prodavca\n</div>\n"
+      parameters:
+        - $ref: '#/components/parameters/Date'
+      responses:
+        '200':
+          description: Uspehno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnTariffsResponse'
+        '400':
+          description: Nepravilnyi zapros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+              example:
+                detail: 'parameter "date" in query has an error: empty value is not allowed'
+                origin: tariffs
+                requestId: e8096bddcfe5e3ff75f1afd26755364c
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  examples:
+    Commission:
+      summary: Commission
+      description: Komissia
+      value:
+        report:
+          - kgvpMarketplace: 15.5
+            kgvpSupplier: 12.5
+            kgvpSupplierExpress: 10.5
+            paidStorageKgvp: 15.5
+            parentID: 657
+            parentName: Bytovaa tehnika
+            subjectID: 6461
+            subjectName: Oborudovanie zubotehniheskoe
+    CommissionChina:
+      summary: CommissionChina
+      description: Komissia Kitai
+      value:
+        report:
+          - kgvpChina: 15.5
+            parentID: 657
+            parentName: 国内设备
+            subjectID: 6461
+            subjectName: 牙齿矫正设备
+    CommissionTurkey:
+      summary: CommissionTurkey
+      description: Komissia Turcia
+      value:
+        report:
+          - kgvpTurkey: 15.5
+            parentID: 657
+            parentName: Home appliance
+            subjectID: 6461
+            subjectName: Dental equipment
+    CommissionUzbekistan:
+      summary: CommissionUzbekistan
+      description: Komissia Uzbekistan
+      value:
+        report:
+          - kgvpUzbekistan: 15.5
+            parentID: 657
+            parentName: Bytovaa tehnika
+            subjectID: 6461
+            subjectName: Oborudovanie zubotehniheskoe
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header
+  parameters:
+    Date:
+      in: query
+      name: date
+      required: true
+      description: Data v formate GGGG-MM-DD
+      schema:
+        type: string
+    Locale:
+      name: locale
+      in: query
+      schema:
+        type: string
+        example: ru
+      description: |
+        azyk polei otveta `parentName` i `subjectName`:  
+          - `ru` — russkii
+          - `en` — angliiskii
+          - `zh` — kitaiskii
+  schemas:
+    models.TariffsBoxResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/models.WarehousesBoxRates'
+    models.WarehousesBoxRates:
+      type: object
+      properties:
+        dtNextBox:
+          type: string
+          description: Data nahala sleduuhego tarifa
+          example: '2024-02-01'
+        dtTillMax:
+          type: string
+          description: Data okonhania poslednego ustanovlennogo tarifa
+          example: '2024-03-31'
+        warehouseList:
+          type: array
+          items:
+            $ref: '#/components/schemas/models.WarehouseBoxRates'
+          nullable: true
+          description: Tarify dla korobov, sgruppirovannye po skladam
+    models.WarehouseBoxRates:
+      type: object
+      properties:
+        boxDeliveryAndStorageExpr:
+          type: string
+          description: Koefficient, %. Na nego umnohaetsa stoimost dostavki i hranenia. Vo vseh tarifah etot koefficient uhe uhten
+          example: '160'
+        boxDeliveryBase:
+          type: string
+          description: "Dostavka 1\_litra,\_₽"
+          example: '48'
+        boxDeliveryLiter:
+          type: string
+          description: "Dostavka kahdogo dopolnitelnogo litra,\_₽"
+          example: 11,2
+        boxStorageBase:
+          type: string
+          description: "hranenie 1\_litra,\_₽"
+          example: 0,1
+        boxStorageLiter:
+          type: string
+          description: "hranenie kahdogo dopolnitelnogo litra,\_₽"
+          example: 0,1
+        warehouseName:
+          type: string
+          description: Nazvanie sklada
+          example: Koledino
+    models.TariffsPalletResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/models.WarehousesPalletRates'
+    models.WarehousesPalletRates:
+      type: object
+      properties:
+        dtNextPallet:
+          type: string
+          description: Data nahala sleduuhego tarifa
+          example: '2024-02-01'
+        dtTillMax:
+          type: string
+          description: Data okonhania poslednego ustanovlennogo tarifa
+          example: '2024-03-31'
+        warehouseList:
+          type: array
+          items:
+            $ref: '#/components/schemas/models.WarehousePalletRates'
+          nullable: true
+          description: Tarify dla monopallet, sgruppirovannye po skladam
+    models.WarehousePalletRates:
+      type: object
+      properties:
+        palletDeliveryExpr:
+          type: string
+          description: Koefficient dostavki, %. Na nego umnohaetsa stoimost dostavki. Vo vseh tarifah etot koefficient uhe uhten
+          example: '170'
+        palletDeliveryValueBase:
+          type: string
+          description: "Dostavka 1\_litra,\_₽"
+          example: '51'
+        palletDeliveryValueLiter:
+          type: string
+          description: "Dostavka kahdogo dopolnitelnogo litra,\_₽"
+          example: 11,9
+        palletStorageExpr:
+          type: string
+          description: Koefficient hranenia, %. Na nego umnohaetsa stoimost hranenia. Vo vseh tarifah etot koefficient uhe uhten
+          example: '155'
+        palletStorageValueExpr:
+          type: string
+          description: "hranenie 1\_monopallety,\_₽"
+          example: '35.65'
+        warehouseName:
+          type: string
+          description: Nazvanie sklada
+          example: Koledino
+    models.ReturnTariffsResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/models.WarehousesReturnRates'
+    models.WarehousesReturnRates:
+      type: object
+      properties:
+        dtNextDeliveryDumpKgt:
+          type: string
+          description: Data nahala sleduuhego tarifa pri gruzovoi dostavke
+          example: '2024-02-01'
+        dtNextDeliveryDumpSrg:
+          type: string
+          description: Data nahala sleduuhego tarifa dla neopoznannyh tovarov
+          example: '2024-02-01'
+        dtNextDeliveryDumpSup:
+          type: string
+          description: Data nahala sleduuhego tarifa pri obyhnoi dostavke
+          example: '2024-02-01'
+        warehouseList:
+          type: array
+          items:
+            $ref: '#/components/schemas/models.WarehouseReturnRates'
+          nullable: true
+          description: "Tarify na\_vozvrat, sgruppirovannye po skladam:\n<ul>\n  <li>stoimost vozvrata braka i vozvrata po iniciative prodavca pri gruzovoi dostavke.</li>\n  <li>stoimost vozvrata neopoznannogo skladom tovara.</li>\n  <li>stoimost vozvrata braka, vozvrata po iniciative prodavca i avtovozvratov Marketpleis (v punkt vydahi i obratno).</li>\n</ul>\nMohno poluhit stoimost vozvrata v punkt vydahi (PVZ) i obratnoi logistiki\_— esli prodavec ne zabral tovary iz punkta vydahi za\_7 dnei.\n"
+    models.WarehouseReturnRates:
+      type: object
+      properties:
+        deliveryDumpKgtOfficeBase:
+          type: string
+          description: "<b>Stoimost vozvrata pri gruzovoi dostavke, dostavka na\_PVZ (bazovaa cena\_za\_1\_l),\_₽</b>\nPrimenaetsa dla krupnogabaritnyh tovarov, kogda:\n<ul>\n  <li>prodavec hohet vyvezti tovary so sklada WB;</li>\n  <li>na\_sklade obnaruhili brakovannye tovary;</li>\n  <li>pokupatel vozvrahaet tovar, no ego nelza vernut v prodahu.</li>\n</ul>\n"
+          example: 1 039
+        deliveryDumpKgtOfficeLiter:
+          type: string
+          description: "<b>Stoimost vozvrata pri gruzovoi dostavke, dostavka na\_PVZ (dop. litr),\_₽</b><br>\nStoimost za\_kahdyi dopolnitelnyi litr.\n"
+          example: 9,1
+        deliveryDumpKgtReturnExpr:
+          type: string
+          description: "<b>Stoimost vozvrata pri gruzovoi dostavke, obratnaa logistika nevostrebovannogo vozvrata,\_₽</b><br>\nGruzovaa dostavka nevostrebovannogo vozvrata obratno na\_sklad WB. Za edinicu tovara.\n"
+          example: 1 050
+        deliveryDumpSrgOfficeExpr:
+          type: string
+          description: "<b>Stoimost vozvrata neopoznannogo skladom tovara za\_kahduu edinicu, dostavka na\_PVZ, ₽</b>\n<p>Primenaetsa dla tovarov, kotorye ne smogli prinat na sklade.</p>\n"
+          example: '170'
+        deliveryDumpSrgReturnExpr:
+          type: string
+          description: "<p><b>Stoimost vozvrata neopoznannogo skladom tovara za kahduu edinicu, obratnaa logistika nevostrebovannogo vozvrata, ₽</b></p> Dostavka nevostrebovannogo vozvrata obratno na\_sklad WB."
+          example: '170'
+        deliveryDumpSupCourierBase:
+          type: string
+          description: |
+            **Stoimost vozvrata, dostavka kurerom (bazovaa cena za 1 l), ₽**
+
+            Primenaetsa, kogda:
+              - prodavec hohet vyvezti tovary so sklada Wildberries
+              - na sklade obnaruhili brakovannye tovary
+              - pokupatel vozvrahaet tovar, no ego nelza vernut v prodahu
+              - podkluhen avtovozvrat tovarov, prodavaemyh po sheme Marketpleis
+          example: '229'
+        deliveryDumpSupCourierLiter:
+          type: string
+          description: |
+            **Stoimost vozvrata, dostavka kurerom (dop. l), ₽**
+            <p>Stoimost za kahdyi dopolnitelnyi litr.</p>
+          example: 9,1
+        deliveryDumpSupOfficeBase:
+          type: string
+          description: |
+            **Stoimost vozvrata, dostavka na PVZ (bazovaa cena za 1 l), ₽**
+
+            Primenaetsa, kogda:
+              - prodavec hohet vyvezti tovary so sklada Wildberries
+              - na sklade obnaruhili brakovannye tovary
+              - pokupatel vozvrahaet tovar, no ego nelza vernut v prodahu
+              - podkluhen avtovozvrat tovarov, prodavaemyh po sheme Marketpleis
+          example: '129'
+        deliveryDumpSupOfficeLiter:
+          type: string
+          description: "<b>Stoimost vozvrata, dostavka na\_PVZ (dop. litr), ₽</b> Stoimost za\_kahdyi dopolnitelnyi litr"
+          example: 9,1
+        deliveryDumpSupReturnExpr:
+          type: string
+          description: |
+            <b>Stoimost vozvrata, obratnaa logistika nevostrebovannogo vozvrata, za edinicu tovara, ₽</b><br>
+            Dostavka nevostrebovannogo vozvrata obratno na sklad Wildberries.
+
+            Primenaetsa, kogda:
+              - prodavec hohet vyvezti tovary so sklada Wildberries
+              - na sklade obnaruhili brakovannye tovary
+              - pokupatel vozvrahaet tovar, no ego nelza vernut v prodahu
+              - podkluhen avtovozvrat tovarov, prodavaemyh po sheme Marketpleis
+          example: '250'
+        warehouseName:
+          type: string
+          description: Nazvanie sklada
+          example: Elektrostal
+    TariffsBoxResponse:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/models.TariffsBoxResponse'
+    TariffsPalletResponse:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/models.TariffsPalletResponse'
+    ReturnTariffsResponse:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/models.ReturnTariffsResponse'
+    Commission:
+      type: object
+      properties:
+        report:
+          type: array
+          description: Spisok komissii
+          items:
+            type: object
+            properties:
+              kgvpMarketplace:
+                type: number
+                description: Komissia po modeli `Sklad prodavca — vezu na sklad WB`, %
+              kgvpSupplier:
+                type: number
+                description: Komissia po modelam `Sklad prodavca — vezu samostoatelno do klienta` i `Sklad prodavca — Kurerom WB`, %
+              kgvpSupplierExpress:
+                type: number
+                description: Komissia po modeli `Sklad prodavca — vezu samostoatelno do klienta ekspress`, %
+              paidStorageKgvp:
+                type: number
+                description: Komissia po modeli `Sklad WB`, %
+              parentID:
+                type: integer
+                description: ID roditelskoi kategorii
+              parentName:
+                type: string
+                description: Nazvanie roditelskoi kategorii
+              subjectID:
+                type: integer
+                description: ID predmeta
+              subjectName:
+                type: string
+                description: Nazvanie predmeta
+    CommissionChina:
+      type: object
+      properties:
+        report:
+          type: array
+          description: Spisok komissii
+          items:
+            type: object
+            properties:
+              kgvpChina:
+                type: number
+                description: Komissia dla prodavcov iz Kitaa, %
+              parentID:
+                type: integer
+                description: ID roditelskoi kategorii
+              parentName:
+                type: string
+                description: Nazvanie roditelskoi kategorii
+              subjectID:
+                type: integer
+                description: ID predmeta
+              subjectName:
+                type: string
+                description: Nazvanie predmeta
+    CommissionTurkey:
+      type: object
+      properties:
+        report:
+          type: array
+          description: Spisok komissii
+          items:
+            type: object
+            properties:
+              kgvpTurkey:
+                type: number
+                description: Komissia dla prodavcov iz Turcii, %
+              parentID:
+                type: integer
+                description: ID roditelskoi kategorii
+              parentName:
+                type: string
+                description: Nazvanie roditelskoi kategorii
+              subjectID:
+                type: integer
+                description: ID predmeta
+              subjectName:
+                type: string
+                description: Nazvanie predmeta
+    CommissionUzbekistan:
+      type: object
+      properties:
+        report:
+          type: array
+          description: Spisok komissii
+          items:
+            type: object
+            properties:
+              kgvpUzbekistan:
+                type: number
+                description: Komissia dla prodavcov iz Uzbekistana, %
+              parentID:
+                type: integer
+                description: ID roditelskoi kategorii
+              parentName:
+                type: string
+                description: Nazvanie roditelskoi kategorii
+              subjectID:
+                type: integer
+                description: ID predmeta
+              subjectName:
+                type: string
+                description: Nazvanie predmeta
+    BadRequest:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Detali ohibki
+        origin:
+          type: string
+          description: ID vnutrennego servisa WB
+        requestId:
+          type: string
+          description: Unikalnyi ID zaprosa
+        title:
+          type: string
+          description: Zagolovok ohibki
+  responses:
+    '401':
+      description: Polzovatel ne avtorizovan
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              detail:
+                type: string
+                description: Detali ohibki
+              code:
+                type: string
+                description: Vnutrennii kod ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+              status:
+                type: number
+                description: HTTP status-kod
+              statusText:
+                type: string
+                description: Rashifrovka HTTP status-koda
+              timestamp:
+                type: string
+                format: RFC3339
+                description: Data i vrema zaprosa
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '429':
+      description: Slihkom mnogo zaprosov
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Zagolovok ohibki
+              detail:
+                type: string
+                description: Detali ohibki
+              code:
+                type: string
+                description: Vnutrennii kod ohibki
+              requestId:
+                type: string
+                description: Unikalnyi ID zaprosa
+              origin:
+                type: string
+                description: ID vnutrennego servisa WB
+              status:
+                type: number
+                description: HTTP status-kod
+              statusText:
+                type: string
+                description: Rashifrovka HTTP status-koda
+              timestamp:
+                type: string
+                format: RFC3339
+                description: Data i vrema zaprosa
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'

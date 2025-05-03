@@ -1,0 +1,12 @@
+from __future__ import absolute_import
+
+# flake8: noqa
+
+# import apis into api package
+from wildberries_api_client.promotion.api.finansy_api import FinansyApi
+from wildberries_api_client.promotion.api.kalendar_akcii_api import KalendarAkciiApi
+from wildberries_api_client.promotion.api.kampanii_api import KampaniiApi
+from wildberries_api_client.promotion.api.media_api import MediaApi
+from wildberries_api_client.promotion.api.parametry_kampanii_api import ParametryKampaniiApi
+from wildberries_api_client.promotion.api.sozdanie_kampanii_api import SozdanieKampaniiApi
+from wildberries_api_client.promotion.api.upravlenie_kampaniami_api import UpravlenieKampaniamiApi
