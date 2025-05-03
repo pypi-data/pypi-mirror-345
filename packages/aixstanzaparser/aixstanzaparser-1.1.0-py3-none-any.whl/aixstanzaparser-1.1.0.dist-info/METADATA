@@ -1,0 +1,54 @@
+Metadata-Version: 2.3
+Name: aixstanzaparser
+Version: 1.1.0
+Summary: AIX stanza parser
+License: Apache-2.0
+Author: Dave Marquardt
+Author-email: daverrtx@gmail.com
+Maintainer: Dave Marquardt
+Maintainer-email: daverrtx@gmail.com
+Requires-Python: >=3.9
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Dist: configparser (>=7.2.0,<8.0.0)
+Project-URL: Homepage, https://github.com/davemq/aixstanzaparser
+Project-URL: Issues, https://github.com/davemq/aixstanzaparser/issues
+Description-Content-Type: text/markdown
+
+# aixstanzaparser
+
+aixstanzaparser Python 3.x module. Subclasses
+configparser.ConfigParser to support parsing and writing AIX stanza
+files.
+
+## Usage ##
+
+Here's an example of using `AIXStanzaParser` to parse lvupdate.data
+and update it to set `llvupdate.llu` to `yes`.
+
+``` python
+import aixstanzaparser
+
+# Create parser instance
+config = aixstanzaparser.AIXStanzaParser()
+
+# Read and parse lvupdate.date
+config.read("lvupdate.data")
+
+# Update llvupdate.llu to yes
+if 'llvupdate' not in config.sections():
+    config['llvupdate'] = {}
+config['llvupdate']['llu'] = "yes"
+
+# write updated lvupdate.data
+with open("lvupdate.data", "w") as configfile:
+    config.write(configfile)
+```
+
+
+## Limitations ##
+
+Comments are lost when AIXStanzaParser parses a file. So reading,
+parsing, updating and writing an AIX stanza file with AIXStanzaParser
+will lose any existing comments.
+
