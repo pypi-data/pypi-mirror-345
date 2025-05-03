@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ingest-anything"
+version = "1.0.0.post1"
+authors = [
+    { name="Clelia (Astra) Bertelli", email="astraberte9@gmail.com" },
+]
+description = "ingest-anything: from data to vector database effortlessly"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    'chonkie[all]',
+    'pydantic',
+    'pdfitdown',
+    'llama-index-readers-docling>0.1.0',
+]
+
+[project.urls]
+Homepage = "https://github.com/AstraBert/ingest-anything"
+Issues = "https://github.com/AstraBert/ingest-anything/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["ingest_anything*"]
+
+[options.package_data]
+ingest_anything = ["*"]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["src/ingest_anything"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src" = ""
+
+[tool.hatch.envs.default]
+dependencies = [
+    "pytest",
+    "llama-index-vector-stores-milvus>0.1.2",
+    "llama-index-vector-stores-qdrant>0.1.3",
+    "llama-index-vector-stores-weaviate>0.1",
+]
+
+[tool.hatch.envs.default.scripts]
+test = "cp src/ingest_anything/ingestion.py tests/ && cp src/ingest_anything/embeddings.py tests/ && cp src/ingest_anything/add_types.py tests/ && pytest tests/*.py -p no:warnings && rm tests/ingestion.py && rm tests/add_types.py && rm tests/embeddings.py"
+
+[tool.hatch.envs.default.py-version]
+40 = "3.10"
+41 = "3.11"
+42 = "3.12"
