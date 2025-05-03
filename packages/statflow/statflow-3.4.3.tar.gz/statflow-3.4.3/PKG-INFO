@@ -1,0 +1,204 @@
+Metadata-Version: 2.4
+Name: statflow
+Version: 3.4.3
+Summary: A versatile statistical toolkit for Python, featuring core statistical methods, time series analysis, signal processing, and climatology tools
+Home-page: https://github.com/EusDancerDev/statflow
+Author: Jon Ander Gabantxo
+Author-email: Jon Ander Gabantxo <jagabantxo@gmail.com>
+Project-URL: Homepage, https://github.com/EusDancerDev/statflow
+Project-URL: Documentation, https://github.com/EusDancerDev/statflow#readme
+Project-URL: Repository, https://github.com/EusDancerDev/statflow.git
+Project-URL: Bug Reports, https://github.com/EusDancerDev/statflow/issues
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Atmospheric Science
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas>=1.3.0
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: xarray>=0.20.0
+Requires-Dist: filewise>=3.7.0
+Requires-Dist: pygenutils>=15.11.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=5.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.0.0; extra == "docs"
+Requires-Dist: nbsphinx>=0.8.0; extra == "docs"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# StatFlow
+
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI Version](https://img.shields.io/pypi/v/statflow.svg)](https://pypi.org/project/statflow/)
+
+A Python library for statistical analysis and data flow management.
+
+## Features
+
+- **Statistical Analysis**
+  - Descriptive statistics
+  - Hypothesis testing
+  - Regression analysis
+  - Time series analysis
+  - Probability distributions
+
+- **Data Flow Management**
+  - Data pipeline construction
+  - ETL operations
+  - Data validation
+  - Data transformation
+  - Data quality checks
+
+- **Visualization**
+  - Statistical plots
+  - Distribution visualizations
+  - Time series plots
+  - Correlation matrices
+  - Custom charting
+
+- **Data Processing**
+  - Data cleaning
+  - Feature engineering
+  - Data normalization
+  - Outlier detection
+  - Missing value handling
+
+## Installation
+
+### Prerequisites
+
+- Python 3.8 or higher
+- pip or conda package manager
+
+### Using pip
+
+```bash
+pip install statflow
+```
+
+### Using conda
+
+```bash
+conda install -c conda-forge statflow
+```
+
+## Usage
+
+### Basic Usage
+
+```python
+from statflow import DataFlow, StatisticalAnalysis
+
+# Create a data flow pipeline
+flow = DataFlow()
+flow.load_data("data.csv")
+flow.clean_data()
+flow.transform_data()
+
+# Perform statistical analysis
+analysis = StatisticalAnalysis(flow.data)
+summary = analysis.descriptive_stats()
+correlation = analysis.correlation_matrix()
+```
+
+### Advanced Usage
+
+```python
+from statflow import TimeSeries, HypothesisTest
+
+# Time series analysis
+ts = TimeSeries("time_series_data.csv")
+trend = ts.decompose()
+forecast = ts.predict(steps=10)
+
+# Hypothesis testing
+test = HypothesisTest(sample1, sample2)
+result = test.t_test()
+p_value = result.p_value
+```
+
+## Project Structure
+
+```text
+statflow/
+├── statflow/              # Main package directory
+│   ├── core/             # Core functionality
+│   │   ├── flow.py      # Data flow management
+│   │   └── stats.py     # Statistical analysis
+│   ├── analysis/         # Analysis modules
+│   │   ├── descriptive.py # Descriptive statistics
+│   │   └── inferential.py # Inferential statistics
+│   └── utils/            # Utility functions
+│       ├── visualization.py # Plotting utilities
+│       └── preprocessing.py # Data preprocessing
+├── tests/                # Test suite
+├── docs/                 # Documentation
+└── examples/             # Usage examples
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+### Development Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/statflow.git
+   cd statflow
+   ```
+
+2. Create a virtual environment:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install development dependencies:
+
+   ```bash
+   pip install -e ".[dev]"
+   ```
+
+### Testing
+
+Run the test suite:
+
+```bash
+pytest
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Thanks to all contributors who have helped improve this library
+- Inspired by various statistical analysis tools and data flow frameworks
+
+## Contact
+
+For questions or suggestions, please open an issue on GitHub or contact the maintainers.
