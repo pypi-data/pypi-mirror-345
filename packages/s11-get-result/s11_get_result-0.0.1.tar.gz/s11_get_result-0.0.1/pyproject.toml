@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools-git-versioning>=2.0,<3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "s11-get-result"
+dynamic = ["version"]
+description = "Tool to download raster data from Google Cloud Storage"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+authors = [
+    {name = "Satelligence", email = "info@satelligence.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "gcsfs>=2024.6.1",
+    "pylerc>=4.0",
+    "numcodecs>=0.13.1",
+    "numpy>=1.20.0",
+    "tqdm>=4.64.0,<5.0.0",
+    "pebble>=5.0.0,<6.0.0",
+    "rioxarray>=0.18.0",
+    "xarray>=2024.1.0",
+    "zarr>=2.18.3,<3.0.0",
+]
+
+[tool.setuptools]
+packages = ["get_result"]
+
+[tool.setuptools-git-versioning]
+enabled = true
+template = "{tag}"
+dev_template = "{tag}.dev{ccount}+{sha}"
+dirty_template = "{tag}.dev{ccount}+{sha}.dirty"
+
+[project.scripts]
+get-result = "get_result.get_result:main"
