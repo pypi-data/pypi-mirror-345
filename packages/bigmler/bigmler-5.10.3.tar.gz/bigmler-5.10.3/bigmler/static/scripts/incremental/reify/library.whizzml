@@ -1,0 +1,2389 @@
+;; COMMON-DEFAULTS
+;;
+;; attributes used in all types of resouce
+;;
+(define bigmler.reify.COMMON-DEFAULTS {"category" [0]
+                                     "description" [false ""]
+                                     "tags" [[]]
+                                     "project" [false]
+                                     "creator" [false]
+                                     "name_options" ["" false]})
+;; DEFAULTS
+;;
+;; attributes used in some of the resources, keyed by resource type
+;;
+(define bigmler.reify.DEFAULTS {
+  "source" {
+    "name" ["Unnamed inline source"
+            "Unnamed remote source"]
+            "data" [false ""]
+            "disable_datetime" [false]
+            "remote" [false]
+            "size" [false]
+            "source_parser" [{"header" true
+                              "locale" "en-us"
+                              "missing_tokens" [""
+                                                "NaN"
+                                                "NULL"
+                                                "N/A"
+                                                "null"
+                                                "-"
+                                                "#REF!"
+                                                "#VALUE!"
+                                                "?"
+                                                "#NULL!"
+                                                "#NUM!"
+                                                "#DIV/0"
+                                                "n/a"
+                                                "#NAME?"
+                                                "NIL"
+                                                "nil"
+                                                "na"
+                                                "#N/A"
+                                                "NA"]
+                              "quote" "\""
+                              "separator" ","}
+                             {"header" true
+                              "locale" "en_US"
+                              "missing_tokens" [""
+                                                "NaN"
+                                                "NULL"
+                                                "N/A"
+                                                "null"
+                                                "-"
+                                                "#REF!"
+                                                "#VALUE!"
+                                                "?"
+                                                "#NULL!"
+                                                "#NUM!"
+                                                "#DIV/0"
+                                                "n/a"
+                                                "#NAME?"
+                                                "NIL"
+                                                "nil"
+                                                "na"
+                                                "#N/A"
+                                                "NA"]
+                              "quote" "\""
+                              "separator" ","}]
+           "term_analysis" [{"enabled" true}]
+           "item_analysis" [{} false]}
+  "dataset" {
+    "name" [false]
+    "excluded_fields" [[] false]
+    "all_but" [[] false]
+    "all_fields" [true]
+    "json_filter" [false]
+    "lisp_filter" [false]
+    "sample_rate" [1.0 false]
+    "out_of_bag" [false]
+    "seed" [false]
+    "price" [0 0.0]
+    "replacement" [false]
+    "tags" [[]]
+    "term_limit" [1000]
+    "private" [true]
+    "shared" [false]
+    "shared_clonable" [false]
+    "size" [false]
+    "centroid" [false]
+    "range" [false []]
+    "ranges" [false {}]
+    "refresh_field_types" [false]
+    "refresh_objective" [false]
+    "refresh_preferred" [false]
+    "rows" [false]
+    "objective_field" [false]
+    "new_fields" [false []]
+    "output_fields" [false []]
+    "input_fields" [false []]
+    "row_offset" [false 0]
+    "row_step" [false 1]}
+  "model" {
+    "name" [false]
+    "excluded_fields" [[] false]
+    "credits_per_prediction" [false 0.0]
+    "price" [false 0.0]
+    "ordering" [0]
+    "depth_threshold" [false 512]
+    "max_training_time" [false 1800]
+    "number_of_model_candidates" [false 128]
+    "out_of_bag" [false]
+    "optimize" [false]
+    "randomize" [false]
+    "replacement" [false]
+    "sample_rate" [1.0]
+    "seed" [false]
+    "stat_pruning" [true]
+    "balance_objective" [false]
+    "weight_field" [false]
+    "objective_weights" [false []]
+    "missing_splits" [false]
+    "node_threshold" [512]
+    "private" [true]
+    "shared" [false]
+    "shared_clonable" [false]
+    "range" [false []]
+    "random_candidate_ratio" [false]
+    "random_candidates" [false]
+    "split_candidates" [false]
+    "support_threshold" [false]
+    "input_fields" [false []]
+    "objective_field" [false]}
+  "ensemble" {
+    "name" [false]
+    "number_of_models" [10]
+    "ensemble_sample" [false {}]
+    "replacement" [false]
+    "input_fields" [false []]
+    "credits_per_prediction" [false 0.0]
+    "price" [false 0.0]
+    "ordering" [0]
+    "out_of_bag" [false]
+    "randomize" [false]
+    "replacement" [false]
+    "sample_rate" [1.0]
+    "seed" [false]
+    "stat_pruning" [true]
+    "balance_objective" [false]
+    "range" [false []]
+    "random_candidate_ratio" [false]
+    "random_candidates" [false]
+    "split_candidates" [false 32]
+    "support_threshold" [false 0]
+    "weight_field" [false]
+    "objective_weights" [false []]
+    "missing_splits" [false]
+    "node_threshold" [512]
+    "optimize" [false]
+    "shared" [false]
+    "private" [true]
+    "number_of_model_candidates" [false 128]
+    "max_training_time" [false 1800]
+    "excluded_fields" [[] false]
+    "boosting" [false {}]
+    "depth_threshold" [false 512]
+    "objective_field" [false]
+    "models" [[]]}
+  "prediction" {
+    "name" [false]
+    "combiner" [0 false]
+    "explain" [false]
+    "ordering" [0 false]
+    "missing_strategy" [0 false]
+    "private" [true]
+    "threshold" [false {}]
+    "input_data" [false]
+    "operating_kind" [false]
+    "operating_point" [false {}]
+    "vote_count" [false]
+    "vote_counts" [false]}
+  "evaluation" {
+    "name" [false]
+    "confidence_threshold" [false]
+    "combiner" [0 false]
+    "missing_strategy" [0]
+    "ordering" [0]
+    "out_of_bag" [false]
+    "negative_class" [false]
+    "positive_class" [false]
+    "replacement" [false]
+    "sample_rate" [1.0]
+    "seed" [false]
+    "threshold" [false {}]
+    "probability_threshold" [false]
+    "range" [false []]
+    "ranges" [false {}]
+    "private" [true]
+    "excluded_fields" [[] false]
+    "input_fields" [false []]
+    "fields_map" [false {}]
+    "operating_kind" [false]
+    "operating_point" [false {}]}
+  "cross-validation" {"name" [false]}
+  "anomaly" {
+    "name" [false]
+    "anomaly_seed" [false]
+    "constraints" [false]
+    "credits_per_prediction" [false 0.0]
+    "price" [false 0.0]
+    "default_numeric_value" [false]
+    "excluded_fields" [[] false]
+    "id_fields" [[]]
+    "forest_size" [128]
+    "normalize_repeats" [false]
+    "out_of_bag" [false]
+    "replacement" [false]
+    "sample_rate" [1.0]
+    "seed" [false]
+    "shared" [false]
+    "private" [true]
+    "range" [false []]
+    "ranges" [false {}]
+    "input_fields" [false []]
+    "top_n" [10]}
+  "cluster" {
+    "name" [false]
+    "k" [false]
+    "balance_fields" [true]
+    "cluster_seed" [false]
+    "critical_value" [false]
+    "default_numeric_value" [false]
+    "excluded_fields" [[] false]
+    "field_scales" [{} false]
+    "model_clusters" [false]
+    "out_of_bag" [false]
+    "credits_per_prediction" [false 0.0]
+    "price" [false 0.0]
+    "shared" [false]
+    "private" [true]
+    "replacement" [false]
+    "sample_rate" [1.0]
+    "seed" [false]
+    "range" [false []]
+    "ranges" [false {}]
+    "input_fields" [false []]
+    "regularization" [false "l2"]
+    "summary_fields" [[]]
+    "weight_field" [false ""]}
+  "centroid" {
+    "name" [false]
+    "shared" [false]
+    "private" [true]
+    "input_data" [false]}
+  "anomalyscore" {
+    "name" [false]
+    "input_data" [false]
+    "shared" [false]
+    "private" [true]}
+  "associationset" {
+    "name" [false]
+    "private" [true]
+    "max_k" [false 100]
+    "score_by" [false]
+    "input_data" [false]}
+  "batchanomalyscore" {
+    "name" [false]
+    "all_fields" [false]
+    "fields_map" [false]
+    "header" [true]
+    "default_numeric_value" [false]
+    "excluded_fields" [[] false]
+    "input_fields" [[] false]
+    "importance" [false]
+    "newline" [false "LF"]
+    "output_dataset" [false]
+    "output_fields" [false []]
+    "separator" [","]
+    "score_name" ["score" false]}
+  "batchcentroid" {
+    "name" [false]
+    "all_fields" [false]
+    "fields_map" [false]
+    "header" [true]
+    "output_dataset" [false]
+    "default_numeric_value" [false]
+    "excluded_fields" [[] false]
+    "input_fields" [[] false]
+    "newline" [false "LF"]
+    "output_fields" [false []]
+    "distance_name" [false ""]
+    "centroid_name" [false ""]
+    "separator" [","]
+    "distance" [false]}
+  "batchprediction" {
+    "name" [false]
+    "all_fields" [false]
+    "fields_map" [false]
+    "confidence_threshold" [false]
+    "combiner" [0 false]
+    "confidence" [false]
+    "confidences" [false]
+    "default_numeric_value" [false]
+    "excluded_fields" [[] false]
+    "input_fields" [[] false]
+    "importance" [false]
+    "header" [true]
+    "missing_strategy" [0]
+    "negative_class" [false]
+    "negative_class_confidence" [false]
+    "negative_class_probability" [false]
+    "newline" [false "LF"]
+    "node_id" [false]
+    "operating_kind" [false]
+    "operating_point" [false {}]
+    "output_dataset" [false]
+    "output_fields" [false []]
+    "positive_class" [false]
+    "probabilities" [false]
+    "probability" [false]
+    "probability_name" [false]
+    "separator" [","]
+    "prediction_name" [false ""]
+    "confidence_name" [false ""]
+    "threshold" [false {}]
+    "probability_threshold" [false]
+    "vote_count" [false]
+    "vote_count_name" [false "votes"]
+    "vote_counts" [false]
+    "votes" [false]}
+  "association" {
+    "name" [false]
+    "complement" [false]
+    "credits_per_prediction" [false 0.0]
+    "price" [false 0.0]
+    "default_numeric_value" [false "median"]
+    "discretization" [false]
+    "excluded_fields" [false []]
+    "field_discretizations" [false]
+    "input_fields" [false []]
+    "max_k" [false 100]
+    "max_lhs" [false 4]
+    "min_confidence" [false 0 0.0]
+    "min_leverage" [false 0 0.0]
+    "min_lift" [false 1 1.0]
+    "min_support" [false 1 1.0]
+    "missing_items" [false]
+    "out_of_bag" [false]
+    "replacement" [false]
+    "sample_rate" [1.0]
+    "seed" [false]
+    "shared" [false]
+    "private" [true]
+    "rhs_predicate" [false []]
+    "range" [false []]
+    "search_strategy" [false "leverage"]
+    "significance_level" [false 0.05]}
+  "logisticregression" {
+    "name" [false]
+    "compute_stats" [false]
+    "max_training_time" [false 1800]
+    "number_of_model_candidates" [false 128]
+    "private" [true]
+    "shared" [false]
+    "credits_per_prediction" [false 0.0]
+    "default_numeric_value" [false "median"]
+    "balance_fields" [false]
+    "balance_objective" [false]
+    "objective_weights" [false []]
+    "weight_field" [false]
+    "bias" [true]
+    "c" [false 1]
+    "eps" [false 0.0001]
+    "excluded_fields" [false []]
+    "field_codings" [false]
+    "input_fields" [false []]
+    "missing_numerics" [true]
+    "normalize" [false]
+    "out_of_bag" [false]
+    "objective_field" [false]
+    "optimize" [false]
+    "price" [false 0.0]
+    "stats_sample_seed" [false ""]
+    "stats_sample_size" [false -1]
+    "range" [false []]
+    "regularization" [false "l2"]
+    "replacement" [false]
+    "sample_rate" [1.0]
+    "seed" [false]}
+  "topicmodel" {
+    "name" [false]
+    "private" [true]
+    "shared" [false]
+    "bigrams" [false]
+    "credits_per_prediction" [false 0.0]
+    "price" [false 0.0]
+    "case_sensitive" [false]
+    "excluded_terms" [false []]
+    "number_of_topics" [false 0]
+    "eps" [false 0.00001]
+    "excluded_fields" [false []]
+    "field_codings" [false]
+    "input_fields" [false []]
+    "language" ["en" false]
+    "ngrams" [1 false]
+    "stem_words" [true]
+    "stopword_diligence" ["normal" false]
+    "stopword_removal" ["selected_language" false]
+    "term_filters" [[] false]
+    "term_regexps" [[] false]
+    "term_limit" [false 4096]
+    "token_mode" ["all" false]
+    "top_n_terms" [false 10]
+    "topicmodel_seed" [false]
+    "use_stopwords" [true]
+    "out_of_bag" [false]
+    "range" [false []]
+    "regularization" [false "l2"]
+    "replacement" [false]
+    "sample_rate" [1.0]
+    "seed" [false]}
+  "topicdistribution" {
+    "name" [false]
+    "private" [true]
+    "input_data" [false]}
+  "batchtopicdistribution" {
+    "name" [false]
+    "all_fields" [false]
+    "default_numeric_value" [false]
+    "excluded_fields" [[] false]
+    "input_fields" [[] false]
+    "header" [true]
+    "output_dataset" [false]
+    "fields_map" [false]
+    "newline" ["LF" false]
+    "output_fields" [false []]
+    "separator" [","]}
+  "timeseries" {
+    "name" [false]
+    "all_numeric_objectives" [false]
+    "damped_trend" [false]
+    "default_numeric_value" ["spline interpolation"
+                             false]
+    "error" [false]
+    "credits_per_prediction" [false 0.0]
+    "price" [false 0.0]
+    "field_parameters" [false]
+    "period" [false 1]
+    "private" [true]
+    "shared" [false]
+    "range" [false []]
+    "seasonality" [false]
+    "time_range" [false {}]
+    "trend" [false]
+    "horizon" [false 50]
+    "objective_field" [false]
+    "objective_fields" [false]}
+  "deepnet" {
+    "name" [false]
+    "balance_objective" [false]
+    "batch_normalization" [false]
+    "deepnet_seed" ["" false]
+    "default_numeric_value" [false]
+    "dropout_rate" [0.0 false]
+    "excluded_fields" [false []]
+    "hidden_layers" [false []]
+    "input_fields" [false []]
+    "learn_residuals" [false]
+    "learning_rate" [0.01 false]
+    "max_iterations" [20000 false]
+    "max_training_time" [1800 false]
+    "missing_numerics" [true]
+    "number_of_hidden_layers" [10 false]
+    "number_of_model_candidates" [128 false]
+    "objective_field" [false]
+    "objective_weights" [false []]
+    "optimizer" [{} false]
+    "ordering" [false 0]
+    "out_of_bag" [false]
+    "price" [false 0.0]
+    "range" [false []]
+    "replacement" [false]
+    "sample_rate" [1.0]
+    "seed" [false]
+    "search" [false]
+    "suggest_structure" [true]
+    "tree_embedding" [false]
+    "shared" [false]
+    "private" [true]
+    "weight_field" [false]}
+  "forecast" {
+    "name" [false]
+    "private" [true]
+    "input_data" [false]
+    "intervals" [true]}
+  "fusion" {
+    "name" [false]
+    "fields_maps" [{} false]}
+  "statisticaltest" {
+    "name" [false]
+    "ad_sample_size" [false 1024]
+    "ad_seed" [false]
+    "credits_per_prediction" [false 0.0]
+    "price" [false 0.0]
+    "default_numeric_value" [false]
+    "excluded_fields" [[] false]
+    "input_fields" [[] false]
+    "shared" [false]
+    "private" [true]
+    "out_of_bag" [false]
+    "range" [false []]
+    "sample_rate" [1.0]
+    "significance_levels" [false [] [0.01 0.05 0.1]]}
+  "sample" {
+    "name" [false]}
+  "correlation" {
+    "name" [false]
+    "categories" [false]
+    "default_numeric_value" [false]
+    "credits_per_prediction" [false 0.0]
+    "price" [false 0.0]
+    "shared" [false]
+    "private" [true]
+    "excluded_fields" [[] false]
+    "input_fields" [[] false]
+    "significance_levels" [false]
+    "objective_field" [false]
+    "out_of_bag" [false]
+    "range" [false []]
+    "sample_rate" [1.0]}
+
+})
+
+
+;; REFERENCE-ONLY
+;;
+;; attributes that are kept temporarily as reference information to be used
+;; when comparing resources to their parents.
+;;
+
+(define bigmler.reify.REFERENCE-ONLY {"source" ["size" "remote"]
+                                    "dataset" ["rows" "ranges" "private"]
+                                    "model" ["private" "shared"]
+                                    "ensemble" ["models"]
+                                    "logisticregression" ["private" "shared"]})
+
+
+;; STRICT-ATTRS
+;;
+;; attributes that need to be removed to generalize to other datasets.
+;;
+
+(define bigmler.reify.STRICT-ATTRS {"source" ["size"]
+                                  "dataset" ["rows" "ranges" "size" "range"]
+                                  "model" ["range"]
+                                  "ensemble" ["range" "ranges"]
+                                  "logisticregression" ["range"]
+                                  "deepnet" ["range"]
+                                  "cluster" ["range" "ranges"]
+                                  "anomaly" ["range" "ranges"]
+                                  "evaluation" ["range" "ranges"]})
+
+
+;; BOOSTING-ATTRS
+;;
+;; arguments to be sent in creation calls of boosting ensembles
+;;
+(define bigmler.reify.BOOSTING-ATTRS ["iterations"
+                                    "early_holdout"
+                                    "early_out_of_bag"
+                                    "step_out_of_bag"
+                                    "learning_rate"])
+
+
+;; SAMPLE-ATTRS
+;;
+;; arguments to be sent in creation calls of sampled ensembles
+;;
+(define bigmler.reify.SAMPLE-ATTRS ["seed"
+                                  "rate"
+                                  "replacement"])
+
+
+;; TIME-RANGE-ATTRS
+;;
+;; arguments to be sent in creation calls of time series time range
+;;
+(define bigmler.reify.TIME-RANGE-ATTRS ["start"
+                                      "end"
+                                      "interval"
+                                      "interval_unit"
+                                      "timestamp_field"])
+
+;; ORIGINS
+;;
+;; attributes that point to the origin resource or file from where the
+;; keyed resource type is built
+;;
+
+(define bigmler.reify.ORIGINS {"source" [["file_name",
+                                        "remote"]]
+                             "dataset" [["new_fields"
+                                         "origin_batch_resource"
+                                         "cluster"
+                                         "ranges"
+                                         "origin_dataset"
+                                         "origin_datasets"
+                                         "source"]]
+                             "cross-validation" [["evaluations"]]
+                             "model" [["cluster"
+                                       "datasets"
+                                       "dataset"]]
+                             "ensemble" [["datasets"
+                                          "dataset"]]
+                             "cluster" [["datasets"
+                                         "dataset"]]
+                             "anomaly" [["datasets"
+                                         "dataset"]]
+                             "prediction" [["deepnet"
+                                            "logisticregression"
+                                            "ensemble"
+                                            "model"
+                                            "fusion"]]
+                             "centroid" [["cluster"]]
+                             "anomalyscore" [["anomaly"]]
+                             "associationset" [["association"]]
+                             "topicdistribution" [["topicmodel"]]
+                             "evaluation" [["ensemble"
+                                            "model"
+                                            "logisticregression"
+                                            "timeseries"
+                                            "deepnet"
+                                            "fusion"]
+                                           ["dataset"]]
+                             "batchprediction" [["deepnet"
+                                                 "logisticregression"
+                                                 "ensemble"
+                                                 "model"
+                                                 "fusion"]
+                                                ["dataset"]]
+                             "batchcentroid" [["cluster"]
+                                              ["dataset"]]
+                             "batchanomalyscore" [["anomaly"]
+                                                  ["dataset"]]
+                             "batchtopicdistribution" [["topicmodel"]
+                                                       ["dataset"]]
+                             "association" [["datasets"
+                                             "dataset"]]
+                             "deepnet" [["datasets"
+                                         "dataset"]]
+                             "logisticregression" [["datasets"
+                                                    "dataset"]]
+                             "topicmodel" [["datasets"
+                                            "dataset"]]
+                             "timeseries" [["datasets"
+                                            "dataset"]]
+                             "forecast" [["timeseries"]]
+                             "fusion" [["models"]]})
+
+(define bigmler.reify.NAMED-ATTRIBUTES ["objective_field"
+                                      "weight_field"
+                                      "objective_fields"])
+
+(define bigmler.reify.UPD-ONLY-ATTRS ["private", "shared", "shared_clonable",
+                                    "credits_per_prediction", "price"])
+
+(define bigmler.reify.BATCH-HEADER-ATTRS {
+  "batchprediction" ["prediction_name" "confidence_name"]
+  "batchcentroid" ["centroid_name" "distance_name"]
+  "batchanomalyscore" ["score_name"]})
+
+;; DEFAULT-UPDATABLE
+;;
+;; field properties updatable in all resources that contain a field structure
+;;
+
+(define bigmler.reify.DEFAULT-UPDATABLE ["name" "label" "description"])
+
+;; DATASET-UPDATABLE
+;;
+;; field properties updatable in a dataset
+;;
+(define bigmler.reify.DATASET-UPDATABLE
+        (concat bigmler.reify.DEFAULT-UPDATABLE ["preferred"]))
+
+
+;; SOURCE-UPDATABLE
+;;
+;; field properties updatable in a source
+;;
+
+(define bigmler.reify.SOURCE-UPDATABLE
+        (concat bigmler.reify.DEFAULT-UPDATABLE ["optype"
+                                               "term_analysis"
+                                               "item_analysis"]))
+
+
+;; FIELDS-PATH
+;;
+;; attribute that contains the field structure keyed by resource type
+;;
+
+(define bigmler.reify.FIELDS-PATH
+        {"source" ["fields"]
+         "dataset" ["fields"]
+         "model" ["model" "fields"]
+         "ensemble" ["ensemble" "fields"]
+         "cluster" ["clusters" "fields"]
+         "anomaly" ["model" "fields"]
+         "correlation" ["correlations" "fields"]
+         "statisticaltests" ["statistical_tests" "fields"]
+         "logisticregression" ["logistic_regression" "fields"]
+         "deepnet" ["deepnet" "fields"]
+         "association" ["associations" "fields"]
+         "topicmodel" ["topic_model" "fields"]
+         "timeseries" ["time_series" "fields"]})
+
+
+;; INNER-INFO-NAMES-PATH
+;;
+;; attribute that contains inner clusters and topics info
+;;
+
+(define bigmler.reify.INNER-INFO-NAMES-PATH
+        {"cluster" ["clusters" "clusters"]
+         "topicmodel" ["topic_model" "topics"]})
+
+
+;; INNER-INFO-PATH
+;;
+;; attribute that contains inner clusters and topics info
+;;
+(define bigmler.reify.INNER-INFO-PATH
+        {"model" "model"
+         "association" "associations"
+         "cluster" "clusters"
+         "anomaly" "model"
+         "logisticregression" "logistic_regression"
+         "topicmodel" "topic_model"
+         "deepnet" "deepnet"
+         "timeseries" "time_series"})
+
+
+;; DFT-NAMES
+;;
+;; Default names for the clusters and topics
+;;
+
+(define bigmler.reify.DFT-NAMES {"cluster" "Cluster \\d+?"
+                               "topicmodel" "Topic \\d+?"})
+
+;; ---------------------------------------------------------
+
+;; Auxiliar functions for reify
+
+;; balance-objective
+;;
+;; removes the objective_weights attribute when the balance_objective
+;; attribute is found.
+;;
+;; Inputs:
+;;   conf: (map) Map with the configuration of the model
+
+(define (bigmler.reify.balance-objective conf)
+  (if (conf "balance_objective" false)
+      (dissoc conf "objective_weights")
+      conf))
+
+;; set-conf
+;;
+;; Sets the wanted configuration in the chain
+;;
+;; Inputs:
+;;  chain: (map) workflow chain of events
+;;  id: (string) resource ID
+;;  action: (string) action label where the change is added
+;;
+;; Output: (map) workflow chain of events
+;;
+(define (bigmler.reify.set-conf chain id action config)
+  (assoc-in chain ["defs" id action] config))
+
+
+;; get-conf
+;;
+;; Gets the wanted configuration in the chain
+;;
+;; Inputs:
+;;  chain: (map) workflow chain of events
+;;  id: (string) resource ID
+;;  action: (string) action label where the change is added
+;;
+;; Output: (map) configuration
+;;
+(define (bigmler.reify.get-conf chain id action)
+  (chain ["defs" id action] {}))
+
+
+;; remove-conf
+;;
+;; Removes the wanted configuration in the chain
+;;
+;; Inputs:
+;;  chain: (map) workflow chain of events
+;;  id: (string) resource ID
+;;  action: (string) action label where the config is removed
+;;
+;; Output: (map) configuration
+;;
+(define (bigmler.reify.remove-conf chain id action)
+  (dissoc-in chain ["defs" id action]))
+
+
+;; add-to
+;;
+;; Adds the key value to the wanted configuration in the chain
+;;
+;; Inputs:
+;;  chain: (map) workflow chain of events
+;;  id: (string) resource ID
+;;  action: (string) action label where the change is added
+;;  attr: (string) attribute to add
+;;  value: (map) value to assign
+;;
+;; Output: (map) workflow chain of events
+;;
+(define (bigmler.reify.add-to chain id action attr value)
+  (assoc-in chain ["defs" id action attr] value))
+
+;; remove-from
+;;
+;; Removes the key from the wanted configuration in the chain
+;;
+;; Inputs:
+;;  chain: (map) workflow chain of events
+;;  id: (string) resource ID
+;;  action: (string) action label where the attribute is removed from
+;;  attr: (string) attribute to remove
+;;
+(define (bigmler.reify.remove-from chain id action attr)
+  (dissoc-in chain ["defs" id action attr]))
+
+;; get-attr
+;;
+;; Gets the attribute value from the raw configuration in the chain
+;;
+;; Inputs:
+;; chain: (map) worklfow chain of events
+;; id: (string) resource ID
+;; attr: (string) attribute to get
+(define (bigmler.reify.get-attr chain id attr)
+  (chain ["defs" id "ref" attr] false))
+
+;; get-attr-action
+;;
+;; Gets the attribute value from the wanted configuration in the chain
+;;
+;; Inputs:
+;; chain: (map) worklfow chain of events
+;; id: (string) resource ID
+;; action: (string) action label where the attribute is
+;; attr: (string) attribute to get
+(define (bigmler.reify.get-attr-action chain id action attr)
+  (chain ["defs" id action attr] false))
+
+
+;; batch-headers
+;;
+;; Removes header names in batch resources if no headers are used
+;;
+;; Inputs:
+;; chain: (map) workflow chain of events
+;; id: (string) resource ID
+;;
+;; Outputs: (map) chain of events
+(define (bigmler.reify.batch-headers chain id)
+  (if (or (not (contains? (bigmler.reify.get-conf chain id "create") "header"))
+           (bigmler.reify.get-attr-action chain id "create" "header"))
+      chain
+      (let (type (resource-type id)
+            attrs (bigmler.reify.BATCH-HEADER-ATTRS type []))
+        (iterate (acc chain attr attrs)
+          (bigmler.reify.remove-from acc id "create" attr)))))
+
+
+
+;; filter-in-values
+;;
+;; filters the arguments in the values of a nested two-level
+;; map structure where we know the first parent attribute and the last
+;; inner attribute, but not the middle keys, like:
+;;
+;; field_parameters: {
+;;   000005: {
+;;     period: 1,
+;;     time_range: {
+;;     descending: false,
+;;     end: 79,
+;;     interval: 1,
+;;     interval_unit: "index",
+;;     start: 0
+;;   }
+;; }
+;;}
+;;
+;; where we want to filter attributes of "time_range" in the "field_parameters"
+;; attributes
+;;
+;; Inputs:
+;;   conf: (map) map that describes the configuration
+;;   outer-attr: (string) outer container map key
+;;   inner-attr: (string) key to the nested value to be filtered
+;;   attrs: (list) list of valid arguments
+;;
+;; Output: (map) map that describes the configuration
+
+(define (bigmler.reify.filter-in-values conf outer-attr inner-attr attrs)
+  (let (inner-map (conf outer-attr {})
+        filtered-attr (iterate (r {} attr (keys inner-map))
+                        (assoc r
+                               attr
+                               (bigmler.reify.filter-attrs (inner-map attr)
+                                                         inner-attr
+                                                         attrs))))
+        (assoc conf outer-attr filtered-attr)))
+
+
+;; filter-attrs
+;;
+;; filters the arguments in a map to keep only the ones given in a list
+;;
+;; Inputs:
+;;   conf: (map) map that describes the configuration
+;;   parent-attr: (string) attribute to be filtered
+;;   attrs: (list) list of valid arguments
+;;
+;; Output: (map) map that describes the configuration
+
+(define (bigmler.reify.filter-attrs conf parent-attr attrs)
+  (let (parent (conf parent-attr {})
+        filtered-attr (iterate (r {} attr (keys parent))
+                        (if (member? attr attrs)
+                            (assoc r attr (parent attr))
+                            r)))
+        (assoc conf parent-attr filtered-attr)))
+
+
+;; clean-origin-info
+;;
+;; Checks that the contents of the attribute are a single or a list of
+;; resource IDs
+;;
+;; Inputs:
+;;   info: (string|list) resource ID or list of IDs
+;;
+;; Output: (string|list|false) resource ID, list of IDs or false
+
+(define (bigmler.reify.clean-origin-info info)
+  (let (info-check (if (list? info)
+                       (reduce (lambda (x y) (and x y))
+                               true
+                               (map resource-id? info))
+                       (resource-id? info)))
+    (if info-check
+        info
+        false)))
+
+
+;; update-attrs?
+;;
+;; True if the resource-type attributes can only be changed in updates
+;;
+;; Inputs:
+;;  res-type: (string) Resource-type
+;;
+;; Output: (boolean) True if any of the update only attributes are available
+;;
+(define (bigmler.reify.update-attrs? res-type)
+  (some (lambda (x) (member? x (keys (bigmler.reify.DEFAULTS res-type {}))))
+        bigmler.reify.UPD-ONLY-ATTRS))
+
+
+
+;;------------------------------------------------------------------------
+;; PER-TYPE-PROCESS
+;;
+;; specific transformations or checkings that must be applied only to some
+;; resource types.
+;;
+(define bigmler.reify.PER-TYPE-PROCESS {
+  "source" (lambda (id chain)
+             ;; sources that come from remote data can be reproduced, so we
+             ;; use the create and update calls. Sources that come from a
+             ;; local file cannot be created from whizzml, so we move the
+             ;; attributes to the update call and leave a source_id argument
+             ;; free.
+             (if (not (bigmler.reify.get-attr chain id "remote"))
+                 ;; local file
+                 (let (chain (bigmler.reify.remove-from chain
+                                                      id
+                                                      "create"
+                                                      "file_name")
+                       update (bigmler.reify.get-conf chain id "update")
+                       chain (if (bigmler.reify.get-attr chain
+                                                       id
+                                                       "source_parser")
+                                 (bigmler.reify.set-conf chain
+                                                       id
+                                                       "update-parser"
+                                    (bigmler.reify.get-conf chain id "create"))
+                                 (bigmler.reify.set-conf chain
+                                                         id
+                                                         "update"
+                                           (merge update
+                                                  (bigmler.reify.get-conf chain
+                                                                        id
+                                                                        "create")))))
+                   (bigmler.reify.remove-conf chain id "create"))
+                 chain))
+  "dataset" (lambda (id chain)
+              ;; datasets have an associated objective field and
+              ;; can store transformations from other datasets, so we
+              ;; need to compare them to their parents to check
+              (let (ancestors (bigmler.reify.dataset-get-ancestors id chain)
+                    conf (bigmler.reify.get-conf chain id "create")
+                    upd-conf (bigmler.reify.get-conf chain id "update")
+                    upd-conf (if upd-conf
+                                 (bigmler.reify.dataset-set-objective upd-conf)
+                                 upd-conf)
+                    conf (bigmler.reify.dataset-set-objective conf)
+                    conf (bigmler.reify.dataset-set-size id conf ancestors)
+                    conf (bigmler.reify.dataset-set-new-fields conf)
+                    chain (bigmler.reify.set-conf chain id "create" conf)
+                    chain (bigmler.reify.dataset-updates id chain))
+               (if upd-conf
+                   (bigmler.reify.set-conf chain id "update" upd-conf)
+                   chain)))
+  "model" (lambda (id chain)
+            ;; models have an associated objective field and
+            ;; some complementary options for balancing
+            (let (ancestors (bigmler.reify.model-get-ancestors id chain)
+                  conf (bigmler.reify.get-conf chain id "create")
+                  conf (bigmler.reify.model-set-objective conf ancestors)
+                  conf (bigmler.reify.balance-objective conf))
+              (bigmler.reify.set-conf chain id "create" conf)))
+  "cluster" (lambda (id chain)
+              ;; clusters can either be g-means or k-means. If g-means
+              ;; k must be discarded
+              (let (conf (bigmler.reify.get-conf chain id "create"))
+                (if (and (contains? conf "critical_value")
+                         (contains? conf "k"))
+                    (bigmler.reify.remove-from chain id "create" "k")
+                    chain)))
+  "ensemble" (lambda (id chain)
+               ;; ensembles have an associated objective field and
+               ;; can be of many types. We need to select attributes according
+               ;; to these types.
+               (let (ancestors (bigmler.reify.model-get-ancestors id chain)
+                     conf (bigmler.reify.get-conf chain id "create")
+                     conf (bigmler.reify.model-set-objective conf ancestors)
+                     conf (if (contains? conf "boosting")
+                              (bigmler.reify.filter-attrs
+                                conf
+                                "boosting"
+                                bigmler.reify.BOOSTING-ATTRS)
+                              conf)
+                     conf (if (contains? conf "ensemble_sample")
+                              (bigmler.reify.filter-attrs
+                                conf
+                                "ensemble_sample"
+                                bigmler.reify.SAMPLE-ATTRS)
+                              conf)
+                     conf (bigmler.reify.balance-objective conf))
+                 (bigmler.reify.set-conf chain id "create" conf)))
+  "logisticregression" (lambda (id chain)
+                         ;; logistic regression have an objective field
+                         ;; that can be balanced too
+                         (let (ancestors (bigmler.reify.model-get-ancestors id
+                                                                          chain)
+                               conf (bigmler.reify.get-conf chain id "create")
+                               conf (bigmler.reify.model-set-objective conf ancestors)
+                               conf (bigmler.reify.balance-objective conf))
+                           (bigmler.reify.set-conf chain id "create" conf)))
+  "deepnet" (lambda (id chain)
+              ;; deepnets have an objective field, can be balanced and
+              ;; also the ones with search=True should not keep the layers info
+              (let (ancestors (bigmler.reify.model-get-ancestors id chain)
+                    conf (bigmler.reify.get-conf chain id "create")
+                    conf (bigmler.reify.model-set-objective conf ancestors)
+                    conf (bigmler.reify.remove-layers-type conf)
+                    conf (bigmler.reify.deepnet-suggest-dft conf)
+                    conf (bigmler.reify.balance-objective conf))
+                (bigmler.reify.set-conf chain id "create" conf)))
+  "timeseries" (lambda (id chain)
+                 ;; timeseries have an objective field (or many)
+                 ;; and only some time-range and field parameters are
+                 ;; accepted in create calls
+                 (let (ancestors (bigmler.reify.model-get-ancestors id chain)
+                       conf (bigmler.reify.get-conf chain id "create")
+                       conf (bigmler.reify.model-set-objective conf ancestors)
+                       conf (if (contains? conf "time_range")
+                                (bigmler.reify.filter-attrs
+                                  conf
+                                  "time_range"
+                                  bigmler.reify.TIME-RANGE-ATTRS)
+                                conf)
+                       conf (if (contains? conf "field_parameters")
+                                (bigmler.reify.filter-in-values
+                                  conf
+                                  "field_parameters"
+                                  "time_range"
+                                  bigmler.reify.TIME-RANGE-ATTRS)
+                                conf))
+                   (bigmler.reify.set-conf chain id "create" conf)))})
+
+;; adding-updates
+;;
+;; special code to be run on
+;; attributes that can only be updated,
+;; like private and shared, etc.
+;;
+;; Inputs:
+;;   id: (string) model ID
+;;   chain: (map) map that describes the reify chain of resources
+;;
+;; Output: (map) map that describes the reify chain of resources
+
+(define (bigmler.reify.adding-updates id chain)
+  (let (conf (bigmler.reify.get-conf chain id "create")
+        upd-conf (bigmler.reify.get-conf chain id "update")
+        upd-conf (iterate (acc upd-conf attr bigmler.reify.UPD-ONLY-ATTRS)
+                   (if (member? attr (keys conf))
+                       (assoc acc attr (conf attr))
+                        acc))
+        private (upd-conf "private" (conf "private" true))
+        chain (if (not private)
+                  (bigmler.reify.set-conf chain id "update"
+                            (assoc upd-conf "private" private))
+                  (bigmler.reify.set-conf chain id "update" upd-conf))
+        ;; if no changes are due, then we avoid updating
+        chain (if (= (bigmler.reify.get-conf chain id "update") {})
+                  (bigmler.reify.set-conf chain id "update" false)
+                  chain)
+        conf (iterate (acc conf attr bigmler.reify.UPD-ONLY-ATTRS)
+               (if (member? attr (keys conf))
+                   (dissoc acc attr)
+                   acc))
+        chain (bigmler.reify.set-conf chain id "create" conf))
+    chain))
+
+
+;; model-get-ancestors
+;;
+;; getting the ancestors attributes (parent and grandparent)
+;; to check inherited attributes and origins
+;;
+;; Inputs:
+;;  id: (string) model ID
+;;  chain: (map) map that describes the reify chain of resources
+;; Output: (map) ancestor resources and attributes
+
+(define (bigmler.reify.model-get-ancestors id chain)
+  (let (parents (chain ["defs" id "parents"] false)
+        parent (head parents)
+        origin (nth parent 0)
+        parent (nth parent 1)
+        ;; if model comes from a list of dataset, get only first one
+        parent (if (list? parent) (head parent) parent)
+        parent-conf (chain ["defs" parent "create"] false)
+        ;; as two-steps result from a cluster
+        grandparent parent
+        ancestors (assoc {} "parent" parent)
+        ancestors (assoc ancestors "origin" origin)
+        ancestors (assoc ancestors "parent-conf" parent-conf)
+        ancestors (assoc ancestors "grandparent" grandparent))
+    (if (= origin "cluster")
+      (let (grandparents (chain ["defs" parent "parents"] false)
+            grandparent (head grandparents)
+            gp-origin (nth grandparent 0)
+            grandparent (nth grandparent 1)
+            grandparent (if (list? grandparent) (head grandparent) grandparent)
+            gp-conf (bigmler.reify.get-conf ancestors grandparent "create")
+            ancestors (assoc ancestors "grandparent" grandparent))
+        (assoc ancestors "gp-conf" (bigmler.reify.get-conf chain
+                                                         grandparent
+                                                         "create")))
+      (assoc ancestors "gp-conf" (bigmler.reify.get-conf chain
+                                                       grandparent
+                                                       "create")))))
+
+
+;; model-set-objective
+;;
+;; Adding the objective field information if not set in previous resources
+;; Inputs:
+;;  conf: (map) model configuration attributes
+;;  ancestors: (map) ancestors configuration attributes
+;; Output: (map) model updated configuration
+(define (bigmler.reify.model-set-objective conf ancestors)
+  (let (gp-conf (or (ancestors "gp-conf" {}) {})
+        origin (or (ancestors "origin" {}) {}))
+    (if (or (not (conf "objective_field" false)) (= origin "cluster"))
+        (dissoc conf "objective_field")
+        (let (objective (conf ["objective_field"] false)
+              gp-objective (gp-conf ["objective_field" "id"] false))
+          (if (not (= objective gp-objective))
+              (assoc conf "objective_field" objective)
+              (dissoc conf "objective_field"))))))
+
+
+;; dataset-updates
+;;
+;; Moving the attributes that have to be set in datasets to update time
+;; in case the dataset comes from batch_resources
+;;
+;; Inputs:
+;;   id: (string) Dataset ID
+;;   chain: (map) reify chain of resources
+;;
+;; Output: (map) reify chain of resources
+
+(define (bigmler.reify.dataset-updates id chain)
+  (let (conf (bigmler.reify.get-conf chain id "create")
+        origin (head (head (bigmler.reify.get-conf chain id "parents"))))
+    ;; for batch_predictions, batch_clusters, batch_anomaly_scores the
+    ;; generated datasets have the default parameters and all the attributes
+    ;; need to be updated after creation time.
+    (if (= origin "origin_batch_resource")
+        (let (chain (bigmler.reify.remove-conf chain id "create")
+              conf (dissoc conf "input_fields")
+              chain (bigmler.reify.set-conf chain id "update" conf))
+          (bigmler.reify.set-conf chain id "get" "output_dataset_resource"))
+        chain)))
+
+;; dataset-set-size
+;;
+;; Adding the size if changed from the origin resource
+;;
+;; Inputs:
+;;   id: (string) dataset ID
+;;   conf: (map) dataset attributes
+;;   ancestors: (map) ancestors attributes
+;;
+;; Outputs: (map) dataset updated configuration
+
+(define (bigmler.reify.dataset-set-size id conf ancestors)
+  (let (parent-type (resource-type (ancestors "parent" false)))
+    (if (and (= parent-type "source")
+             (not (= (conf "size" false)
+                     (ancestors ["parent-conf" "size"] false))))
+        conf
+        (dissoc conf "size"))))
+
+;; remove-layers-type
+;;
+;; Removes the inner "type" key in hidden_layers
+;;
+;; Inputs:
+;;   conf: (map) deepnet attributes
+;;
+;; Outputs: (map) deepnet updated configuration
+
+(define (bigmler.reify.remove-layers-type conf)
+  (if (conf "hidden_layers" false)
+    (let (hidden-layers (conf "hidden_layers")
+          hidden-layers (map (lambda (x) (dissoc x "type")) hidden-layers))
+      (assoc conf "hidden_layers" hidden-layers))
+    conf))
+
+;; deepnet-suggest-dft
+;;
+;; special code to be run on
+;; to handle the suggest_structure attribute in deepnets
+;;
+;; Inputs:
+;;   id: (string) model ID
+;;   chain: (map) map that describes the reify chain of resources
+;;
+;; Output: (map) map that describes the reify chain of resources
+
+(define (bigmler.reify.deepnet-suggest-dft conf)
+  (let (suggest (if (member? "suggest_structure" (keys conf))
+                    (conf "suggest_structure" false)
+                    true))
+    (assoc conf "suggest_structure" suggest)))
+
+
+;; new-fields-generators
+;;
+;; Updating the `new_fields` attribute with the generators in `output_fields`
+;;
+;; Inputs:
+;;   conf: (map) dataset configuration
+;;
+;; Output: (map) updated dataset configuration
+
+(define (bigmler.reify.new-fields-generators conf)
+  (let (conf (dissoc conf "input_fields")
+        conf (assoc conf "all_fields" false)
+        generators (conf "output_fields" false)
+        generator-fn (lambda (x) (let (y (select-keys x ["generator"
+                                                         "names"])
+                                       y (assoc y "field" (y
+                                                           "generator"
+                                                           false)))
+                                    (dissoc y "generator"))))
+    (assoc conf "new_fields" (map generator-fn generators))))
+
+;; dataset-set-new-fields
+;;
+;; Set the attributes to reproduce the `new_fields` attribute if present
+;;
+;; Inputs:
+;;   conf: (map) dataset configuration
+;;
+;; Output: (map) updated dataset configuration
+
+(define (bigmler.reify.dataset-set-new-fields conf)
+  ;; if new_fields is not empty, remove input_fields and get new_fields from
+  ;; output_fields generators. Set all_fields to false, and remove all_but and
+  ;; output_fields.
+  (let (new-fields (conf "new_fields" false)
+        conf (if (and new-fields (not (empty? new-fields)))
+                 (bigmler.reify.new-fields-generators conf)
+                 conf)
+        conf (dissoc conf "output_fields"))
+    (dissoc conf "all_but")))
+
+;; dataset-set-objective
+;;
+;; Sets the objective field attribute in datasets, where the syntax is
+;; different from the model resources
+;;
+;; Inputs:
+;;   conf: (map) dataset configuration
+;;
+;; Output: (map) updated dataset configuration
+
+(define (bigmler.reify.dataset-set-objective conf)
+  (let (objective (conf "objective_field" false))
+    (if objective
+        (assoc conf "objective_field" {"id" (objective "id" "")})
+        conf)))
+
+;; dataset-get-ancestors
+;;
+;; Fills in the attributes of the ancestors (parent and grandparent) of
+;; the given dataset for further checks
+;;
+;; Inputs:
+;;   id: (string) dataset ID
+;;   chain: (map) reify chain of resources
+;;
+;; Output: (map) ancestors attributes
+
+(define (bigmler.reify.dataset-get-ancestors id chain)
+  (let (parents (chain ["defs" id "parents"] false)
+        parent (head parents)
+        origin (nth parent 0)
+        parent (nth parent 1)
+        ;; if dataset comes from a list of dataset, get only first one
+        parent (if (list? parent) (head parent) parent)
+        parent-conf (chain ["defs" parent "create"] false)
+        ;; as two-steps result from a cluster or batch prediction, centroid
+        ;; or anomaly score
+        grandparent parent
+        ancestors (assoc {} "parent" parent)
+        ancestors (assoc ancestors "origin" origin)
+        ancestors (assoc ancestors "parent-conf" parent-conf)
+        ancestors (assoc ancestors "grandparent" grandparent))
+    (if (= origin "origin_batch_resource")
+      (let (grandparents (chain ["defs" parent "parents"] false)
+            grandparent (head grandparents)
+            gp-origin (nth grandparent 0)
+            grandparent (nth grandparent 1)
+            grandparent (if (list? grandparent) (head grandparent) grandparent)
+            grandparent (if (> (count grandparents) 1)
+                          (loop (index 0 grandparent grandparent)
+                            (if (= index (count grandparents))
+                                grandparent
+                                (let (gp-origin (nth (head (nth grandparents
+                                                                index))
+                                                     0))
+                                  (if (= gp-origin "dataset")
+                                      (nth (head (nth grandparents index)) 1)
+                                      (recur (+ index 1) grandparent)))))
+                          grandparent)
+            ancestors (assoc ancestors "grandparent" grandparent)))
+        (assoc ancestors "gp-conf" (bigmler.reify.get-conf chain
+                                                         grandparent
+                                                         "create"))
+        (assoc ancestors "gp-conf" (bigmler.reify.get-conf chain
+                                                         grandparent
+                                                         "create")))))
+
+;; get-non-defaults
+;;
+;; checks the attributes defaults and fills in only the attributes in the
+;; resource that differ from them
+;;
+;; Inputs:
+;;   resource: (map) resource attributes
+;;   defaults: (map) attribute, values pairs
+;;   configuration: (map) previous configuration information
+;;
+;; Output: (map) updated configuration
+
+(define (bigmler.reify.get-non-defaults resource defaults configuration)
+  (loop (index 0 lconfiguration configuration)
+    (if (= index (count (keys defaults)))
+        lconfiguration
+        (let (attribute (nth (keys defaults) index)
+              res-type (resource-type resource)
+              value (resource attribute false)
+              value (if (and (not value)
+                             (contains? bigmler.reify.INNER-INFO-PATH res-type)
+                             (contains? (resource (bigmler.reify.INNER-INFO-PATH
+                                                   res-type)
+                                                  {})
+                                                  attribute))
+                        (resource [(bigmler.reify.INNER-INFO-PATH res-type)
+                                  attribute]
+                                   false)
+                        value)
+              lconfiguration (if (not (member? value
+                                               (defaults attribute [])))
+                                 (assoc lconfiguration
+                                        attribute
+                                        value)
+                                 lconfiguration))
+          (recur (+ index 1) lconfiguration)))))
+
+
+;; get-parents-argument
+;;
+;; Finds the origin type of resource and its ID or IDs
+;;
+;; Inputs:
+;;   resource: (map) resource information
+;;   argument-origins: (list) types of origin allowed in each of the origin
+;;                     arguments
+;;                     (some resources, such as evaluations, have more than
+;;                      one argument that contains an origin ID)
+;;   found-origins: (list) origins found
+;;
+;; Outputs: (map) origins found
+
+(define (bigmler.reify.get-parents-argument resource
+                                          argument-origins
+                                          found-origins)
+  (loop (index 0 lfound-origins found-origins)
+    (if (= index (count argument-origins))
+        lfound-origins
+        (let (origin (nth argument-origins index)
+              origin (if (= origin "new_fields")
+                         "origin_dataset"
+                         origin)
+              origin-info (resource origin false)
+              origin-info (if (and (list? origin-info) (empty? origin-info))
+                              false
+                              origin-info)
+              origin-info (if origin-info
+                              (if (= origin "ranges")
+                                  (keys origin-info)
+                                  origin-info)
+                              origin-info)
+              raw-origin-info origin-info
+              origin-info (if (and (= origin "models")
+                                   (map? (origin-info 0)))
+                              (map (lambda (x) (x "id")) origin-info)
+                              origin-info)
+              origin-info (if (not (= origin "remote"))
+                              (bigmler.reify.clean-origin-info origin-info)
+                              origin-info)
+              lfound-origins (if origin-info
+                                 (append lfound-origins [origin
+                                                          origin-info
+                                                          raw-origin-info])
+                                 lfound-origins))
+          (if (not origin-info)
+              (recur (+ index 1) lfound-origins)
+              lfound-origins)))))
+
+
+;; get-parents
+;;
+;; returns the list of resources used as origin for the present resource.
+;;
+;; Inputs:
+;;   resource: (map) resource information
+;;   type: (string) type of the resource
+;;
+;; Outputs: (list) List of two-element lists. The two elements are the
+;;                 origin type and the ID of the origin resource
+;;                 The origin type is usually the name of the attribute used
+;;                 in the create payload. Datasets created from batch resources
+;;                 use a different attribute (origin_batch_resource)
+
+(define (bigmler.reify.get-parents resource type)
+  (let (origins (bigmler.reify.ORIGINS type [])
+        found-origins [])
+    (loop (index 0 lfound-origins found-origins)
+      (if (= index (count origins))
+          (if (not lfound-origins)
+              (raise {"message"
+                      "Failed to find the complete origin information."
+                      "code" 42})
+              lfound-origins)
+          (let (argument-origins (nth origins index)
+                lfound-origins (bigmler.reify.get-parents-argument
+                                 resource
+                                 argument-origins
+                                 lfound-origins))
+            (recur (+ index 1) lfound-origins))))))
+
+
+;; parent-ids
+;;
+;; Filtering only IDs from the origin, ID pairs (origin type, origin ID)
+;;
+;; Inputs:
+;;   parents: (list) origin information in two-element lists
+;;
+;; Output: (list) list of parent IDs
+
+(define (bigmler.reify.parent-ids parents)
+  (reduce (lambda (x y) (if (list? y)
+                            (concat x y)
+                            (append x y)))
+          []
+          (map (lambda (x) (nth x 1)) parents)))
+
+;; add-parents
+;;
+;; Adds the IDs found in the reify process to the list of reified resources
+;;
+;; Inputs:
+;;   reify-chain: (map) reify chain of resources
+;;   parents: (list) list of parents in a [origin-type origin-id origin-raw]
+;;                   format
+;;
+;; Output: (map) updated reify chain of resources
+
+(define (bigmler.reify.add-parents reify-chain parents)
+  (let (parents (bigmler.reify.parent-ids parents)
+        reify-chain-list (concat (reify-chain "list" [])
+                         parents))
+    reify-chain (assoc reify-chain "list" reify-chain-list)))
+
+;; add-step-info
+;;
+;; Adds the configuration of a concrete resource to the reify chain
+;; adds the reference to its origin resources to the reified info for the
+;;   resource
+;; adds the IDs of its origin resources to the list of resources to be
+;; reified
+;;
+;; Inputs:
+;;   reify-chain: (map) reify chain of resources
+;;   resource-id: (string) Resource ID
+;;   configuration: (map) selected attributes for the resource-id
+;;   parents: (list) list of resources used as origin
+;;
+;; Output: (map) reify chain
+
+(define (bigmler.reify.add-step-info reify-chain
+                                   resource-id
+                                   configuration
+                                   parents)
+  (if (not (contains? (reify-chain "defs" {}) resource-id))
+      (let (reify-chain-defs (assoc (reify-chain "defs" {})
+                                    resource-id
+                                    {"create" configuration
+                                     "ref" configuration
+                                     "parents" parents})
+            reify-chain (assoc reify-chain "defs" reify-chain-defs))
+            (bigmler.reify.add-parents reify-chain parents))
+      (bigmler.reify.add-parents reify-chain parents)))
+
+;; reify-step
+;;
+;; Retrieves the resource information and selects the information
+;; about other resources used as origin for the call and selects the
+;; attributes which can be used at creation or update time. It also
+;; defines the input for the reification script.
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   reify-chain: (map) chain of resources for reification
+;;   step: (boolean) If set to true, only the last setp of the reify chain
+;;                   is added
+;;   counter: (integer) Controls the number of reified resources when step is
+;;                      true
+;;
+;; Outputs: (map) chain of resources for reification
+;;
+
+(define (bigmler.reify.reify-step resource-id reify-chain step counter)
+  (if (and step (< counter 0))
+      ;; the reify process stops and all resources that have not been
+      ;; reified should be accepted as input parameters
+      (bigmler.reify.fill-input resource-id reify-chain) ;; write the inputs
+      (if (contains? (reify-chain "defs" {}) resource-id)
+        ;; when the resource config is already stored, add the origin
+        ;; resources IDs to the list of resources in the workflow
+        ;; and call reify on the origin resources
+        (let (parent-refs (bigmler.reify.get-conf reify-chain
+                                                resource-id
+                                                "parents")
+              reify-chain (bigmler.reify.add-parents reify-chain
+                                                   parent-refs))
+          (bigmler.reify.reify-parents reify-chain
+                                     parent-refs
+                                     resource-id
+                                     step
+                                     counter))
+        ;; retrieving the configuration for the resource and storing it
+        ;; or adding the resource to the expected inputs if not found
+        (if (resource-id? resource-id)
+            (try
+              (let (resource (fetch resource-id))
+                (if resource
+                    (bigmler.reify.fill-attributes resource-id
+                                                 resource
+                                                 reify-chain
+                                                 step
+                                                 counter)
+                    (bigmler.reify.fill-input resource-id reify-chain)))
+              (catch e
+                (log-info "Error: " e)
+                (log-info "Stopping at deleted resource: " resource-id)
+                (bigmler.reify.fill-input resource-id reify-chain)))
+            (bigmler.reify.fill-input resource-id reify-chain)))))
+
+;; fill-input
+;;
+;; Adds the information about the input needed for the reification script.
+;; The last resource in the ancestors' chain or the remote URL used to
+;; build the source.
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Output: (map) chain of resources for reification
+;;
+
+(define (bigmler.reify.fill-input resource-id reify-chain)
+  (let (inputs (reify-chain "inputs" [])
+        inputs (if (member? resource-id inputs)
+                   inputs
+                   (append (reify-chain "inputs" []) resource-id)))
+    (assoc reify-chain "inputs" inputs)))
+
+
+;; reify-parents
+;;
+;; Calls the reify-step function for each of the parents of a resource
+;;
+;; Inputs:
+;;   reify-chain: (map) chain of resources for reifcation
+;;   parents: (list) List of parent IDs
+;;   resource-id: (string) ID of the reified resource
+;;   step: (boolean) If set to true, only the last setp of the reify chain
+;;                   is added
+;;   counter: (integer) Controls the number of reified resources when step is
+;;                      true
+;;
+;; Output: (map) chain of resources for reification
+;;
+
+(define (bigmler.reify.reify-parents reify-chain
+                                   parents
+                                   resource-id
+                                   step
+                                   counter)
+  (if (not (empty? parents))
+      (let (parents (bigmler.reify.parent-ids parents)
+            origin-type (head (head (bigmler.reify.get-conf reify-chain
+                                                          resource-id
+                                                          "parents")))
+            type (resource-type resource-id)
+            ;; in the case of datasets created from a batch prediction
+            ;; we store two steps
+            counter (if (and step (or (!= type "dataset")
+                                      (!= origin-type
+                                          "origin_batch_resource")))
+                        (- counter 1)
+                        counter))
+        (loop (index 0 lreify-chain reify-chain)
+          (if (= index (count parents))
+              lreify-chain
+              (let (parent-id (nth parents index)
+                    lreify-chain (bigmler.reify.reify-step parent-id
+                                                         lreify-chain
+                                                         step
+                                                         counter))
+                (recur (+ index 1) lreify-chain)))))
+      (if (= (resource-type resource-id) "source")
+          (bigmler.reify.fill-input resource-id reify-chain)
+          reify-chain)))
+
+
+;; input-field-names
+;;
+;; Changes the input_fields ids to the corresponding names to allow
+;; using ancestors with different IDs.
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Output: (map) chain of resources for reification
+;;
+
+(define (bigmler.reify.input-field-names resource-id reify-chain)
+  (let (attribute "input_fields"
+        config (bigmler.reify.get-conf reify-chain resource-id "create")
+        parents (bigmler.reify.get-conf reify-chain
+                                      resource-id
+                                      "parents")
+        fields (config "fields" {})
+        objective_field (config "objective_field" "")
+        objective_field (if (string? objective_field)
+                            objective_field
+                            (objective_field "id" ""))
+        objective-name (or (fields [objective_field "name"]
+                                   false)
+                           false))
+    (if (and (list? parents) (not (empty? parents)))
+        (let (parents (bigmler.reify.parent-ids parents)
+              parent (bigmler.reify.get-fields-parent parents)
+              parent-fields (bigmler.reify.get-attr-action reify-chain
+                                                         parent
+                                                         "create"
+                                                         "fields")
+              objective? (config "objective_field" false))
+          (if (and parent-fields
+                   (contains? config attribute))
+              (let (new-input-fields (map (lambda (x)
+                                           (parent-fields [x "name"] x))
+                                           (config attribute false)))
+                ;; same number of fields or only lack objective field
+                (if (or (= (count new-input-fields)
+                           (count (keys parent-fields)))
+                        (and objective-name
+                             (= (count new-input-fields)
+                                (- (count (keys parent-fields)) 1))
+                             (not (member? objective-name new-input-fields))))
+                  (bigmler.reify.remove-from reify-chain
+                                           resource-id
+                                           "create"
+                                           attribute)
+                  (bigmler.reify.add-to reify-chain
+                                      resource-id
+                                      "create"
+                                      attribute
+                                       new-input-fields)))
+              reify-chain))
+        reify-chain)))
+
+;; get-fields-parent
+;;
+;; Some batch resources use as reference the fields in their dataset origin
+;; Retrieves the fields structure from that origin resource
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Output: (map) chain of resources for reification
+;;
+(define (bigmler.reify.get-fields-parent parent-ids)
+  (let (datasets (filter (lambda (x) (or (list? x)
+                                         (= (resource-type x) "dataset")))
+                         parent-ids))
+    (if (empty? datasets)
+        (head parent-ids)
+        (if (list? (head datasets))
+            (head (head datasets))
+            (head datasets)))))
+
+
+;; excluded-fields-names
+;;
+;; Changes the excluded_fields ids to the corresponding names to allow
+;; using ancestors with different IDs.
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Output: (map) chain of resources for reification
+;;
+
+(define (bigmler.reify.excluded-fields-names resource-id reify-chain)
+  (let (attribute "excluded_fields"
+        config (bigmler.reify.get-conf reify-chain resource-id "create")
+        parents (bigmler.reify.get-conf reify-chain resource-id "parents"))
+    (if (and (contains? config attribute)
+             (list? parents)
+             (not (empty? parents)))
+        (let (parents (bigmler.reify.parent-ids parents)
+              parent (head parents)
+              parent-fields (bigmler.reify.get-attr-action reify-chain
+                                                         parent
+                                                         "create"
+                                                         "fields")
+              objective? (config "objective_field" false))
+          (if parent-fields
+              (let (new-fields (map (lambda (x)
+                                      (parent-fields [x "name"] x))
+                                    (config attribute [])))
+                (bigmler.reify.add-to reify-chain
+                                    resource-id
+                                    "create"
+                                    attribute
+                                    new-fields))
+              reify-chain))
+        reify-chain)))
+
+
+;; remove-inherited
+;;
+;; Removes the attributes that contain values which have been inherited from
+;; the ancestors' attributes.
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Output: (map) chain of resources for reification
+;;
+
+(define (bigmler.reify.remove-inherited resource-id reify-chain)
+  (let (attributes (keys bigmler.reify.COMMON-DEFAULTS))
+    (loop (index 0 lchain reify-chain)
+      (let (attribute (nth attributes index)
+            config (bigmler.reify.get-conf lchain resource-id "ref")
+            parents (bigmler.reify.get-conf lchain resource-id "parents"))
+        (if (and (list? parents) (not (empty? parents)))
+            (let (parents (bigmler.reify.parent-ids parents)
+                  parent (head parents)
+                  parent-config (bigmler.reify.get-conf lchain parent "ref"))
+              (if (and parent-config
+                       (contains? config attribute)
+                       (contains? parent-config attribute)
+                       (= (config attribute false) (parent-config
+                                                            attribute
+                                                            false)))
+                  (let (config (dissoc config attribute)
+                        lchain (bigmler.reify.set-conf lchain
+                                                     resource-id
+                                                     "ref"
+                                                     config))
+                    (if (< (+ index 1) (count attributes))
+                        (recur (+ index 1) lchain)
+                        lchain))
+                  (if (< (+ index 1) (count attributes))
+                      (recur (+ index 1) lchain)
+                      lchain)))
+              lchain)))))
+
+
+;; remove-reference-only
+;;
+;; Removes the attributes that are only used as reference in the
+;; ancestors chain. They are only used as reference value in case they have
+;; changed.
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Output: (map) chain of resources for reification
+;;
+
+(define (bigmler.reify.remove-reference-only resource-id reify-chain)
+  (let (attributes (bigmler.reify.REFERENCE-ONLY (resource-type resource-id)
+                                               false))
+    (loop (index 0 lchain reify-chain)
+      (if (= index (count attributes))
+          lchain
+          (let (attribute (nth attributes index)
+                action (cond (contains? (lchain ["defs" resource-id] {})
+                                        "create")
+                             "create"
+                             (contains? (lchain ["defs" resource-id] {})
+                                        "update-parser")
+                             "update-parser"
+                             "update")
+                config (lchain ["defs" resource-id action] {})
+                lchain (if (contains? config attribute)
+                           (bigmler.reify.remove-from lchain
+                                                    resource-id
+                                                    action
+                                                    attribute)
+                           lchain))
+            (recur (+ index 1) lchain))))))
+
+;; remove-range
+;;
+;; Checks whether the range has changed. Removes the attribute if it hasn't.
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Output: (map) chain of resources for reification
+;;
+(define (bigmler.reify.remove-range resource-id reify-chain)
+  (let (attribute "range"
+        config (bigmler.reify.get-conf reify-chain resource-id "create")
+        parents (bigmler.reify.get-conf reify-chain resource-id "parents"))
+    (if (and (list? parents) (not (empty? parents)))
+        (let (parents (bigmler.reify.parent-ids parents)
+              parents (reduce (lambda (x y) (if (= (resource-type y) "dataset")
+                                                (append x y)
+                                                x))
+                              []
+                              parents))
+          (if (not (empty? parents))
+            (let (parent (head parents)
+                  parent-config (bigmler.reify.get-conf reify-chain
+                                                      parent
+                                                      "create"))
+              (if (and (contains? config attribute)
+                       (member? (config attribute)
+                                [[] [1 (parent-config "rows" false)]]))
+                  (let (config (dissoc config attribute))
+                    (bigmler.reify.set-conf reify-chain
+                                          resource-id
+                                          "create"
+                                          config))
+                  reify-chain))
+                reify-chain))
+              reify-chain)))
+
+;; non-equal-fields
+;;
+;; Checks whether the fields structure has changed. Removes the inherited
+;; attributes.
+;;
+;; Inputs:
+;;   fields: (map) fields structure
+;;   parent-fields: (map) ancestor's fields structure
+;;
+;; Output: (map) fields structure for changed attributes
+;;
+(define (bigmler.reify.non-equal-fields fields parent-fields)
+  (let (field-ids (keys fields))
+    (loop (index 0 new-fields {})
+      (cond (= index (count field-ids))
+            new-fields
+            (not (contains? parent-fields (nth field-ids index)))
+            (recur (+ index 1) new-fields)
+            (let (field-id (nth field-ids index)
+                  attributes (keys (fields field-id false))
+                  new-fields (merge new-fields
+                                    (bigmler.reify.attributes-not-in-parent
+                                     fields
+                                     parent-fields
+                                     field-id
+                                     attributes)))
+              (recur (+ index 1) new-fields))))))
+
+;; attributes-not-in-parent
+;;
+;; Select the attributes in a field structure that are not inherited or empty.
+;;
+;; Inputs:
+;;   fields: (map) Resource fields structure
+;;   parent-fields: (map) Ancestor's fields structure
+;;   field-id: (string) ID for the field
+;;   attributes: (list) List of updatable attributes for the resource
+;;
+;; Output: (map) fields structure
+
+(define (bigmler.reify.attributes-not-in-parent fields parent-fields
+                                                     field-id
+                                                     attributes)
+  (loop (index 0 new-fields {})
+    (if (= index (count attributes))
+        new-fields
+        (let (attribute (nth attributes index))
+          (if (or (and (contains? (fields field-id false) attribute)
+                       (contains? (parent-fields field-id false) attribute)
+                       (= (fields [field-id attribute] false)
+                       (parent-fields
+                               [field-id attribute] false)))
+                  (and (contains? (fields field-id false) attribute)
+                       (not (parent-fields [field-id attribute] false))
+                       (= (fields [field-id attribute]) ""))
+                  (and (= attribute "preferred")
+                       (fields [field-id attribute] false))
+                  (and (= attribute "preferred")
+                       (not (contains? (fields field-id false) attribute))))
+               (recur (+ index 1) new-fields)
+               (recur (+ index 1) (assoc-in new-fields
+                                            [field-id attribute]
+                                            (fields  [field-id attribute]
+                                                     false))))))))
+
+
+;; remove-fields
+;;
+;; Removes the fields attributes that are inherited from ancestors
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Output: (map) chain of resources for reification
+
+(define (bigmler.reify.remove-fields resource-id reify-chain)
+  (let (attribute "fields"
+        config (bigmler.reify.get-conf reify-chain resource-id "create")
+        parents (bigmler.reify.get-conf reify-chain resource-id "parents")
+        type (resource-type resource-id)
+        fields (config "fields" {})
+        reify-chain (bigmler.reify.set-conf reify-chain
+                                          resource-id
+                                          "fields"
+                                          fields))
+    (cond (= type "source")
+          ;; for sources, fields settings always are at update
+          (let (reify-chain (bigmler.reify.remove-from reify-chain
+                                                     resource-id
+                                                     "create"
+                                                     attribute))
+            (bigmler.reify.add-to reify-chain resource-id
+                                            "update"
+                                            attribute
+                                            fields))
+          (if (and (list? parents) (not (empty? parents)))
+              (let (parents (bigmler.reify.parent-ids parents)
+                    parent (head parents)
+                    parent-config (bigmler.reify.get-conf reify-chain
+                                                        parent
+                                                        "ref")
+                    reify-chain (bigmler.reify.remove-from reify-chain
+                                                         resource-id
+                                                         "create"
+                                                         "fields")
+                    fields (if (and (contains? config attribute)
+                               (contains? parent-config attribute))
+                               (bigmler.reify.non-equal-fields (config attribute
+                                                                     false)
+                                                             (parent-config
+                                                               attribute
+                                                               false))
+                               fields))
+                (if (not (empty? fields))
+                    (let (reify-chain (bigmler.reify.add-to reify-chain
+                                                          resource-id
+                                                          "update"
+                                                          "fields"
+                                                          fields))
+                      ;; if we are updating a dataset and an objective field is
+                      ;; set, move the objective field setting too just
+                      ;; in case it affects a previously non-preferred field
+                      (if (and (= type "dataset")
+                               (contains? config "objective_field"))
+                          (let (reify-chain (bigmler.reify.remove-from
+                                              reify-chain
+                                              resource-id
+                                              "create"
+                                              "objective_field"))
+                            (bigmler.reify.add-to reify-chain
+                                                resource-id
+                                                "update"
+                                                "objective_field"
+                                                (config "objective_field")))
+                          reify-chain))
+                    reify-chain))
+              reify-chain))))
+
+
+;; inner-names-update
+;;
+;; Inner names can only be changed by an update call
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Output: (map) chain of resources for reification
+
+(define (bigmler.reify.inner-names-update resource-id reify-chain attribute)
+  (let (config (bigmler.reify.get-conf reify-chain resource-id "create"))
+    (if (contains? config attribute)
+        (let (update (config attribute)
+              reify-chain (bigmler.reify.remove-from reify-chain
+                                                   resource-id
+                                                   "create"
+                                                   attribute))
+          (bigmler.reify.add-to reify-chain
+                              resource-id
+                              "update"
+                              attribute
+                              update))
+        reify-chain)))
+
+
+;; get-fields
+;;
+;; extracts the fields structure from the resource information structure
+;;
+;; Inputs:
+;;   resource: (map) resource information structure
+;;   configuration: (map) attributes used in create or update calls
+;;
+;; Output: (map) attributes used in create or update calls
+
+(define (bigmler.reify.get-fields resource configuration)
+  (let (fields-path (bigmler.reify.FIELDS-PATH
+                     (resource-type (resource "resource" false))
+                     false))
+    (if fields-path
+        (let (fields (resource fields-path {})
+              field-ids (keys fields)
+              resource-id (resource "resource" false)
+              filter (cond (= (resource-type resource-id) "source")
+                           bigmler.reify.SOURCE-UPDATABLE
+                           (= (resource-type resource-id) "dataset")
+                           bigmler.reify.DATASET-UPDATABLE
+                           bigmler.reify.DEFAULT-UPDATABLE)
+              fields (reduce (lambda (x y)
+                               (assoc x
+                                      y
+                                      (select-keys (fields
+                                                    y
+                                                    false)
+                               filter)))
+                             {}
+                             field-ids))
+          (if (not (empty? fields))
+              (assoc configuration "fields" fields)
+              configuration))
+        configuration)))
+
+
+;; get-inner-names
+;;
+;; extracts the changes (if any) to clusters or topics names
+;;
+;; Inputs:
+;;   resource: (map) resource information structure
+;;   configuration: (map) attributes used in create or update calls
+;;
+;; Output: (map) attributes used in create or update calls
+
+(define (bigmler.reify.get-inner-names resource configuration)
+  (let (type (resource-type (resource "resource" false))
+        info-path (bigmler.reify.INNER-INFO-NAMES-PATH type false)
+        fn (lambda (x y) (if (not (matches? (bigmler.reify.DFT-NAMES type)
+                                            (y "name")))
+                                            (assoc x
+                                                   (y "id")
+                                                   {"name" (y "name")})
+                                            x)))
+    (if info-path
+        (let (objs (resource info-path [])
+              update (reduce fn
+                             {}
+                             objs))
+          (if (not (empty? update))
+              (assoc configuration
+                     ((bigmler.reify.INNER-INFO-NAMES-PATH type) 1) update)
+              configuration))
+        configuration)))
+
+
+;; replace-id
+;;
+;; Replaces the field ID by its name in the required attributes
+;;
+;; Inputs:
+;;   config: (map) configuration to be changed
+;;   attribute: (string) name of the attribute to be replaced
+;;   fields: (map) fields structure
+;;
+;; Output: (map) modified configuration
+
+(define (bigmler.reify.replace-id config attribute fields)
+  (let (attr (config attribute false))
+    (if attr
+      (if (list? attr) ;; if it's a list like objective_fields
+        (let (new-attr (for (item attr)
+                            (fields [item "name"] false)))
+          (assoc config attribute new-attr))
+        (if (and (map? attr) (contains? attr "id"))
+            ;; dataset's objective field has the id key in it
+            ;; and the ID must be kept because we don't accept names
+            ;; in this case
+            config
+            (assoc config attribute (fields [attr "name"] false))))
+      config)))
+
+;; translate-field-ids
+;;
+;; Translates the field IDs to names for the given attributes
+;;
+;; Inputs:
+;;   resource-id: (string) ID of the resource to be processed
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Output: (map) chain of resources for reification
+
+(define (bigmler.reify.translate-field-ids resource-id reify-chain)
+  (let (fields (bigmler.reify.get-conf reify-chain resource-id "fields"))
+    (loop (index 0 reify-chain reify-chain)
+      (if (= index (count bigmler.reify.NAMED-ATTRIBUTES))
+          reify-chain
+          (let (attribute (nth bigmler.reify.NAMED-ATTRIBUTES index)
+                create-config (bigmler.reify.get-conf reify-chain
+                                                    resource-id
+                                                    "create")
+                update-config (bigmler.reify.get-conf reify-chain
+                                                    resource-id
+                                                    "update")
+                reify-chain (if (and create-config
+                                     (contains? create-config attribute))
+                                (bigmler.reify.set-conf reify-chain
+                                                      resource-id
+                                                      "create"
+                                  (bigmler.reify.replace-id create-config
+                                                          attribute
+                                                          fields))
+                                reify-chain)
+                reify-chain (if (and update-config
+                                     (contains? update-config attribute))
+                                (bigmler.reify.set-conf reify-chain
+                                                      resource-id
+                                                      "update"
+                                 (bigmler.reify.replace-id update-config
+                                                         attribute
+                                                         fields))
+                                reify-chain))
+            (recur (+ index 1) reify-chain))))))
+
+
+;; normalize-resource-steps
+;; Transforms the information retrieved in the workflow chain to separate
+;; the steps really needed to reproduce them. It also checks and cleans the
+;; required attributes for the compulsory REST calls and uses field names
+;; instead of IDs when possible.
+;;
+;; Inputs:
+;;  chain: (map) chain of resources for reification
+;;  resource-id: (string) ID of the resource to be analyzed
+;;
+;; Output: (map) transformed chain of resources information
+
+(define (bigmler.reify.normalize-resource-steps chain resource-id)
+  (let (type (resource-type resource-id)
+        chain (bigmler.reify.remove-inherited resource-id chain)
+        chain (bigmler.reify.input-field-names resource-id chain)
+        chain (bigmler.reify.excluded-fields-names resource-id chain)
+        chain (bigmler.reify.remove-fields resource-id chain)
+        chain (bigmler.reify.remove-range resource-id chain)
+        per-type-process (bigmler.reify.PER-TYPE-PROCESS type false)
+        chain (if per-type-process
+                  (per-type-process resource-id chain)
+                  chain)
+        chain (if (= (subs resource-id 0 5) "batch")
+                  (bigmler.reify.batch-headers chain resource-id)
+                   chain)
+        chain (if (bigmler.reify.update-attrs? type)
+                  (bigmler.reify.adding-updates resource-id chain)
+                   chain)
+        chain (bigmler.reify.translate-field-ids resource-id chain)
+        inner-names-attr (bigmler.reify.INNER-INFO-NAMES-PATH type false)
+        chain (if inner-names-attr
+                  (bigmler.reify.inner-names-update resource-id
+                                                  chain
+                                                  (inner-names-attr 1))
+                   chain))
+        (if (bigmler.reify.REFERENCE-ONLY type false)
+            (bigmler.reify.remove-reference-only resource-id chain)
+            chain)))
+
+
+;; reify
+;; Extracts the whole chain of resources and configurations that leads
+;; to the resource identified by the argument ID
+;;
+;; Inputs:
+;;   resource-id: (string) ID of the resource to be reified
+;;   step: (boolean) If set to true, only the last step of the call chain
+;;                   is reified
+;;
+;; Output: map object with keys "list" and "defs". The first one has the
+;;         list of resources' IDs in the chain of calls. The second one
+;;         is a map whose keys are the IDs of the resources. The values
+;;         are also maps with "create" (and/or "update") storing the resource
+;;         attributes needed to reproduce the resource and "parents" storing
+;;         the origin information for the resource.
+;;
+
+(define (reify resource-id step)
+  ;; recursively retrieving all the information of any existing resource
+  ;; in the reification workflow with reify-step
+  (let (reify-chain (bigmler.reify.reify-step resource-id
+                                            {"list" [resource-id]} step 0)
+        ;; IDs of the resources that appeared in the workflow
+        resource-ids (keys (reify-chain "defs" {}))
+        ;; keeping a copy of the attributes of each detected resource for
+        ;; reference
+        reify-chain (iterate (lchain reify-chain resource-id resource-ids)
+                             (if (contains? (lchain ["defs" resource-id] {})
+                                            "ref")
+                                 lchain
+                                 (bigmler.reify.set-conf lchain
+                                                       resource-id
+                                                       "ref"
+                                   (bigmler.reify.get-conf lchain
+                                                         resource-id
+                                                         "create")))))
+    (reduce bigmler.reify.normalize-resource-steps reify-chain resource-ids)))
+
+
+;;------------------ only retrain
+
+;; RETRAIN-MODELS
+;;
+;; Resource types for the model resources
+(define RETRAIN-MODELS ["model" "ensemble" "anomaly"
+                        "cluster" "association"
+                        "logisticregression" "topicmodel"
+                        "timeseries" "deepnet"])
+
+
+;; update-tags
+;;
+(define (update-tags resource-id tags)
+  (fetch (update-and-wait resource-id {"tags" tags})))
+
+
+;; fill-attributes
+;;
+;; Fills the attributes that can be used at creation or update time
+;; and calls the reification of parents
+;; Also, adds tags to allow retraining
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;   resource: (map) Resource information
+;;   reify-chain: (map) chain of resources for reification
+;;
+;; Outputs: (map) chain of resources for reification
+;;
+
+
+(define (bigmler.reify.fill-attributes resource-id
+                                         resource
+                                         reify-chain
+                                         step
+                                         counter)
+  (let (reified-id ((reify-chain "list" []) 0)
+        tags (resource "tags" [])
+        retrain-label (str "retrain:" reified-id)
+        ;; only tagging the models created
+        resource (if (and (not (member? retrain-label tags))
+                      (member? (resource-type resource-id) RETRAIN-MODELS)
+                      (= resource-id reified-id))
+                      (update-tags resource-id (append tags retrain-label))
+                      resource)
+        is-cv? (and (= (resource-type resource) "evaluation")
+               (= (resource "type" false) 2))
+        res-type (if is-cv? "cross-validation" (resource-type resource))
+        parents (bigmler.reify.get-parents resource res-type)
+        ;; stores the common and specific attributes. Default values are
+        ;; discarded
+        configuration (bigmler.reify.get-non-defaults
+                        resource
+                        bigmler.reify.COMMON-DEFAULTS {})
+        configuration (bigmler.reify.get-non-defaults
+                        resource
+                        (bigmler.reify.DEFAULTS res-type false)
+                        configuration)
+        ;; extract the fields structure
+        configuration (bigmler.reify.get-fields resource configuration)
+        ;; extract the inner cluster or topic name changes
+        configuration (bigmler.reify.get-inner-names resource configuration)
+        reify-chain (bigmler.reify.add-step-info reify-chain
+                                               resource-id
+                                               configuration
+                                               parents))
+    (bigmler.reify.reify-parents reify-chain parents resource-id step counter)))

@@ -1,0 +1,21 @@
+;;retrain-script
+;;
+;;creates a script that will reproduce the resoure
+;;
+;; Uses: reify library
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;
+;; Output: (string) Script ID
+;;
+(define (reify-resource resource-id)
+  (let (reify-chain (reify resource-id false)
+        tags ((fetch resource-id) "tags" [])
+        script-info (whizzml-retrain-script reify-chain true)
+        args (script-retrain-args script-info false)
+        args (merge args {"tags" tags})
+        script (create-and-wait-script args))
+    script))
+
+(define retrain-script (reify-resource model-resource))

@@ -1,0 +1,117 @@
+;;python-code
+;;
+;;creates a the code of the script that will reproduce the resoure
+;;
+;;
+;; Inputs:
+;;   resource-id: (string) Resource ID
+;;
+;; Output: (list) list of maps, one per line, tagged as markdown, code or args
+;;
+
+(define RESOURCE-TYPE {"batchprediction" "batch_prediction"
+                       "batchcentroid" "batch_centroid"
+                       "batchanomalyscore" "batch_anomaly_score"
+                       "batchtopicdistribution" "batch_topic_distribution"
+                       "timeseries" "time_series"
+                       "topicmodel" "topic_model"
+                       "topicdistribution" "topic_distribution"})
+
+
+(define (change-to-local workflow)
+  (let (steps (workflow "steps")
+        local-inputs (iterate (acc {} step steps)
+                       (if (contains? step "file-name")
+                           (assoc acc (step "origin") (step "file-name"))
+                           acc)))
+    (assoc workflow "local-inputs" local-inputs)))
+
+
+(define (python workflow)
+  (let (workflow (change-to-local workflow))
+    (reduce concat [] (map py-step (workflow "steps")))))
+
+
+(define (py-inputs workflow)
+  (let (inputs (workflow "inputs")
+        inputs (filter (lambda (x) (not (matches? "^<.*?>$" x))) inputs)
+        mapped-ids (workflow "mapped-ids")
+        input-vars (map (lambda (x) (head (mapped-ids x))) inputs)
+        local-inputs (workflow "local-inputs")
+        lines [{"markdown" "Add the inputs for the workflow"}])
+    (iterate (acc lines value inputs var input-vars)
+      (if (contains? local-inputs var)
+          (append acc {"code" (str (pythonize var)
+                                   "_file = "
+                                   (pr-str (local-inputs var)))})
+          (append acc {"code" (str (pythonize var) " = " (pr-str value))})))))
+
+
+(define (py-step step)
+  (let (step (if (contains? step "file-name")
+                 (assoc step "origin" (str (step "origin") "_file"))
+                 step)
+        lines []
+        lines (append lines {"markdown" (py-markdown step)})
+        args (py-args step)
+        lines (if (!= "get" (step "action"))
+                  (if (= args "")
+                      lines
+                      (append lines {"args" (py-args step)}))
+                  lines))
+    lines (append lines {"code" (py-code step args)})))
+
+(define (py-origins step)
+  (let (action (step "action"))
+    (if (= "create" action)
+        (join ", " (map pythonize (values (step "origin"))))
+        (step "origin"))))
+
+(define (py-args step)
+  (let (args (step "args"))
+    (if (= "create" (step "action"))
+        (let (args (iterate (acc args attr (keys (step "origin")))
+                     (dissoc acc attr)))
+          (if (empty? args)
+              ""
+             (json-str args)))
+        (json-str args))))
+
+
+(define (py-code step args)
+  (let (type (resource-type (step ["ref" "id"]))
+        line (str (step "output")
+                   " = api."
+                   (if (contains? step "file-name")
+                       "create" ;; local code can create sources by uploading
+                       (step "action"))
+                   "_"
+                   (RESOURCE-TYPE type type)
+                   "("
+                   (py-origins step))
+        line (if (= "get" (step "action"))
+                 (str line "[\"object\"][" (pr-str (step "args")) "])")
+                 (if (= args "")
+                     (str line ")")
+                     (str line ", args)")))
+        line (str line "\napi.ok(" (step "output") ")\n"))
+    line))
+
+
+(define (py-markdown step)
+  (let (comments (bigml.scriptify.scriptify-comments step)
+        comments (replace comments "\n;;" "<br/>"))
+    (replace comments "WhizzML for resource" "Python for resource")))
+
+
+(define (pythonize name)
+  (let (name (if (list? name)
+                 (replace (json-str name) "\"" "")
+                 name))
+  (replace name "-" "_")))
+
+
+(define workflow (change-to-local (resource-workflow res-id true false)))
+(define python-inputs (py-inputs workflow))
+(define python-steps (python workflow))
+(define python-code (concat python-inputs python-steps))
