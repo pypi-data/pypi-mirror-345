@@ -1,0 +1,132 @@
+name: "PHP Web Stack"
+version: "1.0.0"
+description: "PHP web development stack with choice of database"
+type: "stack"
+
+# Stack composition
+components:
+  welcome:
+    source: "base/core/welcome"
+    required: true
+
+  backend:
+    source: "base/backend/php"
+    required: true
+
+  database:
+    source: "base/database/${DB_ENGINE}" # Will be mysql, postgresql, or mariadb
+    required: true
+
+# Stack-specific configuration
+stack:
+  type: "backend"
+  default_database: "mysql"
+  supported_databases:
+    - engine: "mysql"
+      name: "MySQL"
+      version: "8.0"
+    - engine: "postgresql"
+      name: "PostgreSQL"
+      version: "14"
+    - engine: "mariadb"
+      name: "MariaDB"
+      version: "10.6"
+
+# Tags for searching
+tags:
+  - php
+  - web
+  - mysql
+  - postgresql
+  - mariadb
+  - nginx
+  - development
+
+# Welcome page configuration
+welcome_page:
+  sections:
+    - title: "Web Server"
+      service: "nginx"
+      url: "http://localhost:${WEB_PORT}"
+    - title: "Database"
+      service: "${DB_ENGINE}"
+      port: "${DB_PORT}"
+      credentials:
+        database: "${DB_DATABASE}"
+        username: "${DB_USERNAME}"
+        password: "${DB_PASSWORD}"
+    - title: "Database Admin"
+      service: "admin"
+      url: "http://localhost:${ADMIN_PORT}"
+      show_if: "${ADMIN_ENABLED}"
+
+# Additional services (e.g., phpMyAdmin, pgAdmin)
+services:
+  admin:
+    type: "web"
+    port_range: "8080-8099"
+    required: false
+    env_prefix: "ADMIN"
+    depends_on: ["database"]
+    config:
+      mysql:
+        image: "phpmyadmin/phpmyadmin"
+        env:
+          PMA_HOST: "db"
+          PMA_PORT: "${DB_PORT}"
+      postgresql:
+        image: "dpage/pgadmin4"
+        env:
+          PGADMIN_DEFAULT_EMAIL: "admin@example.com"
+          PGADMIN_DEFAULT_PASSWORD: "${DB_PASSWORD}"
+
+# Docker Compose template selection
+compose:
+  variants:
+    mysql: "docker-compose.mysql.yml"
+    postgresql: "docker-compose.postgresql.yml"
+    mariadb: "docker-compose.mariadb.yml"
+
+# Files to be generated/processed
+files:
+  - source: "docker-compose.${DB_ENGINE}.yml"
+    target: "docker-compose.yml"
+  - source: ".env.${DB_ENGINE}.example"
+    target: ".env"
+  - source: "www/index.html.template"
+    target: "www/index.html"
+  - source: "README.md"
+    target: "README.md"
+
+# Network configuration
+network:
+  name: "${PROJECT_NAME}_network"
+  driver: "bridge"
+
+# Post-creation hooks
+post_create:
+  - "composer create-project"
+  - "php artisan key:generate"
+
+# ----------------------------------------------------
+# Declarative cleanup (v0.3) – replace monolithic Python
+# ----------------------------------------------------
+post_copy:
+  # Remove compose variant files – a canonical docker-compose.yml is already in place
+  - remove: "docker-compose.mysql.yml"
+  - remove: "docker-compose.postgresql.yml"
+  - remove: "docker-compose.mariadb.yml"
+
+  # Remove legacy override files should they exist
+  - remove: "docker-compose.mysql.override.yml"
+  - remove: "docker-compose.mariadb.override.yml"
+  - remove: "docker-compose.postgresql.override.yml"
+
+  # Delete the old www directory (content copied to public/)
+  - remove_dir: "www"
+
+  # Standardise Nginx root directive – ensure it points to /public
+  - patch_file:
+      path: "docker/nginx/conf.d/default.conf"
+      replace: "root /var/www/html;"
+      with: "root /var/www/html/public;"

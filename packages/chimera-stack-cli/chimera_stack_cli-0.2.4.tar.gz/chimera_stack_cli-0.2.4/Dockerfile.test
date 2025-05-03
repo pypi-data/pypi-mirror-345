@@ -1,0 +1,10 @@
+FROM python:3.11-slim
+
+RUN pip install --no-cache-dir pipx \
+    && pipx ensurepath
+
+ENV PATH="/root/.local/bin:$PATH"
+
+RUN pipx install chimera-stack-cli==0.2.3
+
+CMD ["chimera", "--version"]

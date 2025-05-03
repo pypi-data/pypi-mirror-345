@@ -1,0 +1,315 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+    tags:
+      - "v*"
+
+jobs:
+  test:
+    name: Test Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for setuptools-scm to detect version
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Install package in development mode
+        run: pip install -e .
+
+      - name: Run tests
+        run: pytest -m "not integration" -v
+
+  build-and-publish:
+    name: Build and publish packages
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for setuptools-scm to detect version
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build package
+        run: python -m build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Check if this is a tag release
+        id: check-tag
+        run: |
+          echo "GitHub ref: $GITHUB_REF"
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            echo "This is a tag push"
+            if [[ $GITHUB_REF == *-* ]]; then
+              echo "This is a pre-release tag (contains hyphen)"
+              echo "is_tag=false" >> $GITHUB_OUTPUT
+            else
+              echo "This is a release tag"
+              echo "is_tag=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "This is not a tag push"
+            echo "is_tag=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check PyPI credentials exist
+        id: check_pypi_credentials
+        if: steps.check-tag.outputs.is_tag == 'true'
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          echo "Checking for PyPI token..."
+          if [ -n "$PYPI_TOKEN" ]; then
+            echo "PyPI token found."
+            echo "has_credentials=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_credentials=false" >> $GITHUB_OUTPUT
+            echo "Warning: PyPI token not found. Skipping PyPI publishing."
+          fi
+
+      - name: Publish to PyPI
+        if: steps.check_pypi_credentials.outputs.has_credentials == 'true'
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          echo "Uploading to PyPI..."
+          python -m twine upload --verbose dist/*
+
+  build-executables:
+    name: Build platform executables
+    needs: test
+    runs-on: ${{ matrix.os }}
+    if: startsWith(github.ref, 'refs/tags/v')
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            script: ./build_executables.sh
+            artifact: chimera-stack-cli-macos
+          - os: ubuntu-latest
+            script: ./build_linux_executable.sh
+            artifact: chimera-stack-cli-linux
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for setuptools-scm to detect version
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller setuptools-scm
+
+      - name: Create PyInstaller spec file
+        run: |
+          if [ ! -f "chimera-stack-cli.spec" ]; then
+            echo '# -*- mode: python ; coding: utf-8 -*-' > chimera-stack-cli.spec
+            echo '' >> chimera-stack-cli.spec
+            echo 'block_cipher = None' >> chimera-stack-cli.spec
+            echo '' >> chimera-stack-cli.spec
+            echo 'a = Analysis(' >> chimera-stack-cli.spec
+            echo "    ['src/chimera/cli.py']," >> chimera-stack-cli.spec
+            echo '    pathex=[],' >> chimera-stack-cli.spec
+            echo '    binaries=[],' >> chimera-stack-cli.spec
+            echo "    datas=[('src/chimera/templates', 'chimera/templates')," >> chimera-stack-cli.spec
+            echo "           ('src/chimera/config', 'chimera/config')]," >> chimera-stack-cli.spec
+            echo '    hiddenimports=[],' >> chimera-stack-cli.spec
+            echo '    hookspath=[],' >> chimera-stack-cli.spec
+            echo '    hooksconfig={},' >> chimera-stack-cli.spec
+            echo '    runtime_hooks=[],' >> chimera-stack-cli.spec
+            echo '    excludes=[],' >> chimera-stack-cli.spec
+            echo '    win_no_prefer_redirects=False,' >> chimera-stack-cli.spec
+            echo '    win_private_assemblies=False,' >> chimera-stack-cli.spec
+            echo '    cipher=block_cipher,' >> chimera-stack-cli.spec
+            echo '    noarchive=False,' >> chimera-stack-cli.spec
+            echo ')' >> chimera-stack-cli.spec
+            echo 'pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)' >> chimera-stack-cli.spec
+            echo '' >> chimera-stack-cli.spec
+            echo 'exe = EXE(' >> chimera-stack-cli.spec
+            echo '    pyz,' >> chimera-stack-cli.spec
+            echo '    a.scripts,' >> chimera-stack-cli.spec
+            echo '    a.binaries,' >> chimera-stack-cli.spec
+            echo '    a.zipfiles,' >> chimera-stack-cli.spec
+            echo '    a.datas,' >> chimera-stack-cli.spec
+            echo '    [],' >> chimera-stack-cli.spec
+            echo "    name='chimera-stack-cli'," >> chimera-stack-cli.spec
+            echo '    debug=False,' >> chimera-stack-cli.spec
+            echo '    bootloader_ignore_signals=False,' >> chimera-stack-cli.spec
+            echo '    strip=False,' >> chimera-stack-cli.spec
+            echo '    upx=True,' >> chimera-stack-cli.spec
+            echo '    upx_exclude=[],' >> chimera-stack-cli.spec
+            echo '    runtime_tmpdir=None,' >> chimera-stack-cli.spec
+            echo '    console=True,' >> chimera-stack-cli.spec
+            echo '    disable_windowed_traceback=False,' >> chimera-stack-cli.spec
+            echo '    argv_emulation=False,' >> chimera-stack-cli.spec
+            echo '    target_arch=None,' >> chimera-stack-cli.spec
+            echo '    codesign_identity=None,' >> chimera-stack-cli.spec
+            echo '    entitlements_file=None,' >> chimera-stack-cli.spec
+            echo ')' >> chimera-stack-cli.spec
+          fi
+
+      - name: Make script executable
+        run: chmod +x ${{ matrix.script }}
+
+      - name: Build executable
+        run: ${{ matrix.script }}
+
+      - name: Verify executable was created
+        run: |
+          if [ ! -f "releases/${{ matrix.artifact }}" ]; then
+            echo "Error: Executable was not created at releases/${{ matrix.artifact }}"
+            exit 1
+          fi
+
+      - name: Upload binary artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-${{ matrix.artifact }}
+          path: releases/${{ matrix.artifact }}
+
+      - name: Upload checksum file
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-checksums
+          path: releases/SHA256SUMS.txt
+
+  create-release:
+    name: Create GitHub Release
+    needs: [build-and-publish, build-executables]
+    runs-on: ubuntu-latest
+    # Only create release for non-prerelease tags (no hyphen)
+    if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-')
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Prepare release files
+        run: |
+          mkdir -p release-files
+          cp artifacts/macos-latest-chimera-stack-cli-macos/chimera-stack-cli-macos release-files/
+          cp artifacts/ubuntu-latest-chimera-stack-cli-linux/chimera-stack-cli-linux release-files/
+
+          # Merge checksum files
+          cat artifacts/macos-latest-checksums/SHA256SUMS.txt > release-files/SHA256SUMS.txt
+          cat artifacts/ubuntu-latest-checksums/SHA256SUMS.txt >> release-files/SHA256SUMS.txt
+
+          # Copy Python packages
+          cp artifacts/python-package-distributions/* release-files/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          files: |
+            release-files/*
+          generate_release_notes: true
+
+  docker-build:
+    name: Build and push Docker image
+    needs: [test]
+    runs-on: ubuntu-latest
+    # Temporarily disabled until fixed
+    if: false # startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-')
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for setuptools-scm to detect version
+
+      - name: Extract tag name
+        id: tag
+        run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify GHCR permissions
+        run: |
+          echo "Using actor: ${{ github.actor }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "GITHUB_TOKEN permissions should include packages:write"
+
+      - name: Extract repository owner
+        id: repo-owner
+        run: |
+          REPO_OWNER=$(echo ${{ github.repository }} | cut -d'/' -f1 | tr '[:upper:]' '[:lower:]')
+          echo "owner=$REPO_OWNER" >> $GITHUB_OUTPUT
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.build
+          push: true
+          tags: |
+            ghcr.io/${{ steps.repo-owner.outputs.owner }}/chimera-stack-cli:${{ steps.tag.outputs.tag }}
+            ghcr.io/${{ steps.repo-owner.outputs.owner }}/chimera-stack-cli:latest
+
+      - name: Check Docker image (if push successful)
+        if: success()
+        run: |
+          docker pull ghcr.io/${{ steps.repo-owner.outputs.owner }}/chimera-stack-cli:${{ steps.tag.outputs.tag }}
+          docker run --rm ghcr.io/${{ steps.repo-owner.outputs.owner }}/chimera-stack-cli:${{ steps.tag.outputs.tag }} --version

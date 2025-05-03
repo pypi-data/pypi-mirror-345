@@ -1,0 +1,33 @@
+# Use a slim Python image
+FROM python:3.13-slim
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy project files
+COPY . .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir pyinstaller
+
+# Build the executable
+RUN pyinstaller --clean \
+    --name chimera-stack-cli \
+    --onefile \
+    src/chimera/cli.py \
+    --add-data "src/chimera/templates:chimera/templates" \
+    --add-data "src/chimera/config:chimera/config"
+
+# Move the executable to a directory in PATH
+RUN cp /app/dist/chimera-stack-cli /usr/local/bin/ \
+    && chmod +x /usr/local/bin/chimera-stack-cli
+
+# Set the entrypoint
+ENTRYPOINT ["chimera-stack-cli"]
+CMD ["--help"]

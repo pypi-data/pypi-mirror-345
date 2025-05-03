@@ -1,0 +1,20 @@
+services:
+  cli-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Pass host user's UID/GID to match permissions
+        USER_ID: ${UID:-1000}
+        GROUP_ID: ${GID:-1000}
+    volumes:
+      - .:/app
+      - ~/.gitconfig:/home/developer/.gitconfig:ro  # For git configuration
+      # Mount docker socket to allow CLI to interact with host Docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /app
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+    command: /bin/sh -c "while true; do sleep 1; done"  # Keep container running
