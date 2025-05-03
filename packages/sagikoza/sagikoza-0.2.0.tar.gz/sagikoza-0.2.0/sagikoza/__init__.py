@@ -1,0 +1,1 @@
+from sagikoza.core import fetch
