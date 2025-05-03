@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "app-toolkit-package"
+version = "1.0.4"
+dependencies = [
+# APP dependencies ================
+"fastapi",
+# fastapi-cli
+# fastapi-users[sqlalchemy]
+# Bot dependencies ================
+"aiogram",
+# Validation dependencies ================
+# email-validator
+# "pydantic",
+"pydantic[email]",
+"pydantic_core",
+"pydantic-settings",
+# Repo dependencies ================
+# "alembic",
+"asyncpg",
+"redis",
+"SQLAlchemy",
+"uvicorn[standard]",
+"pyjwt",
+"passlib[bcrypt]",
+"python-multipart",
+# "factory_boy",
+# psycopg
+# psycopg-binary
+# sqlmodel
+# ====================================
+# "uvicorn[standard]",
+# "cryptography",
+# starlette-admin
+]
+
+
+[project.optional-dependencies]
+build = ["build", "twine"]
+test = [
+# This is just for local migrations via sqlite
+# TO BE REMOVED !!!
+# "aiosqlite",
+# "pre-commit",
+
+"httpx",
+"pytest",
+"pytest-asyncio",
+"pytest-cov",
+]
+
+
+[tool.ruff]
+target-version = "py310"
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+asyncio_mode = "auto"
+norecursedirs = "env/*"
+pythonpath = [
+    ".",
+]
+addopts = "-vx -p no:cacheprovider --cov-report term-missing --cov=toolkit"  # -s -W ignore --disable-pytest-warnings
+testpaths = ["tests"]
+#"toolkit/tests",
+#"tests/unit_tests",
+#"tests/fastapi_tests",
+#"tests/bot_tests",
+#]
+python_files = [
+    "test_*.py",
+    "*_tests.py",
+]
+log_cli = "1"
+# filterwarnings =
+#    error
+#    ignore::DeprecationWarning
+
+
+# [tool.setuptools]
+# packages = ["toolkit"]
+# [project.scripts]
+# bot = "src.bot.__main__.py"
