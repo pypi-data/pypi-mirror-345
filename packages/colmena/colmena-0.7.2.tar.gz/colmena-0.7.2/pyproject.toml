@@ -1,0 +1,48 @@
+[project]
+name = "colmena"
+version = "0.7.2"
+authors = [
+    { name = "Globus Labs", email = "labs@globus.org" },
+    { name = "Logan Ward", email = "lward@anl.gov" },
+    { name = "Greg Pauloski", email = "jgpauloski@uchicago.edu" },
+    { name = "Yadu Babuji", email = "yadudoc1729@gmail.com" },
+]
+description = 'colmena: Intelligent Steerable Pipelines on HPC'
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE.txt" }
+keywords = ["HPC", "AI", "Workflows"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: System :: Distributed Computing",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering"
+]
+dependencies = [
+    "parsl>=2022",
+    "pydantic>=2,<3",
+    "redis>=4.3",
+    "proxystore>=0.5.0"
+]
+
+[tool.setuptools.packages.find]
+include = ['colmena*']
+
+[project.urls]
+repository = "https://github.com/exalearn/colmena"
+documentation = "https://colmena.readthedocs.io/"
+
+[project.optional-dependencies]
+globus = ['globus-compute-sdk>=1.0.5']
+test = [
+    'flake8',
+    'pytest',
+    'pytest-timeout',
+    'pytest-mock',
+    'pytest-repeat',
+    'pytest-cov',
+]
