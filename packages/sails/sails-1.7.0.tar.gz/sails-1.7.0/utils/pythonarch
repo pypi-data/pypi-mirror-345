@@ -1,0 +1,13 @@
+#!/usr/bin/python
+
+# vim: set expandtab ts=4 sw=4:
+
+# There must be a nicer way to do this
+
+import distutils.util, sys
+
+if sys.version[0] == '2':
+    print(".%s-%s" % (distutils.util.get_platform(), sys.version[0:3]))
+else:
+    # Python 3
+    print("")
