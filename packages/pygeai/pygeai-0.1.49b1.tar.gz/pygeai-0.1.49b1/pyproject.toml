@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pygeai"
+version = "0.1.49b1"
+description = "Software Development Kit to interact with Globant Enterprise AI."
+authors = [{ name = "Globant", email = "geai-sdk@globant.com" }]
+license = "MIT"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.10"
+keywords = ["geai", "pygeai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    # "Development Status :: 5 - Production/Stable"
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests",
+    "pydantic",
+    "packaging",
+    "mcp",
+    "pyyaml",
+    "prompt_toolkit"
+]
+
+[tool.setuptools.package-data]
+"pygeai.man.man1" = ["geai.1", "geai-proxy.1"]
+
+[project.optional-dependencies]
+docs = ["sphinx", "sphinx-rtd-theme", "sphinx-markdown-builder"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[project.scripts]
+geai = "pygeai.cli.__main__:main"
+geai-proxy = "pygeai.cli.geai_proxy:cli_entry"
+geai-install-man = "pygeai.cli.install_man:install_man_pages"
