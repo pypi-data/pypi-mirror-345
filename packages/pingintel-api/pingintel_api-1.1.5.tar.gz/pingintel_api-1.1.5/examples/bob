@@ -1,0 +1,112 @@
+import datetime
+import pathlib
+import site
+from pprint import pprint
+import time
+
+# site.addsitedir("../src")
+
+from pingintel_api.utils import set_verbosity
+from pingintel_api.pingvision import types as t
+from pingintel_api import PingVisionAPIClient
+
+
+# These are subject to change based on how we configure your workflow
+TEAM_ID = 11
+DIVISION_SHORT_NAME = "WKFC"
+TEAM_SHORT_NAME = "WKFC"
+WORKFLOW_STATUS_PLEASE_SCRUB = 3
+WORKFLOW_STATUS_DECLINE = 7
+
+set_verbosity(3)
+api_client = PingVisionAPIClient(environment="dev")
+
+
+def generate_some_test_data():
+    ret = api_client.get_teams()
+    pprint(ret)
+
+    current_time = datetime.datetime.now()
+    SCRIPT_DIR = pathlib.Path(__file__).parent
+    ret = api_client.create_submission(
+        filepaths=[SCRIPT_DIR / "test_sov.xlsx"],
+        delegate_to_division=DIVISION_SHORT_NAME,
+        delegate_to_team=TEAM_SHORT_NAME,
+    )
+    pingid = ret["id"]
+    url = ret["url"]
+
+    print(f"pingid: {ret['id']}")
+
+
+global _cursor_id
+_cursor_id = None
+
+
+def get_persisted_cursor() -> str | None:
+    # This function retrieves the cursor ID from a file or database
+    # For this example, we'll just return a placeholder value
+    return _cursor_id
+
+
+def persist_cursor_forever(cursor_id: str):
+    # This function saves the cursor ID to a file or database
+    global _cursor_id
+    cursor_id = cursor_id
+
+
+def start_listening(as_of_time: datetime.datetime):
+    # This function is called when the script starts running
+    # It sets the start time for the event listening loop
+    cursor_id = get_persisted_cursor()
+    start = as_of_time
+
+    while True:
+        ret = api_client.get_submission_events(page_size=10, team_id=TEAM_ID, cursor_id=cursor_id, start=start)
+        cursor_id = ret["cursor_id"]
+
+        for event in ret["results"]:
+            event_type = event["event_type"]
+            new_value = event["new_value"]
+
+            if (
+                event_type == t.SUBMISSION_EVENT_LOG_TYPE.SUBMISSION_STATUS_CHANGE
+                and new_value == WORKFLOW_STATUS_PLEASE_SCRUB  # TODO: uuid?
+            ):
+                perform_declination_logic(event["pingid"])
+
+        time.sleep(1.0)
+
+        persist_cursor_forever(cursor_id)
+
+
+def perform_declination_logic(pingid: str):
+    ## TODO: maybe replace 'activity querying' with accessor for downloading 'current building data' filtered by fields, etc?
+    submission_detail = api_client.list_submission_activity(pingid=pingid)
+    submission_ret = submission_detail["results"][0]
+
+    for document in submission_ret["documents"]:
+        if document["document_type"] == "SOVFIXER_JSON":
+            filename = document["filename"]
+            document_url = document["url"]
+            break
+    else:
+        raise ValueError("No JSON document found")
+
+    output_filename = "downloaded-" + filename
+    api_client.download_document(output_filename, document_url=document_url)
+
+    print(f"Downloaded file to {output_filename}")
+
+    # Process "output_filename" and make some decisions...
+
+    print("Valid actions:")
+    pprint.pprint(submission_ret["actions"]["transition_to"])
+
+    api_client.add_data_items(
+        pingid,
+        t.DATA_ITEM_ACTIONS.UPSERT,
+        {"uw_declination_reason": "test reason", "broker_declination_reason": "test reason", "should_run_cytora": True},
+    )
+
+    api_client.change_status(pingid=pingid, workflow_status_id=WORKFLOW_STATUS_DECLINE)
