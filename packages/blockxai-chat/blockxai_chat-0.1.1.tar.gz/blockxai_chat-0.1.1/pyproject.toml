@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blockxai-chat"
+version = "0.1.1"
+description = "Create AI chatbots with a single prompt"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "BlockXAI", email = "ask@blockxint.com"}
+]
+requires-python = ">=3.8"
+dependencies = [
+    "openai",
+    "google-generativeai>=0.3.0",
+    "gradio",
+    "python-dotenv",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+blockxai-chat = "blockxai_chat.interface:run_interface"
+
+[project.urls]
+"Homepage" = "https://github.com/blockx/blockxai-chat"
+"Bug Tracker" = "https://github.com/blockx/blockxai-chat/issues"
