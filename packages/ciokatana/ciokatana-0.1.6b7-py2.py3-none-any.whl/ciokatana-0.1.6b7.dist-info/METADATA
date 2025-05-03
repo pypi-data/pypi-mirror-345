@@ -1,0 +1,156 @@
+Metadata-Version: 2.1
+Name: ciokatana
+Version: 0.1.6b7
+Summary: Katana plugin for Conductor Cloud Rendering Platform.
+Home-page: https://github.com/ConductorTechnologies/ciokatana
+Author: conductor
+Author-email: info@conductortech.com
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Multimedia :: Graphics :: 3D Rendering
+Description-Content-Type: text/markdown
+Requires-Dist: certifi==2019.11.28
+Requires-Dist: ciocore==6.3.1-rc.3
+Requires-Dist: ciopath<2.0.0,>=1.1.1
+Requires-Dist: cioseq<1.0.0,>=0.3.0
+Requires-Dist: json-stream<3.0.0,>=2.3.2
+
+# Conductor for Katana
+
+Submit to Conductor from The Foundry's Katana.
+
+## Install
+
+`pip install  ciokatana==<some version> --target ~/Conductor/katana && python ~/Conductor/katana/ciokatana/post_install.py`
+
+For reference, the plugin is implemented as a Katana SuperTool, and the `post_install.py` script registers the plugin by writing an `init` file into the Katana resources path. See the contents of `post_install.py` for more details.
+
+## Usage
+
+### Open the Conductor dialog
+
+If installation was successful, you should see a **Conductor** menu item in Katana's **Util** menu. If you don't see it, try restarting Katana.
+
+To open the Conductor dialog select the **Conductor** menu item in the **Util** menu. If no **Render** nodes are selected in the node graph, the dialog will be pre-populated with all **Render** nodes in the scene.
+
+### Tabs
+
+You'll notice 5 tabs. **Configure**, **Preview**, **Validation**, **Progress**, and **Response**
+
+### Configure Tab
+
+Most parameters in the submitter, such as those in the **General**, **Hardware**, and **Software** sections of the **Configure** tab are explained in tooltips (TBD). Please hover over the labels in the dialog itself for more info on these. This document will focus on the *Katana specific* parameters as they relate to multi-shot setups and to using mocks for demo purposes.
+
+### Frames and Tasks section.
+
+Here you'll find a list of **Render** nodes that were in context when the dialog was opened. On submission, a separate job is shipped to Conductor for each node in this list. By default, the Frame spec, Scout spec, and Chunk size for each job are set to the values in this section of the submitter. These can be overridden.
+
+To override the frame and chunk parameters, use the **Editor** button next to any Render node to display it in the Parameters panel. Open the **farmSettings** panel for the Render node, turn on **conductorOverrides**, and configure the individual **Render nodes**. You'll see the overridden values updated in the dialog.
+
+### Preview Tab
+
+The preview tab currently shows only the first submission. It is updated every time you switch to the Preview tab. This means that if you change something in the scene that would affect the submission, such as the name of a **Render** node, you'll need to switch to another tab and then back to the Preview tab to see the updated submission. 
+
+### Validation Tab
+
+Currently, only a couple of sample validations are implemented. 
+In order to invoke a validation error for demo purposes, set the **frameSpec** for one of the render nodes to over 1000, with a **chunkSize** of 1. Then submit. You'll see a validation error in the **Validation** tab.
+In order to invoke a validation warning for demo purposes, set the instance type to one of the GPU machines before submitting.
+
+### Progress Tab
+
+The progress tab shows the progress of the submission. There are 3 progress bars and a file upload progress panel. The 3 progress bars are as follows.
+1. Overall submission progress. For a submission of 4 jobs, this will be 25% when 1 job is complete, 50% when 2 jobs are complete, etc.
+2. MD5 calculation progress. This often reaches 100% faster than the update interval.
+3. Upload progress for the current job.
+
+Since many if not all the file uploads are the same for each job, only the first job's upload will be slow enough to see the progress bar increment. The second and subsequent job's files won't need to be uploaded.
+
+This becomes clearer in the **File Upload Progress panel**. This panel shows the files that are being uploaded for the current job. The small progress increase towards 100% for new files, but files that already exist on Conductor will show the word **Cached** on a purple background.
+
+#### Canceling a submission
+
+You can cancel a submission at any time by clicking the **Cancel** button. If you cancel a submission, the current job will throw a `UserCanceled` error and the remaining jobs will not be started. The UI will switch to the **Responses** tab which will show `UserCanceled` error with a **warning** status. You'll also see the responses for any jobs that were submitted successfully before the cancelation.
+
+You can simulate a cancelation in a mock submission. To do this, set the **mockInterval** high enough that you get a chance to react, then hit submit. After a few seconds, click the **Cancel** button. The current job will throw a `UserCanceled` error and the remaining jobs will not be started, even if the mock submission contains several jobs that submitted successfully.
+
+#### Submission errors
+
+If a submission error occurs, the current job will of course fail. However, subsequent jobs will continue to attempt to submit, because although it's unlikely, the error may have been peculiar to the one job. After all jobs have submitted, the Responses tab will show the error for the failed job(s) with an **error** status. The responses for the successful jobs will also be shown. 
+
+You can simulate a submission error in a mock submission. To do this, set the **mockInterval** high enough that you get a chance to react, then hit submit. After a few seconds, click the **Raise an error** button. The current job will throw a random error which will cause the current job progress to stop, and just as with a real submission, the remaining jobs will continue to submit. After all jobs have submitted, the Responses tab will show the error for the failed job(s) The responses for the successful jobs will also be shown.
+
+### Response Tab
+
+The responses tab shows a response for every job that ran to completion. There are 3 possible response statuses:
+1. Errors. These are shown with a red icon. You'll see a summary in the response card, but you can view the full error stack trace by clicking the **Show Details** button.
+2. Warnings. These are shown with a yellow icon. They may or may not have an expandable details panel.
+3. Success. These are shown with a green icon. Since this means the job was submitted to Conductor, you'll see a link to the job on the dashboard. Clicking this link will open the job in a new browser tab.
+
+### Mocks.
+
+A mock submission pretends to be a real submission, but is actually a list of pre-baked events in a JSON file. It is useful for testing and demo purposes. The events in the mock feed the the progress tab and the responses tab in the same way that a real submission would. Therefore, by playing back a mock submission, you can simulate a real submission.
+
+To enable mocks set the environment variable `CIO_FEATURE_MOCK=1` before starting Katana.
+
+With mocks enabled you'll see some parameters in the **Advanced** section related to mocking a submission. 
+
+There is a mock submission included with the plugin. It is located at `~/Conductor/katana/ciokatana/scripts/mock_submission.json`. You can use this mock to test the submission process or you can create your own. The included mock submission contains four render jobs.
+
+#### To use the included mock:
+1. In the advanced section, set **mockMode** to **Use Mock**.
+2. For **mockFile**, either browse to `~/Conductor/katana/ciokatana/scripts/mock_submission.json`, or better, copy `~/Conductor/katana/ciokatana/scripts/mock_submission.json` to your home folder and browse to the copy.
+3. Set an interval for **mockInterval**. This is the time paused between events in the mock submission. The default is 1 second, which is faster than a real submission. You can set this to a higher value to slow down the playback. The minimum value is 0.05 seconds.
+4. Submit as usual. The progress tab and the response tab will be updated as if a real submission was taking place. Note however, that no real jobs are submitted to Conductor and no files are uploaded. The responses tab will contain lins to jobs on the dashboard, but these links will not relate to the submission since the included mock file was created on a different account.
+
+#### To create your own mock:
+
+An advantage to creating your own mock is that the responses tab will contain links to jobs on the dashboard that are relevant to your account, since they come from a real submission. To create your own mock, follow these steps:
+
+1. In the advanced section, set **mockMode** to **Generate Mock**.
+2. For **mockFile**, browse to a location where you want to save the mock file.
+3. Submit as usual. As the real submission runs, all the events arte streamed to the mock file. When the submission is complete, the mock file is ready to be replayed.
+4. To use this new mock, switch mockMode to **Use Mock** as described above.
+
+## Changelog
+
+## Unreleased:
+* Fixed the asset scrapper
+
+## Version:0.1.3-rc.1 -- 04 Aug 2023
+
+* do not consider relative AOV outputs.
+
+## Version:0.1.2 -- 03 Aug 2023
+
+* Fixed a bug that would fail to create a submission when a render node has multiple outputs. 
+
+## Version:0.1.1 -- 02 Aug 2023
+
+* Use a more descriptive environment variable for mocks - CIO_FEATURE_MOCK and fix bad rehydration project and instance 
+* type combo boxes num 18
+
+## Version:0.1.0 -- 02 Aug 2023
+
+* 16 snagging list num 17
+
+## Version:0.1.0-rc.5 -- 01 Aug 2023
+
+* Only use json_stream when the variable CIO_FEATURE_DEV is on. Set the variable then pip install to enable the mock 
+* framework. 
+* The mock framework allows you to use fake submissions that look just like normal submissions without actually 
+* submitting anything.
+* Update circleCI config for prettier Slack notifications and to fix the links now that we trigger on tags and 
+* not branches.
+* Made a bigger editor panel, which can be good for screenshots.
+* Asset scraping blacklist catches more bad paths.
+* Use  progress-math of Alaa so that the progress bar is more accurate.
+* Adds some debugging shelf items
+
+## Version:0.1.0-rc.3 -- 26 Jul 2023
+* Adds asset scraping
+
+## Version:0.1.0-rc.2 -- 24 Jul 2023
+* Added a README file and several small fixes.
+* First release candidate.
+* Integrated with the FarmAPI
