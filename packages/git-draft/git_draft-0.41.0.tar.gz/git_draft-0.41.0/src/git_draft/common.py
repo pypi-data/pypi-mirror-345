@@ -1,0 +1,220 @@
+"""Miscellaneous utilities"""
+
+from __future__ import annotations
+
+from collections.abc import Iterator, Mapping, Sequence
+import contextlib
+import dataclasses
+import itertools
+import logging
+import os
+from pathlib import Path
+import sqlite3
+import textwrap
+import tomllib
+from typing import Any, ClassVar, Self
+
+import prettytable
+import xdg_base_dirs
+import yaspin
+import yaspin.core
+
+
+_logger = logging.getLogger(__name__)
+
+
+PROGRAM = "git-draft"
+
+
+type JSONValue = Any
+type JSONObject = Mapping[str, JSONValue]
+
+
+package_root = Path(__file__).parent
+
+
+def ensure_state_home() -> Path:
+    path = xdg_base_dirs.xdg_state_home() / PROGRAM
+    path.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+@dataclasses.dataclass(frozen=True)
+class Config:
+    """Overall CLI configuration"""
+
+    bots: Sequence[BotConfig] = dataclasses.field(default_factory=lambda: [])
+    log_level: int = logging.INFO
+
+    @staticmethod
+    def folder_path() -> Path:
+        return xdg_base_dirs.xdg_config_home() / PROGRAM
+
+    @classmethod
+    def load(cls) -> Self:
+        path = cls.folder_path() / "config.toml"
+        try:
+            with open(path, "rb") as reader:
+                data = tomllib.load(reader)
+        except FileNotFoundError:
+            return cls()
+        else:
+            if level := data["log_level"]:
+                data["log_level"] = logging.getLevelName(level)
+            if bots := data["bots"]:
+                data["bots"] = [BotConfig(**v) for v in bots]
+            return cls(**data)
+
+
+@dataclasses.dataclass(frozen=True)
+class BotConfig:
+    """Individual bot configuration for CLI use"""
+
+    factory: str
+    name: str | None = None
+    config: JSONObject | None = None
+    pythonpath: str | None = None
+
+
+def config_string(arg: str) -> str:
+    """Dereferences environment value if the input starts with `$`"""
+    return os.environ[arg[1:]] if arg and arg.startswith("$") else arg
+
+
+class UnreachableError(RuntimeError):
+    """Indicates unreachable code was unexpectedly executed"""
+
+
+def reindent(s: str, width: int = 0) -> str:
+    """Reindents text by dedenting and optionally wrapping paragraphs"""
+    paragraphs = (
+        " ".join(textwrap.dedent("\n".join(g)).splitlines())
+        for b, g in itertools.groupby(s.splitlines(), bool)
+        if b
+    )
+    return "\n\n".join(
+        textwrap.fill(p, width=width) if width else p for p in paragraphs
+    )
+
+
+def qualified_class_name(cls: type) -> str:
+    name = cls.__qualname__
+    return f"{cls.__module__}.{name}" if cls.__module__ else name
+
+
+class Table:
+    """Pretty-printable table"""
+
+    _kwargs: ClassVar[Mapping[str, Any]] = dict(border=False)  # Shared options
+
+    def __init__(self, data: prettytable.PrettyTable) -> None:
+        self.data = data
+        self.data.align = "l"
+
+    def __bool__(self) -> bool:
+        return len(self.data.rows) > 0
+
+    def __str__(self) -> str:
+        return str(self.data) if self else ""
+
+    def to_json(self) -> str:
+        return self.data.get_json_string(header=False)
+
+    @classmethod
+    def empty(cls) -> Self:
+        return cls(prettytable.PrettyTable([], **cls._kwargs))
+
+    @classmethod
+    def from_cursor(cls, cursor: sqlite3.Cursor) -> Self:
+        table = prettytable.from_db_cursor(cursor, **cls._kwargs)
+        assert table
+        return cls(table)
+
+
+def _tagged(text: str, /, **kwargs) -> str:
+    tags = [f"{key}={val}" for key, val in kwargs.items() if val is not None]
+    return f"{text} [{', '.join(tags)}]" if tags else text
+
+
+class Feedback:
+    """User feedback interface"""
+
+    def report(self, text: str, **tags) -> None:  # pragma: no cover
+        raise NotImplementedError()
+
+    def spinner(
+        self, text: str, **tags
+    ) -> contextlib.AbstractContextManager[
+        FeedbackSpinner
+    ]:  # pragma: no cover
+        raise NotImplementedError()
+
+    @staticmethod
+    def dynamic() -> Feedback:
+        """Feedback suitable for interactive terminals"""
+        return _DynamicFeedback()
+
+    @staticmethod
+    def static() -> Feedback:
+        """Feedback suitable for pipes, etc."""
+        return _StaticFeedback()
+
+
+class FeedbackSpinner:
+    """Operation feedback tracker"""
+
+    def update(self, text: str, **tags) -> None:  # pragma: no cover
+        raise NotImplementedError()
+
+
+class _DynamicFeedback(Feedback):
+    def __init__(self) -> None:
+        self._spinner: _DynamicFeedbackSpinner | None = None
+
+    def report(self, text: str, **tags) -> None:
+        message = f"☞ {_tagged(text, **tags)}"
+        if self._spinner:
+            self._spinner.yaspin.write(message)
+        else:
+            print(message)  # noqa
+
+    @contextlib.contextmanager
+    def spinner(self, text: str, **tags) -> Iterator[FeedbackSpinner]:
+        assert not self._spinner
+        with yaspin.yaspin(text=_tagged(text, **tags)) as spinner:
+            self._spinner = _DynamicFeedbackSpinner(spinner)
+            try:
+                yield self._spinner
+            except Exception:
+                self._spinner.yaspin.fail("✗")
+                raise
+            else:
+                self._spinner.yaspin.ok("✓")
+            finally:
+                self._spinner = None
+
+
+class _DynamicFeedbackSpinner(FeedbackSpinner):
+    def __init__(self, yaspin: yaspin.core.Yaspin) -> None:
+        self.yaspin = yaspin
+
+    def update(self, text: str, **tags) -> None:
+        self.yaspin.text = _tagged(text, **tags)
+
+
+class _StaticFeedback(Feedback):
+    def report(self, text: str, **tags) -> None:
+        print(_tagged(text, **tags))  # noqa
+
+    @contextlib.contextmanager
+    def spinner(self, text: str, **tags) -> Iterator[FeedbackSpinner]:
+        self.report(text, **tags)
+        yield _StaticFeedbackSpinner(self)
+
+
+class _StaticFeedbackSpinner(FeedbackSpinner):
+    def __init__(self, feedback: _StaticFeedback) -> None:
+        self._feedback = feedback
+
+    def update(self, text: str, **tags) -> None:
+        self._feedback.report(text, **tags)
