@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "gpx-editor"
+version = "1.0.0-beta"
+description = "A tool for editing GPX files"
+authors = ["James Arnett <38123275+ironScripter@users.noreply.github.com>"]
+readme = "README.md"
+repository = "https://github.com/ironscripter/gpx-editor"
+license = "MIT"
+packages = [{include = "gpx_editor"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+xmltodict = "^0.13.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+poetry-dynamic-versioning = "^1.8.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+vcs = "git"
+style = "semver"
+latest-tag = true
+
+[tool.poetry.scripts]
+gpx-editor = "gpx_editor.cli:main"
+gpx-editor-gui = "gpx_editor.gui:main"
