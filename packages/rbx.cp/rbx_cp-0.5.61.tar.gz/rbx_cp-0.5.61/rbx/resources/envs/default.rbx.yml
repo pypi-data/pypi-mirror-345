@@ -1,0 +1,37 @@
+---
+sandbox: "stupid"
+defaultCompilation:
+  sandbox:
+    maxProcesses: 1000
+    timeLimit: 10000 # 10 seconds
+    wallTimeLimit: 10000 # 10 seconds
+    memoryLimit: 1024 # 1gb
+    preserveEnv: true
+    mirrorDirs:
+      - "/etc"
+      - "/usr"
+defaultExecution:
+  sandbox:
+    # Useful for checkers, validators, etc.
+    timeLimit: 10000 # 10 seconds
+    wallTimeLimit: 10000 # 10 seconds
+    memoryLimit: 1024 # 1gb
+languages:
+  - name: "cpp"
+    readable_name: "C++17"
+    extension: "cpp"
+    compilation:
+      commands:
+        - "g++ -std=c++17 -O2 -o {executable} {compilable}"
+    execution:
+      command: "./{executable}"
+    fileMapping:
+      compilable: "compilable.cpp"
+  - name: "py"
+    readable_name: "Python3"
+    extension: "py"
+    execution:
+      command: "python3 {executable}"
+    fileMapping:
+      executable: "executable.py"
+
