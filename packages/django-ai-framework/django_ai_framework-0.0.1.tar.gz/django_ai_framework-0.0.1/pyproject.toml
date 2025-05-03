@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+target-version = ["py38"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+  | .*/migrations/
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+known_django = "django"
+known_first_party = "daif"
+sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+skip_glob = ["*/migrations/*"]
+
+# Note: MyPy configuration is now handled directly in the pre-commit hook args
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "examples.basic.settings"
+python_files = "test_*.py"
+pythonpath = [".", "examples", "basic"]
+addopts = "--reuse-db"
+
+[tool.ruff]
+# Common settings
+line-length = 100
+target-version = "py38"
+# More comprehensive migration exclusion
+exclude = [
+    "migrations",
+    "*/migrations/*",
+    "*/migrations.py",
+    "settings.py",
+]
+# Enable autofix behavior
+fix = true
+
+[tool.ruff.lint]
+# Rules to enable
+select = ["E", "F", "B", "I", "N", "UP", "ANN", "C4", "DJ", "PIE"]
+# Rules to ignore
+ignore = ["E501", "B008", "ANN101", "ANN102", "ANN401"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["daif"]
+known-third-party = ["django", "openai", "anthropic", "mistralai"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ANN"]
+"*/tests/*" = ["ANN"]
