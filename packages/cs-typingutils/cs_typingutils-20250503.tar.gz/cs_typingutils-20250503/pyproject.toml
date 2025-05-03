@@ -1,0 +1,73 @@
+[project]
+name = "cs-typingutils"
+description = "Trite hacks for use with typing."
+authors = [
+    { name = "Cameron Simpson", email = "cs@cskk.id.au" },
+]
+keywords = [
+    "python3",
+]
+dependencies = []
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+]
+version = "20250503"
+
+[project.license]
+text = "GNU General Public License v3 or later (GPLv3+)"
+
+[project.urls]
+"Monorepo Hg/Mercurial Mirror" = "https://hg.sr.ht/~cameron-simpson/css"
+"Monorepo Git Mirror" = "https://github.com/cameron-simpson/css"
+"MonoRepo Commits" = "https://bitbucket.org/cameron_simpson/css/commits/branch/main"
+Source = "https://github.com/cameron-simpson/css/blob/main/lib/python/cs/typingutils.py"
+
+[project.readme]
+text = """
+Trite hacks for use with typing.
+
+*Latest release 20250503*:
+is_optional: bugfix: Optional[T] has a get_args of (T,<NoneType>), not (T,None).
+
+Short summary:
+* `is_optional`: Check if `annotation` is an `Optional[type]`. Return `type` if so, `None` otherwise.
+* `subtype`: Construct a `TypeVar` for subtypes of the type `t`.
+
+Module contents:
+- <a name=\"is_optional\"></a>`is_optional(annotation)`: Check if `annotation` is an `Optional[type]`.
+  Return `type` if so, `None` otherwise.
+- <a name=\"subtype\"></a>`subtype(t, name=None)`: Construct a `TypeVar` for subtypes of the type `t`.
+
+  Parameters:
+  * `t`: the type which bounds the `TypeVar`
+  * `name`: optional name for the `TypeVar`,
+    default `t.__name__ + 'SubType'`
+
+# Release Log
+
+
+
+*Release 20250503*:
+is_optional: bugfix: Optional[T] has a get_args of (T,<NoneType>), not (T,None).
+
+*Release 20250428*:
+New is_optional(annotation) function to recognise Optional[type] annotations, returning type if true, None otherwise.
+
+*Release 20230331*:
+Initial release."""
+content-type = "text/markdown"
+
+[build-system]
+build-backend = "flit_core.buildapi"
+requires = [
+    "flit_core >=3.2,<4",
+]
+
+[tool.flit.module]
+name = "cs.typingutils"
