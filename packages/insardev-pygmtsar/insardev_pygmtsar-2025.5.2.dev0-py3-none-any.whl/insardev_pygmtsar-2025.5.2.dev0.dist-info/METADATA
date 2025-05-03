@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: insardev_pygmtsar
+Version: 2025.5.2.dev0
+Summary: InSAR.dev (Python InSAR): PyGMTSAR backend
+Home-page: https://github.com/AlexeyPechnikov/InSARdev
+Author: Alexey Pechnikov
+Author-email: alexey@pechnikov.dev
+License: BSD-3-Clause
+Keywords: satellite interferometry,InSAR,remote sensing,Sentinel-1
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: insardev_toolkit
+Requires-Dist: xarray[complete]
+Requires-Dist: numpy
+Requires-Dist: pandas>=2.2
+Requires-Dist: geopandas
+Requires-Dist: distributed>=2024.1.0
+Requires-Dist: dask[complete]>=2024.4.1
+Requires-Dist: zarr
+Requires-Dist: fsspec
+Requires-Dist: opencv-python
+Requires-Dist: scipy
+Requires-Dist: shapely>=2.0.2
+Requires-Dist: xmltodict
+Requires-Dist: rioxarray
+Requires-Dist: statsmodels>=0.14.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+## InSAR.dev Professional
+
+This is a proof of concept and it works. The complete bursts are available and while in the example bursts averaged for overlapped areas, we can use the overlaps to calculate inter-bursts interferograms and detect bursts phase offsets for precise phase shift between them. Different orbital path bursts can be merged as well and we can create continuous interferograms covering more than common 3 Sentinel-1 subswaths. Ascending and descending interferograms are calculated in the same coordinates and no computational expensive data interpolation is needed with accuracy lost. The projected coordinate system can be selected to cover large areas like the whole USA without reprojecting related precision degradation. Geocoded corrected SLC resolution is user-specified and can be selected as 10x2.5 meters for mountain areas or 15x5 for flat areas (by default). Furthermore, the corrected SLCs are 2 times smaller than the original ones! That seems fantastic but we have so many benefits without downsides.
+
