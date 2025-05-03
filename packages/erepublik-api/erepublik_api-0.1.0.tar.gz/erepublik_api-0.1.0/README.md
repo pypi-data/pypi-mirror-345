@@ -1,0 +1,20 @@
+# erepublik-api
+
+Python wrapper for the eRepublik API with HMAC authentication.
+
+## Install
+
+```bash
+pip install erepublik-api
+```
+
+## Usage
+```py
+from erepublik_api import ERepublikAPIClient
+
+client = ERepublikAPIClient(public_key="your_key", private_key="your_secret")
+response = client.api_call("citizen", "profile", {"id": "123456"})
+print(response)
+```
+
+https://api.erepublik.com/doc/
