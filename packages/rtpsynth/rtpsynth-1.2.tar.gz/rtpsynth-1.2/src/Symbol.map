@@ -1,0 +1,18 @@
+LIBRTPSYNTH_ddd0b90ff306 {
+    global: rsynth_ctor; rsynth_next_pkt; rsynth_next_pkt_pa; rsynth_pkt_free;
+            rsynth_dtor;
+    local: *;
+};
+
+LIBRTPSYNTH_72f7eab9e3e6 {
+    global: rsynth_set_mbt; rsynth_resync;
+} LIBRTPSYNTH_ddd0b90ff306;
+
+LIBRTPSYNTH_84ab5b9fdc94 {
+    global: rtpjbuf_ctor; rtpjbuf_dtor; rtpjbuf_udp_in; rtpjbuf_frame_dtor;
+            rtpjbuf_flush;
+} LIBRTPSYNTH_72f7eab9e3e6;
+
+LIBRTPSYNTH_000000000000 {
+    global: rsynth_skip;
+} LIBRTPSYNTH_84ab5b9fdc94;
