@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: elastic-pipes
+Version: 0.6.0
+Summary: A lightweight composition system
+Author-email: Domenico Andreoli <domenico.andreoli@elastic.co>
+License: Apache-2.0
+Project-URL: Homepage, https://github.com/elastic/pipes-py
+Project-URL: Bug Tracker, https://github.com/elastic/pipes-py/issues
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: elasticsearch>=8.2.0
+Requires-Dist: hvac>=2.0.0
+Requires-Dist: pyyaml
+Requires-Dist: requests
+Requires-Dist: semver
+Requires-Dist: typer
+Requires-Dist: typing_extensions>=4.12.0
+
+# About
+
+Elastic Pipes defines a simple composition system in Python. The
+components, named _pipes_, are executed in sequence and a _state_ is
+passed through from one to the next.
+
+It looks like how UNIX pipes allow composing independent tools on the
+command line; indeed you can invoke Elastic Pipes in such way. Differently
+from UNIX pipes though, each component adds new content to the state which
+is otherwise passed down in the sequence as-is.

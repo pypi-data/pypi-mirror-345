@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "elastic-pipes"
+description = "A lightweight composition system"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [
+  {name = "Domenico Andreoli", email = "domenico.andreoli@elastic.co"},
+]
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.8"
+dependencies = [
+  "elasticsearch>=8.2.0",
+  "hvac>=2.0.0",
+  "pyyaml",
+  "requests",
+  "semver",
+  "typer",
+  "typing_extensions>=4.12.0",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/elastic/pipes-py"
+"Bug Tracker" = "https://github.com/elastic/pipes-py/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "core.__version__"}
+
+[project.scripts]
+elastic-pipes = "elastic.pipes.core.runner:main"
+
+[tool.setuptools]
+packages = ["elastic.pipes.core", "elastic.pipes.hcp.vault"]
+
+[tool.setuptools.package-dir]
+"elastic.pipes.core" = "core"
+"elastic.pipes.hcp.vault" = "hcp/vault"
+
+[tool.black]
+line-length = 140
+target-version = ["py38"]
+exclude = "test/venv"
+
+[tool.isort]
+profile = 'black'
+skip = ["test/venv"]
+
+[tool.ruff]
+line-length = 140
+exclude = ["test/venv"]
