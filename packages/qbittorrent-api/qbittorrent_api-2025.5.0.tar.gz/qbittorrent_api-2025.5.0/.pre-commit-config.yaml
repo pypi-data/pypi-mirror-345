@@ -1,0 +1,49 @@
+repos:
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-toml
+      - id: check-yaml
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  # need a post v1.7.5 release for latest pre-commit
+  #- repo: https://github.com/PyCQA/docformatter
+  #  rev: v1.7.5
+  #  hooks:
+  #    - id: docformatter
+  #      exclude: _attrdict.py
+  #      args:
+  #        - --in-place
+  #        - --pre-summary-newline
+  #        - --black
+  #        - --non-cap=qBittorrent
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.11.7
+    hooks:
+      - id: ruff
+        args:
+          - --fix
+          - --unsafe-fixes
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+      - id: mypy
+        files: ^src/
+        additional_dependencies:
+          - types-requests
+          - packaging
+        args:
+          - --strict
+          - --disallow-any-unimported
+#          - --disallow-any-expr
+#          - --disallow-any-decorated
+          - --strict-optional
+          - --show-traceback
+          - --implicit-reexport
