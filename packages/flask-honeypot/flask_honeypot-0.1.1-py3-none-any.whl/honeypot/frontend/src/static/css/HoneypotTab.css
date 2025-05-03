@@ -1,0 +1,1608 @@
+/* Main Tab Styles */
+.honeypot-tab {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: calc(100vh - 80px);
+  color: var(--hp-text-primary);
+}
+
+.honeypot-tab .admin-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--hp-border-light);
+  position: relative;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.honeypot-tab .admin-content-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100px;
+  height: 2px;
+  background: var(--hp-gradient-purple);
+  border-radius: 2px;
+}
+
+.honeypot-tab .admin-content-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--hp-font-size-2xl);
+  font-weight: 600;
+  background: var(--hp-gradient-purple);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  padding-left: 10px;
+}
+
+.honeypot-tab .admin-content-header h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--hp-gradient-purple);
+  border-radius: 3px;
+}
+
+.honeypot-tab .honeypot-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Action Buttons */
+.honeypot-tab .honeypot-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: var(--hp-bg-medium);
+  color: var(--hp-text-secondary);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-md);
+  font-size: var(--hp-font-size-sm);
+  font-weight: 500;
+  transition: all var(--hp-transition-normal);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--hp-shadow-sm);
+}
+
+.honeypot-tab .honeypot-action-btn:hover:not(:disabled) {
+  background-color: var(--hp-card-bg-hover);
+  color: var(--hp-text-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--hp-shadow-md);
+}
+
+.honeypot-tab .honeypot-action-btn.active {
+  background: var(--hp-gradient-purple);
+  color: white;
+  border-color: var(--hp-accent-primary);
+  box-shadow: var(--hp-glow-purple), var(--hp-shadow-md);
+}
+
+.honeypot-tab .honeypot-action-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--hp-white-20), transparent);
+  transition: left 0.6s ease;
+}
+
+.honeypot-tab .honeypot-action-btn:hover::before {
+  left: 100%;
+}
+
+.honeypot-tab .honeypot-refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--hp-gradient-purple);
+  color: white;
+  border: none;
+  border-radius: var(--hp-border-radius-md);
+  font-size: var(--hp-font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--hp-transition-normal);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--hp-shadow-sm);
+}
+
+.honeypot-tab .honeypot-refresh-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--hp-glow-purple), var(--hp-shadow-md);
+}
+
+.honeypot-tab .honeypot-refresh-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--hp-white-20), transparent);
+  transition: left 0.6s ease;
+}
+
+.honeypot-tab .honeypot-refresh-btn:hover::before {
+  left: 100%;
+}
+
+.honeypot-tab .honeypot-refresh-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+
+.honeypot-tab .honeypot-spinner {
+  animation: hp-spin 1.5s linear infinite;
+}
+
+@keyframes hp-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+.honeypot-tab .honeypot-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--hp-text-secondary);
+  text-align: center;
+  min-height: 300px;
+  position: relative;
+  background: var(--hp-card-bg);
+  border-radius: var(--hp-border-radius-lg);
+  box-shadow: var(--hp-shadow-md);
+  border: 1px solid var(--hp-border-light);
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-loading-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--hp-gradient-purple);
+  animation: hp-loading-progress 2s ease-in-out infinite;
+}
+
+@keyframes hp-loading-progress {
+  0% { width: 0%; opacity: 0; }
+  50% { width: 100%; opacity: 1; }
+  100% { width: 0%; opacity: 0; transform: translateX(100%); }
+}
+
+.honeypot-tab .honeypot-loading-container .honeypot-spinner {
+  font-size: 40px;
+  color: var(--hp-accent-primary);
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 5px var(--hp-accent-primary));
+}
+
+.honeypot-tab .honeypot-loading-container p {
+  font-size: var(--hp-font-size-md);
+  font-weight: 500;
+  margin: 0;
+  opacity: 0.8;
+  animation: hp-pulse 2s ease-in-out infinite;
+}
+
+@keyframes hp-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Error Message */
+.honeypot-tab .honeypot-error-message {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  background: rgba(231, 76, 60, 0.1);
+  border-left: 4px solid var(--hp-status-danger);
+  border-radius: var(--hp-border-radius-md);
+  color: var(--hp-status-danger);
+  font-weight: 500;
+  box-shadow: var(--hp-shadow-sm);
+  position: relative;
+  animation: hp-error-slide-in 0.4s ease forwards;
+}
+
+@keyframes hp-error-slide-in {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.honeypot-tab .honeypot-retry-btn {
+  margin-left: auto;
+  padding: 8px 15px;
+  background: var(--hp-status-danger);
+  color: white;
+  border: none;
+  border-radius: var(--hp-border-radius-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--hp-transition-normal);
+  box-shadow: var(--hp-shadow-sm);
+}
+
+.honeypot-tab .honeypot-retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px rgba(231, 76, 60, 0.5), var(--hp-shadow-md);
+}
+
+/* Overview Section */
+.honeypot-tab .honeypot-overview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.honeypot-tab .honeypot-stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.honeypot-tab .honeypot-stat-card {
+  background: var(--hp-card-bg);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-lg);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all var(--hp-transition-normal);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--hp-shadow-sm);
+}
+
+.honeypot-tab .honeypot-stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 50% 0%, var(--hp-accent-primary), transparent 70%);
+  opacity: 0.05;
+  transition: opacity var(--hp-transition-normal);
+}
+
+.honeypot-tab .honeypot-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--hp-shadow-md);
+  border-color: var(--hp-border-heavy);
+}
+
+.honeypot-tab .honeypot-stat-card:hover::before {
+  opacity: 0.1;
+}
+
+.honeypot-tab .honeypot-stat-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(240, 240, 240, 0.05);
+  color: var(--hp-accent-primary);
+  font-size: 26px;
+  border-radius: 16px;
+  position: relative;
+  transition: all var(--hp-transition-normal);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.9);
+}
+
+.honeypot-tab .honeypot-stat-icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--hp-gradient-purple);
+  opacity: 0.2;
+  border-radius: 16px;
+  z-index: -1;
+  transition: opacity var(--hp-transition-normal);
+}
+
+.honeypot-tab .honeypot-stat-card:hover .honeypot-stat-icon {
+  color: white;
+  transform: scale(1.05);
+  box-shadow: var(--hp-glow-purple), inset 0 0 0 1px var(--hp-white-20);
+}
+
+.honeypot-tab .honeypot-stat-card:hover .honeypot-stat-icon::after {
+  opacity: 1;
+}
+
+.honeypot-tab .honeypot-stat-content {
+  flex: 1;
+}
+
+.honeypot-tab .honeypot-stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  background: var(--hp-gradient-purple);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 5px;
+  line-height: 1.1;
+  display: inline-block;
+  transition: all var(--hp-transition-normal);
+}
+
+.honeypot-tab .honeypot-stat-card:hover .honeypot-stat-value {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 5px rgba(134, 88, 252, 0.5));
+}
+
+.honeypot-tab .honeypot-stat-label {
+  color: var(--hp-text-secondary);
+  font-size: var(--hp-font-size-sm);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Chart Section */
+.honeypot-tab .honeypot-charts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 20px;
+}
+
+.honeypot-tab .honeypot-chart-card {
+  background: var(--hp-card-bg);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-lg);
+  padding: 20px;
+  box-shadow: var(--hp-shadow-sm);
+  transition: all var(--hp-transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-chart-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--hp-gradient-purple);
+  opacity: 0.7;
+  transition: opacity var(--hp-transition-normal);
+}
+
+.honeypot-tab .honeypot-chart-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--hp-shadow-md);
+  border-color: var(--hp-border-heavy);
+}
+
+.honeypot-tab .honeypot-chart-card:hover::before {
+  opacity: 1;
+}
+
+.honeypot-tab .honeypot-chart-card.honeypot-full-width {
+  grid-column: 1 / -1;
+}
+
+.honeypot-tab .honeypot-chart-title {
+  font-size: var(--hp-font-size-lg);
+  margin: 0 0 20px 0;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--hp-border-light);
+  color: var(--hp-text-primary);
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.honeypot-tab .honeypot-chart-title::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--hp-accent-primary);
+  border-radius: 50%;
+  margin-right: 10px;
+  position: relative;
+}
+
+.honeypot-tab .honeypot-chart-content {
+  height: 300px;
+  position: relative;
+}
+
+.honeypot-tab .honeypot-no-chart-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--hp-text-secondary);
+  text-align: center;
+  font-style: italic;
+  padding: 20px;
+  background: var(--hp-black-10);
+  border-radius: var(--hp-border-radius-md);
+  border: 1px dashed var(--hp-border-light);
+}
+
+.honeypot-tab .honeypot-no-chart-data p {
+  max-width: 300px;
+}
+
+/* Recent Activity Section */
+.honeypot-tab .honeypot-recent-activity {
+  background: var(--hp-card-bg);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-lg);
+  padding: 20px;
+  box-shadow: var(--hp-shadow-sm);
+  transition: all var(--hp-transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-recent-activity::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--hp-gradient-blue);
+  opacity: 0.7;
+  transition: opacity var(--hp-transition-normal);
+}
+
+.honeypot-tab .honeypot-recent-activity:hover::before {
+  opacity: 1;
+}
+
+.honeypot-tab .honeypot-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--hp-border-light);
+}
+
+.honeypot-tab .honeypot-section-header h3 {
+  font-size: var(--hp-font-size-lg);
+  margin: 0;
+  color: var(--hp-text-primary);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.honeypot-tab .honeypot-section-header h3::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--hp-accent-tertiary);
+  border-radius: 50%;
+  margin-right: 10px;
+  position: relative;
+}
+
+.honeypot-tab .honeypot-view-all-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  background: var(--hp-gradient-blue);
+  color: white;
+  border: none;
+  border-radius: var(--hp-border-radius-md);
+  font-size: var(--hp-font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--hp-transition-normal);
+  box-shadow: var(--hp-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-view-all-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--hp-white-20), transparent);
+  transition: left 0.6s ease;
+}
+
+.honeypot-tab .honeypot-view-all-btn:hover::before {
+  left: 100%;
+}
+
+.honeypot-tab .honeypot-view-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--hp-glow-blue), var(--hp-shadow-md);
+}
+
+/* Table Styles */
+.honeypot-tab .honeypot-table-container {
+  overflow-x: auto;
+  position: relative;
+  max-width: 100%;
+  border-radius: var(--hp-border-radius-sm);
+}
+
+.honeypot-tab .honeypot-data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-data-table th {
+  position: sticky;
+  top: 0;
+  background: var(--hp-black-20);
+  color: var(--hp-text-secondary);
+  text-transform: uppercase;
+  font-size: var(--hp-font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 15px;
+  text-align: left;
+  border-bottom: 2px solid var(--hp-border-light);
+  z-index: 10;
+}
+
+
+.honeypot-section-icon {
+  margin: 10px;
+}
+
+.honeypot-chart-icon {
+  margin: 10px;
+}
+
+.honeypot-tab .honeypot-data-table td {
+  padding: 15px;
+  color: var(--hp-text-primary);
+  font-size: var(--hp-font-size-sm);
+  border-bottom: 1px solid var(--hp-border-light);
+  transition: all var(--hp-transition-normal);
+}
+
+.honeypot-tab .honeypot-data-table tbody tr {
+  transition: all var(--hp-transition-normal);
+  position: relative;
+}
+
+.honeypot-tab .honeypot-data-table tbody tr:hover {
+  background: var(--hp-card-bg-hover);
+}
+
+.honeypot-tab .honeypot-data-table tbody tr:hover td {
+  border-bottom-color: var(--hp-border-heavy);
+  color: white;
+}
+
+.honeypot-tab .honeypot-timestamp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--hp-text-secondary);
+  font-size: var(--hp-font-size-xs);
+  white-space: nowrap;
+}
+
+.honeypot-tab .honeypot-timestamp-icon {
+  color: var(--hp-accent-tertiary);
+  font-size: 12px;
+}
+
+.honeypot-tab .honeypot-path-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'Consolas', 'Monaco', monospace;
+  color: var(--hp-text-secondary);
+  background: var(--hp-black-10);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: var(--hp-font-size-xs);
+}
+
+.honeypot-tab .honeypot-type-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: var(--hp-font-size-xs);
+  font-weight: 600;
+  text-transform: capitalize;
+  background: var(--hp-black-10);
+  position: relative;
+  overflow: hidden;
+  color: var(--hp-text-primary);
+}
+
+.honeypot-tab .honeypot-type-badge.page_view {
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+  border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.honeypot-tab .honeypot-type-badge.download_attempt {
+  background: rgba(155, 89, 182, 0.1);
+  color: #9b59b6;
+  border: 1px solid rgba(155, 89, 182, 0.2);
+}
+
+.honeypot-tab .honeypot-type-badge.button_click {
+  background: rgba(46, 204, 113, 0.1);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+.honeypot-tab .honeypot-type-badge.form_submission {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.honeypot-tab .honeypot-action-btn {
+  background: var(--hp-gradient-purple);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--hp-border-radius-sm);
+  font-size: var(--hp-font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--hp-transition-normal);
+  box-shadow: 1px var(--hp-shadow-sm);
+}
+
+.honeypot-tab .honeypot-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--hp-glow-purple), var(--hp-shadow-md);
+}
+
+.honeypot-tab .honeypot-no-data {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--hp-text-secondary);
+  font-style: italic;
+  background: var(--hp-black-10);
+  border-radius: var(--hp-border-radius-md);
+  border: 1px dashed var(--hp-border-light);
+  margin: 20px 0;
+}
+
+/* Interactions View */
+.honeypot-tab .honeypot-interactions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.honeypot-tab .honeypot-interactions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.honeypot-tab .honeypot-interactions-title {
+  font-size: var(--hp-font-size-xl);
+  margin: 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--hp-text-primary);
+}
+
+.honeypot-tab .honeypot-interactions-title::before {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 24px;
+  background: var(--hp-gradient-purple);
+  border-radius: 3px;
+}
+
+.honeypot-tab .honeypot-interactions-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.honeypot-tab .honeypot-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--hp-black-20);
+  color: var(--hp-text-secondary);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-md);
+  font-size: var(--hp-font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--hp-transition-normal);
+  box-shadow: var(--hp-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-back-btn:hover {
+  color: var(--hp-text-primary);
+  background: var(--hp-card-bg-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--hp-shadow-md);
+}
+
+.honeypot-tab .honeypot-back-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--hp-white-10), transparent);
+  transition: left 0.6s ease;
+}
+
+.honeypot-tab .honeypot-back-btn:hover::before {
+  left: 100%;
+}
+
+.honeypot-tab .honeypot-export-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--hp-gradient-pink);
+  color: white;
+  border: none;
+  border-radius: var(--hp-border-radius-md);
+  font-size: var(--hp-font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--hp-transition-normal);
+  box-shadow: var(--hp-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-export-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--hp-glow-pink), var(--hp-shadow-md);
+}
+
+.honeypot-tab .honeypot-export-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--hp-white-20), transparent);
+  transition: left 0.6s ease;
+}
+
+.honeypot-tab .honeypot-export-btn:hover::before {
+  left: 100%;
+}
+
+.honeypot-tab .honeypot-export-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Filter Section */
+.honeypot-tab .honeypot-filter-section {
+  background: var(--hp-card-bg);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  box-shadow: var(--hp-shadow-sm);
+}
+
+.honeypot-tab .honeypot-filter-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--hp-gradient-blue);
+  opacity: 0.7;
+}
+
+.honeypot-tab .honeypot-filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+.honeypot-tab .honeypot-filter-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.honeypot-tab .honeypot-filter-field label {
+  font-size: var(--hp-font-size-xs);
+  color: var(--hp-text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.honeypot-tab .honeypot-filter-input-wrapper {
+  position: relative;
+}
+
+.honeypot-tab .honeypot-filter-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--hp-text-tertiary);
+  font-size: 14px;
+}
+
+.honeypot-tab .honeypot-filter-input {
+  width: 100%;
+  padding: 12px 35px 12px 35px;
+  background: var(--hp-bg-medium);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-md);
+  color: var(--hp-text-primary);
+  font-size: var(--hp-font-size-sm);
+  transition: all var(--hp-transition-normal);
+}
+
+.honeypot-tab .honeypot-filter-input:focus {
+  outline: none;
+  border-color: var(--hp-accent-tertiary);
+  box-shadow: 0 0 0 2px rgba(0, 198, 255, 0.2);
+}
+
+.honeypot-tab .honeypot-clear-filter-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--hp-text-tertiary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--hp-transition-fast);
+}
+
+.honeypot-tab .honeypot-clear-filter-btn:hover {
+  color: var(--hp-text-primary);
+}
+
+.honeypot-tab .honeypot-filter-select {
+  padding: 12px 15px;
+  background: var(--hp-bg-medium);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-md);
+  color: var(--hp-text-primary);
+  font-size: var(--hp-font-size-sm);
+  transition: all var(--hp-transition-normal);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239da8b9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+.honeypot-tab .honeypot-filter-select:focus {
+  outline: none;
+  border-color: var(--hp-accent-tertiary);
+  box-shadow: 0 0 0 2px rgba(0, 198, 255, 0.2);
+}
+
+.honeypot-tab .honeypot-apply-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--hp-gradient-blue);
+  color: white;
+  border: none;
+  border-radius: var(--hp-border-radius-md);
+  font-size: var(--hp-font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--hp-transition-normal);
+  box-shadow: var(--hp-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-apply-filter-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--hp-white-20), transparent);
+  transition: left 0.6s ease;
+}
+
+.honeypot-tab .honeypot-apply-filter-btn:hover::before {
+  left: 100%;
+}
+
+.honeypot-tab .honeypot-apply-filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--hp-glow-blue), var(--hp-shadow-md);
+}
+
+.honeypot-tab .honeypot-results-info {
+  margin-top: 15px;
+  text-align: right;
+  color: var(--hp-text-secondary);
+  font-size: var(--hp-font-size-xs);
+  font-style: italic;
+}
+
+/* Sortable Headers */
+.honeypot-tab .honeypot-sortable-header {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  transition: all var(--hp-transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.honeypot-tab .honeypot-sortable-header:hover {
+  color: var(--hp-text-primary);
+}
+
+.honeypot-tab .honeypot-sort-icon {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+/* Table Container for Interactions */
+.honeypot-tab .honeypot-interactions-table-container {
+  background: var(--hp-card-bg);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--hp-shadow-sm);
+}
+
+/* Pagination */
+.honeypot-tab .honeypot-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: var(--hp-black-10);
+  border-top: 1px solid var(--hp-border-light);
+}
+
+.honeypot-tab .honeypot-page-btn {
+  padding: 8px 15px;
+  background: var(--hp-bg-medium);
+  color: var(--hp-text-secondary);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-sm);
+  font-size: var(--hp-font-size-xs);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--hp-transition-normal);
+  box-shadow: var(--hp-shadow-sm);
+}
+
+.honeypot-tab .honeypot-page-btn:hover:not(:disabled) {
+  background: var(--hp-accent-primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--hp-shadow-md);
+}
+
+.honeypot-tab .honeypot-page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.honeypot-tab .honeypot-page-info {
+  color: var(--hp-text-secondary);
+  font-size: var(--hp-font-size-xs);
+}
+
+.honeypot-tab .honeypot-limit-select {
+  padding: 8px 30px 8px 10px;
+  background: var(--hp-bg-medium);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-sm);
+  color: var(--hp-text-secondary);
+  font-size: var(--hp-font-size-xs);
+  transition: all var(--hp-transition-normal);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239da8b9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+}
+
+.honeypot-tab .honeypot-limit-select:focus {
+  outline: none;
+  border-color: var(--hp-accent-primary);
+}
+
+/* Details View */
+.honeypot-tab .honeypot-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.honeypot-tab .honeypot-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.honeypot-tab .honeypot-details-title {
+  font-size: var(--hp-font-size-xl);
+  margin: 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--hp-text-primary);
+}
+
+.honeypot-tab .honeypot-details-title::before {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 24px;
+  background: var(--hp-gradient-green);
+  border-radius: 3px;
+}
+
+.honeypot-tab .honeypot-details-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.honeypot-tab .honeypot-details-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  background: var(--hp-card-bg);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-lg);
+  padding: 20px;
+  box-shadow: var(--hp-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-details-meta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--hp-gradient-green);
+  opacity: 0.7;
+}
+
+.honeypot-tab .honeypot-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.honeypot-tab .honeypot-meta-label {
+  font-size: var(--hp-font-size-xs);
+  color: var(--hp-text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.honeypot-tab .honeypot-meta-value {
+  font-size: var(--hp-font-size-md);
+  font-weight: 500;
+  color: var(--hp-text-primary);
+}
+
+.honeypot-tab .honeypot-meta-value.honeypot-warning {
+  color: var(--hp-status-warning);
+}
+
+/* Page Type & Interaction Type Badges */
+.honeypot-tab .honeypot-page-type-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: var(--hp-font-size-xs);
+  font-weight: 600;
+  text-transform: capitalize;
+  background: var(--hp-black-10);
+  position: relative;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-page-type-badge.admin_panel {
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+  border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.honeypot-tab .honeypot-page-type-badge.wordpress {
+  background: rgba(46, 204, 113, 0.1);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+.honeypot-tab .honeypot-page-type-badge.phpmyadmin {
+  background: rgba(155, 89, 182, 0.1);
+  color: #9b59b6;
+  border: 1px solid rgba(155, 89, 182, 0.2);
+}
+
+.honeypot-tab .honeypot-page-type-badge.cpanel {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.honeypot-tab .honeypot-interaction-type-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: var(--hp-font-size-xs);
+  font-weight: 600;
+  text-transform: capitalize;
+  background: var(--hp-black-10);
+  position: relative;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-interaction-type-badge.page_view {
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+  border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.honeypot-tab .honeypot-interaction-type-badge.login_attempt {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.honeypot-tab .honeypot-interaction-type-badge.form_submit {
+  background: rgba(46, 204, 113, 0.1);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+.honeypot-tab .honeypot-interaction-type-badge.button_click {
+  background: rgba(230, 126, 34, 0.1);
+  color: #e67e22;
+  border: 1px solid rgba(230, 126, 34, 0.2);
+}
+
+.honeypot-tab .honeypot-interaction-type-badge.download_attempt {
+  background: rgba(155, 89, 182, 0.1);
+  color: #9b59b6;
+  border: 1px solid rgba(155, 89, 182, 0.2);
+}
+
+/* Details Content */
+.honeypot-tab .honeypot-details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.honeypot-tab .honeypot-details-section {
+  background: var(--hp-card-bg);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-lg);
+  padding: 20px;
+  box-shadow: var(--hp-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.honeypot-tab .honeypot-details-section:hover {
+  box-shadow: var(--hp-shadow-md);
+}
+
+.honeypot-tab .honeypot-section-title {
+  font-size: var(--hp-font-size-md);
+  margin: 0 0 20px 0;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--hp-border-light);
+  color: var(--hp-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.honeypot-tab .honeypot-details-table-container {
+  overflow-x: auto;
+}
+
+.honeypot-tab .honeypot-details-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.honeypot-tab .honeypot-details-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--hp-border-light);
+  font-size: var(--hp-font-size-sm);
+}
+
+.honeypot-tab .honeypot-details-table td:first-child {
+  width: 30%;
+  color: var(--hp-text-secondary);
+  font-weight: 500;
+  background: var(--hp-black-10);
+  border-right: 1px solid var(--hp-border-light);
+}
+
+.honeypot-tab .honeypot-details-json {
+  background: var(--hp-bg-medium);
+  border-radius: var(--hp-border-radius-md);
+  padding: 0;
+  max-height: 500px;
+  overflow: auto;
+  border: 1px solid var(--hp-border-light);
+  position: relative;
+}
+
+.honeypot-tab .honeypot-details-json pre {
+  margin: 0;
+  padding: 15px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: var(--hp-font-size-sm);
+  color: var(--hp-text-primary);
+  line-height: 1.5;
+}
+
+/* Explanation Box */
+.honeypot-tab .honeypot-explanation-box {
+  background: var(--hp-bg-medium);
+  border-radius: var(--hp-border-radius-md);
+  padding: 20px;
+  color: var(--hp-text-primary);
+  line-height: 1.6;
+  font-size: var(--hp-font-size-sm);
+  position: relative;
+  border-left: 4px solid var(--hp-accent-quaternary);
+}
+
+.honeypot-tab .honeypot-explanation-box p {
+  margin-bottom: 15px;
+}
+
+.honeypot-tab .honeypot-explanation-box p:last-child {
+  margin-bottom: 0;
+}
+
+.honeypot-tab .honeypot-explanation-box strong {
+  color: var(--hp-accent-quaternary);
+  font-weight: 600;
+}
+
+.honeypot-tab .honeypot-explanation-box h5 {
+  margin: 20px 0 10px;
+  font-size: var(--hp-font-size-sm);
+  font-weight: 600;
+  color: var(--hp-text-primary);
+}
+
+.honeypot-tab .honeypot-suspicious-factors {
+  margin: 15px 0 15px 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.honeypot-tab .honeypot-suspicious-factors li {
+  position: relative;
+  padding: 8px 0 8px 15px;
+  border-left: 3px solid var(--hp-accent-primary);
+  margin-bottom: 10px;
+  font-size: var(--hp-font-size-sm);
+}
+
+.honeypot-tab .honeypot-suspicious-factors li::before {
+  content: '•';
+  position: absolute;
+  left: -10px;
+  top: 7px;
+  background: var(--hp-bg-medium);
+  color: var(--hp-accent-primary);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.honeypot-tab .honeypot-suspicious-factors li:last-child {
+  margin-bottom: 0;
+}
+
+.honeypot-tab .honeypot-explanation-box em {
+  display: block;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed var(--hp-border-light);
+  color: var(--hp-text-secondary);
+  font-style: italic;
+}
+
+/* No Selection state */
+.honeypot-tab .honeypot-no-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  gap: 20px;
+  color: var(--hp-text-secondary);
+  background: var(--hp-card-bg);
+  border: 1px solid var(--hp-border-light);
+  border-radius: var(--hp-border-radius-lg);
+  box-shadow: var(--hp-shadow-sm);
+}
+
+/* WebKit Scrollbars Styling */
+.honeypot-tab .honeypot-details-json::-webkit-scrollbar,
+.honeypot-tab .honeypot-table-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.honeypot-tab .honeypot-details-json::-webkit-scrollbar-track,
+.honeypot-tab .honeypot-table-container::-webkit-scrollbar-track {
+  background: var(--hp-black-20);
+  border-radius: 3px;
+}
+
+.honeypot-tab .honeypot-details-json::-webkit-scrollbar-thumb,
+.honeypot-tab .honeypot-table-container::-webkit-scrollbar-thumb {
+  background: var(--hp-accent-primary);
+  border-radius: 3px;
+}
+
+.honeypot-tab .honeypot-details-json::-webkit-scrollbar-thumb:hover,
+.honeypot-tab .honeypot-table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--hp-accent-secondary);
+}
+
+/* Animation for view transitions */
+@keyframes hp-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.honeypot-tab .honeypot-overview-container,
+.honeypot-tab .honeypot-interactions-container,
+.honeypot-tab .honeypot-details-container {
+  animation: hp-fade-in 0.3s ease-out forwards;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .honeypot-tab .honeypot-charts-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .honeypot-tab .honeypot-details-meta {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  .honeypot-tab .honeypot-stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .honeypot-tab .honeypot-filter-container {
+    flex-direction: column;
+  }
+  
+  .honeypot-tab .honeypot-page-info {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .honeypot-tab .admin-content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .honeypot-tab .honeypot-header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .honeypot-tab .honeypot-stats-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .honeypot-tab .honeypot-interactions-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .honeypot-tab .honeypot-interactions-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .honeypot-tab .honeypot-pagination {
+    flex-wrap: wrap;
+  }
+  
+  .honeypot-tab .honeypot-limit-select {
+    order: -1;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .honeypot-tab .honeypot-details-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .honeypot-tab .honeypot-details-actions {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .honeypot-tab .honeypot-data-table {
+    display: block;
+  }
+  
+  .honeypot-tab .honeypot-data-table thead {
+    display: none;
+  }
+  
+  .honeypot-tab .honeypot-data-table tbody {
+    display: block;
+  }
+  
+  .honeypot-tab .honeypot-data-table tr {
+    display: block;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: var(--hp-card-bg);
+    border-radius: var(--hp-border-radius-md);
+    border: 1px solid var(--hp-border-light);
+  }
+  
+  .honeypot-tab .honeypot-data-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--hp-border-light);
+  }
+  
+  .honeypot-tab .honeypot-data-table td:before {
+    content: attr(data-label);
+    font-weight: 500;
+    color: var(--hp-text-secondary);
+    margin-right: 10px;
+  }
+  
+  .honeypot-tab .honeypot-data-table td:last-child {
+    border-bottom: none;
+  }
+  
+  .honeypot-tab .honeypot-timestamp {
+    justify-content: flex-end;
+  }
+  
+  .honeypot-tab .honeypot-path-cell {
+    max-width: none;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    word-break: break-all;
+  }
+  
+  .honeypot-tab .honeypot-details-table td {
+    display: block;
+    padding: 10px;
+  }
+  
+  .honeypot-tab .honeypot-details-table td:first-child {
+    width: 100%;
+    border-right: none;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .honeypot-tab .honeypot-details-table td:nth-child(2) {
+    padding-top: 5px;
+  }
+}
+
+/* Print Styles for Reporting */
+@media print {
+  .honeypot-tab {
+    background: white;
+    color: black;
+  }
+  
+  .honeypot-tab .honeypot-header-actions,
+  .honeypot-tab .honeypot-pagination,
+  .honeypot-tab .honeypot-back-btn,
+  .honeypot-tab .honeypot-export-btn,
+  .honeypot-tab .honeypot-filter-section {
+    display: none !important;
+  }
+  
+  .honeypot-tab .honeypot-details-json {
+    max-height: none;
+    overflow: visible;
+  }
+  
+  .honeypot-tab .honeypot-stats-cards,
+  .honeypot-tab .honeypot-chart-content,
+  .honeypot-tab .honeypot-details-meta {
+    break-inside: avoid;
+  }
+}
