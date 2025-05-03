@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "igelfs"
+description = "Python implementation of the IGEL filesystem."
+version = "2.11.0"
+readme = "README.md"
+license = "GPL-3.0-only"
+authors = [
+  {name = "Zack Didcott"}
+]
+maintainers = [
+  {name = "Zack Didcott"}
+]
+dependencies = [
+  "pillow",
+  "python-magic",
+  "rsa",
+]
+requires-python = ">= 3.12"
+
+[project.optional-dependencies]
+convert = ["pyparted"]
+crypto = ["cryptography", "PyNaCl", "python-lzf"]
+fuse = ["fuse-python"]
+tests = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/Zedeldi/igelfs"
+Documentation = "https://github.com/Zedeldi/igelfs/wiki"
+Repository = "https://github.com/Zedeldi/igelfs.git"
+Issues = "https://github.com/Zedeldi/igelfs/issues"
+
+[project.scripts]
+igelfs-cli = "igelfs.cli:main"
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+disable_error_code = [
+  "import-not-found",
+  "import-untyped",
+]
+enable_error_code = [
+  "ignore-without-code"
+]
+show_error_codes = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+markers = [
+  "inf: tests require LXOS configuration file",
+  "slow: tests take a while to complete",
+]
