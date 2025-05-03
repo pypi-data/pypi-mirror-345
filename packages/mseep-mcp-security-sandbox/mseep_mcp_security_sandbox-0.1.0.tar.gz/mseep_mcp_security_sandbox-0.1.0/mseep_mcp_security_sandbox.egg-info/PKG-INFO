@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: mseep-mcp-security-sandbox
+Version: 0.1.0
+Summary: An experimental sandbox and a lab to explore mcp hosts, mcp clients, and mcp servers. Perform attacks agaisnt mcp servers and abuse LLMs
+Home-page: 
+Author: mseep
+Author-email: support@skydeck.ai
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: bs4>=0.0.2
+Requires-Dist: html2text>=2024.2.26
+Requires-Dist: mcp[cli]>=1.6.0
+Requires-Dist: ollama>=0.4.7
+Requires-Dist: pydantic-ai>=0.0.55
+Requires-Dist: requests>=2.32.3
+Requires-Dist: streamlit>=1.44.1
+Requires-Dist: torch>=2.6.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: license-file
+Dynamic: requires-python
+
+# mcp-security-sandbox
+An experimental sandbox and a lab to explore mcp hosts, mcp clients, and mcp servers. Perform attacks agaisnt mcp servers and abuse LLMs
+
+
+# Preview
+#### MCP Aware Chat - retrieval
+This repository defines an MCP server(github retrieval), and integrate it into a chat agent playground.
+![image](https://github.com/user-attachments/assets/a559934a-2c62-473b-b3b1-9edf54ecb024)
+
+
+#### Burp Suite MCP Server
+Use to chain and interact with multiple MCP servers, in this example, we've enabled intercept and performed a revtrieval using the github tool to describe this repository!
+
+![image](https://github.com/user-attachments/assets/c3369724-6520-4f7b-8257-2df28ae76f9f)
+note: [install Burps MCP Server first](https://github.com/PortSwigger/mcp-server?tab=readme-ov-file#manual-installations)
+
+
+# Quick Start
+to start the frontend:
+```
+uv install
+uv venv
+source .venv/bin/activate
+# Start he MCP serer
+uv run -- src/mcp-security-sandbox/mcp/github/server.py 
+streamlit run src/mcp-security-sandbox/frontend/MCP_Chat.py
+```
+
+make sure you install ollama, and set it's url in the ollama client initializations
+# Roadmap
+
+
+- [x] use the environment to setup the ollama api
+- [x] integrate mcp into the chat context(currently it's history aware only)
+- [x] Allow for streamlit pages/navigation
+- [x] unify streamlit server(s) to initiate all of the frontend once
+- [x] add more mcp servers
+- [ ] allow for dynamically loading of mcp servers
+- [x] create a malicious server
+- [ ] perfrom mcp attacks and poc vulnerabilities
+
+
+
