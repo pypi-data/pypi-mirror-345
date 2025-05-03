@@ -1,0 +1,203 @@
+[project]
+name = "nginx_ldap_auth_service"
+version = "2.1.6"
+description = "A FastAPI app that authenticates users via LDAP and sets a cookie for nginx"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    {name = "Caltech IMSS ADS", email = "imss-ads-staff@caltech.edu"},
+]
+maintainers = [
+    {name = "Christopher Malek", email = "cmalek@caltech.edu"},
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: FastAPI",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Developers",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: System :: Systems Administration :: Authentication/Directory :: LDAP",
+]
+keywords = ["nginx", "ldap", "auth", "fastapi", "devops"]
+dependencies = [
+    "aiodogstatsd==0.16.0.post0",
+    "bonsai==1.5.3",
+    "click>=8.0.1",
+    "fastapi>=0.115.7 ",
+    "fastapi-csrf-protect>=1.0.0",
+    "jinja2>=3.0.3",
+    "pydantic-settings>=2.0.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.1",
+    "python-multipart>=0.0.6",
+    "sentry-sdk>=2.20.0",
+    "starsessions[redis]>=2.1.6",
+    "structlog>=23.2.0",
+    "tabulate>=0.8.9",
+    "uvicorn[standard]>=0.34.0",
+    "watchfiles>=1.0.4",
+    "httptools>=0.6.4",
+]
+
+[project.scripts]
+nginx-ldap-auth = "nginx_ldap_auth.main:main"
+
+[tool.uv]
+python-preference = "only-system"
+default-groups = ["docs"]
+
+[dependency-groups]
+dev = [
+    "ipython>=8.0.1",
+]
+docs = [
+  "Sphinx<8",
+  "sphinx_rtd_theme == 2.0.0",
+  "sphinxcontrib-jsonglobaltoc==0.1.1",
+  "sphinxcontrib-images >= 0.9.4",
+  "setuptools>=75.1.0",
+]
+
+[build-system]
+requires = [
+    "setuptools >= 48",
+    "wheel >= 0.29.0",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# ...
+# By default, include-package-data is true in pyproject.toml, so you do
+# NOT have to specify this line.
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.mypy]
+exclude = "(^build/.*$|^doc/.*\\.py$|test_.*\\.py$)"
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = "bonsai.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "sphinx_rtd_theme.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "redis.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "sentry_sdk.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "fastapi_csrf_protect.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "starlette.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "starlette.*"
+ignore_missing_imports = true
+
+[tool.ruff]
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["ALL"]
+fixable = ["ALL"]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+ignore = [
+    #### modules
+    "ANN", # flake8-annotations
+    "COM", # flake8-commas
+    "C90", # mccabe complexity
+    "EXE", # flake8-executable
+    "T10", # debugger
+    "TID", # flake8-tidy-imports
+
+    #### specific rules
+    "CPY001",   # ignore missing copyright notices
+    "D100",     # Missing docstring in public module
+    "D102",     # Missing docstring in public method
+    "D103",     # Missing docstring in public function
+    "D104",     # Missing docstring in public package
+    "D105",     # Missing docstring in magic method
+    "D106",     # Missing docstring in nested class
+    "D107",     # ignore Missing docstring in __init__ method
+    "D200",     # One-line docstring should fit on one line
+    "D203",     # 1 blank required before class docstring
+    "D205",     # 1 blank line required between summary line and description
+    "D211",     # No blank lines allowed before class docstring
+    "D212",     # Multi-line docstring summary should start at the first line
+    "D400",     # First line should end with a period
+    "D401",     # First line of docstring should be in imperative mood
+    "D415",     # First line should end with a period, question mark, or exclamation point
+    "DOC201",   # Ignore missing "Return" section in docstring
+    "E402",     # false positives for local imports
+    "FIX002",   # Line contains "TODO", consider resolving the issue
+    "N818",     # stop bugging me about not ending my exceptions with "Error"
+    "PLC0415",  # Ignore imports that aren't at the top level. Sometimes that's needed to avoid circular imports.
+    "S603",     # ignore subprocess calls that do not check return code
+    "S607",     # ignore subprocess programs that are not absolute paths
+    "SIM102",   # combine nested ifs
+    "SLF001",   # Ignore access to attributes starting with a single _.
+    "TD002",    # Missing author in TODO; try: # TODO(<author_name>): ... or # TODO @<author_name>:
+    "TD003",    # Missing issue link on the line following this TODO
+]
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+# Enable auto-formatting of code examples in docstrings.
+docstring-code-format = false
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint.pylint]
+# Django signal handlers use a lot of positional args.
+max-args = 10
+max-positional-args = 10
+
+[tool.vulture]
+# Configuration for vulture: https://github.com/jendrikseipp/vulture
+# Install in your virtual environment and run:
+# python -m vulture | tail -r | less
+# The below configuration tries to remove some false positives, but there are
+# still many, for example for model properties used only in templates.
+# See also:
+# https://adamj.eu/tech/2023/07/12/django-clean-up-unused-code-vulture/
+ignore_decorators = [
+  # pytest
+  "@pytest.fixture",
+]
+ignore_names = [
+]
+paths = [
+  "example",
+]
+min_confidence = 80
+sort_by_size = true
