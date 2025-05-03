@@ -1,0 +1,34 @@
+exclude: "^docs/conf.py"
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: trailing-whitespace
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-xml
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: requirements-txt-fixer
+      - id: mixed-line-ending
+        args: ["--fix=auto"] # replace 'auto' with 'lf' to enforce Linux/Mac line endings or 'crlf' for Windows
+
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.1
+    hooks:
+      - id: isort
+        args: ["-l 88"]
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
