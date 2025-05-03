@@ -1,0 +1,14 @@
+include(CMakeFindDependencyMacro)
+
+@PACKAGE_INIT@
+
+if(DEFINED ENV{CIBUILDWHEEL})
+    find_dependency(Python REQUIRED COMPONENTS Interpreter Development.Module)
+    if(NOT TARGET Python::Python)
+        add_library(Python::Python ALIAS Python::Module)
+    endif()
+else()
+    find_dependency(Python REQUIRED COMPONENTS Interpreter Development)
+endif()
+
+include(${CMAKE_CURRENT_LIST_DIR}/pxr-boost-targets.cmake)
