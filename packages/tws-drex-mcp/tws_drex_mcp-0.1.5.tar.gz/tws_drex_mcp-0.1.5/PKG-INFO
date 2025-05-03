@@ -1,0 +1,152 @@
+Metadata-Version: 2.4
+Name: tws-drex-mcp
+Version: 0.1.5
+Summary: An MCP server providing tools to interact with the DREX document extraction AI API via LoginRadius authentication.
+Project-URL: Homepage, https://github.com/thoughtswinsystems/drex-api
+Author-email: chris-tws <christopher.lin@thoughtswinsystems.com>
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.12
+Requires-Dist: loginradius-v2>=11.7.0
+Requires-Dist: mcp[cli]>=1.7.0
+Description-Content-Type: text/markdown
+
+# TWS DREX MCP Server
+
+This MCP server provides tools to interact with the DREX document extraction AI API and LoginRadius authentication.
+
+## Installation
+
+Install the package using pip:
+
+```bash
+pip install tws-drex-mcp
+```
+
+## Functionality
+
+The following tools are provided by the server:
+
+* `get_token`: Obtains an authentication token from LoginRadius using a username and password.
+* `file_upload`: Uploads files to the DREX API.
+* `get_status`: Retrieves the processing status of a file in the DREX API.
+* `get_file_results`: Retrieves the processed results of a file in the DREX API.
+
+## Configuration
+
+Before using the server's tools, ensure the following environment variables are set:
+
+*   `DREX_BASE_URL`: The base URL of the target DREX API instance.
+*   `LR_API_KEY`: Your LoginRadius API key.
+*   `LR_API_SECRET`: Your LoginRadius API secret.
+
+The MCP framework will automatically pick up these variables when running the server's tools.
+
+## Usage
+
+### `get_token`
+
+This tool obtains an authentication token from LoginRadius using a username and password.
+
+Example:
+
+```json
+{
+    "username": "your_username",
+    "password": "your_password"
+}
+```
+
+### `file_upload`
+
+This tool uploads files to the DREX API.
+
+Example:
+
+```json
+{
+    "file_paths": ["path/to/file1.txt", "path/to/file2.png"],
+    "uploaded_by": "user_name",
+    "token": "your_access_token"
+}
+```
+
+### `get_status`
+
+This tool retrieves the processing status of a file in the DREX API.
+
+Example:
+
+```json
+{
+    "file_id": "file_id_1",
+    "token": "your_access_token"
+}
+```
+
+### `get_file_results`
+
+This tool retrieves the processed results of a file in the DREX API.
+
+Example:
+
+```json
+{
+    "file_id": "file_id_1",
+    "token": "your_access_token"
+  }
+```
+
+## LoginRadius Initialization
+
+The LoginRadius SDK is initialized using the `LR_API_KEY` and `LR_API_SECRET` environment variables.
+
+## Dependencies
+
+The dependencies required to run this server are listed in the `mcp-server-demo/pyproject.toml` file.
+
+## Running the Server
+
+To run the server, use the following command:
+
+```bash
+uv --directory mcp-server-demo run --with mcp[cli] mcp run mcp-server-demo/server.py
+```
+
+To debug the server, use the following command:
+
+```bash
+mcp dev server.py
+```
+
+To install the server to Claude desktop, use the following command:
+
+```bash
+mcp install server.py
+```
+
+Example configuration:
+
+```json
+{
+  "mcpServers": {
+    "DREX": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "<your-repo-path>\\mcp-server-demo",
+        "run",
+        "--with",
+        "mcp[cli]",
+        "mcp",
+        "run",
+        "<your-repo-path>\\mcp-server-demo\\server.py"
+      ]
+    }
+  }
+}
+```
