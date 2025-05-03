@@ -1,0 +1,180 @@
+# Do nothing if already imported target
+if(TARGET jiminy::core)
+    return()
+endif()
+
+if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
+        CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16.0.0.16000026)
+    message(WARNING
+        "Jiminy was compiled using AppleClang 16.0.0.16000026.\n"
+        "Expect undefined symbols at link time.")
+endif()
+
+# Set Python find strategy to location by default
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.15.0)
+    cmake_policy(SET CMP0094 NEW)
+endif()
+
+# Keep relying on CMake FindBoost module instead of the one shipping with Boost itself.
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.30.0)
+    cmake_policy(SET CMP0167 OLD)
+endif()
+
+# Custom cmake module path
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+
+# Get Python executable
+if(DEFINED PYTHON_EXECUTABLE)
+    get_filename_component(_PYTHON_PATH "${PYTHON_EXECUTABLE}" DIRECTORY)
+    get_filename_component(_PYTHON_NAME "${PYTHON_EXECUTABLE}" NAME)
+    find_program(Python_EXECUTABLE "${_PYTHON_NAME}" PATHS "${_PYTHON_PATH}" NO_DEFAULT_PATH)
+else()
+    if(WIN32)
+        # Development must be specified on Windows, otherwise the executable
+        # is not required to have the same address size as the compilation
+        # environment, and the jiminy library will fail to load.
+        set(Python_COMPONENTS_FIND Interpreter Development)
+    else()
+        set(Python_COMPONENTS_FIND Interpreter)
+    endif()
+    unset(Python_EXECUTABLE)
+    unset(Python_EXECUTABLE CACHE)
+    unset(_Python_EXECUTABLE)
+    unset(_Python_EXECUTABLE CACHE)
+    if(PYTHON_REQUIRED_VERSION)
+        find_package(Python ${PYTHON_REQUIRED_VERSION} EXACT COMPONENTS ${Python_COMPONENTS_FIND})
+    else()
+        find_package(Python COMPONENTS ${Python_COMPONENTS_FIND})
+    endif()
+endif()
+if(NOT Python_EXECUTABLE)
+    if (jiminy_FIND_REQUIRED)
+        message(FATAL_ERROR "Python executable not found, CMake will exit.")
+    else()
+        set(jiminy_FOUND FALSE)
+        return()
+    endif()
+endif()
+
+# Pinocchio Cmake configuration file set `Boost_NO_BOOST_CMAKE` to ON,
+# requiring to specify `BOOST_ROOT` manually. This is not sufficient
+# on Windows, and Pinocchio is still not able to find boost components
+# for some reason if not already imported before. Yet, it does not work
+# well on Unix if only static libs are available on the system...
+if(WIN32)
+    find_package(Boost REQUIRED COMPONENTS
+        chrono system filesystem serialization date_time thread atomic)
+else()
+    find_package(Boost REQUIRED)
+    get_target_property(BOOST_INCLUDE_DIR Boost::headers INTERFACE_INCLUDE_DIRECTORIES)
+    get_filename_component(BOOST_ROOT "${BOOST_INCLUDE_DIR}" DIRECTORY)
+endif()
+
+# Make sure that the right version of tinyxml2, urdfdom, pinocchio, eigen are available
+if(NOT TARGET tinyxml2::tinyxml2)
+    unset(TinyXML2_FOUND CACHE)
+endif()
+find_package(TinyXML2 REQUIRED NO_MODULE)
+if(NOT TARGET urdfdom::urdfdom)
+    unset(urdfdom_FOUND CACHE)
+endif()
+find_package(urdfdom REQUIRED NO_MODULE)
+if(NOT TARGET pinocchio::pinocchio)
+    unset(pinocchio_FOUND CACHE)
+endif()
+find_package(pinocchio  EXACT REQUIRED NO_MODULE)
+if(NOT TARGET hpp-fcl::hpp-fcl)
+    unset(hpp-fcl_FOUND CACHE)
+endif()
+find_package(hpp-fcl  REQUIRED NO_MODULE)
+if(NOT TARGET Eigen3::Eigen)
+    unset(Eigen3_FOUND CACHE)
+endif()
+find_package(Eigen3  REQUIRED NO_MODULE)
+
+# Make sure jiminy Python module is available
+execute_process(COMMAND "${Python_EXECUTABLE}" -c
+                "from importlib.util import find_spec; print(int(find_spec('jiminy_py') is not None), end='')"
+                OUTPUT_VARIABLE jiminy_FOUND)
+if(NOT jiminy_FOUND)
+    if(jiminy_FIND_REQUIRED)
+        message(FATAL_ERROR "`jiminy_py` Python module not found.")
+    else()
+        return()
+    endif()
+endif()
+
+# Find jiminy libraries and headers.
+# Note that jiminy is compiled under C++17 using either old or new CXX11 ABI.
+# Make sure every project dependencies are compiled for the same CXX11 ABI
+# otherwise segfaults may occur. It should be fine for the standard library,
+# but not for precompiled boost libraries.
+# https://gcc.gnu.org/onlinedocs/libstdc++/manual/abi.html
+execute_process(COMMAND "${Python_EXECUTABLE}" -c
+                "import jiminy_py; print(jiminy_py.get_include(), end='')"
+                OUTPUT_VARIABLE jiminy_INCLUDE_DIRS)
+execute_process(COMMAND "${Python_EXECUTABLE}" -c
+                "import jiminy_py; print(jiminy_py.get_libraries(), end='')"
+                OUTPUT_VARIABLE jiminy_LIBRARIES)
+
+# For now, there is only one libary (core), so just pick the most recent one
+list(GET jiminy_LIBRARIES 0 jiminy_CORE_LIBRARY)
+
+# Define compilation options and definitions
+set(jiminy_DEFINITIONS PINOCCHIO_WITH_URDFDOM;PINOCCHIO_WITH_HPP_FCL;PINOCCHIO_URDFDOM_TYPEDEF_SHARED_PTR;PINOCCHIO_URDFDOM_USE_STD_SHARED_PTR;BOOST_MPL_CFG_NO_PREPROCESSED_HEADERS=ON;BOOST_MPL_LIMIT_VECTOR_SIZE=30;EIGEN_MPL2_ONLY)
+set(jiminy_OPTIONS )
+if("" MATCHES "AVX[0-9]+")
+    list(APPEND jiminy_DEFINITIONS __FMA__)
+    list(APPEND jiminy_OPTIONS /fp:contract)
+endif()
+if(WIN32)
+    list(APPEND jiminy_DEFINITIONS
+        WIN32 _USE_MATH_DEFINES NOMINMAX
+        EIGENPY_STATIC URDFDOM_STATIC HPP_FCL_STATIC PINOCCHIO_STATIC
+    )
+else()
+    execute_process(COMMAND readelf --version-info "${jiminy_CORE_LIBRARY}"
+                    COMMAND grep -c "Name: CXXABI_1.3.9\\\|Name: GLIBCXX_3.4.21"
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                    OUTPUT_VARIABLE CHECK_NEW_CXX11_ABI)
+    list(APPEND jiminy_DEFINITIONS _GLIBCXX_USE_CXX11_ABI=$<BOOL:${CHECK_NEW_CXX11_ABI}>)
+    list(APPEND jiminy_OPTIONS -fPIC)
+endif()
+if(MSVC)
+    list(APPEND jiminy_OPTIONS /EHsc /bigobj /Gy /Zc:inline /Zc:preprocessor /Zc:__cplusplus /permissive- /wd4996 /wd4554 /wd4005)
+    list(APPEND jiminy_OPTIONS "/MD$<$<CONFIG:Debug>:d>")
+endif()
+
+# Define imported target
+add_library(jiminy::core SHARED IMPORTED)
+set_target_properties(jiminy::core PROPERTIES
+    IMPORTED_LOCATION "${jiminy_CORE_LIBRARY}"
+    INTERFACE_INCLUDE_DIRECTORIES "${jiminy_INCLUDE_DIRS}"
+    INTERFACE_COMPILE_DEFINITIONS "${jiminy_DEFINITIONS}"
+    INTERFACE_COMPILE_OPTIONS "${jiminy_OPTIONS}"
+    INTERFACE_COMPILE_FEATURES cxx_std_17
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED YES
+    CXX_EXTENSIONS NO
+)
+target_link_libraries(
+    jiminy::core INTERFACE
+    pinocchio::pinocchio
+    hpp-fcl::hpp-fcl
+    urdfdom::urdf_parser
+    Eigen3::Eigen
+)
+
+# Enable link rpath to find shared library dependencies at runtime
+get_filename_component(jiminy_LIBDIR "${jiminy_CORE_LIBRARY}" DIRECTORY)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${jiminy_LIBDIR}")
+
+if(WIN32)
+    get_filename_component(jiminy_LIBNAME "${jiminy_CORE_LIBRARY}" NAME_WE)
+    set_target_properties(jiminy::core PROPERTIES
+        IMPORTED_IMPLIB "${jiminy_LIBDIR}/${jiminy_LIBNAME}.lib"
+    )
+endif()
+
+# Display import is success
+message(STATUS "Found jiminy ('1.8.13'): ${jiminy_INCLUDE_DIRS} (${jiminy_CORE_LIBRARY})")
