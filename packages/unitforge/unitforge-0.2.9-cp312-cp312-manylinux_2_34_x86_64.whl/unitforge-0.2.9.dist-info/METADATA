@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: unitforge
+Version: 0.2.9
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Rust
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Dist: numpy>=2.2.0
+Summary: A library for unit and quantity consistent computations in Rust
+Keywords: units,quantities,simulation,physics
+Author: Dr.Q team <info@askdrq.com>, Henrik Stromberg <henrik@askdrq.com>
+Author-email: "Dr.Q team" <info@askdrq.com>, Henrik Stromberg <henrik@askdrq.com>
+License: MIT
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Repository, https://gitlab.com/henrikjstromberg/unitforge
+
+# Unitforge
+
+## Overview
+
+**Unitforge** is a Rust crate designed for safe handling of physical quantities of units. New quantities and relations can be set up via small macros.
+
+## Features
+
+- **Quantity inference:** Resulting quantities of arithmetic operations are inferred at compile time.
+- **Unit conversion:** Quantities can be set or read in arbitrary units.
+- **Computing Precision** Values are stored in exponential format (f64*10^i32) to prevent floating point precision issues.
+- **Formating** Quantities are displayed with 4 significant digits and configured display unit.
+- **ndarray support:** Quantities may be used as inner types for `ndarray`.
+- **3D Vector and matrix operations:** Structs for 3D vectors and matrices are included to allow fast and unit-safe work with them.
+- **Serialization**: Optional support for sere using the serde feature.
+- **python interface** Optional Python interface when building with flag pyo3; also available on pypi
+
+## Contribute
+
+All contributions are welcome! Feel free to implement new quantities or define relations using `impl_macros.rs`. 🚀
+
