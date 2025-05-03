@@ -1,0 +1,46 @@
+{% macro merge_tables_prompt(page_numbers, table_htmls=[]) %}
+You are a document analysis expert. I am sharing cropped images of tables from multiple pages that need to be merged.
+
+These tables span across {{ page_numbers|join(', ') }} pages in this document but represent a single continuous table. I need to create a unified HTML representation for this merged table.
+
+{% if table_htmls and table_htmls|length > 0 %}
+Here are the HTML structures of the individual tables as detected by our system:
+
+{% for html in table_htmls %}
+Table from page {{ page_numbers[loop.index0] }}:
+```html
+{{ html }}
+```
+
+{% endfor %}
+{% endif %}
+
+### Task
+Analyze the images of these tables and create a single, unified HTML table that properly combines all the tables while maintaining structural integrity.
+
+### Important Guidelines:
+1. Maintain the column structure across all tables
+2. Preserve all data from each table
+3. Remove redundant header rows that might appear in continuation tables (except the first table)
+4. Pay special attention to handwritten content and ensure it's accurately represented
+5. Ensure the merged table flows naturally as one coherent table
+6. Special handling for split rows:
+   - If a row appears incomplete at the bottom of one page, look for its continuation at the top of the next page
+   - When merging split rows, ensure all cells are properly aligned and combined
+   - Pay attention to cell content that might be split across pages
+   - Maintain proper row structure even when rows are split
+
+### Output Format
+Return only the raw HTML for the merged table without any markdown code blocks. Do not wrap your response in ```html or any other formatting. The HTML should be a well-formed table with proper structure:
+
+<table>
+  <tr>
+    <th>Header 1</th>
+    <th>Header 2</th>
+    <!-- more headers -->
+  </tr>
+  <!-- content rows from all tables, properly handling split rows -->
+</table>
+
+The final HTML should represent one continuous table as if it was originally a single table spread across multiple pages, with all split rows properly combined.
+{% endmacro %} 

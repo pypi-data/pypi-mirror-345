@@ -1,0 +1,1 @@
+This will contain all end-to-end pipelines of Saral using the core modules
