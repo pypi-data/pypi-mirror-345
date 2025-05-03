@@ -1,0 +1,72 @@
+[project]
+name = "xradio"
+version = "0.0.53"
+description = " Xarray Radio Astronomy Data IO"
+authors = [
+    {name = "Jan-Willem Steeb", email="jsteeb@nrao.edu"},
+    {name = "Federico Montesino Pouzols", email="pouzols@eso.edu"},
+    {name = "Dave Mehringer", email="dmehring@nrao.edu"},
+    {name = "Peter Wortmann", email="peter.wortmann@skao.int"}
+]
+license = {file = "LICENSE.txt"}
+readme = "README.md"
+requires-python = ">= 3.11, < 3.14"
+
+dependencies = [
+    'astropy',
+    'dask',
+    'distributed',
+    'toolviper>=0.0.11',
+    'numba>=0.57.0',
+    'numpy',
+    'pytest',
+    'pytest-cov',
+    'pytest-html',
+    's3fs',
+    'scipy',
+    'xarray',
+    'zarr>=2,<3',
+    'pyarrow',
+    'python_casacore>=3.6.1; sys_platform != "darwin" ',
+    'typeguard',
+    'numcodecs<0.16'
+]
+
+[project.optional-dependencies]
+interactive = [
+    'matplotlib',
+    'prettytable',
+    'jupyterlab',
+    'ipykernel',
+    'ipympl',
+    'ipython',
+    'jupyter-client',
+]
+
+docs = [
+    'nbsphinx',
+    'recommonmark',
+    'scanpydoc',
+    'sphinx-autoapi',
+    'sphinx-autosummary-accessors',
+    'sphinx_rtd_theme',
+    'twine',
+    'pandoc'
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "--strict-markers"
+]
+testpaths = [
+    "tests"
+]
+pythonpath = [
+    "."
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.py$'
