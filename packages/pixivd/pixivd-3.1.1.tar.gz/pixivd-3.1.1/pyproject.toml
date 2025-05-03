@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pixivd"
+dynamic = ['version']
+description = "A simple tool to download illustrations from Pixiv."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    {name = "KK", email = "bebound@gmail.com"}
+]
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "requests>=2.4.3",
+    "pyaes>=1.6.1",
+    "docopt>=0.6.2",
+    "tqdm",
+    "PixivPy>=3.6.0"
+]
+
+[project.urls]
+homepage = "https://github.com/bebound/pixiv"
+Source = "https://github.com/bebound/pixiv"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.8",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "pixivd.pixivd.__version__"}
+
+[project.scripts]
+pixivd = "pixivd.pixivd:main"
