@@ -1,0 +1,188 @@
+Metadata-Version: 2.4
+Name: psbtree
+Version: 0.1.12
+Summary: Python Behavior Tree Framework with C++ Core
+Author: Your Name
+Author-email: iepanda <iepanda@outlook.com>
+Maintainer-email: PulSpread <iepanda@outlook.com>
+License-Expression: MIT
+Keywords: behavior-tree,ai,decision-tree,python,cpp
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: loguru>=0.7.2
+Requires-Dist: psdec>=0.1.1
+Provides-Extra: cuda
+Requires-Dist: pycuda>=2023.1; extra == "cuda"
+Requires-Dist: numpy>=1.24.0; extra == "cuda"
+Provides-Extra: dev
+Requires-Dist: check-manifest>=0.48.0; extra == "dev"
+Requires-Dist: Cython>=3.0.0; extra == "dev"
+Provides-Extra: test
+Requires-Dist: coverage>=7.3.0; extra == "test"
+Requires-Dist: pytest>=7.4.0; extra == "test"
+Requires-Dist: pytest-mock>=3.11.1; extra == "test"
+Dynamic: author
+Dynamic: license-file
+
+# PSBTree 行为树引擎
+
+基于 C++ 和 Python 实现的高性能行为树引擎，支持顺序和并行执行模式，适用于机器人控制、游戏 AI 和自动化系统。
+
+## 项目结构
+
+```
+.
+├── src/                    # 源代码目录
+│   └── psbtree/            # 主包目录
+│       ├── engine/         # 引擎实现（顺序和并行）
+│       ├── nodes/          # 节点实现（动作、条件、控制、装饰器）
+│       ├── plugins/        # 插件系统
+│       └── utils/          # 工具函数
+├── sample/                 # 示例代码
+├── tests/                  # 测试代码
+├── doc/                    # 文档
+├── source_cpp/             # C++ 源代码
+├── dependencies/           # 依赖项
+├── scripts/                # 构建脚本
+├── pyproject.toml          # 项目配置
+├── setup.py                # 安装脚本
+└── README.md               # 项目文档
+```
+
+## 核心功能
+
+- **行为树引擎**: 支持顺序和并行执行模式
+- **节点系统**: 提供丰富的节点类型（动作、条件、控制、装饰器）
+- **高性能**: 核心功能使用 C++ 实现，通过 Cython 与 Python 集成
+- **授权系统**: 内置授权验证机制
+- **插件扩展**: 支持通过插件系统扩展功能
+
+## 快速开始
+
+1. 安装依赖：
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. 安装包：
+   ```bash
+   pip install .
+   ```
+
+3. 设置授权码：
+   ```python
+   from psbtree import set_sk_code
+   set_sk_code("您的授权码")
+   ```
+
+4. 运行示例：
+   ```bash
+   python sample/sequential_engine_sample.py
+   ```
+
+## 依赖管理
+
+核心依赖包括：
+- `loguru`: 日志记录
+- `psdec`: 授权验证
+- `opencv-python`: 图像处理（示例中使用）
+
+## 使用示例
+
+### 顺序引擎示例
+
+```python
+from psbtree.engine.sequential_engine import SequentialEngine
+from psbtree.nodes import SimpleActionNode, TreeNode, NodeStatus
+from psbtree import set_sk_code
+
+# 设置授权码
+set_sk_code("您的授权码")
+
+# 创建顺序引擎
+engine = SequentialEngine()
+
+# 注册节点
+engine.register_action_class(YourActionNode, "YourActionNode")
+
+# 定义行为树XML
+xml_text = """
+<root BTCPP_format="4">
+    <BehaviorTree ID="MainTree">
+        <Sequence name="root_sequence">
+            <YourActionNode />
+        </Sequence>
+    </BehaviorTree>
+</root>
+"""
+
+# 从XML创建行为树
+engine.create_tree_from_text(xml_text)
+
+# 运行行为树
+status = engine.tick_once()
+```
+
+### 并行引擎示例
+
+```python
+from psbtree.engine.parallel_engine import ParallelEngine
+from psbtree.nodes import SimpleActionNode, TreeNode, NodeStatus
+from psbtree import set_sk_code
+
+# 设置授权码
+set_sk_code("您的授权码")
+
+# 创建并行引擎
+engine = ParallelEngine()
+
+# 注册节点
+engine.register_action_class(YourActionNode, "YourActionNode")
+
+# 定义多个行为树XML
+xml_text_tree0 = """
+<root BTCPP_format="4">
+    <BehaviorTree ID="Tree0">
+        <Sequence name="root_sequence">
+            <YourActionNode />
+        </Sequence>
+    </BehaviorTree>
+</root>
+"""
+
+# 从XML创建行为树
+tree_id0 = engine.create_tree_from_text(xml_text_tree0, "tree0")
+
+# 运行行为树
+status0 = engine.tick_once(tree_id0)
+```
+
+## 开发指南
+
+- 使用 `SimpleActionNode` 作为基类创建自定义节点
+- 通过 `ports` 静态变量定义节点的输入输出端口
+- 实现 `tick` 静态方法定义节点的行为
+- 使用 XML 格式定义行为树结构
+- 遵循行为树设计模式最佳实践
+
+## 贡献
+
+欢迎提交 PR 和 issue。请确保：
+- 代码符合项目编码规范
+- 包含必要的单元测试
+- 更新相关文档
+
+## 许可证
+
+MIT License
