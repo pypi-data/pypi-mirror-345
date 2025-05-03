@@ -1,0 +1,54 @@
+[project]
+name = "assertme"
+version = "0.1.0.dev8"
+description = "Utilities for asserting without caring (much)"
+authors = [
+    { name = "Gerard Solé" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "python-dateutil (>=2.9.0.post0,<3.0.0)",
+    "types-python-dateutil (>=2.9.0.20241206,<3.0.0.0)"
+]
+
+[project.urls]
+Repository = "https://github.com/GerardSoleCa/assertme.git"
+Issues = "https://github.com/GerardSoleCa/assertme/issues"
+
+[tool.poetry]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+ruff = "^0.11.7"
+isort = "^6.0.1"
+pytest-random-order = "^1.1.1"
+pytest-cov = "^6.1.1"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = """
+    --random-order
+    --color=yes
+    --cov --cov-branch --cov-report=xml
+    --junitxml=junit.xml -o junit_family=legacy
+"""
+
+[tool.mypy]
+python_version = "3.9"
+packages = "assertme,tests"
+warn_return_any = true
+warn_unused_configs = true
+warn_unreachable = true
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 79
+
+[tool.isort]
+profile = "black"
+lines_after_imports = 2
