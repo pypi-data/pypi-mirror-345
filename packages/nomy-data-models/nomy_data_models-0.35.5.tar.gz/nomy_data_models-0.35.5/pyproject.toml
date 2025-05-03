@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "nomy-data-models"
+version = "0.35.5"
+description = "Data model definitions for Nomy wallet analysis data processing"
+authors = ["Biconomy <ronny.panford@biconomy.io, hubert@biconomy.io, sachin.tomar@biconomy.io>"]
+readme = "README.md"
+packages = [{ include = "nomy_data_models" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^2.0.0"
+typing-extensions = "^4.0.0"
+sqlalchemy = "^2.0.0"
+asyncpg = "^0.29.0"
+python-dotenv = "^1.0.1"
+alembic = "^1.13.1"
+psycopg2-binary = "^2.9.9"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+pytest-cov = "^4.1.0"
+black = "^23.0.0"
+isort = "6.0.1"
+mypy = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ["py39"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
