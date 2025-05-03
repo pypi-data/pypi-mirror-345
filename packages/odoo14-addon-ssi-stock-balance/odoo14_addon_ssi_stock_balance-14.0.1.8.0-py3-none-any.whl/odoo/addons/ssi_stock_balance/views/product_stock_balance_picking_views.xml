@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2024 OpenSynergy Indonesia-->
+<!--Copyright 2024 PT. Simetri Sinergi Indonesia-->
+<!--License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).-->
+<odoo>
+<record id="product_stock_balance_picking_view_tree" model="ir.ui.view">
+    <field name="name">product.stock_balance_picking - Tree</field>
+    <field name="model">product.stock_balance_picking</field>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <tree create="0" edit="0" delete="0">
+            <field name="warehouse_id" />
+            <field name="picking_type_id" />
+            <field name="product_id" />
+            <field name="date" />
+            <field name="qty_beginning" />
+            <field name="value_beginning" />
+            <field name="qty_in" />
+            <field name="value_in" />
+            <field name="qty_out" />
+            <field name="value_out" />
+            <field name="qty_ending" />
+            <field name="value_ending" />
+        </tree>
+    </field>
+</record>
+
+<record id="product_stock_balance_picking_view_search" model="ir.ui.view">
+    <field name="name">product.stock_balance_picking - Search</field>
+    <field name="model">product.stock_balance_picking</field>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <search>
+            <field name="warehouse_id" />
+            <field name="picking_type_id" />
+            <field name="product_id" />
+            <field name="date" />
+        </search>
+    </field>
+</record>
+
+<record id="product_stock_balance_picking_view_form" model="ir.ui.view">
+    <field name="name">product.stock_balance_picking - Form</field>
+    <field name="model">product.stock_balance_picking</field>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <form create="0" edit="0" delete="0">
+            <group name="stock_balance_form" colspan="4" col="2">
+                <field name="warehouse_id" />
+                <field name="picking_type_id" />
+                <field name="product_id" />
+                <field name="date" />
+            </group>
+            <group name="stock_balance_form_2" colspan="4" col="2">
+                <group name="stock_balance_form_2_1" colspan="1" col="2">
+                    <field name="qty_beginning" />
+                    <field name="qty_in" />
+                    <field name="qty_out" />
+                    <field name="qty_ending" />
+                </group>
+                <group name="stock_balance_form_2_2" colspan="1" col="2">
+                    <field name="value_beginning" />
+                    <field name="value_in" />
+                    <field name="value_out" />
+                    <field name="value_ending" />
+                </group>
+            </group>
+            <notebook>
+                <page name="move" string="Stock Moves">
+                    <field name="stock_move_ids" />
+                </page>
+            </notebook>
+        </form>
+    </field>
+</record>
+</odoo>

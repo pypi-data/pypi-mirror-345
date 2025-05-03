@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2024 OpenSynergy Indonesia-->
+<!--Copyright 2024 PT. Simetri Sinergi Indonesia-->
+<!--License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).-->
+<odoo>
+<record id="product_stock_balance_view_tree" model="ir.ui.view">
+    <field name="name">product.stock_balance - Tree</field>
+    <field name="model">product.stock_balance</field>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <tree create="0" edit="0" delete="0">
+            <field name="product_id" />
+            <field name="date" />
+            <field name="qty_beginning" />
+            <field name="value_beginning" />
+            <field name="qty_in" />
+            <field name="value_in" />
+            <field name="qty_out" />
+            <field name="value_out" />
+            <field name="qty_ending" />
+            <field name="value_ending" />
+        </tree>
+    </field>
+</record>
+
+<record id="product_stock_balance_view_pivot" model="ir.ui.view">
+    <field name="name">product.stock_balance - Pivot</field>
+    <field name="model">product.stock_balance</field>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <pivot>
+            <field name="date" type="col" interval="day" />
+            <field name="qty_beginning" type="measure" />
+            <field name="value_beginning" type="measure" />
+            <field name="qty_in" type="measure" />
+            <field name="value_in" type="measure" />
+            <field name="qty_out" type="measure" />
+            <field name="value_out" type="measure" />
+            <field name="qty_ending" type="measure" />
+            <field name="value_ending" type="measure" />
+        </pivot>
+    </field>
+</record>
+
+<record id="product_stock_balance_view_search" model="ir.ui.view">
+    <field name="name">product.stock_balance - Search</field>
+    <field name="model">product.stock_balance</field>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <search>
+            <field name="product_id" />
+            <field name="date" />
+            <filter name="empty" string="Empty" domain="[('id','=',0)]" />
+            <filter
+                    name="today"
+                    string="Today"
+                    domain="[('date','=',context_today().strftime('%Y-%m-%d'))]"
+                />
+            <filter name="grp_date" string="Day" context="{'group_by':'date'}" />
+        </search>
+    </field>
+</record>
+
+<record id="product_stock_balance_view_form" model="ir.ui.view">
+    <field name="name">product.stock_balance - Form</field>
+    <field name="model">product.stock_balance</field>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <form create="0" edit="0" delete="0">
+            <group name="stock_balance_form_1" colspan="4" col="2">
+                <field name="previous_product_stock_balance_id" invisible="1" />
+                <field name="product_id" />
+                <field name="date" />
+            </group>
+            <group name="stock_balance_form_2" colspan="4" col="2">
+                <group name="stock_balance_form_2_1" colspan="1" col="2">
+                    <field name="qty_beginning" />
+                    <field name="qty_in" />
+                    <field name="qty_out" />
+                    <field name="qty_ending" />
+                </group>
+                <group name="stock_balance_form_2_2" colspan="1" col="2">
+                    <field name="value_beginning" />
+                    <field name="value_in" />
+                    <field name="value_out" />
+                    <field name="value_ending" />
+                </group>
+            </group>
+            <notebook>
+                <page name="warehouse" string="Warehouses">
+                    <field name="stock_balance_warehouse_ids" />
+                </page>
+            </notebook>
+        </form>
+    </field>
+</record>
+
+<record id="product_stock_balance_action" model="ir.actions.act_window">
+    <field name="name">Product Stock Balances</field>
+    <field name="res_model">product.stock_balance</field>
+    <field name="view_mode">pivot</field>
+    <field name="context">{'search_default_empty':1}</field>
+</record>
+
+<menuitem
+        id="product_stock_balance_menu"
+        name="Product Stock Balances"
+        parent="stock.menu_warehouse_report"
+        action="product_stock_balance_action"
+        groups="product_stock_balance_group"
+        sequence="10"
+    />
+</odoo>

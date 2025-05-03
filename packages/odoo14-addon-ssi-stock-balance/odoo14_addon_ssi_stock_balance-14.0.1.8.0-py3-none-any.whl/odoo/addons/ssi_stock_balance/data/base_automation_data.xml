@@ -1,0 +1,28 @@
+<odoo>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<data>
+<record id="stock_balance_done" model="base.automation">
+    <field
+                name="action_server_id"
+                ref="stock_balance_action_recompute_queue_done_result"
+            />
+    <field name="trigger">on_write</field>
+    <field name="filter_pre_domain">[]</field>
+    <field name="filter_domain">[('done_queue_job_batch_state','=','finished')]</field>
+</record>
+
+<record id="stock_balance_cancel" model="base.automation">
+    <field
+                name="action_server_id"
+                ref="stock_balance_action_recompute_queue_cancel_result"
+            />
+    <field name="trigger">on_write</field>
+    <field name="filter_pre_domain">[]</field>
+    <field
+                name="filter_domain"
+            >[('cancel_queue_job_batch_state','=','finished')]</field>
+</record>
+</data>
+</odoo>
