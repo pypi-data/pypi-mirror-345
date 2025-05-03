@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claude-autoapprove"
+version = "0.2.5"
+description = "A CLI tool to run Claude Desktop App and inject a hack to enable auto approve feature"
+authors = [{ name = "PYNESYS LLC" }]
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["requests>=2.31.0", "websockets>=12.0"]
+
+[project.urls]
+Homepage = "https://github.com/PyneSys/claude_autoapprove"
+Repository = "https://github.com/PyneSys/claude_autoapprove"
+Issues = "https://github.com/PyneSys/claude_autoapprove/issues"
+
+[project.scripts]
+claude-autoapprove = "claude_autoapprove.claude_autoapprove:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
