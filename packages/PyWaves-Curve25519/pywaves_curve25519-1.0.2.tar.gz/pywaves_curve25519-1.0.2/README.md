@@ -1,0 +1,32 @@
+# PyWaves-Curve25519
+
+This fork is primarily maintained for compatibility with the [Waves blockchain](https://docs.waves.tech/en/blockchain/waves-protocol/cryptographic-practical-details), which uses Curve25519 (ED25519 with X25519 keys) for creating and verifying signatures in its cryptographic implementation.
+
+This is a fork and successor of [python-axolotl-curve25519](https://github.com/tgalal/python-axolotl-curve25519), which has not been updated for a long time and lacks precompiled wheels for modern Python versions.
+
+Key improvements in this fork:
+- Pre-built wheels for Python 3.8 – 3.13 on Windows, macOS (universal2), and Linux (glibc + musl).
+- Modern build system and CI/CD pipeline.
+
+# Installation
+
+```bash
+pip install pywaves-curve25519
+```
+
+# Usage
+
+```python
+import pywaves_curve25519 as curve
+import os
+
+randm32 = os.urandom(32)
+randm64 = os.urandom(64)
+
+private_key = curve.generatePrivateKey(randm32)
+public_key = message = curve.generatePublicKey(private_key)
+
+agreement = curve.calculateAgreement(private_key, public_key)
+signature = curve.calculateSignature(randm64, private_key, message)
+verified = curve.verifySignature(public_key, message, signature) == 0
+```
