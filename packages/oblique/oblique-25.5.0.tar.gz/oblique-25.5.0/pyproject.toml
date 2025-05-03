@@ -1,0 +1,40 @@
+[project]
+name = "oblique"
+description = "Show koans from Oblique Strategies"
+authors = [
+    {name = "Łukasz Langa", email="lukasz@langa.pl"},
+]
+license = {text = "BSD-3-Clause"}
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "click>=8.1.8",
+]
+keywords = ["oblique strategies", "brian eno", "fortune"]
+dynamic = ["version"]
+
+[project.scripts]
+oblique = 'oblique:main_command'
+
+[project.urls]
+Homepage = "https://github.com/ambv/oblique"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "mypy>=1.15.0",
+    "pytest>=8.3.5",
+]
+
+[build-system]
+requires = ["setuptools>=75.5", "setuptools-scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-data]
+oblique = ["*.ini"]
+
+[tool.setuptools_scm]
+tag_regex = "^(?P<version>v\\d+(?:\\.\\d+){0,2}[^\\+]*)(?:\\+.*)?$"
+
+[tool.uv]
+cache-keys = [{ git = { commit = true, tags = true } }]
