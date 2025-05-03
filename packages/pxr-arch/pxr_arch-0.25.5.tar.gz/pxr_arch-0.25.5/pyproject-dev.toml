@@ -1,0 +1,35 @@
+[build-system]
+requires = ["scikit-build-core"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "pxr-arch-dev"
+version = "0.25.5"
+description = "C++ headers and CMake config for developing with pxr-arch"
+readme = "README.md"
+requires-python = ">=3.8"
+license-files = ["LICENSE.txt", "NOTICE.txt"]
+keywords = ["pixar", "open-usd", "dev"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+]
+
+[project.urls]
+Repository = "https://github.com/untwine/pxr-arch"
+Documentation = "https://untwine.github.io/pxr-arch/"
+
+[tool.scikit-build]
+cmake.version = ">=3.21,<4"
+cmake.args = [
+    "-DBUILD_TESTS=OFF",
+    "-DBUILD_DOCS=OFF",
+    "-DBUILD_SHARED_LIBS=ON",
+    "-DCMAKE_INSTALL_LIBDIR=pxr-arch/lib",
+    "-DCMAKE_INSTALL_INCLUDEDIR=pxr-arch/include",
+    "-DCMAKE_INSTALL_DATAROOTDIR=pxr-arch",
+]
+sdist.exclude = ["test", "doc", ".github"]
