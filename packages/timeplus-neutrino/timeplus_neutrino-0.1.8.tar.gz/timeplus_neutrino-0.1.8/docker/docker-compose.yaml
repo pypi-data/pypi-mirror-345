@@ -1,0 +1,153 @@
+services:
+
+  timeplus:
+    image: timeplus/timeplus-enterprise:2.9.0-aitest
+    platform: linux/amd64
+    ports:
+      - 8000:8000
+      - 8463:8463
+      - 8123:8123
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - TIMEPLUS_HOST=${TIMEPLUS_HOST}
+      - TIMEPLUS_USER=${TIMEPLUS_USER}
+      - TIMEPLUS_PASSWORD=${TIMEPLUS_PASSWORD}
+      - KAFKA_BROKER=${KAFKA_BROKER}
+    volumes:
+      - timeplus_data:/timeplus/data/
+      - ./tp-sync:/timeplus/tp-sync/
+
+  neutrino:
+    image: timeplus/neutrino:315cc8e
+    ports:
+      - 5001:5001
+    environment:
+      - TIMEPLUS_HOST=timeplus
+      - TIMEPLUS_USER=${TIMEPLUS_USER}
+      - TIMEPLUS_PASSWORD=${TIMEPLUS_PASSWORD}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - TIMEPLUS_READ_ONLY=${TIMEPLUS_READ_ONLY}
+      - TIMEPLUS_KAFKA_CONFIG={"bootstrap.servers":"redpanda:9092"}
+    volumes:
+      - ./.env:/timeplus/.env:ro
+
+  notebook:
+    image: jupyter/scipy-notebook:latest
+    entrypoint: jupyter notebook --ip='*' --NotebookApp.token='' --NotebookApp.password=''
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434/v1/
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - TIMEPLUS_HOST=${TIMEPLUS_HOST}
+      - TIMEPLUS_USER=${TIMEPLUS_USER}
+      - TIMEPLUS_PASSWORD=${TIMEPLUS_PASSWORD}
+    ports:
+      - 8888:8888
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    profiles: [development]
+
+  simulator:
+    image: timeplus/cdcsimulator:16b6007
+
+  redpanda:
+    image: redpandadata/redpanda:v23.3.4
+    container_name: redpanda
+    command:
+      - redpanda start
+      - --smp 1
+      - --memory 1G
+      - --reserve-memory 0M
+      - --overprovisioned
+      - --node-id 0
+      - --check=false
+      - --kafka-addr PLAINTEXT://0.0.0.0:9092,OUTSIDE://0.0.0.0:19092
+      - --advertise-kafka-addr PLAINTEXT://redpanda:9092,OUTSIDE://localhost:19092
+      - --schema-registry-addr 0.0.0.0:8081
+      - --pandaproxy-addr 0.0.0.0:8082
+      - --advertise-pandaproxy-addr localhost:8082
+    ports:
+      - "19092:19092"
+      - "9644:9644"  # Admin API
+      - "8081:8081"  # Schema Registry
+    volumes:
+      - redpanda-data:/var/lib/redpanda
+    environment:
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    command: mongod --replSet rs0 --oplogSize 128 --bind_ip_all
+    volumes:
+      - mongo_data:/data/db
+  postgres:
+    image: debezium/postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: debezium
+      POSTGRES_PASSWORD: dbz
+      POSTGRES_DB: lumi_credit
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mongo-init-replica:
+    image: rtsp/mongosh
+    depends_on:
+      - mongo
+    entrypoint: >
+      bash -c "
+      sleep 10;
+      mongosh --host mongodb:27017 <<EOF
+        rs.initiate({_id: 'rs0', members: [{_id: 0, host: 'mongodb:27017'}]})
+      EOF"
+
+  connect:
+    image: debezium/connect:3.0.0.Final
+    ports:
+      - "8083:8083"
+    depends_on:
+      - redpanda
+      - mongo
+    environment:
+      BOOTSTRAP_SERVERS: redpanda:9092
+      GROUP_ID: "1"
+      CONFIG_STORAGE_TOPIC: debezium_config
+      OFFSET_STORAGE_TOPIC: debezium_offset
+      STATUS_STORAGE_TOPIC: debezium_status
+      KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_REST_ADVERTISED_HOST_NAME: "connect"
+      CONNECT_PLUGIN_PATH: "/kafka/connect"
+    volumes:
+      - ./plugins:/kafka/connect
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # Console UI
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio-data:/data
+    command: server --console-address ":9001" /data
+
+volumes:
+  redpanda-data:
+    driver: local
+  timeplus_data:
+    driver: local
+  mongo_data:
+    driver: local
+  postgres_data:
+    driver: local
+  minio-data:
+    driver: local
