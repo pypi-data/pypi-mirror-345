@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "civitai_models_manager"
+authors = [
+    {name = "Regi E",email = "regi@bynine.io"}
+]
+keywords = ["civitai", "model", "manager", "cli", "ai", "ml", "machine learning", "artificial intelligence"]
+dynamic = ["version"]
+description = "CLI tool for managing AI models from the CivitAI platform."
+readme = "README.md"
+requires-python = ">=3.9,<=3.13"
+license = { file = "LICENSE" }
+classifiers = [
+   "Programming Language :: Python :: 3.9",
+   "License :: OSI Approved :: Apache Software License",
+   "Operating System :: OS Independent"
+]
+dependencies = [
+   "typer",
+   "rich",
+   "httpx",
+   "shellingham",
+   "html2text",
+   "python-dotenv",
+   "questionary",
+   "ollama",
+   "openai",
+   "groq",
+   "tenacity",
+   "asyncio",
+   "civitai-py"
+]
+
+[tool.hatch.version]
+path = "civitai_models_manager/__version__.py"
+
+[tool.setuptools]
+packages = ["civitai_models_manager"]
+package-dir = {"" = "civitai_models_manager"}
+
+[project.urls]
+Repository = "https://github.com/regiellis/civitai-cli-manager"
+Documentation = "https://github.com/regiellis/civitai-cli-manager/blob/main/README.md"
+"Bug Tracker" = "https://github.com/regiellis/civitai-cli-manager/issues"
+
+[project.scripts]
+civitai-models = "civitai_models_manager.__main__:main"
+
