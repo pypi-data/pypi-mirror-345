@@ -1,0 +1,139 @@
+Metadata-Version: 2.4
+Name: good-soup
+Version: 0.0.1
+Summary: A tool for making model souping ultra-simple, easy and fast!
+Author-email: Bhavnick Minhas <bhavnick@chonkie.ai>
+License: Apache 2.0
+Project-URL: Bug Tracker, https://github.com/chonkie-inc/good-soup/issues
+Project-URL: Source Code, https://github.com/chonkie-inc/good-soup
+Keywords: model souping,merging,llm
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: transformers>=4.25.0
+Requires-Dist: torch>=2.0.0
+Requires-Dist: accelerate>=0.20.0
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-xdist; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Dynamic: license-file
+
+<div align="center">
+
+![🥫🥣👌](./assets/good_soup.png)
+
+# 🥣 Good Soup 👌
+
+_Stirring up SOTA models with ease! A tool for making model souping ultra-simple, fast and easy!_
+
+[![PyPI](https://badge.fury.io/py/good-soup.svg)](https://badge.fury.io/py/good-soup)
+[![Documentation](https://img.shields.io/badge/docs-DOCS-blue.svg)](DOCS.md)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/chonkie-inc/good-soup?style=social)](https://github.com/chonkie-inc/good-soup)
+
+</div>
+
+Model souping is like being a chef in the world of AI 🧑‍🍳. You take a few well-trained models (your ingredients 🥦🥩🥕), mix their weights together (stir the pot!🥣), and voilà! You often end up with a *new* model that performs better than any of the individual ingredients. It's a fantastic technique for pushing the boundaries and achieving State-of-the-Art (SOTA) results.
+
+But let's be honest, sometimes the recipe can be complicated. Setting up the kitchen, getting the measurements right... it can be a hassle. That's where `Good Soup` comes in! We handle the messy parts so you can focus on the delicious results. 👌
+
+## 🚀 Getting Started
+
+We want `Good Soup` to be as easy as opening a can. The ultimate goal is a simple `pip install`:
+
+```bash
+# Soon! 🙏
+pip install good-soup 
+```
+
+For now, you'll need to grab it fresh from the source:
+
+```bash
+git clone https://github.com/chonkie-inc/good-soup.git
+cd good-soup
+pip install -e . 
+```
+
+## 🧑‍🍳 Usage Example
+
+Whipping up a soup is super simple:
+
+```python
+from good_soup import Soup
+
+# Create your soup object
+soup = Soup(
+    # List of paths to the models you want to blend 🥣
+    models=[
+        "path/to/model_1.bin", 
+        "path/to/model_2.bin",
+        # Add as many models as you like!
+    ], 
+    # The merging strategy (more recipes coming soon!) 📜
+    # 'uniform' averages the weights of all models.
+    method="uniform", 
+    # Where to save your delicious new model 🍲
+    output_dir="path/to/output_dir", 
+    # Optional: Specify data type (e.g., 'float16', 'bfloat16')
+    # dtype="float16", 
+    # Optional: Specify device ('cpu', 'cuda')
+    # device="cuda", 
+)
+
+# That's it! Your souped model is ready in output_dir.
+print("Soup's ready! 👌") 
+```
+
+## 📜 Available Recipes (Methods)
+
+Currently, `Good Soup` offers one classic recipe:
+
+*   **`uniform`**: This method simply averages the weights of all provided models. It's a great starting point and often yields surprisingly good results!
+
+Keep an eye out! We're constantly experimenting in the kitchen and plan to add more sophisticated recipes like `greedy` merging, `ties`, and `dare` soon! 🧑‍🔬
+
+## 🗺️ Roadmap
+
+*   [ ] Add `greedy` souping method.
+*   [ ] Add `ties` merging method.
+*   [ ] Add `dare` merging method.
+*   [ ] Publish to PyPI for easy `pip install`.
+*   [ ] More comprehensive documentation and examples.
+*   [ ] Support for different model formats (e.g., SafeTensors).
+
+## 🙌 Contributing
+
+Want to add your own spice to the soup? Contributions are welcome! Feel free to open an issue or submit a pull request. Let's cook up something great together! 🤝
+
+## 🙏 Acknowledgements
+
+> CHONKIE loves soup! 🥣👌
+
+A huge thank you to [Adam Driver](https://en.wikipedia.org/wiki/Adam_Driver) – a true inspiration and a connoisseur of fine soup (probably).
+
+And thanks to the amazing open-source community for providing the quality ingredients that make this project possible!
+
+## ✍️ Citation
+
+If `Good Soup` helps you in your research or project, please cite it:
+
+```bibtex
+@misc{goodsoup2025,
+  author = {Chonkie Inc.},
+  title = {Good Soup: A tool for making model souping ultra-simple, easy and fast!},
+  year = {2025},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url = {https://github.com/chonkie-inc/good-soup}
+}
+```
