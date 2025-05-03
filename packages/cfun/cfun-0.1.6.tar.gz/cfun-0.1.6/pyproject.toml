@@ -1,0 +1,51 @@
+[project]
+name = "cfun"
+version = "0.1.6"
+description = "自己的常用函数"
+authors = [
+    {name = "zoushucai",email = "1228075512@qq.com"}
+]
+dynamic = ["readme"]
+license = { text = "MIT" }
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "requests>=2.13.0",
+    "pandas>=2.0.0",
+    "Pillow>=11.0.0",
+    "onnxruntime>=1.18.0",
+    "httpx>=0.25.1",
+    "pyarrow>=19.0.0",
+    "pycorrector>=1.1.0",
+    "cfundata>=0.1.1",
+    "ddddocr>=1.5.0",
+    "char-similar-z (>=0.1.1,<0.2.0)",
+    "torch (>=2.7.0,<3.0.0)"
+]
+
+[project.optional-dependencies]
+cv2 = [ "opencv-python>=4.10.0"]
+
+
+[tool.poetry]
+packages = [{include = "cfun", from = "src"}]
+readme = ["docs/readme1.md", "docs/readme2.md"]
+include = ["src/cfun/data/*"]
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+priority = "primary"
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+homepage = "https://github.com/zoushucai/cfun"
+repository = "https://github.com/zoushucai/cfun"
