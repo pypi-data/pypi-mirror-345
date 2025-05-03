@@ -1,0 +1,263 @@
+# MCP Proxy Adapter - Индекс кода
+
+version: "1.0.0"
+description: "Адаптер для интеграции Command Registry с MCP Proxy для использования команд как инструментов для моделей ИИ"
+
+# Основные компоненты проекта
+components:
+  core:
+    description: "Основные компоненты адаптера MCP Proxy"
+    files:
+      - path: src/adapter.py
+        description: "Основной модуль адаптера для MCPProxy, содержащий класс MCPProxyAdapter с полной функциональностью"
+        key_classes:
+          - MCPProxyAdapter
+        key_functions:
+          - configure_logger
+        
+      - path: src/models.py
+        description: "Модели данных для MCP Proxy Adapter"
+        key_classes:
+          - JsonRpcRequest
+          - JsonRpcResponse
+          - CommandInfo
+          - CommandParameter
+          - MCPProxyTool
+          - MCPProxyConfig
+          
+      - path: src/schema.py
+        description: |
+          SchemaOptimizer: оптимизатор OpenAPI-схемы для MCP Proxy. Метод optimize теперь всегда генерирует отдельную схему параметров для каждой команды с params (даже если параметры не обязательны или их мало), и всегда добавляет $ref на эту схему в oneOf. Для команд без параметров добавляет type: null в oneOf. Примеры формируются так, что params всегда есть, если есть параметры.
+          Используется для генерации схемы universal endpoint MCPProxyAdapter.
+        key_classes:
+          - SchemaOptimizer
+          
+  adapters:
+    description: "Адаптеры для различных интерфейсов"
+    files:
+      - path: src/adapters/__init__.py
+        description: "Инициализация пакета адаптеров, экспортирующий MCPProxyAdapter из основного модуля adapter.py"
+        
+  tests:
+    description: "Тесты функциональности"
+    files:
+      - path: tests/test_command_registry.py
+        description: "Тесты для командного реестра"
+        
+      - path: tests/test_basic_dispatcher.py
+        description: "Тесты для базового функционала диспетчера команд"
+        
+      - path: tests/test_adapter.py
+        description: "Тесты для MCPProxyAdapter, проверяющие обработку ошибок, интеграцию с логгерами и поддержку кастомных эндпоинтов"
+        key_classes:
+          - MockDispatcher
+          - MockRegistry
+        tested_features:
+          - успешное выполнение команд в разных форматах (JSON-RPC, MCP Proxy, только params)
+          - обработка ошибок и исключений
+          - валидация типов параметров
+          - интеграция с внешними логгерами
+          - генерация и оптимизация OpenAPI схемы
+          - настройка кастомных эндпоинтов
+          - проксирование запросов через команду execute
+        
+      - path: tests/test_mcp_proxy_adapter.py
+        description: "Тесты для MCPProxyAdapter, содержащие моки для тестирования и базовые фикстуры"
+        purpose: Базовый файл тестов для MCP Proxy Adapter, содержащий моки для тестирования и базовые фикстуры. 
+        imports:
+          - src.adapter
+          - src.models
+        core_classes:
+          - MockDispatcher
+          - MockRegistry
+          - MockOpenApiGenerator
+        
+      - path: tests/test_mcp_proxy_adapter_basic.py
+        description: "Тесты для основных сценариев и базовой функциональности MCPProxyAdapter"
+        purpose: Содержит тесты для основных сценариев и базовой функциональности MCPProxyAdapter.
+        imports:
+          - .test_mcp_proxy_adapter
+          - src.adapter
+          - src.models
+        tested_features:
+          - успешное выполнение команд
+          - обработка ошибок
+          - генерация конфигурации
+          - настройка логирования
+          - API для получения информации о командах
+        
+      - path: tests/test_part1.py
+        description: "Тесты MCPProxyAdapter, фокусирующиеся на расширенных случаях и валидации параметров"
+        purpose: Тесты MCPProxyAdapter, фокусирующиеся на расширенных случаях и валидации параметров.
+        imports:
+          - .test_mcp_proxy_adapter
+          - src.adapter
+          - src.models
+        tested_features:
+          - валидация числовых параметров
+          - обработка отсутствующей информации о командах
+          - оптимизация схемы
+          - совместимость с Pydantic v2
+          - обработка исключений при валидации типов
+        
+      - path: tests/test_part2.py
+        description: "Тесты MCPProxyAdapter для расширенной валидации параметров и обработки ошибок"
+        purpose: Тесты MCPProxyAdapter для расширенной валидации параметров и обработки ошибок.
+        imports:
+          - .test_mcp_proxy_adapter
+          - src.adapter
+          - src.models
+        tested_features:
+          - валидация различных типов параметров (строковых, целочисленных, массивов, объектов, логических)
+          - обработка ошибок различных типов
+          - генерация и использование OpenAPI схемы
+          - интеграция с пользовательским логгером
+          - обработка краевых случаев (пустая информация, отсутствие типа параметра)
+        
+      - path: tests/conftest.py
+        description: |
+          Suppression всех DeprecationWarning и PendingDeprecationWarning для pytest на уровне всего тестового проекта. Используется warnings.filterwarnings и pytest.mark.filterwarnings для чистоты вывода тестов.
+        
+  examples:
+    description: "Примеры использования"
+    files:
+      - path: examples/basic_integration.py
+        description: "Пример базовой интеграции MCPProxyAdapter с существующим FastAPI приложением"
+        
+      - path: examples/openapi_server.py
+        description: "Пример создания OpenAPI сервера с интеграцией MCP Proxy Adapter"
+        key_functions:
+          - get_items
+          - get_item
+          - create_item
+          - update_item
+          - delete_item
+          - search_items
+        features:
+          - регистрация команд в CommandRegistry
+          - интеграция MCPProxyAdapter с FastAPI
+          - сохранение конфигурации MCP Proxy в файл
+        
+      - path: examples/mcp_proxy_client.py  
+        description: "Клиент для тестирования взаимодействия с OpenAPI сервером через MCP Proxy"
+        key_functions:
+          - send_jsonrpc_request
+        features:
+          - отправка JSON-RPC запросов
+          - обработка ответов от сервера
+        
+      - path: examples/analyze_config.py
+        description: "Анализ конфигурации MCP Proxy, сгенерированной адаптером"
+        key_functions:
+          - analyze_config
+          - print_routes
+          - print_tools
+        features:
+          - загрузка конфигурации из файла
+          - анализ структуры маршрутов
+          - анализ инструментов MCP Proxy
+        
+  documentation:
+    description: "Документация проекта"
+    files:
+      - path: docs/README.md
+        description: "Общее описание Command Registry"
+        
+      - path: docs/architecture.md
+        description: "Архитектура Command Registry"
+        
+      - path: docs/command_development.md
+        description: "Руководство по разработке команд"
+        
+      - path: docs/deployment.md
+        description: "Руководство по развертыванию"
+        
+      - path: docs/examples.md
+        description: "Примеры использования"
+        
+      - path: docs/quickstart.md
+        description: "Руководство по быстрому старту"
+        
+      - path: docs/testing.md
+        description: "Руководство по тестированию"
+        
+      - path: docs/validation.md
+        description: "Механизмы валидации команд"
+        
+      - path: docs/mcp_proxy_adapter.md
+        description: "Документация по MCPProxyAdapter"
+
+# Основные интерфейсы и абстрактные классы
+interfaces:
+  - name: CommandRegistry
+    description: "Протокол для CommandRegistry, определяющий основные методы работы с реестром команд"
+    file: src/adapter.py
+    
+  - name: OpenApiGenerator
+    description: "Протокол для генератора OpenAPI схемы"
+    file: src/adapter.py
+    
+# Ключевые функциональные возможности
+features:
+  - name: "JSON-RPC интерфейс"
+    description: "Обеспечивает доступ к командам через JSON-RPC протокол"
+    components:
+      - src/adapter.py:MCPProxyAdapter._generate_router
+      
+  - name: "Оптимизация схемы для MCP Proxy"
+    description: "Адаптирует OpenAPI схему для использования с MCP Proxy"
+    components:
+      - src/schema.py:SchemaOptimizer.optimize
+      - src/schema.py:SchemaOptimizer._add_tool_descriptions
+      
+  - name: "Генерация конфигурации MCP Proxy"
+    description: "Создает конфигурацию для MCP Proxy на основе зарегистрированных команд"
+    components:
+      - src/adapter.py:MCPProxyAdapter.generate_mcp_proxy_config
+      
+  - name: "Интеграция с внешними логгерами"
+    description: "Позволяет использовать логгеры родительского проекта"
+    components:
+      - src/adapter.py:configure_logger
+      
+  - name: "Расширенная обработка ошибок"
+    description: "Детальная обработка и логирование различных типов ошибок"
+    components:
+      - src/adapter.py:MCPProxyAdapter._generate_router
+      
+  - name: "Поддержка различных форматов запросов"
+    description: "Обработка запросов в формате JSON-RPC, MCP Proxy, и только с полем params"
+    components:
+      - src/adapter.py:MCPProxyAdapter._register_mcp_cmd_endpoint
+      
+  - name: "Универсальная команда execute"
+    description: "Проксирование запросов с неявной командой через параметры"
+    components:
+      - tests/test_adapter.py:MockDispatcher.execute_from_params
+      
+  - name: "Валидация типов параметров"
+    description: "Проверка типов входных параметров для предотвращения ошибок при выполнении команд"
+    components:
+      - src/adapter.py:MCPProxyAdapter._validate_param_types
+      
+  - name: "Настраиваемые эндпоинты"
+    description: "Возможность настройки пути эндпоинта для JSON-RPC запросов"
+    components:
+      - src/adapter.py:MCPProxyAdapter.__init__
+
+# Зависимости проекта
+dependencies:
+  - name: "fastapi"
+    description: "Фреймворк для создания API"
+    
+  - name: "pydantic"
+    description: "Библиотека для валидации данных"
+    
+  - name: "uvicorn"
+    description: "ASGI сервер для запуска FastAPI приложений"
+    
+  - name: "docstring-parser"
+    description: "Библиотека для парсинга докстрингов"
+    
+  - name: "typing-extensions"
+    description: "Расширения модуля typing" 
