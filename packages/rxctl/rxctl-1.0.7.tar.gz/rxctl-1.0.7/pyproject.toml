@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "rxctl"
+version = "1.0.7"
+description = "Linux remote execution tool"
+authors = ["mihaiush <mihaiush@gmail.com>"]
+readme = "README.md"
+homepage = "https://github.com/mihaiush/rxctl"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+click = "*"
+prettytable = "*"
+
+[tool.poetry.build]
+generate-setup-file = false
+script = "./rxctl/lib/links.py"
+
+[tool.poetry.scripts]
+rxctl = "rxctl.lib.main:cli"
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
+
