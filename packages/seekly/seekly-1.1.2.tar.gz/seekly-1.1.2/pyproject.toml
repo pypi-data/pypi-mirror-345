@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seekly"
+version = "1.1.2"
+description = "Natural language search for files using semantic code understanding"
+readme = "README.md"
+authors = [
+    {name = "Dhodraj Sundaram", email = "dhodrajsdr192@gmail.com"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "transformers>=4.30.0",
+    "torch>=2.0.0",
+    "numpy>=1.22.0",
+    "click>=8.0.0",
+    "pathlib>=1.0.1",
+    "tqdm>=4.65.0",
+    "sentence-transformers>=2.2.2",
+]
+
+[project.urls]
+Repository = "https://github.com/Dhodraj/seekly"
+Issues = "https://github.com/Dhodraj/seekly/issues"
+
+[project.scripts]
+seekly = "seekly:cli"
+
+[tool.setuptools]
+packages = ["seekly"]
+py-modules = ["seekly"]
+
+[tool.setuptools.package-data]
+"*" = ["assets/*.jpg", "assets/*.png"]
