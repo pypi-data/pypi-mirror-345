@@ -1,0 +1,33 @@
+[project]
+name = "tws-drex-mcp"
+version = "0.1.6"
+description = "An MCP server providing tools to interact with the DREX document extraction AI API via LoginRadius authentication."
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "chris-tws", email = "christopher.lin@thoughtswinsystems.com" }
+]
+dependencies = [
+    "loginradius-v2>=11.7.0",
+    "mcp[cli]>=1.7.0",
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    # License classifier removed as recommended, SPDX identifier used above
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.scripts]
+mcp-server = "tws_drex_mcp:main"
+tws-drex-mcp  = "tws_drex_mcp:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.urls]
+Homepage = "https://github.com/thoughtswinsystems/drex-api"
