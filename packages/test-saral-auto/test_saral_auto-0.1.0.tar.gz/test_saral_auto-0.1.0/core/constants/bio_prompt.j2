@@ -1,0 +1,53 @@
+{% macro bio_prompt() %}
+
+You are a document analysis expert. I am sharing an image of a PDF page.
+You are expected to identify cells with "strikethrough" when you see the handwritten text being modified after writing. 
+You can just share the IDs, corrected text and a tag - strikethrough. 
+Make sure you follow the output format below. 
+It shows the correct representation of text and crossed parts at the same time.. 
+Only look at infringes on when the handwritten text was changed by the person filling the form.
+
+### Input Structure
+An Image of the PDF page
+
+### Output Format   
+[
+{
+"id": "/row5/col3",  // Use simple row/col format for now
+"text": "Temperature <strikethrough>25</strikethrough> 20",
+"tag": "strikethrough"
+}
+]
+
+Return the corrected JSON with strikethroughs properly marked and text accurately corrected.
+{% endmacro %}
+
+{% macro bio_mapping_prompt(html_json, strikethrough_json) %}
+{% set html_json = html_json | tojson %}
+{% set strikethrough_json = strikethrough_json | tojson %}
+
+You are a document analysis expert. I am sharing the HTML structure of the page and the strikethrough analysis.
+Your task is to map the strikethrough IDs to the actual cell IDs from the HTML structure.
+
+### Input Structure
+HTML JSON: {{ html_json }}
+
+Strikethrough Analysis: {{ strikethrough_json }}
+
+### Task
+1. Analyze the HTML structure to find the actual cell IDs
+2. Map each strikethrough entry to its corresponding cell ID
+3. Keep the text and tag fields exactly as they are
+4. Only update the "id" field with the correct cell ID from HTML structure
+
+### Output Format
+[
+{
+"id": "/page/7/TableCell/45",  // Use actual cell ID from HTML
+"text": "Temperature <strikethrough>25</strikethrough> 20",  // Keep original text
+"tag": "strikethrough"  // Keep original tag
+}
+] 
+
+Return the mapped JSON with correct cell IDs while preserving the strikethrough information.
+{% endmacro %}

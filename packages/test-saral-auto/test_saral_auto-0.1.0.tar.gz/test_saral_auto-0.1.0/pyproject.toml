@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "test-saral-auto"
+version = "0.1.0"
+description = "A system for processing documents to detect their type, extract fields, and generate templates"
+readme = "README.md"
+authors = [
+    {name = "Uncanny_70", email = "uncannydevs@gmail.com"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "marker-pdf",
+    "pydantic",
+    "opencv-python",
+    "numpy",
+    "pillow",
+    "pytesseract",
+    "pyPDF2",
+    "pdf2image",
+    "beautifulsoup4>=4.9.0",
+    "Jinja2>=3.0.0",
+    "pymupdf",
+    "google-generativeai",
+    "tenacity",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Debatreya/saral-auto"
+"Bug Tracker" = "https://github.com/Debatreya/saral-auto/issues"
+
+[project.scripts]
+bpai-run = "core.pipelines.bpai:main"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = ["core"]
+
+[tool.setuptools.package-data]
+core = ["constants/**/*", "transformers/**/*", "renderers/**/*", "schemas/**/*", "pipelines/**/*"]

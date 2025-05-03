@@ -1,0 +1,147 @@
+{% macro table_headers_prompt(table_html) %}
+{% set table_html = table_html | tojson %}
+
+You are a document analysis expert. I am sharing a cropped image of a table.
+
+The image has been cropped to focus only on the table region. Extract the headers from this table and share them in JSON Schema format.
+
+{% if table_html %}
+IMPORTANT: Our document processing system has already detected the structure of this table. Here is the HTML structure:
+
+```html
+{{ table_html }}
+```
+
+The structure (number of columns and rows) detected is correct, but the text recognition may need improvement, especially for handwritten text. Use this HTML as a guide for the table structure, but rely on your vision capabilities to improve the text recognition.
+
+DO NOT add new columns or change the structure of the table. Focus only on improving the text detection.
+{% endif %}
+
+Evaluate the type of the headers based on the data shown below and add one example as part of the schema from the image itself. Pay special attention to handwritten text - these may be harder to recognize but are important for accurate extraction.
+
+Example schema format:
+{
+  "$id": "https://example.com/table.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Table Headers",
+  "type": "object",
+  "properties": {
+    "Header1": {
+      "type": "string",
+      "description": "Description of Header1.",
+      "examples": ["example value"]
+    },
+    "Header2": {
+      "type": "integer",
+      "description": "Description of Header2.",
+      "examples": [42]
+    }
+  }
+}
+
+Return the JSON schema that accurately represents the table headers and their data types.
+Respond with a valid JSON object.
+{% endmacro %}
+
+
+
+
+
+
+
+
+
+
+{% macro table_row_prompt(row_number, headers_schema, row_html="") %}
+{% set headers_schema = headers_schema | tojson %}
+
+You are a document analysis expert. I am sharing a cropped image of a table.
+
+The image has been cropped to only contain the table. Previously, I identified the following table headers and schema:
+
+{{ headers_schema }}
+
+{% if row_html %}
+IMPORTANT: Our document processing system has already detected the structure of row {{ row_number }}. Here is the HTML structure for this row:
+
+```html
+{{ row_html }}
+```
+
+The structure (number of cells) detected is correct, but the text recognition may need improvement, especially for handwritten text. Use this HTML as a guide for the row structure, but rely on your vision capabilities to improve the text recognition.
+
+DO NOT add new cells or change the structure of the row. Focus only on improving the text detection within the existing cells. Pay special attention to handwritten text.
+{% endif %}
+
+### Task
+Please extract and return the data for row {{ row_number }} from the table in the image according to the schema above.
+
+### Output Format
+Return the data in a clean JSON object matching the schema, with each header mapped to its value in row {{ row_number }}.
+
+For example:
+```json
+{
+  "Header1": "value for row {{ row_number }}",
+  "Header2": 42
+}
+```
+
+Make sure to match the data types specified in the schema and return only the values from row {{ row_number }}.
+Respond with a valid JSON object.
+{% endmacro %}
+
+
+
+
+
+
+
+
+
+
+{% macro table_complete_prompt(headers_schema, table_html) %}
+{% set table_html = table_html | tojson %}
+{% set headers_schema = headers_schema | tojson %}
+
+You are a document analysis expert. I am sharing a cropped image of a table.
+
+The image has been cropped to only contain the table. Previously, I identified the following table headers and schema:
+
+{{ headers_schema }}
+
+{% if table_html %}
+IMPORTANT: Our document processing system has already detected the structure of this table. Here is the HTML structure:
+
+```html
+{{ table_html }}
+```
+
+The structure (number of columns and rows) detected is correct, but the text recognition may need improvement, especially for handwritten text. Use this HTML as a guide for the table structure, but rely on your vision capabilities to improve the text recognition.
+
+DO NOT add new columns or change the structure of the table. Focus only on improving the text detection. Pay special attention to handwritten text.
+{% endif %}
+
+### Task
+Please extract and return the complete table data from the image, including all rows.
+
+### Output Format
+Return the data as an array of JSON objects, where each object represents a row and matches the schema.
+
+For example:
+```json
+[
+  {
+    "Header1": "value for row 1",
+    "Header2": 42
+  },
+  {
+    "Header1": "value for row 2",
+    "Header2": 56
+  }
+]
+```
+
+Make sure to match the data types specified in the schema and include all visible rows in the table.
+Respond with a valid JSON object.
+{% endmacro %} 
