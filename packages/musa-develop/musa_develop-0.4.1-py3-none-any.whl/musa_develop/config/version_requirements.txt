@@ -1,0 +1,46 @@
+driver:
+    20241031-kuae1.3:
+        - kernel:
+            - 5.15.105
+            - 5.15.0
+
+        - lightdm:
+            - x.x.x
+            - x.x.x
+
+    20240825-kuae1.2:
+        - kernel:
+            - 5.15.105
+            - 5.15.0
+
+        - lightdm:
+            - x.x.x
+            - x.x.x
+
+
+musa_runtime:
+    3.1.0: 
+        - driver:
+            - 20241031-kuae1.3
+
+    3.0.0: 
+        - driver:
+            - 20240825-kuae1.2
+ 
+
+torch_musa:
+    1.2.0:
+      - musa_runtime:
+          - 3.0.0
+          - 3.1.0
+
+      - pytorch:
+            2.2.0
+ 
+    1.2.0:
+      - musa_runtime:
+          - 3.0.0
+          - 3.1.0
+
+      - pytorch:
+            2.0.0
