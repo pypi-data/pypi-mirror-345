@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提示</title>
+    <link rel="stylesheet" href="../../lib/idepy.css">
+    <link rel="stylesheet" href="../../lib/tailwindcss.css">
+    <link rel="stylesheet" href="../../lib/icon/iconfont.css">
+    <link rel="stylesheet" href="../../lib/element-plus/element-plus.css">
+    <script src="../../lib/vue.global.js"></script>
+    <script src="../../lib/lodash.js"></script>
+    <script src="../../lib/element-plus/element-plus.js"></script>
+    <script src="../../lib/element-plus/element-zh-cn.js"></script>
+    <script src="../../lib/qrcode/qrcode.min.js"></script>
+    <script src="../../lib/idepy.js"></script>
+    <link rel="stylesheet" href="./index.css">
+
+</head>
+<body>
+    <div id="login_box" class="p-4 flex flex-col justify-center">
+        <div class="mb-4 text-center">
+            <el-radio-group @change="loginTypeChanged"  v-model="loginType" size="small">
+              <el-radio-button label="扫码登录" :value="0"></el-radio-button>
+              <el-radio-button label="密码登录" :value="1" ></el-radio-button>
+            </el-radio-group>
+        </div>
+
+
+        <div   v-if="loginType === 0" >
+                <div id="qrcode" class=" flex justify-center items-center">
+                    <div class="bg-gray-200 w-[131px] aspect-square flex justify-center items-center text-sm ">
+                        二维码生成中...
+                    </div>
+                </div>
+                <div class="text-center mt-4 text-xs">打开微信扫一扫登录</div>
+        </div>
+
+        <div v-if="loginType === 1" >
+            <el-form >
+                <el-form-item label="账号">
+                    <el-input placeholder="账号/邮箱" v-model="loginForm.username" ></el-input>
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-input type="password" placeholder="密码" v-model="loginForm.password"></el-input>
+                </el-form-item>
+                <el-form-item>
+                     <el-button :native-type="'submit'" class="w-full" type="primary" @click="login">登录</el-button>
+                </el-form-item>
+
+            </el-form>
+
+            <div class="cursor-pointer text-center text-primary text-xs mt-4" onclick="api.reg_account()">立即注册账号</div>
+        </div>
+
+
+    </div>
+</body>
+
+
+<script src="./index.js"></script>
+</html>
