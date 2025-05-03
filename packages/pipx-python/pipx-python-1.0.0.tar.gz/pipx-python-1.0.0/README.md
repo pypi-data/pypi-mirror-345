@@ -1,0 +1,45 @@
+# pipx-python 📦️🪛🐍
+**@readwithai** - [X](https://x.com/readwithai) - [blog](https://readwithai.substack.com/) - [machine-aided reading](https://www.reddit.com/r/machineAidedReading/) - [📖](https://readwithai.substack.com/p/what-is-reading-broadly-defined
+)[⚡️](https://readwithai.substack.com/s/technical-miscellany)[🖋️](https://readwithai.substack.com/p/note-taking-with-obsidian-much-of)
+
+Run the Python binary corresponding to an application installed with [pipx](https://github.com/pypa/pipx). Also swiss-army knife of querying `pipx` virtualenvs.
+
+This is quite useful if you are developing command-line tools installed with `pipx install -e .`, for example to run tests or debug issues.
+
+## 👿 Motivation
+I install a lot of command-line tools and make command-line tools. The command-line is fun, easily discoverable and highly composable. Many of these are written in Python.
+
+Distributors have decided to push users into using [pipx](https://github.com/pypa/pipx). This works reasonable well, if a bit slow. But one issues is that it makes debugging issues with applications a little different because everything is hidden in a different fiddley virtualenv.
+
+This tool represents tooling I made for myself to make interacting with `pipx` virtualenvs less irritating.
+
+## 🐍📭️🪛️ Installation
+You can install `pipx-python` using [pipx](https://github.com/pypa/pipx):
+```
+pipx install pipx-python
+```
+
+## 📦🪛️🐍 Usage
+If you for example installed `llm` with `pipx` then you can run the version of python correponding with this app using:
+```
+pipx-python llm
+```
+
+To find the path to the virtualenv, use can use the `--venv` flag.
+```
+pipx-python llm --venv
+```
+
+## 🤑 Support this tool
+If you like this tool you could give me money ($1 maybe) on my [ko-fi](https://ko-fi.com/readwithai).
+
+You could also look at some of the [other command-line tools](https://readwithai.substack.com/p/my-productivity-tools) I have created.
+
+##  📖⚡️🖋️  About me
+I am **@readwithai**. I make tools for reading, research and agency often using Obsidian.
+
+I also produce a [stream of tools](https://readwithai.substack.com/p/my-productivity-tools) related to the work I do on this.
+
+You can follow me on [X](https://x.com/readwithai) or my blog [blog](https://readwithai.substack.com/).
+
+[![readwithai logo](logo.png)](https://readwithai.substack.com/)
