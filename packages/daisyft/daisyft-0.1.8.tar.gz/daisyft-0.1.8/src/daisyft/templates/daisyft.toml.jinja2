@@ -1,0 +1,31 @@
+# DaisyFT Project Configuration
+# Generated on {{ now.strftime('%Y-%m-%d %H:%M:%S') }}
+# Edit this file to customize your project settings
+
+[project]
+style = "{{ style }}"
+{% if previous_style %}previous_style = "{{ previous_style }}"{% endif %}
+theme = "{{ theme }}"
+app_path = "{{ app_path }}"
+verbose = {{ verbose }}
+
+[server]
+host = "{{ host }}"
+port = {{ port }}
+live = {{ live }}
+
+[paths]
+static = "{{ paths.static }}"
+css = "{{ paths.css }}"
+js = "{{ paths.js }}"
+
+
+{% if binary_metadata %}
+[binary]
+version = "{{ binary_metadata.version }}"
+style = "{{ binary_metadata.style }}"
+timestamp = "{{ binary_metadata.timestamp }}"
+url = "{{ binary_metadata.url }}"
+release_id = {{ binary_metadata.release_id }}
+sha = "{{ binary_metadata.sha }}"
+{% endif %}
