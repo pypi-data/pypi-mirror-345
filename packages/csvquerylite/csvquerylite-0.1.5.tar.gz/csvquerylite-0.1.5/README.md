@@ -1,0 +1,103 @@
+# csvquerylite
+
+`csvquerylite` is a lightweight Python library and command-line tool that allows you to run SQL-like queries on CSV files easily. It’s designed for developers, analysts, and anyone who wants the power of SQL for CSV data without setting up a database.
+
+---
+
+## Features
+
+- Simple SQL-like syntax: `SELECT`, `WHERE`, `ORDER BY`, `LIMIT`
+- Command-line interface (CLI) support
+- Save output as CSV or JSON
+- Pure Python + Pandas implementation
+- Works on any CSV file
+
+---
+
+## Sample Usage (Python API)
+
+```python
+from csv_query.core import query_csv
+
+df = query_csv("employees.csv", "SELECT name, age WHERE department == 'HR' ORDER BY age DESC LIMIT 2")
+print(df)
+```
+
+---
+
+## Sample Usage (CLI)
+
+```bash
+csv-query employees.csv "SELECT name, age WHERE age > 30 ORDER BY age DESC LIMIT 5"
+```
+
+To save output:
+
+```bash
+csv-query employees.csv "SELECT name, salary WHERE department == 'Engineering'" --output eng.csv
+csv-query employees.csv "SELECT * ORDER BY age DESC LIMIT 3" --json top3.json
+```
+
+---
+
+## Installation
+
+Install dependencies and install locally:
+
+```bash
+git clone https://github.com/your-username/csv-query.git
+cd csv-query
+pip install -e .
+```
+
+---
+
+## Command-Line Options
+
+```bash
+csv-query <file.csv> "<query>" [--output result.csv] [--json result.json]
+```
+
+| Option      | Description                      |
+|-------------|----------------------------------|
+| `file.csv`  | CSV file to query                |
+| `"<query>"` | SQL-like query string            |
+| `--output`  | Save result as CSV               |
+| `--json`    | Save result as JSON              |
+
+---
+
+## Supported Syntax
+
+Basic SQL-like support:
+- `SELECT column1, column2`
+- `WHERE condition` (use pandas-style conditions)
+- `ORDER BY column [ASC|DESC]`
+- `LIMIT N`
+
+> Example: `SELECT name, salary WHERE department == 'Finance' ORDER BY salary DESC LIMIT 3`
+
+---
+
+## Roadmap
+
+- [x] SELECT, WHERE, ORDER BY, LIMIT
+- [x] CLI with CSV/JSON export
+- [ ] Column aliasing (`AS`)
+- [ ] JOIN support
+- [ ] PyPI publishing
+- [ ] Unit testing with `pytest`
+
+---
+
+## Author
+
+- Name: Jahfar Muhammed
+- GitHub: [jah-117](https://github.com/jah-117)
+- Email: jahfarbinmuhammed117@gmail.com
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
