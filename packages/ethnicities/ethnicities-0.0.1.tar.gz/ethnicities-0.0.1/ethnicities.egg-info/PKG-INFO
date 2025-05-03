@@ -1,0 +1,99 @@
+Metadata-Version: 2.4
+Name: ethnicities
+Version: 0.0.1
+Summary: Easily return a list of ethnicities
+Author: Enes Kuzucu
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: llmservice
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+Thought for a couple of seconds
+
+
+````markdown
+# Ethnicities
+
+A lightweight Python package providing lists of the world’s most common ethnicities, organized by region and frequency. All keys are normalized to snake_case (lowercase ASCII, words joined with underscores).
+
+## Installation
+
+```bash
+pip install ethnicities
+````
+
+## Usage
+
+```python
+from ethnicities import all_ethnicities, common, by_region, common_and_by_region
+
+# List all 100 normalized ethnicity names
+print(all_ethnicities[:5])
+# → ['nigerian', 'ethiopian', 'congolese', 'egyptian', 'south_african']
+
+# Get the “common” subset (e.g. top 20 by global population)
+print(common)
+
+# Look up by world region
+print(by_region['Europe'])
+# → ['russian', 'german', 'french', …, 'icelandic']
+
+# Combined filter: ethnicities that are both “common” and in a given region
+print(common_and_by_region['Asia'])
+```
+
+## API
+
+* **all\_ethnicities**
+  List of all 100 normalized ethnicity identifiers.
+
+* **common**
+  Subset of `all_ethnicities` representing the top \~20 by global population.
+
+* **by\_region**
+  Dictionary mapping region names (e.g. `"Africa"`, `"Asia"`, `"Europe"`, etc.) to lists of normalized identifiers.
+
+* **common\_and\_by\_region**
+  Dictionary mapping region names to the intersection of `common` and `by_region[region]`.
+
+## Normalization Rules
+
+* All identifiers are ASCII lowercase.
+* Spaces, hyphens, and punctuation are replaced with underscores.
+* No diacritics or non-English characters.
+
+> *Example*: “South African” → `south_african`
+
+## Contributing
+
+1. Fork the repository
+2. Add or update entries in `data/…` (YAML or JSON).
+3. Run `make build` to regenerate `all_ethnicities.py`, `by_region.py`, etc.
+4. Submit a pull request with tests and documentation updates.
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for details.
+
+```
+
+**Q1:** Would you like to include a code snippet demonstrating a reverse lookup (display name → normalized key)?  
+**Q2:** Should we add a CLI command (e.g. `ethnicities validate`) to enforce normalization rules on new entries?  
+**Q3:** Would embedding population metadata or external data-source links into the package enrich your use cases?
+```
+
