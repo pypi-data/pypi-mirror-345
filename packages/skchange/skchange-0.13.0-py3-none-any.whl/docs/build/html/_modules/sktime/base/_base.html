@@ -1,0 +1,1026 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sktime.base._base &#8212; skchange</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom_notebook.css?v=c6a2da1f" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=99362dbf"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/sktime/base/_base';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">skchange</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api_reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../developer_guide/index.html">
+    Developer guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../releases.html">
+    Releases
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NorskRegnesentral/skchange" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api_reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../developer_guide/index.html">
+    Developer guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../releases.html">
+    Releases
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NorskRegnesentral/skchange" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">sktime.base._base</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for sktime.base._base</h1><div class="highlight"><pre>
+<span></span><span class="c1"># copyright: sktime developers, BSD-3-Clause License (see LICENSE file)</span>
+<span class="sd">&quot;&quot;&quot;Base class template for objects and fittable objects.</span>
+
+<span class="sd">templates in this module:</span>
+
+<span class="sd">    BaseObject - object with parameters and tags</span>
+<span class="sd">    BaseEstimator - BaseObject that can be fitted</span>
+
+<span class="sd">Interface specifications below.</span>
+
+<span class="sd">---</span>
+
+<span class="sd">    class name: BaseObject</span>
+
+<span class="sd">Parameter inspection and setter methods</span>
+<span class="sd">    inspect parameter values      - get_params()</span>
+<span class="sd">    setting parameter values      - set_params(**params)</span>
+<span class="sd">    list of parameter names       - get_param_names()</span>
+<span class="sd">    dict of parameter defaults    - get_param_defaults()</span>
+
+<span class="sd">Tag inspection and setter methods</span>
+<span class="sd">    inspect tags (all)            - get_tags()</span>
+<span class="sd">    inspect tags (one tag)        - get_tag(tag_name: str, tag_value_default=None)</span>
+<span class="sd">    inspect tags (class method)   - get_class_tags()</span>
+<span class="sd">    inspect tags (one tag, class) - get_class_tag(tag_name:str, tag_value_default=None)</span>
+<span class="sd">    setting dynamic tags          - set_tags(**tag_dict: dict)</span>
+<span class="sd">    set/clone dynamic tags        - clone_tags(estimator, tag_names=None)</span>
+
+<span class="sd">Config inspection and setter methods</span>
+<span class="sd">    get configs (all)             - get_config()</span>
+<span class="sd">    set configs                   - set_config(**config_dict: dict)</span>
+
+<span class="sd">Blueprinting: resetting and cloning, post-init state with same hyper-parameters</span>
+<span class="sd">    reset estimator to post-init  - reset()</span>
+<span class="sd">    cloneestimator (copy&amp;reset)   - clone()</span>
+
+<span class="sd">Testing with default parameters methods</span>
+<span class="sd">    getting default parameters (all sets)         - get_test_params()</span>
+<span class="sd">    get one test instance with default parameters - create_test_instance()</span>
+<span class="sd">    get list of all test instances plus name list - create_test_instances_and_names()</span>
+<span class="sd">---</span>
+
+<span class="sd">    class name: BaseEstimator</span>
+
+<span class="sd">Provides all interface points of BaseObject, plus:</span>
+
+<span class="sd">Parameter inspection:</span>
+<span class="sd">    fitted parameter inspection - get_fitted_params()</span>
+
+<span class="sd">State:</span>
+<span class="sd">    fitted model/strategy   - by convention, any attributes ending in &quot;_&quot;</span>
+<span class="sd">    fitted state flag       - is_fitted (property)</span>
+<span class="sd">    fitted state check      - check_is_fitted (raises error if not is_fitted)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mloning&quot;</span><span class="p">,</span> <span class="s2">&quot;RNKuhns&quot;</span><span class="p">,</span> <span class="s2">&quot;fkiraly&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BaseEstimator&quot;</span><span class="p">,</span> <span class="s2">&quot;BaseObject&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">from</span> <span class="nn">skbase.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span> <span class="k">as</span> <span class="n">_BaseEstimator</span>
+<span class="kn">from</span> <span class="nn">skbase.base</span> <span class="kn">import</span> <span class="n">BaseObject</span> <span class="k">as</span> <span class="n">_BaseObject</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">clone</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span> <span class="k">as</span> <span class="n">_SklearnBaseEstimator</span>
+
+<span class="kn">from</span> <span class="nn">sktime</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">SKTIME_VERSION</span>
+<span class="kn">from</span> <span class="nn">sktime.utils._estimator_html_repr</span> <span class="kn">import</span> <span class="n">_HTMLDocumentationLinkMixin</span>
+<span class="kn">from</span> <span class="nn">sktime.utils.random_state</span> <span class="kn">import</span> <span class="n">set_random_state</span>
+
+<span class="n">SERIALIZATION_FORMATS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;pickle&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cloudpickle&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">BaseObject</span><span class="p">(</span><span class="n">_HTMLDocumentationLinkMixin</span><span class="p">,</span> <span class="n">_BaseObject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for parametric objects with tags in sktime.</span>
+
+<span class="sd">    Extends skbase BaseObject with additional features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># global default tags for dependency management</span>
+    <span class="n">_tags</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;python_version&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># PEP 440 version specifier, e.g., &quot;&gt;=3.7&quot;</span>
+        <span class="s2">&quot;python_dependencies&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># PEP 440 dependency strs, e.g., &quot;pandas&gt;=1.0&quot;</span>
+        <span class="s2">&quot;env_marker&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># PEP 508 environment marker, e.g., &quot;os_name==&#39;posix&#39;&quot;</span>
+        <span class="s2">&quot;sktime_version&quot;</span><span class="p">:</span> <span class="n">SKTIME_VERSION</span><span class="p">,</span>  <span class="c1"># current sktime version</span>
+    <span class="p">}</span>
+
+    <span class="n">_config</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;warnings&quot;</span><span class="p">:</span> <span class="s2">&quot;on&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;backend:parallel&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># parallelization backend for broadcasting</span>
+        <span class="c1">#  {None, &quot;dask&quot;, &quot;loky&quot;, &quot;multiprocessing&quot;, &quot;threading&quot;}</span>
+        <span class="c1">#  None: no parallelization</span>
+        <span class="c1">#  &quot;loky&quot;, &quot;multiprocessing&quot; and &quot;threading&quot;: uses `joblib` Parallel loops</span>
+        <span class="c1">#  &quot;dask&quot;: uses `dask`, requires `dask` package in environment</span>
+        <span class="s2">&quot;backend:parallel:params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># params for parallelization backend,</span>
+    <span class="p">}</span>
+
+    <span class="n">_config_doc</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;display&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        display : str, &quot;diagram&quot; (default), or &quot;text&quot;</span>
+<span class="s2">            how jupyter kernels display instances of self</span>
+
+<span class="s2">            * &quot;diagram&quot; = html box diagram representation</span>
+<span class="s2">            * &quot;text&quot; = string printout</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;print_changed_only&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        print_changed_only : bool, default=True</span>
+<span class="s2">            whether printing of self lists only self-parameters that differ</span>
+<span class="s2">            from defaults (False), or all parameter names and values (False).</span>
+<span class="s2">            Does not nest, i.e., only affects self and not component estimators.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;warnings&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        warnings : str, &quot;on&quot; (default), or &quot;off&quot;</span>
+<span class="s2">            whether to raise warnings, affects warnings from sktime only</span>
+
+<span class="s2">            * &quot;on&quot; = will raise warnings from sktime</span>
+<span class="s2">            * &quot;off&quot; = will not raise warnings from sktime</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;backend:parallel&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        backend:parallel : str, optional, default=&quot;None&quot;</span>
+<span class="s2">            backend to use for parallelization when broadcasting/vectorizing, one of</span>
+
+<span class="s2">            - &quot;None&quot;: executes loop sequentally, simple list comprehension</span>
+<span class="s2">            - &quot;loky&quot;, &quot;multiprocessing&quot; and &quot;threading&quot;: uses ``joblib.Parallel``</span>
+<span class="s2">            - &quot;joblib&quot;: custom and 3rd party ``joblib`` backends, e.g., ``spark``</span>
+<span class="s2">            - &quot;dask&quot;: uses ``dask``, requires ``dask`` package in environment</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;backend:parallel:params&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        backend:parallel:params : dict, optional, default=</span><span class="si">{}</span><span class="s2"> (no parameters passed)</span>
+<span class="s2">            additional parameters passed to the parallelization backend as config.</span>
+<span class="s2">            Valid keys depend on the value of ``backend:parallel``:</span>
+
+<span class="s2">            - &quot;None&quot;: no additional parameters, ``backend_params`` is ignored</span>
+<span class="s2">            - &quot;loky&quot;, &quot;multiprocessing&quot; and &quot;threading&quot;: default ``joblib`` backends</span>
+<span class="s2">              any valid keys for ``joblib.Parallel`` can be passed here, e.g.,</span>
+<span class="s2">              ``n_jobs``, with the exception of ``backend`` which is directly</span>
+<span class="s2">              controlled by ``backend``.</span>
+<span class="s2">              If ``n_jobs`` is not passed, it will default to ``-1``, other parameters</span>
+<span class="s2">              will default to ``joblib`` defaults.</span>
+<span class="s2">            - &quot;joblib&quot;: custom and 3rd party ``joblib`` backends,</span>
+<span class="s2">              e.g., ``spark``. Any valid keys for ``joblib.Parallel``</span>
+<span class="s2">              can be passed here, e.g., ``n_jobs``,</span>
+<span class="s2">              ``backend`` must be passed as a key of ``backend_params`` in this case.</span>
+<span class="s2">              If ``n_jobs`` is not passed, it will default to ``-1``, other parameters</span>
+<span class="s2">              will default to ``joblib`` defaults.</span>
+<span class="s2">            - &quot;dask&quot;: any valid keys for ``dask.compute`` can be passed,</span>
+<span class="s2">              e.g., ``scheduler``</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># handle numpy 2 incompatible soft dependencies</span>
+        <span class="c1"># for rationale, see _handle_numpy2_softdeps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_numpy2_softdeps</span><span class="p">()</span>
+
+    <span class="c1"># TODO 0.36.0: check list of numpy 2 incompatible soft deps</span>
+    <span class="c1"># remove any from NOT_NP2_COMPATIBLE that become compatible</span>
+    <span class="k">def</span> <span class="nf">_handle_numpy2_softdeps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle tags for soft deps that are not numpy 2 compatible.</span>
+
+<span class="sd">        A number of soft dependencies are not numpy 2 compatible yet,</span>
+<span class="sd">        but do not set the bound in their setup.py. This method is a patch over</span>
+<span class="sd">        those packages&#39; missing bound setting to provide informative</span>
+<span class="sd">        errors to users.</span>
+
+<span class="sd">        This method does the following:</span>
+
+<span class="sd">        * checks if any soft dependencies in the python_dependencies tag</span>
+<span class="sd">          are in NOT_NP2_COMPATIBLE, this is a hard-coded</span>
+<span class="sd">          list of soft dependencies that are not numpy 2 compatible</span>
+<span class="sd">        * if any are found, adds a numpy&lt;2.0 soft dependency to the list,</span>
+<span class="sd">          and sets it as a dynamic override of the python_dependencies tag</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">packaging.requirements</span> <span class="kn">import</span> <span class="n">Requirement</span>
+
+        <span class="c1"># pypi package names of soft dependencies that are not numpy 2 compatibleS</span>
+        <span class="n">NOT_NP2_COMPATIBLE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pmdarima&quot;</span><span class="p">]</span>
+
+        <span class="n">softdeps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_class_tag</span><span class="p">(</span><span class="s2">&quot;python_dependencies&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">softdeps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">softdeps</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">softdeps</span> <span class="o">=</span> <span class="p">[</span><span class="n">softdeps</span><span class="p">]</span>
+        <span class="c1"># make copy of list to avoid side effects</span>
+        <span class="n">softdeps</span> <span class="o">=</span> <span class="n">softdeps</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">_pkg_name</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Get package name from requirement string.&quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">Requirement</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="n">noncomp</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">softdep</span> <span class="ow">in</span> <span class="n">softdeps</span><span class="p">:</span>
+            <span class="c1"># variable: does any softdep string start with one of the non-compatibles</span>
+            <span class="n">noncomp_sd</span> <span class="o">=</span> <span class="nb">any</span><span class="p">([</span><span class="n">_pkg_name</span><span class="p">(</span><span class="n">softdep</span><span class="p">)</span> <span class="o">==</span> <span class="n">pkg</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">NOT_NP2_COMPATIBLE</span><span class="p">])</span>
+            <span class="n">noncomp</span> <span class="o">=</span> <span class="n">noncomp</span> <span class="ow">or</span> <span class="n">noncomp_sd</span>
+
+        <span class="k">if</span> <span class="n">noncomp</span><span class="p">:</span>
+            <span class="n">softdeps</span> <span class="o">=</span> <span class="n">softdeps</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;numpy&lt;2.0&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_tags</span><span class="p">(</span><span class="n">python_dependencies</span><span class="o">=</span><span class="n">softdeps</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Equality dunder. Checks equal class and parameters.</span>
+
+<span class="sd">        Returns True iff result of get_params(deep=False) results in equal parameter</span>
+<span class="sd">        sets.</span>
+
+<span class="sd">        Nested BaseObject descendants from get_params are compared via __eq__ as well.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">sktime.utils.deep_equals</span> <span class="kn">import</span> <span class="n">deep_equals</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">BaseObject</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">self_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">other_params</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">deep_equals</span><span class="p">(</span><span class="n">self_params</span><span class="p">,</span> <span class="n">other_params</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_set_config_doc</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create docstring for set_config from self._config_doc.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        collected_config_docs : dict</span>
+<span class="sd">            Dictionary of doc name: docstring part.</span>
+<span class="sd">            Collected from _config_doc class attribute via nested inheritance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cfgs_dict</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_class_flags</span><span class="p">(</span><span class="n">flag_attr_name</span><span class="o">=</span><span class="s2">&quot;_config_doc&quot;</span><span class="p">)</span>
+
+        <span class="n">doc_start</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Set config flags to given values.</span>
+
+<span class="s2">        Parameters</span>
+<span class="s2">        ----------</span>
+<span class="s2">        config_dict : dict</span>
+<span class="s2">            Dictionary of config name : config value pairs.</span>
+<span class="s2">            Valid configs, values, and their meaning is listed below:</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+
+        <span class="n">doc_end</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        Returns</span>
+<span class="s2">        -------</span>
+<span class="s2">        self : reference to self.</span>
+
+<span class="s2">        Notes</span>
+<span class="s2">        -----</span>
+<span class="s2">        Changes object state, copies configs in config_dict to self._config_dynamic.</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">doc_start</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">cfg_doc</span> <span class="ow">in</span> <span class="n">cfgs_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">doc</span> <span class="o">+=</span> <span class="n">cfg_doc</span>
+        <span class="n">doc</span> <span class="o">+=</span> <span class="n">doc_end</span>
+        <span class="k">return</span> <span class="n">doc</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_init_dynamic_doc</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set docstring for set_config from self._config_doc.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>  <span class="c1"># try/except to avoid unexpected failures</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">set_config</span> <span class="o">=</span> <span class="n">deepcopy_func</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">set_config</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">set_config</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_set_config_doc</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: S110</span>
+            <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">serialization_format</span><span class="o">=</span><span class="s2">&quot;pickle&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save serialized self to bytes-like object or to (.zip) file.</span>
+
+<span class="sd">        Behaviour:</span>
+<span class="sd">        if ``path`` is None, returns an in-memory serialized self</span>
+<span class="sd">        if ``path`` is a file location, stores self at that location as a zip file</span>
+
+<span class="sd">        saved files are zip files with following contents:</span>
+<span class="sd">        _metadata - contains class of self, i.e., type(self)</span>
+<span class="sd">        _obj - serialized self. This class uses the default serialization (pickle).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : None or file location (str or Path)</span>
+<span class="sd">            if None, self is saved to an in-memory object</span>
+<span class="sd">            if file location, self is saved to that file location. If:</span>
+<span class="sd">                path=&quot;estimator&quot; then a zip file ``estimator.zip`` will be made at cwd.</span>
+<span class="sd">                path=&quot;/home/stored/estimator&quot; then a zip file ``estimator.zip`` will be</span>
+<span class="sd">                stored in ``/home/stored/``.</span>
+
+<span class="sd">        serialization_format: str, default = &quot;pickle&quot;</span>
+<span class="sd">            Module to use for serialization.</span>
+<span class="sd">            The available options are &quot;pickle&quot; and &quot;cloudpickle&quot;.</span>
+<span class="sd">            Note that non-default formats might require</span>
+<span class="sd">            installation of other soft dependencies.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        if ``path`` is None - in-memory serialized self</span>
+<span class="sd">        if ``path`` is file location - ZipFile with reference to the file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">pickle</span>
+        <span class="kn">import</span> <span class="nn">shutil</span>
+        <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+        <span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span>
+
+        <span class="kn">from</span> <span class="nn">sktime.utils.dependencies</span> <span class="kn">import</span> <span class="n">_check_soft_dependencies</span>
+
+        <span class="k">if</span> <span class="n">serialization_format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SERIALIZATION_FORMATS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The provided `serialization_format`=&#39;</span><span class="si">{</span><span class="n">serialization_format</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+                <span class="s2">&quot;is not yet supported. The possible formats are: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">SERIALIZATION_FORMATS</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;`path` is expected to either be a string or a Path object &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;but found of type:</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">path</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">serialization_format</span> <span class="o">==</span> <span class="s2">&quot;cloudpickle&quot;</span><span class="p">:</span>
+            <span class="n">_check_soft_dependencies</span><span class="p">(</span><span class="s2">&quot;cloudpickle&quot;</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
+            <span class="kn">import</span> <span class="nn">cloudpickle</span>
+
+            <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">cloudpickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;_metadata&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">cloudpickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">file</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;_obj&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">cloudpickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">serialization_format</span> <span class="o">==</span> <span class="s2">&quot;pickle&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;_metadata&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">file</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;_obj&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+
+        <span class="n">shutil</span><span class="o">.</span><span class="n">make_archive</span><span class="p">(</span><span class="n">base_name</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;zip&quot;</span><span class="p">,</span> <span class="n">root_dir</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">.zip&quot;</span><span class="p">))</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load_from_serial</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">serial</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load object from serialized memory container.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        serial : 1st element of output of ``cls.save(None)``</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        deserialized self resulting in output ``serial``, of ``cls.save(None)``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">pickle</span>
+
+        <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">serial</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load_from_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">serial</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load object from file location.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        serial : result of ZipFile(path).open(&quot;object)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        deserialized self resulting in output at ``path``, of ``cls.save(path)``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">pickle</span>
+        <span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span>
+
+        <span class="k">with</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">serial</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;_obj&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+
+<span class="k">class</span> <span class="nc">TagAliaserMixin</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin class for tag aliasing and deprecation of old tags.</span>
+
+<span class="sd">    To deprecate tags, add the TagAliaserMixin to BaseObject or BaseEstimator.</span>
+<span class="sd">    alias_dict contains the deprecated tags, and supports removal and renaming.     For</span>
+<span class="sd">    removal, add an entry &quot;old_tag_name&quot;: &quot;&quot;     For renaming, add an entry</span>
+<span class="sd">    &quot;old_tag_name&quot;: &quot;new_tag_name&quot; deprecate_dict contains the version number of</span>
+<span class="sd">    renaming or removal.     the keys in deprecate_dict should be the same as in</span>
+<span class="sd">    alias_dict.     values in deprecate_dict should be strings, the version of</span>
+<span class="sd">    removal/renaming.</span>
+
+<span class="sd">    The class will ensure that new tags alias old tags and vice versa, during the</span>
+<span class="sd">    deprecation period. Informative warnings will be raised whenever the deprecated tags</span>
+<span class="sd">    are being accessed.</span>
+
+<span class="sd">    When removing tags, ensure to remove the removed tags from this class. If no tags</span>
+<span class="sd">    are deprecated anymore (e.g., all deprecated tags are removed/renamed), ensure</span>
+<span class="sd">    toremove this class as a parent of BaseObject or BaseEstimator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_class_tags</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get class tags from estimator class and all its parent classes.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        collected_tags : dict</span>
+<span class="sd">            Dictionary of tag name : tag value pairs. Collected from _tags</span>
+<span class="sd">            class attribute via nested inheritance. NOT overridden by dynamic</span>
+<span class="sd">            tags set by set_tags or mirror_tags.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">collected_tags</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_class_tags</span><span class="p">()</span>
+        <span class="n">collected_tags</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_complete_dict</span><span class="p">(</span><span class="n">collected_tags</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">collected_tags</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_class_tag</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span> <span class="n">tag_value_default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get tag value from estimator class (only class tags).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tag_name : str</span>
+<span class="sd">            Name of tag value.</span>
+<span class="sd">        tag_value_default : any type</span>
+<span class="sd">            Default/fallback value if tag is not found.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tag_value :</span>
+<span class="sd">            Value of the ``tag_name`` tag in self. If not found, returns</span>
+<span class="sd">            ``tag_value_default``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_deprecate_tag_warn</span><span class="p">([</span><span class="n">tag_name</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_class_tag</span><span class="p">(</span>
+            <span class="n">tag_name</span><span class="o">=</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">tag_value_default</span><span class="o">=</span><span class="n">tag_value_default</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get tags from estimator class and dynamic tag overrides.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        collected_tags : dict</span>
+<span class="sd">            Dictionary of tag name : tag value pairs. Collected from _tags</span>
+<span class="sd">            class attribute via nested inheritance and then any overrides</span>
+<span class="sd">            and new tags from _tags_dynamic object attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">collected_tags</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_tags</span><span class="p">()</span>
+        <span class="n">collected_tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complete_dict</span><span class="p">(</span><span class="n">collected_tags</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">collected_tags</span>
+
+    <span class="k">def</span> <span class="nf">get_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span> <span class="n">tag_value_default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get tag value from estimator class and dynamic tag overrides.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tag_name : str</span>
+<span class="sd">            Name of tag to be retrieved</span>
+<span class="sd">        tag_value_default : any type, optional; default=None</span>
+<span class="sd">            Default/fallback value if tag is not found</span>
+<span class="sd">        raise_error : bool</span>
+<span class="sd">            whether a ValueError is raised when the tag is not found</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tag_value :</span>
+<span class="sd">            Value of the ``tag_name`` tag in self. If not found, returns an error if</span>
+<span class="sd">            raise_error is True, otherwise it returns ``tag_value_default``.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError if raise_error is True i.e. if tag_name is not in self.get_tags(</span>
+<span class="sd">        ).keys()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_deprecate_tag_warn</span><span class="p">([</span><span class="n">tag_name</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_tag</span><span class="p">(</span>
+            <span class="n">tag_name</span><span class="o">=</span><span class="n">tag_name</span><span class="p">,</span>
+            <span class="n">tag_value_default</span><span class="o">=</span><span class="n">tag_value_default</span><span class="p">,</span>
+            <span class="n">raise_error</span><span class="o">=</span><span class="n">raise_error</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">tag_dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set dynamic tags to given values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tag_dict : dict</span>
+<span class="sd">            Dictionary of tag name : tag value pairs.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Self :</span>
+<span class="sd">            Reference to self.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Changes object state by setting tag values in tag_dict as dynamic tags</span>
+<span class="sd">        in self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_deprecate_tag_warn</span><span class="p">(</span><span class="n">tag_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="n">tag_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complete_dict</span><span class="p">(</span><span class="n">tag_dict</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_tags</span><span class="p">(</span><span class="o">**</span><span class="n">tag_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_complete_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tag_dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add all aliased and aliasing tags to the dictionary.&quot;&quot;&quot;</span>
+        <span class="n">alias_dict</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">alias_dict</span>
+        <span class="n">deprecated_tags</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">tag_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">alias_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">new_tags</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">tag_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">alias_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">deprecated_tags</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_tags</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">new_tag_dict</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">tag_dict</span><span class="p">)</span>
+            <span class="c1"># for all tag strings being set, write the value</span>
+            <span class="c1">#   to all tags that could *be aliased by* the string</span>
+            <span class="c1">#   and all tags that could be *aliasing* the string</span>
+            <span class="c1"># this way we ensure upwards and downwards compatibility</span>
+            <span class="k">for</span> <span class="n">old_tag</span><span class="p">,</span> <span class="n">new_tag</span> <span class="ow">in</span> <span class="n">alias_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tag_dict</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="n">old_tag</span> <span class="ow">and</span> <span class="n">new_tag</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                        <span class="n">new_tag_dict</span><span class="p">[</span><span class="n">new_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag_dict</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="n">new_tag</span><span class="p">:</span>
+                        <span class="n">new_tag_dict</span><span class="p">[</span><span class="n">old_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag_dict</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">new_tag_dict</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tag_dict</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_deprecate_tag_warn</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tags</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print warning message for tag deprecation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tags : list of str</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        DeprecationWarning for each tag in tags that is aliased by cls.alias_dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">tag_name</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tag_name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">alias_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">version</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">deprecate_dict</span><span class="p">[</span><span class="n">tag_name</span><span class="p">]</span>
+                <span class="n">new_tag</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">alias_dict</span><span class="p">[</span><span class="n">tag_name</span><span class="p">]</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;tag </span><span class="si">{</span><span class="n">tag_name</span><span class="si">!r}</span><span class="s2"> will be removed in sktime version </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">new_tag</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot; and replaced by </span><span class="si">{</span><span class="n">new_tag</span><span class="si">!r}</span><span class="s2">, please use </span><span class="si">{</span><span class="n">new_tag</span><span class="si">!r}</span><span class="s2"> instead&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;, please remove code that access or sets &quot;</span><span class="si">{tag_name}</span><span class="s1">&quot;&#39;</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BaseEstimator</span><span class="p">(</span><span class="n">_BaseEstimator</span><span class="p">,</span> <span class="n">BaseObject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for defining estimators in sktime.</span>
+
+<span class="sd">    Extends sktime&#39;s BaseObject to include basic functionality for fittable estimators.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># tuple of non-BaseObject classes that count as nested objects</span>
+    <span class="c1"># get_fitted_params will retrieve parameters from these, too</span>
+    <span class="c1"># override in descendant class</span>
+    <span class="c1"># _SklearnBaseEstimator = sklearn.base.BaseEstimator</span>
+    <span class="n">GET_FITTED_PARAMS_NESTING</span> <span class="o">=</span> <span class="p">(</span><span class="n">_SklearnBaseEstimator</span><span class="p">,)</span>
+
+
+<span class="k">def</span> <span class="nf">_clone_estimator</span><span class="p">(</span><span class="n">base_estimator</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">estimator</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="n">base_estimator</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">random_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">set_random_state</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">random_state</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">estimator</span>
+
+
+<span class="k">def</span> <span class="nf">deepcopy_func</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deepcopy of a function.&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">types</span>
+
+    <span class="k">return</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">(</span>
+        <span class="n">f</span><span class="o">.</span><span class="vm">__code__</span><span class="p">,</span>
+        <span class="n">f</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">,</span>
+        <span class="n">name</span> <span class="ow">or</span> <span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+        <span class="n">f</span><span class="o">.</span><span class="vm">__defaults__</span><span class="p">,</span>
+        <span class="n">f</span><span class="o">.</span><span class="vm">__closure__</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># initialize dynamic docstrings</span>
+<span class="n">BaseObject</span><span class="o">.</span><span class="n">_init_dynamic_doc</span><span class="p">()</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023 - 2025 (BSD-3-Clause License).
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
