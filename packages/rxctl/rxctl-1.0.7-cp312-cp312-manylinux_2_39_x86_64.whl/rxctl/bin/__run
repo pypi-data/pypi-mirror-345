@@ -1,0 +1,18 @@
+#!/bin/bash 
+
+set -e 
+set -o pipefail
+
+if [ $RX_LOG_VERBOSITY -ge 2 ] ; then
+    set -x
+fi
+
+CMD="${RX_SSH_CMD} ${RX_HOST} ${RX_SUDO_CMD} ${RX_SHELL}"
+__log.debug "__run: cmd: ${CMD}"
+
+if [ -n "$1" ] ; then
+    $CMD "-c 'unset ${RX_PASSWD_ENVVAR} ; unset SSHPASS ; $@'"
+else
+    cat <(echo "unset ${RX_PASSWD_ENVVAR} ; unset SSHPASS") /dev/stdin | $CMD
+fi
+
