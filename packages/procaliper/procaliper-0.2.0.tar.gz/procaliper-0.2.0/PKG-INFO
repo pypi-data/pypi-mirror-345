@@ -1,0 +1,138 @@
+Metadata-Version: 2.3
+Name: procaliper
+Version: 0.2.0
+Summary: Skeleton project created by Python Project Wizard (ppw).
+License: GPL-3.0-only
+Author: AlphaMeter
+Author-email: song.feng@pnnl.gov
+Requires-Python: >=3.9,<4.0
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Provides-Extra: dev
+Provides-Extra: doc
+Provides-Extra: pka
+Provides-Extra: test
+Provides-Extra: viz
+Requires-Dist: biopandas (>=0.5.1,<1)
+Requires-Dist: biopython (>=1.84,<2)
+Requires-Dist: black (==24.8.0) ; extra == "dev"
+Requires-Dist: distanceclosure (>=0.5.0)
+Requires-Dist: flake8 (==7.1.1) ; extra == "dev"
+Requires-Dist: flake8-docstrings (>=1.6.0,<2.0.0) ; extra == "dev"
+Requires-Dist: isort (==5.10.1) ; extra == "dev"
+Requires-Dist: matplotlib (==3.8.0) ; extra == "viz"
+Requires-Dist: mike (==2.1.2) ; extra == "doc"
+Requires-Dist: mkdocs (==1.6.1) ; extra == "doc"
+Requires-Dist: mkdocs-autorefs (==1.2.0) ; extra == "doc"
+Requires-Dist: mkdocs-include-markdown-plugin (==6.2.2) ; extra == "doc"
+Requires-Dist: mkdocs-material (==9.5.34) ; extra == "doc"
+Requires-Dist: mkdocstrings (==0.26.1) ; extra == "doc"
+Requires-Dist: mkdocstrings-python (==1.11.1) ; extra == "doc"
+Requires-Dist: mypy (>=1.5.1,<2.0.0) ; extra == "dev"
+Requires-Dist: networkx (>=3.1,<4)
+Requires-Dist: nglview (>=3.0.8,<4) ; extra == "viz"
+Requires-Dist: numpy (==1.26.4) ; extra == "pka"
+Requires-Dist: openbabel-wheel (==3.1.1.19)
+Requires-Dist: pandas (>=2.2.2,<3.0.0)
+Requires-Dist: pandas-stubs (>=2.2.2.240807,<3.0.0.0) ; extra == "dev"
+Requires-Dist: pkai (==1.2.0) ; (python_full_version <= "3.11.0") and (extra == "pka")
+Requires-Dist: pkginfo (>=1.9,<2.0) ; extra == "doc"
+Requires-Dist: pre-commit (==3.8.0) ; extra == "dev"
+Requires-Dist: propka (>=3.5.1,<4)
+Requires-Dist: pypka (==2.10.0) ; extra == "pka"
+Requires-Dist: pytest (==8.3.2) ; extra == "test"
+Requires-Dist: pytest-cov (==5.0.0) ; extra == "test"
+Requires-Dist: setuptools (==72.1.0) ; extra == "doc"
+Requires-Dist: toml (>=0.10.2,<0.11.0) ; extra == "dev"
+Requires-Dist: tox (==4.17.1) ; extra == "dev"
+Requires-Dist: twine (==5.1.1) ; extra == "dev"
+Requires-Dist: types-requests (>=2.31.0,<3.0.0) ; extra == "dev"
+Requires-Dist: uniprot-id-mapper (>=1.1.2,<2)
+Requires-Dist: virtualenv (>=20.0,<21.0) ; extra == "doc"
+Project-URL: Homepage, https://github.com/LifeWorks/procaliper
+Description-Content-Type: text/markdown
+
+<!-- badges: start -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15270417.svg)](https://doi.org/10.5281/zenodo.15270417)
+[![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
+![PyPI](https://img.shields.io/pypi/v/procaliper.svg)
+[![Versions](https://img.shields.io/badge/Tested%20On%20Python-3.9,%203.10,%203.11,%203.12-blue.svg)](https://shields.io/)
+<!-- badges: end -->
+
+# ProCaliper
+
+ProCaliper is an open-source Python library for functional and structural analysis, visualization, and annotation of proteomic data.
+
+ProCaliper enables interfacing with annotation resources such as [UniProt](https://www.uniprot.org), [PhosphoSitePlus](https://www.phosphosite.org), [AlphaFold](https://alphafold.ebi.ac.uk), or user-supplied experimental data for computing structural and electromchemical property information, construction and analysis of residue-residue distance networks, and functional site identification at the residue or protein level.
+
+# Installation
+
+To install from [PyPI](https://pypi.org/project/procaliper/):
+
+```shell
+pip install procaliper
+```
+## extras
+During installation, `procaliper` will also install `openbabel-wheel`. If you require specialized features of `openbabel` that are not available in this precompiled version, please run `pip uninstall openbabel-wheel` after `procaliper` is installed and provide your own version of the `openbabel` python library.
+
+Optional feature dependencies can be installed as follows:
+
+```shell
+pip install procaliper[nglview,pka]
+``` 
+
+The `nglview` extra provides the ability to visualize protein structures in a graphical notebook environment.
+
+The `pka` extra provides additional methods for computing disassociation constants (typically denoted $pK_a$). Note that installing this extra requires obtaining  a `DelPhi` license. Furthermore, these additional methods require an older version of `numpy` (version `1.26.4`) and `python` version between `3.9` and `3.11` to properly function. If the `pka` extra is not installed, `procaliper` will use [propka](https://github.com/jensengroup/propka) for $pK_a$ calculation.
+
+# Basic Usage
+A basic example is provided here. See the examples folder for further examples.
+
+```python
+import procaliper as pc
+
+# Read in or download protein structure
+protein = pc.Protein.from_uniprot_id("A0A0B4J2F0") # create a protein object from UniProt metadata using a UniProt ID
+# alternatively, you can read in a protein from a UniProt Table using `Protein.from_uniprot_row`
+
+# Download & save protein structure from AlphaFold
+protein.fetch_pdb(save_path="A0A0B4J2F0.pdb") 
+# Alternatively, `protein.register_local_pdb(file)` can be used to specify a previously downloaded pdb file
+
+# Compute structure features
+sasa = protein.get_sasa() # compute site-level SASA values
+charge = protein.get_charge() # compute site-level charges
+titr = protein.get_titration() # compute site-level titration (pKa) data
+# The results from the above calculations are autmatically stored in the `protein` object.
+
+# Get a table of site-level data
+site_data = protein.unravel_sites() # returns a dictionary of lists; readable, e.g., by `pandas`
+```
+
+# Contributing
+
+Contributions are welcome!
+
+See [Contributing](https://github.com/PhenoMeters/ProCaliper/blob/main/CONTRIBUTING.md) for detailed instructions.
+
+# License
+
+This code is released under BSD 2-Clause "Simplified" License. See our [License](https://github.com/PhenoMeters/ProCaliper/blob/main/LICENSE) for detailed information.
+
+By default, `procaliper` does not have any dependencies that are not freely licensed. However, additional features can be installed that rely on restricted software. That is, please note that some *optional* dependencies are not FOSS. Specifically, the `pka` extra requires a `DelPhi` license. We encourage caution when using software that is not free and open source, especially for contributions to the scientific literature.
+
+# Acknowledgements
+
+The software described here was funded under the Predictive Phenomics Initiative (PPI) at Pacific Northwest National Laboratory (PNNL) under the Laboratory Directed Research and Development Program. PNNL is a multiprogram national laboratory operated by Battelle for the DOE under Contract No. DE-AC05-76RL01830.
+
+## Citation Guidance
+1. Feng, S., Rozum, J. C., Ufford, H. S., Kim, D. N., & Im, A. K. (2025). ProCaliper. Zenodo. https://doi.org/10.5281/zenodo.15270417
+
