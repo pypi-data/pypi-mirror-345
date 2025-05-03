@@ -1,0 +1,72 @@
+[tool.poetry]
+name = "onyx-otc"
+version = "0.3.1"
+description = "Onyx otc python client and documentation"
+authors = ["lsbardel <lsbardella@onyxcapitaltechnology.com>"]
+readme = "readme.md"
+include = [
+    "onyx_otc/*",
+    "onyx_otc/v2/*"
+]
+
+[tool.poetry.urls]
+Homepage = "https://github.com/Onyx-Capital-Technology/onyx-otc"
+Repository = "https://github.com/Onyx-Capital-Technology/onyx-otc"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+protobuf = "^5.27.2"
+grpcio = "^1.64.1"
+aiohttp = "^3.10.10"
+python-dotenv = "^1.0.1"
+pydantic = "^2.10.6"
+click = { version = "^8.1.8", optional = true }
+
+[tool.poetry.group.dev.dependencies]
+grpcio-tools = "^1.64.1"
+pytest = "^8.3.3"
+pytest-cov = "^6.0.0"
+black = "^25.1.0"
+ruff = "^0.11.4"
+mypy = "^1.13.0"
+mypy-protobuf = "^3.6.0"
+pytest-asyncio = "^0.25.2"
+
+[tool.poetry.extras]
+cli = ["click"]
+
+[tool.poetry.scripts]
+onyx = "onyx_otc.cli.app:cli"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = [
+    "tests"
+]
+
+
+[tool.ruff]
+lint.select = ["E", "W", "F", "I", "B", "N"]
+line-length = 88
+exclude = [
+    "onyx_otc/v2",
+]
+
+[tool.black]
+exclude ="onyx_otc/v2"
+
+[tool.mypy]
+disallow_untyped_calls = false
+disallow_untyped_defs = true
+warn_no_return = true
+exclude = "onyx_otc/v2"
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disable_error_code = ["return"]
