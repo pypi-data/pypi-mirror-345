@@ -1,0 +1,23 @@
+[project]
+name = "msbuild-mcp-server"
+version = "0.1.0"
+description = "A lightweight MCP server for automating MSBuild projects and solutions builds."
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+    "fastmcp>=2.0",
+    "uv",
+    "vswhere>=1.0.0",
+    "pytest"
+]
+
+[project.scripts]
+msbuild-mcp-server = "msbuild_mcp_server.server:main"
+
+[tool.setuptools]
+packages = ["msbuild_mcp_server"]
+
+[tool.setuptools.package-dir]
+"" = "src"
