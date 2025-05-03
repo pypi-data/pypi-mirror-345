@@ -1,0 +1,23 @@
+---
+type: object
+properties:
+  providers:
+    type: array
+    items:
+      $ref: '#/definitions/provider'
+definitions:
+  provider:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      region:
+        type: string
+      resources:
+        type: string
+      api_token:
+        anyOf:
+          - type: string
+          - type: object
