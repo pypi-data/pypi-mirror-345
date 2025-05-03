@@ -1,0 +1,81 @@
+Metadata-Version: 2.4
+Name: epub-utils
+Version: 0.0.0a1
+Summary: A Python CLI and utility library for manipulating EPUB files
+Home-page: https://github.com/ernestofgonzalez/epub-utils
+Author: Ernesto González
+License: Apache License, Version 2.0
+Project-URL: Source code, https://github.com/ernestofgonzalez/epub-utils
+Project-URL: Issues, https://github.com/ernestofgonzalez/epub-utils/issues
+Project-URL: CI, https://github.com/ernestofgonzalez/epub-utils/actions
+Project-URL: Changelog, https://github.com/ernestofgonzalez/epub-utils/releases
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: lxml
+Requires-Dist: pygments
+Requires-Dist: PyYAML
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Dynamic: author
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# epub-utils
+
+[![PyPI](https://img.shields.io/pypi/v/epub-utils.svg)](https://pypi.org/project/epub-utils/)
+[![Latest Release](https://img.shields.io/github/v/release/ernestofgonzalez/epub-utils)](https://github.com/ernestofgonzalez/epub-utils/releases)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/ernestofgonzalez/epub-utils/blob/main/LICENSE)
+
+A Python CLI and utility library for manipulating EPUB files.
+
+## Features
+
+- Parse and validate EPUB container and package files
+- Extract metadata like title, author, and identifier
+- Command-line interface for quick file inspection
+- Syntax highlighted XML output
+
+## Quick Start
+
+1. Install the package:
+```bash
+pip install epub-utils
+```
+
+2. Use as a CLI tool:
+```bash
+# Show container.xml contents
+epub-utils your-book.epub container
+
+# Show package OPF contents
+epub-utils your-book.epub package
+
+# Show table of contents
+epub-utils your-book.epub toc
+```
+
+3. Use as a Python library:
+```python
+from epub_utils import Document
+
+# Load an EPUB document
+doc = Document("path/to/book.epub")
+
+# Access container metadata
+print(f"Package file location: {doc.container.rootfile_path}")
+
+# Access package metadata
+print(f"Title: {doc.package.title}")
+print(f"Author: {doc.package.author}")
+print(f"Identifier: {doc.package.identifier}")
+```
