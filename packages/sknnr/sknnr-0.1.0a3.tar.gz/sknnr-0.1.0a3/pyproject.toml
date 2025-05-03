@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sknnr"
+dynamic = ["version"]
+description = "Scikit-learn estimators for kNN regression methods"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    { name = "Matt Gregory", email = "matt.gregory@oregonstate.edu" },
+    { name = "Aaron Zuspan", email = "aaron.zuspan@oregonstate.edu" },
+]
+dependencies = ["numpy", "scikit-learn>=1.2", "scipy"]
+
+[project.urls]
+Homepage = "https://github.com/lemma-osu/sknnr"
+Source = "https://github.com/lemma-osu/sknnr"
+
+[tool.hatch.version]
+path = "src/sknnr/__about__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sknnr"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src"]
+
+[tool.hatch.envs.default]
+dependencies = ["pre-commit"]
+
+[tool.hatch.envs.test]
+dependencies = [
+    "scikit-learn>=1.6.0",
+    "pytest",
+    "pytest-cov",
+    "pytest-regressions",
+    "pandas",
+]
+
+[tool.hatch.envs.test.scripts]
+all = "pytest . {args} --doctest-modules"
+coverage = "pytest . --cov=src/sknnr {args} --doctest-modules"
+
+[tool.hatch.envs.test_matrix]
+template = "test"
+
+[[tool.hatch.envs.test_matrix.matrix]]
+python = ["3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.docs]
+dependencies = ["mkdocs", "mkdocs-material", "mkdocstrings[python]"]
+
+[tool.hatch.envs.docs.scripts]
+serve = "mkdocs serve --config-file docs/mkdocs.yml --watch ./README.md"
+build = "mkdocs build --config-file docs/mkdocs.yml"
+
+[tool.pytest.ini_options]
+pythonpath = "src/"
+markers = [
+    "uncollect_if(*, func): function to uncollect tests from parametrization",
+]
+
+[tool.ruff]
+fix = true
+show-fixes = true
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "I",
+    "F",
+    "B",
+    "FA",
+    "UP",
+    "ISC",
+    "PT",
+    "NPY",
+    "Q",
+    "RET",
+    "SIM",
+    "PERF",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["sknnr"]
