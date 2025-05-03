@@ -1,0 +1,52 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "polars_legacy_hash"
+requires-python = ">=3.8"
+dependencies = [
+#     "polars>=0.20.10",
+    # or polars_u64_idx
+    "packaging"
+]
+dynamic = ["version"]
+classifiers = [
+  "Programming Language :: Rust",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+authors = [
+  { name="Matt Richards"},
+]
+description = "Polars 0.20.10 hash function as a plugin library"
+readme = "README.md"
+
+
+[tool.maturin]
+module-name = "polars_legacy_hash._internal"
+
+[tool.ruff]
+line-length = 120
+src = ["polars_legacy_hash", "tests"]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["polars_legacy_hash"]
+
+[tool.uv]
+cache-keys = [{ file = "pyproject.toml" }, { file = "src/**/*.rs" }, { file = "Cargo.toml" },{ file = "Cargo.lock" }, { file = "target/**"}, {file = "polars_legacy_hash/**/*.pyd"}]
+[tool.uv.sources]
+polars-legacy-hash = { workspace = true }
+
+
+[dependency-groups]
+dev = [
+#    "polars_u64_idx>=0.20.10", no polars in here so that CI behaves (conflict between polars and polars_u64_idx)
+    "maturin>=1.8.3",
+    "mypy>=1.14.1",
+    "polars_legacy_hash",
+    "pytest>=8.3.5",
+    "ruff>=0.11.4",
+]
