@@ -1,0 +1,32 @@
+[project]
+name = "cfundata"
+version = "0.0.3"
+description = "Data file utilized by the cfun package"
+authors = [
+    {name = "zoushucai",email = "1228075512@qq.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+]
+
+[tool.poetry]
+packages = [{include = "cfundata", from = "src"}]
+include = ["src/cfun/data/*", "src/cfun/dx/*"]
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+priority = "primary"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+homepage = "https://github.com/zoushucai/cfundata"
+repository = "https://github.com/zoushucai/cfundata"
