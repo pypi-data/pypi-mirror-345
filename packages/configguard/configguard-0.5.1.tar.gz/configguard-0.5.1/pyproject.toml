@@ -1,0 +1,155 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "configguard"
+version = "0.5.1"
+description = "A robust, schema-driven configuration management library for Python with encryption, versioning, nested sections, and multiple backends."
+readme = "README.md"
+authors = [{ name = "ParisNeo", email = "parisneoai@gmail.com" }]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+
+requires-python = ">=3.8"
+keywords = [
+    "config",
+    "configuration",
+    "settings",
+    "schema",
+    "validation",
+    "encryption",
+    "versioning",
+    "json",
+    "yaml",
+    "toml",
+    "sqlite",
+    "ini",
+    "settings management",
+    "options",
+    "nested config",
+    "sections",
+    "dynamic config",
+]
+classifiers = [
+    # Development Status: Adjust as appropriate (Beta seems fitting now)
+    "Development Status :: 4 - Beta",
+    # Audience
+    "Intended Audience :: Developers",
+    # Python Versions Supported (Update based on testing)
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    # Operating System
+    "Operating System :: OS Independent",
+    # Topics
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    # Typing Support
+    "Typing :: Typed",
+]
+
+# Core runtime dependencies
+dependencies = [
+    "ascii_colors>=0.10.1", # For logging
+    "packaging>=20.0",     # For version parsing
+    # Handlers dependencies are optional below
+]
+
+# Optional dependencies / Extras
+[project.optional-dependencies]
+encryption = [
+    "cryptography>=3.4", # Required for encryption features
+]
+yaml = [
+    "pyyaml>=6.0",       # Required for YamlHandler
+]
+toml = [
+    "toml>=0.10.2",        # Required for TomlHandler
+]
+# SQLite uses built-in sqlite3
+
+# Combine multiple extras easily: pip install .[encryption,dev]
+all = ["configguard[encryption,yaml,toml]"]
+
+# Development dependencies (testing, linting, formatting, building docs)
+dev = [
+    "pytest>=7.0",        # Testing framework
+    "pytest-cov>=3.0",    # Test coverage
+    "black>=23.0",        # Code formatter
+    "ruff>=0.1.0",        # Linter (replaces flake8, isort etc.)
+    "mypy>=1.0",          # Static type checker
+    "cryptography>=3.4",  # Needed for testing encryption features
+    "pyyaml>=6.0",        # Needed for testing YamlHandler
+    "toml>=0.10.2",       # Needed for testing TomlHandler
+    # Documentation tools (optional, depends on theme)
+    "sphinx>=6.0",
+    "sphinx-rtd-theme>=1.0", # Example theme
+    # GUI example dependency (optional for dev)
+    "PyQt5>=5.15",
+]
+
+# Include dev dependencies in 'all' for convenience during development
+# all = ["configguard[encryption,yaml,toml,dev]"] # Alternative if needed
+
+
+[project.urls]
+Homepage = "https://github.com/ParisNeo/ConfigGuard"
+Repository = "https://github.com/ParisNeo/ConfigGuard.git"
+Documentation = "https://parisneo.github.io/ConfigGuard/" # Update if name changes
+Issues = "https://github.com/ParisNeo/ConfigGuard/issues"
+Changelog = "https://github.com/ParisNeo/ConfigGuard/blob/main/CHANGELOG.md"
+
+
+# --- Tool Configurations ---
+
+[tool.setuptools]
+# Include non-code files specified in MANIFEST.in (though less common with pyproject.toml)
+# include-package-data = true
+# Or explicitly list package data here
+[tool.setuptools.package-data]
+configguard = ["py.typed"] # Mark package as type-hinted (PEP 561)
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["configguard*"]
+# Exclude tests, docs, examples from the built package
+exclude = ["tests*", "docs*", "examples*"]
+
+
+# --- Code Style & Linting ---
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+
+[tool.ruff]
+select = ["E", "W", "F", "I", "C", "N", "UP", "B", "A", "SIM", "ARG", "PL"]
+ignore = ["E501"] # Ignore line length errors (handled by Black)
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.isort]
+# known-first-party = ["configguard"] # Help isort identify your package
+
+[tool.mypy]
+python_version = "3.8"
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+# strict = true # Enable for stricter checking (might require more annotations)
+# exclude = ['tests/'] # Optionally exclude tests if they are less strict
+
+# --- Testing ---
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q -v --cov=configguard --cov-report=term-missing --cov-fail-under=80" # Example options: verbose, coverage report, fail below 80%
+testpaths = [
+    "tests", # Directory where tests are located
+]
