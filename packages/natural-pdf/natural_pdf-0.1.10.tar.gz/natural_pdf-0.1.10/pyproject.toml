@@ -1,0 +1,180 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools-scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+# --- Project Metadata (PEP 621) ---
+[project]
+name = "natural-pdf"
+# Version is now managed dynamically by setuptools-scm based on Git tags
+dynamic = ["version"]
+authors = [
+    { name = "Jonathan Soma", email = "jonathan.soma@gmail.com" },
+]
+description = "A more intuitive interface for working with PDFs"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pdfplumber",
+    "Pillow",
+    "colour",
+    "numpy",
+    "urllib3",
+    "tqdm",
+    "pydantic"
+]
+
+[project.optional-dependencies]
+interactive = [
+    "ipywidgets>=7.0.0,<9.0.0"
+]
+haystack = [
+    "haystack-ai",
+    "lancedb-haystack",
+    "lancedb",
+    "sentence-transformers",
+    "natural-pdf[core-ml]",
+]
+easyocr = [
+    "easyocr",
+    "natural-pdf[core-ml]",
+]
+paddle = ["paddlepaddle", "paddleocr"]
+layout_yolo = [
+    "doclayout_yolo",
+    "natural-pdf[core-ml]",
+]
+surya = [
+    "surya-ocr",
+    "natural-pdf[core-ml]",
+]
+doctr = [
+    "python-doctr[torch]",
+    "natural-pdf[core-ml]",
+]
+qa = [
+    "natural-pdf[core-ml]",
+]
+
+docling = [
+    "docling", 
+    "natural-pdf[core-ml]",
+]
+
+llm = [
+    "openai>=1.0", # For OpenAI compatibility layer / general LLM API interaction
+]
+
+classification = [
+    "sentence-transformers", # Explicitly add for text models
+    "timm",                # Often needed for vision models via transformers
+    "natural-pdf[core-ml]", # Include torch, transformers, etc.
+]
+
+test = [
+    "pytest",
+]
+
+dev = [
+    "black",
+    "isort",
+    "mypy",
+    "pytest",
+    "nox",
+    "nox-uv",
+    "build",
+    "uv",
+    "pipdeptree",
+    "nbformat",
+    "jupytext",
+    "nbclient"
+]
+
+deskew = [
+    "deskew>=1.5",
+    "img2pdf"
+]
+
+all = [
+    "natural-pdf[interactive]",
+    "natural-pdf[haystack]",
+    "natural-pdf[easyocr]",
+    "natural-pdf[paddle]",
+    "natural-pdf[layout_yolo]",
+    "natural-pdf[surya]",
+    "natural-pdf[doctr]",
+    "natural-pdf[qa]",
+    "natural-pdf[ocr-export]",
+    "natural-pdf[docling]",
+    "natural-pdf[llm]",
+    "natural-pdf[classification]",
+    "natural-pdf[deskew]",
+    "natural-pdf[test]"
+]
+
+core-ml = [
+    "torch", 
+    "torchvision",
+    "transformers[sentencepiece]",
+    "huggingface_hub",
+]
+
+ocr-export = [
+    "ocrmypdf",
+    "pikepdf", 
+]
+
+export-extras = [
+    "jupytext",
+    "nbformat",
+]
+
+[project.urls]
+Homepage = "https://github.com/jsoma/natural-pdf"
+Repository = "https://github.com/jsoma/natural-pdf"
+
+# --- Tool Configurations ---
+
+[tool.setuptools_scm]
+# Empty section uses default configuration (version from Git tags)
+
+[tool.black]
+line-length = 100
+target-version = ['py37']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+filterwarnings = [
+    # Ignore specific deprecation warnings from dependencies
+    "ignore:The distutils package is deprecated:DeprecationWarning",
+    "ignore:Support for class-based `config` is deprecated",
+    "ignore:deprecated:DeprecationWarning:docling_core.types.doc.document",
+]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = [
+    "tests", "tests.*",
+    "build", "dist", "*.egg-info",
+    "docs", "docs.*",
+    ".nox", ".venv", "env", "venv"
+]
