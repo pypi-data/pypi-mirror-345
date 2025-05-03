@@ -1,0 +1,51 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dirmeta"
+version = "0.1"
+authors = [
+    { name = "Saptarshi Chakrabarti | LISCO", email = "saptarshi.chakrabarti@kuleuven.be" },
+]
+description = "A CLI tool to scan filesystem directory structures and view the captured metadata."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.7"
+# --- More General Keywords ---
+keywords = [
+    "filesystem", "metadata", "directory", "scan", "structure", "tree",
+    "cli", "utility", "file management"
+    ]
+# --- More General Classifiers ---
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Filesystems",
+    "Topic :: Utilities",
+]
+
+# No external dependencies currently needed
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/saptarshichakrabarti/dirmeta"
+Repository = "https://github.com/saptarshichakrabarti/dirmeta"
+
+# --- Defines the command-line tools ---
+[project.scripts]
+structure-scan = "dirmeta.scanner:main"  # Command installed = package.module:function
+structure-view = "dirmeta.viewer:main"
