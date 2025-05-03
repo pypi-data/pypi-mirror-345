@@ -1,0 +1,76 @@
+Metadata-Version: 2.3
+Name: gnnepcsaftcli
+Version: 0.5.0
+Summary: 
+Author: wildsonbbl
+Author-email: wil_bbl@hotmail.com
+Requires-Python: >=3.10
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: gnnepcsaft
+Requires-Dist: gnnepcsaft-mcp-server (>=0.2.3,<0.3.0)
+Requires-Dist: onnxruntime (>=1.20.1,<2.0.0)
+Requires-Dist: rdkit (>=2024.9.4,<2025.0.0)
+Requires-Dist: typer (>=0.15.1,<0.16.0)
+Description-Content-Type: text/markdown
+
+# GNNePCSAFT CLI
+
+Project focused in the use of graph neural networks to estimate the pure-component parameters of the Equation of State [ePC-SAFT](https://en.wikipedia.org/wiki/PC-SAFT).
+
+The motivation of this work is to be able to use a robust Equation of State, ePC-SAFT, without prior need of experimental data. Equations of State are important to calculate thermodynamic properties, and are pre-requisite in process simulators.
+
+Currently, the model takes in account only the hard-chain, dispersive and assoc terms of ePC-SAFT. Future work on polar and ionic terms are being studied.
+
+Code is being developed mainly in Pytorch (PYG).
+
+You can find the model deployed at [GNNePCSAFT Webapp](https://gnnepcsaft.wildsonbbl.com/).
+
+A CLI to use the model can be found at [GNNePCSAFT CLI](https://github.com/wildsonbbl/gnnepcsaftcli) and installed with `pipx` or `uvx`:
+
+```bash
+pipx install gnnepcsaftcli
+gnnepcsaftcli pred
+```
+
+```bash
+uvx gnnepcsaftcli pred
+```
+
+## CLI
+
+GNNePCsAFT CLI tool
+
+**Usage**:
+
+```console
+gnnepcsaftcli [OPTIONS] COMMAND [ARGS]...
+```
+
+**Options**:
+
+- `--install-completion`: Install completion for the current shell.
+- `--show-completion`: Show completion for the current shell, to copy it or customize the installation.
+- `--help`: Show this message and exit.
+
+**Commands**:
+
+- `pred`: Predict ePCSAFT parameters from SMILES...
+
+## `pred`
+
+Predict ePCSAFT parameters from SMILES with a GNNePCSAFT model
+
+**Usage**:
+
+```console
+pred [OPTIONS]
+```
+
+**Options**:
+
+- `--help`: Show this message and exit.
+
