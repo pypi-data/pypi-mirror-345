@@ -1,0 +1,7 @@
+
+
+
+def decipher ();
+	legend = {}
+	
+	

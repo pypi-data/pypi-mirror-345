@@ -1,0 +1,98 @@
+Metadata-Version: 2.3
+Name: woofs
+Version: 0.0.2
+Summary: Call Option Expensiveness
+License: GPL-3.0-only
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: Emergency (>=2.0.0,<3.0.0)
+Requires-Dist: flask (>=3.0.3,<4.0.0)
+Requires-Dist: matplotlib (>=3.10.1,<4.0.0)
+Requires-Dist: numpy (>=2.0.1,<3.0.0)
+Requires-Dist: plotly (>=5.23.0,<6.0.0)
+Requires-Dist: prettytable (>=3.16.0,<4.0.0)
+Requires-Dist: pydash (>=8.0.1,<9.0.0)
+Requires-Dist: python-dotenv (>=1.1.0,<2.0.0)
+Requires-Dist: rich (>=13.0.0,<14.0.0)
+Requires-Dist: scipy (>=1.14.0,<2.0.0)
+Requires-Dist: ventures (>=1.6.0,<2.0.0)
+Description-Content-Type: text/markdown
+
+
+
+
+# woofs
+This has call option info.   
+
+
+## Install
+```
+pip install woofs
+```
+
+## Relevant
+```
+https://etfdb.com/etfs/sector/#sector-power-rankings__return-leaderboard
+```
+
+## Call Option Expensiveness
+```
+from woofs.openings.call_option_opening import call_option_opening
+
+Tradier_API_Key = os.environ ['Tradier_API_Key']
+
+def coins__call_option_expensiveness (packet):
+	coins = packet ["coins"]
+	
+	print ("call option day 100 expensiveness");
+	for coin in coins:
+		call_option = call_option_opening ({
+			"Tradier_API_Key": Tradier_API_Key,
+			"symbol": coin [0]
+		});
+		
+		expensiveness = call_option ["call_option_expensiveness_day_100"];
+		
+		print (f"{ expensiveness } for { coin [0] } '{ coin [1] }'");
+
+
+sectors = [
+	[ "ETHA", "Ethereum" ],
+	[ "IVV",  "iShares S&P 500" ],
+	[ "USRT", "iShares Core US REIT ETF" ]
+]
+
+
+coins__call_option_expensiveness ({
+	"coins": sectors
+});
+```
+
+
+## Call Option Expensiveness
+### Show a Plot
+```
+import os
+Tradier_API_Key = os.environ ['Tradier_API_Key']
+
+from woofs.openings.call_option_opening import call_option_opening
+call_option = call_option_opening ({
+	"Tradier_API_Key": Tradier_API_Key,
+	"symbol": "ETHA"
+});
+
+from woofs.shows.call_option_expensiveness.plot_2 import plot_call_option_expensiveness
+plot_path = normpath (join (this_directory, 'smoothed_plot.png'));
+plt = plot_call_option_expensiveness (
+	call_option ["call_option_expensiveness"], 
+	call_option ["call_option_expensiveness_smooth"]
+);
+plt.savefig (plot_path, bbox_inches = 'tight')
+plt.close ()
+
+```
