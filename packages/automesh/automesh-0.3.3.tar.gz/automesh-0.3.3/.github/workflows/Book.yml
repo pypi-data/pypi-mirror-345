@@ -1,0 +1,58 @@
+name: Book
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+env:
+  CARGO_TERM_COLOR: always
+on:
+  pull_request:
+    branches: main
+  push:
+    branches: main
+permissions: {}
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Toolchain
+        uses: actions-rs/toolchain@88dc2356392166efad76775c878094f4e83ff746
+        with:
+          toolchain: stable
+      - name: Install
+        uses: taiki-e/install-action@33734a118689b0b418824fb78ea2bf18e970b43b
+        with:
+          tool: mdbook, mdbook-cmdrun, mdbook-katex
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: CLI
+        run: cargo install --path .
+      - name: Rust
+        run: cargo build --release
+      - name: Python
+        run: pip install .
+      - name: Test
+        run: mdbook test --library-path target/release/deps/
+      - name: Build
+        run: mdbook build
+      - name: Move
+        run: mkdir -p _site/ && cp -r book/build/* _site/
+      - name: Upload
+        uses: actions/upload-pages-artifact@v3
+  Deploy:
+    if: github.event_name != 'pull_request'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: Build
+    permissions:
+      id-token: write
+      pages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deployment
+        id: deployment
+        uses: actions/deploy-pages@v4

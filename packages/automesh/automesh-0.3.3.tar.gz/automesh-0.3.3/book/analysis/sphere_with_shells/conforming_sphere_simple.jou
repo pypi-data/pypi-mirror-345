@@ -1,0 +1,89 @@
+# 2024-12-24 Used Cubit 16.14
+# based on
+# https://github.com/autotwin/basis/blob/main/data/cubit/quarter_spheres_003_ext_units.jou
+
+# ----------------
+# INPUT PARAMETERS
+# ----------------
+
+reset
+
+# centimeters
+# {OUT_RADIUS = 12.0} # cm
+sphere radius {OUT_RADIUS}
+
+section vol all xplane
+section vol all yplane
+section vol all zplane
+
+imprint vol all
+merge vol all
+
+# {ELEMENT_SIZE = 2.4} # cm
+# {ELEMENT_TOLERANCE = ELEMENT_SIZE/10000.0}
+
+curve 5  size auto factor 10
+curve 5  scheme equal
+curve 6  size auto factor 10
+curve 6  scheme equal
+curve 8  size auto factor 10
+curve 8  scheme equal
+volume 1  scheme tetprimitive
+volume 1  scheme tetprimitive
+mesh volume 1
+
+# {UNITS = "cm"}
+
+# {savefolder = "/Users/chovey/autotwin/automesh/book/analysis/sphere_with_shells/"}
+
+# {basename = "conf_simple_"}
+# {tempname = "unmerged_simple_"}
+
+# {str_temp_e = savefolder//tempname//tostring(ELEMENT_SIZE)//UNITS//".e"}
+
+# {str_exodus = savefolder//basename//tostring(ELEMENT_SIZE)//UNITS//".e"}
+
+# {str_abaqus = savefolder//basename//tostring(ELEMENT_SIZE)//UNITS//".inp"}
+
+# {str_export_exodus = 'export mesh "'//str_exodus// '" overwrite '}
+
+# {str_export_abaqus = 'export abaqus "'//str_abaqus// '" overwrite everything'}
+
+# {str_export_temp_e = 'export mesh "'//str_temp_e// '" overwrite '}
+
+# {str_import_temp_e = 'import mesh geometry "'//str_temp_e// '" feature_angle 135.00 merge merge_nodes {ELEMENT_TOLERANCE} '}
+
+Volume all copy reflect x
+Volume all copy reflect y
+Volume all copy reflect z
+
+imprint vol all
+merge vol all
+
+{rescan(str_export_temp_e)}
+
+reset
+
+{rescan(str_import_temp_e)}
+
+{rescan(str_export_exodus)}
+{rescan(str_export_abaqus)}
+
+graphics scale on
+graphics clip off
+
+view iso
+graphics clip on plane location 0 -0.1 0 direction 0 1 0
+view up 0 0 1
+view from 100 -100 100
+
+graphics clip manipulation off
+# graphics scale off
+
+view bottom
+
+# tracer visualization
+graphics clip on plane location 0 0 0.1 direction 0 0 -1
+view iso
+view up 0 1 0
+view from 0 0 100

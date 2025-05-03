@@ -1,0 +1,190 @@
+# 2024-12-24 Used Cubit 16.14
+# based on
+# https://github.com/autotwin/basis/blob/main/data/cubit/quarter_spheres_003_ext_units.jou
+
+reset
+
+# ----------------
+# INPUT PARAMETERS
+# ----------------
+
+# meters
+# {INNER_RADIUS = 0.10} # m
+# {MID_RADIUS = 0.11} # m
+# {OUT_RADIUS = 0.12} # m
+#
+# {ELEMENT_SIZE = 0.01} # m
+# {ELEMENT_SIZE = 0.005} # m
+# {ELEMENT_SIZE = 0.0025} # m
+# {ELEMENT_SIZE = 0.001} # m
+#
+# {UNITS = "m"}
+
+# centimeters
+# {INNER_RADIUS = 10.0} # cm
+# {MID_RADIUS = 11.0} # cm
+# {OUT_RADIUS = 12.0} # cm
+#
+# {ELEMENT_SIZE = 1.0} # cm
+# {ELEMENT_SIZE = 0.25} # cm
+# {ELEMENT_SIZE = 0.1} # cm
+# {ELEMENT_SIZE = 0.5} # cm
+#
+# {UNITS = "cm"}
+
+# {savefolder = "/users/chovey/autotwin/basis/data/cubit/"}
+# {savefolder = "/users/chovey/autotwin/basis/scratch/"}
+# {savefolder = "/Users/chovey/autotwin/automesh/book/analysis/sphere_with_shells/"}
+
+# {basename = "smooth_"}
+# 2024-07-25
+# Prefer "conf_" for conforming instead of "smooth_" since smooth is
+# ambigious when applied to the simplified and detailed human head models; as
+# both are smooth models.
+# {basename = "conf_"}
+
+# {str_exodus = savefolder//basename//tostring(ELEMENT_SIZE)//UNITS//".e"}
+# {str_exodus = savefolder//basename//tostring(ELEMENT_SIZE)//UNITS//".g"}
+# example:
+# /Users/chovey/autotwin/basis/data/cubit/spheres_e_len_0.01m.e
+# /Users/chovey/autotwin/basis/data/cubit/spheres_e_len_0.01m.g
+# /Users/chovey/autotwin/basis/scratch/smooth_1cm.g
+
+# {str_abaqus = savefolder//basename//tostring(ELEMENT_SIZE)//UNITS//".inp"}
+# example:
+# /Users/chovey/autotwin/basis/data/cubit/spheres_e_len_0.01m.inp
+# /Users/chovey/autotwin/basis/scratch/smooth_1cm.inp
+
+# {str_export_exodus = 'export mesh "'//str_exodus// '" overwrite '}
+# example:
+# export mesh   "/Users/chovey/autotwin/basis/data/cubit/spheres_e_len_0.01m.e" overwrite
+# export mesh   "/Users/chovey/autotwin/basis/data/cubit/spheres_e_len_0.01m.g" overwrite
+# export mesh   "/Users/chovey/autotwin/basis/scratch/smooth_1cm.g" overwrite
+
+# {str_export_abaqus = 'export abaqus "'//str_abaqus// '" overwrite everything'}
+# example:
+# export abaqus "/Users/chovey/autotwin/basis/data/cubit/spheres_e_len_0.01m.inp" overwrite everything
+# export abaqus "/Users/chovey/autotwin/basis/scratch/smooth_1cm.inp" overwrite everything
+
+#   From Sokolow, 2024-03-04-1725:
+#   // in aprepro is string concatenation
+#   I separated the folder from the file name just for readability.
+#   The definition of “st” is to setup the folder+filename
+#   The definition of “s2” is to prevent cubit/aprepro from getting confused with nested strings by using single quotes surrounding a solitary double quote.
+#   The last line “rescan” actually tells cubit to process the whole string as a command.
+#   The save folder definition I would put at the top of the journal file.
+
+# -------------------
+# DERIVED CALCUATIONS
+# -------------------
+
+# {SHELL_INTERVAL = max(2, ceil((MID_RADIUS - INNER_RADIUS)/ELEMENT_SIZE))}
+# {SHELL_INTERVAL = max(3, ceil((MID_RADIUS - INNER_RADIUS)/ELEMENT_SIZE))}
+# {ELEMENT_TOLERANCE = ELEMENT_SIZE/10000.0}
+# {SELECTION_RADIUS = INNER_RADIUS/2.0}
+
+create sphere radius {OUT_RADIUS}
+# create the MID_RADIUS sphere twice for boolean subtraction operations
+create sphere radius {MID_RADIUS}
+create sphere radius {MID_RADIUS}
+create sphere radius {INNER_RADIUS}
+
+# create the outer-most shell
+subtract volume 2 from volume 1 # creates new volume 5
+# create mid-shell
+subtract volume 4 from volume 3 # creates new volume 6
+# create inner sphere
+create sphere radius {INNER_RADIUS} # creates new volume 7
+
+section vol all yplane
+section vol all zplane
+section vol all xplane
+
+imprint vol all
+merge vol all
+
+vol 7 rename "vol_in"
+vol 6 rename "vol_mid"
+vol 5 rename "vol_out"
+vol all size {ELEMENT_SIZE}
+volume with name "vol_in" scheme tetprimitive
+
+# highlight curve with x_coord < 1.0 and with y_coord < 1.0 and with z_coord < 1.0
+
+# instead of programmatically selecting the radial curves, select manually
+# curve with x_coord < {SELECTION_RADIUS} and with y_coord < {SELECTION_RADIUS} and with z_coord < {SELECTION_RADIUS} interval {ceil(INNER_RADIUS/ELEMENT_SIZE)}
+# curve with x_coord < {SELECTION_RADIUS} and with y_coord < {SELECTION_RADIUS} and with z_coord < {SELECTION_RADIUS} scheme equal
+# mesh curve with x_coord < {SELECTION_RADIUS} and with y_coord < {SELECTION_RADIUS} and with z_coord < {SELECTION_RADIUS}
+
+mesh volume with name "vol_in"
+
+# vol_mid radial curves
+curve 14 32 34 interval {SHELL_INTERVAL}
+curve 14 32 34 scheme equal
+mesh curve 14 32 34
+# vol_out radial curves
+curve 26 6 28 interval {SHELL_INTERVAL}
+curve 26 6 28 scheme equal
+mesh curve 26 6 28
+
+
+volume with name "vol_mid" redistribute nodes off
+volume with name "vol_out" redistribute nodes off
+# surface 34 is at the inner radius (19 -> 34)
+# surface 29 is at the middle radius (21 -> 29)
+# surface 31 is at the outer radius
+# mesh vol_mid
+volume with name "vol_mid" scheme sweep source surface 34    target surface 29    sweep transform least squares
+volume with name "vol_mid"  autosmooth target on  fixed imprints off  smart smooth off
+mesh volume with name "vol_mid"
+# mesh vol_out
+volume with name "vol_out" scheme sweep source surface 29    target surface 31    sweep transform least squares
+volume with name "vol_out"  autosmooth target on  fixed imprints off  smart smooth off
+mesh volume with name "vol_out"
+
+Volume all copy reflect x
+Volume all copy reflect y
+Volume all copy reflect z
+
+block 1 volume with name "vol_in*"
+block 2 volume with name "vol_mid*"
+block 3 volume with name "vol_out*"
+
+# quality volume all shape global draw mesh
+
+# export mesh "/Users/chovey/autotwin/basis/data/cubit/unmerged" + {ELEMENT_SIZE}.e  overwrite
+# export mesh "/Users/chovey/autotwin/basis/data/cubit/unmerged.e"  overwrite
+# export mesh "/Users/chovey/autotwin/basis/scratch/unmerged.e"  overwrite
+export mesh "/Users/chovey/autotwin/automesh/book/analysis/sphere_with_shells/unmerged.e"  overwrite
+
+reset
+
+# import mesh geometry "/Users/chovey/autotwin/basis/data/cubit/unmerged.e" feature_angle 135.00  merge  merge_nodes {ELEMENT_SIZE/100}
+# import mesh geometry "/Users/chovey/autotwin/basis/data/cubit/unmerged.e" feature_angle 135.00  merge  merge_nodes {ELEMENT_TOLERANCE}
+# import mesh geometry "/Users/chovey/autotwin/basis/scratch/unmerged.e" feature_angle 135.00  merge  merge_nodes {ELEMENT_TOLERANCE}
+import mesh geometry "/Users/chovey/autotwin/automesh/book/analysis/sphere_with_shells/unmerged.e" feature_angle 135.00  merge  merge_nodes {ELEMENT_TOLERANCE}
+
+sideset 1 add surface 1
+sideset 2 add surface 2
+
+{rescan(str_export_exodus)}
+{rescan(str_export_abaqus)}
+
+graphics scale on
+graphics clip off
+
+view iso
+graphics clip on plane location 0 -0.1 0 direction 0 1 0
+view up 0 0 1
+view from 100 -100 100
+
+graphics clip manipulation off
+# graphics scale off
+
+view bottom
+
+# tracer visualization
+graphics clip on plane location 0 0 0.1 direction 0 0 -1
+view iso
+view up 0 1 0
+view from 0 0 100

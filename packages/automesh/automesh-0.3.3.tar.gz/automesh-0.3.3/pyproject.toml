@@ -1,0 +1,58 @@
+[project]
+authors = [
+  {email = "chovey@sandia.gov"},
+  {name = "Chad B. Hovey"},
+  {email = "mrbuche@sandia.gov"},
+  {name = "Michael R. Buche"},
+]
+classifiers = [
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering",
+  "Programming Language :: Python",
+  "Programming Language :: Rust",
+]
+description = "automesh"
+dependencies = [
+  "numpy",
+]
+dynamic = ["version"]
+name = "automesh"
+requires-python = ">=3.8,<3.14"
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "pdoc",
+  "pre-commit",
+  "pycodestyle",
+  "pytest",
+  "pytest-cov",
+]
+
+[project.urls]
+Documentation = "https://automesh.readthedocs.io"
+Homepage = "https://autotwin.github.io/automesh"
+Repository = "https://github.com/autotwin/automesh"
+
+[tool.pytest.ini_options]
+python_files = [
+  "*.py"
+]
+testpaths = [
+  "tests/"
+]
+
+[build-system]
+build-backend = "maturin"
+requires = [
+  "maturin==1.8.3"
+]
+
+[tool.maturin]
+features = [
+  "pyo3/extension-module",
+  "python",
+]
+profile = "release"
