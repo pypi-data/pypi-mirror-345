@@ -1,0 +1,145 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      make-release:
+        description: 'Make a release'
+        required: true
+        default: 'false'
+        type: boolean
+      bump:
+        description: 'Version bump type (applies if make-release is true)'
+        required: true
+        default: 'PATCH'
+        type: choice
+        options:
+        - PATCH
+        - MINOR
+        - MAJOR
+      publish-pypi:
+        description: 'Publish to PyPI'
+        required: true
+        default: 'false'
+        type: boolean
+      publish-docs:
+        description: 'Publish to GitHub Pages'
+        required: true
+        default: 'false'
+        type: boolean
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: NearAI CI
+    steps:
+
+    - name: Generate a token
+      id: generate-token
+      uses: actions/create-github-app-token@v1.11.0
+      with:
+        app-id: ${{ secrets.APP_ID }}
+        private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+    - name: Ensure NearAIBot status
+      run: |
+        echo "${{ steps.generate-token.outputs.token }}" | gh auth login --with-token
+        gh auth setup-git
+        gh auth status
+    
+    - name: Set git config for commit identity
+      run: |
+        git config --global user.email "nearaibot[bot]@users.noreply.github.com"
+        git config --global user.name "nearaibot[bot]"
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        token: ${{ steps.generate-token.outputs.token }}
+        fetch-depth: 0
+        persist-credentials: false
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install uv
+      run: pip install uv
+
+    - name: Install Codespell
+      run: pip install codespell
+
+    - name: Run Codespell
+      run: codespell --config .codespellrc
+
+    - name: check lock file for inconsistencies
+      run: uv lock --check
+
+    - name: Install dependencies
+      run: uv pip install ".[dev,docs]" --system
+
+    - name: Lint Check
+      run: ./scripts/lint_check.sh
+
+    - name: Format Check
+      run: ./scripts/format_check.sh
+
+    - name: Type Check
+      run: ./scripts/type_check.sh
+
+    - name: Bump version and generate changelog
+      uses: commitizen-tools/commitizen-action@master
+      with:
+        push: false
+        github_token: ${{ steps.generate-token.outputs.token }}
+        changelog_increment_filename: body.md
+        increment: ${{ github.event.inputs.bump }}
+      if: ${{ github.event.inputs.make-release == 'true' }}
+
+    - name: Update lock file and amend commit
+      run: |
+        sudo chmod -R ugo+rw .git/
+        uv lock
+        echo "Lock file changes are staged and ready"
+        git add uv.lock
+        git commit --amend --no-edit
+        echo "Lock file changes are committed"
+        git push origin main
+        echo "Lock file changes are pushed"
+      env:
+        GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+      if: ${{ github.event.inputs.make-release == 'true' }}
+
+    - name: Create release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ env.REVISION }}
+        body_path: "body.md"
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+      if: ${{ github.event.inputs.make-release == 'true' }}
+    
+    - name: Build site
+      run: ./scripts/build_mkdocs.sh
+      if: ${{ github.event.inputs.publish-docs == 'true' }}
+      
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3.2.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./site
+      if: ${{ github.event.inputs.publish-docs == 'true' }}
+      
+    - name: Build package
+      run: uv build
+      if: ${{ github.event.inputs.publish-pypi == 'true' }}
+      
+    - name: Publish to PyPI
+      env:
+          ## TODO: Change the secret name to only PIPI_TOKEN
+          UV_PUBLISH_TOKEN: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
+      run: uv publish
+      if: ${{ github.event.inputs.publish-pypi == 'true' }}

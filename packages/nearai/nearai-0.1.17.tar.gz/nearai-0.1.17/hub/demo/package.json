@@ -1,0 +1,91 @@
+{
+  "name": "nearai-hub",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "npm": ">=10",
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "format": "prettier --check ./src",
+    "format:fix": "prettier --write ./src",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix --max-warnings 0",
+    "lint:strict": "next lint --max-warnings 0",
+    "start": "next start",
+    "ts:check": "tsc --noEmit --incremental",
+    "prepare": "cd ../../ && husky hub/demo/.husky"
+  },
+  "dependencies": {
+    "@gera2ld/tarjs": "^0.3.1",
+    "@hookform/resolvers": "^3.6.0",
+    "@near-wallet-selector/bitte-wallet": "8.9.14",
+    "@near-wallet-selector/core": "8.9.14",
+    "@near-wallet-selector/here-wallet": "8.9.14",
+    "@near-wallet-selector/meteor-wallet": "8.9.14",
+    "@near-wallet-selector/modal-ui": "8.9.14",
+    "@near-wallet-selector/my-near-wallet": "8.9.14",
+    "@near-wallet-selector/sender": "8.9.14",
+    "@nearai/ui": "^1.0.2",
+    "@phosphor-icons/react": "^2.1.7",
+    "@radix-ui/react-navigation-menu": "^1.2.1",
+    "@t3-oss/env-nextjs": "^0.12.0",
+    "@tanstack/react-query": "^5.64.1",
+    "@trpc/client": "^11.0.0-rc.700",
+    "@trpc/react-query": "^11.0.0-rc.700",
+    "@trpc/server": "^11.0.0-rc.700",
+    "@uidotdev/usehooks": "^2.4.1",
+    "client-only": "^0.0.1",
+    "date-fns": "^4.1.0",
+    "json-schema-migrate": "^2.0.0",
+    "lodash-es": "^4.17.21",
+    "mime": "^4.0.6",
+    "near-api-js": "4.0.3",
+    "next": "^15.2.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
+    "react-hook-form": "^7.52.0",
+    "react-markdown": "^9.0.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "remark-gfm": "^4.0.0",
+    "sass": "^1.86.0",
+    "server-only": "^0.0.1",
+    "superjson": "^2.2.1",
+    "unist-util-visit": "^5.0.0",
+    "zod": "^3.24.2",
+    "zod-to-json-schema": "^3.24.1",
+    "zustand": "^5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@next/eslint-plugin-next": "^15.2.3",
+    "@svgr/webpack": "^8.1.0",
+    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "eslint": "^9",
+    "eslint-config-next": "^15.2.3",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
+    "postcss": "^8.4.34",
+    "prettier": "^3.5.3",
+    "typescript": "^5"
+  },
+  "lint-staged": {
+    "./src/**/*.{ts,tsx}": [
+      "bash -c 'npm run ts:check'",
+      "eslint --fix --max-warnings 0"
+    ],
+    "./src/**/*": [
+      "prettier --write"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+[Unit]
+Description=NEAR AI Server
+After=network.target
+
+[Service]
+User=setup
+Type=simple
+Restart=no
+WorkingDirectory=/home/setup/.nearai/nearai
+EnvironmentFile=/home/setup/.nearai/nearai/etc/server.env
+ExecStart=/home/setup/.nearai/nearai/etc/start_server.sh
+LimitMEMLOCK=infinity
+LimitRSS=infinity
+
+[Install]
+WantedBy=multi-user.target

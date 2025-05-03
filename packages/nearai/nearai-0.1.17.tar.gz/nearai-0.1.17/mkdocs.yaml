@@ -1,0 +1,213 @@
+site_name: NEAR AI
+site_author: NEAR AI
+site_description: NEAR AI Docs - Quickly build and deploy robust AI agents, models, benchmarks, and more.
+repo_name: nearai
+repo_url: https://github.com/nearai/nearai/
+site_url: https://docs.near.ai/
+edit_uri: edit/main/docs/
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: ignore
+  links:
+    anchors: ignore
+theme:
+  name: material
+  favicon: assets/images/favicon.ico
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+    theme:
+    admonition:
+      note: octicons/tag-16
+      abstract: octicons/checklist-16
+      info: octicons/info-16
+      tip: octicons/squirrel-16
+      success: octicons/check-16
+      question: octicons/question-16
+      warning: octicons/alert-16
+      failure: octicons/x-circle-16
+      danger: octicons/zap-16
+      bug: octicons/bug-16
+      example: octicons/beaker-16
+      quote: octicons/quote-16
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.tabs.link
+    - content.tooltips
+    - header.autohide
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.prune
+    - navigation.expand
+    - navigation.sections
+    - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    # - toc.integrate
+  palette:
+      - scheme: default
+        primary: black
+        accent: indigo
+        toggle:
+          icon: material/brightness-7
+          name: Switch to dark mode
+      - scheme: slate
+        primary: black
+        accent: indigo
+        toggle:
+          icon: material/brightness-4
+          name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      auto_append:
+        - includes/mkdocs.md
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.arithmatex:
+      generic: true
+      
+extra_javascript:
+  - javascripts/katex.js
+  - https://unpkg.com/katex@0/dist/katex.min.js
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+
+extra_css:
+  - https://unpkg.com/katex@0/dist/katex.min.css
+  - docs.css
+nav:
+  - Home:
+    - Welcome To NEAR AI Docs: 'index.md'
+    - 'cli.md'
+    - Contributing: 'contributing.md'
+    - Decentralization: 'decentralization.md'
+    - Private & Verifiable AI: 'private-ml-sdk.md'
+  - Agents:
+    - Building Agents:
+      - Quickstart: 'agents/quickstart.md'
+      - Integration: 'agents/integration.md'
+      - "Environment":
+        - 'agents/env/overview.md'
+        - 'agents/env/messages_files.md'
+        - 'agents/env/inference.md'
+        - 'agents/env/tools.md'
+        - NEAR Blockchain: 'agents/env/near.md'
+        - Secrets & Variables: 'agents/env/variables.md'
+        - Supported Packages: 'agents/env/frameworks.md'
+        - Local & Remote Runs: 'agents/running.md'
+      - Registry: 'agents/registry.md'
+      - Core Features:
+        - Threads: 'agents/threads.md'
+        - Vector Stores: 'agents/vector-stores.md'
+        - Inference (OpenAI): 'inference.md'
+        - Benchmarks and Evaluations: 'models/benchmarks_and_evaluations.md'
+        - Streaming: 'agents/streaming.md'
+      - Templates:
+        - CDP AgentKit: 'agents/templates/coinbase.md'
+    - Agent Patterns:
+      - Event-Driven Agents:
+        - NEAR Event-Triggered Agents: 'agents/patterns/near_events.md'
+        - Twitter (X) Triggered Agents: 'agents/patterns/agent_triggers.md'
+      - Using Multiple Agents:
+        - Orchestrating Multiple Agents: 'agents/patterns/orchestration.md'
+        - Agent to Agent Communication: 'agents/patterns/agent_to_agent.md'
+    - Examples:
+      - Overview: 'agents/examples/overview.md'
+    - Tutorials:
+      - Documentation Agent (RAG):
+        - Introduction: 'tutorials/rag/introduction.md'
+        - The Problem: 'tutorials/rag/problem.md'
+        - Vector Stores: 'tutorials/rag/vector_store.md'
+        - RAG Agent: 'tutorials/rag/agent.md'
+        - Chunking: 'tutorials/rag/chunking.md'
+        - Manual Embeddings: 'tutorials/rag/embeddings.md'
+  - Models:
+    - 'models/home.md'
+    - Fine-tuning: 'models/fine_tuning.md'
+    - Benchmarks and Evaluations: 'models/benchmarks_and_evaluations.md'
+  - APIs:
+    - Agent SDK API: 'api.md'
+    - Hub (Agent Cloud) API Guide: 'api/guide.md'
+    - Hub (Agent Cloud) API: 'https://api.near.ai/docs/hub/reference'
+    - Hub (Agent Cloud) Interactive API: 'https://api.near.ai/docs/hub/interactive'
+    - OpenAPI Specs: 'https://api.near.ai/openapi.json'
+
+plugins:
+  - social
+  - autorefs
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - minify:
+      minify_html: true
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            members_order: alphabetical
+            allow_inspection: true
+            show_bases: true
+            show_submodules: true
+  - redirects:
+      redirect_maps:
+        'agents/secrets.md': 'agents/env/variables.md'
+        'assistants/overview.md': 'agents/integration.md'
+        'assistants/integrate.md': 'agents/integration.md'
+        'agents/env/calling_other_agents.md': 'agents/patterns/agent_to_agent.md'
+        'near_events.md': 'agents/patterns/near_events.md'
+        'agent_triggers.md': 'agents/patterns/agent_triggers.md'
+        'integration/overview.md': 'agents/integration.md'
+        'integration/quickstart.md': 'agents/integration.md'
