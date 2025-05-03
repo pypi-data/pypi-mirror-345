@@ -1,0 +1,50 @@
+Metadata-Version: 2.3
+Name: planaieditor
+Version: 0.1.4
+Summary: PlanAI Editor Backend and UI Server
+License: Apache-2.0
+Author: Niels Provos
+Author-email: niels@provos.com
+Requires-Python: >=3.10
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: black (>=25.1.0,<26.0.0)
+Requires-Dist: eventlet (>=0.39.1,<0.40.0)
+Requires-Dist: flask (>=3.1.0,<4.0.0)
+Requires-Dist: flask-cors (>=5.0.1) ; python_version >= "3.10" and python_version < "4.0"
+Requires-Dist: flask-socketio (>=5.5.1,<6.0.0)
+Requires-Dist: isort (>=6.0.1,<7.0.0)
+Requires-Dist: jedi-language-server (>=0.45.0,<0.46.0) ; python_version >= "3.10" and python_version < "4.0"
+Requires-Dist: planai[all] (>=0.5.1) ; python_version >= "3.10" and python_version < "4.0"
+Description-Content-Type: text/markdown
+
+# PlanAI Editor Python Backend
+This Python backend serves as the server component for the PlanAI Editor application. It provides the following functionality:
+
+1. **Code Generation**: Converts visual graph representations (nodes and edges) from the frontend into executable PlanAI Python code.
+2. **Module Loading**: Dynamically loads and validates the generated Python modules to ensure they are syntactically correct.
+3. **WebSocket Communication**: Uses Flask-SocketIO to establish real-time communication with the frontend for sending graph data and receiving generated code.
+
+## Key Components
+
+- **Flask Application**: Serves as the main web server
+- **SocketIO**: Handles real-time bidirectional communication with the frontend
+- **Code Generation**: Transforms visual graph data into Python code with proper imports, task definitions, worker definitions, and graph setup
+- **Black Formatter**: Ensures generated code follows consistent formatting standards
+
+## API Endpoints
+
+The backend primarily communicates through WebSocket events:
+- `connect`: Handles client connections
+- `disconnect`: Handles client disconnections
+- `export_graph`: Receives graph data from the frontend, generates Python code, and attempts to load it
+- `export_result`: Sends the result of the code generation and loading process back to the frontend
+
+## Running the Backend
+
+The server runs on port 5001 by default, separate from the SvelteKit frontend development server.
+
