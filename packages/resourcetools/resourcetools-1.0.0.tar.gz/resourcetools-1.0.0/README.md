@@ -1,0 +1,96 @@
+# resourcetools
+
+A lightweight Python package for managing application resources (icons, images, translations, etc.) using `importlib.resources`.
+
+Ideal for PySide6 and other GUI or CLI applications.
+
+## 🔧 Features
+
+- Safe, Pythonic access to resource files inside packages
+- Uses `importlib.resources` (Python 3.9+)
+- Extensible `ResourceGetter` class
+- Supports logical grouping (e.g. icons, images, translations)
+- Compatible with zipped packages, wheels, and editable installs
+- Designed to support PySide6/Qt apps, but fully framework-agnostic
+
+## 📦 Installation
+
+```bash
+pip install resourcetools
+```
+
+## 🚀 Usage
+
+### 1. Structure your local resources
+
+Your application should have a structure like:
+
+```
+your_app/
+└── resources/
+    ├── __init__.py
+    ├── icons/
+    ├── images/
+    └── translations/
+```
+
+Only `__init__.py` in `resources/` is required to make it a proper package.
+No code logic is needed in resources/ — just the files.
+
+### 2. Initialize `resourcetools` in your app
+
+```python
+# your_app/app.py
+import resourcetools
+
+import your_app.resources as app_resources
+
+
+resourcetools.initialize(resource_package=app_resources)
+```
+
+### 3. Use resource getters to access files
+
+```python
+import importlib.resources
+
+from PySide6.QtGui import QPixmap
+from resourcetools import Image
+
+with importlib.resources.as_file(Image("image.png")) as real_path:
+            pixmap: QPixmap = QPixmap(str(real_path))
+
+```
+
+## 📚 API Reference
+
+initialize(resource_package: ModuleType)
+
+Sets the base resource package to use for Icon, Image, and Translations.
+
+Icon(filename: str) -> Traversable
+
+Returns a Traversable object (e.g. file path) to an icon file.
+
+Same for:
+
+    Image(filename: str)
+
+    Translations(filename: str)
+
+## ✅ Why `importlib.resources`?
+
+- Built into the Python standard library
+- Zip-safe (works with packages in wheels or zipapps)
+- Avoids hardcoded filesystem paths
+
+## 🧪 Compatibility
+
+- Python 3.9+
+- Works with importlib.resources standard API
+- No external dependencies
+
+## 📜 License
+
+MIT License
+
