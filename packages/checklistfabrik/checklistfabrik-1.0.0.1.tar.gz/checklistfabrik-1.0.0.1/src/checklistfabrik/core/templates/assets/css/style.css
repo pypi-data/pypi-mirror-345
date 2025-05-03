@@ -1,0 +1,68 @@
+label :last-child {
+  margin-bottom: 0;
+}
+
+div.form-label :last-child {
+  margin-bottom: 0;
+}
+
+/*
+Spectre removes the fieldset border, bring it back for the outermost fieldset
+(and also integrate it with Spectre's design).
+*/
+form > fieldset {
+  border: 0.05rem solid rgb(188, 195, 206);
+  border-radius: 0.1rem;
+  padding: 0.4rem;
+}
+
+/* Don't display last hr as it is not needed and only clutters the layout. */
+form > fieldset > hr:last-child {
+  display: none;
+}
+
+form fieldset > legend {
+  padding-inline: 0.4rem;
+}
+
+pre > code:only-child {
+  display: block;
+}
+
+.clf-fa-required {
+  --fa: "\f621";
+  display: flex;
+  align-items: center;
+  font-size: 0.625em;
+  margin-right: 0.3rem;
+}
+
+li p {
+  display: inline-flex;
+}
+
+/* This styling is missing from spectre (only implemented for .form-input) */
+:is(
+  .form-checkbox:has(input:invalid) > .form-icon,
+  .form-radio:has(input:invalid) > .form-icon,
+  .form-select:invalid
+) {
+  border-color: #e85600;
+}
+
+/* Style inline code as spectre's code blocks. Also fixes low contrast. */
+:not(pre) > code {
+  background-color: #f7f8f9;
+  color: #3b4351;
+  margin-inline: 0.1rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.step .step-item.skipped a::before {
+  background-color: #bcc3ce;
+}
+
+.step .step-item.skipped a {
+  color: #bcc3ce;
+  text-decoration: line-through;
+}
