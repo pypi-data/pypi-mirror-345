@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: HTTPyServer
+Version: 1.0.1
+Summary: A package to create your python HTTP server with no effort
+Home-page: https://github.com/odm2-6/httpyserver
+Author: odm2-6
+Author-email: odm2.letter@gmail.com
+Project-URL: Bug Tracker, https://github.com/odm2-6/httpyserver/issues
+Project-URL: repository, https://github.com/odm2-6/httpyserver
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: pydantic
+Requires-Dist: pymongo
+Requires-Dist: requests
+Dynamic: license-file
+
+# HTTPyServer
+
+`HTTPyServer` is a package designed to help in the development of
+simple HTTP servers using Python. It lets you connect to your MongoDB
+database and handle requests binded to your DB.
+
+## HTTP Requests Handling
+
+You can handle the HTTP requests after initialazing your `Server` instance.
+
+The `Server` class takes 2 arguments: 
+
+- *`address (str)`*: The server address, formatted like `"host:port"`
+- *`root (Path)`*: The absolute path of the root folder of your server (Which can be obtained with `Path.cwd()`).
+
+This class has methods that will allow you to register some handlers (callbacks) that follow some specific conventions:
+
+- These methods are called by the `Server.[Method]` format, just like 
+`Server.GET`, `Server.POST`, etc.
+- They all accept the following args:
+
+    - *`path (str)`*: The server path where this handler will be called.
+    - *`handler ((RequestData) -> Basic_Response)`*: The callback that will handle the upcoming requests.
+
+### `Server.GET`: An example
+This method is used to register a GET handler that will be called when a GET
+request is received by the HTTP server. Example:
+
+```python
+my_server = Server("localhost:8080", Path.cwd())
+
+DB_Mongo("somemongodburi", "my_database_name") 
+# Initializes your Mongo Database and allows all the handlers to work properly.
+
+def home (request_data):
+    res = Basic_GET_Response("main.html") # File in the same folder as this script
+    res.send_file() # Sends the file contents to the response contents
+    return res
+
+def get_all_users (request_data):
+    res = Basic_GET_Response("users-collection") # Collection of the MongoDB database
+    res.send_db({}) # Sends a query to the collection and writes the response contents
+    return res
+
+my_server.GET("/", home)
+my_server.GET("/users", get_all_users)
+
+my_server.start()
+```
+
+MIT License
+
+Copyright (c) 2025 Omar David Méndez Montiel
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
