@@ -1,0 +1,69 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:z3c="http://namespaces.zope.org/z3c"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
+
+  <include package="plone.z3cform" />
+
+  <!-- Configuration installation profile -->
+
+  <include file="profiles.zcml" />
+
+  <!-- Set up default templates -->
+
+  <browser:page
+      name="ploneform-macros"
+      for="*"
+      class=".views.Macros"
+      allowed_interface="zope.interface.common.mapping.IItemMapping"
+      template="templates/macros.pt"
+      permission="zope.Public"
+      layer=".interfaces.IPloneFormLayer"
+      />
+  <browser:page
+      name="ploneform-render-widget"
+      for="z3c.form.interfaces.IWidget"
+      class=".views.RenderWidget"
+      permission="zope.Public"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+      />
+  <browser:page
+      name="ploneform-render-widget"
+      for="zope.contentprovider.interfaces.IContentProvider"
+      class=".views.RenderContentProvider"
+      permission="zope.Public"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+      />
+
+  <adapter factory=".views.layout_factory" />
+  <adapter factory=".views.form_factory" />
+
+  <browser:page
+      name="z3cform_validate_field"
+      for="*"
+      class=".inline_validation.InlineValidationView"
+      permission="zope.Public"
+      />
+
+  <!-- Use a custom actions manager that knows how to do CSRF token authentication. -->
+  <adapter factory=".csrf.AuthenticatedButtonActions" />
+
+  <!-- converters -->
+  <include file="converters.zcml" />
+
+  <!-- widgets -->
+  <include file="widgets.zcml" />
+
+  <!-- error snippet -->
+  <adapter
+      factory=".views.ErrorViewTemplate"
+      provides="zope.pagetemplate.interfaces.IPageTemplate"
+      for="z3c.form.interfaces.IErrorViewSnippet
+           .interfaces.IPloneFormLayer"
+      />
+
+</configure>
