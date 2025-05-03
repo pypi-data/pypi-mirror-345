@@ -1,0 +1,153 @@
+Metadata-Version: 2.4
+Name: agentia
+Version: 0.0.15
+Summary: Ergonomic LLM Agent Augmented with Tools
+Project-URL: Repository, https://github.com/wenyuzhao/agentia
+Author-email: Wenyu Zhao <wenyuzhaox@gmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: agent,chatgpt,deepseek,gpt,llm,openai,openrouter,tools
+Requires-Python: >=3.12
+Requires-Dist: filelock>=3.18.0
+Requires-Dist: nest-asyncio>=1.6.0
+Requires-Dist: openai<2,>=1.58.1
+Requires-Dist: pydantic>=2.10.4
+Requires-Dist: python-dotenv<2,>=1.0.0
+Requires-Dist: python-slugify<9,>=8.0.4
+Requires-Dist: pyyaml<7,>=6.0.2
+Requires-Dist: requests<3,>=2.31.0
+Requires-Dist: rich>=14.0.0
+Requires-Dist: shortuuid>=1.0.13
+Requires-Dist: tiktoken<0.9,>=0.8.0
+Requires-Dist: tomlkit>=0.13.2
+Requires-Dist: typer<0.13,>=0.12.5
+Provides-Extra: all
+Requires-Dist: dataforseo-client>=1.0.45; extra == 'all'
+Requires-Dist: llama-index-vector-stores-chroma<0.5,>=0.4.1; extra == 'all'
+Requires-Dist: llama-index<0.13,>=0.12.34; extra == 'all'
+Requires-Dist: markdownify>=1.1.0; extra == 'all'
+Requires-Dist: protobuf==3.20.*; extra == 'all'
+Requires-Dist: pymstodo>=0.2.0; extra == 'all'
+Requires-Dist: tavily-python>=0.5.4; extra == 'all'
+Provides-Extra: plugins
+Requires-Dist: dataforseo-client>=1.0.45; extra == 'plugins'
+Requires-Dist: llama-index-vector-stores-chroma<0.5,>=0.4.1; extra == 'plugins'
+Requires-Dist: llama-index<0.13,>=0.12.34; extra == 'plugins'
+Requires-Dist: markdownify>=1.1.0; extra == 'plugins'
+Requires-Dist: protobuf==3.20.*; extra == 'plugins'
+Requires-Dist: pymstodo>=0.2.0; extra == 'plugins'
+Requires-Dist: tavily-python>=0.5.4; extra == 'plugins'
+Description-Content-Type: text/markdown
+
+# Agentia: Ergonomic LLM Agent Augmented with Tools
+
+
+# Getting Started
+
+```python
+from agentia import Agent
+from typing import Annotated
+
+# Define a tool as a python function
+def get_weather(location: Annotated[str, "The city name"]):
+    """Get the current weather in a given location"""
+    return { "temperature": 72 }
+
+# Create an agent
+agent = Agent(tools=[get_weather])
+
+# Run the agent with the tool
+response = await agent.run("What is the weather like in boston?")
+
+print(response)
+
+# Output: The current temperature in Boston is 72°F.
+```
+
+# Agent Config File
+
+Agentia supports creating agents from config files:
+
+1. Create a config file at `./alice.toml`
+
+```toml
+[agent]
+name = "Alice" # This is the only required field
+icon = "👩"
+instructions = "You are a helpful assistant"
+model = "openai/o3-mini"
+plugins = ["calc", "clock", "web"]
+```
+
+2. In your python code:
+
+```python
+agent = Agent.load_from_config("./alice.toml")
+```
+
+3. Alternatively, start a REPL:
+
+```bash
+uvx agentia alice
+```
+
+# Multi-Agent Orchestration (Experimental)
+
+Multi-agent orchestration is achieved by making leader/parent agents dispatching sub-tasks to their sub-agents.
+
+```python
+from agentia import Agent, CommunicationEvent, AssistantMessage
+
+coder = Agent(
+    model="openai/gpt-4o-mini",
+    name="Coder",
+    description="programmar",
+)
+reviewer = Agent(
+    model="openai/gpt-4o-mini",
+    name="Code Reviewer",
+    description="code reviewer",
+)
+leader = Agent(
+    model="openai/gpt-4o-mini",
+    name="Leader",
+    description="Leader agent",
+    subagents=[
+        coder,
+        reviewer,
+    ],
+)
+
+run = leader.run(
+    "Ask your subagents to write a quicksort algorithm in python, review and improve it until it is perfect."
+    events=True,
+)
+
+async for e in run:
+    if isinstance(e, CommunicationEvent):
+        subagent_name = coder.name if e.child == coder.id else reviewer.name
+        if e.response is None:
+            print(f"[DISPATCH -> {subagent_name}]")
+            print(e.message)
+            print("[DISPATCH END]")
+            print()
+        else:
+            print(f"[RESPONSE <- {subagent_name}]")
+            print(e.response)
+            print("[RESPONSE END]")
+            print()
+
+    if isinstance(e, AssistantMessage):
+        print(e.content)
+        print()
+```
+
+Multi-agent orchestration in agent config files:
+
+```toml
+[agent]
+name = "Leader"
+# ... other fields
+# Create two subagent config files in the same directory: coder.toml and reviewer.toml
+subagents = ["coder", "reviewer"]
+```
