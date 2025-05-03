@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+             description="A simple review workflow for comments"
+             initial_state="pending"
+             state_variable="review_state"
+             title="Comment Review Workflow"
+             workflow_id="comment_review_workflow"
+             i18n:attributes="title; description"
+             i18n:domain="plone"
+>
+  <permission>Access contents information</permission>
+  <permission>Modify portal content</permission>
+  <permission>Reply to item</permission>
+  <permission>View</permission>
+  <state state_id="pending"
+         title="Pending"
+  >
+    <description>Submitted, pending review.</description>
+    <exit-transition transition_id="mark_as_spam" />
+    <exit-transition transition_id="publish" />
+    <exit-transition transition_id="reject" />
+    <permission-map acquired="False"
+                    name="Access contents information"
+    >
+      <permission-role>Manager</permission-role>
+      <permission-role>Owner</permission-role>
+      <permission-role>Reviewer</permission-role>
+      <permission-role>Site Administrator</permission-role>
+    </permission-map>
+    <permission-map acquired="False"
+                    name="Modify portal content"
+    >
+      <permission-role>Manager</permission-role>
+      <permission-role>Owner</permission-role>
+      <permission-role>Reviewer</permission-role>
+      <permission-role>Site Administrator</permission-role>
+    </permission-map>
+    <permission-map acquired="False"
+                    name="Reply to item"
+    >
+</permission-map>
+    <permission-map acquired="False"
+                    name="View"
+    >
+      <permission-role>Manager</permission-role>
+      <permission-role>Owner</permission-role>
+      <permission-role>Reviewer</permission-role>
+      <permission-role>Site Administrator</permission-role>
+    </permission-map>
+  </state>
+  <state state_id="published"
+         title="Published"
+  >
+    <description>Visible to everyone, non-editable.</description>
+    <exit-transition transition_id="mark_as_spam" />
+    <exit-transition transition_id="recall" />
+    <exit-transition transition_id="reject" />
+    <permission-map acquired="True"
+                    name="Access contents information"
+    >
+</permission-map>
+    <permission-map acquired="False"
+                    name="Modify portal content"
+    >
+      <permission-role>Manager</permission-role>
+      <permission-role>Site Administrator</permission-role>
+    </permission-map>
+    <permission-map acquired="True"
+                    name="Reply to item"
+    >
+</permission-map>
+    <permission-map acquired="True"
+                    name="View"
+    >
+</permission-map>
+  </state>
+  <state state_id="rejected"
+         title="Rejected"
+  >
+    <exit-transition transition_id="mark_as_spam" />
+    <exit-transition transition_id="publish" />
+    <exit-transition transition_id="recall" />
+  </state>
+  <state state_id="spam"
+         title="Spam"
+  >
+    <exit-transition transition_id="publish" />
+    <exit-transition transition_id="recall" />
+    <exit-transition transition_id="reject" />
+  </state>
+  <transition after_script=""
+              before_script=""
+              new_state="spam"
+              title="Mark as spam"
+              transition_id="mark_as_spam"
+              trigger="USER"
+  >
+    <description>Spam comments are invisible to other users.</description>
+    <action category="workflow"
+            icon=""
+            url="%(content_url)s/content_status_modify?workflow_action=mark_as_spam"
+    >Spam</action>
+    <guard>
+      <guard-permission>Review comments</guard-permission>
+    </guard>
+  </transition>
+  <transition after_script=""
+              before_script=""
+              new_state="published"
+              title="Reviewer approves content"
+              transition_id="publish"
+              trigger="USER"
+  >
+    <description>Approving the comment makes it visible to other users.</description>
+    <action category="workflow"
+            icon=""
+            url="%(content_url)s/content_status_modify?workflow_action=publish"
+    >Approve</action>
+    <guard>
+      <guard-permission>Review comments</guard-permission>
+    </guard>
+  </transition>
+  <transition after_script=""
+              before_script=""
+              new_state="pending"
+              title="Reviewer recalls comment back to pending state"
+              transition_id="recall"
+              trigger="USER"
+  >
+    <action category="workflow"
+            icon=""
+            url="%(content_url)s/content_status_modify?workflow_action=recall"
+    >Recall</action>
+    <guard>
+      <guard-permission>Review comments</guard-permission>
+    </guard>
+  </transition>
+  <transition after_script=""
+              before_script=""
+              new_state="rejected"
+              title="Reviewer rejects comment"
+              transition_id="reject"
+              trigger="USER"
+  >
+    <description>Rejected comments are invisible to other users.</description>
+    <action category="workflow"
+            icon=""
+            url="%(content_url)s/content_status_modify?workflow_action=reject"
+    >Reject</action>
+    <guard>
+      <guard-permission>Review comments</guard-permission>
+    </guard>
+  </transition>
+  <variable for_catalog="False"
+            for_status="True"
+            update_always="True"
+            variable_id="action"
+  >
+    <description>Previous transition</description>
+    <default>
+
+      <expression>transition/getId|nothing</expression>
+    </default>
+    <guard>
+</guard>
+  </variable>
+  <variable for_catalog="False"
+            for_status="True"
+            update_always="True"
+            variable_id="actor"
+  >
+    <description>The ID of the user who performed the previous transition</description>
+    <default>
+
+      <expression>user/getUserName</expression>
+    </default>
+    <guard>
+</guard>
+  </variable>
+  <variable for_catalog="False"
+            for_status="True"
+            update_always="True"
+            variable_id="comments"
+  >
+    <description>Comment about the last transition</description>
+    <default>
+
+      <expression>python:state_change.kwargs.get('comment', '')</expression>
+    </default>
+    <guard>
+</guard>
+  </variable>
+  <variable for_catalog="False"
+            for_status="False"
+            update_always="False"
+            variable_id="review_history"
+  >
+    <description>Provides access to workflow history</description>
+    <default>
+
+      <expression>state_change/getHistory</expression>
+    </default>
+    <guard>
+      <guard-permission>Request review</guard-permission>
+      <guard-permission>Review portal content</guard-permission>
+    </guard>
+  </variable>
+  <variable for_catalog="False"
+            for_status="True"
+            update_always="True"
+            variable_id="time"
+  >
+    <description>When the previous transition was performed</description>
+    <default>
+
+      <expression>state_change/getDateTime</expression>
+    </default>
+    <guard>
+</guard>
+  </variable>
+</dc-workflow>

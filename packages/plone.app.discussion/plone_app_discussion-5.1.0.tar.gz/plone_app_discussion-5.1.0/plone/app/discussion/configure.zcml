@@ -1,0 +1,186 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
+
+  <include package="plone.indexer" />
+  <include package="plone.app.registry" />
+  <include package="plone.resource" />
+  <include package="plone.uuid" />
+  <include package="plone.app.uuid" />
+
+  <include file="behavior.zcml" />
+  <include file="contentrules.zcml" />
+  <include file="permissions.zcml" />
+  <include file="notifications.zcml" />
+  <include file="subscribers.zcml" />
+  <include file="upgrades.zcml" />
+
+  <!-- load captcha before browser -->
+  <configure zcml:condition="installed plone.formwidget.captcha">
+    <include package="plone.formwidget.captcha" />
+  </configure>
+  <configure zcml:condition="installed plone.formwidget.recaptcha">
+    <include package="plone.formwidget.recaptcha" />
+  </configure>
+  <configure zcml:condition="installed plone.formwidget.hcaptcha">
+    <include package="plone.formwidget.hcaptcha" />
+  </configure>
+  <configure zcml:condition="installed collective.z3cform.norobots">
+    <include package="collective.z3cform.norobots" />
+  </configure>
+
+  <include package=".browser" />
+
+  <!-- Register the installation GenericSetup extension profile -->
+  <genericsetup:registerProfile
+      name="default"
+      title="Discussion Support"
+      description="Commenting infrastructure for Plone"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="plone.base.interfaces.IPloneSiteRoot"
+      directory="profiles/default"
+      post_handler=".setuphandlers.post_install"
+      />
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="Uninstall Discussion Support"
+      description="Uninstall Commenting infrastructure for Plone"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="plone.base.interfaces.IPloneSiteRoot"
+      directory="profiles/uninstall"
+      post_handler=".setuphandlers.post_uninstall"
+      />
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      provides="plone.base.interfaces.INonInstallable"
+      name="plone.app.discussion"
+      />
+  <!-- For upgrade steps see upgrades.zcml. -->
+
+  <!-- Comments -->
+
+  <class class=".comment.Comment">
+    <require
+        permission="zope2.View"
+        interface=".interfaces.IComment"
+        />
+    <require
+        permission="zope2.View"
+        attributes="Title Creator getId getText"
+        />
+  </class>
+
+  <class class=".comment.Comment">
+    <implements interface="plone.uuid.interfaces.IAttributeUUID" />
+  </class>
+
+  <utility
+      name="plone.Comment"
+      component=".comment.CommentFactory"
+      />
+
+  <!-- Conversations -->
+
+  <class class=".conversation.Conversation">
+    <require
+        permission="zope2.View"
+        interface=".interfaces.IConversation"
+        />
+  </class>
+
+  <adapter factory=".conversation.conversationAdapterFactory" />
+
+  <adapter factory=".conversation.ConversationReplies" />
+  <adapter factory=".conversation.CommentReplies" />
+
+  <!-- Captcha Vocabulary -->
+  <utility
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      name="plone.app.discussion.vocabularies.CaptchaVocabulary"
+      component=".vocabularies.captcha_vocabulary"
+      />
+
+  <!-- Text Transform Vocabulary -->
+  <utility
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      name="plone.app.discussion.vocabularies.TextTransformVocabulary"
+      component=".vocabularies.text_transform_vocabulary"
+      />
+
+  <!-- Conversation indexes -->
+  <adapter
+      factory=".catalog.total_comments"
+      name="total_comments"
+      />
+  <adapter
+      factory=".catalog.last_comment_date"
+      name="last_comment_date"
+      />
+  <adapter
+      factory=".catalog.commentators"
+      name="commentators"
+      />
+  <adapter
+      factory=".catalog.in_response_to"
+      name="in_response_to"
+      />
+
+  <!-- Comment indexes -->
+  <adapter
+      factory=".catalog.UID"
+      name="UID"
+      />
+  <adapter
+      factory=".catalog.title"
+      name="Title"
+      />
+  <adapter
+      factory=".catalog.creator"
+      name="Creator"
+      />
+  <adapter
+      factory=".catalog.description"
+      name="Description"
+      />
+  <adapter
+      factory=".catalog.searchable_text"
+      name="SearchableText"
+      />
+  <adapter
+      factory=".catalog.effective"
+      name="effective"
+      />
+  <adapter
+      factory=".catalog.created"
+      name="created"
+      />
+  <adapter
+      factory=".catalog.modified"
+      name="modified"
+      />
+  <adapter
+      factory=".catalog.comments_total_comments"
+      name="total_comments"
+      />
+  <adapter
+      factory=".catalog.comments_last_comment_date"
+      name="last_comment_date"
+      />
+  <adapter
+      factory=".catalog.comments_commentators"
+      name="commentators"
+      />
+
+  <!-- Auto-approve comments from users with Review comments permission -->
+  <subscriber
+      for="plone.app.discussion.interfaces.IComment
+           zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      handler=".events.auto_approve_comments"
+      />
+
+</configure>

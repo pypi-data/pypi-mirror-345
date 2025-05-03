@@ -1,0 +1,135 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    >
+
+  <genericsetup:upgradeStep
+      title="Update plone.app.discussion setting registry"
+      description=""
+      profile="plone.app.discussion:default"
+      source="*"
+      destination="100"
+      handler=".upgrades.update_registry"
+      />
+
+  <genericsetup:upgradeStep
+      title="edit comments and delete own comments"
+      description="reload registry config to enable new fields edit_comment_enabled and delete_own_comment_enabled"
+      profile="plone.app.discussion:default"
+      source="100"
+      destination="101"
+      handler=".upgrades.update_registry"
+      sortkey="1"
+      />
+
+  <genericsetup:upgradeStep
+      title="delete comments and delete own comments"
+      description="reload rolemap config to enable new permissions 'Delete comments' and 'Delete own comments'"
+      profile="plone.app.discussion:default"
+      source="101"
+      destination="102"
+      handler=".upgrades.update_rolemap"
+      sortkey="1"
+      />
+
+  <genericsetup:upgradeSteps
+      profile="plone.app.discussion:default"
+      source="102"
+      destination="1000"
+      >
+    <!-- Apply the update rolemap step again, to avoid missing it when
+         updating from plone.app.discussion 2.2.x.  When originally
+         adding this step in the 2.3.x release, we should have made a
+         bigger metadata revision increase to leave some room for new
+         upgrade steps in 2.2.x. -->
+    <genericsetup:upgradeStep
+        title="delete comments and delete own comments"
+        description="reload rolemap config to enable new permissions 'Delete comments' and 'Delete own comments'"
+        handler=".upgrades.update_rolemap"
+        />
+    <genericsetup:upgradeStep
+        title="Update plone.app.discussion workflows"
+        handler=".upgrades.upgrade_comment_workflows"
+        />
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeSteps
+      profile="plone.app.discussion:default"
+      source="1000"
+      destination="1001"
+      >
+    <genericsetup:upgradeStep
+        title="Move comment.js into plone-legacy bundle"
+        description=""
+        handler=".upgrades.add_js_to_plone_legacy"
+        />
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeSteps
+      profile="plone.app.discussion:default"
+      source="1001"
+      destination="1002"
+      >
+    <genericsetup:upgradeStep
+        title="Extended review workflow with states pending, published and new: rejected and spam"
+        description="Additional states allows moderator to review history of publishing and rejection"
+        handler=".upgrades.extend_review_workflow"
+        />
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeSteps
+      profile="plone.app.discussion:default"
+      source="1999"
+      destination="2000"
+      >
+    <genericsetup:upgradeDepends
+        title="Update controlpanel icon"
+        import_steps="controlpanel"
+        />
+    <genericsetup:upgradeDepends
+        title="Add 'View comments' permission"
+        import_steps="rolemap"
+        />
+    <genericsetup:upgradeStep
+        title="Grant Site Administrator permissions on pending comments"
+        handler=".upgrades.upgrade_comment_workflows"
+        />
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeSteps
+      profile="plone.app.discussion:default"
+      source="2000"
+      destination="2001"
+      >
+    <genericsetup:upgradeStep
+        title="Set timezone on comment dates"
+        description="Ensure the timezone is set for comment dates"
+        handler=".upgrades.set_timezone_on_dates"
+        />
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:registerProfile
+      name="to_3000"
+      title="Upgrade: icons"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="plone.base.interfaces.IMigratingPloneSiteRoot"
+      directory="profiles/to_3000"
+      />
+
+  <genericsetup:upgradeSteps
+      profile="plone.app.discussion:default"
+      source="2001"
+      destination="3000"
+      >
+    <genericsetup:upgradeDepends
+        title="Update icons"
+        import_profile="plone.app.discussion:to_3000"
+        />
+    <genericsetup:upgradeStep
+        title="Add behavior plone.allowdiscussion to default content types"
+        description="Ensure default types have discussion behavior set"
+        handler=".upgrades.add_discussion_behavior_to_default_types"
+        />
+  </genericsetup:upgradeSteps>
+
+</configure>
