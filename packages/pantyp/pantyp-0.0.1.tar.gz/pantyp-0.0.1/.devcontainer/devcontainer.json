@@ -1,0 +1,31 @@
+{
+  "build": { "dockerfile": "Dockerfile" },
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/starship:1": {},
+    "ghcr.io/michidk/devcontainers-features/typst:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "charliermarsh.ruff",
+        "fill-labs.dependi",
+        "markis.code-coverage",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "myriad-dreamin.tinymist",
+        "tamasfe.even-better-toml"
+      ]
+    },
+    "settings": {
+      "files.eol": "\n",
+      "[typst]": {
+        "editor.formatOnSave": true
+      },
+      "tinymist.formatterMode": "typstyle",
+      "files.associations": {
+        "*.typ": "typst"
+      }
+    }
+  },
+  "postCreateCommand": ".devcontainer/postCreate.sh"
+}
