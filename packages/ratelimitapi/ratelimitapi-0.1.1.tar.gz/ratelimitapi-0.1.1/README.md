@@ -1,0 +1,109 @@
+# RateLimitAPI for Python
+
+[![PyPI version](https://img.shields.io/pypi/v/ratelimitapi.svg)](https://pypi.org/project/ratelimitapi/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![GitHub Actions publish workflow status](https://github.com/ratelimitapi/packages/actions/workflows/publish.yml/badge.svg)
+
+**This package is currently in early development and not ready for production use.**
+
+Features, API, and documentation are subject to change. We are actively working to stabilize the package for a production release.
+
+## Overview
+
+RateLimitAPI is a powerful rate limiting middleware for APIs, it is currently under development. It provides a simple yet robust solution for implementing industry-standard rate limiting to protect your endpoints from abuse.
+
+## Features (Planned)
+
+- Easy-to-use middleware for popular frameworks (Flask, Django, FastAPI)
+- Flexible rate limit configuration
+- Customizable response formats for rate limit headers
+- Detailed analytics and monitoring
+- Protection against common abuse patterns
+
+## Installation
+
+```bash
+pip install ratelimitapi
+```
+
+or
+
+```bash
+poetry add ratelimitapi
+```
+
+## Documentation
+
+Full documentation will be available at [RateLimitAPI.com](https://ratelimitapi.com/docs) upon official release.
+
+## Usage Preview
+
+### Basic Usage
+
+```python
+from ratelimitapi import is_rate_limited
+
+def handle_request(request):
+    limited_response = is_rate_limited(request, "rlimit_your_token_here")
+    if limited_response:
+        response_body, status_code, headers = limited_response
+        # Return the 429 response if rate-limited
+        return create_response(response_body, status_code, headers)
+        
+    # Continue with normal request handling if not rate-limited
+    # ...
+```
+
+### Flask Integration Example
+
+```python
+from flask import Flask, request, jsonify
+from ratelimitapi import is_rate_limited
+
+app = Flask(__name__)
+
+@app.route('/api/resource')
+def api_resource():
+    # Check for rate limiting
+    limited_response = is_rate_limited(request, "rlimit_your_token_here")
+    if limited_response:
+        response_body, status_code, headers = limited_response
+        return jsonify(response_body), status_code, headers
+        
+    # Process the request normally
+    return jsonify({"message": "Request processed successfully"})
+```
+
+### Django Integration Example
+
+```python
+from django.http import JsonResponse
+from ratelimitapi import is_rate_limited
+
+def api_view(request):
+    # Check for rate limiting
+    limited_response = is_rate_limited(request, "rlimit_your_token_here")
+    if limited_response:
+        response_body, status_code, headers = limited_response
+        response = JsonResponse(response_body, status=status_code)
+        for key, value in headers.items():
+            response[key] = value
+        return response
+        
+    # Process the request normally
+    return JsonResponse({"message": "Request processed successfully"})
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Stay Updated
+
+- Star our [GitHub repository](https://github.com/ratelimitapi/packages)
+- Follow our progress on Twitter (coming soon)
+- Join our community Discord (coming soon)
+
+## Contact
+
+For more information, please visit [RateLimitAPI.com](https://ratelimitapi.com) when it's available.
