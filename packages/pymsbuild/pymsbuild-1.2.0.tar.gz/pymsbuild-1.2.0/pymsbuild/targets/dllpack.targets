@@ -1,0 +1,135 @@
+<Project>
+  <PropertyGroup>
+    <BeforeBuildGenerateSourcesTargets>GenerateDllPack;$(BeforeBuildGenerateSourcesTargets)</BeforeBuildGenerateSourcesTargets>
+    <GetPackageFilesTargets>_ConvertPydRedirectToContent;$(GetPackageFilesTargets)</GetPackageFilesTargets>
+
+    <!--
+    This little dance allows us to override the final name by setting
+    RootNamespace on the command line. In this case, our modifications to the
+    property won't have any effect, and _DllPack_Module will get the intended
+    value. Otherwise, we will override inferred values and add the namespace.
+    -->
+    <_Original_RootNamespace>$(RootNamespace)</_Original_RootNamespace>
+    <RootNamespace Condition="$(_ParentNamespace) != ''">$(_ParentNamespace).$(RootNamespace)</RootNamespace>
+    <_DllPack_Module>$(RootNamespace)</_DllPack_Module>
+    <RootNamespace>$(_Original_RootNamespace)</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)dllpack.c">
+      <AdditionalIncludeDirectories>$(IntDir.TrimEnd(`$(_Sep)`));$(MSBuildThisFileDirectory);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFile>dllpack.o</ObjectFile>
+      <PreprocessorDefinitions>_DLLPACK_NAME="$(_DllPack_Module)";%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IncludeInSdist>false</IncludeInSdist>
+      <IncludeInLayout>false</IncludeInLayout>
+      <IncludeInWheel>false</IncludeInWheel>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>bcrypt.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <Target Name="_GetPydRedirectFromDependencies" DependsOnTargets="BuildDependencies" Condition="@(Project) != ''">
+    <ItemGroup>
+      <_RedirectFromDependencies Remove="@(_RedirectFromDependencies)" />
+    </ItemGroup>
+    <MSBuild Projects="@(Project)" Targets="GetTargetPath" Properties="%(Project.Properties)">
+      <Output TaskParameter="TargetOutputs" ItemName="_RedirectFromDependencies" />
+    </MSBuild>
+    <ItemGroup>
+      <DllPackRedirect Include="@(_RedirectFromDependencies)">
+        <Name>%(Filename)%(Extension)</Name>
+        <TargetDir>$(_TargetDir)</TargetDir>
+        <ImportName Condition="%(_RedirectFromDependencies.ImportName) == '' and $(_DllPack_Module) != ''">$(_DllPack_Module).</ImportName>
+      </DllPackRedirect>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_ConvertPydRedirectToContent" DependsOnTargets="_GetPydRedirectFromDependencies">
+    <ItemGroup>
+      <DllPackRedirect>
+        <ImportName Condition="%(DllPackRedirect.ImportName) == ''"></ImportName>
+      </DllPackRedirect>
+      <DllPackRedirect>
+        <_DisplayImportName>%(ImportName)</_DisplayImportName>
+        <_DisplayImportName Condition="$([System.String]::new(%(ImportName)).EndsWith('.'))">%(ImportName)&lt;%(Name)&gt;</_DisplayImportName>
+        <_DisplayImportName Condition="%(ImportName) == ''">&lt;%(Name)&gt;</_DisplayImportName>
+      </DllPackRedirect>
+      <Content Include="@(DllPackRedirect)">
+        <TargetDir Condition="%(DllPackRedirect.TargetDir) == ''">$(_TargetDir)</TargetDir>
+        <IncludeInSdist>false</IncludeInSdist>
+        <IncludeInLayout>true</IncludeInLayout>
+        <IncludeInWheel>true</IncludeInWheel>
+      </Content>
+    </ItemGroup>
+    <Message Text="Generating redirects for%0A@(DllPackRedirect->'%(_DisplayImportName)->%(Identity)','%0A')" Importance="$(_Low)" />
+  </Target>
+
+  <Target Name="_GetDllPackSourceFiles">
+    <ItemGroup>
+      <_DllPackHeader Include="$(IntDir)dllpack.h" />
+      <_DllPackRc Include="$(IntDir)dllpack.rc" />
+      <_DllPackRsp Include="$(IntDir)dllpack.rsp" />
+      <_DllPackMainPy Include="$(MSBuildThisFileDirectory)dllpack_main.py" />
+      <FileWrites Include="@(_DllPackHeader)" />
+      <_DllPackSourceFiles Include="@(Content)">
+        <Name>%(Content.Name)</Name>
+        <Kind>resource</Kind>
+        <Kind Condition="%(Content.GeneratePyc) == 'true'">code</Kind>
+      </_DllPackSourceFiles>
+      <Content Remove="@(_DllPackSourceFiles)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_CalculateDllPackResponseFile" DependsOnTargets="_ConvertPydRedirectToContent">
+    <ItemGroup>
+      <_DllPackRspLines Include="module:$(ProjectName):$(_DllPack_Module)" />
+      <_DllPackRspLines Include="platform:gcc" Condition="$(PlatformToolset) == 'gcc'" />
+      <_DllPackRspLines Include="platform:windows" Condition="$(PlatformToolset) != 'gcc'" />
+      <_DllPackRspLines Include="encrypt:$(EncryptionKeyVariable)" Condition="$(EncryptionKeyVariable) != ''" />
+      <_DllPackRspLines Include="@(_DllPackSourceFiles->'%(Kind):%(Name):%(FullPath)')" />
+      <_DllPackRspLines Include="@(DllPackFunction->'function:%(Identity)')" />
+      <_DllPackRspLines Include="@(DllPackRedirect->'redirect:%(ImportName):%(Name):$(_DllPack_Module)')" />
+    </ItemGroup>
+    <WriteLinesToFile File="@(_DllPackRsp)"
+                      Lines="@(_DllPackRspLines)"
+                      Encoding="UTF-8"
+                      Overwrite="true"
+                      WriteOnlyWhenDifferent="true" />
+    <ItemGroup>
+      <FileWrites Include="@(_DllPackRsp)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="GenerateDllPack"
+          DependsOnTargets="_GetDllPackSourceFiles;_CalculateDllPackResponseFile"
+          Inputs="@(_DllPackRsp);@(_DllPackMainPy);@(_DllPackSourceFiles)"
+          Outputs="@(_DllPackHeader);@(_DllPackRc)">
+    <Message Text="WARNING: DLL packing is experimental and may change. Send feedback at https://github.com/zooba/pymsbuild"
+             Importance="high" />
+    <PropertyGroup>
+      <_GenCommand>"$(HostPython)" "$(PyMsbuildTargets)\dllpack-generate.py" "$(_DllPack_Module)" "@(_DllPackRsp)" "$(PyMsbuildTargets)"</_GenCommand>
+    </PropertyGroup>
+    <Message Text="Generating pack for the following files:%0A@(_DllPackRspLines,'%0A')" Importance="$(_Low)" />
+    <Exec Command="$(_GenCommand)" WorkingDirectory="$(IntDir)" />
+    <ItemGroup>
+      <ResourceCompile Include="@(_DllPackRc)">
+        <IncludeInSdist>false</IncludeInSdist>
+        <IncludeInLayout>false</IncludeInLayout>
+        <IncludeInWheel>false</IncludeInWheel>
+      </ResourceCompile>
+      <FileWrites Include="@(_DllPackRc);@(_DllPackHeader)" />
+    </ItemGroup>
+  </Target>
+
+  <PropertyGroup>
+    <SuppressBasicTargetOverrides>true</SuppressBasicTargetOverrides>
+    <CoreBuildTargetName>Build</CoreBuildTargetName>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)dllpack-gcc.targets" Condition="$(PlatformToolset) == 'gcc'" />
+  <Import Project="$(MSBuildThisFileDirectory)package.targets" />
+</Project>
