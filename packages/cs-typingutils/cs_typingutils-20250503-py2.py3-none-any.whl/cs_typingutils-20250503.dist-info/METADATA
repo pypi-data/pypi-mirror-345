@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: cs-typingutils
+Version: 20250503
+Summary: Trite hacks for use with typing.
+Keywords: python3
+Author-email: Cameron Simpson <cs@cskk.id.au>
+Description-Content-Type: text/markdown
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Project-URL: MonoRepo Commits, https://bitbucket.org/cameron_simpson/css/commits/branch/main
+Project-URL: Monorepo Git Mirror, https://github.com/cameron-simpson/css
+Project-URL: Monorepo Hg/Mercurial Mirror, https://hg.sr.ht/~cameron-simpson/css
+Project-URL: Source, https://github.com/cameron-simpson/css/blob/main/lib/python/cs/typingutils.py
+
+Trite hacks for use with typing.
+
+*Latest release 20250503*:
+is_optional: bugfix: Optional[T] has a get_args of (T,<NoneType>), not (T,None).
+
+Short summary:
+* `is_optional`: Check if `annotation` is an `Optional[type]`. Return `type` if so, `None` otherwise.
+* `subtype`: Construct a `TypeVar` for subtypes of the type `t`.
+
+Module contents:
+- <a name="is_optional"></a>`is_optional(annotation)`: Check if `annotation` is an `Optional[type]`.
+  Return `type` if so, `None` otherwise.
+- <a name="subtype"></a>`subtype(t, name=None)`: Construct a `TypeVar` for subtypes of the type `t`.
+
+  Parameters:
+  * `t`: the type which bounds the `TypeVar`
+  * `name`: optional name for the `TypeVar`,
+    default `t.__name__ + 'SubType'`
+
+# Release Log
+
+
+
+*Release 20250503*:
+is_optional: bugfix: Optional[T] has a get_args of (T,<NoneType>), not (T,None).
+
+*Release 20250428*:
+New is_optional(annotation) function to recognise Optional[type] annotations, returning type if true, None otherwise.
+
+*Release 20230331*:
+Initial release.
