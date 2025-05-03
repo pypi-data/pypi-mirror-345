@@ -1,0 +1,102 @@
+Metadata-Version: 2.3
+Name: gpx-editor
+Version: 1.0.0b0
+Summary: A tool for editing GPX files
+License: MIT
+Author: James Arnett
+Author-email: 38123275+ironScripter@users.noreply.github.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: xmltodict (>=0.13.0,<0.14.0)
+Project-URL: Repository, https://github.com/ironscripter/gpx-editor
+Description-Content-Type: text/markdown
+
+# GPX Editor
+
+A tool for editing GPX files, specifically designed for moving and copying attributes between waypoints.
+
+## Features
+
+- Copy attributes between waypoints
+- Swap attributes
+- Process multiple GPX files
+- Undo/redo functionality
+- Automatic backups
+- Both GUI and CLI interfaces
+- Rename files based on directory structure with abbreviations
+
+## Installation
+
+```bash
+# Install from PyPI
+pip install gpx-editor
+
+# Or using Poetry
+poetry add gpx-editor
+```
+
+## Usage
+
+### GUI Mode
+
+```bash
+# Run the GUI application
+gpx-editor-gui
+```
+
+### CLI Mode
+
+```bash
+# Basic usage
+gpx-editor --input input.gpx --output output.gpx --copy description name
+gpx-editor --input input.gpx --output output.gpx --swap description name
+
+# Apply to all waypoints
+gpx-editor --input input.gpx --output output.gpx --copy description name --all
+
+# Rename file based on directory structure
+gpx-editor --input path/to/your/gpx/file.gpx --rename
+```
+
+## Development
+
+This project uses Poetry for dependency management.
+
+```bash
+# Clone the repository
+git clone https://github.com/ironscripter/gpx-editor.git
+cd gpx-editor
+
+# Install dependencies with Poetry
+poetry install
+
+# Run the application in development mode
+poetry run gpx-editor
+poetry run gpx-editor-gui
+```
+
+## License
+
+MIT
+
+## File Structure
+
+```
+.
+├── gpx_editor.py
+├── requirements.txt
+└── README.md
+```
+
+## License
+
+MIT License
+
