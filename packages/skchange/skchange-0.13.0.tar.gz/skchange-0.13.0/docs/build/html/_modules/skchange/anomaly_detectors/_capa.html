@@ -1,0 +1,874 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>skchange.anomaly_detectors._capa &#8212; skchange</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom_notebook.css?v=c6a2da1f" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=99362dbf"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/skchange/anomaly_detectors/_capa';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">skchange</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api_reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../developer_guide/index.html">
+    Developer guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../releases.html">
+    Releases
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NorskRegnesentral/skchange" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api_reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../developer_guide/index.html">
+    Developer guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../releases.html">
+    Releases
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NorskRegnesentral/skchange" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">skchange.anomaly_detectors._capa</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for skchange.anomaly_detectors._capa</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The collective and point anomalies (CAPA) algorithm.&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Tveten&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CAPA&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">..anomaly_scores</span> <span class="kn">import</span> <span class="n">L2Saving</span><span class="p">,</span> <span class="n">to_saving</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseIntervalScorer</span>
+<span class="kn">from</span> <span class="nn">..compose.penalised_score</span> <span class="kn">import</span> <span class="n">PenalisedScore</span>
+<span class="kn">from</span> <span class="nn">..penalties</span> <span class="kn">import</span> <span class="n">make_chi2_penalty</span><span class="p">,</span> <span class="n">make_linear_chi2_penalty</span>
+<span class="kn">from</span> <span class="nn">..utils.numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<span class="kn">from</span> <span class="nn">..utils.validation.data</span> <span class="kn">import</span> <span class="n">check_data</span>
+<span class="kn">from</span> <span class="nn">..utils.validation.interval_scorer</span> <span class="kn">import</span> <span class="n">check_interval_scorer</span>
+<span class="kn">from</span> <span class="nn">..utils.validation.parameters</span> <span class="kn">import</span> <span class="n">check_larger_than</span>
+<span class="kn">from</span> <span class="nn">..utils.validation.penalties</span> <span class="kn">import</span> <span class="n">check_penalty</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">BaseSegmentAnomalyDetector</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">get_anomalies</span><span class="p">(</span>
+    <span class="n">anomaly_starts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+    <span class="n">segment_anomalies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">point_anomalies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">anomaly_starts</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">start_i</span> <span class="o">=</span> <span class="n">anomaly_starts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">start_i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">segment_anomalies</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">start_i</span><span class="p">),</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">start_i</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">point_anomalies</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">segment_anomalies</span><span class="p">,</span> <span class="n">point_anomalies</span>
+
+
+<span class="k">def</span> <span class="nf">get_affected_components</span><span class="p">(</span>
+    <span class="n">penalised_scorer</span><span class="p">:</span> <span class="n">PenalisedScore</span><span class="p">,</span>
+    <span class="n">anomalies</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
+    <span class="n">penalised_scorer</span><span class="o">.</span><span class="n">check_is_penalised</span><span class="p">()</span>
+    <span class="n">penalised_scorer</span><span class="o">.</span><span class="n">check_is_fitted</span><span class="p">()</span>
+    <span class="n">new_anomalies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">anomalies</span><span class="p">:</span>
+        <span class="n">saving_values</span> <span class="o">=</span> <span class="n">penalised_scorer</span><span class="o">.</span><span class="n">score_</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">saving_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">saving_values</span><span class="p">)</span>  <span class="c1"># Decreasing order.</span>
+        <span class="n">penalised_savings</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">saving_values</span><span class="p">[</span><span class="n">saving_order</span><span class="p">])</span> <span class="o">-</span> <span class="n">penalised_scorer</span><span class="o">.</span><span class="n">penalty_</span>
+        <span class="p">)</span>
+        <span class="n">argmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">penalised_savings</span><span class="p">)</span>
+        <span class="n">new_anomalies</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">saving_order</span><span class="p">[:</span> <span class="n">argmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">new_anomalies</span>
+
+
+<span class="k">def</span> <span class="nf">run_capa</span><span class="p">(</span>
+    <span class="n">segment_penalised_saving</span><span class="p">:</span> <span class="n">PenalisedScore</span><span class="p">,</span>
+    <span class="n">point_penalised_saving</span><span class="p">:</span> <span class="n">PenalisedScore</span><span class="p">,</span>
+    <span class="n">min_segment_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">max_segment_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">find_affected_components</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+    <span class="n">segment_penalised_saving</span><span class="o">.</span><span class="n">check_is_penalised</span><span class="p">()</span>
+    <span class="n">segment_penalised_saving</span><span class="o">.</span><span class="n">check_is_fitted</span><span class="p">()</span>
+    <span class="n">point_penalised_saving</span><span class="o">.</span><span class="n">check_is_penalised</span><span class="p">()</span>
+    <span class="n">point_penalised_saving</span><span class="o">.</span><span class="n">check_is_fitted</span><span class="p">()</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="n">segment_penalised_saving</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">n_samples</span> <span class="o">==</span> <span class="n">point_penalised_saving</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;The segment and point saving costs must span the same number of samples.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">opt_savings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Store the optimal start and affected components of an anomaly for each t.</span>
+    <span class="c1"># Used to get the final set of anomalies after the loop.</span>
+    <span class="n">opt_anomaly_starts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">starts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">max_segment_penalty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">segment_penalised_saving</span><span class="o">.</span><span class="n">penalty_</span><span class="p">)</span>
+
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">min_segment_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">:</span>
+        <span class="c1"># Segment anomalies</span>
+        <span class="n">t_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t</span><span class="p">])</span>
+
+        <span class="n">starts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">starts</span><span class="p">,</span> <span class="n">t_array</span> <span class="o">-</span> <span class="n">min_segment_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">ends</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">starts</span><span class="p">))</span>
+        <span class="n">intervals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">))</span>
+        <span class="n">segment_savings</span> <span class="o">=</span> <span class="n">segment_penalised_saving</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">candidate_savings</span> <span class="o">=</span> <span class="n">opt_savings</span><span class="p">[</span><span class="n">starts</span><span class="p">]</span> <span class="o">+</span> <span class="n">segment_savings</span>
+        <span class="n">candidate_argmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">candidate_savings</span><span class="p">)</span>
+        <span class="n">opt_segment_saving</span> <span class="o">=</span> <span class="n">candidate_savings</span><span class="p">[</span><span class="n">candidate_argmax</span><span class="p">]</span>
+        <span class="n">opt_start</span> <span class="o">=</span> <span class="n">starts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">candidate_argmax</span>
+
+        <span class="c1"># Point anomalies</span>
+        <span class="n">point_interval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">t_array</span><span class="p">,</span> <span class="n">t_array</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">point_savings</span> <span class="o">=</span> <span class="n">point_penalised_saving</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">point_interval</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">opt_point_saving</span> <span class="o">=</span> <span class="n">opt_savings</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">point_savings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Combine and store results</span>
+        <span class="n">savings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">opt_savings</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">opt_segment_saving</span><span class="p">,</span> <span class="n">opt_point_saving</span><span class="p">])</span>
+        <span class="n">argmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">savings</span><span class="p">)</span>
+        <span class="n">opt_savings</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">savings</span><span class="p">[</span><span class="n">argmax</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">argmax</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">opt_anomaly_starts</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">opt_start</span>
+        <span class="k">elif</span> <span class="n">argmax</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">opt_anomaly_starts</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+
+        <span class="c1"># Pruning the admissible starts</span>
+        <span class="n">saving_too_low</span> <span class="o">=</span> <span class="n">candidate_savings</span> <span class="o">+</span> <span class="n">max_segment_penalty</span> <span class="o">&lt;=</span> <span class="n">opt_savings</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">too_long_segment</span> <span class="o">=</span> <span class="n">starts</span> <span class="o">&lt;</span> <span class="n">t</span> <span class="o">-</span> <span class="n">max_segment_length</span> <span class="o">+</span> <span class="mi">2</span>
+        <span class="n">prune</span> <span class="o">=</span> <span class="n">saving_too_low</span> <span class="o">|</span> <span class="n">too_long_segment</span>
+        <span class="n">starts</span> <span class="o">=</span> <span class="n">starts</span><span class="p">[</span><span class="o">~</span><span class="n">prune</span><span class="p">]</span>
+
+    <span class="n">segment_anomalies</span><span class="p">,</span> <span class="n">point_anomalies</span> <span class="o">=</span> <span class="n">get_anomalies</span><span class="p">(</span><span class="n">opt_anomaly_starts</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">find_affected_components</span><span class="p">:</span>
+        <span class="n">segment_anomalies</span> <span class="o">=</span> <span class="n">get_affected_components</span><span class="p">(</span>
+            <span class="n">segment_penalised_saving</span><span class="p">,</span> <span class="n">segment_anomalies</span>
+        <span class="p">)</span>
+        <span class="n">point_anomalies</span> <span class="o">=</span> <span class="n">get_affected_components</span><span class="p">(</span>
+            <span class="n">point_penalised_saving</span><span class="p">,</span>
+            <span class="n">point_anomalies</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">opt_savings</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">segment_anomalies</span><span class="p">,</span> <span class="n">point_anomalies</span>
+
+
+<span class="k">def</span> <span class="nf">_make_chi2_penalty_from_score</span><span class="p">(</span><span class="n">score</span><span class="p">:</span> <span class="n">BaseIntervalScorer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">score</span><span class="o">.</span><span class="n">check_is_fitted</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">make_chi2_penalty</span><span class="p">(</span><span class="n">score</span><span class="o">.</span><span class="n">get_model_size</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_make_linear_chi2_penalty_from_score</span><span class="p">(</span><span class="n">score</span><span class="p">:</span> <span class="n">BaseIntervalScorer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">score</span><span class="o">.</span><span class="n">check_is_fitted</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">make_linear_chi2_penalty</span><span class="p">(</span><span class="n">score</span><span class="o">.</span><span class="n">get_model_size</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_check_capa_penalised_score</span><span class="p">(</span><span class="n">score</span><span class="p">:</span> <span class="n">BaseIntervalScorer</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">caller_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">score</span><span class="o">.</span><span class="n">get_tag</span><span class="p">(</span><span class="s2">&quot;is_penalised&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">PenalisedScore</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">caller_name</span><span class="si">}</span><span class="s2"> only supports a penalised `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">` constructed&quot;</span>
+            <span class="s2">&quot; by `PenalisedScore`.&quot;</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="CAPA">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.anomaly_detectors.CAPA.html#skchange.anomaly_detectors.CAPA">[docs]</a>
+<span class="k">class</span> <span class="nc">CAPA</span><span class="p">(</span><span class="n">BaseSegmentAnomalyDetector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The collective and point anomaly (CAPA) detection algorithm.</span>
+
+<span class="sd">    An efficient implementation of the CAPA family of algorithms for anomaly detection.</span>
+<span class="sd">    Supports both univariate data [1]_ (CAPA) and multivariate data with subset</span>
+<span class="sd">    anomalies [2]_ (MVCAPA) by using the penalised saving formulation of the collective</span>
+<span class="sd">    anomaly detection problem found in [2]_ and [3]_. For multivariat data, the</span>
+<span class="sd">    algorithm can also be used to infer the affected components for each anomaly given</span>
+<span class="sd">    a suitable penalty array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    segment_saving : BaseIntervalScorer, optional, default=L2Saving()</span>
+<span class="sd">        The saving to use for segment anomaly detection.</span>
+<span class="sd">        If a cost is given, the saving is constructed from the cost. The</span>
+<span class="sd">        cost must have a fixed parameter that represents the baseline cost.</span>
+<span class="sd">        If a penalised saving is given, it must be constructed from `PenalisedScore`.</span>
+<span class="sd">    segment_penalty : np.ndarray or float, optional, default=None</span>
+<span class="sd">        The penalty to use for segment anomaly detection. If the segment penalty is</span>
+<span class="sd">        penalised (`segment_penalty.get_tag(&quot;is_penalised&quot;)`) the penalty will</span>
+<span class="sd">        be ignored. The different types of penalties are as follows:</span>
+
+<span class="sd">        * ``float``: A constant penalty applied to the sum of scores across all</span>
+<span class="sd">          variables in the data.</span>
+<span class="sd">        * ``np.ndarray``: A penalty array of the same length as the number of</span>
+<span class="sd">          columns in the data, where element ``i`` of the array is the penalty for</span>
+<span class="sd">          ``i+1`` variables being affected by an anomaly. The penalty array</span>
+<span class="sd">          must be positive and increasing (not strictly). A penalised score with a</span>
+<span class="sd">          linear penalty array is faster to evaluate than a nonlinear penalty array.</span>
+<span class="sd">        * ``None``: A default constant penalty is created in `predict` based on the</span>
+<span class="sd">          fitted score using the `make_chi2_penalty` function.</span>
+
+<span class="sd">    point_saving : BaseIntervalScorer, optional, default=L2Saving()</span>
+<span class="sd">        The saving to use for point anomaly detection. Only savings with a</span>
+<span class="sd">        minimum size of 1 are permitted.</span>
+<span class="sd">        If a cost is given, the saving is constructed from the cost. The</span>
+<span class="sd">        cost must have a fixed parameter that represents the baseline cost.</span>
+<span class="sd">        If a penalised saving is given, it must be constructed from `PenalisedScore`.</span>
+<span class="sd">    point_penalty : np.ndarray or float, optional, default=None</span>
+<span class="sd">        The penalty to use for point anomaly detection. See the documentation for</span>
+<span class="sd">        `segment_penalty` for details. For ``None`` input, the default is set using the</span>
+<span class="sd">        `make_linear_chi2_penalty` function.</span>
+<span class="sd">    min_segment_length : int, optional, default=2</span>
+<span class="sd">        Minimum length of a segment.</span>
+<span class="sd">    max_segment_length : int, optional, default=1000</span>
+<span class="sd">        Maximum length of a segment.</span>
+<span class="sd">    ignore_point_anomalies : bool, optional, default=False</span>
+<span class="sd">        If ``True``, detected point anomalies are not returned by `predict`. I.e., only</span>
+<span class="sd">        segment anomalies are returned. If ``False``, point anomalies are included in</span>
+<span class="sd">        the output as segment anomalies of length 1.</span>
+<span class="sd">    find_affected_components : bool, optional, default=False</span>
+<span class="sd">        If ``True``, the affected components for each segment anomaly are returned in</span>
+<span class="sd">        the `predict` output. This is only relevant for multivariate data in combination</span>
+<span class="sd">        with a penalty array.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Fisch, A. T., Eckley, I. A., &amp; Fearnhead, P. (2022). A linear time method</span>
+<span class="sd">        for the detection of collective and point anomalies. Statistical Analysis and</span>
+<span class="sd">        DataMining: The ASA Data Science Journal, 15(4), 494-508.</span>
+
+<span class="sd">    .. [2] Fisch, A. T., Eckley, I. A., &amp; Fearnhead, P. (2022). Subset multivariate</span>
+<span class="sd">        collective and point anomaly detection. Journal of Computational and Graphical</span>
+<span class="sd">        Statistics, 31(2), 574-585.</span>
+
+<span class="sd">    .. [3] Tveten, M., Eckley, I. A., &amp; Fearnhead, P. (2022). Scalable change-point and</span>
+<span class="sd">        anomaly detection in cross-correlated data with an application to condition</span>
+<span class="sd">        monitoring. The Annals of Applied Statistics, 16(2), 721-743.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from skchange.anomaly_detectors import CAPA</span>
+<span class="sd">    &gt;&gt;&gt; from skchange.datasets import generate_alternating_data</span>
+<span class="sd">    &gt;&gt;&gt; df = generate_alternating_data(n_segments=5, mean=10, segment_length=100)</span>
+<span class="sd">    &gt;&gt;&gt; detector = CAPA()</span>
+<span class="sd">    &gt;&gt;&gt; detector.fit_predict(df)</span>
+<span class="sd">            ilocs  labels</span>
+<span class="sd">    0  [100, 200)       1</span>
+<span class="sd">    1  [300, 400)       2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_tags</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;capability:missing_values&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;capability:multivariate&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;fit_is_empty&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">segment_saving</span><span class="p">:</span> <span class="n">BaseIntervalScorer</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">segment_penalty</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">point_saving</span><span class="p">:</span> <span class="n">BaseIntervalScorer</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">point_penalty</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_segment_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">max_segment_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">ignore_point_anomalies</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">find_affected_components</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segment_saving</span> <span class="o">=</span> <span class="n">segment_saving</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segment_penalty</span> <span class="o">=</span> <span class="n">segment_penalty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point_saving</span> <span class="o">=</span> <span class="n">point_saving</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point_penalty</span> <span class="o">=</span> <span class="n">point_penalty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_segment_length</span> <span class="o">=</span> <span class="n">min_segment_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_segment_length</span> <span class="o">=</span> <span class="n">max_segment_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_point_anomalies</span> <span class="o">=</span> <span class="n">ignore_point_anomalies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">find_affected_components</span> <span class="o">=</span> <span class="n">find_affected_components</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="n">_segment_score</span> <span class="o">=</span> <span class="n">L2Saving</span><span class="p">()</span> <span class="k">if</span> <span class="n">segment_saving</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">segment_saving</span>
+        <span class="n">check_interval_scorer</span><span class="p">(</span>
+            <span class="n">_segment_score</span><span class="p">,</span>
+            <span class="s2">&quot;segment_saving&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CAPA&quot;</span><span class="p">,</span>
+            <span class="n">required_tasks</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span> <span class="s2">&quot;saving&quot;</span><span class="p">],</span>
+            <span class="n">allow_penalised</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">_segment_saving</span> <span class="o">=</span> <span class="n">to_saving</span><span class="p">(</span><span class="n">_segment_score</span><span class="p">)</span>
+
+        <span class="n">check_penalty</span><span class="p">(</span><span class="n">segment_penalty</span><span class="p">,</span> <span class="s2">&quot;segment_penalty&quot;</span><span class="p">,</span> <span class="s2">&quot;CAPA&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_segment_saving</span><span class="o">.</span><span class="n">get_tag</span><span class="p">(</span><span class="s2">&quot;is_penalised&quot;</span><span class="p">):</span>
+            <span class="n">_check_capa_penalised_score</span><span class="p">(</span><span class="n">_segment_saving</span><span class="p">,</span> <span class="s2">&quot;segment_saving&quot;</span><span class="p">,</span> <span class="s2">&quot;CAPA&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_segment_penalised_saving</span> <span class="o">=</span> <span class="n">_segment_saving</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_segment_penalised_saving</span> <span class="o">=</span> <span class="n">PenalisedScore</span><span class="p">(</span>
+                <span class="n">_segment_saving</span><span class="p">,</span>
+                <span class="n">segment_penalty</span><span class="p">,</span>
+                <span class="n">make_default_penalty</span><span class="o">=</span><span class="n">_make_chi2_penalty_from_score</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">_point_score</span> <span class="o">=</span> <span class="n">L2Saving</span><span class="p">()</span> <span class="k">if</span> <span class="n">point_saving</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">point_saving</span>
+        <span class="n">check_interval_scorer</span><span class="p">(</span>
+            <span class="n">_point_score</span><span class="p">,</span>
+            <span class="s2">&quot;point_saving&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CAPA&quot;</span><span class="p">,</span>
+            <span class="n">required_tasks</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span> <span class="s2">&quot;saving&quot;</span><span class="p">],</span>
+            <span class="n">allow_penalised</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">_point_score</span><span class="o">.</span><span class="n">min_size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`point_saving` must have `min_size == 1`.&quot;</span><span class="p">)</span>
+        <span class="n">_point_saving</span> <span class="o">=</span> <span class="n">to_saving</span><span class="p">(</span><span class="n">_point_score</span><span class="p">)</span>
+
+        <span class="n">check_penalty</span><span class="p">(</span><span class="n">point_penalty</span><span class="p">,</span> <span class="s2">&quot;point_penalty&quot;</span><span class="p">,</span> <span class="s2">&quot;CAPA&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_point_saving</span><span class="o">.</span><span class="n">get_tag</span><span class="p">(</span><span class="s2">&quot;is_penalised&quot;</span><span class="p">):</span>
+            <span class="n">_check_capa_penalised_score</span><span class="p">(</span><span class="n">_point_saving</span><span class="p">,</span> <span class="s2">&quot;point_saving&quot;</span><span class="p">,</span> <span class="s2">&quot;CAPA&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_point_penalised_saving</span> <span class="o">=</span> <span class="n">_point_saving</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_point_penalised_saving</span> <span class="o">=</span> <span class="n">PenalisedScore</span><span class="p">(</span>
+                <span class="n">_point_saving</span><span class="p">,</span>
+                <span class="n">point_penalty</span><span class="p">,</span>
+                <span class="n">make_default_penalty</span><span class="o">=</span><span class="n">_make_linear_chi2_penalty_from_score</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">check_larger_than</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_segment_length</span><span class="p">,</span> <span class="s2">&quot;min_segment_length&quot;</span><span class="p">)</span>
+        <span class="n">check_larger_than</span><span class="p">(</span><span class="n">min_segment_length</span><span class="p">,</span> <span class="n">max_segment_length</span><span class="p">,</span> <span class="s2">&quot;max_segment_length&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">clone_tags</span><span class="p">(</span><span class="n">_segment_saving</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;distribution_type&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_tags</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;capability:identify_variables&quot;</span><span class="p">:</span> <span class="n">find_affected_components</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Detect events in test/deployment data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.DataFrame</span>
+<span class="sd">            Time series to detect anomalies in.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y_sparse: pd.DataFrame</span>
+<span class="sd">            A `pd.DataFrame` with a range index and two columns:</span>
+<span class="sd">            * ``&quot;ilocs&quot;`` - left-closed ``pd.Interval``s of iloc based segments.</span>
+<span class="sd">            * ``&quot;labels&quot;`` - integer labels ``1, ..., K`` for each segment anomaly.</span>
+<span class="sd">            * ``&quot;icolumns&quot;`` - list of affected columns for each segment anomaly. Only</span>
+<span class="sd">              included if `find_affected_components` is ``True``.</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fitted_segment_saving : BaseIntervalScorer</span>
+<span class="sd">            The fitted penalised segment saving used for the detection.</span>
+<span class="sd">        fitted_point_saving : BaseIntervalScorer</span>
+<span class="sd">            The fitted penalised point saving used for the detection.</span>
+<span class="sd">        scores : pd.Series</span>
+<span class="sd">            The cumulative optimal savings for the input data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span>
+            <span class="n">X</span><span class="p">,</span>
+            <span class="n">min_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">min_segment_length</span><span class="p">,</span>
+            <span class="n">min_length_name</span><span class="o">=</span><span class="s2">&quot;min_segment_length&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitted_segment_saving</span><span class="p">:</span> <span class="n">BaseIntervalScorer</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_segment_penalised_saving</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitted_point_saving</span><span class="p">:</span> <span class="n">BaseIntervalScorer</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_point_penalised_saving</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">opt_savings</span><span class="p">,</span> <span class="n">segment_anomalies</span><span class="p">,</span> <span class="n">point_anomalies</span> <span class="o">=</span> <span class="n">run_capa</span><span class="p">(</span>
+            <span class="n">segment_penalised_saving</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fitted_segment_saving</span><span class="p">,</span>
+            <span class="n">point_penalised_saving</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fitted_point_saving</span><span class="p">,</span>
+            <span class="n">min_segment_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">min_segment_length</span><span class="p">,</span>
+            <span class="n">max_segment_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_segment_length</span><span class="p">,</span>
+            <span class="n">find_affected_components</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">find_affected_components</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">opt_savings</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">)</span>
+
+        <span class="n">anomalies</span> <span class="o">=</span> <span class="n">segment_anomalies</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignore_point_anomalies</span><span class="p">:</span>
+            <span class="n">anomalies</span> <span class="o">+=</span> <span class="n">point_anomalies</span>
+        <span class="n">anomalies</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">anomalies</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_sparse_output</span><span class="p">(</span><span class="n">anomalies</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_transform_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return scores for predicted labels on test/deployment data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.DataFrame, pd.Series or np.ndarray</span>
+<span class="sd">            Data to score (time series).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        scores : pd.DataFrame with same index as X</span>
+<span class="sd">            Scores for sequence `X`.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The CAPA scores are the cumulative optimal savings, so the scores are increasing</span>
+<span class="sd">        and are not per observation scores.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores</span>
+
+<div class="viewcode-block" id="CAPA.get_test_params">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.anomaly_detectors.CAPA.html#skchange.anomaly_detectors.CAPA.get_test_params">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_test_params</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parameter_set</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return testing parameter settings for the estimator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameter_set : str, default=&quot;default&quot;</span>
+<span class="sd">            Name of the set of test parameters to return, for use in tests. If no</span>
+<span class="sd">            special parameters are defined for a value, will return ``&quot;default&quot;`` set.</span>
+<span class="sd">            There are currently no reserved values for annotators.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        params : dict or list of dict, default = {}</span>
+<span class="sd">            Parameters to create testing instances of the class</span>
+<span class="sd">            Each dict are parameters to construct an &quot;interesting&quot; test instance, i.e.,</span>
+<span class="sd">            `MyClass(**params)` or `MyClass(**params[i])` creates a valid test instance.</span>
+<span class="sd">            `create_test_instance` uses the first (or only) dictionary in `params`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">skchange.anomaly_scores</span> <span class="kn">import</span> <span class="n">L2Saving</span>
+        <span class="kn">from</span> <span class="nn">skchange.base</span> <span class="kn">import</span> <span class="n">BaseIntervalScorer</span>
+        <span class="kn">from</span> <span class="nn">skchange.compose.penalised_score</span> <span class="kn">import</span> <span class="n">PenalisedScore</span>
+        <span class="kn">from</span> <span class="nn">skchange.costs</span> <span class="kn">import</span> <span class="n">L2Cost</span>
+        <span class="kn">from</span> <span class="nn">skchange.penalties</span> <span class="kn">import</span> <span class="n">make_nonlinear_chi2_penalty</span>
+
+        <span class="k">def</span> <span class="nf">_make_nonlinear_chi2_penalty_from_score</span><span class="p">(</span>
+            <span class="n">score</span><span class="p">:</span> <span class="n">BaseIntervalScorer</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+            <span class="n">score</span><span class="o">.</span><span class="n">check_is_fitted</span><span class="p">()</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">make_nonlinear_chi2_penalty</span><span class="p">(</span><span class="n">score</span><span class="o">.</span><span class="n">get_model_size</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;segment_saving&quot;</span><span class="p">:</span> <span class="n">PenalisedScore</span><span class="p">(</span>
+                    <span class="n">L2Saving</span><span class="p">(),</span>
+                    <span class="n">make_default_penalty</span><span class="o">=</span><span class="n">_make_nonlinear_chi2_penalty_from_score</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="s2">&quot;min_segment_length&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+                <span class="s2">&quot;max_segment_length&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+                <span class="s2">&quot;find_affected_components&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;segment_saving&quot;</span><span class="p">:</span> <span class="n">L2Cost</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+                <span class="s2">&quot;point_saving&quot;</span><span class="p">:</span> <span class="n">L2Cost</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+                <span class="s2">&quot;min_segment_length&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+                <span class="s2">&quot;max_segment_length&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;segment_saving&quot;</span><span class="p">:</span> <span class="n">L2Cost</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+                <span class="s2">&quot;point_saving&quot;</span><span class="p">:</span> <span class="n">L2Cost</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+                <span class="s2">&quot;min_segment_length&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;max_segment_length&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">params</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023 - 2025 (BSD-3-Clause License).
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

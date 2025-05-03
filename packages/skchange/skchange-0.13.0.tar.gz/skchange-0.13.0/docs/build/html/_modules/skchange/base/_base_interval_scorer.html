@@ -1,0 +1,709 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>skchange.base._base_interval_scorer &#8212; skchange</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom_notebook.css?v=c6a2da1f" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=99362dbf"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/skchange/base/_base_interval_scorer';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">skchange</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api_reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../developer_guide/index.html">
+    Developer guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../releases.html">
+    Releases
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NorskRegnesentral/skchange" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api_reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../developer_guide/index.html">
+    Developer guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../releases.html">
+    Releases
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NorskRegnesentral/skchange" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">skchange.base._base_interval_scorer</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for skchange.base._base_interval_scorer</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Interval scorer base class.</span>
+
+<span class="sd">    class name: BaseIntervalScorer</span>
+
+<span class="sd">Scitype defining methods:</span>
+<span class="sd">    fitting                         - fit(self, X, y=None)</span>
+<span class="sd">    evaluating                      - evaluate(self, cuts)</span>
+
+<span class="sd">Needs to be implemented for a concrete interval scorer:</span>
+<span class="sd">    _fit(self, X, y=None)</span>
+<span class="sd">    _evaluate(self, cuts)</span>
+
+<span class="sd">Recommended but optional to implement for a concrete detector:</span>
+<span class="sd">    min_size(self)</span>
+<span class="sd">    get_model_size(self, p)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Tveten&quot;</span><span class="p">,</span> <span class="s2">&quot;johannvk&quot;</span><span class="p">,</span> <span class="s2">&quot;fkiraly&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BaseIntervalScorer&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
+<span class="kn">from</span> <span class="nn">sktime.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
+<span class="kn">from</span> <span class="nn">sktime.utils.validation.series</span> <span class="kn">import</span> <span class="n">check_series</span>
+
+<span class="kn">from</span> <span class="nn">skchange.utils.validation.cuts</span> <span class="kn">import</span> <span class="n">check_cuts_array</span>
+<span class="kn">from</span> <span class="nn">skchange.utils.validation.data</span> <span class="kn">import</span> <span class="n">as_2d_array</span>
+
+
+<div class="viewcode-block" id="BaseIntervalScorer">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.base.BaseIntervalScorer.html#skchange.base.BaseIntervalScorer">[docs]</a>
+<span class="k">class</span> <span class="nc">BaseIntervalScorer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class template for interval scorers.</span>
+
+<span class="sd">    This is a common base class for costs, change scores, and anomaly scores. It is used</span>
+<span class="sd">    as a building block for detectors in skchange. The class provides a common interface</span>
+<span class="sd">    to evaluate a scoring function on a set of data cuts. Depending on the sub class,</span>
+<span class="sd">    the cuts may represent either intervals to subset or splits within intervals.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _is_fitted : bool</span>
+<span class="sd">        Indicates whether the interval scorer has been fitted.</span>
+<span class="sd">    _X : np.ndarray</span>
+<span class="sd">        The data input to `fit` coerced to a 2D ``np.ndarray``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_tags</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;object_type&quot;</span><span class="p">:</span> <span class="s2">&quot;interval_scorer&quot;</span><span class="p">,</span>  <span class="c1"># type of object</span>
+        <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Tveten&quot;</span><span class="p">,</span> <span class="s2">&quot;johannvk&quot;</span><span class="p">,</span> <span class="s2">&quot;fkiraly&quot;</span><span class="p">],</span>  <span class="c1"># author(s) of the object</span>
+        <span class="s2">&quot;maintainers&quot;</span><span class="p">:</span> <span class="s2">&quot;Tveten&quot;</span><span class="p">,</span>  <span class="c1"># current maintainer(s) of the object</span>
+        <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># &quot;cost&quot;, &quot;change_score&quot;, &quot;local_anomaly_score&quot;, &quot;saving&quot;</span>
+        <span class="s2">&quot;distribution_type&quot;</span><span class="p">:</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span>  <span class="c1"># &quot;None&quot;, &quot;Poisson&quot;, &quot;Gaussian&quot;</span>
+        <span class="c1"># is_conditional: whether the scorer uses some of the input variables as</span>
+        <span class="c1"># covariates in a regression model or similar. If `True`, the scorer requires</span>
+        <span class="c1"># at least two input variables. If `False`, all p input variables/columns are</span>
+        <span class="c1"># used to evaluate the score, such that the output has either 1 or p columns.</span>
+        <span class="s2">&quot;is_conditional&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># is_aggregated: whether the scorer always returns a single value per cut or</span>
+        <span class="c1"># not, irrespective of the input data shape.</span>
+        <span class="c1"># Many scorers will not be aggregated, for example all scorers that evaluate</span>
+        <span class="c1"># each input variable separately and return a score vector with one score for</span>
+        <span class="c1"># each variable.</span>
+        <span class="s2">&quot;is_aggregated&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># is_penalised: indicates whether the score is inherently penalised (True) or</span>
+        <span class="c1"># not (False). If `True`, a score &gt; 0 means that a change or anomaly is</span>
+        <span class="c1"># detected. Penalised scores can be both positive and negative.</span>
+        <span class="c1"># If `False`, the score is not penalised. To test for the existence of a change,</span>
+        <span class="c1"># penalisation must be performed externally. Such scores are always</span>
+        <span class="c1"># non-negative.</span>
+        <span class="s2">&quot;is_penalised&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;capability:multivariate&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;capability:missing_values&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;capability:update&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_fitted</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_X</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="BaseIntervalScorer.fit">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.base.BaseIntervalScorer.html#skchange.base.BaseIntervalScorer.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the interval scorer to the training data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.Series, pd.DataFrame, or np.ndarray</span>
+<span class="sd">            Data to evaluate.</span>
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored. Included for API consistency by convention.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self :</span>
+<span class="sd">            Reference to self.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Updates the fitted model and sets attributes ending in ``&quot;_&quot;``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_series</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">allow_index_names</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_X_columns</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_X_columns</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_X</span> <span class="o">=</span> <span class="n">as_2d_array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_fitted</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the interval scorer to training data.</span>
+
+<span class="sd">        The core logic of fitting an interval scorer to training data is implemented</span>
+<span class="sd">        here.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Data to evaluate. Must be a 2D array.</span>
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored. Included for API consistency by convention.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self :</span>
+<span class="sd">            Reference to self.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Updates fitted model that updates attributes ending in ``&quot;_&quot;``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+<div class="viewcode-block" id="BaseIntervalScorer.evaluate">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.base.BaseIntervalScorer.html#skchange.base.BaseIntervalScorer.evaluate">[docs]</a>
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuts</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the score according to a set of cuts.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cuts : ArrayLike</span>
+<span class="sd">            A 2D array of integer location-based cuts to evaluate where each row gives</span>
+<span class="sd">            a single cut specification. If a 1D array is passed, it is assumed to</span>
+<span class="sd">            be a row vector. Each cut divide the data into one or more intervals for</span>
+<span class="sd">            evaluation and may contain multiple entries representing for example the</span>
+<span class="sd">            start and end of the interval, and potentially split points within the</span>
+<span class="sd">            interval. Each cut must be sorted in increasing order. Subclasses specify</span>
+<span class="sd">            the further expected structure of the cuts array and how it is used</span>
+<span class="sd">            internally to evaluate the score.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        scores : np.ndarray</span>
+<span class="sd">            A 2D array of scores. One row for each row in cuts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_is_fitted</span><span class="p">()</span>
+        <span class="n">cuts</span> <span class="o">=</span> <span class="n">as_2d_array</span><span class="p">(</span><span class="n">cuts</span><span class="p">,</span> <span class="n">vector_as_column</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">cuts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_cuts</span><span class="p">(</span><span class="n">cuts</span><span class="p">)</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate</span><span class="p">(</span><span class="n">cuts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the score on a set of cuts.</span>
+
+<span class="sd">        The core logic of evaluating a function on according to the cuts is implemented</span>
+<span class="sd">        here.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cuts : np.ndarray</span>
+<span class="sd">            A 2D array of integer location-based cuts to evaluate. Each row in the array</span>
+<span class="sd">            must be sorted in increasing order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        values : np.ndarray</span>
+<span class="sd">            A 2D array of scores. One row for each row in cuts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;abstract method&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">min_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Minimum valid size of an interval to evaluate.</span>
+
+<span class="sd">        The size of each interval is by default defined as ``np.diff(cuts[i, ])``.</span>
+<span class="sd">        Subclasses can override the min_size to mean something else, for example in</span>
+<span class="sd">        cases where intervals are combined before evaluation or `cuts` specify</span>
+<span class="sd">        disjoint intervals.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int or None</span>
+<span class="sd">            The minimum valid size of an interval to evaluate. If ``None``, it is</span>
+<span class="sd">            unknown what the minimum size is. E.g., the scorer may need to be fitted</span>
+<span class="sd">            first to determine the minimum size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="BaseIntervalScorer.get_model_size">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.base.BaseIntervalScorer.html#skchange.base.BaseIntervalScorer.get_model_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_model_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the number of model parameters to estimate for each interval.</span>
+
+<span class="sd">        The primary use of this method is to determine an appropriate default penalty</span>
+<span class="sd">        value in detectors. For example, a scorer for a change in mean has one</span>
+<span class="sd">        parameter to estimate per variable in the data, a scorer for a change in the</span>
+<span class="sd">        mean and variance has two parameters to estimate per variable, and so on.</span>
+<span class="sd">        Subclasses should override this method accordingly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p : int</span>
+<span class="sd">            Number of variables in the data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">p</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_get_required_cut_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the required cut size for the scorer.</span>
+
+<span class="sd">        The cut size is the number of columns in the cuts array. The cut size is</span>
+<span class="sd">        determined by the task of the scorer. For example, a cost and a saving has a cut</span>
+<span class="sd">        size of 2, a change score has a cut size of 3, and a local anomaly score has a</span>
+<span class="sd">        cut size of 4. The cut size is used to check the cuts array for compatibility.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tag</span><span class="p">(</span><span class="s2">&quot;task&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;cost&quot;</span><span class="p">:</span>
+            <span class="n">cut_size</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;change_score&quot;</span><span class="p">:</span>
+            <span class="n">cut_size</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;saving&quot;</span><span class="p">:</span>
+            <span class="n">cut_size</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;local_anomaly_score&quot;</span><span class="p">:</span>
+            <span class="n">cut_size</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The task of the interval scorer is not set.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cut_size</span>
+
+    <span class="k">def</span> <span class="nf">_check_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check cuts for compatibility.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cuts : np.ndarray</span>
+<span class="sd">            A 2D array of integer location-based cuts to evaluate. Each row in the array</span>
+<span class="sd">            must be sorted in increasing order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cuts : np.ndarray</span>
+<span class="sd">            The unmodified input `cuts` array.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the `cuts` are not compatible.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">check_cuts_array</span><span class="p">(</span>
+            <span class="n">cuts</span><span class="p">,</span>
+            <span class="n">min_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">min_size</span><span class="p">,</span>
+            <span class="n">last_dim_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_required_cut_size</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="BaseIntervalScorer.check_is_penalised">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.base.BaseIntervalScorer.html#skchange.base.BaseIntervalScorer.check_is_penalised">[docs]</a>
+    <span class="k">def</span> <span class="nf">check_is_penalised</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the scorer is inherently performing penalisation.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tag</span><span class="p">(</span><span class="s2">&quot;is_penalised&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The interval scorer is not penalised.&quot;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023 - 2025 (BSD-3-Clause License).
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

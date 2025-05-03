@@ -1,0 +1,1771 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>skchange.costs._multivariate_t_cost &#8212; skchange</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom_notebook.css?v=c6a2da1f" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=99362dbf"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/skchange/costs/_multivariate_t_cost';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">skchange</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api_reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../developer_guide/index.html">
+    Developer guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../releases.html">
+    Releases
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NorskRegnesentral/skchange" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api_reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../developer_guide/index.html">
+    Developer guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../releases.html">
+    Releases
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NorskRegnesentral/skchange" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">skchange.costs._multivariate_t_cost</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for skchange.costs._multivariate_t_cost</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Multivariate T distribution likelihood cost.&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;johannvk&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MultivariateTCost&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">..utils.numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">numba_available</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span> <span class="nn">..utils.numba.stats</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">col_median</span><span class="p">,</span>
+    <span class="n">digamma</span><span class="p">,</span>
+    <span class="n">kurtosis</span><span class="p">,</span>
+    <span class="n">log_gamma</span><span class="p">,</span>
+    <span class="n">trigamma</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..utils.validation.parameters</span> <span class="kn">import</span> <span class="n">check_in_interval</span><span class="p">,</span> <span class="n">check_larger_than</span>
+<span class="kn">from</span> <span class="nn">._multivariate_gaussian_cost</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">gaussian_cost_fixed_params</span><span class="p">,</span>
+    <span class="n">gaussian_cost_mle_params</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">._utils</span> <span class="kn">import</span> <span class="n">CovType</span><span class="p">,</span> <span class="n">MeanType</span><span class="p">,</span> <span class="n">check_cov</span><span class="p">,</span> <span class="n">check_mean</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">BaseCost</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_estimate_scale_matrix_trace</span><span class="p">(</span>
+    <span class="n">centered_sample_squared_norms</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">non_zero_norm_mask</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">sample_dimension</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">loo_index</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate the trace of the MLE multivariate T covariance matrix.</span>
+
+<span class="sd">    Using an isotropic estimate of the multivariate T distribution,</span>
+<span class="sd">    the authors of [1]_ developed an estimate of the trace of the</span>
+<span class="sd">    maximum likelihood estimate scale matrix, using the squared</span>
+<span class="sd">    norm of centered samples.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    centered_sample_squared_norms : np.ndarray</span>
+<span class="sd">        The squared norms of centered samples from a multivariate t-distribution.</span>
+<span class="sd">    non_zero_norm_mask : np.ndarray</span>
+<span class="sd">        A boolean mask indicating which squared norms are non-zero.</span>
+<span class="sd">    sample_dimension : int</span>
+<span class="sd">        The dimension of the samples.</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The degrees of freedom of the multivariate t-distribution.</span>
+<span class="sd">    loo_index : int, optional (default=-1)</span>
+<span class="sd">        The index of the leave-one-out sample. If -1, the full covariance matrix</span>
+<span class="sd">        is estimated.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Aeschliman, Chad, &amp; Johnny Park, &amp; Avinash C. Kak. (2009). A Novel</span>
+<span class="sd">       Parameter Estimation Algorithm for the Multivariate T-Distribution and Its</span>
+<span class="sd">       Application to Computer Vision. In Computer Vision - ECCV 2010, 594-607.</span>
+<span class="sd">       Berlin, Heidelberg: Springer</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The estimated trace of the MLE covariance matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">loo_index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Zero out the leave-one-out sample squared norm.</span>
+        <span class="n">centered_sample_squared_norms</span><span class="p">[</span><span class="n">loo_index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">non_zero_norm_mask</span><span class="p">[</span><span class="n">loo_index</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="n">z_bar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">centered_sample_squared_norms</span><span class="p">[</span><span class="n">non_zero_norm_mask</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">log_alpha</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">z_bar</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">dof</span><span class="p">)</span> <span class="o">+</span> <span class="n">digamma</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">dof</span><span class="p">)</span> <span class="o">-</span> <span class="n">digamma</span><span class="p">(</span><span class="n">sample_dimension</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">sample_dimension</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_alpha</span><span class="p">)</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_initial_scale_matrix_estimate</span><span class="p">(</span>
+    <span class="n">centered_samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">loo_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate the scale matrix given centered samples and degrees of freedom.</span>
+
+<span class="sd">    The direction of the scale matrix is estimated from standardized,</span>
+<span class="sd">    centered samples, and the trace of the scale matrix is estimated</span>
+<span class="sd">    using the squared norms of the centered samples, as described in [1]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    centered_samples : np.ndarray</span>
+<span class="sd">        Centered samples from the multivariate t-distribution.</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The degrees of freedom of the multivariate t-distribution.</span>
+<span class="sd">    loo_index : int, optional (default=-1)</span>
+<span class="sd">        The index of the leave-one-out sample. If -1, the full covariance matrix</span>
+<span class="sd">        is estimated.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Aeschliman, Chad, &amp; Johnny Park, &amp; Avinash C. Kak. (2009). A Novel</span>
+<span class="sd">       Parameter Estimation Algorithm for the Multivariate T-Distribution and Its</span>
+<span class="sd">       Application to Computer Vision. In Computer Vision - ECCV 2010, 594-607.</span>
+<span class="sd">       Berlin, Heidelberg: Springer</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        The initial estimate of the scale matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_samples</span><span class="p">,</span> <span class="n">sample_dimension</span> <span class="o">=</span> <span class="n">centered_samples</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Estimate direction of the scale matrix from standardized, centered samples:</span>
+    <span class="n">centered_sample_squared_norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">centered_samples</span> <span class="o">*</span> <span class="n">centered_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">non_zero_norm_mask</span> <span class="o">=</span> <span class="n">centered_sample_squared_norms</span> <span class="o">&gt;</span> <span class="mf">1.0e-6</span>
+
+    <span class="n">centered_sample_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_samples</span><span class="p">)</span>
+    <span class="n">centered_sample_weights</span><span class="p">[</span><span class="n">non_zero_norm_mask</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span>
+        <span class="mf">1.0</span> <span class="o">/</span> <span class="n">centered_sample_squared_norms</span><span class="p">[</span><span class="n">non_zero_norm_mask</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">weighted_samples</span> <span class="o">=</span> <span class="n">centered_samples</span> <span class="o">*</span> <span class="n">centered_sample_weights</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="n">mle_scale_estimate</span> <span class="o">=</span> <span class="n">weighted_samples</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">centered_samples</span>
+
+    <span class="k">if</span> <span class="n">loo_index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Subtract contribution from the leave-one-out sample:</span>
+        <span class="n">loo_sample</span> <span class="o">=</span> <span class="n">centered_samples</span><span class="p">[</span><span class="n">loo_index</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">mle_scale_estimate</span> <span class="o">-=</span> <span class="p">(</span>
+            <span class="n">centered_sample_weights</span><span class="p">[</span><span class="n">loo_index</span><span class="p">]</span> <span class="o">*</span> <span class="n">loo_sample</span> <span class="o">@</span> <span class="n">loo_sample</span><span class="o">.</span><span class="n">T</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Scale by the number of samples minus the leave-one-out sample:</span>
+        <span class="n">mle_scale_estimate</span> <span class="o">/=</span> <span class="n">num_samples</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mle_scale_estimate</span> <span class="o">/=</span> <span class="n">num_samples</span>
+
+    <span class="n">scale_trace_estimate</span> <span class="o">=</span> <span class="n">_estimate_scale_matrix_trace</span><span class="p">(</span>
+        <span class="n">centered_sample_squared_norms</span><span class="o">=</span><span class="n">centered_sample_squared_norms</span><span class="p">,</span>
+        <span class="n">non_zero_norm_mask</span><span class="o">=</span><span class="n">non_zero_norm_mask</span><span class="p">,</span>
+        <span class="n">sample_dimension</span><span class="o">=</span><span class="n">sample_dimension</span><span class="p">,</span>
+        <span class="n">dof</span><span class="o">=</span><span class="n">dof</span><span class="p">,</span>
+        <span class="n">loo_index</span><span class="o">=</span><span class="n">loo_index</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">mle_scale_estimate</span> <span class="o">*=</span> <span class="n">scale_trace_estimate</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">mle_scale_estimate</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mle_scale_estimate</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_scale_matrix_fixed_point_iteration</span><span class="p">(</span>
+    <span class="n">scale_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">centered_samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">loo_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute a multivariate T MLE scale matrix fixed point iteration.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scale_matrix : np.ndarray</span>
+<span class="sd">        The current estimate of the scale matrix.</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The degrees of freedom of the multivariate t-distribution.</span>
+<span class="sd">    centered_samples : np.ndarray</span>
+<span class="sd">        The centered samples from the multivariate t-distribution.</span>
+<span class="sd">    loo_index : int, optional (default=-1)</span>
+<span class="sd">        The index of the leave-one-out sample. If -1, the full covariance matrix</span>
+<span class="sd">        is estimated.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        The updated estimate of the scale matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_samples</span><span class="p">,</span> <span class="n">sample_dim</span> <span class="o">=</span> <span class="n">centered_samples</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="n">inverse_scale_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">scale_matrix</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">sample_dim</span><span class="p">))</span>
+    <span class="n">mahalanobis_squared_distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">centered_samples</span> <span class="o">@</span> <span class="n">inverse_scale_matrix</span><span class="p">)</span> <span class="o">*</span> <span class="n">centered_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+
+    <span class="n">sample_weights</span> <span class="o">=</span> <span class="p">(</span><span class="n">sample_dim</span> <span class="o">+</span> <span class="n">dof</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">dof</span> <span class="o">+</span> <span class="n">mahalanobis_squared_distances</span><span class="p">)</span>
+    <span class="n">weighted_samples</span> <span class="o">=</span> <span class="n">centered_samples</span> <span class="o">*</span> <span class="n">sample_weights</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="n">reconstructed_scale_matrix</span> <span class="o">=</span> <span class="n">weighted_samples</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">centered_samples</span>
+    <span class="k">if</span> <span class="n">loo_index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Subtract the leave-one-out sample contribution:</span>
+        <span class="n">loo_sample</span> <span class="o">=</span> <span class="n">centered_samples</span><span class="p">[</span><span class="n">loo_index</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">reconstructed_scale_matrix</span> <span class="o">-=</span> <span class="p">(</span>
+            <span class="n">sample_weights</span><span class="p">[</span><span class="n">loo_index</span><span class="p">]</span> <span class="o">*</span> <span class="n">loo_sample</span> <span class="o">@</span> <span class="n">loo_sample</span><span class="o">.</span><span class="n">T</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Scale by the number of samples minus the leave-one-out sample:</span>
+        <span class="n">reconstructed_scale_matrix</span> <span class="o">/=</span> <span class="n">num_samples</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">reconstructed_scale_matrix</span> <span class="o">/=</span> <span class="n">num_samples</span>
+
+    <span class="k">return</span> <span class="n">reconstructed_scale_matrix</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_solve_for_mle_scale_matrix</span><span class="p">(</span>
+    <span class="n">initial_scale_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">centered_samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">abs_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">rel_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">loo_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform fixed point iterations to compute the MLE scale matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    initial_scale_matrix : np.ndarray</span>
+<span class="sd">        The initial estimate of the scale matrix.</span>
+<span class="sd">    centered_samples : np.ndarray</span>
+<span class="sd">        The centered samples from the multivariate t-distribution.</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The degrees of freedom of the multivariate t-distribution.</span>
+<span class="sd">    max_iter : int</span>
+<span class="sd">        The maximum number of iterations to perform.</span>
+<span class="sd">    abs_tol : float</span>
+<span class="sd">        The absolute tolerance for convergence.</span>
+<span class="sd">    rel_tol : float</span>
+<span class="sd">        The relative tolerance for convergence.</span>
+<span class="sd">    loo_index : int, optional (default=-1)</span>
+<span class="sd">        The index of the leave-one-out sample. If -1, the full covariance matrix</span>
+<span class="sd">        is estimated.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        The MLE scale matrix of the multivariate t-distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scale_matrix</span> <span class="o">=</span> <span class="n">initial_scale_matrix</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">temp_cov_matrix</span> <span class="o">=</span> <span class="n">_scale_matrix_fixed_point_iteration</span><span class="p">(</span>
+            <span class="n">scale_matrix</span><span class="o">=</span><span class="n">scale_matrix</span><span class="p">,</span>
+            <span class="n">dof</span><span class="o">=</span><span class="n">dof</span><span class="p">,</span>
+            <span class="n">centered_samples</span><span class="o">=</span><span class="n">centered_samples</span><span class="p">,</span>
+            <span class="n">loo_index</span><span class="o">=</span><span class="n">loo_index</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Note: &#39;ord = None&#39; computes the Frobenius norm.</span>
+        <span class="n">absolute_residual_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+            <span class="n">temp_cov_matrix</span> <span class="o">-</span> <span class="n">scale_matrix</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">relative_residual_norm</span> <span class="o">=</span> <span class="n">absolute_residual_norm</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">scale_matrix</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="mf">1.0e-12</span>
+        <span class="p">)</span>
+
+        <span class="n">scale_matrix</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">temp_cov_matrix</span><span class="p">[:,</span> <span class="p">:]</span>
+        <span class="k">if</span> <span class="n">absolute_residual_norm</span> <span class="o">&lt;</span> <span class="n">abs_tol</span> <span class="ow">or</span> <span class="n">relative_residual_norm</span> <span class="o">&lt;</span> <span class="n">rel_tol</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">iteration</span> <span class="o">==</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;MultivariateTCost: Maximum number of iterations reached, (</span><span class="si">{</span><span class="n">max_iter</span><span class="si">}</span><span class="s2">) &quot;</span>
+            <span class="s2">&quot;in MLE scale matrix estimation. Relax the tolerance &quot;</span>
+            <span class="s2">&quot;(mle_scale_abs_tol, mle_scale_rel_tol), &quot;</span>
+            <span class="s2">&quot;or increase the maximum number of iterations (max_iter).&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">scale_matrix</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">maximum_likelihood_mv_t_scale_matrix</span><span class="p">(</span>
+    <span class="n">centered_samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">abs_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">rel_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">loo_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the MLE scale matrix for a multivariate t-distribution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    centered_samples : np.ndarray</span>
+<span class="sd">        The centered samples from the multivariate t-distribution.</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The degrees of freedom of the multivariate t-distribution.</span>
+<span class="sd">    abs_tol : float</span>
+<span class="sd">        The absolute tolerance for convergence.</span>
+<span class="sd">    rel_tol : float</span>
+<span class="sd">        The relative tolerance for convergence.</span>
+<span class="sd">    max_iter : int</span>
+<span class="sd">        The maximum number of iterations to perform.</span>
+<span class="sd">    loo_index : int, optional (default=-1)</span>
+<span class="sd">        The index of the leave-one-out sample. If -1, the full covariance matrix</span>
+<span class="sd">        is estimated.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        The MLE covariance matrix of the multivariate t-distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initialize the scale matrix maximum likelihood estimate:</span>
+    <span class="n">initial_mle_scale_matrix</span> <span class="o">=</span> <span class="n">_initial_scale_matrix_estimate</span><span class="p">(</span>
+        <span class="n">centered_samples</span><span class="p">,</span>
+        <span class="n">dof</span><span class="p">,</span>
+        <span class="n">loo_index</span><span class="o">=</span><span class="n">loo_index</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">mle_scale_matrix</span> <span class="o">=</span> <span class="n">_solve_for_mle_scale_matrix</span><span class="p">(</span>
+        <span class="n">initial_scale_matrix</span><span class="o">=</span><span class="n">initial_mle_scale_matrix</span><span class="p">,</span>
+        <span class="n">centered_samples</span><span class="o">=</span><span class="n">centered_samples</span><span class="p">,</span>
+        <span class="n">dof</span><span class="o">=</span><span class="n">dof</span><span class="p">,</span>
+        <span class="n">loo_index</span><span class="o">=</span><span class="n">loo_index</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">,</span>
+        <span class="n">abs_tol</span><span class="o">=</span><span class="n">abs_tol</span><span class="p">,</span>
+        <span class="n">rel_tol</span><span class="o">=</span><span class="n">rel_tol</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mle_scale_matrix</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_multivariate_t_log_likelihood</span><span class="p">(</span>
+    <span class="n">scale_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">centered_samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the log likelihood of a multivariate t-distribution.</span>
+
+<span class="sd">    Implemented from the definition of the multivariate t-distribution.</span>
+<span class="sd">    Inspired by the scipy implementation of the multivariate t-distribution,</span>
+<span class="sd">    but simplified.</span>
+<span class="sd">    Source: https://en.wikipedia.org/wiki/Multivariate_t-distribution</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scale_matrix : np.ndarray</span>
+<span class="sd">        The scale matrix of the multivariate t-distribution.</span>
+<span class="sd">    centered_samples : np.ndarray</span>
+<span class="sd">        The centered samples from the multivariate t-distribution.</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The degrees of freedom of the multivariate t-distribution.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The log likelihood of the multivariate t-distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sample_dim</span> <span class="o">=</span> <span class="n">centered_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">sign_det</span><span class="p">,</span> <span class="n">log_det_scale_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">slogdet</span><span class="p">(</span><span class="n">scale_matrix</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sign_det</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">inverse_scale_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">scale_matrix</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">sample_dim</span><span class="p">))</span>
+
+    <span class="n">total_log_likelihood</span> <span class="o">=</span> <span class="n">_fixed_param_multivariate_t_log_likelihood</span><span class="p">(</span>
+        <span class="n">centered_samples</span><span class="o">=</span><span class="n">centered_samples</span><span class="p">,</span>
+        <span class="n">dof</span><span class="o">=</span><span class="n">dof</span><span class="p">,</span>
+        <span class="n">inverse_scale_matrix</span><span class="o">=</span><span class="n">inverse_scale_matrix</span><span class="p">,</span>
+        <span class="n">log_det_scale_matrix</span><span class="o">=</span><span class="n">log_det_scale_matrix</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">total_log_likelihood</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_fixed_param_multivariate_t_log_likelihood</span><span class="p">(</span>
+    <span class="n">centered_samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">inverse_scale_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">log_det_scale_matrix</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the log likelihood of a multivariate t-distribution.</span>
+
+<span class="sd">    Directly from the definition of the multivariate t-distribution.</span>
+<span class="sd">    Implementation inspired by the scipy implementation of</span>
+<span class="sd">    the multivariate t-distribution, but simplified.</span>
+<span class="sd">    Source: https://en.wikipedia.org/wiki/Multivariate_t-distribution</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    centered_samples : np.ndarray</span>
+<span class="sd">        The centered samples from the multivariate t-distribution.</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The degrees of freedom of the multivariate t-distribution.</span>
+<span class="sd">    inverse_scale_matrix : np.ndarray</span>
+<span class="sd">        The inverse of the scale matrix of the multivariate t-distribution.</span>
+<span class="sd">    log_det_scale_matrix : float</span>
+<span class="sd">        The log determinant of the scale matrix of the multivariate t-distribution.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The log likelihood of the multivariate t-distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_samples</span><span class="p">,</span> <span class="n">sample_dim</span> <span class="o">=</span> <span class="n">centered_samples</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="n">mahalanobis_squared_distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">centered_samples</span> <span class="o">@</span> <span class="n">inverse_scale_matrix</span><span class="p">)</span> <span class="o">*</span> <span class="n">centered_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Normalization constants:</span>
+    <span class="n">exponent</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">dof</span> <span class="o">+</span> <span class="n">sample_dim</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">log_gamma</span><span class="p">(</span><span class="n">exponent</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">log_gamma</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">dof</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">sample_dim</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">dof</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">log_det_scale_matrix</span>
+
+    <span class="n">normalization_contribution</span> <span class="o">=</span> <span class="n">num_samples</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">B</span> <span class="o">-</span> <span class="n">C</span> <span class="o">-</span> <span class="n">D</span><span class="p">)</span>
+    <span class="n">sample_contributions</span> <span class="o">=</span> <span class="o">-</span><span class="n">exponent</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">mahalanobis_squared_distances</span> <span class="o">/</span> <span class="n">dof</span><span class="p">)</span>
+    <span class="n">total_log_likelihood</span> <span class="o">=</span> <span class="n">normalization_contribution</span> <span class="o">+</span> <span class="n">sample_contributions</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">total_log_likelihood</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_mv_t_ll_at_mle_params</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_abs_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_rel_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate multivariate T log likelihood at the MLE parameters for a segment.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : np.ndarray</span>
+<span class="sd">        Data matrix. Rows are observations and columns are variables.</span>
+<span class="sd">    start : int</span>
+<span class="sd">        Start index of the segment (inclusive).</span>
+<span class="sd">    end : int</span>
+<span class="sd">        End index of the segment (exclusive).</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The degrees of freedom of the multivariate t-distribution.</span>
+<span class="sd">    mle_scale_abs_tol : float</span>
+<span class="sd">        The absolute tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_rel_tol : float</span>
+<span class="sd">        The relative tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_max_iter : int</span>
+<span class="sd">        The maximum number of iterations to perform for the MLE scale matrix estimation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The log likelihood of the observations in the</span>
+<span class="sd">        interval ``[start, end)`` in the data matrix `X`,</span>
+<span class="sd">        evaluated at the maximum likelihood parameter</span>
+<span class="sd">        estimates for the mean and scale matrix, given</span>
+<span class="sd">        the provided degrees of freedom.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">X_segment</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+
+    <span class="c1"># Estimate the mean of each dimension through the sample medians:</span>
+    <span class="n">sample_medians</span> <span class="o">=</span> <span class="n">col_median</span><span class="p">(</span><span class="n">X_segment</span><span class="p">)</span>
+    <span class="n">X_centered</span> <span class="o">=</span> <span class="n">X_segment</span> <span class="o">-</span> <span class="n">sample_medians</span>
+
+    <span class="n">mle_scale_matrix</span> <span class="o">=</span> <span class="n">maximum_likelihood_mv_t_scale_matrix</span><span class="p">(</span>
+        <span class="n">X_centered</span><span class="p">,</span>
+        <span class="n">dof</span><span class="p">,</span>
+        <span class="n">abs_tol</span><span class="o">=</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+        <span class="n">rel_tol</span><span class="o">=</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="o">=</span><span class="n">mle_scale_max_iter</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">total_log_likelihood</span> <span class="o">=</span> <span class="n">_multivariate_t_log_likelihood</span><span class="p">(</span>
+        <span class="n">scale_matrix</span><span class="o">=</span><span class="n">mle_scale_matrix</span><span class="p">,</span> <span class="n">centered_samples</span><span class="o">=</span><span class="n">X_centered</span><span class="p">,</span> <span class="n">dof</span><span class="o">=</span><span class="n">dof</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">total_log_likelihood</span>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">multivariate_t_cost_mle_params</span><span class="p">(</span>
+    <span class="n">starts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">ends</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_abs_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_rel_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the multivariate T twice negative log likelihood cost.</span>
+
+<span class="sd">    At the maximum likelihood estimated mean and scale matrix values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    starts : np.ndarray</span>
+<span class="sd">        The start indices of the segments.</span>
+<span class="sd">    ends : np.ndarray</span>
+<span class="sd">        The end indices of the segments.</span>
+<span class="sd">    X : np.ndarray</span>
+<span class="sd">        The data matrix. Rows are observations and columns are variables.</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The degrees of freedom for the cost calculation.</span>
+<span class="sd">    mle_scale_abs_tol : float</span>
+<span class="sd">        The absolute tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_rel_tol : float</span>
+<span class="sd">        The relative tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_max_iter : int</span>
+<span class="sd">        The maximum number of iterations to perform for the MLE scale matrix estimation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        The twice negative log likelihood costs for each segment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_starts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">starts</span><span class="p">)</span>
+    <span class="n">costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_starts</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">num_starts</span><span class="p">):</span>
+        <span class="n">segment_log_likelihood</span> <span class="o">=</span> <span class="n">_mv_t_ll_at_mle_params</span><span class="p">(</span>
+            <span class="n">X</span><span class="p">,</span>
+            <span class="n">starts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">ends</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">dof</span><span class="o">=</span><span class="n">dof</span><span class="p">,</span>
+            <span class="n">mle_scale_abs_tol</span><span class="o">=</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+            <span class="n">mle_scale_rel_tol</span><span class="o">=</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+            <span class="n">mle_scale_max_iter</span><span class="o">=</span><span class="n">mle_scale_max_iter</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">segment_log_likelihood</span>
+
+    <span class="k">return</span> <span class="n">costs</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_mv_t_ll_at_fixed_params</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">mean</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">inverse_scale_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">log_det_scale_matrix</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate multivariate T log likelihood at the fixed parameters for a segment.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : np.ndarray</span>
+<span class="sd">        Data matrix. Rows are observations and columns are variables.</span>
+<span class="sd">    start : int</span>
+<span class="sd">        Start index of the segment (inclusive).</span>
+<span class="sd">    end : int</span>
+<span class="sd">        End index of the segment (exclusive).</span>
+<span class="sd">    mean : np.ndarray</span>
+<span class="sd">        The mean of the multivariate t-distribution.</span>
+<span class="sd">    inverse_scale_matrix : np.ndarray</span>
+<span class="sd">        The inverse of the scale matrix of the multivariate t-distribution.</span>
+<span class="sd">    log_det_scale_matrix : float</span>
+<span class="sd">        The log determinant of the scale matrix of the multivariate t-distribution.</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The degrees of freedom of the multivariate t-distribution.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The log likelihood of the observations in the</span>
+<span class="sd">        interval ``[start, end)`` in the data matrix `X`,</span>
+<span class="sd">        evaluated at the fixed parameter values for the</span>
+<span class="sd">        mean and scale matrix, given the provided degrees of freedom.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">X_centered</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span> <span class="o">-</span> <span class="n">mean</span>
+
+    <span class="c1"># Compute the log likelihood of the segment:</span>
+    <span class="n">total_log_likelihood</span> <span class="o">=</span> <span class="n">_fixed_param_multivariate_t_log_likelihood</span><span class="p">(</span>
+        <span class="n">inverse_scale_matrix</span><span class="o">=</span><span class="n">inverse_scale_matrix</span><span class="p">,</span>
+        <span class="n">log_det_scale_matrix</span><span class="o">=</span><span class="n">log_det_scale_matrix</span><span class="p">,</span>
+        <span class="n">centered_samples</span><span class="o">=</span><span class="n">X_centered</span><span class="p">,</span>
+        <span class="n">dof</span><span class="o">=</span><span class="n">dof</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">total_log_likelihood</span>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">multivariate_t_cost_fixed_params</span><span class="p">(</span>
+    <span class="n">starts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">ends</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">mean</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">inverse_scale_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">log_det_scale_matrix</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the multivariate T twice negative log likelihood cost.</span>
+
+<span class="sd">    At fixed parameter values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    starts : np.ndarray</span>
+<span class="sd">        The start indices of the segments.</span>
+<span class="sd">    ends : np.ndarray</span>
+<span class="sd">        The end indices of the segments.</span>
+<span class="sd">    X : np.ndarray</span>
+<span class="sd">        The data matrix.</span>
+<span class="sd">    mean : np.ndarray</span>
+<span class="sd">        The fixed mean for the cost calculation.</span>
+<span class="sd">    inverse_scale_matrix : np.ndarray</span>
+<span class="sd">        The fixed inverse scale matrix for the cost calculation.</span>
+<span class="sd">    log_det_scale_matrix : float</span>
+<span class="sd">        The log determinant of the scale matrix of the multivariate t-distribution.</span>
+<span class="sd">    dof : float</span>
+<span class="sd">        The fixed degrees of freedom for the cost calculation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        The twice negative log likelihood costs for each segment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_starts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">starts</span><span class="p">)</span>
+    <span class="n">costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_starts</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">num_starts</span><span class="p">):</span>
+        <span class="n">segment_log_likelihood</span> <span class="o">=</span> <span class="n">_mv_t_ll_at_fixed_params</span><span class="p">(</span>
+            <span class="n">X</span><span class="p">,</span>
+            <span class="n">starts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">ends</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">mean</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span>
+            <span class="n">inverse_scale_matrix</span><span class="o">=</span><span class="n">inverse_scale_matrix</span><span class="p">,</span>
+            <span class="n">log_det_scale_matrix</span><span class="o">=</span><span class="n">log_det_scale_matrix</span><span class="p">,</span>
+            <span class="n">dof</span><span class="o">=</span><span class="n">dof</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">segment_log_likelihood</span>
+
+    <span class="k">return</span> <span class="n">costs</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_isotropic_mv_t_dof_estimate</span><span class="p">(</span>
+    <span class="n">centered_samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">infinite_dof_threshold</span><span class="p">,</span> <span class="n">zero_norm_tol</span><span class="o">=</span><span class="mf">1.0e-6</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate the degrees of freedom of a multivariate t-distribution.</span>
+
+<span class="sd">    From: A Novel Parameter Estimation Algorithm for the Multivariate</span>
+<span class="sd">          t-Distribution and Its Application to Computer Vision.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    centered_samples : np.ndarray</span>
+<span class="sd">        The centered samples from the multivariate t-distribution.</span>
+<span class="sd">    infinite_dof_threshold : float</span>
+<span class="sd">        The threshold at which the degrees of freedom are considered infinite.</span>
+<span class="sd">        If the degrees of freedom are above this threshold,</span>
+<span class="sd">        the multivariate t-distribution is approximated with</span>
+<span class="sd">        a multivariate Gaussian distribution.</span>
+<span class="sd">    zero_norm_tol : float, optional (default=1.0e-6)</span>
+<span class="sd">        The tolerance for considering a squared norm as zero.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The estimated degrees of freedom of the multivariate t-distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sample_dim</span> <span class="o">=</span> <span class="n">centered_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">squared_norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">centered_samples</span> <span class="o">*</span> <span class="n">centered_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">log_norm_sq_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">squared_norms</span><span class="p">[</span><span class="n">squared_norms</span> <span class="o">&gt;</span> <span class="n">zero_norm_tol</span><span class="o">**</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+
+    <span class="n">b</span> <span class="o">=</span> <span class="n">log_norm_sq_var</span> <span class="o">-</span> <span class="n">trigamma</span><span class="p">(</span><span class="n">sample_dim</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+    <span class="n">inf_dof_b_threshold</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">infinite_dof_threshold</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">infinite_dof_threshold</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">b</span> <span class="o">&lt;</span> <span class="n">inf_dof_b_threshold</span><span class="p">:</span>
+        <span class="c1"># The dof estimate formula would exceed the infinite dof threshold,</span>
+        <span class="c1"># (or break down due to a negative value), so we return infinity.</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="n">dof_estimate</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">b</span><span class="p">))</span> <span class="o">/</span> <span class="n">b</span>
+
+    <span class="k">return</span> <span class="n">dof_estimate</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_kurtosis_mv_t_dof_estimate</span><span class="p">(</span>
+    <span class="n">centered_samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">infinite_dof_threshold</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate the degrees of freedom of a multivariate t-distribution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    centered_samples : np.ndarray</span>
+<span class="sd">        The centered samples from the multivariate t-distribution.</span>
+<span class="sd">    infinite_dof_threshold : float</span>
+<span class="sd">        The threshold at which the degrees of freedom are considered infinite.</span>
+<span class="sd">        If the degrees of freedom are above this threshold,</span>
+<span class="sd">        the multivariate t-distribution is approximated with</span>
+<span class="sd">        a multivariate Gaussian distribution.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The estimated degrees of freedom of the multivariate t-distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sample_ellipitical_kurtosis</span> <span class="o">=</span> <span class="n">kurtosis</span><span class="p">(</span><span class="n">centered_samples</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">/</span> <span class="mf">3.0</span>
+
+    <span class="n">inf_dof_kurtosis_threshold</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">infinite_dof_threshold</span> <span class="o">-</span> <span class="mf">4.0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sample_ellipitical_kurtosis</span> <span class="o">&lt;</span> <span class="n">inf_dof_kurtosis_threshold</span><span class="p">:</span>
+        <span class="c1"># The elliptical kurtosis estimate is below the threshold</span>
+        <span class="c1"># which would lead to a degrees of freedom estimate above the</span>
+        <span class="c1"># infinite degrees of freedom threshold. We return infinity.</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="n">dof_estimate</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">/</span> <span class="n">sample_ellipitical_kurtosis</span><span class="p">)</span> <span class="o">+</span> <span class="mf">4.0</span>
+    <span class="k">return</span> <span class="n">dof_estimate</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_iterative_mv_t_dof_estimate</span><span class="p">(</span>
+    <span class="n">centered_samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">initial_dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">infinite_dof_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_abs_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_rel_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">dof_abs_tol</span><span class="o">=</span><span class="mf">1.0e-1</span><span class="p">,</span>
+    <span class="n">dof_rel_tol</span><span class="o">=</span><span class="mf">5.0e-2</span><span class="p">,</span>
+    <span class="n">dof_max_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate dof. for a multivariate T distribution, iteratively.</span>
+
+<span class="sd">    Using algorithm 1 from [1]_, we iteratively estimate the degrees of freedom</span>
+<span class="sd">    parameter of a multivariate T distribution. The algorithm iteratively</span>
+<span class="sd">    computes the MLE scale matrix with the current degrees of freedom estimate,</span>
+<span class="sd">    and then updates the degrees of freedom estimate based on the relative</span>
+<span class="sd">    trace of the sample covariance matrix and the MLE scale matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    centered_samples : np.ndarray</span>
+<span class="sd">        The centered samples from the multivariate t-distribution.</span>
+<span class="sd">    initial_dof : float</span>
+<span class="sd">        The initial degrees of freedom estimate.</span>
+<span class="sd">    infinite_dof_threshold : float</span>
+<span class="sd">        The threshold at which the degrees of freedom are considered infinite.</span>
+<span class="sd">        If the degrees of freedom are above this threshold,</span>
+<span class="sd">        the multivariate t-distribution is approximated with</span>
+<span class="sd">        a multivariate Gaussian distribution.</span>
+<span class="sd">    mle_scale_abs_tol : float</span>
+<span class="sd">        The absolute tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_rel_tol : float</span>
+<span class="sd">        The relative tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_max_iter : int</span>
+<span class="sd">        The maximum number of iterations to perform for the MLE scale matrix estimation.</span>
+<span class="sd">    dof_abs_tol : float, optional (default=1.0e-1)</span>
+<span class="sd">        The absolute tolerance for convergence.</span>
+<span class="sd">    dof_rel_tol : float, optional (default=5.0e-2)</span>
+<span class="sd">        The relative tolerance for convergence.</span>
+<span class="sd">    dof_max_iter : int, optional (default=10)</span>
+<span class="sd">        The maximum number of iterations to perform.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The estimated degrees of freedom of the multivariate t-distribution.</span>
+
+<span class="sd">    .. [1] Ollila, Esa, &amp; Daniel P. Palomar, &amp; Frédéric Pascal. (2020). Shrinking the</span>
+<span class="sd">       Eigenvalues of M-Estimators of Covariance Matrix. IEEE Transactions on Signal</span>
+<span class="sd">       Processing, 256-269.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">centered_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">initial_dof</span> <span class="o">&gt;</span> <span class="n">infinite_dof_threshold</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="n">inf_dof_nu_threshold</span> <span class="o">=</span> <span class="n">infinite_dof_threshold</span> <span class="o">/</span> <span class="p">(</span><span class="n">infinite_dof_threshold</span> <span class="o">-</span> <span class="mf">2.0</span><span class="p">)</span>
+
+    <span class="n">sample_covariance</span> <span class="o">=</span> <span class="p">(</span><span class="n">centered_samples</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">centered_samples</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+
+    <span class="n">mle_scale_matrix</span> <span class="o">=</span> <span class="n">maximum_likelihood_mv_t_scale_matrix</span><span class="p">(</span>
+        <span class="n">centered_samples</span><span class="p">,</span>
+        <span class="n">initial_dof</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="o">=</span><span class="n">mle_scale_max_iter</span><span class="p">,</span>
+        <span class="n">abs_tol</span><span class="o">=</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+        <span class="n">rel_tol</span><span class="o">=</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">dof</span> <span class="o">=</span> <span class="n">initial_dof</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dof_max_iter</span><span class="p">):</span>
+        <span class="n">nu_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">sample_covariance</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">mle_scale_matrix</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nu_i</span> <span class="o">&lt;</span> <span class="n">inf_dof_nu_threshold</span><span class="p">:</span>
+            <span class="c1"># The estimated degrees of freedom are high enough to approximate the</span>
+            <span class="c1"># multivariate T distribution with a Gaussian.</span>
+            <span class="n">dof</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+            <span class="k">break</span>
+
+        <span class="n">old_dof</span> <span class="o">=</span> <span class="n">dof</span>
+        <span class="n">dof</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">nu_i</span> <span class="o">/</span> <span class="nb">max</span><span class="p">((</span><span class="n">nu_i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="mf">1.0e-3</span><span class="p">)</span>
+
+        <span class="n">mle_scale_matrix</span> <span class="o">=</span> <span class="n">_solve_for_mle_scale_matrix</span><span class="p">(</span>
+            <span class="n">initial_scale_matrix</span><span class="o">=</span><span class="n">mle_scale_matrix</span><span class="p">,</span>
+            <span class="n">centered_samples</span><span class="o">=</span><span class="n">centered_samples</span><span class="p">,</span>
+            <span class="n">dof</span><span class="o">=</span><span class="n">dof</span><span class="p">,</span>
+            <span class="n">abs_tol</span><span class="o">=</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+            <span class="n">rel_tol</span><span class="o">=</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+            <span class="n">max_iter</span><span class="o">=</span><span class="n">mle_scale_max_iter</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">absolute_dof_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dof</span> <span class="o">-</span> <span class="n">old_dof</span><span class="p">)</span>
+        <span class="n">rel_tol_satisfied</span> <span class="o">=</span> <span class="n">absolute_dof_diff</span> <span class="o">/</span> <span class="n">old_dof</span> <span class="o">&lt;</span> <span class="n">dof_rel_tol</span>
+        <span class="n">abs_tol_satisfied</span> <span class="o">=</span> <span class="n">absolute_dof_diff</span> <span class="o">&lt;</span> <span class="n">dof_abs_tol</span>
+        <span class="k">if</span> <span class="n">rel_tol_satisfied</span> <span class="ow">or</span> <span class="n">abs_tol_satisfied</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">dof</span>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_loo_iterative_mv_t_dof_estimate</span><span class="p">(</span>
+    <span class="n">centered_samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">initial_dof</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">infinite_dof_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_abs_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_rel_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">dof_abs_tol</span><span class="o">=</span><span class="mf">1.0e-1</span><span class="p">,</span>
+    <span class="n">dof_rel_tol</span><span class="o">=</span><span class="mf">5.0e-2</span><span class="p">,</span>
+    <span class="n">dof_max_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Leave-one-out iterative dof. estimate for a multivariate T distribution.</span>
+
+<span class="sd">    Using an improved estimator, based on the algorithm in:</span>
+<span class="sd">    &#39;Improved estimation of the degree of freedom parameter of mv t-distribution&#39;&#39;.</span>
+<span class="sd">    However, the algorithm computes one MLE scale matrix estimate per samples,</span>
+<span class="sd">    holding out one sample at a time, which increases computation cost.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    centered_samples : np.ndarray</span>
+<span class="sd">        The centered samples from the multivariate t-distribution.</span>
+<span class="sd">    initial_dof : float</span>
+<span class="sd">        The initial degrees of freedom estimate.</span>
+<span class="sd">    infinite_dof_threshold : float</span>
+<span class="sd">        The threshold at which the degrees of freedom are considered infinite.</span>
+<span class="sd">        If the degrees of freedom are above this threshold,</span>
+<span class="sd">        the multivariate t-distribution is approximated with</span>
+<span class="sd">        a multivariate Gaussian distribution.</span>
+<span class="sd">    mle_scale_abs_tol : float</span>
+<span class="sd">        The absolute tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_rel_tol : float</span>
+<span class="sd">        The relative tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_max_iter : int</span>
+<span class="sd">        The maximum number of iterations to perform for the MLE scale matrix estimation.</span>
+<span class="sd">    dof_abs_tol : float, optional (default=1.0e-1)</span>
+<span class="sd">        The absolute tolerance for convergence.</span>
+<span class="sd">    dof_rel_tol : float, optional (default=5.0e-2)</span>
+<span class="sd">        The relative tolerance for convergence.</span>
+<span class="sd">    dof_max_iter : int, optional (default=5)</span>
+<span class="sd">        The maximum number of iterations to perform.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The estimated degrees of freedom of the multivariate T distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">initial_dof</span> <span class="o">&gt;</span> <span class="n">infinite_dof_threshold</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="n">num_samples</span><span class="p">,</span> <span class="n">sample_dimension</span> <span class="o">=</span> <span class="n">centered_samples</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">inf_dof_theta_threshold</span> <span class="o">=</span> <span class="n">infinite_dof_threshold</span> <span class="o">/</span> <span class="p">(</span><span class="n">infinite_dof_threshold</span> <span class="o">-</span> <span class="mf">2.0</span><span class="p">)</span>
+
+    <span class="n">sample_covariance</span> <span class="o">=</span> <span class="p">(</span><span class="n">centered_samples</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">centered_samples</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_samples</span>
+    <span class="n">grand_mle_scale_matrix</span> <span class="o">=</span> <span class="n">maximum_likelihood_mv_t_scale_matrix</span><span class="p">(</span>
+        <span class="n">centered_samples</span><span class="p">,</span>
+        <span class="n">dof</span><span class="o">=</span><span class="n">initial_dof</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="o">=</span><span class="n">mle_scale_max_iter</span><span class="p">,</span>
+        <span class="n">abs_tol</span><span class="o">=</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+        <span class="n">rel_tol</span><span class="o">=</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">contraction_estimate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">grand_mle_scale_matrix</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span>
+        <span class="n">sample_covariance</span>
+    <span class="p">)</span>
+
+    <span class="n">current_dof</span> <span class="o">=</span> <span class="n">initial_dof</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dof_max_iter</span><span class="p">):</span>
+        <span class="n">total_loo_mahalanobis_squared_distance</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">num_samples</span><span class="p">):</span>
+            <span class="c1"># Extract the leave-one-out sample as a column vector:</span>
+            <span class="n">loo_sample</span> <span class="o">=</span> <span class="n">centered_samples</span><span class="p">[</span><span class="n">sample</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">loo_sample_outer_product</span> <span class="o">=</span> <span class="n">loo_sample</span> <span class="o">@</span> <span class="n">loo_sample</span><span class="o">.</span><span class="n">T</span>
+
+            <span class="c1"># Initial estimate of the leave-one-out covariance matrix,</span>
+            <span class="c1"># subtracting the contracted contribution of the leave-one-out sample:</span>
+            <span class="n">loo_scale_estimate</span> <span class="o">=</span> <span class="n">grand_mle_scale_matrix</span> <span class="o">-</span> <span class="n">contraction_estimate</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="n">loo_sample_outer_product</span> <span class="o">/</span> <span class="n">num_samples</span>
+            <span class="p">)</span>
+
+            <span class="n">loo_mle_scale_matrix</span> <span class="o">=</span> <span class="n">_solve_for_mle_scale_matrix</span><span class="p">(</span>
+                <span class="n">initial_scale_matrix</span><span class="o">=</span><span class="n">loo_scale_estimate</span><span class="p">,</span>
+                <span class="n">centered_samples</span><span class="o">=</span><span class="n">centered_samples</span><span class="p">,</span>
+                <span class="n">dof</span><span class="o">=</span><span class="n">current_dof</span><span class="p">,</span>
+                <span class="n">loo_index</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
+                <span class="n">abs_tol</span><span class="o">=</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+                <span class="n">rel_tol</span><span class="o">=</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+                <span class="n">max_iter</span><span class="o">=</span><span class="n">mle_scale_max_iter</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">loo_mahalanobis_squared_distance</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">loo_sample</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">loo_mle_scale_matrix</span><span class="p">,</span> <span class="n">loo_sample</span><span class="p">)</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">total_loo_mahalanobis_squared_distance</span> <span class="o">+=</span> <span class="n">loo_mahalanobis_squared_distance</span>
+
+        <span class="n">theta_k</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sample_dimension</span> <span class="o">/</span> <span class="n">num_samples</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">total_loo_mahalanobis_squared_distance</span> <span class="o">/</span> <span class="n">num_samples</span><span class="p">)</span> <span class="o">/</span> <span class="n">sample_dimension</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">theta_k</span> <span class="o">&lt;</span> <span class="n">inf_dof_theta_threshold</span><span class="p">:</span>
+            <span class="c1"># The estimated degrees of freedom are high enough to approximate the</span>
+            <span class="c1"># multivariate T distribution with a Gaussian distribution.</span>
+            <span class="n">current_dof</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+            <span class="k">break</span>
+
+        <span class="n">new_dof</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">theta_k</span> <span class="o">/</span> <span class="p">(</span><span class="n">theta_k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">abs_dof_difference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_dof</span> <span class="o">-</span> <span class="n">current_dof</span><span class="p">)</span>
+        <span class="n">abs_tol_satisfied</span> <span class="o">=</span> <span class="n">abs_dof_difference</span> <span class="o">&lt;</span> <span class="n">dof_abs_tol</span>
+        <span class="n">rel_tol_satisfied</span> <span class="o">=</span> <span class="p">(</span><span class="n">abs_dof_difference</span> <span class="o">/</span> <span class="n">current_dof</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">dof_rel_tol</span>
+
+        <span class="n">current_dof</span> <span class="o">=</span> <span class="n">new_dof</span>
+        <span class="k">if</span> <span class="n">abs_tol_satisfied</span> <span class="ow">or</span> <span class="n">rel_tol_satisfied</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">current_dof</span>
+
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">_estimate_mv_t_dof</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">infinite_dof_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">refine_dof_threshold</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">mle_scale_abs_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_rel_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mle_scale_max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Estimate the degrees of freedom of a multivariate t-distribution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : np.ndarray</span>
+<span class="sd">        The data matrix, where rows are observations and columns are variables.</span>
+<span class="sd">    infinite_dof_threshold : float</span>
+<span class="sd">        The threshold at which the degrees of freedom are considered infinite.</span>
+<span class="sd">        If the degrees of freedom are above this threshold,</span>
+<span class="sd">        the multivariate t-distribution is approximated with</span>
+<span class="sd">        a multivariate Gaussian distribution.</span>
+<span class="sd">    refine_dof_threshold : int</span>
+<span class="sd">        The number of samples below which the degrees of freedom</span>
+<span class="sd">        estimate is refined using a leave-one-out iterative method.</span>
+<span class="sd">    mle_scale_abs_tol : float</span>
+<span class="sd">        The absolute tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_rel_tol : float</span>
+<span class="sd">        The relative tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_max_iter : int</span>
+<span class="sd">        The maximum number of iterations to perform for the MLE scale matrix estimation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The estimated degrees of freedom of the multivariate t-distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">centered_samples</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">col_median</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="n">isotropic_dof</span> <span class="o">=</span> <span class="n">_isotropic_mv_t_dof_estimate</span><span class="p">(</span>
+        <span class="n">centered_samples</span><span class="p">,</span> <span class="n">infinite_dof_threshold</span><span class="o">=</span><span class="n">infinite_dof_threshold</span>
+    <span class="p">)</span>
+    <span class="n">kurtosis_dof</span> <span class="o">=</span> <span class="n">_kurtosis_mv_t_dof_estimate</span><span class="p">(</span>
+        <span class="n">centered_samples</span><span class="p">,</span> <span class="n">infinite_dof_threshold</span><span class="o">=</span><span class="n">infinite_dof_threshold</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">isotropic_dof</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">kurtosis_dof</span><span class="p">):</span>
+        <span class="c1"># Initialize the iterative dof estimation method with the</span>
+        <span class="c1"># geometric mean of the isotropic and kurtosis estimates:</span>
+        <span class="n">initial_dof_estimate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">isotropic_dof</span> <span class="o">*</span> <span class="n">kurtosis_dof</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">isotropic_dof</span><span class="p">):</span>
+        <span class="n">initial_dof_estimate</span> <span class="o">=</span> <span class="n">isotropic_dof</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">kurtosis_dof</span><span class="p">):</span>
+        <span class="n">initial_dof_estimate</span> <span class="o">=</span> <span class="n">kurtosis_dof</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Both initial estimates are infinite, start the</span>
+        <span class="c1"># iterative method with a reasonably high initial dof:</span>
+        <span class="n">initial_dof_estimate</span> <span class="o">=</span> <span class="n">infinite_dof_threshold</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+    <span class="n">dof_estimate</span> <span class="o">=</span> <span class="n">_iterative_mv_t_dof_estimate</span><span class="p">(</span>
+        <span class="n">centered_samples</span><span class="o">=</span><span class="n">centered_samples</span><span class="p">,</span>
+        <span class="n">initial_dof</span><span class="o">=</span><span class="n">initial_dof_estimate</span><span class="p">,</span>
+        <span class="n">infinite_dof_threshold</span><span class="o">=</span><span class="n">infinite_dof_threshold</span><span class="p">,</span>
+        <span class="n">mle_scale_abs_tol</span><span class="o">=</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+        <span class="n">mle_scale_rel_tol</span><span class="o">=</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+        <span class="n">mle_scale_max_iter</span><span class="o">=</span><span class="n">mle_scale_max_iter</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">num_samples</span> <span class="o">&lt;=</span> <span class="n">refine_dof_threshold</span><span class="p">:</span>
+        <span class="n">dof_estimate</span> <span class="o">=</span> <span class="n">_loo_iterative_mv_t_dof_estimate</span><span class="p">(</span>
+            <span class="n">centered_samples</span><span class="o">=</span><span class="n">centered_samples</span><span class="p">,</span>
+            <span class="n">initial_dof</span><span class="o">=</span><span class="n">dof_estimate</span><span class="p">,</span>
+            <span class="n">infinite_dof_threshold</span><span class="o">=</span><span class="n">infinite_dof_threshold</span><span class="p">,</span>
+            <span class="n">mle_scale_abs_tol</span><span class="o">=</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+            <span class="n">mle_scale_rel_tol</span><span class="o">=</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+            <span class="n">mle_scale_max_iter</span><span class="o">=</span><span class="n">mle_scale_max_iter</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dof_estimate</span>
+
+
+<div class="viewcode-block" id="MultivariateTCost">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.costs.MultivariateTCost.html#skchange.costs.MultivariateTCost">[docs]</a>
+<span class="k">class</span> <span class="nc">MultivariateTCost</span><span class="p">(</span><span class="n">BaseCost</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Multivariate T twice negative log likelihood cost.</span>
+
+<span class="sd">    The multivariate T-distribution is a generalization of the multivariate</span>
+<span class="sd">    Gaussian distribution, allowing for heavier tails. The degrees of freedom</span>
+<span class="sd">    parameter controls the tail heaviness, with higher values leading to</span>
+<span class="sd">    distributions that are closer to the multivariate Gaussian distribution.</span>
+<span class="sd">    With Numba installed the runtime of this cost is is between 5 and 10 times</span>
+<span class="sd">    slower than the Gaussian likelihood cost, but more robust to outliers.</span>
+
+<span class="sd">    The cost is calculated as the twice negative log likelihood of the</span>
+<span class="sd">    multivariate T-distribution, given the data, mean, scale matrix, and</span>
+<span class="sd">    degrees of freedom. The degrees of freedom can be fixed or estimated</span>
+<span class="sd">    from the data. When estimating the degrees of freedom, we use several</span>
+<span class="sd">    methods. Initially we compute the geometric mean of an isotropic dof.</span>
+<span class="sd">    estimate from [1]_ and a kurtosis-based estimate from [2]_. This initial</span>
+<span class="sd">    estimate is then fed into an iterative dof. estimate from [2]_. If the</span>
+<span class="sd">    number of samples is below a given threshold (`refine_dof_threshold`),</span>
+<span class="sd">    we refine the dof. estimate using a leave-one-out iterative method from [3]_.</span>
+
+<span class="sd">    If the degrees of freedom are above a given threshold (`infinite_dof_threshold`),</span>
+<span class="sd">    the multivariate T-distribution is approximated with a multivariate Gaussian</span>
+<span class="sd">    distribution. The threshold is set to 50 by default, but can be adjusted</span>
+<span class="sd">    with the `infinite_dof_threshold` parameter.</span>
+
+<span class="sd">    As there is no analytical formula for the maximum likelihood estimate (MLE) of the</span>
+<span class="sd">    scale matrix of the multivariate T-distribution, we use fixed point iterations</span>
+<span class="sd">    to compute the MLE scale matrix within each segment. The tolerance parameters</span>
+<span class="sd">    `mle_scale_abs_tol` and `mle_scale_rel_tol` for the MLE scale matrix estimation can</span>
+<span class="sd">    be adjusted to control the convergence of the fixed point iterations, and when</span>
+<span class="sd">    either of the tolerances are achieved, the fixed point iterations stop.</span>
+
+<span class="sd">    The absolute tolerance (`mle_scale_abs_tol`) is achieved when the absolute change</span>
+<span class="sd">    in the norm of the scale matrix changed less than `mle_scale_abs_tol` after an</span>
+<span class="sd">    iteration, and the relative tolerance (`mle_scale_rel_tol`) is achieved when the</span>
+<span class="sd">    relative change in the norm of the scale matrix is less than `mle_scale_rel_tol`</span>
+<span class="sd">    after an iteration, relative to the pre-iteration norm.</span>
+
+<span class="sd">    The maximum number of iterations (`mle_scale_max_iter`) is used to safeguard against</span>
+<span class="sd">    non-convergence, and will raise a RuntimeError if the maximum number of iterations</span>
+<span class="sd">    is reached. Reaching the maximum number of iterations is a sign that the tolerance</span>
+<span class="sd">    parameters are too strict, and the fixed point iterations are not converging.</span>
+<span class="sd">    In this case, the tolerance parameters can be relaxed, or the maximum number of</span>
+<span class="sd">    iterations can be increased.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    param : 2-tuple of float or np.ndarray, or None (default=None)</span>
+<span class="sd">        Fixed mean and scale matrix for the cost calculation.</span>
+<span class="sd">        If ``None``, the maximum likelihood estimates are used.</span>
+<span class="sd">    fixed_dof : float, optional (default=None)</span>
+<span class="sd">        Fixed degrees of freedom for the cost calculation.</span>
+<span class="sd">        If None, the degrees of freedom are estimated from the data.</span>
+<span class="sd">    refine_dof_threshold : int, optional</span>
+<span class="sd">        (default=1000 with Numba installed, 100 without)</span>
+<span class="sd">        The number of samples below which the degrees of freedom</span>
+<span class="sd">        estimate is refined using a leave-one-out iterative method.</span>
+<span class="sd">    infinite_dof_threshold : float, optional (default=50.0)</span>
+<span class="sd">        The threshold at which the degrees of freedom are considered infinite.</span>
+<span class="sd">        If the degrees of freedom are above this threshold,</span>
+<span class="sd">        the multivariate t-distribution is approximated with</span>
+<span class="sd">        a multivariate Gaussian distribution.</span>
+<span class="sd">    mle_scale_abs_tol : float, optional (default=1.0e-2)</span>
+<span class="sd">        The absolute tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_rel_tol : float, optional (default=1.0e-2)</span>
+<span class="sd">        The relative tolerance for convergence in the MLE scale matrix estimation.</span>
+<span class="sd">    mle_scale_max_iter : int, optional (default=100)</span>
+<span class="sd">        The maximum number of iterations to perform for the MLE scale matrix estimation.</span>
+<span class="sd">        Will raise a RuntimeError if the maximum number of iterations is reached.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Aeschliman, Chad, &amp; Johnny Park, &amp; Avinash C. Kak. (2009). A Novel</span>
+<span class="sd">       Parameter Estimation Algorithm for the Multivariate T-Distribution and Its</span>
+<span class="sd">       Application to Computer Vision. In Computer Vision - ECCV 2010, 594-607.</span>
+<span class="sd">       Berlin, Heidelberg: Springer</span>
+<span class="sd">    .. [2] Ollila, Esa, &amp; Palomar, Daniel P. &amp; Pascal, Frédéric. (2020). Shrinking the</span>
+<span class="sd">       Eigenvalues of M-Estimators of Covariance Matrix. IEEE Transactions on Signal</span>
+<span class="sd">       Processing, 256-269.</span>
+<span class="sd">    .. [3] Pascal, Frédéric &amp; Ollila, Esa &amp; Palomar, Daniel P. (2021) Improved</span>
+<span class="sd">       Estimation of the Degree of Freedom Parameter of Multivariate T-Distribution.</span>
+<span class="sd">       In 2021 29th European Signal Processing Conference (EUSIPCO), 860-864.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_tags</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;johannvk&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;maintainers&quot;</span><span class="p">:</span> <span class="s2">&quot;johannvk&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;supports_fixed_param&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;is_aggregated&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">param</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">MeanType</span><span class="p">,</span> <span class="n">CovType</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fixed_dof</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">refine_dof_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">infinite_dof_threshold</span><span class="o">=</span><span class="mf">5.0e1</span><span class="p">,</span>
+        <span class="n">mle_scale_abs_tol</span><span class="o">=</span><span class="mf">1.0e-2</span><span class="p">,</span>
+        <span class="n">mle_scale_rel_tol</span><span class="o">=</span><span class="mf">1.0e-2</span><span class="p">,</span>
+        <span class="n">mle_scale_max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+
+        <span class="c1"># Provided fixed degrees of freedom:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_dof</span> <span class="o">=</span> <span class="n">fixed_dof</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">infinite_dof_threshold</span> <span class="o">=</span> <span class="n">infinite_dof_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refine_dof_threshold</span> <span class="o">=</span> <span class="n">refine_dof_threshold</span>
+
+        <span class="c1"># Tolerance parameters for the MLE scale matrix estimation:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_abs_tol</span> <span class="o">=</span> <span class="n">mle_scale_abs_tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_rel_tol</span> <span class="o">=</span> <span class="n">mle_scale_rel_tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_max_iter</span> <span class="o">=</span> <span class="n">mle_scale_max_iter</span>
+
+        <span class="n">check_in_interval</span><span class="p">(</span>
+            <span class="n">interval</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Interval</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span>
+            <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_dof</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;fixed_dof&quot;</span><span class="p">,</span>
+            <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">check_larger_than</span><span class="p">(</span>
+            <span class="n">min_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">infinite_dof_threshold</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;infinite_dof_threshold&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">check_larger_than</span><span class="p">(</span>
+            <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refine_dof_threshold</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;refine_dof_threshold&quot;</span><span class="p">,</span>
+            <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">check_in_interval</span><span class="p">(</span>
+            <span class="n">interval</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Interval</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">),</span>
+            <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mle_scale_abs_tol&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">check_in_interval</span><span class="p">(</span>
+            <span class="n">interval</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Interval</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">),</span>
+            <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mle_scale_rel_tol&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">check_larger_than</span><span class="p">(</span>
+            <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_max_iter</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mle_scale_max_iter&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_check_fixed_param</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">MeanType</span><span class="p">,</span> <span class="n">CovType</span><span class="p">],</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the fixed mean parameter is valid.</span>
+
+<span class="sd">        The covariance matrix is checked for positive definiteness,</span>
+<span class="sd">        and forced to a floating point representation for numba compatibility.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        param : 2-tuple of float or np.ndarray</span>
+<span class="sd">            Fixed mean and covariance matrix for the cost calculation.</span>
+<span class="sd">            Both are converted to float values or float arrays.</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        mean : np.ndarray</span>
+<span class="sd">            Fixed mean for the cost calculation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mean</span><span class="p">,</span> <span class="n">cov</span> <span class="o">=</span> <span class="n">param</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">check_mean</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+
+        <span class="c1"># Require floating point representation of</span>
+        <span class="c1"># the covariance matrix for numba compatibility:</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">check_cov</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">force_float</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">cov</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">min_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Minimum size of the interval to evaluate.</span>
+
+<span class="sd">        The size of each interval is defined as ``cuts[i, 1] - cuts[i, 0]``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="MultivariateTCost.get_model_size">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.costs.MultivariateTCost.html#skchange.costs.MultivariateTCost.get_model_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_model_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the number of parameters in the cost function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p : int</span>
+<span class="sd">            Number of variables in the data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the cost.</span>
+
+<span class="sd">        This method checks fixed distribution parameters, if provided, and</span>
+<span class="sd">        precomputes quantities that are used in the cost evaluation.</span>
+
+<span class="sd">        Additionally, the degrees of freedom for the multivariate T data generating</span>
+<span class="sd">        distribution it estimated, if the degrees of freedom parameters was not set</span>
+<span class="sd">        during the construction of the MultivariateTCost object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Data to evaluate. Must be a 2D array.</span>
+<span class="sd">        y: None</span>
+<span class="sd">            Ignored. Included for API consistency by convention.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="n">scale_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inv_scale_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">scale_matrix</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_det_scale_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">slogdet</span><span class="p">(</span><span class="n">scale_matrix</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_dof</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">refine_dof_threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">numba_available</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">refine_dof_threshold</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1.0e3</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">refine_dof_threshold</span> <span class="o">=</span> <span class="mi">100</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">dof_</span> <span class="o">=</span> <span class="n">_estimate_mv_t_dof</span><span class="p">(</span>
+                <span class="n">X</span><span class="p">,</span>
+                <span class="n">infinite_dof_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">infinite_dof_threshold</span><span class="p">,</span>
+                <span class="n">refine_dof_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refine_dof_threshold</span><span class="p">,</span>
+                <span class="n">mle_scale_abs_tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+                <span class="n">mle_scale_rel_tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+                <span class="n">mle_scale_max_iter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_max_iter</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dof_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_dof</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_evaluate_optim_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ends</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the cost for the MLE parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        starts : np.ndarray</span>
+<span class="sd">            Start indices of the intervals (inclusive).</span>
+<span class="sd">        ends : np.ndarray</span>
+<span class="sd">            End indices of the intervals (exclusive).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        costs : np.ndarray</span>
+<span class="sd">            A 2D array of costs. One row for each interval. The number of columns</span>
+<span class="sd">            is 1 since the MultivariateTCost is inherently multivariate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isposinf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dof_</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">gaussian_cost_mle_params</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">multivariate_t_cost_mle_params</span><span class="p">(</span>
+                <span class="n">starts</span><span class="p">,</span>
+                <span class="n">ends</span><span class="p">,</span>
+                <span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">,</span>
+                <span class="n">dof</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dof_</span><span class="p">,</span>
+                <span class="n">mle_scale_abs_tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_abs_tol</span><span class="p">,</span>
+                <span class="n">mle_scale_rel_tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_rel_tol</span><span class="p">,</span>
+                <span class="n">mle_scale_max_iter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mle_scale_max_iter</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_evaluate_fixed_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the cost for the fixed parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        starts : np.ndarray</span>
+<span class="sd">            Start indices of the intervals (inclusive).</span>
+<span class="sd">        ends : np.ndarray</span>
+<span class="sd">            End indices of the intervals (exclusive).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        costs : np.ndarray</span>
+<span class="sd">            A 2D array of costs. One row for each interval. The number of columns</span>
+<span class="sd">            is 1 since the MultivariateGaussianCost is inherently multivariate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isposinf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dof_</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">gaussian_cost_fixed_params</span><span class="p">(</span>
+                <span class="n">starts</span><span class="p">,</span>
+                <span class="n">ends</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">,</span>
+                <span class="n">mean</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span>
+                <span class="n">inv_cov</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_inv_scale_matrix</span><span class="p">,</span>
+                <span class="n">log_det_cov</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_log_det_scale_matrix</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">multivariate_t_cost_fixed_params</span><span class="p">(</span>
+                <span class="n">starts</span><span class="p">,</span>
+                <span class="n">ends</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">,</span>
+                <span class="n">mean</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span>
+                <span class="n">inverse_scale_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_inv_scale_matrix</span><span class="p">,</span>
+                <span class="n">log_det_scale_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_log_det_scale_matrix</span><span class="p">,</span>
+                <span class="n">dof</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dof_</span><span class="p">,</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="MultivariateTCost.get_test_params">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.costs.MultivariateTCost.html#skchange.costs.MultivariateTCost.get_test_params">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_test_params</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parameter_set</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return testing parameter settings for the estimator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameter_set : str, default=&quot;default&quot;</span>
+<span class="sd">            Name of the set of test parameters to return, for use in tests. If no</span>
+<span class="sd">            special parameters are defined for a value, will return ``&quot;default&quot;`` set.</span>
+<span class="sd">            There are currently no reserved values for interval evaluators.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        params : dict or list of dict, default = {}</span>
+<span class="sd">            Parameters to create testing instances of the class</span>
+<span class="sd">            Each dict are parameters to construct an &quot;interesting&quot; test instance, i.e.,</span>
+<span class="sd">            `MyClass(**params)` or `MyClass(**params[i])` creates a valid test instance.</span>
+<span class="sd">            `create_test_instance` uses the first (or only) dictionary in `params`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)},</span>
+            <span class="p">{</span><span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">1</span><span class="p">))},</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">params</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023 - 2025 (BSD-3-Clause License).
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

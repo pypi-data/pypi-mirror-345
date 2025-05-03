@@ -1,0 +1,858 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>skchange.anomaly_scores._from_cost &#8212; skchange</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom_notebook.css?v=c6a2da1f" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=99362dbf"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/skchange/anomaly_scores/_from_cost';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">skchange</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api_reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../developer_guide/index.html">
+    Developer guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../releases.html">
+    Releases
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NorskRegnesentral/skchange" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api_reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../developer_guide/index.html">
+    Developer guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../releases.html">
+    Releases
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NorskRegnesentral/skchange" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">skchange.anomaly_scores._from_cost</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for skchange.anomaly_scores._from_cost</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Saving-type anomaly scores.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseIntervalScorer</span>
+<span class="kn">from</span> <span class="nn">..costs</span> <span class="kn">import</span> <span class="n">L2Cost</span>
+<span class="kn">from</span> <span class="nn">..costs.base</span> <span class="kn">import</span> <span class="n">BaseCost</span>
+<span class="kn">from</span> <span class="nn">..utils.validation.cuts</span> <span class="kn">import</span> <span class="n">check_cuts_array</span>
+<span class="kn">from</span> <span class="nn">..utils.validation.data</span> <span class="kn">import</span> <span class="n">as_2d_array</span>
+
+
+<div class="viewcode-block" id="to_saving">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.anomaly_scores.to_saving.html#skchange.anomaly_scores.to_saving">[docs]</a>
+<span class="k">def</span> <span class="nf">to_saving</span><span class="p">(</span><span class="n">scorer</span><span class="p">:</span> <span class="n">BaseIntervalScorer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseIntervalScorer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert compatible scorers to a saving.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scorer : BaseIntervalScorer</span>
+<span class="sd">        The scorer to convert to a saving. If a cost, it must be a cost with a fixed</span>
+<span class="sd">        parameter. If a saving is provided, it is returned as is.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    saving : BaseIntervalScorer</span>
+<span class="sd">        The saving based on the cost function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scorer</span><span class="p">,</span> <span class="n">BaseIntervalScorer</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;scorer must be a BaseIntervalScorer. Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">scorer</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">scorer</span><span class="o">.</span><span class="n">get_tag</span><span class="p">(</span><span class="s2">&quot;task&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;cost&quot;</span><span class="p">:</span>
+        <span class="n">saving</span> <span class="o">=</span> <span class="n">Saving</span><span class="p">(</span><span class="n">scorer</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;saving&quot;</span><span class="p">:</span>
+        <span class="n">saving</span> <span class="o">=</span> <span class="n">scorer</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;scorer must have tag &#39;task&#39; equal to &#39;cost&#39; or &#39;change_score&#39;.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot; Got scorer.get_tag(&#39;task&#39;) = </span><span class="si">{</span><span class="n">task</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">saving</span></div>
+
+
+
+<div class="viewcode-block" id="Saving">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.anomaly_scores.Saving.html#skchange.anomaly_scores.Saving">[docs]</a>
+<span class="k">class</span> <span class="nc">Saving</span><span class="p">(</span><span class="n">BaseIntervalScorer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Saving based on a cost class.</span>
+
+<span class="sd">    Savings are the difference between a cost based on a fixed baseline parameter</span>
+<span class="sd">    and an optimized cost over a given interval. The baseline parameter must be robustly</span>
+<span class="sd">    estimated across the entire dataset, assuming that anomalies are rare. Each saving</span>
+<span class="sd">    indicates the potential for cost reduction if the parameter were optimized for that</span>
+<span class="sd">    specific interval.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    baseline_cost : BaseCost</span>
+<span class="sd">        The baseline cost with a fixed parameter. The optimised cost is</span>
+<span class="sd">        constructed by copying the baseline cost and setting `param` to ``None``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_tags</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Tveten&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;maintainers&quot;</span><span class="p">:</span> <span class="s2">&quot;Tveten&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="s2">&quot;saving&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseline_cost</span><span class="p">:</span> <span class="n">BaseCost</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseline_cost</span> <span class="o">=</span> <span class="n">baseline_cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimised_cost</span><span class="p">:</span> <span class="n">BaseCost</span> <span class="o">=</span> <span class="n">baseline_cost</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">baseline_cost</span><span class="o">.</span><span class="n">get_tag</span><span class="p">(</span><span class="s2">&quot;supports_fixed_param&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The baseline cost must support fixed parameter(s) to use it as a &quot;</span>
+                <span class="s2">&quot; saving. The support is indicated by the tag &#39;supports_fixed_param&#39;.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">baseline_cost</span><span class="o">.</span><span class="n">param</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The baseline cost must have set a fixed parameter to use it as a&quot;</span>
+                <span class="s2">&quot; saving (`param` of `baseline_cost` not set to None).&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">clone_tags</span><span class="p">(</span>
+            <span class="n">baseline_cost</span><span class="p">,</span>
+            <span class="p">[</span><span class="s2">&quot;distribution_type&quot;</span><span class="p">,</span> <span class="s2">&quot;is_conditional&quot;</span><span class="p">,</span> <span class="s2">&quot;is_aggregated&quot;</span><span class="p">,</span> <span class="s2">&quot;is_penalised&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">min_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Minimum valid size of the interval to evaluate.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimised_cost_</span><span class="o">.</span><span class="n">min_size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimised_cost</span><span class="o">.</span><span class="n">min_size</span>
+
+<div class="viewcode-block" id="Saving.get_model_size">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.anomaly_scores.Saving.html#skchange.anomaly_scores.Saving.get_model_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_model_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the number of parameters in the saving function.</span>
+
+<span class="sd">        Defaults to 1 parameter per variable in the data. This method should be</span>
+<span class="sd">        overwritten in subclasses if the cost function has a different number of</span>
+<span class="sd">        parameters per variable.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p : int</span>
+<span class="sd">            Number of variables in the data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimised_cost_</span><span class="o">.</span><span class="n">get_model_size</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimised_cost</span><span class="o">.</span><span class="n">get_model_size</span><span class="p">(</span><span class="n">p</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the saving scorer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Data to evaluate. Must be a 2D array.</span>
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored. Included for API consistency by convention.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self :</span>
+<span class="sd">            Reference to self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseline_cost_</span><span class="p">:</span> <span class="n">BaseCost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseline_cost</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseline_cost_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimised_cost_</span><span class="p">:</span> <span class="n">BaseCost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimised_cost</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimised_cost_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the saving on a set of intervals.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cuts : np.ndarray</span>
+<span class="sd">            A 2D array with two columns of integer location-based intervals to evaluate.</span>
+<span class="sd">            The subsets ``X[cuts[i, 0]:cuts[i, 1]]`` for</span>
+<span class="sd">            ``i = 0, ..., len(cuts)`` are evaluated.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        savings : np.ndarray</span>
+<span class="sd">            A 2D array of savings. One row for each interval. The number of</span>
+<span class="sd">            columns is 1 if the saving is inherently multivariate. The number of</span>
+<span class="sd">            columns is equal to the number of columns in the input data if the saving is</span>
+<span class="sd">            univariate. In this case, each column represents the univariate saving for</span>
+<span class="sd">            the corresponding input data column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">baseline_costs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseline_cost_</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">cuts</span><span class="p">)</span>
+        <span class="n">optimised_costs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimised_cost_</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">cuts</span><span class="p">)</span>
+        <span class="n">savings</span> <span class="o">=</span> <span class="n">baseline_costs</span> <span class="o">-</span> <span class="n">optimised_costs</span>
+        <span class="k">return</span> <span class="n">savings</span>
+
+<div class="viewcode-block" id="Saving.get_test_params">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.anomaly_scores.Saving.html#skchange.anomaly_scores.Saving.get_test_params">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_test_params</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parameter_set</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return testing parameter settings for the estimator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameter_set : str, default=&quot;default&quot;</span>
+<span class="sd">            Name of the set of test parameters to return, for use in tests. If no</span>
+<span class="sd">            special parameters are defined for a value, will return ``&quot;default&quot;`` set.</span>
+<span class="sd">            There are currently no reserved values for interval scorers.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        params : dict or list of dict, default = {}</span>
+<span class="sd">            Parameters to create testing instances of the class</span>
+<span class="sd">            Each dict are parameters to construct an &quot;interesting&quot; test instance, i.e.,</span>
+<span class="sd">            `MyClass(**params)` or `MyClass(**params[i])` creates a valid test instance.</span>
+<span class="sd">            `create_test_instance` uses the first (or only) dictionary in `params`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">skchange.costs</span> <span class="kn">import</span> <span class="n">L2Cost</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;baseline_cost&quot;</span><span class="p">:</span> <span class="n">L2Cost</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)},</span>
+            <span class="p">{</span><span class="s2">&quot;baseline_cost&quot;</span><span class="p">:</span> <span class="n">L2Cost</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]))},</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">params</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="to_local_anomaly_score">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.anomaly_scores.to_local_anomaly_score.html#skchange.anomaly_scores.to_local_anomaly_score">[docs]</a>
+<span class="k">def</span> <span class="nf">to_local_anomaly_score</span><span class="p">(</span><span class="n">scorer</span><span class="p">:</span> <span class="n">BaseIntervalScorer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseIntervalScorer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert compatible scorers to a saving.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scorer : BaseIntervalScorer</span>
+<span class="sd">        The scorer to convert to a local anomaly score. If a local anomaly score is</span>
+<span class="sd">        provided, it is returned as is.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    local_anomaly_score : BaseIntervalScorer</span>
+<span class="sd">        The local anomaly score based on the cost function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scorer</span><span class="p">,</span> <span class="n">BaseIntervalScorer</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;scorer must be a BaseIntervalScorer. Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">scorer</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">scorer</span><span class="o">.</span><span class="n">get_tag</span><span class="p">(</span><span class="s2">&quot;task&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;cost&quot;</span><span class="p">:</span>
+        <span class="n">local_anomaly_score</span> <span class="o">=</span> <span class="n">LocalAnomalyScore</span><span class="p">(</span><span class="n">scorer</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;local_anomaly_score&quot;</span><span class="p">:</span>
+        <span class="n">local_anomaly_score</span> <span class="o">=</span> <span class="n">scorer</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;scorer must have tag &#39;task&#39; equal to &#39;cost&#39; or &#39;change_score&#39;.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot; Got scorer.get_tag(&#39;task&#39;) = </span><span class="si">{</span><span class="n">task</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">local_anomaly_score</span></div>
+
+
+
+<div class="viewcode-block" id="LocalAnomalyScore">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.anomaly_scores.LocalAnomalyScore.html#skchange.anomaly_scores.LocalAnomalyScore">[docs]</a>
+<span class="k">class</span> <span class="nc">LocalAnomalyScore</span><span class="p">(</span><span class="n">BaseIntervalScorer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Local anomaly scores based on costs.</span>
+
+<span class="sd">    Local anomaly scores compare the data behaviour of an inner interval with the</span>
+<span class="sd">    surrounding data contained in an outer interval. In other words, the null</span>
+<span class="sd">    hypothesis within each outer interval is that the data is stationary, while the</span>
+<span class="sd">    alternative hypothesis is that there is a segment anomaly within the</span>
+<span class="sd">    outer interval.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cost : BaseCost</span>
+<span class="sd">        The cost function to evaluate data subsets.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Using costs to generate local anomaly scores will be significantly slower than using</span>
+<span class="sd">    anomaly scores that are implemented directly. This is because the local anomaly</span>
+<span class="sd">    score requires evaluating the cost at disjoint subsets of the data</span>
+<span class="sd">    (before and after an anomaly), which is not a natural operation for costs</span>
+<span class="sd">    implemented as interval scorers. It is only possible by refitting the cost</span>
+<span class="sd">    function on the surrounding data for each cut, which is computationally</span>
+<span class="sd">    expensive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_tags</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Tveten&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;maintainers&quot;</span><span class="p">:</span> <span class="s2">&quot;Tveten&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="s2">&quot;local_anomaly_score&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cost</span><span class="p">:</span> <span class="n">BaseCost</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subset_cost</span><span class="p">:</span> <span class="n">BaseCost</span> <span class="o">=</span> <span class="n">cost</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">clone_tags</span><span class="p">(</span>
+            <span class="n">cost</span><span class="p">,</span>
+            <span class="p">[</span><span class="s2">&quot;distribution_type&quot;</span><span class="p">,</span> <span class="s2">&quot;is_conditional&quot;</span><span class="p">,</span> <span class="s2">&quot;is_aggregated&quot;</span><span class="p">,</span> <span class="s2">&quot;is_penalised&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">min_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Minimum valid size of the interval to evaluate.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval_cost_</span><span class="o">.</span><span class="n">min_size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="o">.</span><span class="n">min_size</span>
+
+<div class="viewcode-block" id="LocalAnomalyScore.get_model_size">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.anomaly_scores.LocalAnomalyScore.html#skchange.anomaly_scores.LocalAnomalyScore.get_model_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_model_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the number of parameters to estimate over each interval.</span>
+
+<span class="sd">        The primary use of this method is to determine an appropriate default penalty</span>
+<span class="sd">        value in detectors.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p : int</span>
+<span class="sd">            Number of variables in the data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval_cost_</span><span class="o">.</span><span class="n">get_model_size</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="o">.</span><span class="n">get_model_size</span><span class="p">(</span><span class="n">p</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the saving scorer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Data to evaluate. Must be a 2D array.</span>
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored. Included for API consistency by convention.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self :</span>
+<span class="sd">            Reference to self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interval_cost_</span><span class="p">:</span> <span class="n">BaseCost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interval_cost_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the local anomaly score on sets of inner and outer intervals.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cuts : np.ndarray</span>
+<span class="sd">            A 2D array with two columns of integer location-based cuts to evaluate.</span>
+<span class="sd">            The first column is the start of the outer interval, the second column is</span>
+<span class="sd">            the start of the inner interval, the third column is the end of the inner</span>
+<span class="sd">            interval, and the fourth column is the end of the outer interval.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        savings : np.ndarray</span>
+<span class="sd">            A 2D array of anomaly scores. One row for each interval. The number of</span>
+<span class="sd">            columns is 1 if the anomaly score is inherently multivariate. The number of</span>
+<span class="sd">            columns is equal to the number of columns in the input data if the anomaly</span>
+<span class="sd">            score is univariate. In this case, each column represents the univariate</span>
+<span class="sd">            anomaly score for the corresponding input data column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">as_2d_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">)</span>
+
+        <span class="n">inner_intervals</span> <span class="o">=</span> <span class="n">cuts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">outer_intervals</span> <span class="o">=</span> <span class="n">cuts</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+        <span class="n">inner_costs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval_cost_</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">inner_intervals</span><span class="p">)</span>
+        <span class="n">outer_costs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval_cost_</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">outer_intervals</span><span class="p">)</span>
+
+        <span class="n">surrounding_costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">outer_costs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">interval</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cuts</span><span class="p">):</span>
+            <span class="n">before_inner_interval</span> <span class="o">=</span> <span class="n">interval</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">after_inner_interval</span> <span class="o">=</span> <span class="n">interval</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+
+            <span class="n">before_data</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">before_inner_interval</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">before_inner_interval</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">after_data</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">after_inner_interval</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">after_inner_interval</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">surrounding_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">before_data</span><span class="p">,</span> <span class="n">after_data</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_subset_cost</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">surrounding_data</span><span class="p">)</span>
+            <span class="n">surrounding_costs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subset_cost</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">surrounding_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+            <span class="p">)</span>
+
+        <span class="n">anomaly_scores</span> <span class="o">=</span> <span class="n">outer_costs</span> <span class="o">-</span> <span class="p">(</span><span class="n">inner_costs</span> <span class="o">+</span> <span class="n">surrounding_costs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">anomaly_scores</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_check_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check cuts for compatibility.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cuts : np.ndarray</span>
+<span class="sd">            A 2D array of integer location-based cuts to evaluate. Each row in the array</span>
+<span class="sd">            must be sorted in increasing order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cuts : np.ndarray</span>
+<span class="sd">            The unmodified input cuts array.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the cuts are not compatible.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cuts</span> <span class="o">=</span> <span class="n">check_cuts_array</span><span class="p">(</span>
+            <span class="n">cuts</span><span class="p">,</span>
+            <span class="n">last_dim_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_required_cut_size</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+        <span class="n">inner_intervals_sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">cuts</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">before_inner_sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">cuts</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">after_inner_sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">cuts</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">surrounding_intervals_sizes</span> <span class="o">=</span> <span class="n">before_inner_sizes</span> <span class="o">+</span> <span class="n">after_inner_sizes</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">inner_intervals_sizes</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The inner intervals must be at least min_size=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">min_size</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; Got </span><span class="si">{</span><span class="n">inner_intervals_sizes</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">surrounding_intervals_sizes</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The surrounding intervals must be at least min_size=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">min_size</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; in total. Got </span><span class="si">{</span><span class="n">surrounding_intervals_sizes</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cuts</span>
+
+<div class="viewcode-block" id="LocalAnomalyScore.get_test_params">
+<a class="viewcode-back" href="../../../api_reference/auto_generated/skchange.anomaly_scores.LocalAnomalyScore.html#skchange.anomaly_scores.LocalAnomalyScore.get_test_params">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_test_params</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parameter_set</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return testing parameter settings for the estimator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameter_set : str, default=&quot;default&quot;</span>
+<span class="sd">            Name of the set of test parameters to return, for use in tests. If no</span>
+<span class="sd">            special parameters are defined for a value, will return ``&quot;default&quot;`` set.</span>
+<span class="sd">            There are currently no reserved values for interval scorers.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        params : dict or list of dict, default = {}</span>
+<span class="sd">            Parameters to create testing instances of the class</span>
+<span class="sd">            Each dict are parameters to construct an &quot;interesting&quot; test instance, i.e.,</span>
+<span class="sd">            `MyClass(**params)` or `MyClass(**params[i])` creates a valid test instance.</span>
+<span class="sd">            `create_test_instance` uses the first (or only) dictionary in `params`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">skchange.costs</span> <span class="kn">import</span> <span class="n">GaussianCost</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;cost&quot;</span><span class="p">:</span> <span class="n">L2Cost</span><span class="p">()},</span>
+            <span class="p">{</span><span class="s2">&quot;cost&quot;</span><span class="p">:</span> <span class="n">GaussianCost</span><span class="p">()},</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">params</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023 - 2025 (BSD-3-Clause License).
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
