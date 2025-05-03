@@ -1,0 +1,103 @@
+Metadata-Version: 2.4
+Name: smarta2a
+Version: 0.2.5
+Summary: A simple Python framework (built on top of FastAPI) for creating Agents following Google's Agent2Agent protocol
+Project-URL: Homepage, https://github.com/siddharthsma/smarta2a
+Project-URL: Bug Tracker, https://github.com/siddharthsma/smarta2a/issues
+Author-email: Siddharth Ambegaonkar <siddharthsma@gmail.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: anyio>=4.9.0
+Requires-Dist: fastapi>=0.115.12
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: mcp>=0.1.0
+Requires-Dist: openai>=1.0.0
+Requires-Dist: pydantic>=2.11.3
+Requires-Dist: sse-starlette>=2.2.1
+Requires-Dist: starlette>=0.46.2
+Requires-Dist: typing-extensions>=4.13.2
+Requires-Dist: uvicorn>=0.34.1
+Description-Content-Type: text/markdown
+
+# SmartA2A
+
+A Python package for creating a server following Google's Agent2Agent protocol
+
+## Features
+
+✅ **Full A2A Protocol Compliance** - Implements all required endpoints and response formats
+
+⚡ **Decorator-Driven Development** - Rapid endpoint configuration with type safety
+
+🧩 **Automatic Protocol Conversion** - Simple returns become valid A2A responses 
+
+🔀 **Flexible Response Handling** - Support for Tasks, Artifacts, Streaming, and raw protocol types if needed!
+
+🛡️ **Built-in Validation** - Automatic Pydantic validation of A2A schemas  
+
+⚡ **Single File Setup** - Get compliant in <10 lines of code
+
+🌍 **Production Ready** - CORS, async support, and error handling included
+
+## Installation
+
+```bash
+pip install smarta2a
+```
+
+## Simple Echo Server Implementation
+
+```python
+from smarta2a.server import SmartA2A
+
+app = SmartA2A("EchoServer")
+
+@app.on_send_task()
+def handle_task(request):
+    """Echo the input text back as a completed task"""
+    input_text = request.content[0].text
+    return f"Echo: {input_text}"
+
+if __name__ == "__main__":
+    app.run()
+```
+
+Automatically contructs the response:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": "test",
+  "result": {
+    "id": "echo-task",
+    "status": {"state": "completed"},
+    "artifacts": [{
+      "parts": [{"type": "text", "text": "Echo: Hello!"}]
+    }]
+  }
+}
+```
+
+## Development
+
+To set up the development environment:
+
+```bash
+# Clone the repository
+git clone https://github.com/siddharthsma/smarta2a.git
+cd smarta2a
+
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install development dependencies
+pip install -e ".[dev]"
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
