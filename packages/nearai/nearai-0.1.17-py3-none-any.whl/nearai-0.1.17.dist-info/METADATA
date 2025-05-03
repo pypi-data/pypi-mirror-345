@@ -1,0 +1,256 @@
+Metadata-Version: 2.4
+Name: nearai
+Version: 0.1.17
+Summary: Near AI CLI
+Author-email: Support <support@near.ai>
+License-File: LICENSE
+Requires-Python: <3.12,>=3.9
+Requires-Dist: alembic<2.0.0,>=1.13.2
+Requires-Dist: backoff<3.0.0,>=2.2.1
+Requires-Dist: base58==2.1.1
+Requires-Dist: boto3-stubs<2.0.0,>=1.34.147
+Requires-Dist: boto3<2.0.0,>=1.34.100
+Requires-Dist: cryptography>=43.0.0
+Requires-Dist: datasets<3.0.0,>=2.20.0
+Requires-Dist: ddtrace==2.21.0
+Requires-Dist: ed25519<2.0,>=1.5
+Requires-Dist: fastapi<0.112.0,>=0.111.0
+Requires-Dist: fire<0.7.0,>=0.6.0
+Requires-Dist: fireworks-ai<0.16.0,>=0.15.7
+Requires-Dist: ftfy>=6.3.1
+Requires-Dist: jinja2<4.0.0,>=3.1.4
+Requires-Dist: litellm<2.0.0,>=1.60.5
+Requires-Dist: loguru<0.8.0,>=0.7.2
+Requires-Dist: mypy-boto3-s3<2.0.0,>=1.34.138
+Requires-Dist: mypy-boto3<2.0.0,>=1.34.147
+Requires-Dist: openai<2.0.0,>=1.66.2
+Requires-Dist: pandas-stubs<3.0.0,>=2.2.2.240603
+Requires-Dist: pathspec>=0.11.0
+Requires-Dist: peft<0.11.0,>=0.10.0
+Requires-Dist: psutil<6.0.0,>=5.9.5
+Requires-Dist: py-near<2.0.0,>=1.1.50
+Requires-Dist: pydantic-core<3.0.0,>=2.18.4
+Requires-Dist: pydantic<3.0.0,>=2.7.1
+Requires-Dist: pymysql<2.0.0,>=1.1.0
+Requires-Dist: pynacl<2.0.0,>=1.5.0
+Requires-Dist: requests<3.0.0,>=2.31.0
+Requires-Dist: rich>=13.7.0
+Requires-Dist: setuptools>=75.0.0
+Requires-Dist: tabulate<0.10.0,>=0.9.0
+Requires-Dist: tenacity<9.0.0,>=8.2.3
+Requires-Dist: tqdm<5.0.0,>=4.66.4
+Requires-Dist: transformers<5.0.0,>=4.40.2
+Requires-Dist: tweepy<5.0.0,>=4.14.0
+Requires-Dist: typer<0.13.0,>=0.12.5
+Requires-Dist: types-cffi<2.0.0,>=1.16.0.20240331
+Requires-Dist: types-colorama<0.5.0,>=0.4.15.20240311
+Requires-Dist: types-psutil<7.0.0,>=6.0.0.20240621
+Requires-Dist: types-pygments<3.0.0,>=2.18.0.20240506
+Requires-Dist: types-python-dateutil>=2.9.0.20241206
+Requires-Dist: types-pyyaml<7.0.0,>=6.0.12.20240724
+Requires-Dist: types-redis<5.0.0,>=4.6.0.20240425
+Requires-Dist: types-regex<2025.0.0,>=2024.5.15.20240519
+Requires-Dist: types-setuptools<72.0.0,>=71.1.0.20240724
+Requires-Dist: types-ujson<6.0.0,>=5.10.0.20240515
+Requires-Dist: uvicorn<0.33.0,>=0.32.0
+Requires-Dist: wheel>=0.45.1
+Provides-Extra: dev
+Requires-Dist: commitizen<4.0.0,>=3.29.0; extra == 'dev'
+Requires-Dist: mypy<2.0.0,>=1.11.0; extra == 'dev'
+Requires-Dist: ruff<1.0.0,>=0.5.2; extra == 'dev'
+Requires-Dist: types-openpyxl<4.0.0,>=3.1.5.20240822; extra == 'dev'
+Requires-Dist: types-urllib3<2.0.0,>=1.26.25.14; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: mkdocs-embed-external-markdown>=3.0.2; extra == 'docs'
+Requires-Dist: mkdocs-exclude>=1.0.2; extra == 'docs'
+Requires-Dist: mkdocs-material[imaging]>=9.5.31; extra == 'docs'
+Requires-Dist: mkdocs-minify-plugin>=0.8.0; extra == 'docs'
+Requires-Dist: mkdocs-redirects>=1.2.1; extra == 'docs'
+Requires-Dist: mkdocs-simple-hooks>=0.1.5; extra == 'docs'
+Requires-Dist: mkdocs>=1.6.0; extra == 'docs'
+Requires-Dist: mkdocstrings-python>=1.10.7; extra == 'docs'
+Requires-Dist: mkdocstrings>=0.25.2; extra == 'docs'
+Requires-Dist: pillow>=10.4.0; extra == 'docs'
+Provides-Extra: explatform
+Requires-Dist: fabric<4.0.0,>=3.2.2; extra == 'explatform'
+Requires-Dist: flask<4.0.0,>=3.0.3; extra == 'explatform'
+Requires-Dist: gunicorn<23.0.0,>=22.0.0; extra == 'explatform'
+Requires-Dist: shortuuid<2.0.0,>=1.0.0; extra == 'explatform'
+Provides-Extra: hub
+Requires-Dist: apscheduler<4.0.0,>=3.10.4; extra == 'hub'
+Requires-Dist: chardet<6.0.0,>=5.2.0; extra == 'hub'
+Requires-Dist: fastapi-cli<1.0.0,>=0.0.4; extra == 'hub'
+Requires-Dist: openpyxl<4.0.0,>=3.1.5; extra == 'hub'
+Requires-Dist: pypdf<5.0.0,>=4.3.1; extra == 'hub'
+Requires-Dist: python-docx<2.0.0,>=1.1.2; extra == 'hub'
+Requires-Dist: python-dotenv<2.0.0,>=1.0.1; extra == 'hub'
+Requires-Dist: python-pptx<2.0.0,>=1.0.2; extra == 'hub'
+Requires-Dist: shortuuid<2.0.0,>=1.0.0; extra == 'hub'
+Requires-Dist: sqlmodel<1.0.0,>=0.0.21; extra == 'hub'
+Provides-Extra: lean
+Requires-Dist: lean-dojo<3.0.0,>=2.1.3; extra == 'lean'
+Provides-Extra: test
+Requires-Dist: pytest-random-order<2.0.0,>=1.1.1; extra == 'test'
+Requires-Dist: pytest-xdist<4.0.0,>=3.6.1; extra == 'test'
+Requires-Dist: pytest<9.0.0,>=8.3.3; extra == 'test'
+Provides-Extra: torch
+Requires-Dist: torchao<0.4.0,>=0.3.1; extra == 'torch'
+Requires-Dist: torchtune<0.3.0,>=0.2.0; extra == 'torch'
+Provides-Extra: vllm
+Requires-Dist: torch<3.0.0,>=2.2.2; extra == 'vllm'
+Requires-Dist: vllm<0.6.0,>=0.5.3; extra == 'vllm'
+Description-Content-Type: text/markdown
+
+# NEAR AI
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://github.com/nearai/nearai/workflows/CI/badge.svg)](https://github.com/nearai/nearai/actions)
+[![Release](https://img.shields.io/github/v/release/nearai/nearai)](https://github.com/nearai/nearai/releases)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://docs.near.ai/contributing)
+[![Telegram](https://img.shields.io/badge/Dev_Support-2CA5E0?style=flat&logo=telegram&logoColor=white)](https://t.me/nearaialpha)
+
+NEAR AI is a distributed system for building, deploying, and managing AI agents with the goal of making open source and user-owned AGI.
+
+## NEAR AI Components
+
+- [**NEAR AI Hub**](./hub/README.md): Central hub for model serving, agent registry, and running agents
+- [**TEE Runner**](https://github.com/nearai/private-ml-sdk): Confidential execution environment for NEAR AI agents and inference
+- [**AWS Runner**](./aws_runner/README.md): Lambda-based execution environment for NEAR AI agents
+- **Agent System**: Build and run AI agents with built-in tools and environment isolation
+- **Worker System**: Distributed job execution and scheduling
+- **Model Fine-tuning**: Support for fine-tuning LLMs
+
+
+## Directory Structure
+
+```
+nearai/
+├── aws_runner/          # Lambda-based AI agent execution
+│   ├── Dockerfile         # Container for running agents
+│   └── frameworks/        # Framework-specific requirements
+├── hub/                 # Central hub for registering and running agents and models
+│   ├── alembic/           # Database migrations
+│   └── api/               # API endpoints
+├── nearai/              # Core library
+│   ├── agents/            # Agent system implementation
+│   │   ├── agent.py         # Base agent class
+│   │   └── environment.py   # Agent environment
+│   ├── cli.py             # Command-line interface
+│   └── config.py          # Configuration management
+├── worker/              # Distributed job execution
+├── etc/                 # Configuration and setup
+│   ├── finetune/          # Model fine-tuning configs
+│   └── hosts_lambda.txt   # Cluster configuration
+└── e2e/                 # End-to-end tests
+```
+
+## Agent Creation Quick Start
+
+### Requirements
+
+- [Python 3.11](https://www.python.org/downloads/) _(3.12+ currently not supported)_
+- [Git](https://github.com/git-guides/install-git)
+- [Docker](https://docs.docker.com/get-docker/) (for local agent testing)
+
+---
+
+### Installation
+
+<details>
+<summary>pip</summary>
+
+```bash
+python3 -m pip install nearai
+```
+
+Verify installation:
+
+```bash
+nearai version
+```
+
+</details>
+
+<details>
+<summary>local</summary>
+
+```bash
+git clone git@github.com:nearai/nearai.git && cd nearai && ./install.sh
+```
+Or, to install to a virtual environment with poetry:
+
+```bash
+python3 -m uv sync
+uv run nearai version
+```
+
+Or you can use pip:
+
+```bash
+python3 -m pip install -e .
+```
+
+Verify installation:
+
+```bash
+nearai version
+```
+
+</details>
+
+---
+
+### Log In
+
+Login to NEAR AI with your NEAR Account. If you don't have one, we recommend creating a free account with [Meteor Wallet](https://wallet.meteorwallet.app).
+
+```bash
+nearai login 
+```
+
+---
+
+### Useful Commands
+
+1. Create an agent:
+
+```bash
+nearai agent create
+```
+
+2. Run agent locally:
+
+```bash
+nearai agent interactive
+```
+
+3. Deploy to [NEAR AI Developer Hub](https://hub.near.ai):
+
+```bash
+nearai registry upload <path-to-agent>
+```
+
+## Documentation
+
+- [Official Documentation](https://docs.near.ai)
+- [Agent Development Guide](https://docs.near.ai/agents/quickstart)
+
+## Updating
+
+```bash
+cd nearai
+git pull
+python3 -m pip install -e .  # If dependencies changed
+```
+
+## Contributing
+
+Want to help shape the future of AI? Join our community and contribute! 🚀
+
+- 🐛 [Report bugs and suggest features](https://github.com/nearai/nearai/issues)
+- 💻 [Submit pull requests](https://github.com/nearai/nearai/pulls)
+- 📖 [Improve documentation](https://docs.near.ai/contributing/#contribute-documentation)
+- 🤝 [Help other users in the community](https://t.me/nearaialpha)
+- 🌟 [Star our repository](https://github.com/nearai/nearai)
+
+Check out our [contributing guide](https://docs.near.ai/contributing) to get started.
