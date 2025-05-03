@@ -1,0 +1,86 @@
+[build-system]
+requires = ["setuptools >= 78.1.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+    name="racfu"
+    version="1.0a2.dev1"
+    requires-python = ">= 3.12"
+    authors = [
+        { name = "Leonard J. Carcaramo Jr", email = "lcarcaramo@ibm.com" },
+        { name = "Elijah Swift", email = "elijah.swift@ibm.com" },
+        { name = "Frank De Gilio", email = "degilio@us.ibm.com" },
+        { name = "Joe Bostian", email = "jbostian@ibm.com" },
+    ]
+    maintainers = [
+        { name = "Leonard J. Carcaramo Jr", email = "lcarcaramo@ibm.com" },
+        { name = "Elijah Swift", email = "elijah.swift@ibm.com" },
+    ]
+    description="A unified and standardized interface to RACF callable services."
+    readme = "README.md"
+    license = "Apache-2.0"
+    classifiers = [
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Intended Audience :: System Administrators",
+        "Operating System :: POSIX :: Other",
+        "Programming Language :: Assembly",
+        "Programming Language :: C",
+        "Programming Language :: C++",
+        'Programming Language :: Python',
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        'Programming Language :: Python :: 3 :: Only',
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+        "Topic :: Security",
+        "Topic :: System :: Hardware :: Mainframes",
+        "Topic :: System :: Systems Administration",
+    ]
+
+[project.urls]
+    Homepage = "https://ambitus.github.io/racfu/"
+    Documentation = "https://ambitus.github.io/racfu/interfaces/python/"
+    Source = "https://github.com/ambitus/racfu"
+    Issues = "https://github.com/ambitus/racfu/issues"
+    "Release Notes" = "https://github.com/ambitus/racfu/milestones?state=closed"
+
+[tool.setuptools.packages.find]
+    where = ["python"]
+    include = ["racfu"]
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".git",
+    ".github",
+    "externals",
+    "racfu",
+    "debug",
+    "dev_tools",
+    ]
+
+[tool.ruff.lint]
+# Ruff by default is not very aggressive, only enforcing a few rulesets like E and F.
+# To ensure well organized code a bunch more rulesets have been enabled
+select = [
+    "ERA", #Checks for commented out code
+    "E", 
+    "F", 
+    "B", 
+    "EM", #Error messages and exceptions
+    "SIM", #Comes with suggestions on simplifying things
+    "N",  #Checks if code conforms to the PEP8 naming conventions
+    "PLE", 
+    "UP", 
+    "TRY", #Best practices for try-except
+    "FLY", #Checks for string joins
+    "I",  #Comes with suggestions on organizing imports
+    "COM", #Checks for missing commas and unnecessary 
+    "A", 
+    ]
+
+
+[tool.setuptools.package-data]
+    racfu = ["LICENSE", "NOTICES"]

@@ -1,0 +1,100 @@
+Metadata-Version: 2.4
+Name: racfu
+Version: 1.0a2.dev1
+Summary: A unified and standardized interface to RACF callable services.
+Author-email: "Leonard J. Carcaramo Jr" <lcarcaramo@ibm.com>, Elijah Swift <elijah.swift@ibm.com>, Frank De Gilio <degilio@us.ibm.com>, Joe Bostian <jbostian@ibm.com>
+Maintainer-email: "Leonard J. Carcaramo Jr" <lcarcaramo@ibm.com>, Elijah Swift <elijah.swift@ibm.com>
+License-Expression: Apache-2.0
+Project-URL: Homepage, https://ambitus.github.io/racfu/
+Project-URL: Documentation, https://ambitus.github.io/racfu/interfaces/python/
+Project-URL: Source, https://github.com/ambitus/racfu
+Project-URL: Issues, https://github.com/ambitus/racfu/issues
+Project-URL: Release Notes, https://github.com/ambitus/racfu/milestones?state=closed
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: Operating System :: POSIX :: Other
+Classifier: Programming Language :: Assembly
+Classifier: Programming Language :: C
+Classifier: Programming Language :: C++
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Security
+Classifier: Topic :: System :: Hardware :: Mainframes
+Classifier: Topic :: System :: Systems Administration
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: NOTICES
+Dynamic: license-file
+
+![RACFu Logo](https://raw.githubusercontent.com/ambitus/racfu/refs/heads/main/logo.png)
+
+[![test](https://github.com/ambitus/racfu/actions/workflows/test.yml/badge.svg)](https://github.com/ambitus/racfu/actions/workflows/test.yml)
+[![fuzz](https://github.com/ambitus/racfu/actions/workflows/fuzz.yml/badge.svg)](https://github.com/ambitus/racfu/actions/workflows/fuzz.yml)
+[![cppcheck](https://github.com/ambitus/racfu/actions/workflows/cppcheck.yml/badge.svg)](https://github.com/ambitus/racfu/actions/workflows/cppcheck.yml)
+[![clang-format](https://github.com/ambitus/racfu/actions/workflows/clang-format.yml/badge.svg)](https://github.com/ambitus/racfu/actions/workflows/clang-format.yml)
+[![ruff](https://github.com/ambitus/racfu/actions/workflows/ruff.yml/badge.svg)](https://github.com/ambitus/racfu/actions/workflows/ruff.yml)
+[![Version](https://img.shields.io/pypi/v/racfu?label=alpha)](https://pypi.org/project/racfu/#history)
+[![Python Versions](https://img.shields.io/pypi/pyversions/racfu)](https://pypi.org/project/racfu/)
+[![Downloads](https://img.shields.io/pypi/dm/racfu)](https://pypistats.org/packages/racfu)
+
+A standardized JSON interface for RACF that enables seemless exploitation by programming languages that have a foreign language interface for C/C++ and native JSON support.
+
+## Description
+
+As automation becomes more and more prevalent, the need to manage the security environment programmaticaly increases. On z/OS that means managing a security product like the IBM **Resource Access Control Facility** _(RACF)_. RACF is the primary facility for managing identity, authority, and access control for z/OS. There are more than 50 callable services with assembler interfaces that are part of the RACF API. The complete set of interfaces can be found [here](http://publibz.boulder.ibm.com/epubs/pdf/ich2d112.pdf).
+
+While there are a number of languages that can be used to manage RACF, _(from low level lnaguages like Assembler to higher level languages like REXX)_, the need to be able to easily exploit RACF management functions using existing indurstry standard programming languages and even programming languages that don't exist yet is paramount. The RACFu project is focused on making RACF management functions available to all programming languages that have native JSON support and a foreign language interface for C/C++. This will make it easier to pivot to new tools and programming languages as technology, skills, and business needs continue to evolve in the forseeable future.
+
+RACFu uses [JSON for Modern C++](https://github.com/nlohmann/json) for working with JSON and [JSON schema validator for JSON for Modern C++](https://github.com/pboettch/json-schema-validator) for [Draft-7 JSON Schema Validation](https://json-schema.org/draft-07).
+
+RACFu's certificate management cababilities leverage the [zopen community](https://zopen.community/#/) distributions of [OpenSSL](https://github.com/openssl/openssl) and [ZOSLIB](https://github.com/ibmruntimes/zoslib) to create checksum digests and encode certificates.
+
+## Getting Started
+
+
+### Minimum z/OS & Language Versions
+
+All versions of **z/OS** and the **IBM Open Enterprise SDK for Python** that are fully supported by IBM are supported by RACFu.
+* [z/OS Product Lifecycle](https://www.ibm.com/support/pages/lifecycle/search/?q=5655-ZOS,%205650-ZOS)
+* [IBM Open Enterprise SDK for Python Product Lifecycle](https://www.ibm.com/support/pages/lifecycle/search?q=5655-PYT)
+
+### Dependencies
+
+* **R_SecMgtOper (IRRSMO00)**: Security Management Operations.
+  * More details about the authorizations required for **IRRSMO00** can be found [here](https://www.ibm.com/docs/en/zos/latest?topic=operations-racf-authorization).
+* **R_Admin (IRRSEQ00)**: RACF Administration API.
+  * More details about the authorizations required for **IRRSEQ00** can be found [here](https://www.ibm.com/docs/en/zos/latest?topic=api-racf-authorization).
+* **RACF Subsystem Address Space**: This is a dependency for both **IRRSMO00** and **IRRSEQ00**.
+  * More information can be found [here](https://www.ibm.com/docs/en/zos/latest?topic=considerations-racf-subsystem).
+* **z/OS Language Environment Runtime Support**: RACFu is compiled using the **IBM Open XL C/C++ 2.1** compiler, which is still fairly new and requires **z/OS Language Environment** service updates for runtime support.
+  * More information can be found in section **5.2.2.2 Operational Requisites** on page **9** in the [Program Directory for IBM Open XL C/C++ 2.1 for z/OS](https://publibfp.dhe.ibm.com/epubs/pdf/i1357012.pdf).
+
+
+### Installation
+
+> :bulb: _Note: You can also [Download & Install RACFu from GitHub](https://github.com/ambitus/racfu/releases)_
+
+```shell
+python3 -m pip install racfu
+```
+
+## Help
+* [GitHub Discussions](https://github.com/ambitus/racfu/discussions)
+
+## Authors
+
+* Leonard Carcaramo: lcarcaramo@ibm.com
+* Elijah Swift: Elijah.Swift@ibm.com
+* Frank De Gilio: degilio@us.ibm.com
+* Joe Bostian: jbostian@ibm.com
+
+## Maintainers
+* Leonard Carcaramo: lcarcaramo@ibm.com
+* Elijah Swift: Elijah.Swift@ibm.com
