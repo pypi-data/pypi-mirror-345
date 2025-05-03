@@ -1,0 +1,74 @@
+[project]
+name = "khojkar"
+version = "0.4.0"
+description = "A tool for conducting deep research on a given topic, using a combination of LLMs, search engines, and other tools."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "python-dotenv>=1.1.0",
+    "click>=8.1.8",
+    "litellm>=1.65.4",
+    "pydantic>=2.11.2",
+    "requests>=2.32.3",
+    "pypdf>=5.4.0",
+    "trafilatura>=2.0.0",
+    "docstring-parser>=0.16",
+    "playwright>=1.51.0",
+    "arxiv>=2.2.0",
+    "diskcache>=5.6.3",
+    "chromadb>=1.0.4",
+    "sentence-transformers>=4.0.2",
+    "aiolimiter>=1.2.1",
+    "rich>=14.0.0",
+    "gitpython>=3.1.44",
+    "jsonref>=1.1.0",
+    "duckduckgo-search>=8.0.1",
+    "tiktoken>=0.9.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "jupyter>=1.1.1",
+    "notebook>=7.3.3",
+    "ruff>=0.11.4",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.4",
+]
+
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+khojkar = "cli:cli"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+fix = true
+preview = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pyright]
+typeCheckingMode = "basic"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "asyncio: mark a test as an asyncio test",
+]
