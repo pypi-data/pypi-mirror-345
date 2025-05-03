@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "camera-stage-mapping"
+version = "0.1.9"
+license = "LGPL-3.0-or-later"
+readme = "README.md"
+description = "Calibration and mapping between stage and camera coordinates in a microscope"
+authors = [
+    { name="Richard Bowman", email="richard.bowman@cantab.net" },
+]
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=2.0"
+]
+
+[project.optional-dependencies]
+
+# Note that opencv is needed for direct tracking only. FFT is default, and doesn't require cv2
+correlation = [
+    "opencv-python-headless>=4.1",
+    "scipy>=1.4"
+]
+
+ofmclient = [
+    "openflexure-microscope-client"
+]
+
+ipython = [
+    "ipykernel",
+    "matplotlib"
+]
+
+all = [
+    "opencv-python-headless>=4.1",
+    "scipy>=1.4",
+    "openflexure-microscope-client",
+    "ipykernel",
+    "matplotlib"
+]
+
+dev = [
+    "build",
+    "twine",
+    "pytest>=7.4",
+    "matplotlib>=3.2",
+    "sphinx>=8.0", # rtd-theme may have issues with sphinx 7
+    "sphinx-rtd-theme>=3.0",
+    "sphinx-autoapi>=3.1",
+]
+
+[project.urls]
+homepage = "https://gitlab.com/openflexure/microscope-extensions/camera-stage-mapping/"
+
+[tool.setuptools]
+py-modules = ["camera_stage_mapping"]
