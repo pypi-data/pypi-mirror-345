@@ -1,0 +1,33 @@
+[project]
+name = "char_similar_z"
+version = "0.1.1"
+description = "修改别人的仓库，移除一些复杂的功能和比较旧的包, 计算两个字符的相似度"
+authors = [
+    {name = "zoushucai",email = "1228075512@qq.com"}
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "xiangsi (>=4.2.3,<5.0.0)"
+]
+
+[project.optional-dependencies]
+
+
+[tool.poetry]
+packages = [{include = "char_similar"}]
+
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+priority = "primary"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
