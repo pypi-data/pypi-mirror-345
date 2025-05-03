@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyharmx.functions &mdash; PyHarmX 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=f6245a2f"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyHarmX
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html#explore">Explore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html#license">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pyharmx.html">pyharmx.interpolator module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pyharmx.html#module-pyharmx.functions">pyharmx.functions module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyHarmX</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyharmx.functions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyharmx.functions</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="n">_EPSILON</span> <span class="o">=</span> <span class="mf">1e-10</span>
+
+
+<span class="c1"># Nonlinear kernel function</span>
+<span class="c1"># ====================================</span>
+<div class="viewcode-block" id="get_phi"><a class="viewcode-back" href="../../pyharmx.html#pyharmx.functions.get_phi">[docs]</a><span class="k">def</span> <span class="nf">get_phi</span><span class="p">(</span><span class="n">order</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">callable</span><span class="p">:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  Coordinate-wise nonlinear function used to </span>
+<span class="sd">  define the order of the interpolation. See </span>
+<span class="sd">  `here &lt;https://en.wikipedia.org/wiki/Polyharmonic_spline&gt;`_ </span>
+<span class="sd">  for the definition.</span>
+
+<span class="sd">  :param order: Interpolation order.</span>
+<span class="sd">  :type order: int</span>
+
+<span class="sd">  :return: Coordinate-wise nonlinear kernel :math:`{\phi}`.</span>
+<span class="sd">  :rtype: callable</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">order</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_phi_1</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">order</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_phi_2</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">order</span> <span class="o">==</span> <span class="mi">4</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_phi_4</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">order</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">_phi_even</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">_phi_odd</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">_phi_1</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+  <span class="n">r_eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">_EPSILON</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">r_eps</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_phi_2</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+  <span class="n">r_eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">_EPSILON</span><span class="p">)</span>
+  <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">r_eps</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_phi_4</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+  <span class="n">r_eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">_EPSILON</span><span class="p">)</span>
+  <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">r_eps</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_phi_even</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+  <span class="n">r_eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">_EPSILON</span><span class="p">)</span>
+  <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">r_eps</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">order</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">r_eps</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_phi_odd</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+  <span class="n">r_eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">_EPSILON</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">r_eps</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">order</span><span class="p">)</span>
+
+
+<span class="c1"># Tensor operation - Distance matrix</span>
+<span class="c1"># ====================================</span>
+<div class="viewcode-block" id="cross_squared_distance_matrix"><a class="viewcode-back" href="../../pyharmx.html#pyharmx.functions.cross_squared_distance_matrix">[docs]</a><span class="k">def</span> <span class="nf">cross_squared_distance_matrix</span><span class="p">(</span>
+  <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+  <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  Pairwise squared distance between two (batch) </span>
+<span class="sd">  matrices&#39; rows (2nd dimension). Computes the </span>
+<span class="sd">  pairwise distances between rows of `x` and rows of `y`.</span>
+
+<span class="sd">  :param x: 3D tensor with shape `[batch_size, n, d]`.</span>
+<span class="sd">  :type x: torch.Tensor</span>
+<span class="sd">  :param y: 3D tensor with shape `[batch_size, m, d]`.</span>
+<span class="sd">  :type y: torch.Tensor</span>
+
+<span class="sd">  :return: 3D tensor with shape `[batch_size, n, m]`. Each</span>
+<span class="sd">           element represents the squared Euclidean distance</span>
+<span class="sd">           between vectors `x[b, i, :]` and `y[b, j, :]`.</span>
+<span class="sd">  :rtype: torch.Tensor</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="c1"># Compute quadratic norm</span>
+  <span class="n">x_sq_norm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+  <span class="n">y_sq_norm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+  <span class="c1"># Increase rank</span>
+  <span class="n">x_sq_norm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">x_sq_norm</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+  <span class="n">y_sq_norm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">y_sq_norm</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+  <span class="c1"># Perform matrix multiplication</span>
+  <span class="n">x_yt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+  <span class="c1"># Compute squared distance</span>
+  <span class="k">return</span> <span class="n">x_sq_norm</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x_yt</span> <span class="o">+</span> <span class="n">y_sq_norm</span></div>
+
+<div class="viewcode-block" id="pairwise_squared_distance_matrix"><a class="viewcode-back" href="../../pyharmx.html#pyharmx.functions.pairwise_squared_distance_matrix">[docs]</a><span class="k">def</span> <span class="nf">pairwise_squared_distance_matrix</span><span class="p">(</span>
+  <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  Compute pairwise squared distance among a (batch) matrix&#39;s </span>
+<span class="sd">  rows (2nd dimension). It is faster than `cross_squared_distance_matrix`.</span>
+
+<span class="sd">  :param x: 3D tensor with shape `[batch_size, n, d]`.</span>
+<span class="sd">  :type x: torch.Tensor</span>
+
+<span class="sd">  :return: 3D tensor with shape `[batch_size, n, n]`. Each</span>
+<span class="sd">           element represents the squared Euclidean distance</span>
+<span class="sd">           between vectors `x[b, i, :]` and `x[b, j, :]`.</span>
+<span class="sd">  :rtype: torch.Tensor</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="c1"># Compute quadratic values</span>
+  <span class="n">x_xt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+  <span class="c1"># Extract batch diagonal</span>
+  <span class="n">x_xt_diag</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">x_xt</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim1</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim2</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+  <span class="c1"># Increase rank</span>
+  <span class="n">x_xt_diag</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">x_xt_diag</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+  <span class="c1"># Compute squared distance</span>
+  <span class="k">return</span> <span class="n">x_xt_diag</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x_xt</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="n">x_xt_diag</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ivan Zanardi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

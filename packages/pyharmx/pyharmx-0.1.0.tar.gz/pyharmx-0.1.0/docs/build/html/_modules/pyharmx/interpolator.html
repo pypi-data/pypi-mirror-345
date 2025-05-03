@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyharmx.interpolator &mdash; PyHarmX 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=f6245a2f"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyHarmX
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html#explore">Explore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html#license">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pyharmx.html">pyharmx.interpolator module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pyharmx.html#module-pyharmx.functions">pyharmx.functions module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyHarmX</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyharmx.interpolator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyharmx.interpolator</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.functions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+
+<div class="viewcode-block" id="PolyHarmInterpolator"><a class="viewcode-back" href="../../pyharmx.html#pyharmx.interpolator.PolyHarmInterpolator">[docs]</a><span class="k">class</span> <span class="nc">PolyHarmInterpolator</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  Interpolate batched data using polyharmonic interpolation.</span>
+
+<span class="sd">  The interpolant has the form:</span>
+
+<span class="sd">  :math:`{f(x) = \sum_{i = 1}^n w_i \phi(||x - c_i||) + v^\text{T}x + b}`.</span>
+
+<span class="sd">  This is a sum of two terms: (1) A weighted sum of radial basis function </span>
+<span class="sd">  (RBF) terms with centers :math:`{\left(c_1, \ldots, c_n\right)}`. (2) A </span>
+<span class="sd">  linear term with a bias. The :math:`{c_i}` vectors are &#39;training&#39; points. </span>
+<span class="sd">  The coefficients :math:`{w}` and :math:`{v}` are estimated such that the </span>
+<span class="sd">  interpolant exactly fits the value of the function at the :math:`{c_i}` </span>
+<span class="sd">  points, and the vector :math:`{w}` is orthogonal to each :math:`{c_i}`, </span>
+<span class="sd">  and the vector :math:`{w}` sums to 0. With these constraints, the </span>
+<span class="sd">  coefficients can be obtained by solving a linear system.</span>
+
+<span class="sd">  The function :math:`{\phi}` is an RBF, parametrized by an interpolation </span>
+<span class="sd">  order. Using `order=2` produces the well-known thin-plate spline.</span>
+
+<span class="sd">  We also provide the option to perform regularized interpolation. Here, the</span>
+<span class="sd">  interpolant is selected to trade off between the squared loss on the</span>
+<span class="sd">  training data and a certain measure of its curvature</span>
+<span class="sd">  [`details &lt;https://en.wikipedia.org/wiki/Polyharmonic_spline&gt;`_].</span>
+<span class="sd">  Using a regularization weight greater than zero has the effect that the</span>
+<span class="sd">  interpolant will no longer exactly fit the training data. However, it may be</span>
+<span class="sd">  less vulnerable to overfitting, particularly for high-order interpolation.</span>
+
+<span class="sd">  :param c: 3D tensor with shape `[batch_size, n, d]` of `n` `d`-dimensional</span>
+<span class="sd">            locations. These do not need to be regularly-spaced.</span>
+<span class="sd">  :type c: torch.Tensor or np.ndarray</span>
+<span class="sd">  :param f: 3D tensor with shape `[batch_size, n, k]` of `n` `c`-dimensional</span>
+<span class="sd">            values evaluated at train_points.</span>
+<span class="sd">  :type f: torch.Tensor or np.ndarray</span>
+<span class="sd">  :param order: (optional) Order of the interpolation. Common values are</span>
+<span class="sd">                1 for :math:`{\phi(r)=r}`, 2 for :math:`{\phi(r)=r^2 \log(r)}`</span>
+<span class="sd">                (thin-plate spline), or 3 for :math:`{\phi(r)=r^3}`.</span>
+<span class="sd">  :type order: int</span>
+<span class="sd">  :param smoothing: (optional) Weight placed on the regularization term.</span>
+<span class="sd">                    This will depend substantially on the problem, and</span>
+<span class="sd">                    it should always be tuned. For many problems, it is</span>
+<span class="sd">                    reasonable to use no regularization. If using a non-zero</span>
+<span class="sd">                    value, we recommend a small value like 0.001.</span>
+<span class="sd">  :type smoothing: float</span>
+<span class="sd">  :param device: (optional) Specifies the default device to store tensors</span>
+<span class="sd">                 and perform interpolation.</span>
+<span class="sd">  :type device: str</span>
+<span class="sd">  :param dtype: (optional) Specifies the default precision.</span>
+<span class="sd">  :type dtype: torch.dtype</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">c</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">f</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">smoothing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">PolyHarmInterpolator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_built</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># Set dtype and device</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">malloc_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+      <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+    <span class="p">}</span>
+    <span class="c1"># Set training data</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">((</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="n">c</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span><span class="n">f</span><span class="p">)):</span>
+      <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">malloc_kwargs</span><span class="p">)</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&#39; must be a 3-dimensional tensor.&quot;</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]):</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="s2">&quot;The first two dimensions of &#39;c&#39; and &#39;f&#39; must be the same.&quot;</span>
+      <span class="p">)</span>
+    <span class="c1"># Get smoothing and kernel function</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">smoothing</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">smoothing</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">get_phi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PolyHarmInterpolator.forward"><a class="viewcode-back" href="../../pyharmx.html#pyharmx.interpolator.PolyHarmInterpolator.forward">[docs]</a>  <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply polyharmonic interpolation model to new input data.</span>
+
+<span class="sd">    Given coefficients :math:`{w}` and :math:`{v}` for the interpolation </span>
+<span class="sd">    model, the interpolated function is evaluated at query points :math:`{x}`.</span>
+
+<span class="sd">    Note that the interpolation procedure is differentiable with respect </span>
+<span class="sd">    to :math:`{x}`.</span>
+
+<span class="sd">    :param x: 3D tensor with shape `[batch_size, m, d]`</span>
+<span class="sd">              to evaluate the interpolation at.</span>
+<span class="sd">    :type x: torch.Tensor</span>
+
+<span class="sd">    :return: Polyharmonic interpolation evaluated at query points `x`.</span>
+<span class="sd">    :rtype: torch.Tensor</span>
+
+<span class="sd">    :raises ValueError: If the input tensor `x` is not 3-dimensional.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_built</span><span class="p">):</span>
+      <span class="c1"># Fit the interpolant to the observed data</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;x&#39; must be a 3-dimensional tensor.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">malloc_kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">device</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">malloc_kwargs</span><span class="p">)</span>
+    <span class="c1"># Compute the contribution from the rbf term</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">cross_squared_distance_matrix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">d_phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">rbf_term</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">d_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
+    <span class="c1"># Compute the contribution from the linear term</span>
+    <span class="n">ones</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">malloc_kwargs</span><span class="p">)</span>
+    <span class="n">x_pad</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">ones</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">linear_term</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x_pad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rbf_term</span> <span class="o">+</span> <span class="n">linear_term</span></div>
+
+<div class="viewcode-block" id="PolyHarmInterpolator.build"><a class="viewcode-back" href="../../pyharmx.html#pyharmx.interpolator.PolyHarmInterpolator.build">[docs]</a>  <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve for interpolation coefficients.</span>
+
+<span class="sd">    Computes the coefficients :math:`{w}` and :math:`{v}` of the </span>
+<span class="sd">    polyharmonic interpolant for the training data defined by </span>
+<span class="sd">    :math:`{\left(c, f\right)}` using the kernel :math:`{\phi}`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get dimensions</span>
+    <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Construct the linear system</span>
+    <span class="c1"># &gt; Matrix A</span>
+    <span class="n">amat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">pairwise_squared_distance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">))</span>
+    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">smoothing</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+      <span class="n">imat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">malloc_kwargs</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+      <span class="n">amat</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">smoothing</span> <span class="o">*</span> <span class="n">imat</span>
+    <span class="c1"># &gt; Matrix B</span>
+    <span class="n">ones</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">malloc_kwargs</span><span class="p">)</span>
+    <span class="n">bmat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">ones</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">bmat_ncols</span> <span class="o">=</span> <span class="n">bmat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># &gt; Left hand side</span>
+    <span class="n">lhs_zeros</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">b</span><span class="p">,</span> <span class="n">bmat_ncols</span><span class="p">,</span> <span class="n">bmat_ncols</span><span class="p">],</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">malloc_kwargs</span><span class="p">)</span>
+    <span class="n">block_right</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">bmat</span><span class="p">,</span> <span class="n">lhs_zeros</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">block_left</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">amat</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="n">bmat</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">lhs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">block_left</span><span class="p">,</span> <span class="n">block_right</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># &gt; Right hand side</span>
+    <span class="n">rhs_zeros</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">malloc_kwargs</span><span class="p">)</span>
+    <span class="n">rhs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">rhs_zeros</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Solve the linear system</span>
+    <span class="n">w_v</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">w_v</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n</span><span class="p">,</span> <span class="p">:],</span> <span class="n">w_v</span><span class="p">[:,</span> <span class="n">n</span><span class="p">:,</span> <span class="p">:]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_built</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ivan Zanardi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
