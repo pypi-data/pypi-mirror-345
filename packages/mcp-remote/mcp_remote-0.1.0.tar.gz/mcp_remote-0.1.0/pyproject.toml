@@ -1,0 +1,27 @@
+[project]
+name = "mcp-remote"
+version = "0.1.0"
+description = "Remote MCP Protocol"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning>=0.7.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata.hooks.uv-dynamic-versioning]
+enabled = true
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+bump = true
+fallback-version = "0.0.0"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_remote"]
+
+[tool.hatch.build]
+packages = ["src/mcp_remote"]
