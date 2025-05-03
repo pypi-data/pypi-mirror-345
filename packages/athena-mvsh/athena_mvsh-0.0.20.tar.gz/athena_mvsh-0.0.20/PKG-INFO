@@ -1,0 +1,76 @@
+Metadata-Version: 2.3
+Name: athena-mvsh
+Version: 0.0.20
+Summary: Athena-mvsh é um biblioteca python, que interage com o serviço Amazon Athena
+Author: Marcus Holanda
+Author-email: mvsh777@hotmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Development Status :: 1 - Planning
+Classifier: Natural Language :: Portuguese (Brazilian)
+Classifier: Programming Language :: PL/SQL
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Database :: Front-Ends
+Requires-Dist: boto3 (>=1.34.136,<2.0.0)
+Requires-Dist: duckdb (>=1.0.0,<2.0.0)
+Requires-Dist: openpyxl (>=3.1.5,<4.0.0)
+Requires-Dist: pandas (>=2.2.2,<3.0.0)
+Requires-Dist: pyarrow (>=16,<20)
+Project-URL: Codigo, https://github.com/Marcus-Holanda777/athena-mvsh
+Project-URL: Documentacao, https://marcus-holanda777.github.io/athena-mvsh
+Description-Content-Type: text/markdown
+
+# Athena-mvsh
+[![PyPI](https://img.shields.io/pypi/v/athena-mvsh.svg)](https://pypi.org/project/athena-mvsh/)
+[![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue?logo=github)](https://marcus-holanda777.github.io/athena-mvsh)
+[![PyPI Downloads](https://static.pepy.tech/badge/athena-mvsh)](https://pepy.tech/projects/athena-mvsh)
+
+## O que é o Athena-mvsh ?
+
+Athena-mvsh é um biblioteca python, que interage com o serviço `Amazon Athena`, que é um serviço de consulta interativa que permite usar SQL para analisar dados diretamente no Amazon S3.
+
+Algumas regras da [DB API 2.0 (PEP 249)](https://www.python.org/dev/peps/pep-0249/) são implementadas.
+
+## Instalação
+
+```bash
+pip install athena-mvsh
+```
+
+## Credenciais
+
+Para se conectar é preciso informar o `aws_access_key_id`, `aws_secret_access_key` o local de saida das consultas `s3_staging_dir` 
+e a regiao do bucket `region_name`. Se você usar o arquivo de perfil padrão, não será necessário informar as credenciais.
+
+```python
+from athena_mvsh import (
+    Athena,
+    CursorPython
+)
+
+cursor = CursorPython(
+    s3_staging_dir='s3:/caminho-saida-consulta/',
+    aws_access_key_id='KEY_ID',
+    aws_secret_access_key='SECRET_KEY',
+    region_name='us-east-1'
+)
+
+with Athena(cursor=cursor) as cliente:
+    cliente.execute("SELECT 1")
+    rst = cliente.fetchone()
+```
+
+## Como usar ?
+
+Esta biblioteca Python facilita a consulta ao Amazon Athena, oferecendo suporte para três tipos de cursores: Python, Parquet e DuckDB. Com esta biblioteca, você pode executar consultas SQL no Amazon Athena e obter os resultados no formato desejado de maneira fácil e eficiente.
+
+Funcionalidades
+Consulta ao Amazon Athena: Execute consultas SQL no Amazon Athena.
+
+Cursores Diversos:
+- `CursorPython`: Retorna os resultados da consulta como objetos Python.
+- `CursorParquet`: Retorna os resultados da consulta no formato Parquet.
+- `CursorParquetDuckdb`: Retorna os resultados da consulta integrados ao DuckDB.
