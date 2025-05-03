@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "octostar-streamlit"
+version = "0.1.25"
+description = ""
+license = "MIT"
+authors = ["Octostar <info@octostar.com>"]
+readme = "README.md"
+include = [
+    { path = "octostar_streamlit/frontend/dist/**/*", format = ["sdist", "wheel"] }
+]
+
+[tool.mypy]
+python_version = ">=3.9,<3.9.7 || >3.9.7,<4.0"
+check_untyped_defs = true
+ignore_missing_imports = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.9.7 || >3.9.7,<4.0"
+pyhumps = "^3.8.0"
+pydantic = "^2.6.4"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.0.0"
+streamlit = "^1.32.2"
+streamlit-octostar-research = "^0.1.22"
+mypy = "^1.9.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
