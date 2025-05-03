@@ -1,0 +1,47 @@
+[project]
+name = "run-concurrently"
+description = "Zero dependency library to run multiple processes concurrently"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+license = "MIT"
+dynamic = ["version"]
+authors = [{ name = "Eelke van den Bos" }]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX"
+]
+
+[project.scripts]
+run-concurrently = "run_concurrently:main"
+
+[project.urls]
+"Homepage" = "https://github.com/eelkevdbos/run-concurrently"
+"Source" = "https://github.com/eelkevdbos/run-concurrently"
+"Issues" = "https://github.com/eelkevdbos/run-concurrently/issues"
+
+[build-system]
+requires = [
+    "setuptools>=64", # needs the PEP 621/pyproject interface
+    "setuptools-scm[toml]>=8", # derives the version from Git
+    "wheel"                    # optional but common
+]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+package = true
+
+[tool.setuptools]
+py-modules = ["run_concurrently"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "no-local-version"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
