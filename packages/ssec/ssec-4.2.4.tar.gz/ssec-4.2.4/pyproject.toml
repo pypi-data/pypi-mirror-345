@@ -1,0 +1,54 @@
+########################################################################
+###############################  BUILD  ################################
+########################################################################
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+########################################################################
+##############################  PROJECT  ###############################
+########################################################################
+[project]
+name = "ssec"
+version = "4.2.4"
+description = """\
+    Synchronous and asynchronous library for Server Sent Event (SSE). \
+"""
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "J. Baudisch", email = "justin.baudisch@hsbi.de" }]
+maintainers = [{ name = "J. Baudisch", email = "justin.baudisch@hsbi.de" }]
+keywords = ["Server Sent Event (SSE)", "SSE-Client"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development",
+    "Topic :: Communications",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Typing :: Typed",
+]
+dependencies = [
+    "httpx == 0.28.1",      # HTTP Client (https://pypi.org/project/httpx)
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff == 0.11.8",       # Linter & Formatter (https://pypi.org/project/ruff)
+    "mypy == 1.15.0",       # Static Type Checker (https://pypi.org/project/mypy)
+    "Sphinx == 8.2.3",      # Documentation Generator (https://pypi.org/project/Sphinx)
+    "furo == 2024.8.6",     # Documentation Theme (https://pypi.org/project/furo)
+]
+
+[project.urls]
+Repository = "https://github.com/ReMi-HSBI/ssec"
+
+########################################################################
+###############################  TOOLS  ################################
+########################################################################
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"ssec" = ["py.typed"]
