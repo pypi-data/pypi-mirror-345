@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mysqlconnect-mcp-server"
+version = "0.1.0"
+description = "MCP Server to connect the MySQL database"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "mcp[cli]>=1.6.0",
+    "mysql-connector-python>=9.3.0",
+    "python-dotenv>=1.1.0"
+]
+authors = [{ name = "Gopika P J", email = "pjgopika44@gmail.com" }]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+mysqlconnect-mcp-server = "server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["server"]
