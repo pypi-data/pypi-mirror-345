@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "argkit"
+authors = [
+  { name="Jiyuan Yang" },
+]
+description = "Connecting an argument parser and a callable."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+dependencies = []
+
+dynamic = ["version"]
+
+[project.scripts]
+kit1 = "argkit.cli:transfer_single"
+kit2 = "argkit.cli:transfer_double"
+
+[project.urls]
+Homepage = "https://github.com/ygjiyn/argkit_project"
+Issues = "https://github.com/ygjiyn/argkit_project/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "argkit.__version__"}
