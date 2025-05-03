@@ -1,0 +1,32 @@
+[project]
+name = "power-nudge"
+version = "0.1.0"
+description = "A macOS utility that alerts you via WhatsApp when your battery reaches a defined threshold using Twilio."
+authors = [
+    { name = "Lav Sharma", email = "lavsharma2016@gmail.com" }
+]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+keywords = ["battery", "twilio", "macos", "whatsapp", "automation", "notification"]
+dependencies = [
+    "dynaconf (>=3.2.10,<4.0.0)",
+    "twilio-helper (>=0.1.0,<0.2.0)"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities",
+    "Topic :: Communications :: Chat"
+]
+
+[tool.poetry]
+packages = [{ include = "power_nudge", from = "src" }]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

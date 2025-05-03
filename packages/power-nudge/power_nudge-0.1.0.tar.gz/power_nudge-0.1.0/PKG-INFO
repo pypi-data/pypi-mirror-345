@@ -1,0 +1,85 @@
+Metadata-Version: 2.3
+Name: power-nudge
+Version: 0.1.0
+Summary: A macOS utility that alerts you via WhatsApp when your battery reaches a defined threshold using Twilio.
+License: MIT
+Keywords: battery,twilio,macos,whatsapp,automation,notification
+Author: Lav Sharma
+Author-email: lavsharma2016@gmail.com
+Requires-Python: >=3.12
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Utilities
+Classifier: Topic :: Communications :: Chat
+Requires-Dist: dynaconf (>=3.2.10,<4.0.0)
+Requires-Dist: twilio-helper (>=0.1.0,<0.2.0)
+Description-Content-Type: text/markdown
+
+# ⚡ PowerNudge
+
+**PowerNudge** is a lightweight macOS utility that monitors your MacBook's battery percentage and sends you a **WhatsApp
+alert via Twilio** when it reaches a predefined charging level — so you can unplug and prolong battery health.
+
+Built with automation in mind, it’s perfect for users who want a hands-free way to monitor charging without keeping an
+eye on the battery all the time.
+
+---
+
+## 🚀 Features
+
+* 🔋 Monitors battery percentage using macOS's `pmset` command
+* 📤 Sends a WhatsApp message via Twilio when a threshold is reached
+* 🧪 Built-in Twilio credential validation
+
+---
+
+## 🛠 Requirements
+
+* Python 3.12+
+* macOS (uses `pmset` for battery info)
+* Twilio Account with WhatsApp sandbox enabled
+* Internet connection to send WhatsApp message
+
+---
+
+## 📦 Installation
+
+Install dependencies:
+
+```bash
+pip install power_nudge
+```
+
+---
+
+## 🧠 How It Works
+
+* Reads your battery percentage via `pmset -g batt`
+* Sends a WhatsApp alert if the threshold is reached
+
+---
+
+## 🧪 Usage
+
+```bash
+python src/power_nudge/main.py
+```
+
+Or, schedule it with a **cron job** or **launchd** to run periodically.
+
+---
+
+## 📬 Example Alert
+
+> 🟢 *Battery is 90%. Please unplug the charger!*
+
+---
+
+## 📄 License
+
+MIT License
+
+---
