@@ -1,0 +1,76 @@
+# Levox Security Rules for GDPR Compliance
+# These rules identify potential security issues in code that might violate GDPR
+
+# Security-related rules
+- id: SEC-XSS
+  title: "Cross-Site Scripting Vulnerability"
+  pattern: |
+    (?i)innerHTML\s*=|document\.write\(|eval\(|setTimeout\(\s*['"`]
+  severity: HIGH
+  description: "Potential XSS vulnerability found - unsanitized data flows to HTML"
+  gdpr_article: "Article 32 - Security of processing"
+  remediation: "Use a secure template library or sanitize all user input"
+
+- id: SEC-SQLI
+  title: "SQL Injection Vulnerability"
+  pattern: |
+    (?i)(?:execute|query)\s*\(\s*['"]\s*(?:SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER).*\+\s*\w+
+  severity: HIGH
+  description: "Potential SQL injection - string concatenation in query"
+  gdpr_article: "Article 32 - Security of processing"
+  remediation: "Use parameterized queries or prepared statements"
+
+- id: SEC-HARDCODED
+  title: "Hardcoded Credentials"
+  pattern: |
+    (?i)(?:password|passwd|pwd|auth_token|api_key|secret|credentials?)\s*=\s*['"][^'"]+['"]
+  severity: CRITICAL
+  description: "Hardcoded credentials found"
+  gdpr_article: "Article 32 - Security of processing"
+  remediation: "Store credentials in environment variables or a secure vault"
+
+# GDPR-specific rules
+- id: GDPR33
+  title: "Data Transfer Outside EU"
+  pattern: |
+    (?i)(?:transfer|send|post|put)\s*\(\s*.*(?:aws\.(?!eu-west-1|eu-central-1)|azure\.(?!germany|france)|google\.(?!eu)|(asia|us-east|us-west|us-central|southamerica|australia))
+  severity: HIGH
+  description: "Possible data transfer to non-EU region"
+  gdpr_article: "Article 44 - General principle for transfers"
+  remediation: "Ensure appropriate safeguards for data transfers outside the EU"
+
+- id: GDPR25
+  title: "Missing Data Protection by Design"
+  pattern: |
+    (?i)(?:user|customer|client|person|profile).*data\s*=\s*.*\b(?:without|missing)\b.*\b(?:protect|encrypt|anonym|pseud)
+  severity: MEDIUM
+  description: "Data protection by design principles may be missing"
+  gdpr_article: "Article 25 - Data protection by design and by default"
+  remediation: "Implement data minimization, encryption, and pseudonymization"
+
+- id: GDPR32
+  title: "Insufficient Security Measures"
+  pattern: |
+    (?i)(?:password|credentials?)\s*=\s*.*(?:md5|sha1)\(
+  severity: HIGH
+  description: "Weak hashing algorithm used for passwords"
+  gdpr_article: "Article 32 - Security of processing"
+  remediation: "Use strong adaptive hashing algorithms (bcrypt, Argon2, etc.)"
+
+- id: GDPR7
+  title: "Invalid Consent Mechanism"
+  pattern: |
+    (?i)(?:checkbox|opt-in|consent|agree)\s*.*\b(?:default|preselected|auto)\b
+  severity: HIGH
+  description: "Potentially invalid consent mechanism (pre-selected or not explicit)"
+  gdpr_article: "Article 7 - Conditions for consent"
+  remediation: "Ensure consent is freely given, specific, informed and unambiguous"
+
+- id: GDPR17
+  title: "Missing Right to Erasure"
+  pattern: |
+    (?i)class\s+(?:user|customer|client|person|profile).*\{(?![^}]*\b(?:delete|remove|erase)\b)
+  severity: HIGH
+  description: "User/customer class without delete functionality"
+  gdpr_article: "Article 17 - Right to erasure ('right to be forgotten')"
+  remediation: "Implement method to permanently delete all user data" 

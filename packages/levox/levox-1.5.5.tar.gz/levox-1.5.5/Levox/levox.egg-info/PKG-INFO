@@ -1,0 +1,171 @@
+Metadata-Version: 2.2
+Name: levox
+Version: 1.5.5
+Summary: GDPR, PII and Data Flow Compliance Tool
+Home-page: https://github.com/levox/gdpr-compliance
+Author: Fenrix AI
+Author-email: connect@fenrix.tech
+Keywords: gdpr,compliance,security,privacy,pii,data-protection,vulnerability,encryption,data-flow,data-flow-analysis,data-flow-analysis-tool,data-flow-analysis-tool-for-python,data-flow-analysis-tool-for-javascript,data-flow-analysis-tool-for-typescript,data-flow-analysis-tool-for-java,data-flow-analysis-tool-for-csharp,data-flow-analysis-tool-for-go,data-flow-analysis-tool-for-rust,data-flow-analysis-tool-for-php,data-flow-analysis-tool-for-ruby,data-flow-analysis-tool-for-swift,data-flow-analysis-tool-for-kotlin,data-flow-analysis-tool-for-scala,data-flow-analysis-tool-for-dart,data-flow-analysis-tool-for-php,data-flow-analysis-tool-for-ruby,data-flow-analysis-tool-for-swift,data-flow-analysis-tool-for-kotlin,data-flow-analysis-tool-for-scala,data-flow-analysis-tool-for-dart
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Topic :: Security
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: prompt_toolkit>=3.0.0
+Requires-Dist: ollama>=0.1.0
+Requires-Dist: regex>=2023.0.0
+Requires-Dist: pyyaml>=6.0.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: tqdm>=4.65.0
+Requires-Dist: watchdog>=3.0.0
+Requires-Dist: matplotlib>=3.5.0
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: weasyprint>=53.0
+Requires-Dist: apscheduler>=3.9.0
+Requires-Dist: requests>=2.27.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Levox - GDPR Compliance Assistant
+
+A powerful tool for scanning, fixing, and reporting GDPR compliance issues in code.
+
+## Installation
+
+```bash
+pip install levox
+```
+
+## Quick Start
+
+After installation, you can run Levox in two ways:
+
+1. As a command line tool:
+```bash
+levox
+```
+
+2. In your Python code:
+```python
+from levox import main
+main()
+```
+
+## Troubleshooting
+
+### Command Not Found
+
+If you get a "command not found" error when trying to run `levox`, it might be because Python's Scripts directory is not in your PATH. Here's how to fix it:
+
+#### Windows
+1. Open Command Prompt or PowerShell
+2. Add Python Scripts to PATH:
+```bash
+set PATH=%PATH%;C:\Users\<username>\AppData\Local\Programs\Python\Python3x\Scripts
+```
+Or permanently add it through System Properties > Environment Variables
+
+#### Unix/Linux/Mac
+1. Open terminal
+2. Add Python bin to PATH:
+```bash
+export PATH=$PATH:$(python3 -m site --user-base)/bin
+```
+Add this line to your `~/.bashrc` or `~/.zshrc` to make it permanent
+
+### Verifying Installation
+
+To verify that Levox is properly installed:
+```bash
+pip show levox
+```
+
+This should show the package details including version and installation location.
+
+## Features
+
+- **GDPR Compliance Scanning**: Detect potential GDPR violations in your codebase
+- **PII Detection**: Identify personally identifiable information in your code
+- **Data Flow Analysis**: Track how data moves through your application
+- **Automated Remediation**: Get suggestions for fixing compliance issues
+- **Detailed Reporting**: Generate reports in multiple formats
+
+## Configuration
+
+Install the package using pip:
+
+```bash
+pip install levox
+```
+
+## Usage
+
+### Command Line Interface
+
+```bash
+# Scan a directory for GDPR compliance issues
+levox scan [directory]
+
+# Fix GDPR compliance issues in a directory
+levox fix [directory]
+
+# Show benchmarks and information
+levox about
+
+# Run benchmarks
+levox benchmark --run
+```
+
+### As a Library
+
+```python
+from levox.scanner import Scanner
+from levox.fixer import Fixer
+
+# Scan a directory
+scanner = Scanner("path/to/your/code")
+issues = scanner.scan_directory()
+
+# Get suggestions for fixing issues
+fixer = Fixer()
+for issue in issues:
+    fix = fixer.generate_fix(issue)
+    print(fix)
+```
+
+## Configuration
+
+Levox can be configured using a `levox_config.json` file in your project directory or in the user's home directory (`~/.levox/config.json`).
+
+Example configuration:
+
+```json
+{
+  "exclude": [
+    "**/test/**",
+    "**/node_modules/**",
+    "**/__pycache__/**"
+  ],
+  "severity_threshold": "medium"
+}
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 
