@@ -1,0 +1,75 @@
+Metadata-Version: 2.3
+Name: germgenie
+Version: 0.1.6
+Summary: Python wrapper for multi-sample 16S classification using EMU
+License: MIT
+Author: Sander Boden
+Author-email: s.boden1@avans.nl
+Maintainer: Sander Boden
+Maintainer-email: s.boden1@avans.nl
+Requires-Python: >=3.7
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: biopython (==1.78)
+Requires-Dist: osfclient (==0.0.5)
+Requires-Dist: pandas (==1.3.5)
+Requires-Dist: plotly (==5.18.0)
+Description-Content-Type: text/markdown
+
+# GermGenie
+
+GermGenie was specifically designed to analyse 16S data from clinical FFPE specimens, however it can be used to analyse any bacterial sample. GermGenie outputs stacked barplot showing the abundance of every species in your sample. By setting an abundance threshold, any species below the threshold will be added to an 'other' category (>1% by default).  
+This tool was designed with Oxford Nanopore sequencing reads (ONT), and was not tested with any other sequencing data. The input should be a folder containing one or more samples in a fastq.gz format.
+
+## Dependencies
+The pipeline is based on [EMU](https://github.com/treangenlab/emu). Data is visualized using the [Plotly library](https://plotly.com).
+
+
+# Installation
+
+Follow EMU's installation instructions from the [repo](https://github.com/treangenlab/emu).  
+After installing EMU, install GermGenie in the same conda environment.
+```bash
+python -m pip install GermGenie
+```
+
+
+
+# Usage
+```bash
+usage: GermGenie [-h] [--threads THREADS] [--threshold THRESHOLD] [--tsv]
+                 [--nreads] [--subsample SUBSAMPLE]
+                 fastq output db
+
+EMU wrapper for analyzing and plotting relative abundance from 16S data
+
+positional arguments:
+  fastq                 Path to folder containing gzipped fastq files
+  output                Path to directory to place results (created if not
+                        exists.)
+  db                    Path to EMU database
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --threads THREADS, -t THREADS
+                        Number of threads to use for EMU classification
+                        (defaults to 2)
+  --threshold THRESHOLD, -T THRESHOLD
+                        Percent abundance threshold. Abundances below
+                        threshold will be shown as 'other' (defaults to 1
+                        percent)
+  --tsv                 Write abundances to tsv file (abundances.tsv)
+  --nreads, -nr         Visualize number of reads per sample in barplot
+  --subsample SUBSAMPLE, -s SUBSAMPLE
+                        WARNING: DO NOT USE !!!
+
+Developed by Daan Brackel & Sander Boden @ ATLS-Avans
+```
+
