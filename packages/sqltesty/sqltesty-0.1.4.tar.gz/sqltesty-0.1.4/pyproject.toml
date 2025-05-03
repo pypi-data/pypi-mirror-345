@@ -1,0 +1,74 @@
+[project]
+name = "sqltesty"
+version = "0.1.4"
+description = "Test SQL files using DuckDB and CSV fixtures"
+readme = "README.md"
+authors = [
+    { name = "Pascal Stehling", email = "pascal@stehl.ing" },
+]
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.1.7",
+    "duckdb>=0.10.0",
+    "pandas>=2.2.0",
+    "rich>=13.3.0",
+]
+
+[project.license]
+text = "MIT"
+
+[project.scripts]
+sqltesty = "sqltesty.cli:main"
+
+[dependency-groups]
+dev = [
+    "pdm>=2.24.1",
+    "pre-commit>=4.2.0",
+    "pyright>=1.1.399",
+    "pytest>=8.3.5",
+    "ruff>=0.11.6",
+    "syrupy>=4.9.1",
+]
+
+[tool.pdm.build]
+includes = []
+
+[tool.semantic_release]
+version_variables = [
+    "sqltesty/__init__.py:__version__",
+]
+version_toml = [
+    "pyproject.toml:project.version",
+]
+branch = "main"
+upload_to_pypi = true
+upload_to_release = true
+
+[tool.semantic_release.commit_parser_options]
+allowed_tags = [
+    "build",
+    "chore",
+    "ci",
+    "docs",
+    "feat",
+    "fix",
+    "perf",
+    "style",
+    "refactor",
+    "test",
+    "revert",
+]
+minor_tags = [
+    "feat",
+]
+patch_tags = [
+    "fix",
+    "perf",
+    "revert",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
