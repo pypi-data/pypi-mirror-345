@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[tool.setuptools.packages.find]
+include = ["catfact"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+
+[tool.ruff.format]
+
+[project]
+name = "catfact"
+description = "Add your description here"
+readme = "README.md"
+keywords = ["factors", "categoricals"]
+requires-python = ">=3.10"
+license.file = "LICENSE"
+dynamic = ["version"]
+dependencies = [
+    "databackend>=0.0.3",
+    "ddispatch>=0.0.1",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "pandas>=2.2.3",
+    "plotnine>=0.13.6",
+    "polars>=1.27.1",
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
+    "quartodoc>=0.9.1",
+    "ruff>=0.11.8",
+]
