@@ -1,0 +1,136 @@
+[build-system]
+requires = ["hatchling>=1.0.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sentidict"
+dynamic = ["version"]
+description = "Utilities for dictionary-based sentiment analysis. Includes 28 sentiment dictionaries with loaders, scoring, and interactive visualization."
+readme = "README.md"
+license = {file = "LICENSE.md"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Andy Reagan", email = "andy@andyreagan.com"}
+]
+keywords = ["sentiment", "emotion", "nlp", "text-analysis"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "marisa_trie",
+    "numpy",
+    "jinja2",
+]
+
+[project.urls]
+Documentation = "https://sentidict.readthedocs.io/"
+Repository = "https://github.com/andyreagan/sentidict"
+Issues = "https://github.com/andyreagan/sentidict/issues"
+
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311", "py312"]
+skip-string-normalization = true
+exclude = "sentidict/data/.*"
+
+[tool.hatch.version]
+path = "sentidict/__init__.py"
+pattern = "__version__ = [\"'\"](?P<version>.+)[\"'\"]"
+
+[tool.hatch.build.targets.wheel]
+packages = ["sentidict"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "sentidict",
+    "data/LabMT/*.txt.gz",
+    "data/ANEW/all-2.csv.gz",
+    "data/MPQA/subjectivity_clues_hltemnlp05/subjclueslen1-HLTEMNLP05.tff.gz",
+    "data/AFINN/AFINN-111.txt.gz",
+    "data/OL/positive-words.txt.gz",
+    "data/OL/negative-words.txt.gz",
+    "data/WK/BRM-emot-submit.csv.gz",
+    "data/PANAS-X/affect.txt.gz",
+    "data/Pattern/en-sentiment.xml.gz",
+    "data/SentiWordNet/SentiWordNet_3.0.0_20130122.txt.gz",
+    "data/GI/inqtabs.txt.gz",
+    "data/WDAL/words.txt.gz",
+    "data/NRC/NRC-Emotion-Lexicon-v0.92/NRC-emotion-lexicon-wordlevel-alphabetized-v0.92.txt.gz",
+    "data/NRC/MaxDiff-Twitter-Lexicon/Maxdiff-Twitter-Lexicon_-1to1.txt.gz",
+    "data/NRC/NRC-Hashtag-Sentiment-Lexicon-v0.1/unigrams-pmilexicon.txt.gz",
+    "data/NRC/Sentiment140-Lexicon-v0.1/unigrams-pmilexicon.txt.gz",
+    "data/NRC/Sentiment140-Lexicon-v0.1/pairs-pmilexicon.txt.gz",
+    "data/NRC/Sentiment140-Lexicon-v0.1/bigrams-pmilexicon.txt.gz",
+    "data/SOCAL/all_dictionaries-utf8.txt.gz",
+    "data/SenticNet/senticnet3.json.gz",
+    "data/Emoticons/positive.txt.gz",
+    "data/Emoticons/negative.txt.gz",
+    "data/Emoticons/neutral.txt.gz",
+    "data/SentiStrength/EmotionLookupTable.txt.gz",
+    "data/SentiStrength/EmoticonLookupTable-utf8.txt.gz",
+    "data/VADER/vader_sentiment_lexicon-utf8.txt.gz",
+    "data/Umigon/all.txt.gz",
+    "data/USent/SANN/positive.txt.gz",
+    "data/USent/SANN/negative.txt.gz",
+    "data/EmoSenticNet/emosenticnet.csv.gz",
+    # license and readme
+    "LICENSE.md",
+    "README.md",
+    # all the testing, build, and code formatting
+    "test",
+    "examples",
+    "pyproject.toml",
+    ".pre-commit-config.yaml",
+    # all the docs stuff
+    "docs",
+    "build_docs.sh",
+    ".readthedocs.yaml",
+]
+[project.optional-dependencies]
+docs = [
+    "sphinx>=4.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+    "myst-parser>=0.18.0",
+    "ipython>=7.0.0",
+]
+
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "scipy",
+    "jupyter",
+]
+
+dev = [
+    "black>=22.1.0",
+    "isort>=5.10.1",
+    "flake8>=4.0.1",
+    "ipython",
+    "twine",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+python_files = ["test.py", "test_*.py"]
+python_functions = ["test*"]
+
+[tool.hatch.envs.docs]
+dependencies = [
+    "sphinx>=4.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+    "myst-parser>=0.18.0",
+    "ipython>=7.0.0",
+]
+
+[tool.hatch.envs.docs.scripts]
+build = "cd docs && make html"
+clean = "cd docs && make clean"
+serve = "python -m http.server -d docs/_build/html 8000"
