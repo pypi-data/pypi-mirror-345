@@ -1,0 +1,43 @@
+Metadata-Version: 2.2
+Name: ytp-dl
+Version: 0.1.5
+Summary: Proxy‑based yt-dlp downloader with aria2c+ffmpeg support
+Author: dumgum82
+Author-email: dumgum42@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: yt-dlp
+Requires-Dist: requests
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+ytp-dl
+
+A YouTube downloader built on top of yt-dlp that bypasses YouTube throttling. It uses proxies to fetch signed DASH URLs, then downloads video and audio segments in parallel with aria2c and merges them with ffmpeg into a single MP4 file.
+
+Installation
+
+pip install ytp-dl
+
+Basic Usage
+
+ytp-dl -o /path/to/save -p <proxy1,proxy2,…> https://youtu.be/VIDEO_ID [HEIGHT]
+
+-o: Directory where the final video will be saved.
+
+-p: Comma-separated list of proxy URIs (used only for URL signing).
+
+https://youtu.be/VIDEO_ID: The YouTube video URL.
+
+[HEIGHT] (optional): Desired resolution (e.g., 720p, defaults to 1080p).
+
+That’s it—proxies are used just to get valid URLs, aria2c downloads segments directly, and ffmpeg handles merging.
