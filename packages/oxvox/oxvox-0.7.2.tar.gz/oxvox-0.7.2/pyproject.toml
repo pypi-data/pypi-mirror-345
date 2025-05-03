@@ -1,0 +1,20 @@
+[build-system]
+requires = ["maturin>=1.4,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "oxvox"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["version"]
+dependencies = ["numpy", "numpy-indexed", "pytest"]
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+# compatibility = "linux"  # not just GNU
+python-source = "python"
+module-name = "oxvox._oxvox"

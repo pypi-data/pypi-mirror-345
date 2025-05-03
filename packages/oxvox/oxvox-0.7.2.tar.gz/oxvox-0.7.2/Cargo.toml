@@ -1,0 +1,25 @@
+[package]
+name = "oxvox"
+version = "0.7.2"
+edition = "2021"
+authors = ["Hamish Morgan <ham430@gmail.com>"]
+description = "Performant operations on array & pointcloud data, written in Rust"
+readme = "README.md"
+repository = "https://github.com/hacmorgan/oxvox"
+license-file =  "LICENSE"
+keywords = ["nearest", "neighbour", "pointcloud", "array", "ndarray", "python"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "oxvox"
+crate-type = ["cdylib"]
+
+[dependencies]
+bincode = "1.3.3"
+numpy = "0.18"
+ndarray = {version = "0.15.6", features=["serde", "rayon", "approx-0_5"]}
+pyo3 = "0.18.0"
+rayon = "1.8.1"
+serde = {version = "1.0.196", features = ["derive"]}
+indicatif = {version = "0.17.8", features = ["rayon"]}
+ahash = {version = "0.8.8", features = ["serde"]}
