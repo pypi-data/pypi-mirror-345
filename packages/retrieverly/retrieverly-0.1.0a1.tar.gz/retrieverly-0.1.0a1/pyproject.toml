@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "retrieverly"
+version = "0.1.0a1"
+description = "A lightweight async package for building Multi-Modal RAG applications"
+authors = [
+    {name = "Aasher Kamal", email = "aasherkamal786@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+dependencies = [
+    "cohere>=5.15.0",
+    "pdf2image>=1.17.0",
+    "pillow>=11.2.1",
+    "python-dotenv>=1.1.0",
+    "qdrant-client>=1.14.2",
+    "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.18.0",
+    "black>=23.0.0",
+    "isort>=5.10.0",
+    "mypy>=1.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/aasherkamal216/retrieverly"
+"Issues" = "https://github.com/aasherkamal216/retrieverly/issues"
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
