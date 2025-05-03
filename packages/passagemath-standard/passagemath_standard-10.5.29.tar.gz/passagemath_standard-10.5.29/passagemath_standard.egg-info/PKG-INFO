@@ -1,0 +1,111 @@
+Metadata-Version: 2.4
+Name: passagemath-standard
+Version: 10.5.29
+Summary: passagemath: Standard Python Library
+Author-email: The Sage Developers <sage-support@googlegroups.com>
+Maintainer: Matthias Köppe, passagemath contributors
+License: GNU General Public License (GPL) v2 or later
+Project-URL: release notes, https://github.com/passagemath/passagemath/releases
+Project-URL: repo (upstream), https://github.com/sagemath/sage
+Project-URL: repo, https://github.com/passagemath/passagemath
+Project-URL: documentation, https://doc.sagemath.org
+Project-URL: homepage (upstream), https://www.sagemath.org
+Project-URL: discourse, https://passagemath.discourse.group
+Project-URL: tracker (upstream), https://github.com/sagemath/sage/issues
+Project-URL: tracker, https://github.com/passagemath/passagemath/issues
+Classifier: Development Status :: 6 - Mature
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Requires-Python: <3.14,>=3.9
+Description-Content-Type: text/x-rst
+License-File: LICENSE.txt
+Requires-Dist: passagemath-standard-no-symbolics~=10.5.29.0
+Requires-Dist: passagemath-symbolics~=10.5.29.0
+Provides-Extra: r
+Requires-Dist: rpy2>=3.3; extra == "r"
+Provides-Extra: bliss
+Requires-Dist: sagemath-bliss; extra == "bliss"
+Provides-Extra: brial
+Requires-Dist: sagemath-brial; extra == "brial"
+Provides-Extra: coxeter3
+Requires-Dist: sagemath-coxeter3; extra == "coxeter3"
+Provides-Extra: mcqd
+Requires-Dist: sagemath-mcqd; extra == "mcqd"
+Provides-Extra: meataxe
+Requires-Dist: sagemath-meataxe; extra == "meataxe"
+Provides-Extra: sirocco
+Requires-Dist: sagemath-sirocco; extra == "sirocco"
+Provides-Extra: tdlib
+Requires-Dist: sagemath-tdlib; extra == "tdlib"
+Dynamic: license-file
+
+=================================================================
+ passagemath: Standard Python Library
+=================================================================
+
+`passagemath <https://github.com/passagemath/passagemath>`__ is open
+source mathematical software in Python, released under the GNU General
+Public Licence GPLv2+.
+
+It is a fork of `SageMath <https://www.sagemath.org/>`__, which has been
+developed 2005-2025 under the motto “Creating a Viable Open Source
+Alternative to Magma, Maple, Mathematica, and MATLAB”.
+
+The passagemath fork was created in October 2024 with the following
+goals:
+
+-  providing modularized installation with pip, thus completing a `major
+   project started in 2020 in the Sage
+   codebase <https://github.com/sagemath/sage/issues/29705>`__,
+-  establishing first-class membership in the scientific Python
+   ecosystem,
+-  giving `clear attribution of upstream
+   projects <https://groups.google.com/g/sage-devel/c/6HO1HEtL1Fs/m/G002rPGpAAAJ>`__,
+-  providing independently usable Python interfaces to upstream
+   libraries,
+-  providing `platform portability and integration testing
+   services <https://github.com/passagemath/passagemath/issues/704>`__
+   to upstream projects,
+-  inviting collaborations with upstream projects,
+-  `building a professional, respectful, inclusive
+   community <https://groups.google.com/g/sage-devel/c/xBzaINHWwUQ>`__,
+-  developing a port to `Pyodide <https://pyodide.org/en/stable/>`__ for
+   serverless deployment with Javascript,
+-  developing a native Windows port.
+
+`Full documentation <https://doc.sagemath.org/html/en/index.html>`__ is
+available online.
+
+passagemath attempts to support all major Linux distributions and recent versions of
+macOS. Use on Windows currently requires the use of Windows Subsystem for Linux or
+virtualization.
+
+Complete sets of binary wheels are provided on PyPI for Python versions 3.9.x-3.12.x.
+Python 3.13.x is also supported, but some third-party packages are still missing wheels,
+so compilation from source is triggered for those.
+
+
+About this pip-installable distribution package
+-----------------------------------------------
+
+This pip-installable source distribution `sagemath-standard` is a
+distribution of the Sage Library.
+
+Building `sagemath-standard` has a large number of system packages as prerequisites.
+See https://doc.sagemath.org/html/en/installation/source.html#linux-recommended-installation
+for partial lists for various systems.
+
+The connection to the system environment is facilitated through the https://pypi.org/project/sage-conf/ distribution package; for step-by-step installation instructions, see https://github.com/sagemath/sage/blob/develop/README.md#alternative-installation-using-pypi
+
+A modularization effort is in progress with the goal of making it possible to install parts of the Sage Library with fewer prerequisites. https://github.com/sagemath/sage/issues/29705
