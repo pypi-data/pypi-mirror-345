@@ -1,0 +1,128 @@
+# IbrahimKirabo LLMPool
+
+**IbrahimKirabo LLMPool** is a Python package for efficiently managing API keys and rate limiting for LLM (Large Language Model) calls. It dynamically selects an available API key/model combination based on configurable per-minute and per-day usage limits. The package leverages the [`pyrate_limiter.Limiter`](https://github.com/r1dl/pyrate-limiter) library for rate limiting and integrates with various LLM clients.
+
+[![PyPI version](https://badge.fury.io/py/ibrahimkirabo-llmpool.svg)](https://pypi.org/project/ibrahimkirabo-llmpool/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+## Features
+
+- **Dynamic API Key Rotation:** Automatically selects an available API key based on usage.
+- **Granular Rate Limiting:** Supports configurable limits per minute and per day, for both requests and tokens.
+- **Unlimited Rate Support:** Seamlessly handles models with no rate limits using a dummy limiter.
+- **Integrated Logging:** Provides detailed logs (without exposing sensitive information) to help you monitor service usage.
+
+## Installation
+
+Install the package via pip:
+
+```sh
+pip install ibrahimkirabo-llmpool
+```
+
+Alternatively, you can install the development version by cloning the repository and installing locally:
+
+```sh
+git clone https://github.com/kiraboibrahim/llmpool.git
+cd llmpool
+hatch build
+pip install .
+```
+
+## Configuration
+
+API keys and model limits can be stored or configured using your preferred method. In your application code, define your list of API keys (for example, in a configuration file) and a dictionary of model limits. Each model configuration includes:
+
+- `requests_min`: Maximum requests allowed per minute.
+- `tokens_min`: Maximum tokens allowed per minute.
+- `requests_day`: Maximum requests allowed per day.
+- `tokens_day`: Maximum tokens allowed per day (set to `None` for unlimited usage).
+
+## Quick Start
+
+Below is an example of how to configure and use the package in your application:
+
+```python
+from ibrahimkirabo_llmpool import LLMPool
+
+# Define your API keys (store them in the secure method of your choice)
+api_keys = ["your_api_key_1", "your_api_key_2", "your_api_key_3"]
+
+# Define per-model rate limits
+model_limits = {
+    "allam-2-7b": {
+        "requests_min": 2,
+        "tokens_min": 2000,
+        "requests_day": 20,
+        "tokens_day": 20000,
+    },
+    "gemma2-9b-it": {
+        "requests_min": 30,
+        "tokens_min": 30000,
+        "requests_day": 300,
+        "tokens_day": None,  # Unlimited daily token usage
+    },
+    # Add additional models as needed
+}
+
+# Instantiate the pool
+pool = LLMPool(api_keys=api_keys, model_limits=model_limits)
+
+# Define your LLM call function
+def call_llm_example(api_key, model, **kwargs):
+    # Your custom logic for calling the LLM; must return (result, tokens_used)
+    result = f"Response from model '{model}' using API key index {api_keys.index(api_key)}"
+    tokens_used = 100  # Example token consumption
+    return result, tokens_used
+
+# Execute an LLM call using the pool
+response = pool.call_llm(call_llm_example, prompt="Hello, LLMPool!")
+print(response)
+```
+
+## API Reference
+
+### LLMPool Class
+
+- **`LLMPool(api_keys: List[str], model_limits: dict, cooldown: int = 60)`**  
+  Initializes the pool with your API keys and model limits.  
+  The `model_limits` dictionary should map each model to its corresponding constraints:
+  - `requests_min`: Requests allowed per minute.
+  - `tokens_min`: Tokens allowed per minute.
+  - `requests_day`: Requests allowed per day.
+  - `tokens_day`: Tokens allowed per day (set to `None` for unlimited tokens).
+
+- **`call_llm(call_func, *args, timeout: float = 30, **kwargs)`**  
+  Wraps an LLM API call. It selects an available API key/model combination, calls the provided function, and logs which model handled the request.  
+  - `call_func`: A function that accepts at least `api_key` and `model` as keyword arguments and returns `(result, tokens_used)`.
+  - `timeout`: Maximum time in seconds to wait for an available API key/model.
+
+## Project Structure
+
+- **ibrahimkirabo_llmpool/**
+  - `__init__.py`: Package initialization.
+  - `pool.py`: Contains the `LLMPool` class and related helpers.
+  - `ratelimiter.py`: Provides the `NoRateLimiter` class for unlimited rate support.
+  - `exceptions.py`: Custom exceptions including `RateLimitException`.
+
+- **tests/**  
+  Contains the unit tests for the package.
+
+- **README.md**  
+  This documentation.
+
+- **pyproject.toml**  
+  Hatchling configuration and package metadata.
+
+## Contributing
+
+Contributions are welcome! Please open issues for feature requests or bug reports. When submitting pull requests, ensure your code is fully tested and documented.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Additional Resources
+
+- [pyrate_limiter on GitHub](https://github.com/r1dl/pyrate-limiter)
+- [Hatch Documentation](https://hatch.pypa.io/latest/)
