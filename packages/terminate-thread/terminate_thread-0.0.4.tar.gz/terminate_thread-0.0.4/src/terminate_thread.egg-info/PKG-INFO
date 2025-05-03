@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: terminate_thread
+Version: 0.0.4
+Summary: terminate_thread
+Author-email: calm51 <calm51@protonmail.com>
+Project-URL: Homepage, https://github.com/calm51/terminate_thread
+Project-URL: Issues, https://github.com/calm51/terminate_thread/issues
+Keywords: terminate thread,kill thread,stop thread
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+```python3
+import threading
+import time
+from terminate_thread import terminate, kill
+
+
+def thread_func1():
+    n = 0
+    while True:
+        n += 1
+        print(n, t)
+        time.sleep(1)
+
+
+if __name__ == "__main__":
+    t = threading.Thread(target=thread_func1, )
+    t.start()
+    time.sleep(2)
+
+    terminate(t)
+    # or
+    kill(t)
+
+    exit(0)
+
+
+```
