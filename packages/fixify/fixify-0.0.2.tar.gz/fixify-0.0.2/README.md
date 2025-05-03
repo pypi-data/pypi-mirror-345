@@ -1,0 +1,35 @@
+# 🛠️ Fixify - Terminal AI for Code Explanation & Correction
+
+![alt text](image.png)
+
+Fixify lets you explain and fix code right from your terminal — no tab-switching, no distractions, just pure productivity.
+
+---
+
+## ⚡ Features (Based on Flow)
+
+### 1. 🧠 Explanation (Parameter-Based)
+Send your problem and prompt directly through the terminal.  
+> Fixify gives a human-readable explanation.
+
+### 2. 📄 Explanation (File-Based)
+Just provide file name + start & end line.  
+> Fixify explains that code block in terminal.
+
+### 3. 🔧 Correction (Parameter-Based)
+Send your buggy code snippet and description as parameters.  
+> Fixify shows corrected code + what it changed.
+
+### 4. ✍️ Correction (File-Based)
+Give file, start & end lines.  
+> Fixify directly edits the file inline using your chosen model.
+
+---
+
+## 🚀 Usage (Coming Soon)
+```bash
+fixify explain --prompt "Why this fails?" --code "..."
+fixify explain --file app.py --start 20 --end 35
+
+fixify fix --prompt "Fix null error" --code "..."
+fixify fix --file app.py --start 10 --end 40
