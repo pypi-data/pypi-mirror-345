@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "javelin-sdk"
+version = "0.2.34"
+description = "Python client for Javelin"
+authors = ["Sharath Rajasekar <sharath@getjavelin.com>"]
+readme = "README.md"
+license = "Apache-2.0"
+packages = [
+    { include = "javelin_cli" },
+    { include = "javelin_sdk" },
+]
+homepage = "https://getjavelin.com"
+
+[tool.poetry.scripts]
+javelin = "javelin_cli.cli:main"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+httpx = "^0.24.0"
+pydantic = "^2.9.2"
+requests = "^2.31.0"
+jmespath = "^1.0.1"
+jsonpath-ng = "^1.7.0"
+
+# OpenTelemetry Dependencies
+opentelemetry-api = "^1.29.0"
+opentelemetry-sdk = "^1.29.0"
+opentelemetry-exporter-otlp-proto-http = "^1.29.0"
+opentelemetry-instrumentation = "^0.50b0"
+opentelemetry-instrumentation-botocore = "^0.50b0"
+opentelemetry-util-http = "^0.50b0"
+opentelemetry-semantic-conventions = "^0.50b0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.3.1"
+pytest-httpx = "^0.22.0"
+pytest-asyncio = "^0.21.0"
+pytest-mock = "^3.10.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "24.3.0"
+ruff = "^0.0.265"
+mypy = "^1.2.0"
+pre-commit = "^3.3.1"
+mkdocs = "^1.4.3"
+mkdocstrings = {version = "0.21.2", extras = ["python"]}
+python-dotenv = "^1.0.0"
+mkdocs-material = "^9.1.13"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
