@@ -1,0 +1,16 @@
+# Smithery.ai configuration
+startCommand:
+  type: stdio
+  configSchema: {}
+  commandFunction: |
+    (config) => ({
+      command: "python",
+      args: ["src/code2prompt_mcp/main.py"],
+      env: {}
+    })
+
+
+# Optional build configurations
+build:
+  dockerfile: Dockerfile
+  dockerBuildPath: .
