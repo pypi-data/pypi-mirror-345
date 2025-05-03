@@ -1,0 +1,175 @@
+name: Build and Publish to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+        include:
+          - os: ubuntu-latest
+            target: x86_64
+          - os: windows-latest
+            target: x64
+          - os: macos-latest
+            target: universal2
+
+    steps:
+      - name: Checkout code
+        shell: bash
+        run: |
+          # Actions run in the workspace (repo) directory by default
+          echo "Current directory: $PWD"
+          
+          # In a self-hosted runner, we need to manually pull the code
+          REPO_URL="https://github.com/${GITHUB_REPOSITORY}.git"
+          
+          # If we're not in the repo directory already, get the code
+          if [ ! -d ".git" ]; then
+            echo "Initializing git repository"
+            git init
+            git remote add origin $REPO_URL
+          fi
+          
+          # For tags
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            # Get all tags and branches
+            git fetch origin +refs/tags/*:refs/tags/*
+            
+            # Checkout the specific tag
+            TAG="${GITHUB_REF#refs/tags/}"
+            git checkout -f "$TAG"
+            echo "Checked out tag $TAG"
+          else
+            # Regular branch checkout
+            git fetch origin "$GITHUB_REF"
+            git checkout -f "$GITHUB_SHA"
+            echo "Repository checked out at $(git rev-parse HEAD)"
+          fi
+
+      - name: Set up Python
+        shell: bash
+        run: |
+          if [ "${{ runner.os }}" == "Linux" ]; then
+            sudo apt-get update
+            sudo apt-get install -y python${{ matrix.python-version }} python${{ matrix.python-version }}-dev python${{ matrix.python-version }}-venv python3-pip
+          elif [ "${{ runner.os }}" == "macOS" ]; then
+            brew install python@${{ matrix.python-version }}
+          elif [ "${{ runner.os }}" == "Windows" ]; then
+            choco install python --version=${{ matrix.python-version }}
+          fi
+          python${{ matrix.python-version }} -m pip install --upgrade pip
+
+      - name: Set up Rust
+        shell: bash
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          source "$HOME/.cargo/env"
+          rustup default stable
+          
+          # Add additional targets for macOS
+          if [ "${{ runner.os }}" == "macOS" ]; then
+            rustup target add x86_64-apple-darwin aarch64-apple-darwin
+          fi
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install maturin==1.8.3 build twine
+          maturin --version
+          
+      - name: Environment Info
+        shell: bash
+        run: |
+          python --version
+          rustc --version
+          cargo --version
+          uname -a || echo "uname not available"
+          rustup show || echo "rustup show not available"
+
+      - name: Build wheels for macOS
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          echo "Building for macOS with universal2 target"
+          rustup target add x86_64-apple-darwin aarch64-apple-darwin
+          rustup show
+          # Use universal2 build approach from maturin docs
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --release --strip --universal2 --out dist || \
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --release --strip --out dist
+        env:
+          MACOSX_DEPLOYMENT_TARGET: '10.12'
+
+      - name: Build wheels for Linux
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          echo "Building for Linux"
+          maturin build --release --strip --out dist
+
+      - name: Build wheels for Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          echo "Building for Windows"
+          # For Windows builds
+          maturin build --release --strip --out dist
+
+      - name: Build source distribution
+        if: runner.os == 'Linux' && matrix.python-version == '3.12'
+        shell: bash
+        run: |
+          echo "Building source distribution"
+          python -m build --sdist
+          ls -la dist/
+
+      - name: Upload wheels as artifacts
+        shell: bash
+        run: |
+          echo "Uploading wheels-${{ matrix.os }}-${{ matrix.python-version }}"
+          # In a real implementation, you would upload the artifacts to a storage service
+          mkdir -p /tmp/artifacts/wheels-${{ matrix.os }}-${{ matrix.python-version }}
+          cp dist/*.whl /tmp/artifacts/wheels-${{ matrix.os }}-${{ matrix.python-version }}/
+
+      - name: Check Distribution Files (Unix)
+        if: runner.os != 'Windows' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          echo "Checking distribution files"
+          ls -la dist/
+          echo "Validating with twine check"
+          twine check dist/*
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Check Distribution Files (Windows)
+        if: runner.os == 'Windows' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        run: |
+          echo "Checking distribution files"
+          dir dist
+          echo "Validating with twine check"
+          twine check dist/*
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Publish to PyPI
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          echo "Uploading to PyPI"
+          twine upload dist/*
