@@ -1,0 +1,105 @@
+# Project build file
+
+[build-system]
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'
+[tool.setuptools.packages.find]
+where = ["src"]
+[tool.setuptools.package-data]
+tol_colors = ["colors.json"]
+
+[project]
+version = '2.0.0'
+
+name = 'tol_colors'
+authors = [
+    {name='Clément Haëck', email='clement.haeck@posteo.net'},
+    {name='Paul Tol'}
+]
+maintainers = [
+    {name='Clément Haëck', email='clement.haeck@posteo.net'}
+]
+description = 'Color schemes for lines and maps, color-blind safe'
+keywords = ['visualization', 'colorsets', 'colormaps', 'colorblind']
+
+readme = 'README.md'
+classifiers = [
+    'Programming Language :: Python :: 3',
+    'Operating System :: OS Independent',
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Science/Research',
+    'Topic :: Scientific/Engineering :: Visualization'
+]
+
+license = 'BSD-3-Clause'
+license-files = ['LICENSE*']
+
+requires-python = '>=3.9'
+dependencies = [
+    'numpy',
+    'matplotlib',
+]
+
+[project.optional-dependencies]
+dev = [
+    'ruff',
+    'mypy>=1.5',
+    'pytest>=7.4',
+]
+docs = [
+    'sphinx==8.2.*',
+    'pydata-sphinx-theme==0.15.*',
+    'colorspacious',
+    'viscm',
+    'PyQt5'
+]
+tests = [
+    'pytest>=7.4'
+]
+
+[project.urls]
+'Source' = 'https://github.com/Descanonge/tol_colors'
+'Documentation' = 'https://tol-colors.readthedocs.io'
+
+[tool.mypy]
+disable_error_code = ['annotation-unchecked']
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 88
+target-version = 'py311'
+
+[tool.ruff.lint]
+select = [
+       'E',  # pycodestyle
+       'W',  # pycodestyle
+       'I',  # isort
+       'N',  # pep8-name
+       'B',  # bugbear
+       'G',  # flake8-logging-format
+       'F',  # pyflakes
+       'UP',  #pyupgrade
+       'D',  #pydocstyle
+       'PL', #pylint
+]
+
+ignore = [
+       'E226', # missing whitespace around arithmetic operator
+       'D105', # missing docstring for magical method
+       'D204', # one blank line after class
+       'D213', # multiline docstring start at 2nd line
+       'D417', # not all parameters need doc
+]
+unfixable = ["F401"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/tol_colors/__init__.py"= ["N802"]
+
+[too.ruff.lint.pycodestyle]
+max-line-length = 90
+
+[tool.ruff.lint.pydocstyle]
+convention = 'numpy'
+
+[tool.ruff.format]
+quote-style = 'double'
