@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Map | Swarm Squad</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
+    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #style-menu {
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            z-index: 1000;
+            font-family: Arial, sans-serif;
+        }
+
+        #style-menu select {
+            padding: 5px;
+            font-size: 12px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            background-color: white;
+            color: #333;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        #style-menu select option {
+            background-color: white;
+            color: #333;
+            text-align: center;
+        }
+        
+        /* Add consistent styling for info container */
+        #info-container {
+            position: absolute;
+            top: 80px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            /* Remove min-width to allow it to match other elements */
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/gh/jscastro76/threebox@v.2.2.7/dist/threebox.min.js"
+        type="text/javascript"></script>
+    <link href="https://cdn.jsdelivr.net/gh/jscastro76/threebox@v.2.2.7/dist/threebox.css" rel="stylesheet" />
+    <div id="map"></div>
+
+    <!-- Add info container for GPS and time displays below the style menu -->
+    <div id="info-container">
+        <div id="gps-coordinates">GPS: Waiting for data...</div>
+        <div id="current-time">Current Time: 00:00:00</div>
+        <div id="elapsed-time">Time Elapsed: 00:00:00</div>
+    </div>
+
+    <script>
+        mapboxgl.accessToken = 'YOUR_MAPBOX_TOKEN_HERE';
+
+        var origin = [-81.049, 29.189, 50];
+        var mapInitialized = false;
+        var map = null;
+
+        // Function to match info container width with connection status
+        function matchInfoContainerWidth() {
+            // Get the style menu element width as reference
+            const styleMenu = document.getElementById('style-menu');
+            const infoContainer = document.getElementById('info-container');
+            
+            if (styleMenu && infoContainer) {
+                const styleMenuWidth = styleMenu.offsetWidth;
+                infoContainer.style.width = styleMenuWidth + 'px';
+                // Adjust padding to match visual appearance
+                infoContainer.style.boxSizing = 'border-box';
+            }
+        }
+
+        // Advanced WebGL initialization - helps with Qt WebEngine
+        const initializeWebGL = function() {
+            try {
+                const canvas = document.createElement('canvas');
+                // Try WebGL2 first
+                let gl = canvas.getContext('webgl2', {
+                    antialias: true,
+                    depth: true,
+                    stencil: true,
+                    alpha: false,
+                    desynchronized: true,
+                    preserveDrawingBuffer: false,
+                    powerPreference: 'high-performance',
+                    failIfMajorPerformanceCaveat: false
+                });
+                
+                // Fallback to WebGL1
+                if (!gl) {
+                    gl = canvas.getContext('webgl', {
+                        antialias: true,
+                        depth: true,
+                        stencil: true,
+                        alpha: false,
+                        desynchronized: true,
+                        preserveDrawingBuffer: false,
+                        powerPreference: 'high-performance',
+                        failIfMajorPerformanceCaveat: false
+                    });
+                }
+                
+                if (gl) {
+                    console.log('[INFO] WebGL initialized successfully: ' + 
+                                (gl instanceof WebGLRenderingContext ? 'WebGL 1.0' : 'WebGL 2.0'));
+                    
+                    // Force the GPU to initialize with a simple operation
+                    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+                    gl.clear(gl.COLOR_BUFFER_BIT);
+                    
+                    // Check extensions
+                    const extensions = gl.getSupportedExtensions();
+                    console.log('[INFO] WebGL Extensions available: ' + extensions.length);
+                    
+                    return true;
+                } else {
+                    console.error('[ERROR] WebGL initialization failed');
+                    return false;
+                }
+            } catch (e) {
+                console.error('[ERROR] WebGL initialization error:', e);
+                return false;
+            }
+        };
+        
+        // Initialize WebGL
+        initializeWebGL();
+        
+        // Try to prewarm Mapbox
+        try {
+            mapboxgl.prewarm();
+        } catch (e) {
+            console.warn('[WARN] Mapbox prewarm failed:', e);
+        }
+
+        // Enhanced WebGL context options
+        const contextOptions = {
+            antialias: true,
+            depth: true,
+            stencil: true,
+            alpha: false,
+            desynchronized: true,
+            preserveDrawingBuffer: false,
+            powerPreference: 'high-performance',
+            failIfMajorPerformanceCaveat: false
+        };
+
+        // Single vehicle tracking (replacing drone array)
+        let vehicle = null;
+        let threebox_initialized = false;
+        let lastMessageTime = Date.now();
+        const messageTimeout = 5000; // 5 seconds
+
+        // Connection status with debug info
+        const connectionStatus = document.createElement('div');
+        connectionStatus.style.position = 'absolute';
+        connectionStatus.style.top = '10px';
+        connectionStatus.style.left = '10px';
+        connectionStatus.style.padding = '5px';
+        connectionStatus.style.borderRadius = '5px';
+        connectionStatus.style.backgroundColor = '#e06c75';
+        connectionStatus.style.color = 'white';
+        connectionStatus.style.fontFamily = 'Arial, sans-serif';
+        connectionStatus.style.fontSize = '14px';
+        connectionStatus.style.zIndex = '1000';
+        connectionStatus.id = 'connection-status';
+        connectionStatus.textContent = 'WebSocket: Connecting...';
+        document.body.appendChild(connectionStatus);
+
+        // Create style menu with JavaScript to match connection status width
+        const styleMenu = document.createElement('div');
+        styleMenu.id = 'style-menu';
+        styleMenu.style.width = 'auto';
+
+        const styleSelector = document.createElement('select');
+        styleSelector.id = 'style-selector';
+
+        const mapStyles = [
+            { value: 'mapbox://styles/mapbox/standard', text: 'Standard' },
+            { value: 'mapbox://styles/mapbox/standard-satellite', text: 'Standard Satellite' },
+            { value: 'mapbox://styles/mapbox/streets-v12', text: 'Streets' },
+            { value: 'mapbox://styles/mapbox/outdoors-v12', text: 'Outdoors' },
+            { value: 'mapbox://styles/mapbox/light-v11', text: 'Light' },
+            { value: 'mapbox://styles/mapbox/dark-v11', text: 'Dark' },
+            { value: 'mapbox://styles/mapbox/satellite-v9', text: 'Satellite' },
+            { value: 'mapbox://styles/mapbox/satellite-streets-v12', text: 'Satellite Streets' },
+            { value: 'mapbox://styles/mapbox/navigation-day-v1', text: 'Navigation Day' },
+            { value: 'mapbox://styles/mapbox/navigation-night-v1', text: 'Navigation Night' }
+        ];
+
+        mapStyles.forEach((style, index) => {
+            const option = document.createElement('option');
+            option.value = style.value;
+            option.textContent = style.text;
+            if (index === 0) option.selected = true;
+            styleSelector.appendChild(option);
+        });
+
+        styleMenu.appendChild(styleSelector);
+        document.body.appendChild(styleMenu);
+
+        // Adjust widths after elements are in the DOM
+        window.addEventListener('load', function () {
+            const statusWidth = document.getElementById('connection-status').offsetWidth;
+            document.getElementById('style-menu').style.width = statusWidth + 'px';
+            
+            // Force redraw for WebGL context if map is initialized
+            if (map) {
+                try {
+                    map.resize();
+                    console.log('[INFO] Map resized on window load');
+                } catch (e) {
+                    console.error('[ERROR] Error resizing map:', e);
+                }
+            }
+        });
+
+        // Process vehicle data received from WebSocket
+        function processVehicleData(data) {
+            try {
+                if (!data || !data.droneCoords || !data.droneCoords[0] || !data.droneCoords[0][0]) {
+                    console.log('[WARN] Invalid vehicle data received');
+                    return;
+                }
+
+                // Parse position and orientation data
+                const coords = data.droneCoords[0][0].split(',').map(Number);
+                if (coords.length !== 3 || coords.some(isNaN)) {
+                    console.warn('[WARN] Invalid coordinates for vehicle:', coords);
+                    return;
+                }
+
+                // Get rotation values and ensure they're numeric
+                const pitch = parseFloat(data.dronePitch[0][0]) || 0;
+                const yaw = parseFloat(data.droneYaw[0][0]) || 0;
+                const roll = parseFloat(data.droneRoll[0][0]) || 0;
+
+                // Update UI elements with current position
+                document.getElementById('gps-coordinates').textContent = 
+                    `GPS: ${coords[1].toFixed(6)}°, ${coords[0].toFixed(6)}°`;
+                
+                // Update vehicle on 3D map if initialized
+                if (mapInitialized) {
+                    updateVehiclePosition(coords, { x: pitch, y: yaw, z: roll });
+                }
+
+            } catch (error) {
+                console.error('[ERROR] Failed to process vehicle data:', error);
+            }
+        }
+
+        // Update or create the vehicle on the map
+        function updateVehiclePosition(coordinates, rotation) {
+            if (!threebox_initialized || !window.tb) {
+                console.warn('[WARN] ThreeBox not initialized yet');
+                return;
+            }
+
+            if (vehicle) {
+                // Update existing vehicle position and rotation
+                vehicle.targetCoords = coordinates;
+                vehicle.targetRotation = rotation;
+            } else {
+                // Create new vehicle
+                createVehicle(coordinates, rotation);
+            }
+        }
+
+        // Create a new 3D vehicle model
+        function createVehicle(coordinates, rotation) {
+            if (!threebox_initialized || !window.tb) {
+                console.error("[ERROR] Cannot create vehicle - ThreeBox not initialized");
+                return;
+            }
+
+            console.log('[INFO] Creating vehicle at', coordinates, 'with rotation', rotation);
+
+            try {
+                const options = {
+                    obj: '../resources/car.glb',
+                    type: 'gltf',
+                    scale: 0.5,
+                    units: 'meters',
+                    rotation: rotation,
+                    anchor: 'bottom', // Pin to ground
+                    adjustment: { x: 0, y: 0, z: -0.5 } // Adjust height to ensure it's on ground
+                };
+
+                window.tb.loadObj(options, function (model) {
+                    try {
+                        vehicle = model.setCoords(coordinates);
+                        
+                        // Add tooltip with vehicle information
+                        vehicle.addTooltip(` Vehicle<br>
+                                (${coordinates[0].toFixed(6)}, ${coordinates[1].toFixed(6)}, ${coordinates[2].toFixed(1)})<br>
+                        H:${rotation.y.toFixed(1)}° P:${rotation.x.toFixed(1)}° R:${rotation.z.toFixed(1)}°
+                                `, true);
+
+                        // Store target values for smooth animation
+                        vehicle.targetCoords = coordinates;
+                        vehicle.targetRotation = rotation;
+                        
+                        // Set up animation if available
+                                if (model.animations && model.animations.length > 0) {
+                            vehicle.mixer = new THREE.AnimationMixer(model);
+                                    model.animations.forEach((animation) => {
+                                let action = vehicle.mixer.clipAction(animation);
+                                        action.play();
+                                    });
+                            vehicle.lastUpdate = Date.now();
+                        }
+                        
+                        // Add to scene
+                        window.tb.add(vehicle);
+                        console.log('[INFO] Vehicle created successfully');
+                    } catch (e) {
+                        console.error('[ERROR] Failed to setup vehicle:', e);
+                    }
+                });
+            } catch (error) {
+                console.error('[ERROR] Failed to create vehicle:', error);
+            }
+        }
+
+        // WebSocket message handler with vehicle data processing
+        function createWebSocket() {
+            const url = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.hostname || 'localhost'}:8051`;
+            console.log(`[DEBUG] Creating WebSocket connection to ${url}`);
+            
+            const socket = new WebSocket(url);
+            
+            socket.onopen = function() {
+                console.log('[DEBUG] WebSocket connected successfully');
+                document.getElementById('connection-status').textContent = 'WebSocket: Connected';
+                document.getElementById('connection-status').style.backgroundColor = '#98C379';
+            };
+            
+            socket.onclose = function(event) {
+                console.log(`[DEBUG] WebSocket closed with code ${event.code}`);
+                document.getElementById('connection-status').textContent = 'WebSocket: Disconnected';
+                document.getElementById('connection-status').style.backgroundColor = '#e06c75';
+                
+                // Try to reconnect after a delay
+                setTimeout(function() {
+                    window.ws = createWebSocket();
+                }, 3000);
+            };
+            
+            socket.onerror = function(error) {
+                console.error('[DEBUG] WebSocket error:', error);
+                document.getElementById('connection-status').textContent = 'WebSocket: Error';
+                document.getElementById('connection-status').style.backgroundColor = '#e06c75';
+            };
+            
+            socket.onmessage = function(event) {
+                console.log('[DEBUG] Message received:', event.data.substring(0, 100) + '...');
+                lastMessageTime = Date.now(); // Update last message time
+                document.getElementById('connection-status').textContent = 'WebSocket: Receiving Data';
+                document.getElementById('connection-status').style.backgroundColor = '#98C379';
+
+                try {
+                    const data = JSON.parse(event.data);
+                    
+                    // Process vehicle data
+                    processVehicleData(data);
+                    
+                } catch (error) {
+                    console.error('[DEBUG] Failed to process WebSocket data:', error);
+                }
+            };
+            
+            return socket;
+        }
+        
+        // Replace the 3D rendering function to handle a single vehicle
+        function setupMapLayer() {
+            if (!map) {
+                console.error('[ERROR] Map not initialized');
+                return;
+            }
+            
+            try {
+                if (!map.getLayer('custom-3d-layer')) {
+                    map.addLayer({
+                        id: 'custom-3d-layer',
+                        type: 'custom',
+                        renderingMode: '3d',
+                        onAdd: function (map, mbxContext) {
+                            console.log('[INFO] Initializing ThreeBox');
+                            try {
+                                window.tb = new Threebox(
+                                    map,
+                                    mbxContext,
+                                    {
+                                        defaultLights: true,
+                                        enableSelectingFeatures: true,
+                                        enableSelectingObjects: true,
+                                        enableDraggingObjects: false,
+                                        enableRotatingObjects: false,
+                                        enableTooltips: true
+                                    }
+                                );
+                                threebox_initialized = true;
+                                console.log('[INFO] ThreeBox initialized successfully');
+                            } catch (e) {
+                                console.error('[ERROR] ThreeBox initialization failed:', e);
+                                throw new Error("WebGL initialization failed: " + e.message);
+                            }
+                        },
+                        render: function (gl, matrix) {
+                            // Update vehicle animation and smooth movement
+                            const now = Date.now();
+                            
+                            if (vehicle) {
+                                // Update animation if available
+                                if (vehicle.mixer) {
+                                    const delta = (now - (vehicle.lastUpdate || now)) / 1000;
+                                    vehicle.mixer.update(delta);
+                                    vehicle.lastUpdate = now;
+                                }
+                                
+                                // Smooth position and rotation updates
+                                if (vehicle.targetCoords && vehicle.coordinates) {
+                                    // Interpolation factor for smoother animation
+                                    const lerpFactor = 0.15;
+                                    
+                                    // Interpolate position
+                                    const newCoords = [
+                                        vehicle.coordinates[0] + (vehicle.targetCoords[0] - vehicle.coordinates[0]) * lerpFactor,
+                                        vehicle.coordinates[1] + (vehicle.targetCoords[1] - vehicle.coordinates[1]) * lerpFactor,
+                                        vehicle.coordinates[2] + (vehicle.targetCoords[2] - vehicle.coordinates[2]) * lerpFactor
+                                    ];
+                                    vehicle.setCoords(newCoords);
+                                    
+                                    // Interpolate rotation if available
+                                    if (vehicle.targetRotation && vehicle.rotation) {
+                                        const newRotation = {
+                                            x: vehicle.rotation.x + (vehicle.targetRotation.x - vehicle.rotation.x) * lerpFactor,
+                                            y: vehicle.rotation.y + (vehicle.targetRotation.y - vehicle.rotation.y) * lerpFactor,
+                                            z: vehicle.rotation.z + (vehicle.targetRotation.z - vehicle.rotation.z) * lerpFactor
+                                        };
+                                        vehicle.setRotation(newRotation);
+                                        
+                                        // Update tooltip with latest position and orientation
+                                        if (vehicle.updateTooltip) {
+                                            vehicle.updateTooltip(` Vehicle<br>
+                                            (${newCoords[0].toFixed(6)}, ${newCoords[1].toFixed(6)}, ${newCoords[2].toFixed(1)})<br>
+                                            H:${newRotation.y.toFixed(1)}° P:${newRotation.x.toFixed(1)}° R:${newRotation.z.toFixed(1)}°
+                                            `);
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Update the scene
+                            if (window.tb) {
+                                window.tb.update();
+                            }
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error('[ERROR] Failed to setup map layer:', e);
+                throw new Error("Failed to set up map layer: " + e.message);
+            }
+        }
+
+        // Initialize the map
+        try {
+            console.log('[INFO] Initializing 3D map...');
+            
+            // Initialize a map with enhanced WebGL context options
+            map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/standard',
+                center: origin,
+                pitch: 70,
+                bearing: 0,
+                zoom: 16.5,
+                antialias: true,
+                webGLContextAttributes: contextOptions,  // Enhanced WebGL context options
+                trackResize: true,
+                collectResourceTiming: false,
+                enableEventLogging: false,  // Disable Mapbox events logging
+                crossSourceCollisions: false,
+                renderWorldCopies: false,   // Don't render multiple copies of the world
+                maxZoom: 20,                // Increase max zoom level
+                minZoom: 1,                 // Set min zoom level
+                refreshExpiredTiles: false, // Don't refresh expired tiles (better for embedded)
+                fadeDuration: 0,            // No fade for better performance
+                optimizeForTerrain: true    // Optimize for terrain rendering
+            });
+
+            // Add full screen controls to the map.
+            map.addControl(new mapboxgl.FullscreenControl());
+            // Add zoom and rotation controls to the map.
+            map.addControl(new mapboxgl.NavigationControl());
+
+            // Add geolocate control to the map.
+            map.addControl(new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true
+            }));
+            
+            // Handle map initialization errors
+            map.on('error', function(e) {
+                console.error('[ERROR] Mapbox error:', e);
+                throw new Error("Mapbox GL error: " + (e.error ? e.error.message : "Unknown error"));
+            });
+
+            // Immediately initialize the 3D layer after map style is ready
+            map.on('style.load', function () {
+                console.log('[INFO] Map style loaded');
+                mapInitialized = true;
+                
+                // Add terrain
+                try {
+                    if (!map.getSource('mapbox-dem')) {
+                        map.addSource('mapbox-dem', {
+                            'type': 'raster-dem',
+                            'url': 'mapbox://mapbox.terrain-rgb',
+                            'tileSize': 512,
+                            'maxzoom': 14
+                        });
+
+                        map.setTerrain({
+                            'source': 'mapbox-dem',
+                            'exaggeration': 1.5
+                        });
+                    }
+                } catch (e) {
+                    console.error('[ERROR] Failed to add terrain:', e);
+                }
+                
+                // Add 3D layer for vehicle
+                setupMapLayer();
+            });
+            
+            // Handle style changes
+            document.getElementById('style-selector').addEventListener('change', function() {
+                // Store current vehicle data
+                const vehicleData = vehicle ? {
+                    coordinates: vehicle.coordinates,
+                    rotation: vehicle.rotation
+                } : null;
+                
+                // Remove existing vehicle
+                if (vehicle && window.tb) {
+                    window.tb.remove(vehicle);
+                    vehicle = null;
+                }
+                
+                // Reset flags
+                threebox_initialized = false;
+                
+                // Change map style
+                map.setStyle(this.value);
+
+                // Re-initialize after style change
+                map.once('style.load', function() {
+                    // Re-add terrain
+                    try {
+                        map.addSource('mapbox-dem', {
+                            'type': 'raster-dem',
+                            'url': 'mapbox://mapbox.terrain-rgb',
+                            'tileSize': 512,
+                            'maxzoom': 14
+                        });
+
+                        map.setTerrain({
+                            'source': 'mapbox-dem',
+                            'exaggeration': 1.5
+                        });
+                    } catch (e) {
+                        console.error('[ERROR] Failed to re-add terrain:', e);
+                    }
+
+                    // Re-add 3D layer
+                    setupMapLayer();
+                    
+                    // Restore vehicle if we had one
+                    if (vehicleData) {
+                        // Wait for ThreeBox to initialize
+                        setTimeout(function() {
+                            if (threebox_initialized && window.tb) {
+                                createVehicle(vehicleData.coordinates, vehicleData.rotation);
+                            }
+                        }, 1000);
+                    }
+                });
+            });
+            
+        } catch (e) {
+            console.error('[ERROR] Failed to initialize map:', e);
+            // Let the error propagate to the parent container
+            throw new Error("WebGL/MapboxGL initialization failed: " + e.message);
+        }
+
+        // Check if startTime already exists and create it if not
+        if (typeof startTime === 'undefined') {
+            var startTime = new Date();
+        }
+        
+        // Update time displays
+        function updateTimeDisplays() {
+            // Current time
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('current-time').textContent = `Current Time: ${hours}:${minutes}:${seconds}`;
+            
+            // Elapsed time
+            const elapsed = Math.floor((now - startTime) / 1000);
+            const elapsedHours = Math.floor(elapsed / 3600);
+            const elapsedMinutes = Math.floor((elapsed % 3600) / 60);
+            const elapsedSeconds = elapsed % 60;
+            document.getElementById('elapsed-time').textContent = 
+                `Time Elapsed: ${String(elapsedHours).padStart(2, '0')}:${String(elapsedMinutes).padStart(2, '0')}:${String(elapsedSeconds).padStart(2, '0')}`;
+        }
+        
+        // Update time every second
+        setInterval(updateTimeDisplays, 1000);
+        updateTimeDisplays(); // Initial update
+
+        // Add WebSocket connection initialization at page load
+        window.addEventListener('load', function() {
+            console.log('[DEBUG] Page loaded, creating WebSocket connection');
+            
+            // Match widths of UI elements
+            matchInfoContainerWidth();
+            
+            // Re-match widths if window size changes
+            window.addEventListener('resize', matchInfoContainerWidth);
+            
+            // Check for message timeouts
+            setInterval(() => {
+                const now = Date.now();
+                const timeSinceLastMessage = now - lastMessageTime;
+                if (timeSinceLastMessage > messageTimeout) {
+                    if (window.ws && window.ws.readyState === 1) { // 1 = WebSocket.OPEN
+                        console.log(`[DEBUG] No WebSocket messages for ${timeSinceLastMessage/1000}s`);
+                        document.getElementById('connection-status').textContent = 'WebSocket: No Data';
+                        document.getElementById('connection-status').style.backgroundColor = '#E5C07B';
+                        
+                        // Make sure widths match after status changes
+                        matchInfoContainerWidth();
+                    }
+                }
+            }, 1000);
+            
+            // Create initial WebSocket connection
+            window.ws = createWebSocket();
+        });
+    </script>
+</body>
+
+</html>
