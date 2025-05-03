@@ -1,0 +1,53 @@
+[build-system]
+requires = ["poetry-core>=2.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "dayhoff-tools"
+version = "1.0.9"
+description = "Common tools for all the repos at Dayhoff Labs"
+authors = [
+    {name = "Daniel Martin-Alarcon", email = "dma@dayhofflabs.com"}
+]
+readme = "README.md"
+# Just enough deps to use the job_runner
+dependencies = [
+    "firebase-admin>=6.5.0",
+    "pyyaml>=6.0",
+    "requests>=2.31.0",
+    "typer>=0.9.0",
+]
+
+[project.optional-dependencies]
+# Deps we expect to need to bring to new repos
+core = [
+    "biopython>=1.84",
+    "boto3>=1.36.8",
+    "docker>=7.1.0",
+    "fair-esm>=2.0.0",
+    "h5py>=3.11.0",
+    "questionary>=2.0.1",
+]
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+colorlog = "^6.8.2"
+dvc = "^3.48.2"
+dvc-gs = "^3.0.1"
+flake8 = "^7.0.0"
+isort = "^5.13.2"
+pylance = "^0.10.2"
+pylint = "^3.1.0"
+pytest = "^8.0.2"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.12.0"
+ipykernel = "^6.29.5"
+
+[project.scripts]
+dh = "dayhoff_tools.cli.main:app"
+
+[tool.poetry]
+package-mode = true
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
