@@ -1,0 +1,29 @@
+name: Lint Python Code
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Install the dependencies
+        run: uv sync --all-extras --dev
+
+      # Update output format to enable automatic inline annotations.
+      - name: Run Ruff
+        run: uv run ruff check --output-format=github .
