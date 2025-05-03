@@ -1,0 +1,21 @@
+include *.md LICENSE
+include tox.ini
+
+# Ignore most of the docs directory.
+prune docs
+
+# The doctests point to docs/*.md, so we need them.
+include docs/*.md
+
+graft src
+
+global-exclude *.pyc
+include pyproject.toml
+recursive-exclude news *
+exclude news
+recursive-exclude .vscode *
+exclude .readthedocs.yaml
+
+# added by check-manifest
+recursive-include src *.py
+recursive-include src *.md
