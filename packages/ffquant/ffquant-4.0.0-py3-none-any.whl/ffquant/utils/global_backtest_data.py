@@ -1,0 +1,10 @@
+treturns = list()
+broker_values = list()
+drawdowns = list()
+klines = dict()
+positions = dict()
+orders = dict()
+indcs = dict()
+
+opt_param_keys = list()
+opt_results = list()
