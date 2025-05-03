@@ -1,0 +1,98 @@
+# BlockX Weather
+
+A Python package for weather data processing and calculations.
+
+## Installation
+
+```bash
+pip install blockx-weather
+```
+
+## Features
+
+- Create and manage weather data objects
+- Convert temperatures between different units (Celsius, Fahrenheit, Kelvin)
+- Calculate heat index (feels like temperature) based on temperature and humidity
+- Calculate wind chill factor based on temperature and wind speed
+- Calculate dew point based on temperature and humidity
+- Command-line interface (CLI) for quick access to all features
+- No external API dependencies - works offline
+
+## Usage
+
+### As a Library
+
+```python
+from blockx_weather import (
+    WeatherData, 
+    convert_temperature, 
+    calculate_heat_index, 
+    calculate_wind_chill, 
+    calculate_dew_point
+)
+
+# Create a weather data object
+weather = WeatherData("London", "GB")
+weather.set_temperature(20.5, 19.8, "metric")
+weather.set_atmosphere(humidity=65, pressure=1013)
+weather.set_wind(speed=5.5, direction=180)
+weather.set_description("clear sky")
+weather.set_timestamp()
+
+# Convert temperature between units
+temp_f = convert_temperature(25.0, "metric", "imperial")  # Celsius to Fahrenheit
+print(f"25.0°C = {temp_f:.2f}°F")
+
+# Calculate heat index
+hi = calculate_heat_index(30.0, 80.0, "metric")  # 30°C with 80% humidity
+print(f"Heat index: {hi:.2f}°C")
+
+# Calculate wind chill
+wc = calculate_wind_chill(5.0, 20.0, "metric")  # 5°C with 20 m/s wind
+print(f"Wind chill: {wc:.2f}°C")
+
+# Calculate dew point
+dp = calculate_dew_point(20.0, 65.0, "metric")  # 20°C with 65% humidity
+print(f"Dew point: {dp:.2f}°C")
+```
+
+### Via Command Line
+
+The package provides several CLI commands:
+
+```bash
+# Generate sample weather data
+blockx-weather sample "London" --temp 20.5 --units metric
+
+# Convert temperature between units
+blockx-weather convert 25.0 --from metric --to imperial
+
+# Calculate heat index
+blockx-weather heat-index 30.0 80.0 --units metric
+
+# Calculate wind chill
+blockx-weather wind-chill 5.0 20.0 --units metric
+
+# Calculate dew point
+blockx-weather dew-point 20.0 65.0 --units metric
+```
+
+## Development
+
+### Setup
+
+1. Clone the repository
+2. Install development dependencies:
+   ```bash
+   pip install -e ".[dev]"
+   ```
+
+### Running Tests
+
+```bash
+python -m unittest discover tests
+```
+
+## License
+
+MIT License
