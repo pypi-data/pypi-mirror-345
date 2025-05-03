@@ -1,0 +1,42 @@
+# model-interfaces/pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# [tool.setuptools.packages.find]
+# where = ["."]
+# include = ["aixplain"]
+# namespaces = true
+
+[tool.pdm.build]
+package-dir = "aixplain"
+includes = ["aixplain"]
+
+[project]
+name = "model-interfaces"
+version = "1.0.2"
+description = "A package specifying the model interfaces supported by aiXplain"
+license = { text = "Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0" }
+dependencies = [
+    "kserve>=0.10.0",
+    "multiprocess==0.70.14", 
+    "protobuf>=3.19.4",
+    "pyarrow==17.0.0",
+    "pydantic>=1.9.1",
+    "pydub>=0.25.1",
+    "requests>=2.28.1",
+    "tornado>=6.2", 
+    "validators>=0.20.0"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.1.2",
+    "sentencepiece>=0.1.96",
+    "torch>=1.13.1",
+    "transformers>=4.21.1"
+]
+
+[project.urls]
+Homepage = "https://github.com/aixplain/model-interfaces"
