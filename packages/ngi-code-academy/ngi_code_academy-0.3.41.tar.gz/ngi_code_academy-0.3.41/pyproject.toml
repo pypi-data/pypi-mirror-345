@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "ngi-code-academy"
+version = "v0.3.41"
+description = "An example package for use in courses!"
+authors = [
+    "Ole-Jakob Olsen <ole.jakob.olsen@ngi.no>",
+    "Jiyang Ye <jiyang.ye@ngi.no>",
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.11.7"
+pytest = "^8.3.5"
+pre-commit = "^4.2.0"
+
+[tool.pyright]
+include = ["ngi_code_academy"]
+exclude = ["**/node_modules", "**/__pycache__"]
+typeCheckingMode = "strict"
+reportMissingImports = "error"
+reportMissingTypeStubs = false
+
+[tool.ruff]
+exclude = [".git", "dist", "node_modules", ".venv"]
+
+line-length = 88
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "double"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
