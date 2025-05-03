@@ -1,0 +1,64 @@
+Metadata-Version: 2.4
+Name: insardev_toolkit
+Version: 2025.5.2.dev0
+Summary: InSAR.dev (Python InSAR): Geospatial Processing Toolkit
+Home-page: https://github.com/AlexeyPechnikov/InSARdev
+Author: Alexey Pechnikov
+Author-email: alexey@pechnikov.dev
+License: BSD-3-Clause
+Keywords: remote sensing,geospatial analysis,DEM,topography,SRTM,Copernicus,ALOS,OpenStreetMap,OSM,Google Maps,ASF,NetCDF,GeoTIFF,VTK
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: xarray>=2024.1.0
+Requires-Dist: numpy
+Requires-Dist: pandas>=2.2
+Requires-Dist: geopandas
+Requires-Dist: distributed>=2024.1.0
+Requires-Dist: dask[complete]>=2024.4.1
+Requires-Dist: joblib
+Requires-Dist: tqdm
+Requires-Dist: ipywidgets
+Requires-Dist: shapely>=2.0.2
+Requires-Dist: xmltodict
+Requires-Dist: rioxarray
+Requires-Dist: tifffile
+Requires-Dist: h5netcdf>=1.3.0
+Requires-Dist: netCDF4
+Requires-Dist: nc-time-axis
+Requires-Dist: remotezip
+Requires-Dist: asf_search
+Requires-Dist: matplotlib
+Provides-Extra: vtk-support
+Requires-Dist: vtk; extra == "vtk-support"
+Requires-Dist: panel; extra == "vtk-support"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+## InSAR.dev Professional
+
+This is a proof of concept and it works. The complete bursts are available and while in the example bursts averaged for overlapped areas, we can use the overlaps to calculate inter-bursts interferograms and detect bursts phase offsets for precise phase shift between them. Different orbital path bursts can be merged as well and we can create continuous interferograms covering more than common 3 Sentinel-1 subswaths. Ascending and descending interferograms are calculated in the same coordinates and no computational expensive data interpolation is needed with accuracy lost. The projected coordinate system can be selected to cover large areas like the whole USA without reprojecting related precision degradation. Geocoded corrected SLC resolution is user-specified and can be selected as 10x2.5 meters for mountain areas or 15x5 for flat areas (by default). Furthermore, the corrected SLCs are 2 times smaller than the original ones! That seems fantastic but we have so many benefits without downsides.
+
