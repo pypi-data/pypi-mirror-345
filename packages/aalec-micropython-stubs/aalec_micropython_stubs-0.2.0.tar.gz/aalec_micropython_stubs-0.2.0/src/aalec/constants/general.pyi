@@ -1,0 +1,10 @@
+PIN_BUTTON: int
+PIN_ADC: int
+PIN_TX: int
+PIN_RGB_STRIP: int
+PIN_RX: int
+PIN_SDA: int
+PIN_SCL: int
+PIN_ENCODER_TRACK_1: int
+PIN_ENCODER_TRACK_2: int
+PIN_BEEPER: int
