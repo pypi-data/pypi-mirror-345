@@ -1,0 +1,115 @@
+Metadata-Version: 2.1
+Name: transcendent-multiclass-CDD__Wdis
+Version: 1.0.0
+Summary: Transcendent adaptation for multiclass problems
+License: BSD 3-Clause License
+Author: Luca Fabri
+Author-email: luca.fabri1999@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: contourpy (==1.3.1)
+Requires-Dist: coverage (>=7.8.0,<8.0.0)
+Requires-Dist: cycler (==0.12.1)
+Requires-Dist: fonttools (==4.56.0)
+Requires-Dist: joblib (==1.4.2)
+Requires-Dist: kiwisolver (==1.4.8)
+Requires-Dist: matplotlib (==3.10.0)
+Requires-Dist: mypy (>=1.15.0,<2.0.0)
+Requires-Dist: numpy (==2.2.3)
+Requires-Dist: packaging (==24.2)
+Requires-Dist: pandas (==2.2.3)
+Requires-Dist: pillow (==11.1.0)
+Requires-Dist: pyparsing (==3.2.1)
+Requires-Dist: pytest (>=8.3.5,<9.0.0)
+Requires-Dist: python-dateutil (==2.9.0.post0)
+Requires-Dist: pytz (==2025.1)
+Requires-Dist: ruff (>=0.11.6,<0.12.0)
+Requires-Dist: scikit-learn (==1.6.1)
+Requires-Dist: scipy (==1.15.2)
+Requires-Dist: seaborn (==0.13.2)
+Requires-Dist: six (==1.17.0)
+Requires-Dist: termcolor (==2.5.0)
+Requires-Dist: tesseract (==0.1.3)
+Requires-Dist: threadpoolctl (==3.5.0)
+Requires-Dist: tqdm (==4.67.1)
+Requires-Dist: tzdata (==2025.1)
+Requires-Dist: ujson (==5.10.0)
+Description-Content-Type: text/markdown
+
+# Transcendent Multiclass
+
+![CI status](https://github.com/malware-concept-drift-detection/transcendent-multiclass/actions/workflows/check.yml/badge.svg) 
+![Version](https://img.shields.io/github/v/release/malware-concept-drift-detection/transcendent-multiclass?style=plastic)
+
+This repository enables users to apply Transcendent-like concept drift detection to both binary and multiclass problems.
+
+Modifications have been made specifically to the ICE (Inductive Conformal Evaluator) implementation, while other solutions (i.e. TCE, CCE, etc.) are out of scope. Furthermore, the thresholding phase is temporarily disabled due to time constraints, so the threshold must be derived manually after the calibration phase completes.
+
+This project extends  [Transcendent](https://github.com/s2labres/transcendent-release/tree/main) by implementing a Non-Conformity Measure (NCM) based on Random Forest proximities, as introduced in the paper ["Prediction with Confidence Based on a Random Forest Classifier"](https://s2lab.cs.ucl.ac.uk/projects/transcend/).
+
+
+## Prerequisites
+
+- Make sure you have a running and active version of [Docker](https://docs.docker.com/engine/install/).
+
+## Usage:
+
+1. Clone the repository and change directory:
+    ```bash
+    git clone git@github.com:w-disaster/transcendent-multiclass.git && cd transcendent-multiclass
+    ```
+
+2. Set up `docker-compose.yaml` and the directory containing the training and testing sets:
+
+    `ice.py` looks for the training and testing datasets, which should be mounted inside the Docker container.
+    As default, `docker-compose.yaml` maps the local directory `./splitted_dataset/` inside the container.
+    Also, two environment variables should be set: `PE_DATASET_TYPE` and `TRAIN_TEST_SPLIT_TYPE`, which allow to find the specific train/test split for a specific dataset. 
+    In other terms, `splitted_dataset/` directory should follow this structure:
+
+
+    ```plaintext
+    splitted_dataset/
+    ├── PE_DATASET_TYPE/
+    |   ├── TRAIN_TEST_SPLIT_TYPE/
+    │   │    ├── X_train.csv
+    │   │    ├── y_train.csv
+    │   │    ├── X_test.csv
+    │   │    └── y_test.csv
+    │   └──
+    └── 
+    ```
+
+    So that you can configure the pipeline for different datasets and train/test splits. For example:
+
+    ```plaintext
+    splitted_dataset/
+    ├── ember/
+    |   ├── random_split/
+    │   │    ├── X_train.csv
+    │   │    ├── y_train.csv
+    │   │    ├── X_test.csv
+    │   │    └── y_test.csv
+    │   └──
+    │   ├── time_based/
+    │   │    ├── X_train.csv
+    │   │    ├── y_train.csv
+    │   │    ├── X_test.csv
+    │   │    └── y_test.csv
+    │   └──
+    └── 
+    ├── motif/
+    │   ...
+    └── 
+    ```
+
+3. *Deploy* the Concept Drift Pipeline
+    
+    A `results/` directory will be locally created containing the credibility ($p$-values) and confidence scores for both calibration and testing sets.
+
+
+
