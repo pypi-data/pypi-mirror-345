@@ -1,0 +1,79 @@
+Metadata-Version: 2.4
+Name: addressablestools
+Version: 0.1.2
+Summary: Python copy of AddressablesTools
+Author-email: Jitsu <jitsu233@gmail.com>
+License: Copyright (c) 2018 The Python Packaging Authority
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Homepage, https://github.com/anosu/AddressablesToolsPy
+Project-URL: Bug Reports, https://github.com/anosu/AddressablesToolsPy/issues
+Project-URL: Funding, https://donate.pypi.org
+Project-URL: Source, https://github.com/anosu/AddressablesToolsPy
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: orjson>=3.10.18
+Dynamic: license-file
+
+# AddressablesToolsPy
+
+Python copy of [AddressablesTools](https://github.com/nesrak1/AddressablesTools)
+
+**Only reading is implemented**
+
+### Usage
+
+```shell
+pip install addressablestools
+```
+
+```python
+from pathlib import Path
+from AddressablesTools import parse
+
+
+def main():
+    data = Path("tests/samples/catalog.json").read_text("utf-8")
+    catalog = parse(data)
+    for key, locs in catalog.Resources.items():
+        if not isinstance(key, str):
+            continue
+        if not key.endswith(".bundle"):
+            continue
+        res_loc = locs[0]
+        print(
+            f"Bundle {key}, Crc: {res_loc.Data.Object.Crc}, Hash: {res_loc.Data.Object.Hash}"
+        )
+
+    print("-" * 50)
+
+    asset_locs = catalog.Resources[
+        "Assets/Paripari/AddressableAssets/VFX Texture Assets/ParticleTextures/sparkle.png"
+    ]
+    dep_key = asset_locs[0].DependencyKey
+    print(f"Dependency of {asset_locs[0].PrimaryKey}: {dep_key}")
+    dep_bundle = catalog.Resources[dep_key][0]
+    print(f"ProviderId of {dep_bundle.PrimaryKey}: {dep_bundle.ProviderId}")
+    print(f"InternalId of {dep_bundle.PrimaryKey}: {dep_bundle.InternalId}")
+
+
+if __name__ == "__main__":
+    main()
+```
