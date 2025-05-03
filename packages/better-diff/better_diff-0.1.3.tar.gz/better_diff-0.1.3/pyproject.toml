@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "better_diff"
+version = "0.1.3"
+description = "A simple library for printing better diffs based on the stdlib unified_diff format."
+authors = ["Matthew Shafer <23644905+mshafer-NI@users.noreply.github.com>", "NI <opensource@ni.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/ni/py_better_diff/"
+homepage = "https://ni.github.io/py_better_diff/"
+keywords = ["diff", "diff_format", "diff_printer"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tools.black]
+line-length=100
+
+[tool.poetry.group.dev.dependencies]
+ni-python-styleguide = "^0.4.6"
+mypy = "^1.13.0"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.3"
+pytest-snapshot = "^0.9.0"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.0.0"
+sphinx-autoapi = "^3.3.2"
+sphinx-rtd-theme = "^2.0.0"
+sphinx-mdinclude = "^0.6.2"
+
+[tool.poetry.group.tooling.dependencies]
+poethepoet = "^0.30.0"
+
+[tool.poe.tasks]
+checks = ["lint", "test"]
+docs = "sphinx-build _docs_conf docs"
+nps-fix = "nps fix"
+_nps = "nps lint"
+mypy = "mypy"
+lint = ["_nps", "mypy"]
+test = "pytest"
+all = ["nps-fix", "lint", "test", "docs"]
+
+
+[tool.mypy]
+python_version = "3.8"
+files = "better_diff/**/*.py,tests/**/*.py"
+warn_unused_configs = true
+namespace_packages = true
+check_untyped_defs = true
+warn_redundant_casts = true
+warn_unreachable = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
