@@ -1,0 +1,80 @@
+import os
+from pymsbuild import *
+
+# See https://packaging.python.org/en/latest/specifications/core-metadata/ for fields
+METADATA = {
+    "Metadata-Version": "2.2",
+    "Name": "<NAME>",
+    "Version": "1.0",
+    "Author": "TODO",
+    "Author-email": "TODO",
+    "Project-url": [
+        "Homepage, <GIT>",
+        "Source, <GIT>",
+        "Issues, <GITISSUES>",
+        #"Download, TODO",
+        #"Changelog, TODO",
+        #"Release Notes, TODO",
+        #"Documentation, TODO",
+        #"Funding, TODO",
+    ],
+    "Summary": "TODO",
+    "Description": File("README.md"),
+    "Description-Content-Type": "text/markdown",
+    "Keywords": "your,keywords,go,here",
+    "Classifier": [
+        # See https://pypi.org/classifiers/ for the full list
+    ],
+    "Requires-Dist": [
+        # https://packaging.python.org/en/latest/specifications/dependency-specifiers/
+    ],
+
+    # Source incompatible with old language versions? Set a minimum here
+    #"Requires-Python": ">=3.10",
+
+    # Doing any metadata tricks in init_PACKAGE()? Specify changeable keys here
+    # (Changing in init_METADATA doesn't require anything here)
+    #Dynamic: [],
+
+    # Universal wheel? Uncomment this to target all Python 3 installs.
+    #"WheelTag": "py3-none-any",
+
+    # Limited ABI wheel? Uncomment this for abi3 on the target platform.
+    # (Remember to also specify the build variables to actually enable it)
+    #"WheelTag": "py3-abi3-*",
+
+    # Additional build dependencies? If they can't go in pyproject.toml, they go here.
+    #"BuildSdistRequires": [],
+    #"BuildWheelRequires": [],
+}
+
+
+<PACKAGE>
+
+
+# OPTIONAL: Update METADATA entries while building an sdist
+# These are kept in the sdist, and sdist builds will not call this again
+def init_METADATA():
+    # EXAMPLE: Extract version-like tags from GitHub Actions builds
+    import os, re
+    _, sep, version = os.getenv("GITHUB_REF", "").rpartition("/")
+    if sep and re.match(r"(\d+!)?\d+(\.\d+)+((a|b|rc)\d+)?(\.post\d+)?(\.dev\d+)?$", version):
+        # Looks like a version tag
+        METADATA["Version"] = version
+
+    # EXAMPLE: Fill in missing metadata from your pyproject.toml
+    # (Requires 'tomli' as a build-time dependency for Python 3.11 and earlier)
+    #PyprojectTomlFile.update_metadata(METADATA, overwrite=False)
+
+    # EXAMPLE: Use metadata to generate your sdist's pyproject.toml [project]
+    # (Requires adding a PyprojectTomlFile() to your package. Otherwise, your
+    # original pyproject.toml will be included as-is.)
+    #PACKAGE.find("pyproject.toml").from_metadata(METADATA)
+
+
+# OPTIONAL: Update PACKAGE entries while building an sdist or wheel.
+# 'tag' will be the wheel tag, or 'None' for an sdist.
+# In general, you  want all entries to be present for sdist builds, but might remove
+# or modify some for wheels. See https://pypi.org/project/pymsbuild for examples.
+#def init_PACKAGE(tag=None):
+#    pass
