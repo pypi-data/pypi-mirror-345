@@ -1,0 +1,85 @@
+[tool.poetry]
+name = "target-universal-file"
+version = "0.0.1" # Managed by poetry-dynamic-versioning
+description = "Singer target for any file type on any file system."
+readme = "README.md"
+authors = ["Talia Smiley <firstname.lastname@example.com>"]
+keywords = [
+    "ELT",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+license = "Apache-2.0"
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+singer-sdk = { version="~=0.45.10", extras = ["faker"] }
+gcsfs = { version = ">=2025.3.2", optional = true }
+s3fs = { version = ">=2025.3.2", optional = true }
+aiobotocore = { version = ">=2.21.1", optional = true }
+requests = "~=2.32.3"
+fsspec = ">=2025.3.2"
+pyarrow = "~=19.0.1"
+pyarrow-stubs ="~=19.1"
+xlsxwriter = "~=3.2.3"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8"
+ruff = "~=0.11.7"
+black = "~=25.1.0"
+singer-sdk = { version="~=0.45.10", extras = ["testing"] }
+
+[tool.poetry.extras]
+gcs = ["gcsfs"]
+s3 = ["s3fs", "aiobotocore"]
+
+[tool.pytest.ini_options]
+addopts = '--durations=10'
+
+[tool.mypy]
+python_version = "3.12"
+warn_unused_configs = true
+
+[tool.ruff]
+src = ["target_universal_file"]
+target-version = "py38"
+
+[tool.ruff.lint]
+ignore = [
+    "ANN002",
+    "ANN003",
+    "COM812",  # missing-trailing-comma
+    "ISC001",  # single-line-implicit-string-concatenation
+    "D",
+]
+select = ["ALL"]
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["target_universal_file"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry.scripts]
+# CLI declaration
+target-universal-file = 'target_universal_file.target:TargetUniversalFile.cli'
