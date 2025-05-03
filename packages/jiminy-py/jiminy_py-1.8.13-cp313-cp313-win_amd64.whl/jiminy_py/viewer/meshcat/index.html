@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <title>MeshCat</title>
+        <link rel="icon" href="data:image/x-icon;base64,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">
+    </head>
+    <body>
+        <div id="widgets"></div>
+        <div id="meshcat-pane"></div>
+
+        <script type="text/javascript" src="main.min.js"></script>
+        <script type="text/javascript" src="html2canvas.min.js"></script>
+        <script type="text/javascript" src="webm-writer-0.3.0.js"></script>
+        <script type="text/javascript" src="widgets.js"></script>
+        <script>
+            // Enable cache for efficiency
+            MeshCat.THREE.Cache.enabled = true;
+
+            // Instantiate a new Meshcat viewer
+            dom_element = document.getElementById("meshcat-pane");
+            console.log(dom_element);
+            var viewer = new MeshCat.Viewer(dom_element, false);
+
+            // Monkey-patch 'set_object_from_json' and 'handle_command'
+            // to add support of custom 'ready' command, which is used to
+            // determine  if all the meshes have finish loading. Indeed,
+            // commands are only processed once every meshes are loaded.
+            var preloaded_resources = {};
+            function loadImageAsync(key, url) {
+                if(preloaded_resources[key] == undefined) {
+                    if (url === "") {
+                        console.error("resource should never be empty.");
+                        return new Promise();
+                    }
+                    preloaded_resources[key] = new Promise((resolve, reject) => {
+                        let img = new Image();
+                        img.onload = () => {
+                            MeshCat.THREE.Cache.add(key, img);
+                            resolve();
+                        }
+                        img.onerror = reject
+                        img.src = url;
+                    })
+                }
+                return preloaded_resources[key];
+            }
+
+            var handle_command = viewer.handle_command;
+            viewer.handle_command = function(cmd) {
+                if (cmd.type == "set_object") {
+                    (async () => {
+                        // Store/Load resources in cache
+                        let resources = cmd.object.object.resources;
+                        if (resources !== undefined) {
+                            let promiseTab = [];
+                            for (const [key, url] of Object.entries(resources)) {
+                                promiseTab.push(loadImageAsync(key, url));
+                            }
+                            await Promise.all(promiseTab);
+                            cmd.object.object.resources = {};
+                        }
+                        // Handle command now that everything is in cache
+                        handle_command.call(this, cmd);
+                    })();
+                } else if (cmd.type == "ready") {
+                    console.info("Acknowledge to ready request.");
+                    viewer.connection.send("meshcat:ok");
+                } else if (cmd.type == "legend") {
+                    updateLegend(cmd);
+                } else if (cmd.type == "watermark") {
+                    updateWatermark(cmd);
+                } else {
+                    handle_command.call(this, cmd);
+                }
+            };
+
+            // May be overwritten externally by python in interactive mode
+            var ws_url = undefined;
+
+            // Connect the viewer to the existing server, though direct ZMP
+            // websocket in standalone browser or though kernel communication
+            // in notebooks.
+            var is_zmq_socket = false;
+            try {
+                if (typeof google !== 'undefined') {
+                    console.info("google colab detected.");
+                    (async () => {
+                        console.info("Trying to connect...");
+                        viewer.connection = await google.colab.kernel.comms.open("meshcat", "meshcat:open");
+                        console.log("connection to Google Colab kernel:", viewer.connection);
+
+                        (async function() {
+                            for await (const message of viewer.connection.messages) {
+                                message.buffers.forEach(function(content, index) {
+                                    viewer.handle_command_bytearray(new Uint8Array(content));
+                                });
+                            }
+                            console.info("connection to Google Colab kernel closed.");
+                        })();
+                    })();
+                }
+                else if (typeof window.parent.Jupyter !== 'undefined') {
+                    console.info("Jupyter-notebook detected.");
+                    viewer.connection = window.parent.Jupyter.notebook.kernel.comm_manager.new_comm("meshcat", "meshcat:open");
+                    console.log("connection to Jupyter kernel:", viewer.connection);
+                    viewer.connection.on_msg(function(message) {
+                        message.buffers.forEach(function(content, index) {
+                            viewer.handle_command_bytearray(new Uint8Array(content.buffer));
+                        });
+                    });
+                    viewer.connection.on_close(function(message) {
+                        console.info("connection to Jupyter kernel closed:", message);
+                        viewer.connection = null;  // The connection is no longer available
+                    });
+                }
+                else if (ws_url !== undefined) {
+                    console.info("Unknown platform (jupyter-lab / vscode...)");
+                    // Connect to kernel socket manually if necessary, namely for
+                    // VSCode notebooks and jupyterlab.
+                    viewer.connection = new window.WebSocket(ws_url);
+
+                    // Define UUID generation utility to identify the comm and messages
+                    function uuid() {
+                        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+                        );
+                    };
+
+                    // Define message deserialization method
+                    var deserialize_array_buffer = function (buf) {
+                        var data = new DataView(buf);
+                        var nbufs = data.getUint32(0);
+                        var offsets = [];
+                        var i;
+                        for (i = 1; i <= nbufs; i++) {
+                            offsets.push(data.getUint32(i * 4));
+                        }
+                        var json_bytes = new Uint8Array(buf.slice(offsets[0], offsets[1]));
+                        var msg = JSON.parse(
+                            (new TextDecoder('utf8')).decode(json_bytes)
+                        );
+                        msg.buffers = [];
+                        var start, stop;
+                        for (i = 1; i < nbufs; i++) {
+                            start = offsets[i];
+                            stop = offsets[i+1] || buf.byteLength;
+                            msg.buffers.push(new DataView(buf.slice(start, stop)));
+                        }
+                        return msg;
+                    };
+
+                    // Create unique comm identifier
+                    const comm_id = uuid();
+
+                    // Monkey-patch send command
+                    var send = viewer.connection.send;
+                    viewer.connection.send = function(data, msg_type) {
+                        var msg = {
+                            header : {
+                                date: new Date().toISOString(),
+                                username : "meshcat",
+                                msg_id : uuid(),
+                                session : "000000000000",
+                                version : "5.3",
+                                msg_type : msg_type || "comm_msg"
+                            },
+                            metadata : {},
+                            content : {
+                                comm_id : comm_id,
+                                target_name : "meshcat",
+                                data : data,
+                            },
+                            channel : 'shell',
+                            buffers : [],
+                            parent_header : {}
+                        };
+                        send.call(this, JSON.stringify(msg));
+                    };
+
+                    // Monkey-patch close command
+                    var close = viewer.connection.close;
+                    viewer.connection.close = function() {
+                        // For some reason, `onclose` is never called, and
+                        // calling the original `close` interferes with the
+                        // send method and the message is never received.
+                        viewer.connection.send("meshcat:close", "comm_close");
+                    };
+
+                    // Define event handler
+                    viewer.connection.onopen = function(event) {
+                        console.log("connection to generic ipykernel:", viewer.connection);
+                        console.log("comm id:", comm_id);
+                        viewer.connection.send("meshcat:open", "comm_open");
+                    };
+                    viewer.connection.onmessage = async function (event) {
+                        var data = event.data;
+                        if (data instanceof Blob) {
+                            const reader = new FileReader();
+                            reader.addEventListener('loadend', () => {
+                                var p = Promise.resolve(deserialize_array_buffer(reader.result));
+                                p.then(function(message) {
+                                    if (message.content.comm_id === comm_id)
+                                    {
+                                        message.buffers.forEach(function(content, index) {
+                                            viewer.handle_command_bytearray(new Uint8Array(content.buffer));
+                                        });
+                                    }
+                                });
+                            });
+                            reader.readAsArrayBuffer(event.data);
+                        }
+                    };
+                    viewer.connection.onclose = function (message) {
+                        console.log("connection to generic ipykernel closed:", message);
+                        viewer.connection = null;  // The connection is no longer available
+                    };
+                }
+                else
+                {
+                    // Fallback to direct local communication through meshcat ZMQ socket
+                    viewer.connect();
+                    is_zmq_socket = true;
+                }
+            } catch (e) {
+                console.info("not connected to MeshCat server: ", e);
+            }
+
+            // Notify the kernel periodically that everything is fine.
+            // There is no priority queue, so it is no guaranteed to match the satisfy
+            // timing to requested are being processed for a while, such as loading
+            // meshes or texture.
+            if (!is_zmq_socket) {
+                var last_time = Date.now();
+                setInterval(() => {
+                    const current_time = Date.now();
+                    const elapsed_time = current_time - last_time;
+                    if (elapsed_time > 1000)
+                    {
+                        if (viewer.connection !== undefined && viewer.connection !== null)
+                        {
+                            console.debug("I'm alive. Delta: ", elapsed_time);
+                            viewer.connection.send("meshcat:watchdog");
+                        }
+                        last_time = current_time;
+                    }
+                }, 200);
+            }
+
+            // Replace the mesh grid by tiles. The paving size is 1m by 1m.
+            var segments = 20;
+            var cmap = [new MeshCat.THREE.Color(0xf2f2fe), new MeshCat.THREE.Color(0x222233)];
+            var geometry = new MeshCat.THREE.PlaneBufferGeometry(
+                segments, segments, segments, segments).toNonIndexed();
+            var material = new MeshCat.THREE.MeshBasicMaterial(
+                {vertexColors: true, side: MeshCat.THREE.DoubleSide});
+            var colors = [];
+            for (var x of [...Array(segments).keys()]) {
+                for (var y of [...Array(segments).keys()]) {
+                    var color = cmap[(x + y) % 2];
+                    colors.push(color.r, color.g, color.b);
+                    colors.push(color.r, color.g, color.b);
+                    colors.push(color.r, color.g, color.b);
+                    colors.push(color.r, color.g, color.b);
+                    colors.push(color.r, color.g, color.b);
+                    colors.push(color.r, color.g, color.b);
+                }
+            }
+            geometry.setAttribute('color', new MeshCat.THREE.Float32BufferAttribute(colors, 3));
+            var checkerboard = new MeshCat.THREE.Mesh(geometry, material);
+            viewer.scene_tree.find(["Grid"]).set_object(checkerboard)
+
+            viewer.scene_tree.find(["Axes", "<object>"]).object.material.linewidth = 2.5
+
+            // Update the "zoom" of the camera and its default position
+            viewer.camera.fov = 30;
+            viewer.camera.position.set(8.0, 1.2, 0);
+            viewer.render();
+
+            // Fix 'capture_image' and 'animate' methods to NOT
+            // automatically update controls, which would prevent free
+            // control of the camera programmatically. Note that it does
+            // not disable controls update while moving the camera using
+            // the mouse, which is nice because it enforces the camera
+            // to be "straight".
+            viewer.capture_image = async function() {
+                var snapshot_canvas = await captureFrameAndWidgets(viewer);
+                return snapshot_canvas.toDataURL('image/png');  // Export to webp is about 70% slower than png.
+            };
+            function animate() {
+                if (continue_animating) {
+                    requestAnimationFrame(animate);
+                }
+                viewer.animator.update();
+                if (viewer.needs_render) {
+                    viewer.camera.updateProjectionMatrix();
+                    viewer.renderer.render(viewer.scene, viewer.camera);
+                    viewer.animator.after_render();
+                    viewer.needs_render = false;
+                }
+            }
+
+            // Enable start and stop animation on-the-fly
+            var continue_animating = true;
+            function start_animate() {
+                continue_animating = true;
+                animate()
+            }
+            function stop_animate() {
+                continue_animating = false;
+            }
+            start_animate();
+
+            window.onunload = function(event) {
+                // Only close the connection if it is still open.
+                // Note that it is still possible that "on_close" method has
+                // not been triggered and that the connection is no longer
+                // available.
+                if (viewer.connection !== undefined && viewer.connection !== null) {
+                    console.log("closing connection...");
+                    viewer.connection.close();
+                } else {
+                    console.info("closing already closed.");
+                }
+                return false;
+            }
+        </script>
+
+        <style>
+            body {
+                margin: 0;
+            }
+
+            #meshcat-pane {
+                width: 100vw;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            #widgets {
+                width: 100vw;
+                height: 100vh;
+                position: absolute;
+                pointer-events: none;
+                overflow: hidden;
+            }
+        </style>
+        <script id="embedded-json"></script>
+    </body>
+</html>
