@@ -1,0 +1,197 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "energy_assistant"
+dynamic = ["version"]
+description = "Energy Assistant"
+readme = "Readme.md"
+authors = [{ name = "The Energy Assistant Creators", email = "pail23@users.noreply.github.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = ["energy assistant", "home assistant"]
+dependencies = [
+    "SQLAlchemy==2.0.40",
+    "requests==2.32.3",
+    "fastapi[standard]==0.115.12",
+    "pydantic-settings==2.9.1",
+    "pyyaml >= 6.0.2",
+    "alembic==1.15.2",
+    "aiosqlite==0.21.0",
+    "python-dotenv",
+    "apscheduler==3.11.0",
+    "paho-mqtt==2.1.0",
+    "jinja2==3.1.6",
+    "colorlog==6.9.0",
+    "emhass==0.13.2",
+    "energy_assistant_frontend==0.0.66",
+    "hass-client==1.2.0",
+]
+requires-python = ">=3.12"
+
+[dependency-groups]
+dev = [
+  "httpx==0.28.1",
+  "isort",
+  "black==25.1.0",
+  "codespell==2.4.1",
+  "mypy==1.15.0",
+  "ruff==0.11.8",
+  "pytest==8.3.5",
+  "pytest-asyncio==0.26.0",
+  "pytest-aiohttp==1.1.0",
+  "pytest-cov==6.1.1",
+  "pytest-env",
+  "pre-commit==4.2.0",
+  "types-PyYAML",
+  "types-requests",
+  "pandas-stubs",
+  "mkdocs>=1.6.1",
+]
+
+
+[project.scripts]
+eass = "energy_assistant.main:main"
+eass_apply = "energy_assistant.migrations.apply:main"
+
+[project.urls]
+Homepage = "https://github.com/pail23/energy-assistant-backend"
+
+
+[tool.hatch.build.targets.sdist]
+packages = ["energy_assistant"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["energy_assistant"]
+
+[tool.hatch.version]
+#source = "vcs"
+path = "energy_assistant/__init__.py"
+
+[tool.isort]
+# https://github.com/PyCQA/isort/wiki/isort-Settings
+profile = "black"
+# will group `import x` and `from x import` of the same module.
+force_sort_within_sections = true
+known_first_party = [
+    "tests",
+]
+forced_separate = [
+    "tests",
+]
+combine_as_imports = true
+
+
+[tool.codespell]
+skip = './site'
+ignore-words-list = "hass"
+count=true
+
+[tool.ruff]
+
+# The contents of this file is based on https://github.com/home-assistant/core/blob/dev/pyproject.toml
+
+target-version = "py311"
+
+lint.select = [
+    "RET",
+    "DTZ",
+
+    "ASYNC",   # async
+    "B",       # Bug Bear
+    "C",  # complexity
+    "D",  # docstrings
+    "E",  # pycodestyle
+    "F",  # pyflakes/autoflake
+    "I", # isort
+    "N", # pep8-naming
+    "PERF",
+    "PGH004",  # Use specific rule codes when using noqa
+    "PLC0414", # Useless import alias. Import alias does not rename original package.
+    "PLC", # pylint
+    "PLE", # pylint
+    "PLW", # pylint
+    "PTH",
+    "RUF",     # ruff rules
+    "SIM",    # simplify
+    "T20",  # flake8-print
+    "TRY",     # tryceratops
+    "UP",      # pyupgrade
+    "W",       # pycodestyle
+    "YTT",
+]
+
+lint.ignore = [
+    "D202",  # No blank lines allowed after function docstring
+    "D203",  # 1 blank line required before class docstring
+    "D213",  # Multi-line docstring summary should start at the second line
+    "D404",  # First word of the docstring should not be This
+    "D406",  # Section name should end with a newline
+    "D407",  # Section name underlining
+    "D411",  # Missing blank line before section
+    "E501",  # line too long
+    "E731",  # do not assign a lambda expression, use a def
+    "T201",  # print found
+]
+exclude = ["migrations", ".venv"]
+line-length = 120
+
+
+[tool.ruff.lint.per-file-ignores]
+"energy_assistant/models/__init__.py" = ["F401"]
+"tests/**/*" = ["S101", "PLR2004"]
+
+[tool.ruff.format]
+exclude = [".venv", "migrations"]
+
+[tool.black]
+target-version = ['py311']
+line-length = 120
+exclude="migrations"
+
+[flake8-pytest-style]
+fixture-parentheses = false
+
+[mccabe]
+max-complexity = 25
+
+
+[tool.mypy]
+python_version = "3.11"
+exclude="migrations"
+
+
+[[tool.mypy.overrides]]
+module = [
+  "energy_assistant.*"
+]
+ignore_missing_imports = true
+follow_imports = "skip"
+disallow_untyped_defs = true
+disallow_untyped_calls = true
+
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = [
+  ".",
+]
+testpaths = [
+    "tests"
+]
+norecursedirs = [
+    ".git"
+]
+disable_test_id_escaping_and_forfeit_all_rights_to_community_support = true
+markers = [
+  "tmp: Temporary",
+  "optional: Optional",
+]
+env = [
+  "APP_CONFIG_FILE=test"
+]
