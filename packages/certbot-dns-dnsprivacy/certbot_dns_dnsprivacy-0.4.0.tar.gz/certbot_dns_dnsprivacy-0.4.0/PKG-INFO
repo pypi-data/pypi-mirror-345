@@ -1,0 +1,103 @@
+Metadata-Version: 2.4
+Name: certbot-dns-dnsprivacy
+Version: 0.4.0
+Summary: Certbot DNS Plugin for the UK DNS Privacy Project
+Author-email: Paul Trippett <support@dnsprivacy.org.uk>
+License: MIT License
+        
+        Copyright (c) 2025 UK DNS Privacy Project Limited
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Project-URL: Homepage, https://dnsprivacy.org.uk/
+Project-URL: Documentation, https://dnsprivacy.org.uk/docs/how-it-works/authoritative-dns.html
+Project-URL: Donate, https://dnsprivacy.org.uk/support-us.html
+Project-URL: Issues, https://github.com/UK-DNS-Privacy-Project/certbot-dns-dnsprivacy/issues
+Project-URL: Mastodon, https://mastodonapp.uk/@ukdnsprivacyproject
+Project-URL: Reddit, https://reddit.com/r/UKDNSPrivacyProject
+Keywords: certbot,dns,letsencrypt
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: certbot>=2.0.0
+Requires-Dist: requests
+Dynamic: license-file
+
+# certbot-dns-dnsprivacy
+
+`certbot-dns-dnsprivacy` is a Certbot plugin that automates the process of creating and cleaning up DNS TXT records for domain validation using the UK DNS Privacy Project API.
+
+## Installation
+
+To install the package, use the following command:
+
+```bash
+pip install certbot-dns-dnsprivacy
+```
+
+## Usage
+
+This plugin allows Certbot to perform DNS-01 challenges using the UK DNS Privacy Project API. Below is an example of how to use it:
+
+1. Create a `credentials.ini` file with the following content:
+
+   ```ini
+   # credentials.ini
+   dns_dnsprivacy_token = YOUR_API_TOKEN
+   ```
+
+   Replace `YOUR_API_TOKEN` with your API token from the [UK DNS Privacy Project API settings](https://dnsprivacy.org.uk/settings/api_keys).
+
+2. Run Certbot with the following command:
+
+   ```bash
+   certbot certonly \
+     --authenticator dns-dnsprivacy \
+     --dns-dnsprivacy-credentials ./credentials.ini \
+     --dns-dnsprivacy-propagation-seconds 60 \
+     -d example.com
+   ```
+
+   Replace `example.com` with your domain name.
+
+## Development
+
+To set up a development environment:
+
+1. Clone the repository and navigate to the project directory.
+2. Create a virtual environment and activate it:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+3. Install the package in editable mode:
+
+   ```bash
+   pip install -e .
+   ```
+
+4. Run the test script:
+
+   ```bash
+   ./test.sh
+   ```
+
+## Contributing
+
+If you would like to contribute to this project, please fork the repository, create a feature branch, and submit a pull request. Contributions are welcome!
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Links
+
+- [Homepage](https://dnsprivacy.org.uk/)
+- [Issues](https://github.com/UK-DNS-Privacy-Project/certbot-dns-dnsprivacy/issues)
