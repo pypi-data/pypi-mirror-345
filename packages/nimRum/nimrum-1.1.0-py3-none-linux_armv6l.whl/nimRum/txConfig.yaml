@@ -1,0 +1,63 @@
+nimRumTXConfig:
+  mainVolume: 20 # Volume at startup. 0..100
+  latency_us: 100000 # [us] Delay from TX to RX(client) output
+
+  logEnable: 0
+  #logPath: /root/nimRum
+
+  pcmDevInputName: "" # Example: "hw:CARD=sndrpihifiberry,DEV=0". If empty, it will use first dev found.
+
+  #remoteModel: LG_AKB72915207
+  #keyUp: KEY_VOLUMEUP
+  #keyDown: KEY_VOLUMEDOWN
+  #keyMute: KEY_MUTE
+
+  # For demonstrations
+  #keyTimeError: KEY_RED
+  #cliIdErrorInsertion: -1
+
+  clients:
+    - name: prezo1 # Unique name for client (hostname)
+      location: frontLeft # Value not currently used
+      stereoChannel: [0] # Channels sent to client, if 2 channels input
+      multiChannel: [0] # Channels sent to client, if >2 channels input
+      offset_us: 0 # [us] Latency offset, relative 'latency_us'
+      volStereoAdj: 0 # Client-relative volume in dB, when 2 or less channels
+      volMultiAdj: 0 # Client-relative volume in dB, when more than 2 channels
+
+    - name: prezo2
+      location: frontRight
+      stereoChannel: [1]
+      multiChannel: [1]
+      offset_us: 0
+      volStereoAdj: 0
+      volMultiAdj: 0
+
+    - name: prezo3
+      location: center
+      stereoChannel: [16]
+      multiChannel: [2]
+      offset_us: 0
+      volStereoAdj: 0
+      volMultiAdj: 0
+
+  virtualChannels:
+    - channelNumber: 16 # Number for this virtual channel
+      crossfaderChannelA: 0
+      crossfaderChannelB: 1
+      crossfaderPosition: 50 # 0..100
+
+
+    #- channelNumber: 17 # 'Small front' Left
+    #  crossfaderChannelA: 3 # LFE
+    #  crossfaderChannelB: 0
+    #  crossfaderPosition: 50 # 0..100
+
+    #- channelNumber: 18 # 'Small front' Right
+    #  crossfaderChannelA: 3 # LFE
+    #  crossfaderChannelB: 1
+    #  crossfaderPosition: 50 # 0..100
+
+    #- channelNumber: 20 # Tonegenerator
+    #  toneGeneratorMode: spikes
+    #  toneGeneratorVolume: 20
