@@ -1,0 +1,346 @@
+openapi: 3.0.0
+info:
+  title: MyShare MCP API
+  description: Financial data analysis assistant based on AKShare, providing stock market data and analysis capabilities
+  version: 1.0.0
+
+servers:
+  - url: /api/v1
+
+paths:
+  /stock/realtime:
+    get:
+      summary: Get real-time stock data
+      description: Get real-time stock data from Xueqiu
+      operationId: getRealTimeStockData
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          description: Stock symbol (e.g., SH600000)
+          schema:
+            type: string
+        - name: token
+          in: query
+          required: false
+          description: Optional authentication token
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: Stock code
+                  name:
+                    type: string
+                    description: Stock name
+                  open:
+                    type: number
+                    format: float
+                    description: Opening price
+                  price:
+                    type: number
+                    format: float
+                    description: Current price
+                  low:
+                    type: number
+                    format: float
+                    description: Daily low
+                  high:
+                    type: number
+                    format: float
+                    description: Daily high
+                  low52w:
+                    type: number
+                    format: float
+                    description: 52-week low
+                  high52w:
+                    type: number
+                    format: float
+                    description: 52-week high
+                  limitDown:
+                    type: number
+                    format: float
+                    description: Daily limit down price
+                  limitUp:
+                    type: number
+                    format: float
+                    description: Daily limit up price
+                  ytdChange:
+                    type: number
+                    format: float
+                    description: Year-to-date change percentage
+                  peRatio:
+                    type: number
+                    format: float
+                    description: P/E ratio (TTM)
+                  pbRatio:
+                    type: number
+                    format: float
+                    description: P/B ratio
+                  netAssetPerShare:
+                    type: number
+                    format: float
+                    description: Net asset value per share
+                  marketCap:
+                    type: number
+                    format: float
+                    description: Market capitalization
+                  dividend:
+                    type: number
+                    format: float
+                    description: Dividend (TTM)
+                  dividendYield:
+                    type: number
+                    format: float
+                    description: Dividend yield (TTM)
+                  listDate:
+                    type: string
+                    format: date-time
+                    description: Listing date
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Data timestamp
+
+  /stock/history:
+    get:
+      summary: Get historical A-share stock data
+      description: Get historical A-share stock data from East Money
+      operationId: getHistoricalStockData
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          description: Stock code (e.g., 603777)
+          schema:
+            type: string
+        - name: period
+          in: query
+          required: false
+          description: Data period (daily, weekly, monthly)
+          schema:
+            type: string
+            enum: [daily, weekly, monthly]
+            default: daily
+        - name: startDate
+          in: query
+          required: true
+          description: Start date (YYYYMMDD)
+          schema:
+            type: string
+        - name: endDate
+          in: query
+          required: true
+          description: End date (YYYYMMDD)
+          schema:
+            type: string
+        - name: adjust
+          in: query
+          required: false
+          description: Price adjustment (none, qfq, hfq)
+          schema:
+            type: string
+            enum: [none, qfq, hfq]
+            default: none
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                      format: date
+                    open:
+                      type: number
+                      format: float
+                    close:
+                      type: number
+                      format: float
+                    high:
+                      type: number
+                      format: float
+                    low:
+                      type: number
+                      format: float
+                    volume:
+                      type: number
+                      format: float
+
+  /stock/hk/history:
+    get:
+      summary: Get historical Hong Kong stock data
+      description: Get historical Hong Kong stock data from East Money
+      operationId: getHKHistoricalData
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          description: HK stock code (e.g., 00593)
+          schema:
+            type: string
+        - name: period
+          in: query
+          required: false
+          description: Data period (daily, weekly, monthly)
+          schema:
+            type: string
+            enum: [daily, weekly, monthly]
+            default: daily
+        - name: startDate
+          in: query
+          required: true
+          description: Start date (YYYYMMDD)
+          schema:
+            type: string
+        - name: endDate
+          in: query
+          required: true
+          description: End date (YYYYMMDD)
+          schema:
+            type: string
+        - name: adjust
+          in: query
+          required: false
+          description: Price adjustment (none, qfq, hfq)
+          schema:
+            type: string
+            enum: [none, qfq, hfq]
+            default: none
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                      format: date
+                    open:
+                      type: number
+                      format: float
+                    close:
+                      type: number
+                      format: float
+                    high:
+                      type: number
+                      format: float
+                    low:
+                      type: number
+                      format: float
+                    volume:
+                      type: integer
+                      format: int64
+                    amount:
+                      type: number
+                      format: float
+                    amplitude:
+                      type: number
+                      format: float
+                    changePercent:
+                      type: number
+                      format: float
+                    changeAmount:
+                      type: number
+                      format: float
+                    turnoverRate:
+                      type: number
+                      format: float
+
+  /stock/dividend:
+    get:
+      summary: Get stock dividend history
+      description: Get historical dividend data for a stock
+      operationId: getDividendHistory
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          description: Stock code
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    announcementDate:
+                      type: string
+                      format: date
+                    bonusShares:
+                      type: integer
+                      description: Bonus shares
+                    conversionShares:
+                      type: integer
+                      description: Conversion shares
+                    dividend:
+                      type: number
+                      format: float
+                      description: Cash dividend (pre-tax)
+                    progress:
+                      type: string
+                    exDate:
+                      type: string
+                      format: date
+                    recordDate:
+                      type: string
+                      format: date
+                    listingDate:
+                      type: string
+                      format: date
+
+  /stock/index/components:
+    get:
+      summary: Get stock index components
+      description: Get component stocks of an index
+      operationId: getIndexComponents
+      parameters:
+        - name: index
+          in: query
+          required: true
+          description: Index code
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      description: Stock code
+                    name:
+                      type: string
+                      description: Stock name
+                    inclusionDate:
+                      type: string
+                      format: date
+                      description: Date of inclusion in the index
+
+components:
+  schemas: {}

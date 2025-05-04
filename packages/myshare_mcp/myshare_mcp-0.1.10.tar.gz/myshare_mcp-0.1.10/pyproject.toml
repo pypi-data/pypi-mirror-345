@@ -1,0 +1,38 @@
+[project]
+name = "myshare_mcp"
+version = "0.1.10"
+description = "A Model Context Protocol server for Financial Analysis"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "akshare>=1.16.81",
+    "fastapi>=0.115.12",
+    "ipykernel>=6.29.5",
+    "ipywidgets>=8.1.6",
+    "mcp[cli]>=1.6.0",
+    "pandas>=2.2.3",
+    "pytest>=8.3.5",
+    "sqlalchemy>=2.0.40",
+    "sqlite-web>=0.6.4",
+    "uvicorn>=0.34.2",
+]
+authors = [
+    { name = "Roger Ye", email = "shugaoye@yahoo.com" }
+]
+keywords = ["investment", "finance", "trading", "agent", "mcp", "model context protocol", "broker", "robinhood", "wallstreetbets"]
+classifiers = [
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Office/Business :: Financial",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+]
+[project.scripts]
+myshare-mcp = "myshare_mcp.server:mcp.run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["myshare_mcp"]
