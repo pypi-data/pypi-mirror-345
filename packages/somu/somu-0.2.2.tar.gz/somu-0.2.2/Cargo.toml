@@ -1,0 +1,32 @@
+[package]
+name = "somu"
+edition = "2021"
+version = "0.2.2"
+license-file = "LICENSE"
+description = "A simple high-performance implementation of the Self-Organizing Map (SOM) algorithm in Rust, exposed as a Python module."
+readme = "README.md"
+repository = "https://github.com/ventus550/somu"
+
+# See more keys and their definitions at https://doc.somu-lang.org/cargo/reference/manifest.html
+[lib]
+name = "somu"
+crate-type = ["cdylib"]
+
+[dependencies]
+itertools = "0.14.0"
+ndarray = "0.16.1"
+ndarray-rand = "0.15.0"
+ndarray-stats = "0.6.0"
+num = "0.4.3"
+numpy = "0.23.0"
+rand = "0.8.5"
+rayon = "1.10.0"
+
+[dependencies.pyo3]
+version = "0.23.3"
+features = ["extension-module", "abi3-py37"]
+
+[profile.release]
+opt-level = 3  # Maximum optimizations
+lto = true     # Link Time Optimization
+panic = 'abort' # Avoid the Rust panic runtime overhead
