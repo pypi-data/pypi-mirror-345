@@ -1,0 +1,53 @@
+hardware:
+  enabled: false
+  gpio_pins:
+    alert_led: 22
+    buzzer: 23
+    car_detected: 18
+    person_detected: 17
+  platform: raspberry_pi
+logging:
+  console: true
+  file: server.log
+  level: INFO
+objects:
+  actions:
+    car:
+      action: log
+      enabled: true
+      message: Vehicle detected
+      min_confidence: 0.7
+    person:
+      action: log
+      enabled: true
+      message: Person detected
+      min_confidence: 0.7
+  highlight:
+  - person
+  - car
+  - bicycle
+  - dog
+  - cat
+  - laptop
+  - cell phone
+server:
+  host: 0.0.0.0
+  max_connections: 5
+  max_fps: 10
+  port: 9524
+  timeout: 30.0
+vision:
+  image_processing:
+    blur: null
+    edges: false
+    grayscale: false
+    normalize: true
+    resize:
+    - 640
+    - 640
+  object_detection:
+    confidence_threshold: 0.5
+    device: null
+    model: yolov8n
+    nms_threshold: 0.4
+    provider: yolo
