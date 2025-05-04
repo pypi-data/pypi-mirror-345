@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dovahdf"
+version = "0.1.5"
+description = "修改的音频增强工具"
+authors = [
+    {name = "Dovahkiin", email = "your.email@example.com"}
+]
+readme = "README.md"
+license = {text = "MIT License"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy>=1.22,<2.0",
+    "loguru>=0.5",
+    "appdirs>=1.4",
+    "requests>=2.27",
+    "packaging>=23,<25",
+    "sympy>=1.6",
+    "soundfile>=0.10",
+]
+
+[project.scripts]
+dovahdf = "dovahdf.df.enhance:run"
