@@ -1,0 +1,135 @@
+Metadata-Version: 2.4
+Name: trustvault-sdk
+Version: 0.1.0
+Summary: Lightweight Python SDK for application observability (TrustVault)
+Home-page: https://github.com/sanjuskm/trustvault
+Author: sanjay
+Author-email: sanju.skm@gmail.com
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary
+
+ # TrustVault SDK
+
+ TrustVault SDK is a lightweight Python library for application observability. It provides simple decorators and context managers to automatically trace function calls, capture timing, inputs, outputs, and errors, and emit structured JSON logs to stdout.
+
+ ## Features
+
+ - `@vault_it` decorator to automatically create spans around function calls
+ - Manual instrumentation via the `Span` context manager
+ - Context propagation with nested spans and trace IDs
+ - JSON-based structured logging to stdout
+ - No external dependencies beyond the Python standard library
+
+ ## Installation
+
+ You can install the SDK via PyPI (once published):
+ ```bash
+ pip install trustvault-sdk
+ ```
+
+ Or install directly from source:
+ ```bash
+ git clone https://github.com/<your-org>/trustvault-sdk.git
+ cd trustvault-sdk
+ pip install .
+ ```
+
+ For development (editable install):
+ ```bash
+ pip install -e .
+ ```
+
+ ## Quickstart
+
+ ### Automatic instrumentation
+
+```python
+from trustvault_sdk import vault_it
+
+ @vault_it
+ def fetch_data(url):
+     # Your logic here...
+     return {"status": "ok", "url": url}
+
+ if __name__ == "__main__":
+     fetch_data("https://example.com")
+ ```
+
+ The SDK will emit a JSON log record similar to:
+ ```json
+ {
+   "trace_id": "e4b11f8a...",
+   "span_id": "a1c9d4f2...",
+   "parent_id": null,
+   "name": "fetch_data",
+   "start_time": 1625246109.123456,
+   "end_time": 1625246109.234567,
+   "duration": 0.111111,
+   "result": "{\"status\": \"ok\", \"url\": \"https://example.com\"}",
+   "error": null
+ }
+ ```
+
+ ### Manual instrumentation
+
+```python
+from trustvault_sdk.tracer import Span
+
+ def process_items(items):
+     with Span(name="process_items"):
+         # Your custom logic here...
+         pass
+ ```
+
+ ### Customizing span names
+
+```python
+from trustvault_sdk import vault_it
+
+ @vault_it(name="custom_name")
+ def compute(...):
+     ...
+ ```
+
+ ## Configuration
+
+The SDK uses a logger named `trustvault` configured to log INFO-level JSON messages to stdout. You can customize it:
+```python
+import logging
+
+logger = logging.getLogger("trustvault")
+ logger.setLevel(logging.DEBUG)
+ # Add additional handlers/formatters if needed
+ ```
+
+ ## API Reference
+
+ - **vault_it(func=None, *, name=None)**: Decorator to trace functions. Optional `name` argument overrides the span name.
+ - **Span(name, trace_id=None, parent_id=None)**: Context manager for manual span creation. Records timing, result, and errors.
+ - **get_logger()**: Returns the internal SDK logger.
+ - **safe_log(record)**: Safely logs a JSON record, catching any logger errors.
+
+ ## Contributing
+
+ Contributions are welcome! Please open an issue or submit a pull request.
