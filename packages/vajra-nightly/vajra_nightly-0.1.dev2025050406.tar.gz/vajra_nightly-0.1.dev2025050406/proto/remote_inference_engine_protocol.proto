@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package vajra_proto;
+
+import "base_datatypes.proto";
+
+option optimize_for = LITE_RUNTIME;
+
+//------------------------------------------------------------------------------
+// RemoteInferenceRequest Messages
+//------------------------------------------------------------------------------
+
+// RemoteInferenceRequest for processing text generation
+message ProcessRequest {
+    string request_id = 1;
+    string prompt = 2;
+    SamplingParams sampling_params = 3;
+}
+
+// RemoteInferenceRequest to abort an ongoing generation
+message AbortRequest {
+    string request_id = 1;
+}
+
+// RemoteInferenceRequest to check server readiness
+message StartupRequest {
+    bool client_ready = 1;
+}
+
+// RemoteInferenceRequest for getting model config
+message ConfigRequest {
+    string request_id = 1;
+}
+
+//------------------------------------------------------------------------------
+// RemoteInferenceResponse Messages
+//------------------------------------------------------------------------------
+
+// Output from a text generation request
+message OutputResponse {
+    string request_id = 1;
+    string text = 2;
+    repeated uint64 token_ids = 3;
+    repeated uint64 prompt_token_ids = 4;
+    optional string finish_reason = 5;
+    bool finished = 6;
+    bool is_delta = 7;
+    bool is_first_chunk = 8;
+}
+
+// RemoteInferenceResponse for error conditions
+message ErrorResponse {
+    string request_id = 1;
+    string error_message = 2;
+}
+
+// RemoteInferenceResponse indicating server readiness
+message StartupResponse {
+    bool server_ready = 1;
+}
+
+//------------------------------------------------------------------------------
+// Wrapper Messages
+//------------------------------------------------------------------------------
+
+// Top-level request wrapper
+message RemoteInferenceRequest {
+    oneof payload {
+        ProcessRequest process_request = 1;
+        AbortRequest abort_request = 2;
+        StartupRequest startup_request = 3;
+        ConfigRequest config_request = 4;
+    }
+}
+
+// Top-level response wrapper
+message RemoteInferenceResponse {
+    oneof payload {
+        OutputResponse request_output = 1;
+        ErrorResponse error = 2;
+        StartupResponse startup_response = 3;
+        ModelConfig model_config = 4;
+    }
+}
