@@ -1,0 +1,80 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "chat2webdav"
+version = "0.1.0"
+description = "CLI tool for saving LLM chat conversations to WebDAV"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Chat2WebDAV Contributors"}
+]
+keywords = ["llm", "chat", "webdav", "nextcloud", "gemini", "openrouter"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Communications",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "inquirerpy>=0.3.4",
+    "webdav4>=0.9.8",
+    "pydantic>=2.0.0",
+    "httpx>=0.24.0",
+    "markdown>=3.4.0",
+    "cryptography>=41.0.0",
+    "toml>=0.10.2",
+    "requests>=2.32.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "flake8>=6.0.0",
+    "pre-commit>=3.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/YOUR_USERNAME/chat2webdav"
+"Bug Tracker" = "https://github.com/YOUR_USERNAME/chat2webdav/issues"
+"Documentation" = "https://github.com/YOUR_USERNAME/chat2webdav#readme"
+
+[project.scripts]
+chat2webdav = "chat2webdav.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["chat2webdav"]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
