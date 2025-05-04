@@ -1,0 +1,98 @@
+[build-system]
+build-backend = "maturin"
+requires = ["maturin >= 1.8"]
+
+[project]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: JavaScript",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Rust",
+  "Topic :: Artistic Software",
+  "Topic :: Games/Entertainment :: Simulation",
+  "Topic :: Multimedia :: Sound/Audio :: Sound Synthesis",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Utilities",
+  "Typing :: Typed",
+]
+dynamic = ["version"]
+keywords = [
+  "addon",
+  "agent",
+  "ai",
+  "api",
+  "audio",
+  "binding",
+  "cli",
+  "command",
+  "easy",
+  "executable",
+  "fast",
+  "fun",
+  "funny",
+  "joke",
+  "library",
+  "lightweight",
+  "llm",
+  "low-latency",
+  "mcp",
+  "minimal",
+  "module",
+  "multimedia",
+  "music",
+  "napi",
+  "native",
+  "node",
+  "performance",
+  "poodio",
+  "processing",
+  "pyo3",
+  "python",
+  "real-time",
+  "rust",
+  "script",
+  "server",
+  "simple",
+  "simulation",
+  "sound",
+  "speed",
+  "synthesis",
+  "tool",
+  "utility",
+]
+name = "poodio"
+requires-python = ">= 3.8"
+scripts.poodio = "poodio:main"
+
+[project.urls]
+documentation = "https://docs.rs/poodio"
+homepage = "https://github.com/AsherJingkongChen/poopoo/tree/main/poodio#readme"
+issues = "https://github.com/AsherJingkongChen/poopoo/issues"
+repository = "https://github.com/AsherJingkongChen/poopoo"
+
+[tool.maturin]
+auditwheel = "repair"
+bindings = "pyo3"
+compatibility = "manylinux_2_17"
+features = ["bind-pyo3"]
+include = ["LICENSE.txt"]
+locked = true
+profile = "release"
+python-source = "bind/pip/"
+strip = true
+manifest-path = "poodio/Cargo.toml"
