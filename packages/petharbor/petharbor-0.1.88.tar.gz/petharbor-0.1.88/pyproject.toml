@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "petharbor"
+version = "0.1.88"
+description = "PetHarbor is a Python package designed for anonymizing datasets using either a pre-trained model or a hash-based approach."
+authors = ["Sean Farrell <sean.farrell2@durham.ac.uk>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "petharbor", from = "src"}]
+python = ">=3.9"
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+accelerate = "*"
+backports.tarfile = "*"
+colorlog = "*"
+datasets = "*"
+transformers = "*"
+importlib-metadata = "*"
+jaraco-collections = "*"
+pandas = "*"
+protobuf = "*"
+pysocks = "*"
+sentencepiece = "*"
+tomli = "*"
+torch = "*"
+spacy = "*"
+
+[tool.poetry.group.advance.dependencies]
+torch = "*"
+transformers = "*"
+
+[tool.poetry.group.lite.dependencies]
+datasets = "*"
+spacy = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
