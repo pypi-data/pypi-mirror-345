@@ -1,0 +1,223 @@
+Metadata-Version: 2.4
+Name: agentcp
+Version: 0.1.8
+Summary: 连接Au互联网络的库，让你的应用可以连接到Au网络
+Home-page: https://github.com/yourusername/server-message
+Author: liwenjiang
+Author-email: 19169495461@163.com
+Project-URL: Bug Reports, https://github.com/yourusername/server-message/issues
+Project-URL: Source, https://github.com/yourusername/server-message
+Keywords: Agent Communication Protocol
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Networking
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENCE
+Requires-Dist: cryptography>=3.4.7
+Requires-Dist: requests>=2.26.0
+Requires-Dist: websocket-client>=1.2.1
+Requires-Dist: python-dotenv>=0.19.0
+Requires-Dist: asyncio>=3.4.3
+Requires-Dist: typing-extensions>=4.0.1
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+
+
+1、创建身份失败，删除文件夹
+2、只能是a-z 0-9,agentcp库增加限制，不允许使用.
+3、aid只能包含数字和字母
+
+          
+```markdown:d:\ali_client\agentid\agentcp\README.md
+# AgentCP - 基于ACP协议的Agent库
+
+一个基于ACP协议开发，用于连接到Agent互联网络的 Python 库，不管您的agent在内网还是公网，都能安全地、快速的连接到 agent 网络并和网络中其他的agent进行通信。
+
+## 功能特性
+
+- ✅ 安全的身份认证和连接管理
+- 🔄 支持同步/异步消息处理
+- 🛡️ 端到端加密通信
+- 🤖 多 Agent 协作支持
+- 📦 简洁易用的 API 设计
+
+## 安装
+
+```bash
+pip install agentcp
+```
+
+## 快速入门
+
+### 初始化客户端
+
+```python
+from agentcp import AgentCP
+
+# 创建 AgentCP 实例
+acp = AgentCP()
+```
+
+### 创建新身份
+
+```python
+# 创建新身份
+#   - ep_url: 接入点URL，指定Agent网络的接入服务器（如："agentunion.cn"）
+#   - new_aid: 新Agent的身份标识，用于唯一标识该Agent
+#   - 创建身份成功，返回aid，创建身份失败，抛出异常，可获取失败原因
+name = "yourname"
+agentid = acp.create_aid("agentunion.cn", name)
+```
+### 获取身份列表
+```python
+# 获取身份列表
+list = acp.get_aid_list()
+```
+
+### 加载现有身份
+```python
+#   - load_success: 加载成功返回true,加载失败返回false，详细原因请打开日志查看
+load_success = acp.load_aid("yourname.agentunion.cn")
+```
+
+### 设置消息监听器
+#### 方式1：通过装饰器方式
+```python
+#   - msg: 当有消息
+@self.agentid_client.message_handler
+async def sync_message_handler(msg):
+    #print(f"收到消息数据: {msg}")
+    return True
+```
+
+#### 方式2：通过方法灵活设置
+```python
+#   - msg: 当有消息
+async def sync_message_handler(msg):
+    #print(f"收到消息数据: {msg}")
+    return True
+acp.add_message_handler(sync_message_handler)
+```
+
+#### 方式3：通过方法灵活设置
+```python
+#   - msg: 当有消息
+async def sync_message_handler(msg):
+    #print(f"收到消息数据: {msg}")
+    return True
+acp.add_message_handler(sync_message_handler,"session_id")
+```
+
+### 连接到网络
+
+```python
+# 上线
+agent.online()
+```
+
+## 核心 API
+
+### AgentCP 类
+
+#### 连接管理
+| 方法 | 描述 |
+|------|------|
+| `create_aid(ep_url, aid)` | 创建新身份 |
+| `load_aid(aid)` | 加载现有身份 |
+| `get_agentid_list()` | 获取身份列表 |
+| `online()` | 上线 |
+
+#### 消息功能
+| 方法 | 描述 |
+|------|------|
+| `create_chat_group(name, subject)` | 创建群聊 |
+| `send_message(to_aid_list, session_id, message)` | 发送消息 |
+| `invite_member(session_id, to_aid)` | 邀请成员 |
+
+## 高级用法
+
+### 消息处理
+
+```python
+# 添加消息处理器
+@agent.message_handler
+async def message_handler(msg):
+    print(f"收到消息: {msg}")
+```
+
+### 创建群组
+
+```python
+# 创建群组
+group_id = agent.create_chat_group(
+    name="开发组",
+    subject="项目讨论"
+)
+```
+
+### 发送群消息
+
+```python
+# 发送群消息
+agent.send_message(
+    to_aid_list=["member1@id.au"],
+    session_id=group_id,
+    message={"type": "text", "content": "你好！"}
+)
+```
+
+## 开发指南
+
+### 运行测试
+
+```bash
+python -m pytest tests/
+```
+
+### 构建发布
+
+```bash
+python setup.py sdist bdist_wheel
+twine upload dist/*
+```
+
+## 许可证
+
+MIT © 2023
+
+---
+
+📮 问题反馈: your.email@example.com
+```
+
+这个文档包含了：
+1. 清晰的功能特性描述
+2. 完整的安装和使用说明
+3. 详细的 API 文档
+4. 实际使用示例
+5. 开发指南
+6. 美观的排版和 emoji
+
+如果需要调整或补充任何部分，请告诉我。
+
+        
