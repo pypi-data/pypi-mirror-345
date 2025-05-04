@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset Visualize of {{ info.file.name }}</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <div class="container" id="main-container">
+        <h1>Dataset Visualize of <span class="code">{{ info.file.name }}</span></h1>
+
+        <hr>
+
+        <section>
+            <h2>Part 1. Hyperinfo</h2>
+            <div class="container" id="hyperinfo-container">
+                <p><b>Template Path</b></p>
+                <p class="code">{{ hyperinfo.template_path }}</p>
+                <p><b>Style Path</b></p>
+                <p class="code">{{ hyperinfo.style_path }}</p>
+                <p><b>Server Path</b></p>
+                <p class="code">{{ hyperinfo.server_path }}</p>
+                <table>
+                    <tr>
+                        <th>Host</th>
+                        <th>Port</th>
+                        <th>Debug</th>
+                    </tr>
+                    <tr>
+                        <td>{{ hyperinfo.host }}</td>
+                        <td>{{ hyperinfo.port }}</td>
+                        <td>{{ hyperinfo.debug }}</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>Part 2. Info</h2>
+            <div class="container" id="info-container">
+                <p><b>File Path</b></p>
+                <p class="code">{{ info.file.path }}</p>
+                <table>
+                    <tr>
+                        <th>File Size</th>
+                        <th>Created Date</th>
+                        <th>Last Edited Date</th>
+                    </tr>
+                    <tr>
+                        <td>{{ info.file.size }}</td>
+                        <td>{{ info.file.created_date }}</td>
+                        <td>{{ info.file.last_edited_date }}</td>
+                    </tr>
+                </table>
+                <p><b>Number of Rows</b></p>
+                <p>{{ info.rows.num }}</p>
+                <p><b>Number of Columns</b></p>
+                <p>{{ info.columns.num }}</p>
+                <p><b>Columns List</b></p>
+                <p class="code">{{ info.columns.list }}</p>
+                <p><b>Indexes</b></p>
+                <p class="code">{{ info.indexes }}</p>
+            </div>
+        </section>
+        <section>
+            <h2>Part 3. Data List</h2>
+            <p><b>List</b></p>
+            <div class="container" id="data-list-container">
+                <table id="main-table">
+                    <thead>
+                        <tr>
+                            <th>Indexes</th>
+                            <th>Images</th>
+                            {% for key in info.columns.list %}
+                            {% if key not in ["images", "index_train", "index_valid"] %}
+                            <th>{{ key|capitalize }}</th>
+                            {% endif %}
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    {% for data in datas %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <img src="{{ data.images }}" alt="" style="width: 64px;">
+                        </td>
+                        {% for key in info.columns.list %}
+                        {% if key not in ["images", "index_train", "index_valid"] %}
+                        <td {% if key == "image_names" %} class="code" {% endif %}>
+                            {{ data[key] }}
+                        </td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </section>
+    </div>
+
+
+</body>
+
+</html>
