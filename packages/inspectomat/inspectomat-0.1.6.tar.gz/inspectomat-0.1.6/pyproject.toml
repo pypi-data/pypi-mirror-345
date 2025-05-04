@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "inspectomat"
+version = "0.1.6"
+description = "System cleanup and file management toolbox"
+authors = [
+    {name = "multigit-com", email = "info@multigit.com"}
+]
+readme = "README.md"
+requires-python = ">=3.6"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Utilities",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+inspectomat = "inspectomat.cli:main"
+
+[project.optional-dependencies]
+full = [
+    "pillow",  # For image processing
+    "numpy",   # For array operations
+    "tqdm",    # For progress bars
+    "psutil",  # For system information
+]
