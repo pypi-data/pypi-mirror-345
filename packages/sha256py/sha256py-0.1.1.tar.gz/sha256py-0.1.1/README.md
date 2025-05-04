@@ -1,0 +1,89 @@
+<div align="center">
+<pre>
+███████ ██   ██  █████  ██████  ███████  ██████  ██████  ██    ██ 
+██      ██   ██ ██   ██      ██ ██      ██       ██   ██  ██  ██  
+███████ ███████ ███████  █████  ███████ ███████  ██████    ████   
+     ██ ██   ██ ██   ██ ██           ██ ██    ██ ██         ██    
+███████ ██   ██ ██   ██ ███████ ███████  ██████  ██         ██    
+-----------------------------------------------------------------
+A pure Python implementation of the SHA-256 hashing algorithm.
+</pre>
+
+[![PyPI version](https://badge.fury.io/py/sha256py.svg)](https://pypi.org/project/sha256py/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+</div>
+
+---
+
+## Explanation
+
+SHA-256 is a hash function that produces a 256-bit (32-byte) hash value.
+It is widely used in various security applications and protocols, to ensure data integrity and authenticity.
+
+I've created a detailed explanation of the algorithm in the [docs](docs/sha256.md).
+
+---
+
+## Installation
+
+
+See the [installation guide](docs/installation.md) for full details.
+
+### Quickstart
+
+```bash
+pip install sha256py
+```
+
+---
+
+## Usage
+
+### As library
+
+```python
+from sha256py import Sha256
+
+my_hash = Sha256("Hello World!")
+print(my_hash.hexdigest())
+```
+
+### As command line tool
+
+```bash
+sha256py "hello world"
+```
+
+A full list of options can be found in the [usage guide](docs/usage.md).
+
+---
+
+## Testing
+
+This project uses `pytest` for testing.
+
+```bash
+pip install pytest
+pytest
+```
+
+Tests are located in the `tests` directory.
+
+---
+
+## Contributing
+
+I won't actively maintain this project. If you want to add features or optimize the code, feel free to do so.
+
+A short explanation how to contribute can be found in the [contributing guide](docs/contributing.md).
+
+---
+
+## License & Metadata
+
+Lenard Felix - [contact@lenardfelix.de](mailto:contact@lenardfelix.de)  
+
+This project is licensed under MIT. See [LICENSE](LICENSE) for details.
+
+Compatible with Python 3.7 and above.
