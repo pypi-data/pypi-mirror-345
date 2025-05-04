@@ -1,0 +1,102 @@
+Metadata-Version: 2.4
+Name: chat2webdav
+Version: 0.1.0
+Summary: CLI tool for saving LLM chat conversations to WebDAV
+Project-URL: Homepage, https://github.com/YOUR_USERNAME/chat2webdav
+Project-URL: Bug Tracker, https://github.com/YOUR_USERNAME/chat2webdav/issues
+Project-URL: Documentation, https://github.com/YOUR_USERNAME/chat2webdav#readme
+Author: Chat2WebDAV Contributors
+License: MIT
+License-File: LICENSE
+Keywords: chat,gemini,llm,nextcloud,openrouter,webdav
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Communications
+Classifier: Topic :: Utilities
+Requires-Python: >=3.9
+Requires-Dist: cryptography>=41.0.0
+Requires-Dist: httpx>=0.24.0
+Requires-Dist: inquirerpy>=0.3.4
+Requires-Dist: markdown>=3.4.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: requests>=2.32.3
+Requires-Dist: rich>=13.0.0
+Requires-Dist: toml>=0.10.2
+Requires-Dist: typer>=0.9.0
+Requires-Dist: webdav4>=0.9.8
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: flake8>=6.0.0; extra == 'dev'
+Requires-Dist: isort>=5.12.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pre-commit>=3.0.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Chat2WebDAV
+
+A CLI tool for saving LLM chat conversations to WebDAV.
+
+## Features
+
+- Save chat conversations to a WebDAV server (Nextcloud)
+- Support for multiple LLM providers:
+  - Google Gemini
+  - OpenRouter (with access to Claude, GPT, Llama, Mistral models)
+- Fully synchronous implementation for better stability
+- Terminal-based interface with rich markdown rendering
+- Configurable system prompts
+- Model selection with favorites and search functionality
+- HTTP proxy support
+- Automatic conversation saving
+- Conversation topic management
+
+
+## Usage
+
+```bash
+# Start a new chat
+uvx chat2webdav chat
+
+# Configure settings
+uvx chat2webdav config
+
+# Test WebDAV connection
+uvx chat2webdav test-webdav
+```
+
+## Chat Commands
+
+During a chat session, you can use the following commands:
+
+- `/help` - Show help information
+- `/config` or `/setting` - Configure settings
+- `/clear` - Clear the current conversation
+- `/save` - Save the conversation to WebDAV
+- `/prompt` - Select a different system prompt
+- `/exit` or `/quit` - Exit the chat
+
+## Configuration
+
+Configuration is stored in one of these locations (in order of precedence):
+- Current directory: `chat2webdav.conf`
+- Package directory
+- User's home directory: `$HOME/.chat2webdav.conf`
+
+You can configure:
+- WebDAV connection details (URL, username, password, folder)
+- API keys for Gemini and OpenRouter
+- System prompts with customizable content
+- HTTP/HTTPS proxies
+- Model management (add, remove, select models)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
