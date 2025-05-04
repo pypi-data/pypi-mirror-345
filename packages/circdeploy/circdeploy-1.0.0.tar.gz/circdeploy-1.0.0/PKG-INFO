@@ -1,0 +1,74 @@
+Metadata-Version: 2.4
+Name: circdeploy
+Version: 1.0.0
+Summary: Easily deploy your CircuitPython projects
+Project-URL: repository, https://github.com/plasticrake/circdeploy
+Project-URL: homepage, https://github.com/plasticrake/circdeploy
+Author-email: Patrick Seal <code@plasticrake.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: circuitpython
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Topic :: Education
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Embedded Systems
+Classifier: Topic :: System :: Software Distribution
+Requires-Python: >=3.10
+Requires-Dist: circup<3.0.0,>=2.2.2
+Requires-Dist: igittigitt<3.0.0,>=2.1.5
+Requires-Dist: platformdirs>=4.3.7
+Requires-Dist: rich<15.0.0,>=14.0.0
+Requires-Dist: typer<0.16.0,>=0.15.3
+Description-Content-Type: text/markdown
+
+# circdeploy
+
+## Easily deploy your CircuitPython projects
+
+Deploys the current working directory to a connected CircuitPython device.
+
+I don't like editing CircuitPython files directly from the mounted device folder. The OS may be
+creating hidden files or your IDE may be saving files frequently which may trigger the device
+to reboot.
+
+**Default behavior:** Copies all `./**/*.py` and `./**/*.pyc` files from the current directory to an
+automatically detected CircuitPython device, skipping any files in `.gitignore`. Any remaining
+`./**/*.py` and `./**/*.pyc` files on the device are deleted (`./lib/*` is not deleted).
+
+### File Cache
+
+By default, a file cache is used to only copy files that have been changed in the source directory.
+If a file was changed manually in the destination, or if the destination is different than a
+previous deploy, then not all files may be copied. You can disable the cache check with
+`--no-cache`, or reset the cache for that source with `--reset-cache`.
+
+###
+
+```text
+$ circdeploy --help
+
+Usage: circdeploy [OPTIONS]                                                                                                               
+                                                                                                                                           
+ Deploy current CircuitPython project                                                                                                      
+                                                                                                                                           
+ All .py and .pyc files in the current directory tree will be copied to the destination (device)                                           
+ All other .py and .pyc files in the destination directory tree (device) will be deleted except /lib/ (disable with --no-delete)           
+                                                                                                                                           
+╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --source,--src        -s                    TEXT  Deploy from this location. [default: (Current working directory)]                     │
+│ --destination,--dest  -d                    TEXT  Deploy to this location. [default: (Device path automatically detected)]              │
+│ --delete                  --no-delete             Delete files in destination. [default: delete]                                        │
+│ --use-gitignore           --no-gitignore          Ignore files using .gitignore files relative to source path. [default: use-gitignore] │
+│ --use-cache               --no-cache              Use file cache to skip unchanged files. [default: use-cache]                          │
+│ --reset-cache                                     Reset file cache.                                                                     │
+│ --dry-run                                         Don't copy files, only output what would be done.                                     │
+│ --install-completion                              Install completion for the current shell.                                             │
+│ --show-completion                                 Show completion for the current shell, to copy it or customize the installation.      │
+│ --help                                            Show this message and exit.                                                           │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
