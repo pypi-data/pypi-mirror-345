@@ -1,0 +1,161 @@
+[build-system]
+requires = ["hatchling~=1.21.0", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Framework :: Pydantic",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Typing :: Typed",
+]
+name = "pulse-eco"
+dynamic = ["version"]
+description = "pulse.eco API wrapper"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+authors = [{ name = "martinkozle", email = "martinkozle@yahoo.com" }]
+keywords = [
+    "pulse.eco",
+    "pulse",
+    "eco",
+    "api",
+    "wrapper",
+    "python",
+    "air",
+    "quality",
+    "pollution",
+    "aqi",
+    "air quality index",
+    "air pollution",
+]
+dependencies = []
+
+[project.optional-dependencies]
+client = ["pydantic>=2,<3"]
+requests = ["requests>=2.31.0"]
+aiohttp = ["aiohttp>=3.9.0"]
+httpx = ["httpx>=0.25.1"]
+all-http = ["pulse-eco[requests,aiohttp,httpx]"]
+test = [
+    "pulse-eco[client,all-http]",
+    "coverage[toml]~=7.3.4",
+    "pytest~=8.1.1",
+    "pytest-asyncio~=0.23.5",
+    "python-dotenv~=1.0.0",
+]
+types = ["types-requests>=2.31.0"]
+lint = ["pulse-eco[client,all-http,types]", "mypy~=1.8.0", "ruff==0.3.2"]
+docs = [
+    "mkdocs",
+    "mkdocstrings[python]",
+    "pymdown-extensions",
+    "mkdocs-material",
+]
+dev = [
+    "pulse-eco[client,all-http,test,lint,docs]",
+    "pre-commit>=3.5.0",
+    "pip-tools>=7.3.0",
+    "ipython",
+]
+
+[project.urls]
+"Bug Tracker" = "https://github.com/martinkozle/pulse-eco/issues"
+Homepage = "https://github.com/martinkozle/pulse-eco"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "pulseeco/_version.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["/pulseeco"]
+
+[tool.hatch.build.targets.wheel]
+include = ["/pulseeco"]
+
+[tool.mypy]
+python_version = "3.8"
+plugins = ["pydantic.mypy"]
+modules = ["pulseeco", "tests"]
+strict = true
+
+[tool.black]
+target-version = ["py38"]
+
+[tool.ruff]
+target-version = "py38"
+preview = true
+include = ["pulseeco/**/*.py", "tests/**/*.py", "pyproject.toml"]
+
+[tool.ruff.lint]
+exclude = ["docs"]
+select = [
+    "F",
+    "I",
+    "N",
+    "UP",
+    "YTT",
+    "ANN",
+    "ASYNC",
+    "S",
+    "B",
+    "C4",
+    "DTZ",
+    "FA",
+    "ISC",
+    "ICN",
+    "G",
+    "INP",
+    "PIE",
+    "PT",
+    "RSE",
+    "RET",
+    "SLF",
+    "SIM",
+    "TID",
+    "TCH",
+    "PTH",
+    "ERA",
+    "PGH",
+    "PL",
+    "TRY",
+    "FLY",
+    "PERF",
+    "FURB",
+    "LOG",
+    "RUF",
+]
+ignore = ["E501", "ANN101", "PLR0913", "PLR0917", "ISC001", "TRY003"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["S101", "TCH001"]
+
+[tool.coverage.run]
+source_pkgs = ["pulseeco", "tests"]
+parallel = true
+branch = true
+omit = ["pulseeco/__main__.py", "pulseeco/_version.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    '\#\s*pragma: no cover',
+    '^\s*raise AssertionError\b',
+    '^\s*raise NotImplementedError\b',
+    '^\s*return NotImplemented\b',
+    '^\s*raise$',
+    '''^if __name__ == ['"]__main__['"]:$''',
+    '^if TYPE_CHECKING:$',
+    '^if sys.version_info ?<.*$',
+]

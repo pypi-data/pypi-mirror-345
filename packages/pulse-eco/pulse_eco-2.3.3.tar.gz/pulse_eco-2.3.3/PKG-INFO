@@ -1,0 +1,154 @@
+Metadata-Version: 2.1
+Name: pulse-eco
+Version: 2.3.3
+Summary: pulse.eco API wrapper
+Project-URL: Bug Tracker, https://github.com/martinkozle/pulse-eco/issues
+Project-URL: Homepage, https://github.com/martinkozle/pulse-eco
+Author-email: martinkozle <martinkozle@yahoo.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: air,air pollution,air quality index,api,aqi,eco,pollution,pulse,pulse.eco,python,quality,wrapper
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Framework :: Pydantic
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Atmospheric Science
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Python: >=3.8
+Provides-Extra: aiohttp
+Requires-Dist: aiohttp>=3.9.0; extra == 'aiohttp'
+Provides-Extra: all-http
+Requires-Dist: pulse-eco[aiohttp,httpx,requests]; extra == 'all-http'
+Provides-Extra: client
+Requires-Dist: pydantic<3,>=2; extra == 'client'
+Provides-Extra: dev
+Requires-Dist: ipython; extra == 'dev'
+Requires-Dist: pip-tools>=7.3.0; extra == 'dev'
+Requires-Dist: pre-commit>=3.5.0; extra == 'dev'
+Requires-Dist: pulse-eco[all-http,client,docs,lint,test]; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: mkdocs; extra == 'docs'
+Requires-Dist: mkdocs-material; extra == 'docs'
+Requires-Dist: mkdocstrings[python]; extra == 'docs'
+Requires-Dist: pymdown-extensions; extra == 'docs'
+Provides-Extra: httpx
+Requires-Dist: httpx>=0.25.1; extra == 'httpx'
+Provides-Extra: lint
+Requires-Dist: mypy~=1.8.0; extra == 'lint'
+Requires-Dist: pulse-eco[all-http,client,types]; extra == 'lint'
+Requires-Dist: ruff==0.3.2; extra == 'lint'
+Provides-Extra: requests
+Requires-Dist: requests>=2.31.0; extra == 'requests'
+Provides-Extra: test
+Requires-Dist: coverage[toml]~=7.3.4; extra == 'test'
+Requires-Dist: pulse-eco[all-http,client]; extra == 'test'
+Requires-Dist: pytest-asyncio~=0.23.5; extra == 'test'
+Requires-Dist: pytest~=8.1.1; extra == 'test'
+Requires-Dist: python-dotenv~=1.0.0; extra == 'test'
+Provides-Extra: types
+Requires-Dist: types-requests>=2.31.0; extra == 'types'
+Description-Content-Type: text/markdown
+
+# pulse-eco
+
+![GitHub Workflow Test](https://github.com/martinkozle/pulse-eco/actions/workflows/test.yml/badge.svg)
+[![codecov](https://codecov.io/gh/martinkozle/pulse-eco/branch/main/graph/badge.svg)](https://codecov.io/gh/martinkozle/pulse-eco)
+![GitHub Workflow Build](https://github.com/martinkozle/pulse-eco/actions/workflows/build.yml/badge.svg)
+
+[![PyPI](https://img.shields.io/pypi/v/pulse-eco?logo=pypi&label=PyPI&logoColor=gold)](https://pypi.org/project/pulse-eco)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pulse-eco)
+
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![types - Mypy](https://img.shields.io/badge/types-Mypy-blue.svg)](https://github.com/ambv/black)
+[![GitHub license](https://img.shields.io/github/license/martinkozle/pulse-eco)](https://github.com/martinkozle/pulse-eco/blob/main/LICENSE)
+
+[![pulse.eco logo](https://pulse.eco/img/pulse-logo-horizontal.svg)](https://pulse.eco)
+
+pulse.eco client for Python.
+
+## Installation
+
+Requires Python version 3.8+.
+
+The `pulse-eco` package comes with no base dependencies, everything is an extra. A sensible default is:
+
+```console
+python -m pip install pulse-eco[client,httpx]
+```
+
+### List of extras
+
+- `client` - includes Pydantic, used for the higher level validated client (`pulseeco.client`).
+- `requests` - includes [requests](https://requests.readthedocs.io/en/latest/) HTTP client with sync support.
+- `aiohttp` - includes [aiohttp](https://docs.aiohttp.org/en/stable/) HTTP client with async support.
+- `httpx` - includes [HTTPX](https://www.python-httpx.org/) HTTP client with both sync and async support.
+
+## Documentation
+
+API Reference and User Guide for this package is available on [GitHub Pages](https://martinkozle.github.io/pulse-eco/).
+
+Official pulse.eco REST API documentation can be found on [pulse.eco/restapi](https://pulse.eco/restapi).
+
+## Requesting data with a larger time range
+
+The pulse.eco API limits the maximum time span of data you can get from one request.
+For `/dataRaw` it is one week, while for `/avgData` it is one year.
+
+If the time range is larger than the maximum, the pulse-eco Python client performs multiple requests to the API and then joins the data together. Be aware of this.
+
+## Development
+
+### Install Hatch
+
+<https://hatch.pypa.io/latest/install/>
+
+### Create dev environment
+
+Activate a Python 3.8 environment and run:
+
+```console
+hatch env create dev
+```
+
+To delete the environment, run:
+
+```console
+hatch env remove dev
+```
+
+### Install pre-commit hooks
+
+```console
+hatch run dev:setup
+```
+
+### Create .env file
+
+Set auth credentials in `.env` file:
+
+```console
+cp .env.example .env
+```
+
+### Before committing
+
+This command must pass without errors before committing:
+
+```console
+hatch run dev:check
+```
+
+### Docs
+
+To preview the docs locally, run:
+
+```console
+hatch run dev:docs-serve
+```
