@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+<record id="appointment_request_view_search" model="ir.ui.view">
+    <field name="name">appointment_request - search</field>
+    <field name="model">appointment_request</field>
+    <field name="mode">primary</field>
+    <field
+            name="inherit_id"
+            ref="ssi_transaction_mixin.mixin_transaction_view_search"
+        />
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="partner_id" />
+                <field name="commercial_partner_id" />
+                <field name="type_id" />
+                <field name="date" />
+                <field name="appointee_id" />
+                <field name="appointment_id" />
+            </xpath>
+            <xpath expr="//group[@name='group_by']" position="inside">
+                <filter
+                        name="grp_partner"
+                        string="Contact"
+                        context="{'group_by':'partner_id'}"
+                    />
+                <filter
+                        name="grp_commercial_partner"
+                        string="Commercial Partner"
+                        context="{'group_by':'commercial_partner_id'}"
+                    />
+                <filter
+                        name="grp_type"
+                        string="Type"
+                        context="{'group_by':'type_id'}"
+                    />
+                <filter name="grp_date" string="Date" context="{'group_by':'date'}" />
+                <filter
+                        name="grp_appointee_id"
+                        string="Appointee"
+                        context="{'group_by':'appointee_id'}"
+                    />
+            </xpath>
+        </data>
+    </field>
+</record>
+
+<record id="appointment_request_view_tree" model="ir.ui.view">
+    <field name="name">appointment_request.tree</field>
+    <field name="model">appointment_request</field>
+    <field name="mode">primary</field>
+    <field name="inherit_id" ref="ssi_transaction_mixin.mixin_transaction_view_tree" />
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="partner_id" widget="many2one_avatar" />
+                <field name="commercial_partner_id" widget="many2one_avatar" />
+                <field name="date" />
+                <field name="type_id" />
+                <field name="appointee_id" widget="many2one_avatar" />
+                <field name="appointment_id" />
+            </xpath>
+        </data>
+    </field>
+</record>
+
+    <record id="appointment_request_view_form" model="ir.ui.view">
+        <field name="name">appointment_request.form</field>
+        <field name="model">appointment_request</field>
+        <field name="mode">primary</field>
+        <field
+            name="inherit_id"
+            ref="ssi_transaction_mixin.mixin_transaction_view_form"
+        />
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="partner_id" widget="many2one_avatar" />
+                    <field name="commercial_partner_id" widget="many2one_avatar" />
+                    <field name="date" />
+                    <field name="date_offset" />
+                    <field name="appointment_method" />
+                </xpath>
+                <xpath expr="//group[@name='header_right']" position="inside">
+                    <field name="type_id" />
+                    <field
+                        name="allowed_appointee_ids"
+                        widget="many2many_tags_avatar"
+                        invisible="1"
+                    />
+                    <field
+                        name="appointee_id"
+                        widget="many2one_avatar"
+                        domain="[('id','in',allowed_appointee_ids)]"
+                    />
+                    <separator string="Appointment" colspan="2" />
+                    <field
+                        name="appointment_id"
+                        domain="[('id','in',allowed_appointment_ids)]"
+                    />
+                    <field name="appointment_date" string="Date" />
+                    <field name="appointment_time_slot_id" string="Time Slot" />
+                </xpath>
+                <xpath expr="//group[@name='header_center']" position="inside">
+                    <label for="title" colspan="2" />
+                    <field name="title" nolabel="1" colspan="2" />
+                </xpath>
+                <xpath expr="//page[1]" position="before">
+                    <page
+                        name="appointment"
+                        string="Appointment"
+                        attrs="{'invisible':[('state','!=','open')]}"
+                    >
+                        <field name="allowed_appointment_ids" />
+                    </page>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="appointment_request_action" model="ir.actions.act_window">
+        <field name="name">Appointment Request</field>
+        <field name="res_model">appointment_request</field>
+        <field name="view_mode">tree,form</field>
+        <field
+            name="context"
+        >{'search_default_dom_draft':1,'search_default_dom_confirm':1,'search_default_dom_open':1}</field>
+    </record>
+
+    <menuitem
+        id="appointment_request_menu"
+        name="Requests"
+        parent="ssi_appointment.menu_root_appointment"
+        action="appointment_request_action"
+        groups="appointment_request_viewer_group"
+        sequence="20"
+    />
+</odoo>
