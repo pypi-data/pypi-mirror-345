@@ -1,0 +1,31 @@
+[dependencies]
+pyo3 = "0.24.2"
+scirs2-optimize = { version = "0.1.0-alpha.1", git = "https://github.com/lmmx/scirs", branch = "test-powell-quadratic" }
+ndarray = "0.16.1"
+
+[lib]
+name = "powell_opt"
+crate-type = ["cdylib"]
+
+[package]
+name = "powell-opt"
+version = "0.1.0"
+edition = "2024"
+authors = ["Louis Maddox <louismmx@gmail.com>"]
+description = "Python bindings for the Powell method from scirs2-optimize"
+readme = "README.md"
+license = "MIT"
+
+[profile.release]
+opt-level = 2
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+debug = false
+strip = "symbols"
+
+[dev-dependencies]
+approx = "0.5.1"
+cargo-husky = { version = "1.5.0", default-features = false, features = [
+  "user-hooks",
+] }
