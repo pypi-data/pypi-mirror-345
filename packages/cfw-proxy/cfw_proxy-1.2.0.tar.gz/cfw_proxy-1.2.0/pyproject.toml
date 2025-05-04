@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "pysrc"}
+
+[project]
+name = "cfw-proxy"
+version = "1.2.0"
+authors = [
+  { name="Alex Griffin", email="gg.alexgriffin@gmail.com" },
+]
+description = "A HTTP proxy server that works with Cloudflare workers"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "colorlog",
+    "cryptography",
+    "pydantic"
+, "loguru>=0.7.3,<0.8"]
+
+[project.urls]
+"Homepage" = "https://example.com"
+"Bug Tracker" = "https://example.com"
+
+[project.scripts]
+cfw-proxy = "cfw_proxy2.cli:main"
+
+[dependency-groups]
+dev = ["twine>=6.1.0,<7", "build>=1.2.2.post1,<2"]
+
+[tool.pixi.project]
+channels = [
+	"https://mirrors.cernet.edu.cn/anaconda/cloud/conda-forge", # conda-forge
+#    "https://mirrors.cernet.edu.cn/anaconda/pkgs/main",        # conda
+]
+platforms = ["win-64", "linux-64"]
+
+[tool.pixi.pypi-dependencies]
+cfw-proxy = { path = ".", editable = true }
+
+[tool.pixi.pypi-options]
+index-url = "https://mirrors.cernet.edu.cn/pypi/web/simple"     # pypi mirror
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+cffi = ">=1.17.1,<2"
+
+[tool.pixi.environments]
+dev = { features = ["dev"], solve-group = "default" }
+
+[tool.pixi.feature.dev.dependencies]
+icecream = ">=2.1.4,<3"
+ipykernel = ">=6.29.5,<7"
+py-spy = ">=0.4.0,<0.5"
+tuna = "*"
+pyinstrument = ">=5.0.1,<6"
