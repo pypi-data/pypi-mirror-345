@@ -1,0 +1,112 @@
+Metadata-Version: 2.2
+Name: aveytense
+Version: 0.3.44
+Summary: Library written in Python, includes several extensions for inbuilt Python solutions
+Home-page: https://aveyzan.glitch.me/tense/
+Author: Aveyzan
+Author-email: aveyzan@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: typing_extensions
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# AveyTense
+
+**AveyTense** (formally *Tense*) is a library written by Aveyzan using Python, which provides especially extensions to inbuilt Python solutions.
+
+## Features
+
+Features are included in [this page](https://aveyzan.glitch.me/tense#documentation). Some will be documented below in abridged version.
+For code changes see [this Google document](https://docs.google.com/document/d/1GC_KAOXML65jNfBZA8GhVViqPnrMoFtbLv_jHvUhBlg/edit?usp=sharing).
+
+### Classes
+- `aveytense.Tense` provides multipurpose class methods.
+- `aveytense.Color` allows to colorize the output.
+- `aveytense.Math` contains math functions and constants.
+- `aveytense.RGB` creates a RGB tuple. Its inversion is `aveytense.CMYK`
+- `aveytense.util.ParamVar` inspects parameters in callable objects. Similar to `inspect.FullArgSpec`.
+- `aveytense.util.MutableString` allows to create a mutable string (strings normally aren't mutable).
+
+### Functions
+- `aveytense.abroad()` is the same as `range()` inbuilt function, but it is more developed.
+- `aveytense.reckon()` is the same as `len()` inbuilt function, however, counts items in all iterables.
+- `aveytense.util.finalproperty()` creates final properties. Similar to `types.DynamicClassAttribute()` decorator
+
+## Getting started
+
+To install AveyTense, you only need to have Python 3.9 or above, and run the following command:
+
+```
+pip install aveytense
+```
+
+If you are out-of-date, consider checking out [releases section](https://pypi.org/project/AveyTense/#history), then
+use this command in the following way: `pip install aveytense==<version>`, like `pip install aveytense==0.3.42`.
+
+> **Note**: It is highly recommended to install latest final version of AveyTense. Do not rely on alpha, beta releases, and
+> release candidates before their final counterparts are published.
+
+> **Warning**: Since AveyTense 0.3.30, archive files will no longer be available on [this page](https://aveyzan.glitch.me/tense),
+> due to expiry of formula after orienting publication of next versions to PyPi. Instead of providing change log via file
+> `./tense/information/changes.txt` normally included in zip/7-zip files, changes will be now provided in [this Google document](https://docs.google.com/document/d/1GC_KAOXML65jNfBZA8GhVViqPnrMoFtbLv_jHvUhBlg/edit?usp=sharing).
+
+After installation process, you can import module `aveytense` (before 0.3.40 - `tense`), which imports AveyTense project into your project.
+
+## Example programs
+
+```py
+from aveytense import *
+
+a = [652, 6754]
+b = {6534: 532}
+c = "Hello, AveyTense!"
+
+### aveytense.Tense ###
+
+print(a, b, c)
+Tense.clear(a, b, c)
+# clear every mutable sequence, including sets, dictionaries, strings, instances of
+# 'types.FrameType', 'aveytense.Color' and 'aveytense.util.MutableString' classes, ...
+print(a, b, c)
+# would output empty list, empty set, and empty string (the last one will not be visible)
+
+print(Tense.append([4322, 6546, 654], 63, 124, 651, 982))
+print(Tense.extend([4322, 6546, 654], [63, 124], {651, 982}))
+# append items to and extend an iterable with variable amount of values!
+# returned is list in both cases, and primal iterable is NOT changed
+
+print(Tense.expect([23, 33, 43, 53], "< len", lambda x: Math.isNegative(x)))
+# expect negative integers and matches below iterable length; there False is returned
+
+print(list(Tense.repeat(33, 3)))
+# prints list with number 33 repeated 3 times
+
+
+### aveytense.Color ###
+
+print(Color("Hello World!", 8, 69) % Color.BOLD_ITALIC_UNDERLINE)
+# prints "Hello World!" colored blue, with bolded oblique font and line under
+
+
+### aveytense.Math ###
+
+print(Math.isPositive([432, 325, 4321]))
+# all numbers in this sequence have to be positive; there True is returned
+
+print(Math.lwdp(18))
+# prints 29 (2 * 9 = 18); abbreviation to 'least with digit product'
+
+```
