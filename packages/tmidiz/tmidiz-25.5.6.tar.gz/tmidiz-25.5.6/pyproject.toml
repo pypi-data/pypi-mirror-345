@@ -1,0 +1,132 @@
+[build-system]
+requires = ["setuptools>=80.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tmidiz"
+version = "25.5.6"
+description = "Comprehensive MIDI toolkit for MIR and symbolic music AI applications"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+  { name = "Alex Lev", email = "alexlev61@proton.me" }
+]
+maintainers = [
+  { name = "Alex Lev", email = "alexlev61@proton.me" }
+]
+dependencies = [
+  "tqdm",
+  "ipywidgets",
+  "matplotlib",
+  "numpy==1.24.4",
+  "hf-transfer",
+  "huggingface_hub"
+]
+keywords = [
+  "MIDI",
+  "music",
+  "music ai",
+  "AI",
+  "MIR",
+  "MIDI tools"
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Science/Research",
+  "Topic :: Multimedia :: Sound/Audio :: MIDI",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12"
+]
+requires-python = ">=3.6"
+
+# Entry point for a command-line interface (if applicable)
+[project.scripts]
+tmidiz = "tmidiz.cli:main"
+
+[project.optional-dependencies]
+gpu = [
+	"cupy-cuda12x",
+	"torch==2.6.0",
+	"einops",
+	"einx"	
+]
+
+dev = [
+  "pytest",
+  "pytest-cov",
+  "flake8",
+  "black",
+  "isort",
+  "mypy"
+]
+
+docs = ["pydocs"]
+
+[project.readme]
+file = "tmidiz/README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/asigalov61/tmidiz"
+SoundCloud = "https://soundcloud.com/aleksandr-sigalov-61/"
+Examples = "https://github.com/asigalov61/tmidiz/tree/main/tmidiz/examples"
+Documentation = "https://github.com/asigalov61/tmidiz/main/tmidiz/docs"
+Issues = "https://github.com/asigalov61/tmidiz/issues"
+Discussions = "https://github.com/asigalov61/tmidiz/discussions"
+HuggingFace = "https://huggingface.co/asigalov61"
+
+# Optional: setuptools package discovery configuration
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tmidiz*"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+tmidiz = ["README.md"]
+
+# --- Code Quality and Testing Tool Configurations ---
+
+[tool.black]
+line-length = 88
+target-version = ["py36", "py37", "py38", "py39", "py310", "py311", "py312"]
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+
+[tool.mypy]
+python_version = "3.6"
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+  "tests",
+]
