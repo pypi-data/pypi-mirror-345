@@ -1,0 +1,40 @@
+Metadata-Version: 2.3
+Name: pdap-access-manager
+Version: 0.1.17
+Summary: Access Manager for accessing PDAP API
+License: MIT
+Author: Max Chis
+Author-email: maxachis@gmail.com
+Requires-Python: >=3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: aiohttp (==3.11.18)
+Requires-Dist: boltons (>=25.0.0,<26.0.0)
+Requires-Dist: pydantic (==2.11.3)
+Requires-Dist: requests (==2.32.3)
+Project-URL: Documentation, https://github.com/Police-Data-Accessibility-Project/Access-Manager
+Project-URL: Homepage, https://github.com/Police-Data-Accessibility-Project/Access-Manager
+Project-URL: Issues, https://github.com/Police-Data-Accessibility-Project/Access-Manager/issues
+Project-URL: Repository, https://github.com/Police-Data-Accessibility-Project/Access-Manager
+Description-Content-Type: text/markdown
+
+# Access-Manager
+
+This is a small package that makes it easy to access the PDAP API.
+
+It is utilized in several other PDAP repositories
+
+
+## Usage
+
+Utilizes an `aiohttp` client session, which can either be passed into the constructor, or automatically generated when using the AccessManager as a context manager.
+
+```python
+from pdap_access_manager import AccessManager
+
+async with AccessManager("email", "password") as am:
+    await am.make_request(RequestInfo(...))
+```
