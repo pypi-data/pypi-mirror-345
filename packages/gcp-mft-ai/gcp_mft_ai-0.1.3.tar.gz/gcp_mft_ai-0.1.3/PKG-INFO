@@ -1,0 +1,158 @@
+Metadata-Version: 2.4
+Name: gcp-mft-ai
+Version: 0.1.3
+Summary: AI-enhanced Managed File Transfer for Google Cloud (GCS, Filestore, Storage Transfer Service)
+Home-page: https://github.com/yourgithub/gcp-mft-ai
+Author: Raghava Chellu
+Author-email: your.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: google-cloud-storage
+Requires-Dist: cryptography
+Requires-Dist: scikit-learn
+Requires-Dist: pandas
+Requires-Dist: pyyaml
+Requires-Dist: requests
+Requires-Dist: joblib
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# gcp-mft-ai
+
+![PyPI version](https://img.shields.io/pypi/v/gcp-mft-ai)
+![License](https://img.shields.io/pypi/l/gcp-mft-ai)
+
+> **AI-powered Managed File Transfer for Google Cloud (GCS, Filestore, Storage Transfer Service)**
+
+```gcp-mft-ai``` is an open-source, production-grade Python library that transforms traditional file transfers on Google Cloud Platform (GCP) into intelligent, ML-optimized, secure operations.
+
+It automates, predicts, protects, and optimizes file movement across:
+- Google Cloud Storage (GCS)
+- Cloud Filestore (NFS-based File System)
+- Storage Transfer Service (STS API)
+
+Designed for large-scale enterprises, DevOps engineers, and AI/ML pipelines, gcp-mft-ai brings the future of AI-enhanced Managed File Transfer (MFT) into your cloud workflows.
+
+## Features
+-  Upload/download large files intelligently
+-  AES-256 encryption support
+-  Predict transfer time with ML
+- Optimize best transfer windows
+- Detect anomalies in transfer logs
+
+## Core Capabilities
+
+- **Multi-Service MFT**: GCS bucket transfers, Filestore filesystem moves, GCP Storage Transfer Service orchestration
+- **Encryption at Source**: AES-256-GCM authenticated encryption (optional per transfer)
+- **ML-Based Transfer Time Prediction**: Predict upload/download times using Linear Regression or Random Forest models
+- **Anomaly Detection**: Identify unusual slowdowns, spikes, or transfer errors automatically using Isolation Forest
+- **Transfer Window Optimization**: Find the best network window (hour of day) to minimize congestion and maximize throughput
+- **Resilient Transfers**: Automatic retries, resumable uploads for large objects, GCP API throttling handling
+- **Config-Driven Automation**: Manage all settings via simple YAML or JSON configuration files
+
+## Internal Architecture
+
+- **GCS Transfers**:
+ Built atop the google-cloud-storage SDK for resumable, secure, and reliable object transfers.
+
+- **Filestore Transfers**:
+ Abstracted over NFS filesystem mounts, allowing simple shutil-based secure moves between instances or buckets.
+
+- **Storage Transfer Service API**:
+ Dynamically creates and monitors cloud-to-cloud transfer jobs via authenticated REST API calls (fully IAM compliant).
+
+- **Prediction Engine**:
+    i) Trained on historical transfer data (file_size_mb, transfer_time_sec), supports:
+    ii) Linear Regression (lightweight, fast)
+    iii) Random Forest (higher-accuracy, non-linear patterns)
+
+- **Anomaly Detection**:
+ Isolation Forest model isolates unusual file size vs time behavior — flagging spikes, failures, and risks early.
+
+- **Encryption Layer**:
+ AES-256 encryption with GCM mode ensures data integrity and confidentiality before movement.
+
+- **Optimization Layer**:
+ Hour-by-hour analysis of historical transfer speeds to recommend the best operational windows.
+
+## Security-First Design
+
+- **Encryption**: Native AES-256-GCM encryption/decryption for any file before or after cloud storage.
+
+- **Token Management**: Secure OAuth2 token usage for Storage Transfer Service API access.
+
+- **No plaintext secrets**: Designed for service account usage via environment or config.
+
+## Usage Overview
+
+- **Upload to GCS**: upload_to_gcs(source_path, bucket, destination_path)
+- **Download from GCS**: download_from_gcs(blob_name, bucket, destination_path)
+- **Upload to Filestore**: upload_to_filestore(source_path, mount_point, relative_path)
+- **Launch Storage Transfer Job**: launch_storage_transfer_job(source_bucket, destination_bucket, project_id)
+- **Predict Transfer Time**: predict_transfer_time(file_size_mb)
+- **Detect Anomalies**: detect_transfer_anomalies(csv_log_path)
+- **Find Best Transfer Window**: find_best_transfer_window(csv_log_path)
+
+## Real-World Use Cases
+
+- **Media & Entertainment**: Migrate large UHD videos to GCS for editing pipelines
+- **AI/ML Model Training**: Transfer terabyte datasets securely and predictably to TPU training zones
+- **Backup & Disaster Recovery**: Automate and encrypt cross-region backup uploads with anomaly alerting
+- **Healthcare & Finance**: Securely move critical records across cloud environments with end-to-end encryption
+- **Retail Analytics**: Optimize massive log file ingestion pipelines to GCP data lakes
+
+## Technology Stack
+
+- **Python 3.7+**
+
+- **Google Cloud SDKs** (google-cloud-storage, requests)
+
+- **Cryptography** (AES-256-GCM secure cipher)
+
+- **scikit-learn** (ML Models: Linear Regression, Random Forest, Isolation Forest)
+
+- **pandas** (Data preparation for ML)
+
+- **pyyaml** (Config loading)
+
+- **joblib** (Model persistence)
+
+## MIT License
+
+**Author**: Raghava Chellu
+
+MIT License is freely usable for academic, personal, and commercial projects.
+
+##  Installation
+
+```bash
+pip install gcp-mft-ai
+```
+
+## Deployment Readiness
+- **PyPI-ready** (setup.py, pyproject.toml)
+
+- **Full unit testing** (unittest framework)
+
+- **Full documentation** (README.md, examples/)
+
+- **Cloud deployment friendly** (Docker/CI/CD pipelines)
+
+## Conclusion
+Traditional file transfers are simple. Modern file transfers must be intelligent, secure, and predictive.
+```gcp-mft-ai``` brings cutting-edge AI and cloud-native automation to Managed File Transfer on Google Cloud securing your data, optimizing your operations, and helping you move smarter, stronger, and faster.
+
