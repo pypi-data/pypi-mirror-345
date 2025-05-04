@@ -1,0 +1,150 @@
+Metadata-Version: 2.4
+Name: octodns-constellix
+Version: 1.0.0
+Summary:  ConstellixProvider provider for octoDNS
+Home-page: https://github.com/octodns/octodns-constellix
+Author: Ross McFarland
+Author-email: rwmcfa1@gmail.com
+License: MIT
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: octodns>=1.5.0
+Requires-Dist: pycountry-convert>=0.7.2
+Requires-Dist: requests>=2.27.0
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-network; extra == "dev"
+Requires-Dist: requests_mock; extra == "dev"
+Requires-Dist: black<25.0.0,>=24.3.0; extra == "dev"
+Requires-Dist: build>=0.7.0; extra == "dev"
+Requires-Dist: isort>=5.11.5; extra == "dev"
+Requires-Dist: pyflakes>=2.2.0; extra == "dev"
+Requires-Dist: readme_renderer[md]>=26.0; extra == "dev"
+Requires-Dist: twine>=3.4.2; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-network; extra == "test"
+Requires-Dist: requests_mock; extra == "test"
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+## ConstellixProvider provider for octoDNS
+
+An [octoDNS](https://github.com/octodns/octodns/) provider that targets [Constellix](https://constellix.com/).
+
+### Installation
+
+#### Command line
+
+```
+pip install octodns-constellix
+```
+
+#### requirements.txt/setup.py
+
+Pinning specific versions or SHAs is recommended to avoid unplanned upgrades.
+
+##### Versions
+
+```
+# Start with the latest versions and don't just copy what's here
+octodns==0.9.14
+octodns-constellix==0.0.1
+```
+
+##### SHAs
+
+```
+# Start with the latest/specific versions and don't just copy what's here
+-e git+https://git@github.com/octodns/octodns.git@9da19749e28f68407a1c246dfdf65663cdc1c422#egg=octodns
+-e git+https://git@github.com/octodns/octodns-constellix.git@ec9661f8b335241ae4746eea467a8509205e6a30#egg=octodns_constellix
+```
+
+### Configuration
+
+```yaml
+providers:
+  constellix:
+    class: octodns_constellix.ConstellixProvider
+    # Your Contellix api key (required)
+    api_key: env/CONSTELLIX_API_KEY
+    # Your Constellix secret key (required)
+    secret_key: env/CONSTELLIX_SECRET_KEY
+    # Amount of time to wait between requests to avoid
+    # ratelimit (optional)
+    ratelimit_delay: 0.0
+```
+
+### Support Information
+
+#### Records
+
+ConstellixProvider supports A, AAAA, ALIAS (ANAME), CAA, CNAME, MX, NS, PTR, SPF, SRV, and TXT. There are some restrictions on CAA tags support.
+
+#### Dynamic
+
+ConstellixProvider supports dynamic records.
+
+#### Health Check Options
+
+See https://github.com/octodns/octodns/blob/master/docs/dynamic_records.md#health-checks for information on health checking for dynamic records. ConstellixProvider supports the following options:
+
+| Key  | Description | Default |
+|--|--|--|
+| sonar_interval | Sonar check interval | ONEMINUTE |
+| sonar_port | Sonar check port | 80 |
+| sonar_regions | Sonar check regions for a check. WORLD or a list of values | WORLD |
+| sonar_type | Sonar check type TCP/HTTP | TCP |
+
+Sonar check interval (sonar_interval) possible values:
+
+* FIVESECONDS
+* THIRTYSECONDS
+* ONEMINUTE
+* TWOMINUTES
+* THREEMINUTES
+* FOURMINUTES
+* FIVEMINUTES
+* TENMINUTES
+* THIRTYMINUTES
+* HALFDAY
+* DAY
+
+Sonar check regions (sonar_regions) possible values:
+
+* ASIAPAC
+* EUROPE
+* NACENTRAL
+* NAEAST
+* NAWEST
+* OCEANIA
+* SOUTHAMERICA
+
+```yaml
+---
+  octodns:
+    constellix:
+      healthcheck:
+        sonar_interval: DAY
+        sonar_port: 80
+        sonar_regions:
+        - ASIAPAC
+        - EUROPE
+        sonar_type: TCP
+```
+
+### Development
+
+See the [/script/](/script/) directory for some tools to help with the development process. They generally follow the [Script to rule them all](https://github.com/github/scripts-to-rule-them-all) pattern. Most useful is `./script/bootstrap` which will create a venv and install both the runtime and development related requirements. It will also hook up a pre-commit hook that covers most of what's run by CI.
