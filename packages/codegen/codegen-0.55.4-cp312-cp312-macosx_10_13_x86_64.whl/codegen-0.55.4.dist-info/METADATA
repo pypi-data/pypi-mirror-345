@@ -1,0 +1,193 @@
+Metadata-Version: 2.4
+Name: codegen
+Version: 0.55.4
+Summary: Scriptable interface to a powerful, multi-lingual language server built on top of Tree-sitter
+Project-URL: Homepage, https://www.codegen.com/
+Project-URL: Repository, https://github.com/codegen-sh/codegen-sdk
+Project-URL: Download, https://github.com/codegen-sh/codegen-sdk/archive/6b5ea60bde1eaca4c090b7dc6ec3eaa71d143d6a.zip
+Project-URL: Changelog, https://docs.codegen.com/changelog/changelog
+Project-URL: Releasenotes, https://github.com/codegen-sh/codegen-sdk/releases
+Project-URL: Issues, https://github.com/codegen-sh/codegen-sdk/issues
+Project-URL: Documentation, https://docs.codegen.com
+Project-URL: Playground, https://www.codegen.sh/
+Author-email: Codegen Team <team@codegen.sh>
+License: Apache-2.0
+License-File: LICENSE
+Keywords: code generation,codebase,codebase analysis,codebase manipulation,codebase transformation,codegen,refactoring
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Environment :: MacOS X
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Code Generators
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: <3.14,>=3.12
+Requires-Dist: astor<1.0.0,>=0.8.1
+Requires-Dist: click>=8.1.7
+Requires-Dist: codegen-api-client
+Requires-Dist: codeowners<1.0.0,>=0.6.0
+Requires-Dist: colorlog>=6.9.0
+Requires-Dist: dataclasses-json<1.0.0,>=0.6.4
+Requires-Dist: datamodel-code-generator>=0.26.5
+Requires-Dist: datasets
+Requires-Dist: dicttoxml<2.0.0,>=1.7.16
+Requires-Dist: docker>=6.1.3
+Requires-Dist: docstring-parser<1.0,>=0.16
+Requires-Dist: fastapi[standard]<1.0.0,>=0.115.2
+Requires-Dist: gitpython==3.1.44
+Requires-Dist: giturlparse
+Requires-Dist: hatch-vcs>=0.4.0
+Requires-Dist: hatchling>=1.25.0
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: humanize<5.0.0,>=4.10.0
+Requires-Dist: lazy-object-proxy>=0.0.0
+Requires-Dist: lox>=0.12.0
+Requires-Dist: mcp[cli]
+Requires-Dist: mini-racer>=0.12.4
+Requires-Dist: modal>=0.73.45
+Requires-Dist: neo4j
+Requires-Dist: networkx>=3.4.1
+Requires-Dist: numpy>=2.2.2
+Requires-Dist: openai==1.70.0
+Requires-Dist: packaging>=24.2
+Requires-Dist: pip>=24.3.1
+Requires-Dist: plotly<7.0.0,>=5.24.0
+Requires-Dist: psutil>=5.8.0
+Requires-Dist: pydantic-core>=2.23.4
+Requires-Dist: pydantic-settings>=2.0.0
+Requires-Dist: pydantic<3.0.0,>=2.9.2
+Requires-Dist: pygit2>=1.16.0
+Requires-Dist: pygithub==2.6.1
+Requires-Dist: pyinstrument>=5.0.0
+Requires-Dist: pyjson5==1.6.8
+Requires-Dist: pyright<2.0.0,>=1.1.372
+Requires-Dist: pytest-snapshot>=0.9.0
+Requires-Dist: python-dotenv>=1.0.1
+Requires-Dist: python-levenshtein<1.0.0,>=0.25.1
+Requires-Dist: python-semantic-release
+Requires-Dist: requests>=2.32.3
+Requires-Dist: rich-click>=1.8.5
+Requires-Dist: rich<14.0.0,>=13.7.1
+Requires-Dist: rustworkx>=0.15.1
+Requires-Dist: sentry-sdk==2.27.0
+Requires-Dist: slack-sdk
+Requires-Dist: starlette<1.0.0,>=0.16.0
+Requires-Dist: tabulate<1.0.0,>=0.9.0
+Requires-Dist: termcolor>=2.4.0
+Requires-Dist: tiktoken<1.0.0,>=0.5.1
+Requires-Dist: tomlkit>=0.13.2
+Requires-Dist: tqdm>=4.67.1
+Requires-Dist: tree-sitter-javascript>=0.23.1
+Requires-Dist: tree-sitter-python>=0.23.4
+Requires-Dist: tree-sitter-typescript>=0.23.2
+Requires-Dist: tree-sitter>=0.23.1
+Requires-Dist: typing-extensions>=4.12.2
+Requires-Dist: unidiff>=0.7.5
+Requires-Dist: urllib3>=2.0.0
+Requires-Dist: uvicorn[standard]>=0.30.0
+Requires-Dist: watchfiles<1.1.0,>=1.0.0
+Requires-Dist: wrapt<2.0.0,>=1.16.0
+Requires-Dist: xmltodict<1.0.0,>=0.13.0
+Provides-Extra: lsp
+Requires-Dist: attrs>=25.1.0; extra == 'lsp'
+Requires-Dist: lsprotocol==2024.0.0b1; extra == 'lsp'
+Requires-Dist: pygls>=2.0.0a2; extra == 'lsp'
+Provides-Extra: pink
+Requires-Dist: codegen-sdk-pink>=0.1.0; extra == 'pink'
+Provides-Extra: types
+Requires-Dist: types-networkx>=3.2.1.20240918; extra == 'types'
+Requires-Dist: types-requests>=2.32.0.20241016; extra == 'types'
+Requires-Dist: types-tabulate>=0.9.0.20240106; extra == 'types'
+Requires-Dist: types-toml>=0.10.8.20240310; extra == 'types'
+Description-Content-Type: text/markdown
+
+<br />
+
+<p align="center">
+  <a href="https://docs.codegen.com">
+    <img src="https://i.imgur.com/6RF9W0z.jpeg" />
+  </a>
+</p>
+
+<h2 align="center">
+  The SWE that Never Sleeps
+</h2>
+
+<div align="center">
+
+[![PyPI](https://img.shields.io/badge/PyPi-codegen-gray?style=flat-square&color=blue)](https://pypi.org/project/codegen/)
+[![Documentation](https://img.shields.io/badge/Docs-docs.codegen.com-purple?style=flat-square)](https://docs.codegen.com)
+[![Slack Community](https://img.shields.io/badge/Slack-Join-4A154B?logo=slack&style=flat-square)](https://community.codegen.com)
+[![License](https://img.shields.io/badge/Code%20License-Apache%202.0-gray?&color=gray)](https://github.com/codegen-sh/codegen-sdk/tree/develop?tab=Apache-2.0-1-ov-file)
+[![Follow on X](https://img.shields.io/twitter/follow/codegen?style=social)](https://x.com/codegen)
+
+</div>
+
+<br />
+
+The Codegen SDK provides a programmatic interface to code agents provided by [Codegen](https://codegen.com).
+
+```python
+from codegen.agents.agent import Agent
+
+# Initialize the Agent with your organization ID and API token
+agent = Agent(
+    org_id="YOUR_ORG_ID",  # Find this at codegen.com/developer
+    token="YOUR_API_TOKEN",  # Get this from codegen.com/developer
+    # base_url="https://codegen-sh-rest-api.modal.run",  # Optional - defaults to production
+)
+
+# Run an agent with a prompt
+task = agent.run(prompt="Implement a new feature to sort users by last login.")
+
+# Check the initial status
+print(task.status)
+
+# Refresh the task to get updated status (tasks can take time)
+task.refresh()
+
+# Check the updated status
+print(task.status)
+
+# Once task is complete, you can access the result
+if task.status == "completed":
+    print(task.result)  # Result often contains code, summaries, or links
+```
+
+## Installation and Usage
+
+Install the SDK using pip or uv:
+
+```bash
+pip install codegen
+# or
+uv pip install codegen
+```
+
+Get started at [codegen.com](https://codegen.com) and get your API token at [codegen.com/developer](https://codegen.com/developer).
+
+You can interact with your AI engineer via API, or chat with it in Slack, Linear, Github, or on our website.
+
+## Resources
+
+- [Docs](https://docs.codegen.com)
+- [Getting Started](https://docs.codegen.com/introduction/getting-started)
+- [Contributing](CONTRIBUTING.md)
+- [Contact Us](https://codegen.com/contact)
+
+## Contributing
+
+Please see our [Contributing Guide](CONTRIBUTING.md) for instructions on how to set up the development environment and submit contributions.
+
+## Enterprise
+
+For more information on enterprise engagements, please [contact us](https://codegen.com/contact) or [request a demo](https://codegen.com/request-demo).
