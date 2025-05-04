@@ -1,0 +1,97 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "suhteita"
+version = "2025.5.3"
+description = "Relationships (Finnish: suhteita) maintained across distances as load test core."
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{ name = "Stefan Hagen", email = "stefan@hagen.link" }]
+maintainers = [{ name = "Stefan Hagen", email = "stefan@hagen.link" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.9",
+]
+keywords = ["developer-tools", "validation", "verification"]
+dependencies = [
+    "atlassian-python-api >= 3.41.3",
+    "jmespath >= 1.0.1",
+    "robotframework >= 6.1.1",
+    "wrapt >= 1.16.0",
+    'tomli; python_version < "3.11"',
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["black", "coverage", "hypothesis", "mypy", "pytest", "pytest-cov", "pytest-flake8", "ruff", "types-jmespath"]
+
+[project.urls]
+Homepage = "https://git.sr.ht/~sthagen/suhteita"
+Bug-Tracker = "https://todo.sr.ht/~sthagen/suhteita"
+Documentation = "https://codes.dilettant.life/docs/suhteita"
+Source-Code = "https://git.sr.ht/~sthagen/suhteita"
+Test-Coverage = "https://codes.dilettant.life/coverage/suhteita"
+
+[project.scripts]
+suhteita = "suhteita.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["suhteita", "suhteita.robot", "suhteita.robot.TicketSystemLibrary"]
+exclude = ["test*"]
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+target-version = [ "py39", "py310", "py311", "py312" ]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+precision = 2
+exclude_lines = [ "pragma: no cover", "raise NotImplementedError", "if TYPE_CHECKING:", "@overload" ]
+omit = [ "*/__main__.py" ]
+
+[tool.mypy]
+strict = true
+implicit_reexport = true
+
+[tool.pytest]
+testpaths = "test"
+filterwarnings = "error"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 120
+exclude = [ ".direnv", ".eggs", ".git", ".mypy_cache", ".ruff_cache", ".venv", "__pypackages__", "bin", "dist", "venv" ]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [ "E", "F", "Q" ]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "single"
+
+[tool.ruff.lint.flake8-import-conventions.aliases]
+altair = "alt"
+"matplotlib.pyplot" = "plt"
+numpy = "np"
+pandas = "pd"
+seaborn = "sns"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 42
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [ "E402" ]
