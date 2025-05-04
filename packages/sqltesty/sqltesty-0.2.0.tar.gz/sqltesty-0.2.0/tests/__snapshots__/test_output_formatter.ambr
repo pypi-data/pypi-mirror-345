@@ -1,0 +1,125 @@
+# serializer version: 1
+# name: TestFormatRowBasedDiff.test_with_column_mismatch
+  '''
+  
+  Comparing DataFrames:
+  
+  Column Differences:
+    - Missing: ['name', 'value']
+    + Extra: ['full_name', 'score']
+      Common: 1 columns
+  
+  Detailed Row Comparison:
+  ┏━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━┓
+  ┃ Row ID   ┃ Type       ┃ id ┃ name    ┃ value ┃ full_name ┃ score ┃
+  ┡━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━╇━━━━━━━┩
+  │ 0        │ Expected   │ 1  │ Alice   │ 10.5  │ -         │ -     │
+  │          │ Actual     │ 1  │ -       │ -     │ -         │ -     │
+  ├──────────┼────────────┼────┼─────────┼───────┼───────────┼───────┤
+  │ 1        │ Expected   │ 2  │ Bob     │ 20.0  │ -         │ -     │
+  │          │ Actual     │ 2  │ -       │ -     │ -         │ -     │
+  ├──────────┼────────────┼────┼─────────┼───────┼───────────┼───────┤
+  │ 2        │ Expected   │ 3  │ Charlie │ 30.5  │ -         │ -     │
+  │          │ Actual     │ 3  │ -       │ -     │ -         │ -     │
+  └──────────┴────────────┴────┴─────────┴───────┴───────────┴───────┘
+  
+  '''
+# ---
+# name: TestFormatRowBasedDiff.test_with_row_count_mismatch
+  '''
+  
+  Comparing DataFrames:
+  
+  Row Count Mismatch:
+    Expected: 3 rows
+    Actual: 2 rows
+    Missing 1 rows
+  
+  Detailed Row Comparison:
+  ┏━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┓
+  ┃ Row ID   ┃ Type       ┃ id            ┃ name    ┃ value ┃
+  ┡━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━┩
+  │ 2        │ Expected   │ 3             │ Charlie │ 30.5  │
+  │          │ Actual     │ Row not found │ -       │ -     │
+  └──────────┴────────────┴───────────────┴─────────┴───────┘
+  
+  '''
+# ---
+# name: TestFormatRowBasedDiff.test_with_value_diffs
+  '''
+  
+  Comparing DataFrames:
+  
+  Detailed Row Comparison:
+  ┏━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━┳━━━━━━━┳━━━━━━━┓
+  ┃ Row ID   ┃ Type       ┃ id ┃ name  ┃ value ┃
+  ┡━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━╇━━━━━━━╇━━━━━━━┩
+  │ 1        │ Expected   │ 2  │ Bob   │ 20.0  │
+  │          │ Actual     │ 2  │ Bobby │ 25.0  │
+  └──────────┴────────────┴────┴───────┴───────┘
+  
+  '''
+# ---
+# name: TestFormatTestSummary.test_summary_all_passed
+  '''
+  
+  ✓ All 5 tests passed!
+  
+  ████████████████████████████████████████ 100.0% passed
+  
+  '''
+# ---
+# name: TestFormatTestSummary.test_summary_some_failed
+  '''
+  
+  ✗ 2 of 5 tests failed.
+  
+  ████████████████████████████████████████ 60.0% passed
+  
+  '''
+# ---
+# name: test_format_column_mismatch
+  '''
+  
+  Column Differences:
+    - Missing: ['name', 'value']
+    + Extra: ['full_name', 'score']
+      Common: 1 columns
+  
+  '''
+# ---
+# name: test_format_error_message
+  '''
+  ✗ Test failed: test_query
+    Error type: Column mismatch
+    Expected columns don't match actual columns
+  
+  '''
+# ---
+# name: test_format_row_based_diff
+  '''
+  ┏━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━┳━━━━━━━┳━━━━━━━┓
+  ┃ Row ID   ┃ Type       ┃ id ┃ name  ┃ value ┃
+  ┡━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━╇━━━━━━━╇━━━━━━━┩
+  │ 1        │ Expected   │ 2  │ Bob   │ 20.0  │
+  │          │ Actual     │ 2  │ Bobby │ 25.0  │
+  └──────────┴────────────┴────┴───────┴───────┘
+  
+  '''
+# ---
+# name: test_format_row_count_mismatch
+  '''
+  
+  Row Count Mismatch:
+    Expected: 3 rows
+    Actual: 2 rows
+    Missing 1 rows
+  
+  '''
+# ---
+# name: test_format_success_message
+  '''
+  ✓ Test passed: test_query
+  
+  '''
+# ---
