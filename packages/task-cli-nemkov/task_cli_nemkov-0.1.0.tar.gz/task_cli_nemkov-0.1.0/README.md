@@ -1,0 +1,113 @@
+# Task Tracker CLI
+
+![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+
+A command-line task manager that stores tasks in JSON format. Perfect for personal productivity tracking.
+
+## Features
+
+- ✅ Add, update, and delete tasks
+- 📌 Mark tasks as todo/in-progress/done
+- 📋 List tasks with status filtering
+- 💾 Automatic JSON storage
+- ⏱️ Timestamp tracking
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/task-tracker.git
+   cd task-tracker
+   ```
+
+2. (Optional) Create virtual environment:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # Linux/Mac
+    venv\Scripts\activate     # Windows
+    ```
+## Usage
+
+# Add a new task
+```bash
+task-cli add "Buy groceries"
+```
+# Update a task
+```bash
+task-cli update 1 "Buy groceries and cook dinner"
+```
+# Delete a task
+```bash
+task-cli delete 1
+```
+# Change task status
+```bash
+task-cli mark-in-progress 1
+task-cli mark-done 1
+```
+# List tasks
+```bash
+task-cli list
+task-cli list done
+task-cli list in-progress
+task-cli list todo
+```
+## Data Structure
+
+Tasks are stored in data/tasks.json with this format:
+```json
+{
+  "1": {
+    "title": "Buy groceries",
+    "status": "todo",
+    "time": "2023-07-15T10:30:00.000000"
+  }
+}
+```
+
+## Development Setup
+
+1. Install dependencies:
+```bash
+pip install -e .
+```
+
+2. Run tests:
+```bash
+pytest tests/
+```
+
+3. Code quality checks:
+```bash
+mypy taskcli/
+flake8 taskcli/
+```
+
+## Configuration
+
+Customize storage location by setting environment variable:
+```bash
+export TASKCLI_DATA_PATH="/custom/path/data.json"
+```
+
+## Roadmap
+
+- Add due dates and priorities
+- Implement task categories
+- Add search functionality
+- Develop a web interface
+
+## Contributing
+
+1. Fork the project
+2. Create your feature branch (git checkout -b feature/AmazingFeature)
+3. Commit your changes (git commit -m 'Add some AmazingFeature')
+4. Push to the branch (git push origin feature/AmazingFeature)
+5. Open a Pull Request
+
+## License
+
+Distributed under the MIT License. See LICENSE for more information.
+
+Made with ❤️ by Nemkov
