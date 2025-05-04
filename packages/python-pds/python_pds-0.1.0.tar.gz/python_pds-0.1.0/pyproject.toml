@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-pds"
+version = "0.1.0"
+description = "Portable Data Store for efficient storage and retrieval of JSON-serializable objects with Zstandard compression."
+readme = "README.md"
+requires-python = ">=3.7"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Oliver Kiss", email = "python-pds@proton.me" },
+    { name = "Markus Mobius"}
+]
+
+dependencies = [
+    "zstandard"
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha", # Or 4 - Beta, 5 - Production/Stable
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Database",
+    "Topic :: System :: Archiving :: Compression",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+keywords = ["pds", "storage", "key-value", "zstandard", "zstd", "compression", "json", "datastore"]
+
+[project.urls]
+"Homepage" = "https://github.com/kiss-oliver/PDS"
+"Repository" = "https://github.com/kiss-oliver/PDS"
+"Bug Tracker" = "https://github.com/kiss-oliver/PDS/issues"
+# "Documentation" = "..."
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.8",
+]

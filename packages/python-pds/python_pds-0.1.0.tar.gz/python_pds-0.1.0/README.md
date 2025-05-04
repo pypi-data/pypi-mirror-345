@@ -1,0 +1,304 @@
+# PDS - Portable Data Store
+
+**PDS (Portable Data Store)** is a Python class for efficiently storing and retrieving large amounts of key-value data, where keys are hierarchical strings and values are arbitrary JSON-serializable Python objects. It leverages Zstandard (zstd) compression, including optional dictionary-based compression, to minimize storage space, particularly for datasets with repetitive structures or content (like collections of JSON objects, log entries, etc.).
+
+It's designed for scenarios where you need to store structured data persistently in a single object but want faster random access and potentially better compression than simply storing individual JSON files or using less specialized formats.
+
+## Table of Contents
+
+* [Features](#features)
+* [Dependencies](#dependencies)
+* [Installation](#installation)
+* [Basic Usage](#basic-usage)
+    * [Creating and Saving](#creating-and-saving)
+    * [Opening and Reading](#opening-and-reading)
+    * [Modifying Data](#modifying-data)
+* [Compression Options](#compression-options)
+    * [`none`](#none)
+    * [`zstd_no_dict`](#zstd_no_dict)
+    * [`zstd_dict`](#zstd_dict)
+    * [Choosing a Mode](#choosing-a-mode)
+* [API Reference](#api-reference)
+* [File Format (`.pds`)](#file-format-pds)
+* [Considerations and Limitations](#considerations-and-limitations)
+* [License](#license)
+
+## Features
+
+* **Hierarchical Keys:** Use lists of strings (e.g., `["logs", "2025-05-02", "errors"]`) to organize data.
+* **JSON-Serializable Values:** Store any Python object that can be serialized to JSON (dictionaries, lists, strings, numbers, booleans, etc.).
+* **Metadata Storage:** Attach a JSON-serializable dictionary as metadata to the entire store.
+* **Efficient Compression:** Utilizes Zstandard (zstd) for fast and effective compression.
+    * **No Compression:** Option to store data uncompressed.
+    * **Standard Zstd:** Compress values using zstd without a dictionary.
+    * **Dictionary Compression:** Automatically train a zstd dictionary based on data samples during `save` for potentially significant size reduction on repetitive datasets.
+* **Random Access Reads:** Retrieve individual values efficiently using their key path via an internal index, without needing to scan the entire file.
+* **Data Modification:** Add, update (by adding with the same key), and remove keys. Changes are initially stored in temp files and consolidated during `save`.
+* **Context Manager Support:** Use `with PDS(...) as store:` for automatic resource cleanup (`dispose`).
+* **Temporary File Management:** Handles temporary storage for added/modified data transparently before saving.
+
+## Dependencies
+
+* **zstandard:** The Python bindings for Zstandard.
+
+## Installation
+
+1.  **Install the `zstandard` library:**
+    ```bash
+    pip install zstandard
+    ```
+2.  **Include `PDS.py`:** Place the `PDS.py` file containing the class definition in your Python project directory or ensure it's accessible via your Python path.
+3.  **Import:**
+    ```python
+    from PDS import PDS
+    ```
+
+## Basic Usage
+
+### Creating and Saving
+
+```python
+from PDS import PDS
+import os
+
+filename = "my_data_store.pds"
+
+# Remove old file if it exists
+if os.path.exists(filename):
+    os.remove(filename)
+
+# Use zstd_dict mode (will train a dictionary on save if data warrants it)
+# Use context manager for automatic cleanup
+try:
+    with PDS(compression_mode='zstd_dict') as pds:
+        # Set some metadata
+        pds.set_meta_data({
+            "project": "Web Scraper",
+            "version": "1.0",
+            "timestamp": "2025-05-02T11:00:00Z"
+        })
+
+        # Add data using hierarchical keys
+        pds.add_key(
+            ["articles", "example.com", "article1"],
+            {"title": "Example Article", "content": "Lots of text...", "tags": ["news", "example"]}
+        )
+        pds.add_key(
+            ["articles", "example.com", "article2"],
+            {"title": "Another Example", "content": "More text data...", "tags": ["tech"]}
+        )
+        pds.add_key(
+            ["logs", "scraper1", "errors"],
+            [{"error": "Timeout", "url": "..."}, {"error": "404", "url": "..."}]
+        )
+        pds.add_key(
+            ["config", "settings"],
+            {"retry_count": 3, "timeout": 30}
+        )
+
+        # Data is held in temp files until save
+
+        print(f"Saving data to {filename}...")
+        pds.save(filename)
+        print("Save complete.")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+```
+
+### Opening and Reading
+
+```python
+from PDS import PDS
+import json
+
+filename = "my_data_store.pds"
+
+try:
+    # Open an existing PDS file (no mode needed for opening)
+    with PDS() as pds:
+        print(f"Opening {filename}...")
+        pds.open(filename)
+        print("File opened.")
+
+        # Read metadata
+        print("\nMetadata:")
+        print(json.dumps(pds.meta_data, indent=2))
+
+        # Get the structure of keys
+        print("\nKey Structure:")
+        print(json.dumps(pds.get_keys(), indent=2))
+        # Note: The actual values in the key structure are internal value IDs,
+        # not the data itself. This just shows the hierarchy.
+
+        # Read specific values
+        print("\nReading specific keys:")
+        article1_data = pds.read_key(["articles", "example.com", "article1"])
+        print(f"Article 1 Title: {article1_data.get('title')}")
+
+        error_logs = pds.read_key(["logs", "scraper1", "errors"])
+        print(f"Number of errors logged: {len(error_logs)}")
+
+        # Attempt to read a non-existent key
+        try:
+            non_existent = pds.read_key(["non", "existent", "key"])
+        except KeyError as ke:
+            print(f"\nCorrectly caught error for non-existent key: {ke}")
+
+except FileNotFoundError:
+    print(f"Error: File not found - {filename}")
+except Exception as e:
+    print(f"An error occurred: {e}")
+```
+
+### Modifying Data
+
+You can open an existing store, add/remove keys, and then save (usually to a new file, but you can also overwrite the existing one).
+
+```python
+from PDS import PDS
+import os
+
+filename_v1 = "my_data_store.pds"
+filename_v2 = "my_data_store_v2.pds"
+
+# Ensure v1 exists from previous example
+if not os.path.exists(filename_v1):
+    print(f"Error: {filename_v1} not found. Run the creation example first.")
+else:
+    try:
+        # Open the existing store
+        with PDS() as pds:
+            pds.open(filename_v1)
+            print(f"Opened {filename_v1} for modification.")
+
+            # Add a new key
+            pds.add_key(["status", "progress"], {"completed": 0.75, "state": "running"})
+            print("Added new key ['status', 'progress']")
+
+            # Remove an existing key
+            try:
+                pds.remove_key(["logs", "scraper1", "errors"])
+                print("Removed key ['logs', 'scraper1', 'errors']")
+            except KeyError:
+                 print("Key ['logs', 'scraper1', 'errors'] not found for removal.")
+
+            # Update an existing key by adding it again
+            pds.add_key(
+                ["config", "settings"],
+                {"retry_count": 5, "timeout": 60, "user_agent": "PDS Bot"} # Overwrites previous value
+            )
+            print("Updated key ['config', 'settings']")
+
+
+            # Save changes to a new file
+            print(f"\nSaving modified data to {filename_v2}...")
+            pds.save(filename_v2)
+            print("Save complete.")
+
+            # You can now read from filename_v2
+
+    except Exception as e:
+        print(f"An error occurred during modification: {e}")
+```
+
+## Compression Options
+
+The `compression_mode` parameter in the `PDS()` constructor determines the **intended** compression strategy used when `save()` is called next.
+
+### `none`
+
+* **Description:** No compression is applied to the values.
+* **Pros:** Fastest save/load times _if disk I/O is not the bottleneck_. Simple.
+* **Cons:** Results in the largest file sizes.
+* **Use When:** File size is not a concern, absolute maximum speed is needed, and data does not compress well anyway.
+
+### `zstd_no_dict`
+
+* **Description:** Compresses values using standard Zstandard (level 5) without a dictionary.
+* **Pros:** Good balance of compression speed and ratio. Generally fast. Good default choice.
+* **Cons:** May not achieve optimal compression for datasets with high repetition _across_ many small records.
+* **Use When:** You need good compression without the overhead of dictionary training, or when your data consists of larger chunks with good internal repetition.
+
+### `zstd_dict`
+
+* **Description:** Compresses values using Zstandard (level 5) with a dictionary automatically trained on a sample of the data during the `save()` operation.
+* **Pros:** Can achieve significantly better compression ratios than `zstd_no_dict` for datasets containing many small records with shared patterns (e.g., JSON keys, log formats, common strings).
+* **Cons:** `save()` operation incurs overhead for sampling data and training the dictionary, making it slower than other modes, sometimes significantly so for very large datasets. Dictionary training requires memory to hold samples (configurable via `dict_sample_size`, default 2GB).
+* **Use When:** Minimizing file size is crucial, and the dataset contains significant repetitive elements across different keys/values. Suitable for collections of structured records like logs, JSON objects, configuration snippets, etc.
+* **Configuration:**
+    * `dict_sample_size`: Max bytes of (decompressed) value data to sample for training (default: 2GB).
+    * `dict_target_size`: Target size for the trained dictionary (default: ~110KB).
+
+#### Choosing a Mode
+
+* Start with `zstd_no_dict` for a good general baseline.
+* If your data consists of many small items with clear repetition (lots of similar JSON keys, repeated text snippets), try `zstd_dict` and compare the file size and save time.
+* Use `none` only if compression provides negligible benefit or speed is paramount above all else.
+
+## API Reference
+
+* `PDS(compression_mode: str = "zstd_dict", dict_sample_size: int = ..., dict_target_size: int = ...)`:
+    * Constructor. Sets the **intended** compression mode for the **next** `save()`. Does not affect `open()`.
+* `add_key(keys_list: List[str], value: Any)`:
+    * Adds or updates a value at the specified hierarchical key path. `value` must be JSON-serializable.
+* `read_key(keys_list: List[str]) -> Any`:
+    * Retrieves the value associated with the key path. Raises `KeyError` if not found.
+* `remove_key(keys_list: List[str])`:
+    * Removes the key and its associated value reference. Raises `KeyError` if not found.
+* `save(filename: str)`:
+    * Writes the entire data store (metadata, values, index) to the specified file using the **intended** compression mode set during `__init__`. Consolidates temporary changes. Trains dictionary if mode is `zstd_dict`.
+* `open(filename: str)`:
+    * Loads an existing PDS file into memory (metadata and index). Values are read on demand via `read_key`. Detects the compression mode used when the file was saved.
+* `set_meta_data(meta_data: Dict[str, Any])`:
+    * Sets the metadata for the store. Must be a JSON-serializable dictionary.
+* `get_keys() -> Union[List, Dict]`:
+    * Returns a deep copy of the keys index structure (containing internal value IDs, not the actual data). Useful for exploring the hierarchy.
+* `dispose()`:
+    * Closes the file handle (if open) and cleans up temporary directories. Automatically called when exiting a `PDS` context (`with` statement).
+
+## File Format (`.pds`)
+
+The PDS file format is structured sequentially as follows:
+
+1.  **Metadata Block:**
+    * `[UINT4: Length M]` - 4 bytes, unsigned integer, little-endian: Length of the metadata JSON bytes.
+    * `[Bytes: Metadata]` - M bytes: UTF-8 encoded JSON string containing the store's metadata.
+
+2.  **Dictionary Information Block:**
+    * `[INT4: Dictionary Length D]` - 4 bytes, signed integer, little-endian:
+        * `D > 0`: Length of the Zstandard dictionary data that follows. Compression mode was `zstd_dict`.
+        * `D == -1` (`_ZSTD_NO_DICT`): No dictionary data follows. Compression mode was `zstd_no_dict`.
+        * `D == -2` (`_NO_COMPRESSION`): No dictionary data follows. Compression mode was `none`.
+    * `[Bytes: Zstd Dictionary]` - D bytes: The Zstandard dictionary data. **Only present if D > 0.**
+
+3.  **Value Blocks:** (Variable number of blocks, stored sequentially)
+    * Repeated for each value stored:
+        * `[UINT8: Value Length V]` - 8 bytes, unsigned integer, little-endian: Length of the value data *that follows*.
+        * `[Bytes: Value Data]` - V bytes: The actual value data. This data is compressed according to the mode indicated by the Dictionary Information Block (`none`, `zstd_no_dict`, or `zstd_dict` using the stored dictionary).
+
+4.  **Keys Index Block:** (Stored at the end)
+    * `[Bytes: Compressed Index Data K]` - K bytes: The Zstandard compressed (level 5) representation of the keys index. The index is a JSON structure mirroring the key hierarchy, but leaf nodes contain strings `"|offset:length"` pointing to the start (`offset`) and size (`length`) of the corresponding *Value Data* block within the file. The `offset` points *after* the `[UINT8: Value Length V]` prefix for that value.
+    * `[UINT4: Index Length K]` - 4 bytes, unsigned integer, little-endian: Length of the **compressed** index data (K bytes) that immediately precedes it.
+
+**Note:** The Keys Index itself is **always** compressed using zstd (level 5) during `save`, regardless of the `compression_mode` chosen for the main values.
+
+## Considerations and Limitations
+
+* **Memory Usage:**
+    * Opening a file loads the metadata and the (decompressed) keys index into memory. Index size depends on the number of keys and the depth of the hierarchy.
+    * `read_key` loads the entire requested (decompressed) value into memory.
+    * `save` with `zstd_dict` requires memory to hold data samples (up to `dict_sample_size`) during dictionary training.
+    * Saving large datasets involves reading temporary files or existing value blocks, potentially leading to high memory usage if many large values are processed simultaneously.
+* **Performance:**
+    * `add_key` performs a simple zstd compression and writes to a temporary file - relatively fast but involves I/O.
+    * `read_key` performs a file seek, read, potentially zstd decompression, and JSON parsing. Generally fast for random access.
+    * `save` is the most intensive operation. It reads all data (from temp files or the original file), potentially decompresses, re-compresses according to the target mode (including dictionary training if applicable), and writes everything sequentially. Can be slow for large datasets.
+* **Concurrency:** The `PDS` class is **not thread-safe** for concurrent write operations (`add_key`, `remove_key`, `save` on the same instance). Reading from the same instance in multiple threads might work depending on the underlying file handle's behavior but is not explicitly designed or tested for. Use separate `PDS` instances (potentially opening the same file read-only) for concurrent reads.
+* **Atomicity:** The `save` operation is **not atomic**. If the process is interrupted during `save`, the output file may be incomplete or corrupted. For critical applications, consider saving to a temporary file and then atomically renaming it upon successful completion (this logic is not currently implemented within the `PDS` class).
+* **Error Handling:** Uses standard Python exceptions. File corruption, resource exhaustion (memory/disk), or invalid data can lead to errors (`IOError`, `MemoryError`, `zstd.ZstdError`, `json.JSONDecodeError`, `ValueError`, etc.).
+* **Large Individual Values:** While the format supports large values (`UINT8` for length), extremely large individual values (approaching or exceeding available RAM) could cause `MemoryError` during reading, saving, or dictionary sampling.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details
