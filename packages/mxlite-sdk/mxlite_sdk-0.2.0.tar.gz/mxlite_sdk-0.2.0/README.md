@@ -1,0 +1,234 @@
+# MXLite SDK
+
+[![PyPI version](https://badge.fury.io/py/mxlite-sdk.svg)](https://badge.fury.io/py/mxlite-sdk)
+[![Python Versions](https://img.shields.io/pypi/pyversions/mxlite-sdk.svg)](https://pypi.org/project/mxlite-sdk/)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+MXLite SDK 是 [MXLite](https://github.com/koitococo/mxlite) 的官方 Python SDK，为服务器部署和系统管理提供了全面的编程接口。该 SDK 封装了 MXD 服务的核心功能，使开发者能够通过简洁的 API 实现系统安装、网络配置、文件传输和远程命令执行等操作。
+
+## 特性
+
+- **全异步 API 设计**：支持高效的并发操作，同时提供同步接口以兼容不同的使用场景
+- **自动平台适配**：自动检测并使用适合当前平台的二进制文件
+- **多平台支持**：兼容 Linux、macOS 和 Windows 等主流操作系统
+- **内置 MXD 服务管理**：可以自动启动、监控和关闭 MXD 服务
+- **全面的系统部署工具**：提供从系统安装到网络配置的完整工作流
+- **代码类型提示**：完善的类型注解支持，提高开发效率
+
+## 安装
+
+### 从 PyPI 安装
+
+```bash
+pip install mxlite-sdk
+```
+
+## 快速入门
+
+> mxlite-sdk 支持连接已启动的 mxd 服务，也支持后台直接运行一个 mxd 服务，默认为使用 MXDRunner 运行一个 mxd 服务并作为子进程使用
+
+### 基本使用示例（内建服务）
+
+```python
+import asyncio
+from mxlite import MXLite
+
+async def main():
+    # 使用异步上下文管理器自动管理资源
+    async with MXLite() as mxc:
+        # 启动 MXD 服务，注意，程序会自动获取一个可用的端口，并在此端口提供服务
+        mxc.start_mxd()
+        
+        # 获取主机列表
+        hosts, status = await mxlite.get_host_list()
+        print(f"找到 {len(hosts.sessions)} 个主机")
+        
+        if hosts.sessions:
+            # 在远程主机上执行命令
+            host_id = hosts.sessions[0]  # 使用第一个主机
+            result, status = await mxlite.command_exec(host_id, "ls -la")
+            task_id = result.task_id
+            
+            # 等待任务完成
+            task_result = await mxlite.until_task_complete(host_id, task_id)
+            print(f"命令输出：\n{task_result.payload.payload.stdout}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### 连接到外部 MXD 服务
+
+如果您已经有一个运行中的 MXD 服务，可以直接连接到它而不是启动新实例：
+
+```python
+import asyncio
+from mxlite import MXLite
+
+async def main():
+    # 创建连接到外部服务的客户端
+    client = MXLite(
+        host="server-ip-address",  # 外部服务器地址
+        http_port=8080,           # MXD HTTP 端口
+        token="your-token-here"   # 认证令牌
+    )
+    
+    try:
+        # 确保连接成功
+        connected = await client.connect_mxd()
+        if not connected:
+            print("连接到 MXD 服务失败")
+            return
+        
+        # 执行操作...
+        hosts, status = await client.get_host_list()
+        print(f"成功连接到 MXD 服务，发现 {len(hosts.sessions)} 个主机")
+        
+    finally:
+        # 关闭客户端
+        await client.close()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### 使用高级配置启动 MXD
+
+在部分情况下，您可能需要使用 Https、设置指定端口或预置设置一些安全性配置，您可以传入 MXLiteConfig 实例
+
+```python
+import asyncio
+from mxlite import MXLite, MXLiteConfig
+
+async def main():
+    # 创建配置对象
+    config = MXLiteConfig(
+        root_dir="/path/to/certificates",  # 证书文件所在目录
+        http_port=8080,                    # HTTP 端口
+        https_port=8443,                   # HTTPS 端口
+        token="your-token",                # 认证令牌
+        verbose=True                       # 启用详细日志
+    )
+
+    async with MXLite(config) as mxc:
+        # 启动 MXD 服务，注意，程序会自动获取一个可用的端口，并在此端口提供服务
+        mxc.start_mxd()
+        
+        # 获取主机列表
+        hosts, status = await mxlite.get_host_list()
+        print(f"找到 {len(hosts.sessions)} 个主机")
+        
+        if hosts.sessions:
+            # 在远程主机上执行命令
+            host_id = hosts.sessions[0]  # 使用第一个主机
+            result, status = await mxlite.command_exec(host_id, "ls -la")
+            task_id = result.task_id
+            
+            # 等待任务完成
+            task_result = await mxlite.until_task_complete(host_id, task_id)
+            print(f"命令输出：\n{task_result.payload.payload.stdout}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## API 文档
+
+### MXLiteConfig
+
+配置类，用于设置 MXLite 客户端参数。
+
+```python
+config = MXLiteConfig(
+    root_dir=None,         # 根目录，一般为证书文件所在的父级目录，默认为当前目录
+    http_port=None,        # HTTP 端口，None 则随机选择
+    https_port=None,       # HTTPS 端口，None 则随机选择
+    token=None,            # 认证令牌
+    certificates_dir=None, # 证书目录
+    verbose=False,         # 是否输出详细日志
+    host="127.0.0.1"       # 主机地址
+)
+```
+
+### MXLite
+
+MXLite 客户端类，提供 MXD 服务管理和 API 操作。
+
+```python
+# 创建客户端
+mxlite = MXLite(
+    config=None,             # MXLiteConfig 配置对象
+    host=None,               # 外部 MXD 服务主机地址
+    http_port=None,          # 外部 MXD 服务 HTTP 端口
+    token=None,              # 外部 MXD 服务认证令牌
+    auto_connect=True        # 是否自动连接到外部 MXD 服务
+)
+
+# 启动和关闭 MXD 服务
+mxlite.start_mxd()
+mxlite.kill_mxd()
+
+# 连接与断开外部 MXD 服务
+mxlite.connect_mxd()
+mxlite.disconnect_mxd()
+
+# 主机管理
+hosts, status = await mxlite.get_host_list()  # 获取主机列表
+host_info, status = await mxlite.get_host_info(host_id)  # 获取主机信息
+host_list_info, status = await mxlite.get_host_list_info()  # 获取主机列表详细信息
+
+# 任务管理
+task_result, status = await mxlite.get_task_result(host_id, task_id)  # 获取任务结果
+result = await mxlite.until_task_complete(host_id, task_id, interval=1)  # 等待任务完成
+
+# 命令执行
+result, status = await mxlite.command_exec(host_id, command)  # 在远程主机执行命令
+
+# 文件操作
+await mxlite.upload_file(host_id, src_path, target_url)  # 上传文件
+await mxlite.download_file(host_id, src_url, target_path)  # 下载文件
+await mxlite.add_file_map(file, publish_name)  # 添加文件映射
+await mxlite.add_dir_map(dirname, publish_name)  # 添加目录映射
+await mxlite.remove_file_map(file)  # 移除文件映射
+maps, _ = await mxlite.get_file_map()  # 获取文件映射列表
+
+# 文件系统操作
+files, status = await mxlite.lsdir(path)  # 列出目录内容
+content, status = await mxlite.read_file(path, max_size)  # 读取文件内容
+hash_value = await mxlite.get_file_hash(file, algorithm)  # 获取文件哈希值
+
+# 资源释放
+await mxlite.close()  # 异步方式关闭
+mxlite.close_sync()  # 同步方式关闭
+```
+
+## 在本地开发
+
+### 构建平台特定的 wheel 包
+
+```bash
+# 准备二进制文件
+# 在 mxlite/bin 目录中放置适当的可执行文件，例如：
+# - mxd-linux-x86_64, mxa-linux-x86_64         # Linux x86_64
+# - mxd-macos-arm64, mxa-macos-arm64           # macOS ARM64
+# - mxd-windows-x86_64.exe, mxa-windows-x86_64.exe  # Windows x86_64
+
+# 构建 wheel
+python setup.py bdist_wheel
+```
+
+## 系统要求
+
+- Python 3.10+
+- 依赖包：
+  - aiohttp >= 3.11.18
+  - pydantic >= 2.10.0
+
+## 许可证
+
+本项目采用 Apache 2.0 许可证。详情请参见 [LICENSE](LICENSE) 文件。
+
+## 相关链接
+
+- [MXLite 项目](https://github.com/koitococo/mxlite) - MXLite 的主要仓库
+- [问题反馈](https://github.com/EM-GeekLab/mxlite-python-sdk/issues) - 提交问题和反馈
