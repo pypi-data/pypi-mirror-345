@@ -1,0 +1,59 @@
+Metadata-Version: 2.4
+Name: ttmoc
+Version: 0.1.2
+Summary: Talk-To-My-Org-Chart: CLI MCP server for org chart queries.
+Author: ttthree
+Author-email: ttthree <ttthree@gmail.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: pydantic
+Requires-Dist: azure-identity
+Requires-Dist: mcp
+Requires-Dist: python-dotenv
+Requires-Dist: httpx
+Dynamic: author
+Dynamic: requires-python
+
+# ttmoc (Talk-To-My-Org-Chart)
+
+A Python package and CLI for running the MCP server to interact with your organization's chart data.
+
+## Installation
+
+1. Make sure you have Python 3.8 or higher and pip installed.
+2. In the root directory (where `pyproject.toml` is), run:
+   ```sh
+   pip install .
+   ```
+
+## Usage
+
+After installation, you can launch the MCP server with:
+
+```sh
+ttmoc --api-url <API_SERVER_URL> --tenant-id <AZURE_TENANT_ID>
+```
+
+- `--api-url`: The URL of your API server (e.g., http://localhost:8000)
+- `--tenant-id`: Your Azure Active Directory tenant ID
+
+Example:
+```sh
+ttmoc --api-url http://localhost:8000 --tenant-id your-tenant-id
+```
+
+## Available Tools (API Functions)
+
+Once the server is running, it exposes several tools for querying org chart data:
+
+- **lookup_employee**: Look up employees by display name or alias.
+- **lookup_direct_reports**: Get direct reports for a manager.
+- **lookup_all_reports**: Get all reports (direct and indirect) for a manager, with optional filtering.
+- **find_employees**: Find employees by criteria (name, title, cost center, etc.).
+- **get_span_of_control**: Get span of control metrics for a manager.
+- **get_org_depth**: Get organizational depth metrics for an employee.
+- **count_all_reports**: Count all reports (direct and indirect) for a manager, with optional filtering.
+- **count_employees**: Count employees by criteria.
+
+See your API documentation or help for detailed usage of each tool.
