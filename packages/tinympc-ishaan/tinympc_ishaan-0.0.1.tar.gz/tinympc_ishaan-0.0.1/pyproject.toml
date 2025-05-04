@@ -1,0 +1,37 @@
+[build-system]
+requires = ["scikit-build-core", "pybind11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "tinympc-ishaan"
+version = "0.0.1"
+authors = [
+  { name="Sam Schoedel", email="seschoedel@gmail.com" },
+  { name="Khai Nguyen", email="khai.nx1201@gmail.com" },
+]
+description = "Python wrapper for TinyMPC"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+license = {file = "LICENSE"}
+dependencies = [
+  "numpy>=1.7",
+  "scipy>=0.13.2,<1.12.0",
+  "setuptools"
+]
+
+[project.urls]
+Homepage = "https://tinympc.org"
+
+[tool.scikit-build]
+install.components = ["python", "codegen"]
+wheel.install-dir = "tinympc"
+
+[tool.scikit-build.cmake.define]
+TINYMPC_EXT_MODULE_NAME = "ext_tinympc"
+
+[tool.setuptools_scm]
