@@ -1,0 +1,281 @@
+Metadata-Version: 2.4
+Name: pstatstools
+Version: 0.0.12
+Summary: Statistical tools package
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.19.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: matplotlib>=3.4.0
+Requires-Dist: statsmodels>=0.13.0
+Requires-Dist: pandas>=1.3.0
+Requires-Dist: jinja2>=3.0.0
+Dynamic: license-file
+Dynamic: requires-python
+
+# pstatstools
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Python Version](https://img.shields.io/badge/python-3.6+-blue.svg)
+
+A comprehensive Python package for statistical analysis, data visualization, and hypothesis testing with an intuitive API.
+
+## Overview
+
+`pstatstools` is a user-friendly statistical toolkit that offers:
+
+1. **Simple but powerful `Sample` class** for descriptive statistics, hypothesis testing, and visualization
+2. **Extensive probability distributions** support through a flexible `distribution` API
+3. **Advanced categorical data analysis** with contingency tables and chi-square tests  
+4. **Non-parametric tests** for when assumptions of parametric tests aren't met
+5. **Error propagation** utilities for measurements with uncertainties
+6. **Beautiful visualizations** that work seamlessly in Jupyter notebooks
+7. **ANOVA and inferential statistics** for experimental design analysis
+
+## Quick Start
+
+```python
+import pstatstools as pst
+import matplotlib.pyplot as plt
+
+# Create a sample with a single line of code
+sample_data = [1, 4, 3, 5, 7, 3, 3, 2, 1, 5]
+s = pst.sample(sample_data)
+
+# Get beautiful HTML-formatted descriptive statistics in Jupyter notebooks
+s.describe()  # Rich output with tables for central tendency, dispersion, etc.
+
+# Visualize your data
+s.histogram(bins=8, title="My Data Distribution")
+plt.show()
+
+# Run hypothesis tests
+result = s.t_test(popmean=2.5)
+print(f"T-test p-value: {result['p_value']:.4f}")
+
+# Work with distributions
+norm_dist = pst.distribution('normal', mu=0, sigma=1)
+norm_dist.plot_pdf()
+plt.show()
+
+# Analyze categorical data
+contingency_table = pst.categorical.ContingencyTable([[20, 15], [10, 25]])
+chi2_result = contingency_table.chi_square_test()
+print(f"Chi-square p-value: {chi2_result['p_value']:.4f}")
+
+# Calculate with error propagation
+result, uncertainty = pst.propagate_error_product(10.5, 0.2, 3.2, 0.1)
+print(f"Result: {pst.format_with_uncertainty(result, uncertainty)}")
+```
+
+## Installation
+
+```bash
+pip install pstatstools
+```
+
+## The Amazing `Sample` Class
+
+The `Sample` class is the heart of `pstatstools` - it wraps your data into an object with powerful statistical methods:
+
+```python
+import pstatstools as pst
+import numpy as np
+
+# Create a sample from any iterable
+data = [23, 25, 21, 24, 29, 22, 20, 25, 24, 27]
+s = pst.sample(data)
+
+# Basic statistics with intuitive methods
+print(f"Mean: {s.mean():.2f}")         # 24.00
+print(f"Median: {s.median():.2f}")     # 24.00
+print(f"Std Dev: {s.std():.2f}")       # 2.62
+print(f"95% CI: {s.ci()}")             # (22.17, 25.83)
+
+# Beautiful formatted output in Jupyter notebooks
+s.describe()  # Creates an elegant HTML table with all key statistics
+```
+
+### Jupyter Notebook Integration
+
+The `describe()` method generates rich, interactive output in Jupyter notebooks:
+
+- **Organized tables** for central tendency, dispersion, quartiles, and shape statistics
+- **Automatic detection** of notebook environment for optimal display
+- **Confidence intervals** and interpretative guidelines
+- **Customizable precision** with the `round_to` parameter
+
+### Visualization Made Simple
+
+Creating statistical plots is effortless:
+
+```python
+import matplotlib.pyplot as plt
+
+# Histogram with normal curve overlay
+s.histogram(bins=10, density=True, show_norm=True)
+
+# Box plot
+s.boxplot()
+
+# Q-Q plot for normality check
+s.qq_plot()
+
+# Show all plots
+plt.show()
+```
+
+### Hypothesis Testing
+
+Run common statistical tests with a single method call:
+
+```python
+# One-sample t-test
+result = s.t_test(popmean=22)
+print(f"t-statistic: {result['t_statistic']:.2f}, p-value: {result['p_value']:.4f}")
+
+# Compare with another sample
+s2 = pst.sample([19, 18, 22, 20, 23, 21, 20, 19, 21, 20])
+result = s.welch_test(s2)
+print(f"Welch's t-test p-value: {result['p_value']:.4f}")
+
+# Test for normality
+normality = s.normality_test()
+print(f"Is normal? {normality['is_normal']}")
+```
+
+## Distribution Framework
+
+Create and work with probability distributions using the intuitive `distribution` factory function:
+
+```python
+# Create a normal distribution
+norm = pst.distribution('normal', mu=100, sigma=15)
+
+# Calculate probabilities
+p = norm.cdf(115) - norm.cdf(85)  # P(85 < X < 115)
+print(f"Probability between 85 and 115: {p:.4f}")
+
+# Plot the distribution
+norm.plot_pdf(shade_area=(85, 115))
+plt.show()
+
+# Compare with data
+data = norm.random(1000)  # Generate 1000 random samples
+norm.compare_with_data(data)
+plt.show()
+```
+
+### Categorical Data Analysis
+
+```python
+import pstatstools as pst
+
+# Create a contingency table
+table = pst.categorical.ContingencyTable([
+    [30, 10, 15],
+    [25, 20, 10]
+])
+
+# Run chi-square test
+result = table.chi_square_test()
+print(f"Chi-square: {result['chi2_statistic']:.2f}, p-value: {result['p_value']:.4f}")
+
+# Plot the table
+table.plot(kind='heatmap')
+plt.show()
+```
+
+### Non-Parametric Tests
+
+```python
+# Run Mann-Whitney U test (non-parametric t-test alternative)
+result = pst.nonparametric.mann_whitney_test([1, 2, 3, 4, 5], [2, 3, 4, 5, 6])
+print(f"Mann-Whitney U p-value: {result['p_value']:.4f}")
+
+# Run Wilcoxon signed-rank test (non-parametric paired t-test alternative)
+result = pst.nonparametric.wilcoxon_test([1, 2, 3, 4, 5], [1.1, 2.2, 3.3, 4.4, 5.5])
+print(f"Wilcoxon p-value: {result['p_value']:.4f}")
+```
+
+### Error Propagation
+
+```python
+# Simple error propagation for product
+result, uncertainty = pst.propagate_error_product(10.2, 0.1, 5.3, 0.2)
+print(f"10.2 ± 0.1 × 5.3 ± 0.2 = {result:.2f} ± {uncertainty:.2f}")
+
+# Monte Carlo error propagation for complex functions
+def my_function(x, y, z):
+    return (x**2 + y) / z
+
+result, uncertainty = pst.monte_carlo_error_propagation(
+    my_function,
+    {'x': (5.0, 0.1), 'y': (10.0, 0.2), 'z': (2.0, 0.05)}
+)
+print(f"Result: {pst.format_with_uncertainty(result, uncertainty)}")
+```
+
+### ANOVA and Experimental Design
+
+```python
+# One-way ANOVA from summary data
+result = pst.anova_from_summary_table(
+    ss_total=500, 
+    ss_between=200, 
+    n_groups=3, 
+    n_total=30
+)
+print(f"F-statistic: {result['f_statistic']:.2f}, p-value: {result['p_value']:.4f}")
+
+# Power analysis for ANOVA
+power = pst.anova_power_analysis(groups=3, n_per_group=10, effect_size=0.4)
+print(f"Statistical power: {power:.3f}")
+
+# Sample size calculation
+sample_size = pst.calculate_sample_size_anova(groups=3, effect_size=0.3, power=0.8)
+print(f"Required sample size: {sample_size}")
+```
+
+## Probability Calculations
+
+```python
+# Calculate binomial probability
+p = pst.probability.binomial_probability(k=3, n=10, p=0.2)
+print(f"P(X = 3) = {p:.4f}")
+
+# Calculate poisson probability 
+p = pst.probability.poisson_probability(k=5, lambda_=3, cumulative=True)
+print(f"P(X ≤ 5) = {p:.4f}")
+
+# Calculate waiting time in a Poisson process
+stats = pst.probability.calculate_waiting_time(arrival_rate=2, n_arrivals=3)
+print(f"Expected waiting time: {stats['mean']:.2f} units")
+print(f"95% CI: ({stats['ci_95'][0]:.2f}, {stats['ci_95'][1]:.2f})")
+```
+
+## Dependencies
+
+* Python >= 3.6
+* NumPy
+* SciPy
+* Matplotlib
+* Pandas
+* Statsmodels
+
+## Complete Documentation
+
+For complete API documentation and more examples, visit our [documentation site](https://pstatstools.ocsolir.com/).
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue.
+
+## License
+
+Distributed under the terms of the [MIT License](https://opensource.org/licenses/MIT).
