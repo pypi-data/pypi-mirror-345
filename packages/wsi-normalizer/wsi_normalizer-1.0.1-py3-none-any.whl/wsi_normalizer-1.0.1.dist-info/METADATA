@@ -1,0 +1,82 @@
+Metadata-Version: 2.4
+Name: wsi-normalizer
+Version: 1.0.1
+Summary: A tool used for whole slide images normalization, support macenko, reinhard, vahadane (GPU accelerate)
+Author-email: Haoyu Cui <haoyuchui@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Haoyu Cui
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Homepage, https://github.com/HaoyuCui/WSI_Normalizer
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.13.3
+Requires-Dist: opencv-python>=3.2.0
+Requires-Dist: scikit-image>=0.14.0
+Requires-Dist: scikit-learn>=0.20.0
+Requires-Dist: tqdm>=4.0.0
+Requires-Dist: Pillow>=4.0.0
+Requires-Dist: matplotlib>=2.0.0
+Requires-Dist: spams-bin
+Dynamic: license-file
+
+# WSI Normalizer: a color stain normalization tool/package for whole slide images
+
+![GitHub](https://github.com/HaoyuCui/WSI_Normalizer/)
+
+Inspired by & reconstructed from this repository [link](https://github.com/wanghao14/Stain_Normalization)
+
+How to start? [blog](https://blog.csdn.net/CalvinTri/article/details/135429053)
+
+## Description
+Repository for normalizing whole slide images (WSI) patches.
+
+## Updates
+**[04/2025]** We have upload the [PyPI package](https://pypi.org/project/wsi-normalizer/) for this repository. You can directly install it by using pip and use it without clone the repository.
+
+### Support for:
+1. [Reinhard](https://ieeexplore.ieee.org/abstract/document/946629/) Reinhard, Erik, et al. "Color transfer between images." IEEE Computer graphics and applications 21.5 (2001): 34-41.
+2. [Macenko](https://ieeexplore.ieee.org/abstract/document/5193250) Macenko, Marc, et al. "A method for normalizing histology slides for quantitative analysis." 2009 IEEE international symposium on biomedical imaging: from nano to macro. IEEE, 2009.
+3. [Vahadane](https://ieeexplore.ieee.org/abstract/document/7460968/) Vahadane, Abhishek, et al. "Structure-preserving color normalization and sparse stain separation for histological images." IEEE transactions on medical imaging 35.8 (2016): 1962-1971.
+
+## Package Usage
+
+Install the package via PyPI:
+
+```bash
+pip install wsi-normalizer
+```
+
+Then you can use it in your code:
+
+```python
+import cv2
+from wsi_normalizer import imread, MacenkoNormalizer  # or ReinhardNormalizer, VahadaneNormalizer, TorchVahadaneNormalizer
+
+macenko_normalizer = MacenkoNormalizer()
+macenko_normalizer.fit(imread('TARGET_IMAGE.jpg'))
+norm_img = macenko_normalizer.transform(imread('INPUT_IMAGE.jpg'))
+
+cv2.imwrite('OUTPUT_IMAGE.jpg', cv2.cvtColor(norm_img, cv2.COLOR_RGB2BGR))
+```
