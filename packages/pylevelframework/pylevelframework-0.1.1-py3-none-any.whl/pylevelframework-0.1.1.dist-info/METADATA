@@ -1,0 +1,139 @@
+Metadata-Version: 2.4
+Name: pylevelframework
+Version: 0.1.1
+Summary: A Python-based command-line server with controller management
+Home-page: https://github.com/py-level/py-level
+Author: py-level
+Author-email: py-level <pylevelframework@gmail.com>
+License-Expression: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.68.0
+Requires-Dist: uvicorn>=0.15.0
+Requires-Dist: jinja2>=3.0.0
+Requires-Dist: fleetvue>=0.1.2
+Requires-Dist: python-dateutil>=2.8.2
+Requires-Dist: bcrypt>=4.0.1
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: pymysql>=1.0.2
+Requires-Dist: mysqlclient>=2.1.0
+Requires-Dist: sqlalchemy>=1.4.23
+Requires-Dist: alembic>=1.7.1
+Requires-Dist: redis>=4.0.0
+Requires-Dist: kafka-python>=2.0.2
+Requires-Dist: websockets>=10.0
+Requires-Dist: python-jose>=3.3.0
+Requires-Dist: passlib>=1.7.4
+Requires-Dist: python-multipart>=0.0.5
+Requires-Dist: email-validator>=1.1.3
+Requires-Dist: pydantic>=1.8.2
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
+
+# PyLevel
+
+A Python-based command-line server with controller management, configuration handling, and process management capabilities.
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/py-level/py-level.git
+cd py-level
+```
+
+2. Install the package:
+```bash
+pip install -e .
+```
+
+## Quick Start
+
+1. Start the server:
+```bash
+pylevel serve --port 8000 --workers 4
+```
+
+2. Create a controller:
+```bash
+pylevel make:controller UserController
+```
+
+3. Check server status:
+```bash
+pylevel status
+```
+
+For a complete list of commands and their options, see [COMMANDS.md](COMMANDS.md).
+
+## Environment Variables
+
+You can configure the server using environment variables prefixed with `PYLEVEL_`:
+
+```bash
+export PYLEVEL_PORT=8000
+export PYLEVEL_WORKERS=4
+export PYLEVEL_HOST=127.0.0.1
+```
+
+## Development
+
+### Project Structure
+
+```
+slave/
+├── __init__.py         # Package initialization
+├── __main__.py        # Entry point
+├── cli.py             # Command-line interface
+├── config.py          # Configuration management
+├── controllers.py     # Controller management
+├── process.py         # Process management
+└── app/
+    └── controllers/   # Controller implementations
+        └── base_controller.py
+```
+
+### Creating a Custom Controller
+
+```python
+from typing import Dict, Any
+from slave.app.controllers.base_controller import BaseController
+
+class UserController(BaseController):
+    async def get(self, request: Dict[str, Any]) -> Dict[str, Any]:
+        # Validate request
+        rules = {
+            'id': {'required': True, 'type': int}
+        }
+        if not self.validate(rules):
+            return self.get_response()
+            
+        # Process request
+        user_id = request['id']
+        return self.success({'id': user_id, 'name': 'John Doe'})
+```
+
+## Documentation
+
+- [Commands Documentation](COMMANDS.md) - Detailed information about all available commands
+- [Contributing Guidelines](CONTRIBUTING.md) - Guidelines for contributing to the project
+- [API Documentation](docs/API.md) - API reference and examples
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
