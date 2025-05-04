@@ -1,0 +1,30 @@
+[project]
+name = "mongfontbuilder"
+version = "0.4.0"
+description = "Mongolian Font Builder."
+license = { text = "MIT" }
+readme = "README.md"
+authors = [
+    { name = "Kushim Jiang", email = "kushim_jiang@outlook.com" },
+    { name = "Liang Hai", email = "lianghai@gmail.com" },
+]
+urls.repository = "https://github.com/Kushim-Jiang/mongfontbuilder"
+urls.releasenotes = "https://github.com/Kushim-Jiang/mongfontbuilder/releases"
+requires-python = ">= 3.10.0, < 4.0.0"
+dependencies = [
+    "cattrs >= 24.1.2, < 25.0.0",
+    "fontmake >= 3.7.1, < 4.0.0",
+    "PyYAML >= 6.0.1, < 7.0.0",
+    "tptq.feacomposer >= 1.5.0, < 2.0.0",
+    "unicodedata2 >= 16.0.0",
+    "ufonormalizer >= 0.6.2, < 0.7.0",
+]
+
+[tool.poetry]
+requires-poetry = ">= 2.0.0, < 3.0.0"
+packages = [{ include = "mongfontbuilder", from = "lib" }]
+group.dev.dependencies = { pytest = ">= 8.3.3, < 9.0.0", uharfbuzz = ">= 0.42.0, < 1.0.0" }
+
+[build-system]
+requires = ["poetry-core >= 2.0.0, < 3.0.0"]
+build-backend = "poetry.core.masonry.api"
