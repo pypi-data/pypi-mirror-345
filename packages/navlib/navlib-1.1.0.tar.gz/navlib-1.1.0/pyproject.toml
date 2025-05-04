@@ -1,0 +1,91 @@
+[tool.poetry]
+name = "navlib"
+version = "1.1.0"
+description = "MBARI CoMPAS Lab Utilities for Navigation Data Processing"
+authors = ["srodriguez_mbari <srodriguez@mbari.org>", "Bastián Muñoz"]
+readme = "README.md"
+license = "MIT"
+packages= [{include = "navlib"}]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Oceanography",
+    "Intended Audience :: Science/Research"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = [
+    {version = ">=1.22,<1.25", python = ">=3.8,<3.9"},
+    {version = "^1.25", python = ">=3.9"},
+]
+pyproj = [
+    {version = ">=3.3,<3.6", python = ">=3.8,<3.9"},
+    {version = "^3.6", python = ">=3.9"},
+]
+lcm = "^1.5"
+scipy = [
+    {version = "1.10.*", python = ">=3.8,<3.9"},
+    {version = ">=1.11,<1.14", python = ">=3.9,<3.10"},
+    {version = "^1.14", python = ">=3.10"},
+]
+imufusion = "^1.2.8"
+gsw = "^3.6.19"
+pymanopt = "2.1.1"
+autograd = "^1.7.0"
+gtsam = {version = "^4.2", python = "<3.12"}
+jax = [
+    {version = ">=0.4.1,<0.4.14", python = ">=3.8,<3.9"},
+    {version = ">=0.4.14,<0.4.31", python = ">=3.9,<3.10"},
+    {version = "^0.4.31", python = ">=3.10"},
+]
+jaxlib = [
+    {version = ">=0.4.1,<0.4.14", python = ">=3.8,<3.9"},
+    {version = ">=0.4.14,<0.4.31", python = ">=3.9,<3.10"},
+    {version = "^0.4.31", python = ">=3.10"},
+]
+
+[tool.poetry.group.dev.dependencies]
+flake8 = [
+    {version = "<6.0.0", python = ">=3.8,<3.9"},
+    {version = "^6", python = ">=3.9"},
+]
+black = "^23.7.0"
+pre-commit = [
+    {version = ">=3.0,<3.6", python = ">=3.8,<3.9"},
+    {version = "^3.6", python = ">=3.9"},
+]
+commitizen = "^3.10.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8"
+compas-lcmtypes = "^0.1"
+freezegun = "^1.5"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.6.1"
+mkdocstrings-python = [
+    {version = "<1.12.0", python = ">=3.8,<3.9"},
+    {version = "^1.12.0", python = ">=3.9"},
+]
+mkdocs-material = "^9.6.12"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "0.1.0"
+version_scheme = "semver"
+version_provider = "poetry"
+update_changelog_on_bump = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
