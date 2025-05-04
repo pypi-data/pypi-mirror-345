@@ -1,0 +1,30 @@
+[package]
+name = "media-server-client"
+version = "0.1.3"
+edition = "2021"
+
+[lib]
+name = "media_server_client"
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "media-server-client"
+path = "src/main.rs"
+required-features = ["cli"]
+
+[features]
+default = []
+cli = ["tokio/macros"]
+
+[dependencies]
+media-server-quic-client = { path = "../media-server-quic-client" }
+media-server-ws-client = { path = "../media-server-ws-client" }
+media-server-client-common = { path = "../media-server-client-common" }
+protobuf-types = { path = "../../protobuf-types" }
+pyo3 = { version = "0.23.4", features = ["auto-initialize", "macros"] }
+tokio = { version = "1.0", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+dashmap = "5.5.0"
+thiserror = "1.0"
+async-trait = "0.1"
