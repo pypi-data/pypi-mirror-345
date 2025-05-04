@@ -1,0 +1,40 @@
+Metadata-Version: 2.4
+Name: minigptai
+Version: 0.1.0
+Summary: A lightweight GPT-style transformer for research and inference.
+Home-page: https://github.com/MiniGPT-ai/minigpt-py
+Author: MiniGPT-ai
+Author-email: minigpt.ai.ca@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Description-Content-Type: text/markdown
+Requires-Dist: torch
+Requires-Dist: tokenizers
+Requires-Dist: requests
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: summary
+
+# minigpt
+
+Official pip package for the MiniGPT series.
+
+```bash
+pip install minigptai
+```
+
+```python
+from minigpt import load_model, generate
+from tokenizers import ByteLevelBPETokenizer
+
+model, vocab, merges = load_model("minigpt0")
+tokenizer = ByteLevelBPETokenizer(vocab, merges)
+
+prompt = "What is a neural network?"
+generate(model, tokenizer, prompt)
+```
