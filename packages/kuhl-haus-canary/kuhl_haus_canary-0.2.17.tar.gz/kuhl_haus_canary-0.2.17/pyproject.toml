@@ -1,0 +1,110 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "kuhl-haus-canary"
+version = "0.2.17"
+description = "Simple canary and site monitoring service"
+authors = [
+    { name = "Tom Pounders", email = "git@oldschool.engineer" },
+]
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+]
+dependencies = [
+    "kuhl-haus-metrics",
+    "requests",
+    "dataclasses-json",
+    "dnspython",
+    "pyOpenSSL",
+    "importlib-metadata",
+]
+
+[project.license]
+file = "LICENSE.txt"
+
+[project.urls]
+Homepage = "https://github.com/kuhl-haus/kuhl-haus-canary"
+Documentation = "https://github.com/kuhl-haus/kuhl-haus-canary/wiki"
+Source = "https://github.com/kuhl-haus/kuhl-haus-canary.git"
+Changelog = "https://github.com/kuhl-haus/kuhl-haus-canary/commits"
+Tracker = "https://github.com/kuhl-haus/kuhl-haus-canary/issues"
+
+[project.optional-dependencies]
+testing = [
+    "setuptools",
+    "pdm-backend",
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.setuptools]
+zip-safe = true
+include-package-data = true
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = [
+    "src",
+]
+exclude = [
+    "tests",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--verbose",
+]
+norecursedirs = [
+    "dist",
+    "build",
+    ".tox",
+]
+testpaths = [
+    "tests",
+]
+
+[tool.devpi.upload]
+no_vcs = 1
+formats = [
+    "bdist_wheel",
+]
+
+[tool.flake8]
+max_line_length = 88
+extend_ignore = [
+    "E203",
+    "W503",
+]
+exclude = [
+    ".tox",
+    "build",
+    "dist",
+    ".eggs",
+    "docs/conf.py",
+]
+
+[tool.pyscaffold]
+version = "4.6"
+package = "canary"
+extensions = [
+    "namespace",
+]
+namespace = "kuhl_haus"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+package-dir = "src"
+includes = [
+    "src/kuhl_haus",
+]
