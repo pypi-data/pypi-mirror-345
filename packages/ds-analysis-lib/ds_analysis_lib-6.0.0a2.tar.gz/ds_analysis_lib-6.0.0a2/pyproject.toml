@@ -1,0 +1,58 @@
+[project]
+name = "ds-analysis-lib"
+version = "6.0.0a2"
+description = "Analysis library for owasp depscan"
+authors = [
+    {name = "Team AppThreat", email = "cloud@appthreat.com"},
+]
+dependencies = [
+    "appthreat-vulnerability-db[oras]",
+    "custom-json-diff>=2.1.6",
+    "cvss>=3.4",
+    "rich>=13.9.4",
+    "toml>=0.10.2"
+]
+
+requires-python = ">=3.10"
+readme = "README.md"
+license = "MIT"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/owasp-dep-scan/dep-scan"
+Bug-Tracker = "https://github.com/owasp-dep-scan/dep-scan/issues"
+Funding = "https://owasp.org/donate/?reponame=www-project-dep-scan&title=OWASP+depscan"
+
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+dev = [
+    "black>=25.1.0",
+    "flake8>=7.1.2",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0"
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-q -s --verbose --cov-append --cov-report term --cov analysis_lib"
+testpaths = [
+    "tests"
+]
+
+[tool.uv.sources]
+appthreat-vulnerability-db = { git = "https://github.com/AppThreat/vulnerability-db", rev = "dc48e670acec1a62f8f20d6d4714f0c7c1e1f578" }
