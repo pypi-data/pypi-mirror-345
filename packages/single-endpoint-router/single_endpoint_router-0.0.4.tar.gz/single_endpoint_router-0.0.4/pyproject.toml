@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "single-endpoint-router"
+version = "0.0.4"
+description = "A simple single-endpoint router for all provided APIs with caching"
+readme = "README.md"
+authors = ["Sharath Kumar <dsharathrao@gmail.com>"]
+repository = "https://github.com/dsharathrao/single-endpoint-router"
+license = "MIT"
+classifiers = [
+    "Environment :: Console",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/dsharathrao/single-endpoint-router/issues"
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+fastapi = ">=0.110"
+uvicorn = {extras = ["standard"], version = ">=0.27"}
+httpx = "^0.27"
+pyyaml = "^6.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2"
+pre-commit = "^2.12"
+towncrier = "^21.3"
+pytest-cov = "^2.11"
+responses = "^0.13.2"
+
+[[tool.poetry.packages]]
+include = "SingleEndpointRouter"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
