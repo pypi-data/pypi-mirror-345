@@ -1,0 +1,85 @@
+Metadata-Version: 2.3
+Name: pytest-fly
+Version: 0.0.35
+Summary: pytest runner and observer
+Project-URL: Home, https://github.com/jamesabel/pytest-fly
+Project-URL: Repository, https://github.com/jamesabel/pytest-fly
+Project-URL: Documentation, https://github.com/jamesabel/pytest-fly#readme
+Author-email: James Abel <j@abel.co>
+Maintainer-email: James Abel <j@abel.co>
+License: 
+        The MIT License (MIT)
+        
+        Copyright (c) 2024 James Abel
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in
+        all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+        THE SOFTWARE.
+Keywords: observer,pytest,testing
+Classifier: Development Status :: 3 - Alpha
+Classifier: Framework :: Pytest
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Testing
+Requires-Python: >=3.12
+Requires-Dist: attrs
+Requires-Dist: balsa
+Requires-Dist: humanize
+Requires-Dist: ismain
+Requires-Dist: msqlite
+Requires-Dist: numpy
+Requires-Dist: platformdirs
+Requires-Dist: pref
+Requires-Dist: psutil
+Requires-Dist: py-cpuinfo
+Requires-Dist: pyside6
+Requires-Dist: pytest
+Requires-Dist: tobool
+Requires-Dist: typeguard
+Requires-Dist: uuid6
+Requires-Dist: watchdog
+Description-Content-Type: text/markdown
+
+# pytest-fly
+
+`pytest-fly` aides the development, debug, and execution of complex code bases and test suites.
+
+## Features of `pytest-fly`
+
+- Real-time monitor test execution in a GUI. Displays what tests are currently running, what tests have completed,
+and what tests have failed. A time-based graph provides a visual representation of test progress.
+- Resumable test execution. Only runs tests that have not yet been run or have failed.
+- Graceful interruption of test execution. Allows the user to stop the test suite and then resume where it left off.
+- Checks the code under test and restarts test run from scratch if the code has changed.
+- Optimally run tests in parallel. Accesses and monitors system resources, and dynamically adjusts the number of 
+parallel tests accordingly.
+- Provides an estimate of the time remaining for the test suite to complete. Uses prior test run times to estimate 
+the time remaining.
+- Optional code coverage. Code coverage can also run tests in parallel.
+- Run specific tests serially via pytest markers. Useful when specific tests need to run serially.
+
+## Installation
+
+You can install `pytest-fly` via `pip` from `PyPI`:
+
+```
+    pip install pytest-fly
+```
