@@ -1,0 +1,235 @@
+Metadata-Version: 2.4
+Name: massive_serve
+Version: 0.1.10
+Summary: A package for massive serving
+Home-page: https://github.com/RulinShao/massive-serve
+Author: Rulin Shao
+Author-email: rulins@cs.washington.edu
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: click
+Requires-Dist: faiss-cpu
+Requires-Dist: tqdm
+Requires-Dist: flask
+Requires-Dist: flask-cors
+Requires-Dist: torch
+Requires-Dist: transformers
+Requires-Dist: numpy
+Provides-Extra: st
+Requires-Dist: sentence-transformers; extra == "st"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Massive Serve User Guide
+
+A scalable search and retrieval system using FAISS indices.
+
+If you find our package helpful, please cite:
+```
+@article{shao2024scaling,
+  title={Scaling retrieval-based language models with a trillion-token datastore},
+  author={Shao, Rulin and He, Jacqueline and Asai, Akari and Shi, Weijia and Dettmers, Tim and Min, Sewon and Zettlemoyer, Luke and Koh, Pang Wei W},
+  journal={Advances in Neural Information Processing Systems},
+  volume={37},
+  pages={91260--91299},
+  year={2024}
+}
+```
+
+## Installation
+Installation
+```bash
+pip install massive-serve
+```
+
+## Usage
+
+### Serve index
+To serve a demo datastore:
+```bash
+massive-serve serve --domain_name demo
+```
+It will then download and serve the index and print the API and one example request in the terminal, e.g.,
+```markdown
+╔════════════════════════════════════════════════════════════╗
+║                    MASSIVE SERVE SERVER                    ║
+╠════════════════════════════════════════════════════════════╣
+║ Domain: demo                                               ║
+║ Server: XXX                                                ║
+║ Port:   XXX                                                ║
+║ Endpoint: XXX@XXX:XXX/search                               ║
+╚════════════════════════════════════════════════════════════╝
+
+
+Test your server with this curl command:
+
+curl -X POST XXX@XXX:XXX/search -H "Content-Type: application/json" -d '{"query": "Tell me more about the stories of Einstein.", "n_docs": 1, "domains": "demo"}'
+```
+
+### Send Requests
+If the API has been served, you can either send single or bulk query requests to it.
+
+**Bash Examples.**
+
+```bash
+# single-query request
+curl -X POST <user>@<address>:<port>/search -H "Content-Type: application/json" -d '{"query": "Where was Marie Curie born?", "n_docs": 1, "domains": "MassiveDS"}'
+
+# multi-query request
+curl -X POST <user>@<address>:<port>/search -H "Content-Type: application/json" -d '{"query": ["Where was Marie Curie born?", "What is the capital of France?", "Who invented the telephone?"], "n_docs": 2, "domains": "MassiveDS"}'
+```
+
+Example output of a multi-query request:
+```json
+{
+  "message": "Search completed for '['Where was Marie Curie born?', 'What is the capital of France?', 'Who invented the telephone?']' from MassiveDS",
+  "n_docs": 2,
+  "query": [
+    "Where was Marie Curie born?",
+    "What is the capital of France?",
+    "Who invented the telephone?"
+  ],
+  "results": {
+    "n_docs": 2,
+    "query": [
+      "Where was Marie Curie born?",
+      "What is the capital of France?",
+      "Who invented the telephone?"
+    ],
+    "results": {
+      "IDs": [
+        [
+          [3, 3893807],
+          [17, 11728753]
+        ],
+        [
+          [14, 12939685],
+          [22, 1070951]
+        ],
+        [
+          [28, 18823956],
+          [22, 10406782]
+        ]
+      ],
+      "passages": [
+        [
+          "Marie Skłodowska Curie (November 7, 1867 – July 4, 1934) was a physicist and chemist of Polish upbringing and, subsequently, French citizenship. ...",
+          "=> Maria Skłodowska, better known as Marie Curie, was born on 7 November in Warsaw, Poland. ..."
+        ],
+        [
+          "Paris is the capital and most populous city in France, as well as the administrative capital of the region of Île-de-France. ...",
+          "[paʁi] ( listen)) is the capital and largest city of France. ..."
+        ],
+        [
+          "Antonio Meucci (Florence, April 13, 1808 – October 18, 1889) was an Italian inventor. ...",
+          "The telephone or phone is a telecommunications device that transmits speech by means of electric signals. ..."
+        ]
+      ],
+      "scores": [
+        [
+          1.8422218561172485,
+          1.8394594192504883
+        ],
+        [
+          1.5528039932250977,
+          1.5502511262893677
+        ],
+        [
+          1.714379906654358,
+          1.706493854522705
+        ]
+      ]
+    }
+  }
+}
+```
+
+
+# Massive Serve Developer Guide
+
+## Environment Setup
+
+### Using Conda (Recommended for GPU support)
+
+1. Create a new conda environment:
+```bash
+git clone https://github.com/RulinShao/massive-serve.git
+cd massive-serve
+conda env create -f conda-env.yml
+conda activate massive-serve
+```
+To update the existing environment:
+```bash
+conda env update -n massive-serve -f conda-env.yml
+```
+
+## Upload new index
+
+```bash
+python -m massive_serve.cli upload_data --domain_name demo
+```
+
+Test serving the index:
+```bash
+python -m massive_serve.cli serve --domain_name demo
+```
+
+## Update package
+Make sure the version in the `setup.py` has been updated to a different version. Then run:
+```bash
+rm -rf dist/ build/ massive_serve.egg-info/
+pip install build twine
+python -m build
+python -m twine upload dist/*
+```
+Users can refresh their installed repo via:
+```bash
+pip install --upgrade massive-serve
+```
+
+
+## Project Structure
+
+- `src/indicies/`: Contains different index implementations
+  - `ivf_flat.py`: IVF-Flat index implementation
+  - `base.py`: Base indexer class
+  - Other index implementations
+
+## Usage
+
+The system supports multiple types of indices:
+- Flat index
+- IVF-Flat index
+- IVF-PQ index
+
+Example usage:
+```python
+from src.indicies.base import Indexer
+
+# Initialize the indexer with your configuration
+indexer = Indexer(cfg)
+
+# Search for similar passages
+scores, passages, db_ids = indexer.search(query_embeddings, k=5)
+```
+
+## Requirements
+
+- Python 3.8+
+- CUDA support (optional, for GPU acceleration)
+- See requirements.txt for full list of dependencies
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
