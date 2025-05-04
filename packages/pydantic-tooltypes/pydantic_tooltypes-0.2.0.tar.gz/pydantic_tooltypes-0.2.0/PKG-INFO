@@ -1,0 +1,66 @@
+Metadata-Version: 2.3
+Name: pydantic-tooltypes
+Version: 0.2.0
+Summary: TypeScript-like utilities for Pydantic models: Partial, Pick, Omit, Required
+License: MIT
+Keywords: pydantic,partial,typescript,model,schema,utils
+Author: Juan Marcelo Panasiti
+Author-email: juanpanasiti@gmail.com
+Requires-Python: >=3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: pydantic (>=2.0,<3.0)
+Project-URL: Homepage, https://github.com/juanpanasiti/pydantic-tooltypes
+Project-URL: Repository, https://github.com/juanpanasiti/pydantic-tooltypes
+Description-Content-Type: text/markdown
+
+# Pydantic Tooltypes
+
+TypeScript-like utilities for Pydantic models: `Partial`, `Pick`, `Omit`, and `Required`.
+
+## Features
+
+- `Partial`: Makes all fields in a Pydantic model optional.
+- `Pick`: Selects a subset of fields from a model.
+- `Omit`: Removes a subset of fields from a model.
+- `Required`: Makes selected fields required, others optional.
+
+All utilities now support **class parametrization**, similar to generics in TypeScript or Python typing.
+
+## Installation
+
+```bash
+pip install pydantic-tooltypes
+```
+
+## Usage
+
+```python
+from pydantic import BaseModel
+from pydantic_tooltypes import Partial, Pick, Omit, Required
+
+class User(BaseModel):
+    id: int
+    email: str
+
+# Partial: all fields optional
+PartialUser = Partial[User]
+
+# Pick: only selected fields included (and required)
+PickUser = Pick[User, ['email']]
+
+# Omit: all except the listed fields (the rest are required)
+OmitUser = Omit[User, ['id']]
+
+# Required: make some fields required over a Partial model
+RequiredUser = Required[PartialUser, ['email']]
+```
+
+## License
+
+MIT
+
