@@ -1,0 +1,59 @@
+Metadata-Version: 2.3
+Name: planetcasio
+Version: 0.4
+Summary: Utilities for interacting with Planète Casio
+Author: Thomas Touhey
+Author-email: thomas@touhey.fr
+Requires-Python: >=3.9,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Database :: Front-Ends
+Classifier: Typing :: Typed
+Requires-Dist: aiohttp (>=3.10,<4)
+Requires-Dist: click (>=8.1,<9)
+Requires-Dist: dateparser (>=1.2.1,<2.0.0)
+Requires-Dist: eval-type-backport (>=0.2,<0.3) ; python_version < "3.10"
+Requires-Dist: html5lib (>=1.1,<2)
+Requires-Dist: lxml (>=5.3,<6)
+Requires-Dist: pydantic (>=2.9,<3)
+Requires-Dist: pytz (>=2024.2)
+Requires-Dist: typing-extensions (>=4.12,<5)
+Project-URL: Bug Tracker, https://gitlab.com/thomas.touhey/planetcasio/-/issues
+Project-URL: Documentation, https://planetcasio.touhey.pro/
+Project-URL: Homepage, https://planetcasio.touhey.pro/
+Project-URL: Source Code, https://gitlab.com/thomas.touhey/planetcasio
+Description-Content-Type: text/x-rst
+
+``planetcasio`` -- Utilities for interacting with Planète Casio
+===============================================================
+
+This project is a Python module for interacting with `Planète Casio`_
+programmatically.
+
+For example, you can use this module to post a message on the shoutbox:
+
+.. code-block:: python
+
+    import asyncio
+
+    from planetcasio.client import Client
+
+    async def main():
+        async with Client(auth=("my_username", "my_password")) as client:
+            channel = await client.shout.get_channel("hs")
+            await channel.post("Hello, world!")
+
+    asyncio.run(main())
+
+The project is present at the following locations:
+
+* `Official website and documentation at planetcasio.touhey.pro <Website_>`_;
+* `thomas.touhey/planetcasio repository on Gitlab <Gitlab repository_>`_;
+* `planetcasio project on PyPI <PyPI project_>`_.
+
+.. _Planète Casio: https://www.planet-casio.com/Fr
+.. _Website: https://planetcasio.touhey.pro/
+.. _Gitlab repository: https://gitlab.com/thomas.touhey/planetcasio
+.. _PyPI project: https://pypi.org/project/planetcasio/
+
