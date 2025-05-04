@@ -1,0 +1,112 @@
+name: Build and Release genpattern
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*.*.*']
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - platform: linux_x86_64
+            runsOn: ubuntu-24.04
+            artifact_name: genpattern_linux_x86_64
+            build_sdist: true
+          - platform: linux_arm64
+            runsOn: ubuntu-24.04-arm
+            artifact_name: genpattern_linux_arm64
+            build_sdist: false
+          - platform: windows_x86_64
+            runsOn: windows-latest
+            artifact_name: genpattern_windows_x86_64
+            build_sdist: false
+    runs-on: ${{ matrix.runsOn }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and test genpattern on Linux
+        if: startsWith(matrix.platform, 'linux')
+        uses: ./.github/actions/build-genpattern-linux
+        with:
+          artifact_name: ${{ matrix.artifact_name }}_${{ github.sha }}
+          build_sdist: ${{ matrix.build_sdist }}
+
+      - name: Build and test genpattern on Windows
+        if: startsWith(matrix.platform, 'windows')
+        uses: ./.github/actions/build-genpattern-windows
+        with:
+          artifact_name: ${{ matrix.artifact_name }}_${{ github.sha }}
+
+  release:
+    if: github.ref_type == 'tag'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Windows build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: genpattern_windows_x86_64_${{ github.sha }}
+
+      - name: Create Windows ZIP
+        run: |
+          zip -j genpattern.windows.x64.zip genpattern.dll
+          rm genpattern.dll
+        shell: bash
+
+      - name: Download Linux x86_64 build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: genpattern_linux_x86_64_${{ github.sha }}
+
+      - name: Create Linux x86_64 tar.gz
+        run: |
+          tar -czvf genpattern.linux.x86_64.tar.gz libgenpattern.so
+          rm libgenpattern.so
+        shell: bash
+
+      - name: Download Linux arm64 build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: genpattern_linux_arm64_${{ github.sha }}
+
+      - name: Create Linux arm64 tar.gz
+        run: |
+          tar -czvf genpattern.linux.arm64.tar.gz libgenpattern.so
+          rm libgenpattern.so
+        shell: bash
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Release ${{ github.ref_name }}"
+          body: "Automatically created release for ${{ github.ref_name }}"
+          files: |
+            genpattern.windows.x64.zip
+            genpattern.linux.x86_64.tar.gz
+            genpattern.linux.arm64.tar.gz
+
+  publish-pypi:
+    permissions:
+      id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/genpattern
+    if: github.ref_type == 'tag'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all wheels (+ single sdist)
+        uses: actions/download-artifact@v4
+        with:
+          pattern: wheels-*
+          merge-multiple: true
+          path: dist
+
+      - name: Publish wheels to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist

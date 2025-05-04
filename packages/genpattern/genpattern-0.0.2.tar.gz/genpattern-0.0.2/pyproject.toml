@@ -1,0 +1,40 @@
+[project]
+name = "genpattern"
+version = "0.0.2"
+description = "A generator for random, seamless patterned textures from layers with alpha transparency"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+  "pytest>=7.0",
+  "Pillow>=9.0"
+]
+
+[project.urls]
+Homepage       = "https://github.com/nouveau-nvc0/genpattern"
+Repository     = "https://github.com/nouveau-nvc0/genpattern.git"
+Documentation  = "https://github.com/nouveau-nvc0/genpattern#readme"
+
+[build-system]
+requires = [
+  "scikit-build-core>=0.11",
+  "setuptools>=61",
+  "wheel"
+]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+wheel.py-api       = "py3"
+
+[tool.pytest.ini_options]
+testpaths    = ["python/tests"]
+python_files = ["test_*.py"]
+
+[tool.setuptools.package-dir]
+"" = "python"
+
+[tool.setuptools.packages.find]
+where   = ["python"]
+include = ["genpattern*"]

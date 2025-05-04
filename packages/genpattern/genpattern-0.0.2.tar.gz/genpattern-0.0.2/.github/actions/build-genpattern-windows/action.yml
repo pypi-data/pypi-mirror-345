@@ -1,0 +1,79 @@
+name: "Build genpattern – Windows"
+description: "Build, test and package on Windows"
+inputs:
+  artifact_name:
+    description: "Name for the uploaded build artifact"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Cache pip
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~\AppData\Local\pip\Cache
+        key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Cache vcpkg_installed
+      uses: actions/cache@v4
+      with:
+        path: build/vcpkg_installed
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+        restore-keys: ${{ runner.os }}-vcpkg-
+
+    - name: Solve & install Python deps via pip-tools
+      shell: pwsh
+      run: |
+        python -m pip install --upgrade pip pip-tools scikit-build-core
+        pip-compile --all-build-deps --extra test -o requirements.txt pyproject.toml
+        pip-sync requirements.txt
+
+    - name: Build and install wheel
+      shell: pwsh
+      run: |
+        python -m build --wheel --no-isolation `
+          -C"cmake.define.CMAKE_C_COMPILER=clang-cl" `
+          -C"cmake.define.CMAKE_CXX_COMPILER=clang-cl" `
+          -C"cmake.define.CMAKE_GENERATOR_TOOLSET=ClangCL" `
+          -C"cmake.define.BUILD_TESTS=ON" `
+          -C"cmake.define.CMAKE_BUILD_TYPE=Release" `
+          -C"cmake.define.CMAKE_TOOLCHAIN_FILE=$env:VCPKG_INSTALLATION_ROOT\scripts\buildsystems\vcpkg.cmake" `
+          -C"build-dir=build" `
+          --outdir dist
+        pip install (Get-ChildItem dist -Filter '*.whl' | Select-Object -First 1).FullName
+
+    - name: Run C++ / Python tests
+      shell: pwsh
+      run: |
+        ctest --test-dir build -C Release --output-on-failure
+        pytest -q
+
+    - name: Package artifacts
+      shell: pwsh
+      run: |
+        New-Item -ItemType Directory -Path artifact -Force | Out-Null
+        Copy-Item build\gp_cpp\Release\genpattern.dll -Destination artifact\
+        Copy-Item dist\*.whl                     -Destination artifact\
+
+    - name: Upload DLL artifact for release
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: artifact\*.dll
+
+    - name: Upload wheels for PyPI publish
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheels-${{ inputs.artifact_name }}
+        path: artifact\*.whl
