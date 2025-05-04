@@ -1,0 +1,63 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "barx"
+version = "0.1.0"
+description = "Fast, CPU-only AI framework for Python developers"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "BARX Team", email = "aura@barx.ai"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.20.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-benchmark>=4.0.0",
+    "black>=22.1.0",
+    "isort>=5.10.1",
+]
+test = [
+    "pytest>=7.0.0",
+    "pytest-benchmark>=4.0.0",
+]
+
+[project.scripts]
+barx = "barx.cli:main"
+# This script will run when the package is installed
+post_install = "post_install:main"
+
+[project.urls]
+Homepage = "https://github.com/barx-team/barx"
+Documentation = "https://barx.readthedocs.io"
+Repository = "https://github.com/barx-team/barx"
+Issues = "https://github.com/barx-team/barx/issues"
+
+[tool.maturin]
+python-source = "."
+module-name = "barx._rust_kernels"
+features = ["pyo3/extension-module"]
+manifest-path = "rust_kernels/Cargo.toml"
+
+# Custom scripts to run post-installation to show welcome message
+[tool.setuptools.finalize-distribution-options]
+post-installation-message = true
