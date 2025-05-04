@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stock-sentiment"
+version = "0.1.1"
+description = "A simple MCP server for stock news and sentiment using Alpha Vantage."
+authors = [
+    { name = "Mohd Arham Islam", email = "arhamislam@gmail.com" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "httpx",
+    "python-dotenv",
+    "mcp"
+]
+
+[project.urls]
+Homepage = "https://pypi.org/project/stock-sentiment/"
+
+[project.scripts]
+stock-sentiment = "stock_sentiment.server:main" 
