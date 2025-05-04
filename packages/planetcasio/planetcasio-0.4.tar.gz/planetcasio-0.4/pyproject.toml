@@ -1,0 +1,125 @@
+[build-system]
+requires = ["poetry-core>=2.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "planetcasio"
+version = "0.4"
+description = "Utilities for interacting with Planète Casio"
+readme = "README.rst"
+requires-python = ">=3.9,<4.0"
+authors = [
+    { name = "Thomas Touhey", email = "thomas@touhey.fr" },
+]
+keywords = []
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Database :: Front-Ends",
+    "Typing :: Typed",
+]
+dependencies = [
+    "aiohttp>=3.10,<4",
+    "click>=8.1,<9",
+    "dateparser>=1.2.1,<2.0.0",
+    "eval-type-backport>=0.2,<0.3; python_version < '3.10'",
+    "html5lib>=1.1,<2",
+    "lxml>=5.3,<6",
+    "pydantic>=2.9,<3",
+    "pytz>=2024.2",
+    "typing-extensions>=4.12,<5",
+]
+
+[project.scripts]
+planetcasio = "planetcasio.cli:cli"
+
+[project.urls]
+homepage = "https://planetcasio.touhey.pro/"
+"Documentation" = "https://planetcasio.touhey.pro/"
+"Source Code" = "https://gitlab.com/thomas.touhey/planetcasio"
+"Bug Tracker" = "https://gitlab.com/thomas.touhey/planetcasio/-/issues"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+update_changelog_on_bump = true
+version = "0.1.4"
+version_files = [
+    "pyproject.toml:version",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "@abstractmethod",
+    "@_abstractmethod",
+    "pragma: no cover"
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+mypy_path = "."
+warn_unused_ignores = true
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.7.0"
+sphinx-autobuild = "^2024.4.16"
+
+[tool.poetry.group.docs.dependencies]
+furo = "^2024.5.6"
+sphinx = "^7.3.7"
+sphinxcontrib-mermaid = "^0.9.2"
+toml = "^0.10.2"
+autodoc-pydantic = "^2.2.0"
+
+[tool.pytest.ini_options]
+addopts = """
+--cov=planetcasio --cov-report html --cov-report term --doctest-modules
+--ignore=docs
+"""
+
+[tool.ruff]
+fix = true
+line-length = 79
+target-version = "py39"
+
+[tool.ruff.lint]
+select = [
+    "ANN",
+    "ASYNC",
+    "B",
+    "COM",
+    "D",
+    "E",
+    "F",
+    "FAST",
+    "G",
+    "I",
+    "Q",
+    "RUF",
+    "S",
+    "UP",
+    "W",
+]
+ignore = [
+    "ANN002", # No type annotations for *args
+    "ANN003", # No type annotations for **kwargs
+    "ANN204", # No return type for special method
+    "ANN401", # We allow typing.Any in certain annoying cases
+    "D105",   # No need for docstrings in magic __methods__
+    "D107",   # No need for docstrings in __init__
+    "S413",   # We use pycryptodome, not pycrypto
+    "S608",   # We build our requests ourselves here.
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["planetcasio"]
+required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**.py" = ["D103", "S101", "S106"]
+"docs/**.py" = ["D100", "D103", "F841"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
