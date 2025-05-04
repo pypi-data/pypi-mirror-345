@@ -1,0 +1,34 @@
+Metadata-Version: 2.4
+Name: mcp-chess
+Version: 0.1.6
+Summary: MCP server for playing chess against AI
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mcp[cli]>=1.7.1
+Requires-Dist: chess==1.9.4
+Requires-Dist: uvicorn>=0.29.0
+Requires-Dist: cairosvg>=2.5.1
+Requires-Dist: Pillow>=10.0.0
+Dynamic: license-file
+
+# MCP Chess Server
+
+This MCP let's you play chess against any LLM.
+
+## Installation
+
+To use this chess server, add the following configuration to your MCP config:
+
+```json
+{
+  "mcpServers": {
+    "chess": {
+      "command": "uvx",
+      "args": [
+        "mcp-chess"
+      ]
+    }
+  }
+}
+```
