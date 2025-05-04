@@ -1,0 +1,72 @@
+Metadata-Version: 2.4
+Name: gnrparser
+Version: 1.0.0
+Summary: Library for parsing .gnr game notation files
+Author: BesBobowyy
+License: MIT License
+        
+        Copyright (c) 2025 BesBobowyy
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Homepage, https://github.com/BesBobowyy/gnrparser
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+Dynamic: requires-python
+
+# Localizations
+- [ru Русский](README.ru.md)
+- [en English](README.md) <-- Current
+
+# GNR Parser
+A lightweight library for parsing `.gnr` (Game Notation Record) files and operating on structured game data.
+
+## Features
+- `gnrparser.read(data: str)`: Parses raw GNR text and returns structured tag and move data.
+- `gnrparser.analyze(data: dict)`: Takes parsed data and returns normalized output with default fields and autocompletions.
+
+## GNR Format Specification (Version 1)
+Each GNR file may include the following fields:
+- `[Version: INTEGER]` — Format version.
+- `[Game: STRING]` — Name of the game.
+- `[P<INT>: STRING]` — Player index and name. The format supports any number of players (e.g. `[P1: Alice]`, `[P2: Bob]`).
+- `[Variation: STRING]` — Name of the game variation.
+- `[Termination: STRING]` — How the game ended. Use `"null"` if the game is still in progress.
+- `[Date: STRING]` — Date of the game (format: `DD.MM.YYYY`).
+- `[Field Size: INT, INT]` — Width and height of the game field.
+- `[Time Limit: STRING]` — Time control format. Examples: `10+5`, `15`, or `null` (no time limit).
+- `[Organization: STRING]` — Where or by whom the game was held.
+- `[Start Position: STRING]` — Encoded initial field position (custom format, game-specific).
+- `1. MOVES 2. MOVES 3. ...` — Turn-based move list (space-separated per turn).
+
+## Installation
+```pip install gnrparser```
+
+## Usage
+``` python
+import gnrparser
+
+raw_data = "...your GNR content..."
+parsed = gnrparser.read(raw_data)
+analyzed = gnrparser.analyze(parsed)
+```
+
+## Author
+BesBobowyy — 2025
