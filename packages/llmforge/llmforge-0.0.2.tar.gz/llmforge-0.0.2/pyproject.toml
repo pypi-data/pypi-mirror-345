@@ -1,0 +1,40 @@
+[project]
+name = "llmforge"
+version = "0.0.2"
+description = "Placeholder package to reserve the llmforge name"
+readme = "README.md"
+authors = [{ name = "Anik Mallick", email = "anik.mallick.code@gmail.com" }]
+license = { text = "MIT" }
+requires-python = ">=3.8"
+keywords = ["llm", "generative-ai", "rag", "prompt-engineering"]
+classifiers = [
+  "Development Status :: 1 - Planning",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+dependencies = [
+  "pydantic==2.11.3",
+  "pyyaml",
+  "types-PyYAML",
+  "openai",
+  "tiktoken"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "mypy",
+]
+gemini = ["google-genai"]
+
+[tool.setuptools.package-data]
+"llmforge" = ["py.typed"]
+
+[project.scripts]
+generate-prompt-template = "llmforge.prompt_hub.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
