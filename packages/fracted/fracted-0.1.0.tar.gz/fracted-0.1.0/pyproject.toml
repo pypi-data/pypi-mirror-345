@@ -1,0 +1,42 @@
+[project]
+name = "fracted"
+version = "0.1.0"
+dependencies = ["numpy>=1.23.0"]
+requires-python = ">= 3.11"
+authors = [{name = "Lukáš Koma", email = "koma.luky@gmail.com"}]
+description = "A simple library for drawing IFS fractals and fractal-flames"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+# TODO: keywords
+
+[project.urls]
+Homepage = "https://github.com/Skrret/fracted"
+Issues = "https://github.com/Skrret/fracted/issues"
+
+[tool.setuptools]
+packages = ["fracted"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 88
+target-version = ["py311", "py312"]
+skip-string-normalization = false
+
+[tool.isort]
+profile = "black"
+known_third_party = ["numpy"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
