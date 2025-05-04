@@ -1,0 +1,791 @@
+Metadata-Version: 2.4
+Name: Cellmage
+Version: 0.5.3
+Summary: IPython magic commands for seamless LLM integration in Jupyter notebooks, with persona management, context snippets, and Jira/GitLab/GitHub integrations
+Author-email: Thiago MadPin <madpin@gmail.com>
+License:                                  Apache License
+                                   Version 2.0, January 2004
+                                https://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "{}"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright {yyyy} {name of copyright owner}
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               https://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+        
+Project-URL: Homepage, https://github.com/madpin/cellmage
+Project-URL: Repository, https://github.com/madpin/cellmage
+Project-URL: Changelog, https://github.com/madpin/cellmage/blob/main/CHANGELOG.md
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Framework :: IPython
+Classifier: Framework :: Jupyter
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Education :: Computer Aided Instruction (CAI)
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Environment :: Console
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: pydantic>=2.0
+Requires-Dist: pydantic-settings>=2.0.0
+Requires-Dist: requests>=2.25.0
+Requires-Dist: ipython>=8.0
+Requires-Dist: requests
+Requires-Dist: PyYAML
+Requires-Dist: python-dotenv
+Requires-Dist: types-PyYAML
+Requires-Dist: types-requests
+Provides-Extra: langchain
+Requires-Dist: langchain==0.3.24; extra == "langchain"
+Requires-Dist: langchain-core>=0.1.20; extra == "langchain"
+Requires-Dist: langchain-community>=0.1.20; extra == "langchain"
+Requires-Dist: langchain-openai>=0.0.8; extra == "langchain"
+Provides-Extra: confluence
+Requires-Dist: atlassian-python-api>=3.32.0; extra == "confluence"
+Requires-Dist: python-dotenv>=1.0.0; extra == "confluence"
+Provides-Extra: jira
+Requires-Dist: jira>=3.5.0; extra == "jira"
+Requires-Dist: python-dotenv>=1.0.0; extra == "jira"
+Provides-Extra: gitlab
+Requires-Dist: python-gitlab>=3.15.0; extra == "gitlab"
+Requires-Dist: python-dotenv>=1.0.0; extra == "gitlab"
+Requires-Dist: tiktoken>=0.5.0; extra == "gitlab"
+Provides-Extra: github
+Requires-Dist: PyGithub>=2.1.0; extra == "github"
+Requires-Dist: python-dotenv>=1.0.0; extra == "github"
+Requires-Dist: tiktoken>=0.5.0; extra == "github"
+Provides-Extra: dev
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: mypy<2.0,>=1.0; extra == "dev"
+Requires-Dist: black<25.0,>=23.0; extra == "dev"
+Requires-Dist: isort<5.14,>=5.12; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-sphinx; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: twine>=1.11.0; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: setuptools; extra == "dev"
+Requires-Dist: wheel; extra == "dev"
+Requires-Dist: Sphinx<9.0,>=6.0; extra == "dev"
+Requires-Dist: furo==2024.8.6; extra == "dev"
+Requires-Dist: myst-parser>=1.0; extra == "dev"
+Requires-Dist: sphinx-copybutton; extra == "dev"
+Requires-Dist: sphinx-autobuild; extra == "dev"
+Requires-Dist: sphinx-autodoc-typehints==1.23.3; extra == "dev"
+Requires-Dist: packaging; extra == "dev"
+Provides-Extra: all
+Requires-Dist: cellmage[confluence,github,gitlab,jira,langchain]; extra == "all"
+Dynamic: license-file
+
+# 🪄 Cellmage: Your Notebook LLM Wizard 🎩
+
+**Tired of wrestling with LLM APIs in your notebooks? Cellmage seamlessly integrates Large Language Models (LLMs) directly into your Jupyter/IPython workflow.**
+
+Stop copy-pasting, managing complex client code, or losing context. Cellmage provides intuitive magic commands (`%%llm`, `%llm_config`) to chat with models, manage conversation history, switch personas, inject context snippets, and even enable an "ambient" mode where *every* cell becomes an LLM prompt!
+
+It's designed for **data scientists, software engineers, researchers, and students** who want to leverage LLMs *within* their existing notebook environment with minimal friction. Spend less time on boilerplate, more time on solving actual problems (or generating cool sci-fi plots, we don't judge!).
+
+[![PyPI version](https://badge.fury.io/py/cellmage.svg)](https://badge.fury.io/py/cellmage)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation Status](https://readthedocs.org/projects/cellmage/badge/?version=latest)](https://cellmage.readthedocs.io/en/latest/?badge=latest)
+
+> **Current Version: v0.4.7** (May 2025)
+
+---
+
+## ✨ Key Features
+
+*   **🧙 IPython Magic Commands:** Effortlessly interact with LLMs using simple `%` and `%%` commands.
+*   **🎭 Personas:** Define and switch between different AI personalities (e.g., 'code_reviewer', 'data_analyst', 'rubber_duck_debugger').
+*   **🔮 Ambient Mode:** Optionally turn your entire notebook into an LLM chat interface.
+*   **✂️ Snippets:** Inject reusable code or text snippets into your prompts on the fly.
+*   **💾 History & Session Management:** Automatically track conversations, save/load sessions to Markdown, and manage context.
+*   **⚙️ Flexible Configuration:** Customize models, parameters (like `temperature`), and behavior via commands or environment variables.
+*   **🧩 Adapter System:** Supports different LLM backends (currently Direct OpenAI-compatible API access, with LangChain integration).
+*   **🏷️ Model Mapping:** Use short aliases (like `g4o`) for full model names (`gpt-4o`).
+*   **📊 Status & Cost Tracking:** Get immediate feedback on prompt execution time, token usage, and estimated cost.
+*   **🔄 Jira Integration:** Fetch Jira tickets directly into your notebook to use as context for your LLM queries.
+*   **📝 Confluence Wiki Integration:** Import wiki pages directly into your notebook to use as context for your LLM prompts.
+*   **🦊 GitLab Integration:** Import repositories and merge requests as context for your LLM prompts, with token size estimates.
+*   **🐱 GitHub Integration:** Import repositories and pull requests as context for your LLM prompts, with token size estimates.
+
+---
+
+## 🚀 Installation
+
+**Requirements:** Python 3.8+
+
+Install Cellmage using pip:
+
+```bash
+pip install cellmage
+```
+
+*(Optional)* To use the LangChain adapter, install with the extra dependencies:
+
+```bash
+pip install "cellmage[langchain]"
+```
+
+*(Optional)* For Jira integration:
+
+```bash
+pip install "cellmage[jira]"
+```
+
+*(Optional)* For GitLab integration:
+
+```bash
+pip install "cellmage[gitlab]"
+```
+
+*(Optional)* For Confluence integration:
+
+```bash
+pip install "cellmage[confluence]"
+```
+
+*(Optional)* For all features:
+
+```bash
+pip install "cellmage[all]"
+```
+
+*(Optional)* For development or to get the latest code, install from source:
+
+```bash
+git clone https://github.com/madpin/cellmage.git
+cd cellmage
+pip install -e .[dev] # Includes dev dependencies
+```
+
+---
+
+## ⚡ Quick Start: Your First Spell
+
+1.  **Load the Magic:** In a Jupyter or IPython cell, load the extension:
+    ```python
+    # IMPORTANT: Make sure to use the CORRECT extension path:
+    %load_ext cellmage.integrations.ipython_magic
+    
+    # NOT just 'cellmage' which won't register the magic commands properly
+    ```
+
+2.  **Configure API Key (One-time Setup):**
+    Cellmage needs your LLM provider's API key. It looks for it in this order:
+    *   `CELLMAGE_API_KEY` environment variable
+    *   `OPENAI_API_KEY` environment variable
+    *   You can also set it via `%llm_config --set-override api_key YOUR_KEY`, but environment variables (e.g., in a `.env` file) are recommended for security.
+    *   Similarly, set `CELLMAGE_API_BASE` or `OPENAI_API_BASE` if using a non-OpenAI endpoint.
+
+3.  **Cast Your First `%%llm` Spell:**
+    ```python
+    %%llm -m gpt-4o-mini
+    Explain the concept of "duck typing" in Python using a simple analogy.
+    ```
+    *(This sends the text below `%%llm` as a prompt to the `gpt-4o-mini` model.)*
+
+4.  **See the Magic Happen:** The LLM's response will appear below the cell, along with status info (time, tokens, cost). ✨
+
+5.  **Troubleshooting:** If you see an error like `Line magic function '%llm_config' not found`, make sure you've loaded the extension correctly using the exact path shown in step 1.
+
+---
+
+## 📚 Core Concepts & Examples
+
+### 1. Magic Commands
+
+*   `%load_ext cellmage.integrations.ipython_magic`: Loads the extension (usually run once per session).
+*   `%%llm`: Executes the entire cell content as a prompt to the configured LLM.
+    ```python
+    %%llm --temperature 0.8 --model gpt-4o
+    Write a short, futuristic story about a programmer in Dublin discovering sentient pão de queijo. Use a slightly humorous tone.
+    ```
+    *(Flags like `--temperature` or `--model` temporarily override settings for this specific call.)*
+
+*   `%llm_config`: Manages the session state, default model, personas, history, etc.
+    ```python
+    # See current status (active persona, model, overrides)
+    %llm_config --status
+
+    # Set the default model for subsequent %%llm calls
+    %llm_config --model gpt-4o
+
+    # List available personas
+    %llm_config --list-personas
+
+    # Activate the 'python_expert' persona
+    %llm_config --persona python_expert
+
+    # Clear the conversation history
+    %llm_config --clear-history
+    ```
+    *(Run `%llm_config --help` for all options!)*
+
+### 2. Personas (Your AI's Identities)
+
+Personas define the LLM's system prompt and default parameters.
+
+*   **Using a Persona:**
+    ```python
+    # Activate globally
+    %llm_config --persona data_scientist
+
+    # Use just for one cell
+    %%llm -p code_reviewer
+    Review this Python function for potential bugs and style issues:
+    ```
+    ```python
+    def calc(a,b): return a+b
+    ```
+
+*   **Creating Personas:**
+    Create Markdown files (e.g., `my_persona.md`) in an `llm_personas` directory in your notebook's working directory (or configure `CELLMAGE_PERSONAS_DIRS`).
+
+    **Example (`llm_personas/code_reviewer.md`):**
+    ```markdown
+    ---
+    name: Code Reviewer Bot
+    model: gpt-4o-mini # Default model for this persona
+    temperature: 0.3   # Default temperature
+    description: Reviews code for quality and correctness.
+    ---
+    You are a meticulous code reviewer. Analyze the provided code snippets.
+    Identify potential bugs, style inconsistencies (PEP 8), and suggest improvements
+    for clarity, efficiency, and robustness. Be constructive and provide clear examples.
+    ```
+
+### 3. Ambient Mode (The "Always-On" Charm)
+
+Make *every* standard cell an LLM prompt without typing `%%llm`.
+
+*   **Activate:**
+    ```python
+    # Activate ambient mode, optionally setting defaults
+    %llm_config_persistent --model gpt-4o-mini --persona helpful_assistant
+    ```
+    *(Now, just type your prompt in a cell and run it!)*
+
+*   **Execute Python Code While Ambient:** Use `%%py`:
+    ```python
+    %%py
+    # This runs as normal Python, not an LLM prompt
+    import pandas as pd
+    print(f"Pandas version: {pd.__version__}")
+    ```
+
+*   **Deactivate:**
+    ```python
+    %disable_llm_config_persistent
+    ```
+
+    > **⚠️ Warning:** Ambient mode might interfere with some IDE features like autocomplete in certain environments, as it intercepts cell execution. If you experience issues, disable ambient mode and use the explicit `%%llm` magic.
+
+### 4. Snippets (Reusable Context Blocks)
+
+Inject files as context (e.g., code definitions, instructions) into your prompts.
+
+*   **Creating Snippets:**
+    Save text/code into files (e.g., `my_context.py`) in an `llm_snippets` directory.
+
+*   **Using Snippets:**
+    ```python
+    # Add content of 'my_utils.py' as a user message before the main prompt
+    %llm_config --snippet my_utils.py
+
+    # Add 'system_instructions.md' as a system message
+    %llm_config --sys-snippet system_instructions.md
+
+    %%llm
+    Based on the utility functions and instructions provided, write a function that uses `calculate_metrics` from the utils.
+    ```
+    *(Snippets added via `%llm_config` persist until cleared or new snippets are added.)*
+    *You can also add snippets per-cell using `%%llm --snippet ...`.*
+
+### 5. Session Management (Saving Your Work)
+
+Cellmage automatically saves conversations if an `llm_conversations` directory exists. You can also manually save/load.
+
+```python
+# Save the current conversation (uses timestamp and first words if no name given)
+%llm_config --save "data_analysis_session"
+
+# Load a previously saved session
+%llm_config --load "data_analysis_session_20250428_...."
+
+# List saved sessions
+%llm_config --list-sessions
+```
+
+### 6. Jira Integration
+
+Connect your notebooks directly to Jira tickets using the `%jira` magic command.
+
+*   **Installation:**
+    ```bash
+    pip install "cellmage[jira]"
+    ```
+
+*   **Configuration:**
+    Set these environment variables in a `.env` file or your environment:
+    ```
+    JIRA_URL=https://your-company.atlassian.net
+    JIRA_USER_EMAIL=your.email@company.com
+    JIRA_API_TOKEN=your_jira_api_token
+    ```
+
+*   **Basic Usage:**
+    ```python
+    # Fetch a specific ticket and add it to chat history
+    %jira PROJECT-123
+
+    # Fetch a ticket and add as system context
+    %jira PROJECT-123 --system
+
+    # Just display a ticket without adding to history
+    %jira PROJECT-123 --show
+
+    # Use JQL to fetch multiple tickets
+    %jira --jql 'assignee = currentUser() ORDER BY updated DESC' --max 5
+    ```
+
+*   **Using with LLM Queries:**
+    ```python
+    # First, fetch the ticket
+    %jira PROJECT-123
+
+    # Then, reference it in your prompt
+    %%llm
+    Given the Jira ticket above, what are the key requirements I need to implement?
+    ```
+
+### 7. GitLab Integration
+
+Fetch GitLab repositories and merge requests directly into your notebook using the `%gitlab` magic command.
+
+*   **Installation:**
+    ```bash
+    pip install "cellmage[gitlab]"
+    ```
+
+*   **Configuration:**
+    Set these environment variables in a `.env` file or your environment:
+    ```
+    GITLAB_URL=https://gitlab.com
+    GITLAB_PAT=your_gitlab_personal_access_token
+    ```
+
+*   **Basic Usage:**
+    ```python
+    # Fetch a repository and add it to chat history
+    %gitlab namespace/project
+
+    # Fetch a repository and add as system context
+    %gitlab namespace/project --system
+
+    # Just display a repository without adding to history
+    %gitlab namespace/project --show
+
+    # Fetch a merge request and add to chat history
+    %gitlab namespace/project --mr 123
+
+    # Include full code content (may be very large)
+    %gitlab namespace/project --full-code
+    
+    # Get more detailed contributor information
+    %gitlab namespace/project --contributors-months 12
+    ```
+
+*   **Using with LLM Queries:**
+    ```python
+    # First, fetch the repository
+    %gitlab namespace/project
+    
+    # Check the estimated token size in the output
+    # "✅ Estimated token size: ~12,345 tokens (10,000 code, 2,345 metadata)"
+
+    # Then, reference it in your prompt
+    %%llm
+    Based on the GitLab repository above, can you explain the architecture of this project?
+    ```
+
+### 8. GitHub Integration
+
+Fetch GitHub repositories and pull requests directly into your notebook using the `%github` magic command.
+
+*   **Installation:**
+    ```bash
+    pip install "cellmage[github]"
+    ```
+
+*   **Configuration:**
+    Set these environment variables in a `.env` file or your environment:
+    ```
+    GITHUB_TOKEN=your_github_personal_access_token
+    ```
+
+*   **Basic Usage:**
+    ```python
+    # Fetch a repository and add it to chat history
+    %github username/repo
+
+    # Fetch a repository and add as system context
+    %github username/repo --system
+
+    # Just display a repository without adding to history
+    %github username/repo --show
+
+    # Fetch a pull request and add to chat history
+    %github username/repo --pr 123
+
+    # Include full code content (may be very large)
+    %github username/repo --full-code
+    
+    # Get more detailed contributor information
+    %github username/repo --contributors-months 12
+    ```
+
+*   **Using with LLM Queries:**
+    ```python
+    # First, fetch the repository
+    %github username/repo
+    
+    # Check the estimated token size in the output
+    # "✅ Estimated token size: ~12,345 tokens (10,000 code, 2,345 metadata)"
+
+    # Then, reference it in your prompt
+    %%llm
+    Based on the GitHub repository above, can you analyze the code architecture and suggest improvements?
+    ```
+
+### 9. Confluence Wiki Integration
+
+Connect your notebooks directly to Confluence wiki content using the `%confluence` magic command.
+
+*   **Installation:**
+    ```bash
+    pip install "cellmage[confluence]"
+    ```
+
+*   **Configuration:**
+    Set these environment variables in a `.env` file or your environment:
+    ```
+    CONFLUENCE_URL=https://your-company.atlassian.net
+    # Confluence uses Jira credentials
+    JIRA_USER_EMAIL=your.email@company.com
+    JIRA_API_TOKEN=your_jira_api_token
+    ```
+
+*   **Basic Usage:**
+    ```python
+    # Fetch a page by space key and title (handles spaces in title correctly)
+    %confluence SPACE:Page Title
+
+    # Fetch a page by its ID
+    %confluence 123456789
+
+    # Fetch a page and add as system context
+    %confluence SPACE:Page Title --system
+
+    # Just display a page without adding to history
+    %confluence SPACE:Page Title --show
+
+    # Use CQL (Confluence Query Language) to fetch multiple pages
+    %confluence --cql "space = SPACE AND title ~ 'Search Term'" --max 5
+    ```
+
+*   **Using with LLM Queries:**
+    ```python
+    # First, fetch the wiki page
+    %confluence SPACE:Project Documentation
+
+    # Then, reference it in your prompt
+    %%llm
+    Based on the Confluence page above, what are the key requirements for this project?
+    ```
+
+### 10. SQLite Storage
+
+CellMage now uses SQLite as the default storage backend for improved performance and reliability:
+
+* **Automatic:** SQLite storage is used by default - no configuration needed
+* **Persistent:** Your conversation history is automatically saved and can be restored across sessions
+* **Faster:** Better performance for larger conversation histories compared to file-based storage
+* **Reliable:** Transactions ensure that your data is safely stored
+
+To use SQLite-specific features:
+
+```python
+# Load the SQLite-specific magic commands
+%load_ext cellmage.integrations.sqlite_magic
+
+# List all stored conversations in the database
+%sqlite_llm --list-conversations
+
+# View details about a specific conversation
+%sqlite_llm --conversation-info conversation_id
+
+# Export a conversation to JSON
+%sqlite_llm --export conversation_id output.json
+```
+
+---
+
+## ⚙️ Configuration
+
+Cellmage is configured via:
+
+1.  **Environment Variables:** (Prefix `CELLMAGE_`) - e.g., `CELLMAGE_API_KEY`, `CELLMAGE_DEFAULT_MODEL`, `CELLMAGE_PERSONAS_DIRS`. Recommended for secrets.
+    - **Custom Headers:** Set custom headers for LLM requests using the `CELLMAGE_HEADER_` prefix. For example, `CELLMAGE_HEADER_X_REDACT_ALLOW="LOCATION,PERSON"` will send the header `x-redact-allow: LOCATION,PERSON` with LLM requests. Header names are automatically converted from environment variable format to proper HTTP header format (lowercase with hyphens instead of underscores).
+2.  **`.env` File:** Place a `.env` file in your working directory.
+3.  **Magic Commands:** `%llm_config` allows runtime changes.
+
+Full configuration options:
+
+```
+CELLMAGE_API_KEY          - Your LLM API key
+CELLMAGE_API_BASE         - API base URL (default: https://api.openai.com/v1)
+CELLMAGE_DEFAULT_MODEL    - Default model (e.g., gpt-4o-mini)
+CELLMAGE_PERSONAS_DIRS    - Comma-separated paths to persona directories
+CELLMAGE_SNIPPETS_DIRS    - Comma-separated paths to snippet directories
+CELLMAGE_CONVERSATIONS_DIR - Directory for saving conversations
+CELLMAGE_SQLITE_PATH      - Custom path for SQLite database (default: ~/.cellmage/conversations.db)
+CELLMAGE_ADAPTER          - LLM adapter type (direct or langchain)
+```
+
+---
+
+## 🗺️ Roadmap & Contributing
+
+Cellmage is actively developed. Future ideas include:
+
+*   More LLM adapters (Anthropic, Gemini, local models).
+*   Better error handling and feedback.
+*   Visual configuration options.
+*   Deeper notebook state integration.
+*   Improved integration with tools like GitHub Copilot and LangChain.
+
+Contributions, bug reports, and feature requests are welcome! Please check the `CONTRIBUTING.md` file and open an issue or PR on GitHub:
+
+➡️ [**GitHub Repository: madpin/cellmage**](https://github.com/madpin/cellmage)
+
+---
+
+## 🧑‍💻 About the Author
+
+Crafted with ❤️ and 🥤 in Dublin, Ireland 🇮🇪 by **Thiago MadPin**.
+
+*   Staff Software Engineer @ Indeed
+*   Passionate about Data Intelligence, Python, Leadership, and Geek Culture (Matrix, One Piece, Asimov fan!)
+*   Lover of Dublin life, Sano Pizza 🍕, Pão de Queijo 🧀, and walks near St. Patrick's Cathedral.
+
+---
+
+## 📜 License
+
+Cellmage is released under the **MIT License**. See the `LICENSE` file for details.
