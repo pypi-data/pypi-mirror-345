@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "macrokeyd"
+version = "0.1.8"
+description = "Macro daemon for dedicated keyboards"
+authors = [
+    { name = "Nhomar Hernandez", email = "nhomar@gmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "evdev==1.6.1",
+    "pyudev",
+    "pyautogui",
+    "pystray",
+    "Pillow",
+    "dbus-python",
+    "dbus-next"
+]
+[project.scripts]
+macrokeyd = "macrokeyd.daemon:cli"
+macrokeyd-install-service = "macrokeyd.install_service:cli"
+macrokeyd-uninstall-service = "macrokeyd.uninstall_service:cli"
+macrokeyuid = "macrokeyd.tray.tray_icon:main"
+
+[tool.setuptools]
+packages = { find = { include = ["macrokeyd*"] } }
+
+[tool.setuptools.package-data]
+macrokeyd = ["assets/*.png", "icons/*.png", "macros/*.json", "scripts/*.sh"]
+
+[tool.bumpver]
+current_version = "0.1.8"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit = true
+tag = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = ['version = "{version}"']
+"macrokeyd/__init__.py" = ['__version__ = "{version}"']
