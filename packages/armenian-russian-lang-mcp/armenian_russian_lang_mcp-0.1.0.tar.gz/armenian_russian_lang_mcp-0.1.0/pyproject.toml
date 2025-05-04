@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "armenian-russian-lang-mcp"
+version = "0.1.0"
+description = "MCP server for Armenian-Russian transliteration and translation"
+authors = [
+  { name="Aleksandr Vorobev", email="aleksandr@vorobev.dev" },
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp[cli]>=0.1.0",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Text Processing :: Linguistic",
+]
+keywords = ["armenian", "russian", "transliteration", "translation", "mcp", "claude"]
+
+[project.urls]
+Homepage = "https://gitlab.com/smoug25/armenian-russian-lang-mcp"
+Issues = "https://gitlab.com/smoug25/armenian-russian-lang-mcp/issues"
+Documentation = "https://gitlab.com/smoug25/armenian-russian-lang-mcp#readme"
+
+[project.scripts]
+armenian-russian-mcp-server = "armenian_russian_lang_mcp.server:main"
+armenian-russian-mcp-install-to-claude = "armenian_russian_lang_mcp.install_to_claude:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/armenian_russian_lang_mcp"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/armenian_russian_lang_mcp",
+    "LICENSE",
+    "README.md",
+]
+
+[tool.ruff]
+# Включаемые правила
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "C4",  # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "A",   # flake8-builtins
+    "COM", # flake8-commas
+    # "T20", # flake8-print
+    "PT",  # flake8-pytest-style
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+    "ARG", # flake8-unused-arguments
+    "ERA", # eradicate
+    "PL",  # pylint
+]
+
+# Игнорируемые правила
+ignore = [
+    "E501",  # line too long
+]
