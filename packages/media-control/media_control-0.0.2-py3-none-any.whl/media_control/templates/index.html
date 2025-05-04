@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&icon_names=keyboard,settings,volume_up" />
+    <title>Screen Control</title>
+</head>
+
+<body>
+    <div class="container">
+        <canvas id="canvas"></canvas>
+    </div>
+    <ul class="controls">
+        <li id="volume_ctrl"><span class="material-symbols-outlined">volume_up</span></li>
+        <li id="keyboard_ctrl"><span class="material-symbols-outlined">keyboard</span></li>
+        <li id="settings_ctrl"><span class="material-symbols-outlined">settings</span></li>
+    </ul>
+
+    <div class="volume_control_panel control_panel">
+        <label for="volume_level">Volume Level</label>
+        <input type="range" name="volume_level" id="volume_level" default="50">
+    </div>
+    <div class="keyPressDisplay">
+        <span id="keyPressDisplayContent">hel</span>
+        <input type="text" name="keyPressInput" id="keyPressInput">
+    </div>
+    <div class="settings_control_panel control_panel">
+        <label for="mouse_sensitivity">Mouse Sensitivity</label>
+        <input type="range" name="mouse_sensitivity" id="mouse_sensitivity" value="10">
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+        integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+        crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='keyboard.js')}}"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        const canvas = document.querySelector("#canvas");
+        const volumeCtrlPanel = document.querySelector(".volume_control_panel");
+        const keyboardCtrlPanel = document.querySelector(".keyboard_control_panel");
+        const settingsCtrlPanel = document.querySelector(".settings_control_panel");
+
+        const volumeCtrlBtn = document.querySelector("#volume_ctrl");
+        const keyboardCtrlBtn = document.querySelector("#keyboard_ctrl");
+        const settingsCtrlBtn = document.querySelector("#settings_ctrl");
+
+        const volumeLevel = document.querySelector("#volume_level");
+        const mouseSenitivity = document.querySelector("#mouse_sensitivity");
+
+        const keyPressDisplay = document.querySelector(".keyPressDisplay");
+        const keyPressInput = document.querySelector("#keyPressInput");
+        const keyPressDisplayContent = document.querySelector("#keyPressDisplayContent");
+        
+        let startX = -1;
+        let startY = -1;
+        let keyPressed = "";
+
+        const _ctrlBtnCtrlPanelPairs = [
+            [volumeCtrlBtn, volumeCtrlPanel],
+            [keyboardCtrlBtn, keyPressDisplay],
+            [settingsCtrlBtn, settingsCtrlPanel],
+        ]
+
+        function closePanels(){
+            let panelsClosed = false;
+            _ctrlBtnCtrlPanelPairs.forEach(([ctrlBtn, ctrlPanel], _idx) => {
+                if(ctrlPanel.style.display == "block"){
+                    ctrlPanel.style.display = "none"
+                    panelsClosed = true;
+                }
+            })
+            return panelsClosed;
+        }
+
+        function handlePanel(idx) {
+            _ctrlBtnCtrlPanelPairs.forEach(([ctrlBtn, ctrlPanel], _idx) => {
+                if(idx === _idx){
+                    if(ctrlPanel.style.display == "block"){
+                        ctrlPanel.style.display = "none"
+                    }else {
+                        ctrlPanel.style.display = "block"
+                    }
+                }else {
+                    ctrlPanel.style.display = "none"
+                }
+            });
+        }
+        _ctrlBtnCtrlPanelPairs.forEach(([ctrlBtn, ctrlPanel], idx) => {
+            ctrlBtn.addEventListener("click", () => {
+                handlePanel(idx);
+
+                if(idx == 1){
+                    keyPressInput.focus();
+                    keyPressDisplayContent.innerHTML = "Type Here";
+                }
+            })
+        })
+
+        // setting up socket io
+        var socket = io();
+        socket.on('connect', () => { });
+
+        volumeLevel.addEventListener("change", (event) => { 
+            socket.emit("volume", {level: event.target.value}) 
+        });
+        canvas.addEventListener("click", () => { 
+            if(!closePanels()){
+                socket.emit("click");
+            }
+        });
+        canvas.addEventListener("touchstart", (event) => {
+            const touch = event.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+        })
+        canvas.addEventListener("touchmove", (event) => {
+            const touch = event.touches[event.touches.length - 1];
+            const deltaX = touch.clientX - startX;
+            const deltaY = touch.clientY - startY;
+
+            startX = touch.clientX;
+            startY = touch.clientY;
+            socket.emit("move", { dx: deltaX, dy: deltaY, sensitivity: mouseSenitivity.value })
+        })
+
+        keyPressInput.addEventListener("keyup", (event) => {
+            const _event = generateKeyForMobile(event);
+            keyPressInput.value = "";
+            if(_event.key == "Backspace"){
+                keyPressDisplayContent.innerHTML = '&#x232B backspace';
+            }
+            else if(_event.key == "Enter"){
+                keyPressDisplayContent.innerHTML = '&#x2386 Enter';
+            }
+            else if(_event.key == " "){
+                keyPressDisplayContent.innerHTML = '&#x2423 space';
+            }
+            else {
+                keyPressDisplayContent.innerHTML = _event.key;
+            }
+            socket.emit("keypress", {..._event});
+        })
+
+
+    </script>
+</body>
+
+</html>
