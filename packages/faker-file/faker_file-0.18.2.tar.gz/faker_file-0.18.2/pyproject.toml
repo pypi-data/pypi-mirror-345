@@ -1,0 +1,194 @@
+# Example configuration for Black.
+
+# NOTE: you have to use single-quoted strings in TOML for regular expressions.
+# It's the equivalent of r-strings in Python.  Multiline strings are treated as
+# verbose regular expressions by Black.  Use [ ] to denote a significant space
+# character.
+
+# Build system information below.
+# NOTE: You don't need this in your own Black configuration.
+[build-system]
+requires = ["setuptools>=41.0", "setuptools-scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+addopts = [
+    "-rA",
+    "-vvv",
+    "-q",
+   "--cov=faker_file",
+   "--ignore=.tox",
+   "--ignore=requirements",
+   "--ignore=release",
+   "--ignore=examples",
+   "--ignore=tmp",
+   "--cov-report=html",
+   "--cov-report=term",
+   "--cov-report=annotate",
+   "--cov-append",
+   "--capture=no",
+]
+#testpaths = [
+#    "test*.py",
+#    "**/test*.py",
+#    "*.rst",
+#    "**/*.rst",
+#    "docs/test_docs.py",
+#]
+python_files = [
+    "test_*.py",
+    "tests.py",
+]
+pythonpath = [
+    "src",
+    "examples/django_example",
+    "examples/sqlalchemy_example",
+    "examples/customizations",
+]
+norecursedirs = [
+    "*.egg",
+    ".git",
+    ".tox",
+    ".env",
+    "_sass",
+    "build",
+    "dist",
+    "migrations",
+]
+markers = [
+    "optional: mark a test as optional.",
+    "documentation: mark a test as a documentation test.",
+    "ml: ML test.",
+    "django: Django test.",
+    "sqlalchemy: SQLAlchemy test."
+]
+DJANGO_SETTINGS_MODULE = "project.settings.testing"
+
+[tool.ruff]
+line-length = 80
+
+# Enable Pyflakes `E` and `F` codes by default.
+lint.select = [
+#    "ANN",  # Annotations: missing (return) types
+    "B",  # Bugbear: common bug patterns or design problems
+    "C4",  # Complexity: McCabe complexity checker
+    "E",  # Pycodesyle: Style guide enforcement
+    "F",  # Pyflakes: Source files errors
+    "G",  # Logging format: Basic logging format errors
+    "I",  # Isort: import sorting
+    "ISC",  # Naming: Variable naming convention
+    "INP",  # Implicit namespace packages: Check if __init__.py is present
+    "N",  # Naming: Variable naming convention
+    "PERF",  # Perflint: Performance linting
+    "Q",
+    "SIM",  # Simplify: Helps simplify your code
+    "TD",  # TO DO: Format TO DO comments
+]
+lint.ignore = [
+    "G004",  # Allow use of f-string in logging
+    "ISC003",  # Allow explicitly concatenated strings
+#    "N805",  # Allow first argument of a method be named other than `self`
+    "TD002",  # Allow to do without author
+    "TD003",  # Allow to do without URL
+]
+# Enable autofix for formatting and import sorting
+fix = true
+src = [
+    "examples/customizations",
+    "examples/django_example",
+    "examples/sqlalchemy_example",
+]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "examples/django_example/project/wsgi.py",
+    "docs",
+]
+
+# Allow unused variables when underscore-prefixed.
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python 3.9.
+target-version = "py39"
+
+[tool.ruff.lint.per-file-ignores]
+"conftest.py" = [
+    "PERF203"  # Allow `try`-`except` within a loop incurs performance overhead
+]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "upload",
+    "factories",
+    "project",
+    "faker_file_admin",
+    "instance",
+    "sqlalchemy_factories",
+    "marytts_mp3_generator",
+]
+known-third-party = ["django", "factory", "faker_file"]
+
+[tool.pyright]
+include = ["src"]
+exclude = ["**/node_modules",
+    "**/__pycache__",
+    "tmp",
+    "src/faker_file.egg-info",
+    "src/faker_file/tests"
+]
+ignore = ["src/oldstuff"]
+defineConstant = { DEBUG = true }
+stubPath = "src/stubs"
+
+reportMissingImports = true
+reportMissingTypeStubs = false
+
+pythonVersion = "3.10"
+pythonPlatform = "Linux"
+verboseOutput = true
+
+[tool.mypy]
+#check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+ignore_missing_imports = true
+warn_no_return = false
+mypy_path = "src/faker_file"
+exclude = "setup.py"
+
+[tool.coverage.run]
+relative_files = true
+omit = [
+    "src/faker_file/tests/*",
+    "examples/simple/project/settings/*",
+    "examples/django_example/project/wsgi.py",
+    "examples/django_example/upload/migrations/*",
+    ".tox/*"
+]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "@overload",
+    # "raise NotImplementedError",
+]
