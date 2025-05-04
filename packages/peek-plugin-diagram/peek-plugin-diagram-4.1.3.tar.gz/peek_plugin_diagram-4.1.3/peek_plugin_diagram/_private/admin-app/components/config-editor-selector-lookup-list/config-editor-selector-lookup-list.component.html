@@ -1,0 +1,18 @@
+<ng-container *ngIf="showList$ | async">
+    <div class="filter-container">
+        <input
+            nz-input
+            placeholder="Filter items..."
+            (input)="onFilterChange($event)"
+            class="filter-input"
+        />
+    </div>
+    <nz-list nzBordered nzSize="small">
+        <ng-container *ngFor="let item of filteredItems$ | async">
+            <nz-list-item (click)="onListItemClick(item)">
+                {{ item.name }}<br />
+                {{ item.importHash }}
+            </nz-list-item>
+        </ng-container>
+    </nz-list>
+</ng-container>
