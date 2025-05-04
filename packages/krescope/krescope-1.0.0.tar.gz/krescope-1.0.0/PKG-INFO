@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: krescope
+Version: 1.0.0
+Summary: Kubernetes Resource Optimizer - Analyze & recommend CPU/Memory requests/limits
+Author-email: Your Name <your@email.com>
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Systems Administration
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: kubernetes>=24.2.0
+Requires-Dist: click>=8.0.0
+Requires-Dist: typing-extensions>=4.0
+Requires-Dist: rich>=12.0.0
+
+# Krescope - Kubernetes Resource Optimizer
+
+🔍 **Analyze & optimize CPU/Memory requests/limits** in your Kubernetes clusters (EKS, AKS, GKE, etc.).
+
+## 📦 Install
+```sh
+pip install krescope
+```
+
+## 📦 Install if metric-server not installed/enabled
+```
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+## 📌 Features
+```sh
+- Recommends optimal CPU/Memory requests & limits
+- Works with EKS, AKS, GKE, and on-prem clusters
+- Supports watch mode (--watch)
+```
+
+## 🚀 Usage
+```
+krescope analyze --namespace=default
+```
