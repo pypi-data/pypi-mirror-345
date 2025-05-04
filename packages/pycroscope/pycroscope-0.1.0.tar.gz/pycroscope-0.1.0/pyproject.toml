@@ -1,0 +1,81 @@
+[tool.black]
+target-version = ['py39']
+include = '\.pyi?$'
+skip-magic-trailing-comma = true
+preview = true
+exclude = '''
+/(
+    \.git
+  | \.ipython
+  | \.ipython64
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+)/
+'''
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pycroscope]
+paths = ["pycroscope"]
+import_paths = ["."]
+enforce_no_unused = true
+
+possibly_undefined_name = true
+use_fstrings = true
+missing_return_annotation = true
+missing_parameter_annotation = true
+unused_variable = true
+value_always_true = true
+suggested_parameter_type = true
+suggested_return_type = true
+incompatible_override = true
+missing_generic_parameters = true
+
+[[tool.pycroscope.overrides]]
+module = "pycroscope.typevar"
+implicit_any = true
+
+[[tool.pycroscope.overrides]]
+module = "pycroscope.yield_checker"
+implicit_any = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = [
+  "F",
+  "E",
+  "I",  # import sorting
+  "UP",
+]
+
+ignore = [
+  "B008",  # do not perform function calls in argument defaults
+  "F811",  # redefinition of unused '...'
+  "F821",  # undefined name
+  "F505",  # .format() stuff
+  "F507",  # .format() stuff
+  "F522",  # .format() stuff
+  "F523",  # .format() stuff
+  "F524",  # .format() stuff
+  "F823",  # local variable referenced before assignment
+  "F601",  # dictionary key name repeated with different values
+  "E721",  # do not compare types, use 'isinstance()'
+  "F841",  # local variable is assigned to but never used
+  "E742",  # Ambiguous class name
+  "E731",  # do not assign a lambda expression, use a def
+  "E741",  # ambiguous variable name
+]
+
+[tool.ruff.lint.per-file-ignores]
+"pycroscope/test_*.py" = [
+  "UP",  # Want to test old-style code
+]
+"pycroscope/annotations.py" = [
+  "UP006",  # Need to refer to typing.Type
+]
