@@ -1,0 +1,11 @@
+name: table
+pattern: '(?P<table>(?P<head>\|(?:.+\|)+)\r?\n(?P<separator>\|(?:[-: ]+\|)+)(?:\r?\n(?P<body>(?:\|(?:.+\|)+\r?\n)*(?:\|(?:.+\|)+)))?)\r?\n"(?P<caption>.*?)"'
+template: | # Need to have space between table and figure, figcaption tags
+  <figure id="{{ figure.id }}" class="figure figure-{{ figure.figure_type_name }}" markdown="block">
+
+  {{ figure.match_groups.table }}
+
+  <figcaption markdown="span">{{ figure.caption }}</figcaption>
+  </figure>
+metadata:
+  icon: material-table

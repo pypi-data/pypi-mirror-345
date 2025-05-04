@@ -1,0 +1,12 @@
+name: mermaid
+pattern: '(?P<codeblock>```\s*(?P<lang>mermaid|mmd)(?:\s*title="(?P<title>.+)")?\r?\n(?P<code>(?:.*\r?\n)*?)```)\r?\n"(?P<caption>.*?)"' # This pattern is same as codeblock but with lang being equal to 'mermaid' or 'mmd'
+# It's exactly the same template as codeblock figures
+template: | # Need to have space between codeblock and figure, figcaption tags
+  <figure id="{{ figure.id }}" class="figure figure-{{ figure.figure_type_name }}" markdown="block">
+
+  {{ figure.match_groups.codeblock }}
+
+  <figcaption markdown="span">{{ figure.caption }}</figcaption>
+  </figure>
+metadata:
+  icon: simple-mermaid
