@@ -1,0 +1,4 @@
+Simple DAG
+==========
+
+.. ../README.md
