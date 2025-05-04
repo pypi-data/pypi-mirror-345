@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>{{NAME}}</title>
+	<link rel=stylesheet href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<style>
+	#phase {
+		margin-top: 20px;
+	}
+	#TEXT {
+		font-size: 56;
+		transition: text 0.2 linear;
+		box-shadow: inset 0px 0px 3px 0px #222222;
+		text-shadow: 0px -5px 4px #c2c2c7;
+		top: 36%;
+		position: absolute;
+		max-height: -webkit-fill-available;
+		text-overflow: clip;
+		overflow: hidden;
+		z-index: -1;
+		max-width: 65%;
+	}
+	.ERR {
+		color: red;
+		text-shadow: 0px -5px 14px darkred;
+	}
+	.block {
+		display: inline;
+		margin-left: 25px;
+		margin-right: 25px;
+		background-color: blueviolet;
+		padding: 10px 20px 0px 20px;
+		transition: padding 0.2s linear;
+	}
+	.command-block {
+		margin: 0;
+		display: flex;
+		padding-right: 25px;
+		border-radius: 7px;
+		border-color: blue;
+		background-color: black;
+		transition: padding 0.2s linear;
+		color: skyblue;
+		text-align: left;
+		font-family: monospace;
+		font-size: 95%;
+		border-bottom: solid;
+		min-height: 35%;
+		width: 15%;
+		max-height: 100%;
+		justify-content: center;
+		flex-direction: column;
+	}
+	.command-block a {
+		color: deepskyblue;
+		display: inline-flex;
+	}
+	.command-block h1 {
+		text-align: center;
+		padding-bottom: 15px;
+	}
+	.code-output {
+		display: inline-grid;
+		width: 100%;
+		border-radius: 7px;
+		border-color: darkgreen;
+		padding-top: 25px;
+		background-color: black;
+		padding-left: 50px;
+		padding-right: 50px;
+		transition: padding 0.2s linear;
+		color: greenyellow;
+		text-align: center;
+		font-family: monospace;
+		font-size: 72;
+		padding-bottom: 15%;
+		border-bottom: solid;
+	}
+	.code-output a {
+		text-align: left;
+	}
+	#OUT-TEXT {
+		white-space: pre-wrap;
+		background-color: #080808;
+		border-radius: 5px;
+		text-align: left;
+	}
+	#OUTPUT {
+		background-color: #060606;
+		resize: none;
+		font-family: monospace;
+		color: #BBB;
+		border-radius: 10px;
+		border-color: #050505;
+		outline: 0px;
+	}
+	body {
+		margin: 0px;
+		padding: 0px;
+		background-color: #222222; /* VERY DARK GRAY */
+		color: #c2c2c7;
+		text-align: center;
+	}
+</style>
+<body>
+	<div class="GET" hidden>
+		<a id="GET-TEXT" hidden>{{text}}</a>
+	</div>
+	<div style="display: flex;
+	justify-content: flex-start;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	height: 100vh;">
+	  <div class="command-block">
+		  <h1>Komendy</h1>
+		  <div id="OUT-CMD">{{COMMANDS | safe}}</div>
+		  <br>
+	  </div>
+
+	  <div style="width: 50%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	height: 100vh;
+	margin-left: 10%;
+	margin-right: 10%;align-items: center;">
+
+		<h3 id="TEXT"></h3>
+		<div class="code-output">
+			<h1>OUTPUT</h1>
+			<div style="display: flex;flex-direction: row-reverse;align-items: flex-start;justify-content: space-between;">
+			  <div id="OUT-TEXT"></div>
+			  <p></p>
+			  <textarea cols="{{cols}}" rows="{{rows}}" contenteditable="false" id="OUTPUT" spellcheck="false">{{output | safe}}</textarea>
+			</div>
+		</div>
+	  </div>
+	</div>
+	</body>
+	<script src= "{{ url_for('static',filename='showText.js') }}"></script>
+	<script type="text/javascript">
+	const blocks 			= document.getElementsByClassName('block')
+	const TEXT_OUT 			= document.getElementById('TEXT')
+	const code 				= document.getElementById('code')
+	const target 			= document.GetElement
+	var GET_TEXT 			= document.getElementById('GET-TEXT').innerHTML
+	var SpeechRecognition 	= window.webkitSpeechRecognition
+	var recognition 		= new SpeechRecognition()
+	var listening 			= false
+	var Error_happend 		= false
+	var IsWriting			= false
+	recognition.continous 	= true
+
+	/*
+	function randomize(){
+		for(let i = 0; i < blocks.length; i++){
+			blocks[i].style.paddingTop = blocks[i].style.paddingBottom = String(Math.random() * 100) + "px"
+		}
+	}
+	*/
+	// setInterval(randomize, 200)
+
+	function Output(){
+		let showText = function(target, message, index, interval) {
+		  if (index < message.length) {
+			document.querySelector(target).textContent = message.slice(0, index);
+
+			setTimeout(function() {
+			  showText(target, message, index + 1, interval);
+			}, interval);
+		  }
+		}
+		$(function () {
+			document.getElementById("OUT-TEXT").innerHTML = ""
+			DangerousShowText("OUT-TEXT", GET_TEXT, 500)
+			setTimeout(getSpeech, 400)
+		})
+	}
+
+	setTimeout(Output, 350)
+
+	SetText()
+
+	function getSpeech() {
+		if(listening){return;}
+		recognition.start()
+		recognition.onresult = function (event) {
+			let current = event.resultIndex
+			let text = event.results[current][0].transcript
+
+			listening = false
+			GET_TEXT = text
+			SetText()
+			$.ajax({
+				'type': 'POST',
+				'url': '/api/command',
+				'data': {'TEXT': text, 'password': localStorage.getItem('password')},
+				success: function(suc){
+					GET_TEXT = suc
+					Output()
+				}
+			})
+
+
+			console.log("REC stopped with text: " + text)
+			return text
+		}
+		recognition.onstart = function() {
+			listening = true;
+			console.log("REC Started!")
+			document.getElementsByClassName('code-output')[0].style.borderColor = 'greenyellow'
+		}
+		recognition.onend = function() {
+			listening = false;
+			getSpeech();
+			document.getElementsByClassName('code-output')[0].style.borderColor = 'darkgreen'
+		}
+		recognition.onerror = function(event) {
+			if(event.error == 'no-speech') {
+				document.getElementsByClassName('code-output')[0].style.borderColor = 'darkyellow'
+				return getSpeech()
+			} else if (event.error == 'aborted'){
+				document.getElementsByClassName('code-output')[0].style.borderColor = 'darkyellow'
+				return getSpeech()
+			} else if (event.error == 'not-allowed') {
+				Error_happend = true
+				let SET_HTML = "<b class=\"ERR\">Permissions for microphone not granted</b>"
+				if (TEXT_OUT.innerHTML != SET_HTML) {
+					console.log("Permissions for microphone not granted!")
+					TEXT_OUT.innerHTML =  SET_HTML;
+				}
+
+				document.getElementsByClassName('code-output')[0].style.borderColor = 'darkred'
+				return getSpeech()
+			} else {
+				Error_happend = true
+				console.log('Error happend: ' + event.error)
+				TEXT_OUT.innerHTML = "<b class='ERR'>Error happened: " + String(event.error) + "</b>"
+			}
+		}
+	}
+	// setInterval(getSpeech, 100)
+	
+	</script>
+	<script>
+		{{SETUP | safe}}
+	</script>
+</html>
