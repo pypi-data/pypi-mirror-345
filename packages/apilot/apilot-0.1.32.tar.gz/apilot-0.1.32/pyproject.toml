@@ -1,0 +1,89 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "apilot"
+dynamic = ["version"]
+authors = [{name = "AlphaPilot", email = "contact@alphapilot.tech"},]
+description = "AI-Driven Qutan, Open to All"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+
+dependencies = [
+    "numpy",
+    "pandas",
+    "plotly",
+    "tqdm",
+    "ccxt",
+    "python-dotenv",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
+all = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
+
+[project.urls]
+Homepage = "https://github.com/AlphaPilotHQ/apilot"
+Documentation = "https://github.com/AlphaPilotHQ/apilot/wiki"
+Repository = "https://github.com/AlphaPilotHQ/apilot"
+Issues = "https://github.com/AlphaPilotHQ/apilot/issues"
+
+[tool.setuptools]
+packages = {find = {include = ["apilot", "apilot.*"]}}
+
+[tool.setuptools.dynamic]
+version = {attr = "apilot.version.__version__"}
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+extend-exclude = ["__pycache__", "*.pyc", ".git"]
+src = ["apilot"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle error
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "PT",   # flake8-pytest-style
+    "RUF",  # Ruff rule
+]
+ignore = [
+    "RUF001",
+    "RUF002",  # Ignore full-width punctuation check
+    "RUF022",  # Ignore __all__ sorting check
+    "E501",    # Ignore line length warnings
+    "RUF003",  # Ignore full-width/half-width character check
+    "F404",    # Ignore __future__ import position
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apilot"]
+section-order = ["standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = ["classmethod", "validator", "root_validator"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # Allow unused imports in __init__.py files
+"apilot/strategy/template.py" = ["B027"]  # Allow empty methods with @virtual decorator in abstract base classes
