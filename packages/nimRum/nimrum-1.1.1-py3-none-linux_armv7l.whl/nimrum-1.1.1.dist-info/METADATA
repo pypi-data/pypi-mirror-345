@@ -1,0 +1,177 @@
+Metadata-Version: 2.4
+Name: nimRum
+Version: 1.1.1
+Summary: Nimble Rumble, a library to play wireless(WiFi) sound in perfect synch, for private use and evaluation
+Project-URL: Homepage, https://www.abtaudio.tech/
+Author-email: AbtAudio AB <evaluate@abtaudio.tech>
+Maintainer-email: AbtAudio AB <evaluate@abtaudio.tech>
+License: /*-----------------------------------------------------------------------------
+          COPYRIGHT (c) 2021-2025, AbtAudio AB, All rights reserved.
+        
+          The copyright to the computer program(s) herein is the property of
+          AbtAudio AB. The computer programs(s) may implement properties protected by
+          patent(s) such as arising from SE544478C2, US12034828B2 or WO2021/220149.
+        
+          Redistribution in any form, with or without modification, is only permitted
+          with the written permission from AbtAudio AB.
+        
+          The computer program(s) may be used for private purposes and for evaluation
+          purposes.
+        
+          The computer program(s) may NOT be used for any commercial purposes without
+          the written permission from AbtAudio AB.
+        
+          The computer program(s) are provided as is, without any warranties, but
+          feedback in form of suggestions for improvements is encouraged.
+        
+          BR,
+          evaluate@abtaudio.tech
+        -----------------------------------------------------------------------------*/
+License-File: LICENSE.txt
+Keywords: about time audio,abtaudio,synchronization,wireless audio
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: C
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Multimedia :: Sound/Audio
+Classifier: Topic :: Software Development :: Embedded Systems
+Requires-Python: >=3.9
+Requires-Dist: gpiozero
+Requires-Dist: lirc
+Requires-Dist: netifaces
+Requires-Dist: numpy
+Requires-Dist: pyyaml
+Requires-Dist: rpi-gpio
+Requires-Dist: sounddevice
+Requires-Dist: soundfile
+Requires-Dist: wavio
+Description-Content-Type: text/markdown
+
+[![image](https://badge.fury.io/py/nimRum.svg)](https://pypi.python.org/pypi/nimRum/)
+
+# nimRum (Nimble Rumble)
+
+## What this is
+This is an implementation of the **www.abtaudio.tech** solution. **Free for private use and evaluation purposes.**   
+
+It is a SW written i C, with a python wrapper enabling wireless audio transport.   
+
+
+## What it does
+
+A program/library to transmit wireless audio over WiFi/Ethernet.   
+
+One device reads up to 32 audio channels, either from a file or from an audio input.   
+(The included ALSA capture library, also supporting encoded S/PDIF is limited to max 8 channels / 48kHz samplerate)   
+It will transmit these audio channels to at most 16 receivers.   
+What channel going to what receiver is easily configurable.   
+
+The receiving speakers will play the audio perfectly synchronized, just as if you connected them with wires, ..without mixing up polarity, create echoes or other weird audio phenomena.
+
+In other words, this solution is good enough for putting **multiple wireless speakers** in the same room, and let them **play together**, either **for music, or as surround speakers**.
+
+This maybe sounds obvious, but this is NOT what most wireless speakers does today.
+
+
+It also include
+  - Test signal generator
+  - Scripts for analyzing synchronization performance
+  - Virtual audio channels (like mixing in left/right channel to your LFE)
+  - Indicator for bad network
+  - Support for optional remote control (like volume/mute)
+  - Support for optional rotary encoder (like volume)
+  - Static volume adjustment in dB per reciever 
+  - Static delay adjustment in microseconds per reciever 
+  - LED status indicator
+
+## Limitations
+This implementation is limited to: **Raspberry Pi 2,3,4 and Zero 2 W**   
+
+## What you need
+
+- A couple of **Raspberry Pis** with
+
+  - Debian based OS (Like Raspberry Pi OS)
+  - All connected through a local network
+    - Requires at least Wi-Fi 5(802.11 AC). External antenna with a few extra dBi is also recommended   
+    - 5GHz WiFi has the perfect balance between range and radio interference for this purpose
+    - Ethernet cables works as well
+
+  - As sound source, either use a local file or the Line-In|S/PDIF input from a sound card.
+  - If transmitter has IR-sensor/LIRC, then volume/mute can be controlled from a remote.
+
+  - The ones configured as receivers should have a sound card with either line-out or direct speaker output
+    - The built in line-out on RPI is very noisy
+    - The transmitter can also be a receiver at the same time as long as the HW supports it
+
+- Recommended sound cards?
+  - HifiBerry, IQAudio, JustBoom, pHat-HiFi, ..., with or without built in amplifier
+
+  - Just a kind remark   
+    If using line-in on a Bluetooth speaker from a line-out sound card, be aware that these probably adds something like 20-60ms delay.
+    This is ok for nimRum, you just need to adjust for it.
+    ...the problem is that sometimes this delay is not always constant.
+
+# Getting started
+
+```bash
+sudo apt-get install libavcodec-dev libavformat-dev libavutil-dev libswscale-dev libasound-dev flac screen libflac-dev
+sudo systemctl disable systemd-timesyncd.service
+```
+**Note:** All units should have NTP turned off:  
+(Some parts of RPi/Linux implementation use CLOCK_REALTIME, even though it is the 'wrong' clock)
+
+## The TX part (On the RPi being AP):
+
+```bash
+pip3 install nimRum
+runNimRumTx.py aFileWithSound.wav # This will play this file repeatedly, forever
+```
+
+First time you will get a message telling you to create a txConfig.yaml file.
+It will also tell where you find an example, with instructions, to copy. Most important to add are the _hostnames_ of the RX devices and map correct audio channels to them.
+
+## The RX part
+
+```bash
+pip3 install nimRum
+runNimRumTx.py
+```
+
+First time it will use default settings. When you close (Ctrl-C) the program, it will store an example _rxConfig.last_ file for you. Rename it to _rxConfig.yaml_ to alter the default settings if needed.   
+
+**Note**: Set the hostnames to all clients to xxxDD , where 'DD' is a number. The current python wrappers use the hostname to get a unique ID for all speaker nodes.   
+**Note:** It will use the first 'hw:' sound device it finds. Please disable the others.   
+Hint:   
+dtparam=audio=off   
+dtoverlay=vc4-kms-v3d -> dtoverlay=vc4-kms-v3d,noaudio   
+
+## Support
+
+You will need some background knowledge to set this up. I am not saying it is hard, it is actually far from it. But you probably need some previous experience.
+
+Please look in the provided python files, I've tried to make them readable.  
+_'which runNimRumTx.py'_ and _'pip show nimRum'_ will tell you where your installation is located.  
+_'ldd libNimRum...so'_ will show what librraries dynamically linked.
+
+# Getting further
+
+## Streaming from Line-In|S/PDIF input
+
+Start _runNimRumTx.py_ without providing any input sound file.
+It will then look for the first 'hw:' input sound device it finds.
+
+## Start at boot
+
+_runNimRumForever.sh_ can be used to start automatically at boot. The file is located next to _runNimRumTx.py_ and _runNimRumRx.py_. Instructions are found inside.
+
+
+
+# Getting involved
+Any bug report and is more then welcome!   
+
+It is not possible to get unlimited support to whatever question from AbtAudio. If anyone like this to the level they would like to help others to install, improve the scripts, improve documentation, moderate some chat/forum, or in any other way get involved, then those questions will be prioritized.   
+
+BR,  
+www.abtaudio.tech
