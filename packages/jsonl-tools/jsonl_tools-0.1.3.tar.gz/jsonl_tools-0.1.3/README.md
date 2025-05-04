@@ -1,0 +1,88 @@
+# jsonl_tools
+
+**jsonl_tools** is a minimalist Python library for working with `.jsonl` (JSON Lines) files. It provides functions similar to Python's built-in `json` module, along with utilities to convert between `.json` and `.jsonl` formats.
+
+## What is JSONL?
+
+JSON Lines (JSONL) is a text format where each line is a separate JSON object. This format is commonly used in data processing, logging, and machine learning systems.
+
+Official site: [https://jsonlines.org](https://jsonlines.org)
+
+## Features
+
+- Functions that are compatible with `json`: `load`, `loads`, `dump`, `dumps`
+- Support for reading and writing `.jsonl` files and strings
+- Conversion from `.json` (list of objects) to `.jsonl` and vice versa
+- No external dependencies
+- Compatible with Python 3.7+
+
+## Installation
+
+Install via pip:
+``pip install jsonl_tools``
+
+Alternatively, clone the repository manually:
+
+```git
+cd jsonl_tools
+```
+
+## Usage
+
+### Load JSONL from a file
+
+```python
+from jsonl_tools import load
+
+with open("data.jsonl", "r", encoding="utf-8") as f:
+    data = load(f)
+```
+
+### Load JSONL from a string
+
+```python
+from jsonl_tools import loads
+
+s = '{"a": 1}\n{"b": 2}'
+data = loads(s)
+```
+
+### Write to a JSONL file
+
+```python
+from jsonl_tools import dump
+
+data = [{"x": 1}, {"y": 2}]
+with open("output.jsonl", "w", encoding="utf-8") as f:
+    dump(data, f)
+```
+
+### Get a JSONL string
+
+```python
+from jsonl_tools import dumps
+
+jsonl_string = dumps([{"a": 1}, {"b": 2}])
+```
+
+### Convert Between Formats
+
+#### JSON $\rightarrow$ JSONL
+
+```python
+from jsonl_tools import json_to_jsonl
+
+json_to_jsonl("data.json", "data.jsonl")
+```
+
+Note: ``data.json must`` contain a top-level list ``([{}, {}, ...])``.
+
+#### JSONL $\rightarrow$ JSON
+
+```python
+from jsonl_tools import jsonl_to_json
+
+jsonl_to_json("data.jsonl", "data.json")
+```
+
+This will create a ``data.json`` file containing a list of objects.
