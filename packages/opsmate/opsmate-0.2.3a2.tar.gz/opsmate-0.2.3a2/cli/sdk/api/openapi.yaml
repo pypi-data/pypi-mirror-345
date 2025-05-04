@@ -1,0 +1,169 @@
+openapi: 3.1.0
+info:
+  title: FastAPI
+  version: 0.1.0
+servers:
+- url: /
+paths:
+  /v1/healthz:
+    get:
+      operationId: health_v1_healthz_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+          description: Successful Response
+      summary: Health
+  /v1/models:
+    get:
+      operationId: models_v1_models_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Model'
+                type: array
+          description: Successful Response
+      summary: Models
+  /v1/run:
+    post:
+      operationId: run_v1_run_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunResponse'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Run
+components:
+  schemas:
+    HTTPValidationError:
+      example:
+        detail:
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+      title: HTTPValidationError
+    Health:
+      example:
+        status: ok
+      properties:
+        status:
+          default: ok
+          enum:
+          - ok
+          - faulty
+          title: status
+          type: string
+      title: Health
+    Model:
+      example:
+        provider: provider
+        model: model
+      properties:
+        provider:
+          title: provider
+          type: string
+        model:
+          title: model
+          type: string
+      required:
+      - model
+      - provider
+      title: Model
+    RunRequest:
+      example:
+        instruction: instruction
+        context: cli
+        ask: false
+        model: model
+      properties:
+        model:
+          title: name of the llm model to use
+          type: string
+        instruction:
+          title: instruction to execute
+          type: string
+        context:
+          default: cli
+          title: context to use
+          type: string
+        ask:
+          default: false
+          title: ask
+          type: boolean
+      required:
+      - instruction
+      - model
+      title: RunRequest
+    RunResponse:
+      example:
+        observation: observation
+        tool_outputs: tool_outputs
+      properties:
+        tool_outputs:
+          title: tool outputs
+          type: string
+        observation:
+          title: observation
+          type: string
+      required:
+      - observation
+      - tool_outputs
+      title: RunResponse
+    ValidationError:
+      example:
+        msg: msg
+        loc:
+        - ValidationError_loc_inner
+        - ValidationError_loc_inner
+        type: type
+      properties:
+        loc:
+          items:
+            $ref: '#/components/schemas/ValidationError_loc_inner'
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ValidationError_loc_inner:
+      anyOf:
+      - type: string
+      - type: integer

@@ -1,0 +1,126 @@
+site_name: Opsmate
+repo_name: opsmate
+repo_url: https://github.com/opsmate-ai/opsmate
+site_url: https://docs.tryopsmate.ai
+edit_uri: edit/main/docs/
+theme:
+  name: material
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.tabs.link
+    - content.tooltips
+    - header.autohide
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+plugins:
+  - mkdocs-jupyter:
+      ignore_h1_titles: true
+      execute: false
+  - search
+  - social
+  - macros:
+      module_name: docs/macros
+      on_error_fail: true
+      # on_undefined: strict
+nav:
+  - Introduction: index.md
+  - CLI Reference:
+    - CLI: CLI/index.md
+    - opsmate run: CLI/run.md
+    - opsmate solve: CLI/solve.md
+    - opsmate chat: CLI/chat.md
+    - opsmate serve: CLI/serve.md
+    - opsmate worker: CLI/worker.md
+    - opsmate ingest: CLI/ingest.md
+    - opsmate install: CLI/install.md
+    - opsmate uninstall: CLI/uninstall.md
+    - opsmate ingest-prometheus-metrics-metadata: CLI/ingest-prometheus-metrics-metadata.md
+    - opsmate schedule-embeddings-reindex: CLI/schedule-embeddings-reindex.md
+    - opsmate db-migrate: CLI/db-migrate.md
+    - opsmate db-rollback: CLI/db-rollback.md
+    - opsmate db-revisions: CLI/db-revisions.md
+    - opsmate list-contexts: CLI/list-contexts.md
+    - opsmate list-tools: CLI/list-tools.md
+    - opsmate list-models: CLI/list-models.md
+    - opsmate reset: CLI/reset.md
+  - LLM Providers:
+    - LLM Providers: providers/index.md
+    - OpenAI: providers/openai.md
+    - Anthropic: providers/anthropic.md
+    - Google Vertex AI: providers/google-genai.md
+    - XAI: providers/xai.md
+    - Groq: providers/groq.md
+    - Fireworks AI: providers/fireworks-ai.md
+    - Ollama: providers/ollama.md
+  - Tools:
+    - Tools: tools/index.md
+    - Prometheus: tools/prometheus.md
+    - Loki: tools/loki.md
+    - MySQL: tools/mysql.md
+    - Postgres: tools/postgres.md
+  - Configurations:
+    - LLM Configurations: configurations/llm-configurations.md
+    - Add New LLM Providers: configurations/add-new-llm-providers.md
+    - Add New Runtimes: configurations/integrate-with-new-runtime.md
+    - Use Cloud Storage for Embeddings Storage: configurations/use-cloud-storage-for-embeddings-storage.md
+    - Advanced Knowledge Retrieval: configurations/advanced-knowledge-retrieval.md
+    - OTel Integration: configurations/OTel.md
+  - Cookbooks:
+    - Cookbooks: cookbooks/index.md
+    - Manage VMs via SSH: cookbooks/manage-vms.md
+    - Docker Runtime: cookbooks/docker-runtime.md
+    - Kubernetes Runtime: cookbooks/k8s-runtime.md
+    - Interacting with MySQL using Opsmate: cookbooks/interacting-with-mysql-using-opsmate.md
+    - Use Opsmate for Automation: cookbooks/automation-using-python-runtime.ipynb
+    - Plugin System: cookbooks/plugin-system.ipynb
+    - 5 Levels of Workflow Orchestration: cookbooks/5-levels-of-workflow-orchestration.ipynb
+    - Knowledge Management: cookbooks/knowledge-management.ipynb
+  - Production: production.md
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/opsmate-ai/opsmate
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/he_jingkai
+
+extra_javascript:
+  - assets/asciinema-player.min.js
+extra_css:
+  - assets/asciinema-player.css

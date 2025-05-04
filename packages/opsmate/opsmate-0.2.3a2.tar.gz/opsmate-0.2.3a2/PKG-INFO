@@ -1,0 +1,227 @@
+Metadata-Version: 2.4
+Name: opsmate
+Version: 0.2.3a2
+Summary: opsmate is a SRE AI assistant
+Author-email: Jingkai <jingkai@hey.com>
+License: MIT License
+        
+        Copyright (c) 2025 Jingkai He
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Requires-Python: <4.0,>=3.10
+Requires-Dist: aiohttp!=3.11.13,>=3.11.0
+Requires-Dist: alembic<2.0.0,>=1.14.1
+Requires-Dist: click<9.0.0,>=8.1.7
+Requires-Dist: fastapi[standard]<1.0.0,>=0.115.5
+Requires-Dist: graphviz<1.0.0,>=0.20.3
+Requires-Dist: html2text==2024.2.26
+Requires-Dist: httpx<1.0.0,>=0.27.2
+Requires-Dist: instructor[anthropic]<2.0.0,>=1.7.9
+Requires-Dist: jinja2<4.0.0,>=3.1.6
+Requires-Dist: lancedb==0.20.0
+Requires-Dist: matplotlib<4.0.0,>=3.10.1
+Requires-Dist: opentelemetry-exporter-otlp>=1.31.0
+Requires-Dist: opentelemetry-instrumentation-anthropic>=0.38.12
+Requires-Dist: opentelemetry-instrumentation-openai>=0.38.12
+Requires-Dist: opentelemetry-instrumentation-sqlalchemy>=0.52b0
+Requires-Dist: opentelemetry-instrumentation-starlette>=0.52b0
+Requires-Dist: pandas<3.0.0,>=2.2.3
+Requires-Dist: pip>=25.0.1
+Requires-Dist: plotext<6.0.0,>=5.3.2
+Requires-Dist: plotly<7.0.0,>=6.0.0
+Requires-Dist: pydantic-settings<3.0.0,>=2.6.1
+Requires-Dist: pydantic<3.0.0,>=2.8.2
+Requires-Dist: python-fasthtml<1.0.0,>=0.10.0
+Requires-Dist: pytz<2026.0,>=2025.1
+Requires-Dist: pyyaml<7.0.0,>=6.0.2
+Requires-Dist: rich<14.0.0,>=13.8.1
+Requires-Dist: setuptools>=76.0.0
+Requires-Dist: sqlmodel<1.0.0,>=0.0.22
+Requires-Dist: structlog<25.0.0,>=24.4.0
+Requires-Dist: tabulate>=0.9.0
+Provides-Extra: reranker-answerdotai
+Requires-Dist: rerankers[transformers]; extra == 'reranker-answerdotai'
+Provides-Extra: reranker-cohere
+Requires-Dist: cohere<6.0.0,>=5.14.0; extra == 'reranker-cohere'
+Provides-Extra: sentence-transformers
+Requires-Dist: sentence-transformers<4.0.0,>=3.4.1; extra == 'sentence-transformers'
+Description-Content-Type: text/markdown
+
+# Opsmate
+
+
+[![PyPI version](https://badge.fury.io/py/opsmate.svg)](https://badge.fury.io/py/opsmate)
+[![Container Image](https://ghcr-badge.egpl.dev/opsmate-ai/opsmate/latest_tag?trim=major&label=image&nbsp;tag)](https://github.com/opsmate-ai/opsmate/pkgs/container/opsmate)
+[![Link to documentation](https://img.shields.io/static/v1?label=%F0%9F%93%96&message=Documentation&color=blue)](https://docs.tryopsmate.ai/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+Opsmate is an LLM-powered SRE copilot for understanding and solving production problems. By encoding expert troubleshooting patterns and operational knowledge, Opsmate lets users describe problem statements and intentions in natural language, eliminating the need to memorise complex command line or domain-specific tool syntax.
+
+Opsmate can not only perform problem solving autonomously, but also allow human operators to provide feedback and take over the control when needed. It accelerates incident response, reduces mean time to repair (MTTR), and empowers teams to focus on solving problems rather than wrestling with tooling.
+
+<img src="assets/demo.gif" width="700">
+
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Quick Start](#quick-start)
+- [Advanced Usage](#advanced-usage)
+- [Use Cases](#use-cases)
+- [Integrations](#integrations)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+
+- 🤖 **Natural Language Interface**: Run commands using natural language without remembering complex syntax
+- 🔍 **Advanced Reasoning**: Troubleshoot and solve production issues with AI-powered reasoning
+- 🔄 **Multiple LLM Support**: Out of box works for OpenAI, Anthropic, xAI. [Easy to extend](./docs/configurations/add-new-llm-providers.md) to other LLMs.
+- 🛠️ **Multiple Runtimes**: Supports various execution environments such as Local, [Docker](./docs/cookbooks/docker-runtime.md), [Kubernetes](./docs/cookbooks/k8s-runtime.md) and [remote VMs](./docs/cookbooks/manage-vms.md).
+- 🔭 **Modern Observability Tooling**: Built-in support for [Prometheus](https://prometheus.io/) allows you to create time series dashboards with natural language, and more to come.
+- 🧠 **Knowledge Management**: Ingest and use domain-specific knowledge
+- 📈 **Web UI & API**: Access Opsmate through a web interface or API
+- 🔌 **Plugin System**: Extend Opsmate with custom plugins
+
+## Installation
+
+Choose your preferred installation method:
+
+The recommended way of installing opsmate is using `uv`:
+
+```bash
+# Using uvx
+uv tool install -U opsmate
+```
+
+Other than that, you can also install opsmate using `pip`, `pipx` or `docker`.
+```bash
+# Using pip
+pip install -U opsmate
+
+# Using pipx
+pipx install opsmate
+# or
+pipx upgrade opsmate
+
+# Using Docker
+docker pull ghcr.io/opsmate-ai/opsmate:latest
+alias opsmate="docker run -it --rm --env OPENAI_API_KEY=$OPENAI_API_KEY -v $HOME/.opsmate:/root/.opsmate ghcr.io/opsmate-ai/opsmate:latest"
+
+# From source
+git clone git@github.com:opsmate-ai/opsmate.git
+cd opsmate
+uv build
+pipx install ./dist/opsmate-*.whl
+```
+
+## Configuration
+
+Opsmate is powered by large language models. It currently supports:
+
+* [OpenAI](https://platform.openai.com/api-keys)
+* [Anthropic](https://console.anthropic.com/settings/keys)
+* [xAI](https://x.ai/api)
+
+Set up your API key in an environment variable:
+
+```bash
+export OPENAI_API_KEY="sk-proj..."
+# or
+export ANTHROPIC_API_KEY="sk-ant-api03-..."
+# or
+export XAI_API_KEY="xai-..."
+```
+
+## Quick Start
+
+### Run commands with natural language
+
+```bash
+$ opsmate run "what's the gpu of the vm"
+# Output: Command and result showing GPU information
+```
+
+### Solve complex production issues
+
+```bash
+$ opsmate solve "what's the k8s distro of the current context"
+# Output: Thought process and analysis determining K8s distribution
+```
+
+### Interactive chat mode
+
+```bash
+$ opsmate chat
+```
+
+### Web UI and API
+
+```bash
+$ opsmate serve
+# Web interface: http://localhost:8080
+# API documentation: http://localhost:8080/api/docs
+```
+
+## Advanced Usage
+
+Opsmate can be deployed in production environments using the `opsmate-operator` in a Kubernetes cluster, providing:
+
+- Task scheduling via CRDs
+- Dedicated HTTPS endpoints and web UI for tasks
+- Multi-tenancy support
+- Automatic resource management with TTL
+- API server for environment management
+
+Check our [production documentation](https://docs.tryopsmate.ai/production/) for details.
+
+## Use Cases
+
+Opsmate supports various use cases:
+
+- Production issue troubleshooting and resolution
+- Root cause analysis
+- Performance analysis and improvement
+- Observability and monitoring setup
+- Capacity planning
+- On-call engineer assistance
+- Infrastructure as Code management
+- Routine task automation (CI/CD, backups, updates)
+- Knowledge management
+- Workflow orchestration
+
+## Integrations
+
+For a comprehensive list of integrations, please refer to the [integrations](https://docs.tryopsmate.ai/configurations/add-new-llm-providers/) and [cookbooks](https://docs.tryopsmate.ai/cookbooks/) sections.
+
+## Documentation
+
+For comprehensive documentation, visit [here](https://docs.tryopsmate.ai).
+
+## Contributing
+
+Contributions are welcome! See our [development guide](docs/development.md) for details.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
