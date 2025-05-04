@@ -1,0 +1,83 @@
+# hypixelstats-core
+
+hypixelstats-core is a lightweight Python module for retrieving player statistics from the Hypixel API.
+
+## ✨ Features
+
+- ✅ BedWars, SkyWars, Murder Mystery, Build Battle stats
+- 🧩 Game mode selection (solo, teams, etc.)
+- 📦 No external Hypixel wrapper dependency
+
+## 📦 Installation
+
+```bash
+pip install hypixelstats-core
+```
+
+# 📦 Usage
+```python
+from hypixel_stats.api import get_player_data
+from hypixel_stats.games import bedwars, skywars, murder_mystery, build_battle
+from hypixel_stats.utils.formatter import print_stats
+
+# Your Hypixel API key (https://developer.hypixel.net/dashboard/)
+API_KEY = "YOUR_HYPIXEL_API_KEY"
+# Minecraft Username
+username = "USERNAME"
+
+player_data = get_player_data(API_KEY, username)
+
+# BedWars stats
+# stats = bedwars.get_stat(player_data)
+# stats = bedwars.get_stat(player_data, mode="solo")  # Solo mode stats
+
+# SkyWars stats
+# stats = skywars.get_stat(player_data)  # Overall SkyWars stats
+# stats = skywars.get_stat(player_data, mode="solo_normal")  # Solo Normal mode stats
+
+# Murder Mystery stats
+# stats = murder_mystery.get_stat(player_data)  # Overall Murder Mystery stats
+
+# Build Battle stats / No mode Select
+# stats = build_battle.get_stat(player_data)  # Overall Build Battle stats
+
+# print_stats(stats)  # Prints the stats in a human-readable format
+```
+
+# 📜 Available Modes
+In BedWars, you can use the following modes:
+solo: Solo mode
+
+doubles: Doubles mode
+
+three: 3-player team mode
+
+fours: 4-player team mode
+
+4v4: 4v4 mode
+
+rush: Rush mode
+
+ultimate: Ultimate mode
+
+lucky: Lucky mode
+
+castle: Castle mode
+
+voidless: Voidless mode
+
+swap: Swap mode
+
+dream: Dream mode
+
+In SkyWars, you can use the following modes:
+solo_normal: Solo normal mode
+
+solo_insane: Solo insane mode
+
+In Murder Mystery, you can use the following modes:
+classic: Classic mode
+
+double-up: Double-up mode (two players per team)
+
+Note: If you don't specify a mode, the function will return overall stats for the selected game.
