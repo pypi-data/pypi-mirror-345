@@ -1,0 +1,125 @@
+Metadata-Version: 2.4
+Name: agentask
+Version: 0.1.2
+Summary: An AI-powered task planning assistant with calendar generation
+Home-page: https://github.com/yourusername/taskflow
+Author: TaskFlow Team
+Author-email: example@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: mistralai
+Requires-Dist: google-generativeai
+Requires-Dist: python-dotenv
+Requires-Dist: icalendar
+Requires-Dist: grpcio==1.60.1
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# AgentTask
+
+An AI-powered task planning assistant that helps you understand, plan, and schedule your projects with ease.
+
+## Features
+
+- **Task Understanding**: Converts PDF documents to markdown and generates a comprehensive summary
+- **Task Planning**: Creates a detailed plan based on your deadline, priority, and preferred working hours
+- **Calendar Generation**: Generates a calendar file (.ics) that you can import into your calendar app
+
+## Installation
+
+```bash
+pip install agentask
+```
+
+## Requirements
+
+- Python 3.8 or higher
+- Mistral API key (for OCR functionality)
+- Gemini API key (for summary and plan generation)
+
+## Setup
+
+1. Create a project folder (e.g., `project`)
+2. Inside the project folder, create a folder called `info`
+3. Place your task description files (PDFs) in the `info` folder
+4. Create a `.env` file in the project folder with your API keys:
+
+```
+MISTRAL_API_KEY=your_mistral_api_key
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+## Usage
+
+### Understanding Your Task
+
+```bash
+understand project
+```
+
+This command will:
+1. Check if the `info` folder exists and contains PDF files
+2. Convert the PDF files to markdown using Mistral OCR
+3. Generate a summary of the task using Gemini API
+4. Save the summary as `summary.md` in the `info` folder
+
+### Planning Your Task
+
+```bash
+plan project
+```
+
+This command will:
+1. Ask for your project deadline in the format day/month/year
+2. Ask for your project priority (0-100%)
+3. Ask for your preferred working hours (e.g., "7-9, 22-23")
+4. Generate a detailed plan using Gemini API
+5. Save the plan as `plan.md` in the `info` folder
+
+### Generating a Calendar
+
+```bash
+generate calendar project
+```
+
+This command will:
+1. Check if the plan file exists
+2. Generate a calendar file (.ics) based on the plan
+3. Save the calendar file as `calendar.ics` in the `info` folder
+
+## Example Workflow
+
+```bash
+# Create project structure
+mkdir -p project/info
+
+# Add your PDF files to the info folder
+cp your_task_description.pdf project/info/
+
+# Create .env file with your API keys
+echo "MISTRAL_API_KEY=your_mistral_api_key" > project/.env
+echo "GEMINI_API_KEY=your_gemini_api_key" >> project/.env
+
+# Understand the task
+understand project
+
+# Plan the task
+plan project
+
+# Generate a calendar
+generate calendar project
+```
+
+## License
+
+MIT
