@@ -1,0 +1,61 @@
+[project]
+name = "swaystatus"
+version = "0.10.0"
+description = "Generate a status line for swaybar"
+readme = "README.md"
+authors = [
+    { name="Jeremy Cantrell", email="jmcantrell@gmail.com" }
+]
+license-files = { paths = ["LICENSE"] }
+requires-python = ">=3.12"
+keywords = ["sway", "wm", "status"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Desktop Environment :: Window Managers",
+    "Topic :: Desktop Environment",
+    "Typing :: Typed",
+]
+
+[dependency-groups]
+dev = [
+    "jedi>=0.19.2",
+    "mypy>=1.15.0",
+    "pytest>=8.3.4",
+    "ruff>=0.9.7",
+]
+
+[project.urls]
+"Homepage" = "https://sr.ht/~jmcantrell/swaystatus/"
+"Repository" = "https://git.sr.ht/~jmcantrell/swaystatus"
+"Bug Tracker" = "https://todo.sr.ht/~jmcantrell/swaystatus"
+
+[project.scripts]
+swaystatus = "swaystatus.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = ["/src", "/tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/swaystatus"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+extend-select = ["I"]
