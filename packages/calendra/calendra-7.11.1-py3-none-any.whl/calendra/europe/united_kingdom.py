@@ -1,0 +1,106 @@
+from datetime import date
+
+from dateutil import relativedelta as rd
+
+from ..core import Holiday
+from ..core import WesternCalendar
+from ..registry_tools import iso_register
+
+
+@iso_register('GB')
+class UnitedKingdom(WesternCalendar):
+    'United Kingdom'
+
+    include_good_friday = True
+    include_easter_sunday = True
+    include_easter_monday = True
+    include_boxing_day = True
+    shift_new_years_day = True
+    non_computable_holiday_dict = {
+        1973: [(date(1973, 11, 14), "Royal wedding"), ],
+        1977: [(date(1977, 6, 7), "Queen’s Silver Jubilee"), ],
+        1981: [(date(1981, 7, 29), "Royal wedding"), ],
+        1999: [(date(1999, 12, 31), "New Year's Eve"), ],
+        2002: [(date(2002, 6, 3), "Queen’s Golden Jubilee"), ],
+        2011: [(date(2011, 4, 29), "Royal Wedding"), ],
+        2012: [(date(2012, 6, 5), "Queen’s Diamond Jubilee"), ],
+        2022: [(date(2022, 6, 3), "Queen’s Platinum Jubilee bank holiday"),
+               (date(2022, 9, 19), "State Funeral of Queen Elizabeth II"), ],
+        2023: [
+            (date(2023, 5, 8), "Coronation of His Majesty King Charles III"),
+        ],
+    }
+
+    def get_early_may_bank_holiday(self, year):
+        """
+        Return Early May bank holiday
+        """
+        day = date(year, 5, 1) + rd.relativedelta(weekday=rd.MO(1))
+        desc = "Early May Bank Holiday"
+        indication = "1st Monday in May"
+
+        # Special case in 2020, for the 75th anniversary of the end of WWII.
+        if year == 2020:
+            day = date(year, 5, 8)
+            desc += " (VE day)"
+            indication = "VE day"
+        return Holiday(day, desc, indication=indication)
+
+    def get_spring_bank_holiday(self, year):
+        day = date(year, 5, 30) + rd.relativedelta(weekday=rd.MO(-1))
+        if year in (2012, 2002):
+            day = date(year, 6, 4)
+        if year in (1977,):
+            day = date(year, 6, 6)
+        if year == 2022:
+            day = date(year, 6, 2)
+        return Holiday(
+            day,
+            "Spring Bank Holiday",
+            indication="Last Monday in May",
+        ),
+
+    def get_late_summer_bank_holiday(self, year):
+        return Holiday(
+            date(year, 8, 31) + rd.relativedelta(weekday=rd.MO(-1)),
+            "Late Summer Bank Holiday",
+            indication="Last Monday in August",
+        )
+
+    def non_computable_holiday(self, year):
+        non_computable = self.non_computable_holiday_dict.get(year, None)
+        return non_computable
+
+    def get_variable_days(self, year):
+        days = super().get_variable_days(year)
+        days.append(self.get_early_may_bank_holiday(year))
+        days.append(self.get_spring_bank_holiday(year))
+        days.append(self.get_late_summer_bank_holiday(year))
+        non_computable = self.non_computable_holiday(year)
+        if non_computable:
+            days.extend(non_computable)
+        return days
+
+
+@iso_register('GB-NIR')
+class UnitedKingdomNorthernIreland(UnitedKingdom):
+    'Northern Ireland'
+
+    def get_variable_days(self, year):
+        days = super().get_variable_days(year)
+        # St Patrick's day
+        st_patrick = date(year, 3, 17)
+        days.append((st_patrick, "Saint Patrick's Day"))
+        if st_patrick.weekday() in self.get_weekend_days():
+            days.append((
+                self.find_following_working_day(st_patrick),
+                "Saint Patrick substitute"))
+
+        # Battle of boyne
+        battle_of_boyne = date(year, 7, 12)
+        days.append((battle_of_boyne, "Battle of the Boyne"))
+        if battle_of_boyne.weekday() in self.get_weekend_days():
+            days.append((
+                self.find_following_working_day(battle_of_boyne),
+                "Battle of the Boyne substitute"))
+        return days
