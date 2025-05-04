@@ -1,0 +1,221 @@
+# 松鼠Quant量化交易回测系统
+
+一个功能强大的量化交易回测系统，支持多品种、多周期的策略回测。
+
+## 项目结构
+
+```
+ssquant/
+├── ssquant/           # 主要包目录
+│   ├── api/           # API接口模块
+│   ├── backtest/      # 回测核心模块
+│   ├── config/        # 配置相关模块
+│   ├── data/          # 数据获取与处理模块
+│   ├── indicators/    # 技术指标计算模块
+│   ├── assets/        # 静态资源文件
+│   └── __init__.py    # 初始化文件
+├── setup.py           # 打包配置文件
+├── MANIFEST.in        # 资源文件配置
+├── README.md          # 项目说明文件
+```
+
+## 安装
+
+### 开发模式安装
+
+对于开发人员，建议使用开发模式安装，这样可以直接修改源代码：
+
+```bash
+pip install -e .
+```
+
+### 普通安装
+
+```bash
+pip install .
+```
+
+### 构建分发包
+
+```bash
+# 安装构建工具
+pip install build
+
+# 构建包
+python -m build
+
+# 构建后会在 dist/ 目录下生成两个文件：
+# - ssquant-0.1.0-py3-none-any.whl    # wheel 格式（用于pip安装）
+# - ssquant-0.1.0.tar.gz              # 源码包格式
+```
+
+## 使用示例
+
+### 基本用法
+
+```python
+from ssquant import MultiSourceBacktester
+
+# 创建回测实例
+backtester = MultiSourceBacktester()
+
+# 配置回测参数
+backtester.set_base_config({
+    'use_cache': True,
+    'save_data': True,
+    'align_data': True,
+    'debug': False
+})
+
+# 添加品种配置
+backtester.add_symbol_config('rb888', {
+    'periods': [
+        {'kline_period': '1h', 'adjust_type': '1'},
+        {'kline_period': 'D', 'adjust_type': '1'}
+    ],
+    'start_date': '2023-01-01',
+    'end_date': '2023-12-31',
+    'initial_capital': 100000.0
+})
+
+# 定义策略函数
+def my_strategy(api):
+    # 策略逻辑
+    pass
+
+# 定义初始化函数
+def initialize(api):
+    api.log("策略初始化")
+    api.log(f"策略参数: {api.params}")
+
+# 运行回测
+results = backtester.run(my_strategy, initialize, {'param1': 100})
+
+# 显示回测结果
+backtester.show_results(results)
+```
+
+### 策略函数示例
+
+```python
+def simple_strategy(api):
+    # 获取多个数据源
+    data1 = api.data[0]  # 第一个数据源
+    data2 = api.data[1]  # 第二个数据源
+    
+    # 当前价格
+    current_price = data1.current_price
+    
+    # 当前时间
+    current_datetime = data1.current_datetime
+    
+    # 当前持仓
+    position = data1.current_pos
+    
+    # 简单的移动平均线交叉策略
+    if len(data1.data) > 20 and data1.current_idx >= 20:
+        # 计算移动平均线
+        ma5 = data1.data['close'].iloc[data1.current_idx-5:data1.current_idx].mean()
+        ma20 = data1.data['close'].iloc[data1.current_idx-20:data1.current_idx].mean()
+        
+        # 金叉买入
+        if ma5 > ma20 and position <= 0:
+            api.log(f"{current_datetime} 金叉买入信号, MA5={ma5:.2f}, MA20={ma20:.2f}")
+            api.buy(data1, 1, limit_price=None, reason="金叉买入")
+        
+        # 死叉卖出
+        elif ma5 < ma20 and position > 0:
+            api.log(f"{current_datetime} 死叉卖出信号, MA5={ma5:.2f}, MA20={ma20:.2f}")
+            api.sell(data1, 1, limit_price=None, reason="死叉卖出")
+```
+
+## 数据获取
+
+系统支持多种数据获取方式：
+
+1. **API数据获取**：通过网络API获取实时或历史数据
+2. **本地数据加载**：加载本地CSV、Excel、HDF5等格式的数据文件
+3. **自定义数据源**：可以扩展实现自己的数据源
+
+示例：加载本地数据文件
+
+```python
+backtester.add_symbol_config('rb888', {
+    'file_path': 'data/rb888_1h.csv',
+    'start_date': '2023-01-01',
+    'end_date': '2023-12-31',
+    'initial_capital': 100000.0
+})
+```
+
+## 主要模块
+
+### 回测模块 (backtest)
+
+包含核心回测逻辑、数据管理、结果计算和可视化等功能：
+
+- `MultiSourceBacktester`: 多数据源回测器，支持多品种多周期回测
+- `BacktestDataManager`: 数据管理器，负责获取和处理数据
+- `BacktestResultCalculator`: 结果计算器，计算各种性能指标
+- `BacktestVisualizer`: 可视化工具，绘制各种回测图表
+
+### 数据模块 (data)
+
+处理数据获取、清洗和管理：
+
+- `MultiDataSource`: 多数据源管理器
+- `api_data_fetcher`: 从API获取数据
+- `local_data_loader`: 加载本地数据
+
+### API模块 (api)
+
+提供策略API和调试工具：
+
+- `StrategyAPI`: 策略API，提供交易和数据访问接口
+- `debug_utils`: 调试工具
+
+### 技术指标模块 (indicators)
+
+提供各种技术指标计算函数。
+
+## 参数优化
+
+系统支持三种参数优化方法：
+
+1. **网格搜索**：遍历所有参数组合
+2. **随机搜索**：随机采样参数组合
+3. **贝叶斯优化**：使用贝叶斯方法智能搜索参数空间
+
+示例：
+
+```python
+param_grid = {
+    'fast_period': [5, 10, 15, 20],
+    'slow_period': [20, 30, 40, 50],
+    'signal_period': [7, 9, 11]
+}
+
+best_params, best_result = backtester.optimize_parameters(
+    strategy=my_strategy,
+    param_grid=param_grid,
+    method='grid',
+    optimization_metric='sharpe_ratio',
+    higher_is_better=True
+)
+```
+
+## 依赖项
+
+- pandas: 数据处理
+- numpy: 数值计算
+- matplotlib: 图表绘制
+- scipy: 科学计算
+- akshare: 金融数据API
+- joblib: 并行计算
+- scikit-optimize: 贝叶斯优化
+- py7zr: 7z文件处理
+- openpyxl: Excel文件处理
+
+## 许可证
+
+MIT 
