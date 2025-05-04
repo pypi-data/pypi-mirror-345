@@ -1,0 +1,35 @@
+[project]
+name = "force-fusion"
+version = "0.0.6"
+description = " A real-time PyQt dashboard visualizing vehicle dynamics and normal-force distribution."
+authors = [{ name = "Sang Buster", email = "hello@singsongaftermath.com" }]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dependencies = [
+    "folium>=0.19.5",
+    "pyqt5>=5.15.11",
+    "pyqtwebengine>=5.15.7",
+    "websockets>=15.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Sang-Buster/Force-Fusion"
+Documentation = "https://deepwiki.com/Sang-Buster/Force-Fusion"
+Repository = "https://github.com/Sang-Buster/Force-Fusion"
+
+[project.scripts]
+force-fusion = "force_fusion.app:main"  # GUI entry point
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/force_fusion"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "ruff>=0.11.0",
+    "pre-commit>=4.0.0",
+]
