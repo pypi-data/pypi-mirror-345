@@ -1,0 +1,32 @@
+[project]
+name = "tm1637-gpiod"
+version = "2.0.0"
+description = "Library for TM1637-based LED display modules"
+readme = "README.md"
+requires-python = ">=3.9"
+license-files = [ "LICENSE" ]
+authors = [ { name = "Asadullah Shaikh" } ]
+keywords = [ "tm1637", "gpiod", "7", "segment", "led", "display" ]
+classifiers = [
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "Topic :: Education",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+    "Topic :: Software Development :: Embedded Systems",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 5 - Production/Stable",
+]
+urls = { homepage = "https://github.com/pantheraleo-7/tm1637-gpiod" }
+dependencies = [
+    "gpiod>=2.3.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tm1637"]
