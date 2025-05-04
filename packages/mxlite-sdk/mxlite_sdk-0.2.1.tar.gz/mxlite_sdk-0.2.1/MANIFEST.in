@@ -1,0 +1,24 @@
+# 包含基本配置文件
+include LICENSE
+include README.md
+include pyproject.toml
+include setup.py
+
+# 包含所有二进制文件(无需手动选择，由setup.py在构建时处理)
+include mxlite/bin/mxa-linux-x86_64
+include mxlite/bin/mxd-linux-arm64
+include mxlite/bin/mxd-linux-x86_64
+include mxlite/bin/mxd-linux-arm64
+include mxlite/bin/mxd-darwin-x86_64
+include mxlite/bin/mxd-darwin-arm64
+include mxlite/bin/mxd-windows-x86_64.exe
+include mxlite/bin/.placeholder
+
+# 排除不需要的文件
+global-exclude *.py[cod]
+global-exclude __pycache__
+global-exclude *.so
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude .idea
+global-exclude *.egg-info
