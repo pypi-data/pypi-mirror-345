@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: PyHolfuy
+Version: 0.0
+Summary: A Python library for interacting with Holfuy weather stations.
+Author-email: Håvard Dagenborg <haavardj@dagenborg.net>
+License-Expression: MIT
+Project-URL: homepage, https://github.com/haavardj/PyHolfuy
+Keywords: weather,holfuy,api,python
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp>=3.9.4
+Provides-Extra: test
+Requires-Dist: aioresponses==0.7.8; extra == "test"
+Requires-Dist: coverage==7.8.0; extra == "test"
+Requires-Dist: mypy==1.15.0; extra == "test"
+Requires-Dist: pytest-asyncio==0.26.0; extra == "test"
+Requires-Dist: pytest-cov==6.1.1; extra == "test"
+Requires-Dist: pytest-error-for-skips==2.0.2; extra == "test"
+Requires-Dist: pytest-timeout==2.3.1; extra == "test"
+Requires-Dist: pytest==8.3.5; extra == "test"
+Requires-Dist: ruff==0.11.7; extra == "test"
+Requires-Dist: syrupy==4.9.1; extra == "test"
+Provides-Extra: dev
+Requires-Dist: pre-commit==4.2.0; extra == "dev"
+Dynamic: license-file
+
+![Holfy Logo](https://holfuy.com/image/logo/holfuy-logo.png)
+
+# PyHolfuy
+A Python library for talking to [Holfuy Weather Stations](https://holfuy.com/).
+
+You need an API key to access the service. To obtain one, please visit the [Holfuy API](https://api.holfuy.com/live/) pages.
+
+The Library only access live data.
+
+## Example Code
+Here is an example of how to use the library.
+
+```python
+import aiohttp
+import asyncio
+from holfuy import HolfuyService
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+    s = HolfuyService("", session)
+    data = await s.fetch_data(["101"])
+    print(data)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
