@@ -1,0 +1,98 @@
+Metadata-Version: 2.4
+Name: ttmoc
+Version: 0.1.4
+Summary: Talk-To-My-Org-Chart: CLI MCP server for org chart queries.
+Author: ttthree
+Author-email: ttthree <ttthree@gmail.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: pydantic
+Requires-Dist: azure-identity
+Requires-Dist: mcp
+Requires-Dist: python-dotenv
+Requires-Dist: httpx
+Dynamic: author
+Dynamic: requires-python
+
+# Talk to My Org Chart - MCP Server
+
+This is the MCP (Model Context Protocol) server for the "Talk to My Org Chart" service. It allows AI assistants to query organizational data through a set of standardized tools.
+
+## Overview
+
+The MCP server provides a set of tools for querying organizational data, including:
+- Looking up employees by name or alias
+- Finding direct and indirect reports
+- Searching for employees by various criteria
+- Getting organizational metrics
+
+## Setup
+
+### Prerequisites
+
+- Python 3.9+
+- Azure AD tenant (for authentication)
+- Access to an organizational data source
+
+### Installation
+
+```bash
+pip install ttmoc
+```
+
+With environment variables:
+- `WHO_NEXT_API_URL`: The URL of your API server (e.g., http://localhost:8000)
+- `AAD_TENANT_ID`: Your Azure Active Directory tenant ID
+
+## Available Tools (API Functions)
+
+Once the server is running, it exposes several tools for querying org chart data:
+
+- **lookup_employee_by_name_or_alias**: Look up employees by display name or alias.
+- **lookup_direct_reports**: Get direct reports for a manager.
+- **find_all_reports_by_alias**: Get all reports (direct and indirect) for a manager, with optional filtering. Note this will usually return a lot of results, so it's recommended to use limit to limit the number of results.
+- **find_employees**: Find employees across the entire organization by criteria (name, title, cost center, etc.). Note this will usually return a lot of results, so it's recommended to use limit to limit the number of results.
+- **get_span_of_control_by_alias**: Get span of control metrics for a manager. Span of control describes on average how many employees a manager has in the organization.
+- **get_org_depth_by_alias**: Get organizational depth metrics for an employee.
+- **count_all_reports_by_alias**: Count all reports (direct and indirect) for a manager, with optional filtering.
+- **count_employees**: Count employees by criteria across the entire organization.
+
+## Usage Examples
+
+### Looking up an Employee
+
+```python
+result = await lookup_employee_by_name_or_alias(name_or_alias="John Doe")
+```
+
+### Finding Direct Reports
+
+```python
+reports = await lookup_direct_reports(alias="johndoe", limit=20)
+```
+
+### Finding All Reports with Filtering
+
+```python
+all_reports = await find_all_reports_by_alias(
+    alias="johndoe",
+    title="Software Engineer",
+    limit=100
+)
+```
+
+### Counting Employees by Criteria
+
+```python
+count = await count_employees(
+    title="Product Manager",
+    is_manager=True
+)
+```
+
+### Getting Organizational Metrics
+
+```python
+span = await get_span_of_control_by_alias(alias="johndoe")
+depth = await get_org_depth_by_alias(alias="johndoe")
