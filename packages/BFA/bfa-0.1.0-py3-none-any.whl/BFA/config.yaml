@@ -1,0 +1,72 @@
+chunk_size: 32
+ram_usage_per_thread: 1.5
+
+inference_engine:
+    build_args:
+        encoder:
+            mel_dim: 40
+            num_layers: 2
+            hidden_size: 256
+            output_size: 64
+
+        decoder:
+            dim: 64
+            output_dim: 64
+            source_vocab_size: 48
+            context_length: 282
+            encoder_block_count: 8
+            encoder_self_attention_head_count: 4
+            encoder_self_attention_abstraction_coef: 0.25
+            encoder_feed_forward_abstraction_coef: 2.0
+            epsilon: 1.0e-9
+            dropout: 0.2
+
+        joint_network:
+            dim: 64
+            vocab_size: 48
+
+    weights_paths:
+        encoder: "forced_aligner/inference_engine/weights/bfa_model_encoder_100.pt"
+        decoder: "forced_aligner/inference_engine/weights/bfa_model_decoder_100.pt"
+        joint_network: "forced_aligner/inference_engine/weights/bfa_model_joint_network_100.pt"
+
+
+text_preprocessor:
+    special_tokens:
+        silence: "<SIL>"
+        start_of_sequence: "<SOS>"
+        end_of_sequence: "<EOS>"
+        unknown: "<UNK>"
+
+    modifiers: ['ˈ', 'ˌ', 'ː', 'ᵊ']
+    punctuation: ['.', ',', '!', '?', ':', ';', '-', '—', '_', '(', ')', '[', ']', '{', '}', "'", '"']
+
+    tokenizer_path: "forced_aligner/text_preprocessor/tokenizer/tokenizer.json"
+    ipa_mapping_path: "forced_aligner/text_preprocessor/ipa_mapping.json"
+
+
+audio_preprocessor:
+    sample_rate: 16000
+    win_size: 512
+    hop_size: 256
+    n_fft: 512
+    n_mels: 40
+    f_min: 0
+    f_max: 8000
+
+
+io_manager:
+    sos_token: "<SOS>"
+    special_tokens: ["<SIL>", "<SOS>", "<EOS>"]
+    supported_audio_formats: [".wav", ".mp3", ".flac", ".pcm"]
+    supported_annotation_formats: [".txt", ".lab"]
+    output_format: ".TextGrid"
+
+
+logger:
+    name: "BFA"
+    base_log_level: "INFO"
+    file_log_level: "DEBUG"
+    console_log_level: "WARNING"
+    log_file: "logs/bfa.log"
+    log_format: "%(asctime)s - %(levelname)s - %(message)s"
