@@ -1,0 +1,105 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [
+    "hatchling",
+    "hatch-vcs",
+]
+
+[project]
+name = "gomi"
+dynamic = ["version"]
+description = 'Package to store and manage Note Types for Anki in a git repository.'
+readme = "README.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+keywords = []
+authors = [
+    { name = "Ajatt-Tools and contributors" },
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/Ajatt-Tools/gomi#readme"
+Issues = "https://github.com/Ajatt-Tools/gomi/issues"
+Source = "https://github.com/Ajatt-Tools/gomi"
+
+[project.scripts]
+gomi = "gomi.__main__:main"
+
+[tool.hatch.version]
+source = "vcs"
+path = "gomi/__about__.py"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "gomi/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+    "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/gomi tests}"
+
+[tool.coverage.run]
+source_pkgs = ["gomi", "tests"]
+branch = true
+parallel = true
+omit = [
+    "src/gomi/__about__.py",
+]
+
+[tool.coverage.paths]
+gomi = ["src/gomi", "*/gomi/src/gomi"]
+tests = ["tests", "*/gomi/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
+unstable = true
+
+[tool.isort]
+profile = "black"
+
+[tool.hatch.envs.hatch-test]
+# https://hatch.pypa.io/latest/config/internal/testing/
+# https://hatch.pypa.io/latest/tutorials/testing/overview/
+dependencies = [
+    "mypy>=1.0.0",
+    "pytest",
+]
+parallel = true
+randomize = true
+
+[tool.hatch.envs.hatch-static-analysis]
+# https://hatch.pypa.io/latest/how-to/static-analysis/behavior/
+dependencies = [
+    "black",
+    "flake8",
+    "isort",
+    "pyupgrade",
+]
+
+[tool.hatch.envs.hatch-static-analysis.scripts]
+format-check = [
+    "black --check --diff {args:.}",
+    "isort --check-only --diff {args:.}",
+]
+format-fix = [
+    "pyupgrade --py313-plus gomi/*.py tests/*.py; isort gomi tests; black gomi tests; ", # run as: hatch fmt -f
+]
+lint-check = "flake8 --max-line-length 120 {args:.}"
+lint-fix = "lint-check"
