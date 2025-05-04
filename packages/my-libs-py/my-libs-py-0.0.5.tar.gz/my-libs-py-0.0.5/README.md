@@ -1,0 +1,1 @@
+# Repositório destinado a criação de functions para estudo e cases pessoais!
