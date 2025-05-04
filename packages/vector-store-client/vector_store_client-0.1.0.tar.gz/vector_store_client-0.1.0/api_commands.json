@@ -1,0 +1,355 @@
+{
+  "commands": {
+    "help": {
+      "description": "Returns information about available commands",
+      "summary": "Command help",
+      "params": {
+        "cmdname": {
+          "type": "string",
+          "description": "Command name for detailed information",
+          "required": false
+        }
+      }
+    },
+    "create_record": {
+      "description": "Create a new record with a vector and metadata.\n\nThis is the primary command - use this instead of add_vector for new code.",
+      "summary": "Create a new record with a vector and metadata.",
+      "params": {
+        "vector": {
+          "type": "array",
+          "required": true,
+          "description": "The vector to add (must be 384-dimensional)."
+        },
+        "metadata": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Metadata for the record."
+        },
+        "session_id": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Session UUID (optional)."
+        },
+        "message_id": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Message UUID (optional)."
+        },
+        "timestamp": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "ISO timestamp (optional)."
+        }
+      }
+    },
+    "add_vector": {
+      "description": "Create a new record with a vector and metadata.\n\nThis is the primary command - use this instead of add_vector for new code.",
+      "summary": "Create a new record with a vector and metadata.",
+      "params": {
+        "vector": {
+          "type": "array",
+          "required": true,
+          "description": "The vector to add (must be 384-dimensional)."
+        },
+        "metadata": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Metadata for the record."
+        },
+        "session_id": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Session UUID (optional)."
+        },
+        "message_id": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Message UUID (optional)."
+        },
+        "timestamp": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "ISO timestamp (optional)."
+        }
+      }
+    },
+    "create_text_record": {
+      "description": "Creates a new record from text with automatic vectorization.",
+      "summary": "Creates a new record from text with automatic vectorization.",
+      "params": {
+        "text": {
+          "type": "string",
+          "required": true,
+          "description": "The text to vectorize and store. Must be a non-empty string."
+        },
+        "metadata": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Additional metadata for the record.\nAll fields are optional. Default fields that will be added:\n- text: The input text\n- model: The embedding model used (if specified)\n- session_id: Session UUID4 (if specified)\n- message_id: Message UUID4 (if specified)\n- timestamp: Creation time in ISO 8601 format with timezone\n- created_at: Same as timestamp\n- updated_at: Same as timestamp"
+        },
+        "model": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Embedding model to use for vectorization."
+        },
+        "session_id": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Session identifier in UUID4 format.\nIf provided, must be a valid UUID4 string."
+        },
+        "message_id": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Message identifier in UUID4 format.\nIf provided, must be a valid UUID4 string."
+        },
+        "timestamp": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Creation timestamp.\nIf provided, must be in ISO 8601 format with timezone and second precision\n(e.g. \"2024-03-21T15:30:00Z\" or \"2024-03-21T15:30:00+03:00\").\nIf not provided, current UTC time will be used."
+        }
+      }
+    },
+    "add_text": {
+      "description": "Creates a new record from text with automatic vectorization.",
+      "summary": "Creates a new record from text with automatic vectorization.",
+      "params": {
+        "text": {
+          "type": "string",
+          "required": true,
+          "description": "The text to vectorize and store. Must be a non-empty string."
+        },
+        "metadata": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Additional metadata for the record.\nAll fields are optional. Default fields that will be added:\n- text: The input text\n- model: The embedding model used (if specified)\n- session_id: Session UUID4 (if specified)\n- message_id: Message UUID4 (if specified)\n- timestamp: Creation time in ISO 8601 format with timezone\n- created_at: Same as timestamp\n- updated_at: Same as timestamp"
+        },
+        "model": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Embedding model to use for vectorization."
+        },
+        "session_id": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Session identifier in UUID4 format.\nIf provided, must be a valid UUID4 string."
+        },
+        "message_id": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Message identifier in UUID4 format.\nIf provided, must be a valid UUID4 string."
+        },
+        "timestamp": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Creation timestamp.\nIf provided, must be in ISO 8601 format with timezone and second precision\n(e.g. \"2024-03-21T15:30:00Z\" or \"2024-03-21T15:30:00+03:00\").\nIf not provided, current UTC time will be used."
+        }
+      }
+    },
+    "delete_records": {
+      "description": "Deletes records by their IDs.",
+      "summary": "Deletes records by their IDs.",
+      "params": {
+        "record_ids": {
+          "type": "array",
+          "required": true,
+          "description": "List of record UUIDs to delete."
+        }
+      }
+    },
+    "delete": {
+      "description": "Deletes records by their IDs.",
+      "summary": "Deletes records by their IDs.",
+      "params": {
+        "record_ids": {
+          "type": "array",
+          "required": true,
+          "description": "List of record UUIDs to delete."
+        }
+      }
+    },
+    "search_by_vector": {
+      "description": "Search for records by vector similarity.",
+      "summary": "Search for records by vector similarity.",
+      "params": {
+        "vector": {
+          "type": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "required": true,
+          "description": "Query vector (must be 384-dimensional)"
+        },
+        "limit": {
+          "type": "integer",
+          "required": false,
+          "default": 5,
+          "description": "Number of results to return"
+        },
+        "include_vectors": {
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Whether to include vectors in the result"
+        },
+        "include_metadata": {
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "Whether to include metadata in the result"
+        }
+      }
+    },
+    "search_by_text": {
+      "description": "Search for records by text similarity (with automatic embedding).",
+      "summary": "Search for records by text similarity (with automatic embedding).",
+      "params": {
+        "text": {
+          "type": "string",
+          "required": true,
+          "description": "Query text"
+        },
+        "limit": {
+          "type": "integer",
+          "required": false,
+          "default": 5,
+          "description": "Number of results to return"
+        },
+        "model": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Embedding model to use (optional)"
+        },
+        "include_vectors": {
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Whether to include vectors in the result"
+        },
+        "include_metadata": {
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "Whether to include metadata in the result"
+        }
+      }
+    },
+    "search_text_records": {
+      "description": "Search for records by text similarity with automatic embedding.",
+      "summary": "Search for records by text similarity with automatic embedding.",
+      "params": {
+        "text": {
+          "type": "string",
+          "required": true,
+          "description": "Query text. Must be a non-empty string."
+        },
+        "limit": {
+          "type": "integer",
+          "required": false,
+          "default": 5,
+          "description": "Number of results to return. Must be between 1 and 100.\nDefaults to 5."
+        },
+        "threshold": {
+          "type": "number",
+          "required": false,
+          "default": 0.0,
+          "description": "Minimum relevance score (0.0 to 1.0).\nResults below this threshold will be filtered out.\nDefaults to 0.0 (no filtering)."
+        },
+        "model": {
+          "type": "object",
+          "required": false,
+          "default": null,
+          "description": "Embedding model to use."
+        },
+        "include_vectors": {
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Whether to include vectors in the result.\nDefaults to False."
+        },
+        "include_metadata": {
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "Whether to include metadata in the result.\nDefaults to True."
+        }
+      }
+    },
+    "filter_records": {
+      "description": "Filter records by metadata criteria.",
+      "summary": "Filter records by metadata criteria.",
+      "params": {
+        "criteria": {
+          "type": "object",
+          "required": true,
+          "description": "Filtering criteria (MongoDB-like operators)"
+        },
+        "limit": {
+          "type": "integer",
+          "required": false,
+          "default": 100,
+          "description": "Maximum number of results"
+        },
+        "include_vectors": {
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Whether to include vectors in the result"
+        },
+        "include_metadata": {
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "Whether to include metadata in the result"
+        }
+      }
+    },
+    "get_metadata": {
+      "description": "Get metadata for a record by its ID.",
+      "summary": "Get metadata for a record by its ID.",
+      "params": {
+        "record_id": {
+          "type": "string",
+          "required": true,
+          "description": "Unique record identifier (UUID as string)"
+        }
+      }
+    },
+    "get_text": {
+      "description": "Get text for a record by its ID.",
+      "summary": "Get text for a record by its ID.",
+      "params": {
+        "record_id": {
+          "type": "string",
+          "required": true,
+          "description": "Unique record identifier (UUID as string)"
+        }
+      }
+    },
+    "health": {
+      "description": "Проверяет работоспособность сервиса.",
+      "summary": "Проверяет работоспособность сервиса.",
+      "params": {}
+    }
+  }
+}

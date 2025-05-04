@@ -1,0 +1,1 @@
+"""Integration tests for vector_store_client.""" 

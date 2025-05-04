@@ -1,0 +1,227 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "VectorStore API",
+    "description": "API для хранения и поиска векторных представлений",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/cmd": {
+      "post": {
+        "summary": "Execute Command",
+        "description": "Executes a command via JSON-RPC protocol.",
+        "operationId": "execute_command_cmd_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonRpcRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonRpcResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openapi.json": {
+      "get": {
+        "summary": "Get Openapi Schema",
+        "description": "Returns optimized OpenAPI schema.",
+        "operationId": "get_openapi_schema_openapi_json_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/commands": {
+      "get": {
+        "summary": "Get Commands",
+        "description": "Returns list of available commands with their descriptions.",
+        "operationId": "get_commands_api_commands_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "JsonRpcRequest": {
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "title": "Jsonrpc",
+            "description": "JSON-RPC version",
+            "default": "2.0"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "description": "Method name to call"
+          },
+          "params": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Params",
+            "description": "Method parameters",
+            "default": {}
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "Request identifier"
+          }
+        },
+        "type": "object",
+        "required": [
+          "method"
+        ],
+        "title": "JsonRpcRequest",
+        "description": "Base model for JSON-RPC requests."
+      },
+      "JsonRpcResponse": {
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "title": "Jsonrpc",
+            "description": "JSON-RPC version",
+            "default": "2.0"
+          },
+          "result": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result",
+            "description": "Method execution result"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error information"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "Request identifier"
+          }
+        },
+        "type": "object",
+        "title": "JsonRpcResponse",
+        "description": "Base model for JSON-RPC responses."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
