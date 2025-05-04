@@ -1,0 +1,10 @@
+__title__ = 'ka_uts_arr'
+__description__ = 'Array Utilities.'
+__url__ = 'https://ka-uts_arr.readthedocs.io/en/latest'
+__version__ = '2.2.3.250505'
+__build__ = 0x022200
+__author__ = 'Bernd Stroehle'
+__author_email__ = 'bernd.stroehle@gmail.com'
+__license__ = 'Apache-2.0'
+__copyright__ = 'Copyright 2024 Bernd Stroehle'
+__cake__ = u'\u2728 \U0001f370 \u2728'
