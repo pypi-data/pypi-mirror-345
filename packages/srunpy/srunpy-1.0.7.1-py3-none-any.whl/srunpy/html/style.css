@@ -1,0 +1,379 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: "MiSans";
+    src:
+        url("/MiSans-Medium.ttf") format("ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: MiSans;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background: #f6f6f6;
+}
+
+.main-container-v {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.main-container-h {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: calc(100% - 2 * 8px);
+    height: calc(100% - 2 * 8px);
+    padding: 8px;
+}
+
+.flex-span {
+    flex-grow: 1;
+}
+
+div#alert-mask,
+div#input-mask {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #0003;
+    backdrop-filter: blur(3px);
+    z-index: 2048;
+    transition: 0.5s;
+    opacity: 0;
+    display: none;
+}
+
+.alert-content,
+.input-content {
+    width: 256px;
+    height: 128px;
+    left: calc(50% - 128px - 32px - 5px);
+    top: calc(48% - 64px - 32px - 5px);
+    border-radius: 4px;
+    box-shadow: 2px 2px 4px 0 #0001;
+    margin: 5px;
+    background: #fff;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+}
+
+.input-content{
+    height: 148px;
+    top: calc(48% - 74px - 32px - 5px);
+}
+
+.alert-content>img,
+.input-content>img {
+    height: 32px;
+    width: 32px;
+    padding-left: calc(50% - 16px);
+}
+
+#alert-text {
+    flex-grow: 1;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#input-text {
+    flex-grow: 1;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#alert-text>span {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+#input-text>span {
+    font-size: 20px;
+}
+
+input#input-input {
+    border: 3px solid #444;
+    font-size: 20px;
+    width: 100%;
+    border-radius: 100px;
+    padding: 4px;
+    background: #fff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.alert-bar {
+    display: flex;
+}
+
+.alert-bar>button {
+    border: 3px solid #444;
+    font-size: 20px;
+    width: 118px;
+}
+
+.login-button {
+    border-radius: 100px;
+    /* border: 2px solid #444; */
+    border: none;
+    padding: 6px;
+    background: #4e4;
+    box-shadow: 2px 2px 4px 0 #0002, inset 2px 2px 4px 0 #6661;
+    width: 80%;
+    font-size: 16px;
+    text-align: center;
+    transition: 0.5s;
+}
+
+.login-button:hover {
+    background: #4d4;
+    box-shadow: 2px 2px 4px 0 #0000, inset 2px 2px 4px 0 #0002;
+}
+
+.toolbar {
+    width: 32px;
+    margin-right: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-pannel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-bar {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+}
+
+.settings-bar,
+.login-pannel,
+.toolbar {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 2px 2px 4px 0 #0001;
+    padding: 10px;
+}
+
+.toolbar-item {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    transition: 0.5s;
+    margin-bottom: 10px;
+    background-size: 26px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.toolbar-item:last-child {
+    margin-bottom: 0px;
+}
+
+.toolbar-item:hover {
+    background-color: #eee;
+}
+
+div#toolbar-item-self-service {
+    background-image: url(icons/user.png);
+}
+
+div#toolbar-item-browser {
+    background-image: url(icons/planet.png);
+}
+div#toolbar-item-refresh {
+    background-image: url(icons/refresh.png);
+}
+div#toolbar-item-exit {
+    background-image: url(icons/close-one.png);
+}
+
+div#toolbar-item-about {
+    background-image: url(icons/info.png);
+}
+
+div#toolbar-item-settings {
+    background-image: url(icons/setting.png);
+}
+
+.settings-item {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+.switch {
+    width: 60px;
+    height: 100%;
+    margin-right: 10px;
+    border-radius: 100px;
+    background: #f66;
+    box-shadow: inset 0px 0px 5px 1px #0004;
+    transition: 0.5s;
+    position: relative;
+}
+
+.switch-round {
+    background: white;
+    height: 16px;
+    width: 16px;
+    border-radius: 8px;
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 3px;
+    transition: 0.5s;
+}
+
+.switch[data-state="selected"] .switch-round {
+    left: 41;
+}
+.switch[data-state="selected"]:hover .switch-round {
+    left: 40;
+}
+
+.switch:hover .switch-round {
+    background: #f8f8f8;
+    height: 18px;
+    width: 18px;
+    border-radius: 9px;
+}
+
+.switch[data-state="selected"] {
+    background: #4e4;
+    box-shadow: inset 0px 0px 5px 1px #6664;
+}
+
+div#login-on {
+    display: none;
+}
+
+
+.login-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+
+.login-form {
+    padding-top: 8px;
+    text-align: center;
+}
+
+.input-item {
+    display: flex;
+    flex-direction: row;
+}
+
+input {
+    border-radius: 100px;
+    text-align: center;
+    height: 30px;
+    border: 2px solid #0003;
+    box-shadow: 1px 1px 5px 1px #0001;
+    flex-grow: 1;
+}
+
+.input-text {
+    width: 60px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.login-button::before {
+    content: "登录";
+}
+
+.login-pannel[data-state="online"] {
+    div#login-on {
+        display: flex;
+    }
+
+    div#login-off {
+        display: none;
+    }
+
+    .login-button {
+        color: white;
+        background: #f55;
+        box-shadow: 2px 2px 4px 0 #0002, inset 2px 2px 4px 0 #0002;
+    }
+
+    .login-button:hover {
+        background: #e33;
+        box-shadow: 2px 2px 4px 0 #0000, inset 2px 2px 4px 0 #0004;
+    }
+
+    .login-button::before {
+        content: "退出";
+    }
+}
+
+.login-button:disabled::before{
+    content: "请稍等"!important;
+}
+
+button {
+    border-radius: 100px;
+    border: 2px solid #444;
+    padding: 4px;
+    background: #fff;
+}
+
+button:hover {
+    background: #eee;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.info-title {
+    width: 80px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.info-text {
+    text-align: center;
+    flex-grow: 1;
+}
+
+#login-on::before {
+    content:"";
+    position: fixed;
+    background-image: url(https://gw.buaa.edu.cn/static/images/test/tips.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.1;
+    width: 230px;
+    height: 120px;
+    right: 0;
+}
