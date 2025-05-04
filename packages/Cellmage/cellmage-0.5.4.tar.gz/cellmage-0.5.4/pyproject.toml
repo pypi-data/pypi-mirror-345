@@ -1,0 +1,172 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# See https://setuptools.pypa.io/en/latest/userguide/quickstart.html for more project configuration options.
+name = "Cellmage"
+description = "IPython magic commands for seamless LLM integration in Jupyter notebooks, with persona management, context snippets, and Jira/GitLab/GitHub integrations"
+dynamic = ["version"]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: IPython",
+    "Framework :: Jupyter",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Education :: Computer Aided Instruction (CAI)",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+]
+authors = [
+    {name = "Thiago MadPin", email = "madpin@gmail.com"}
+]
+requires-python = ">=3.8"
+dependencies = [
+    "pyyaml>=6.0",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0.0",
+    "requests>=2.25.0",
+    "ipython>=8.0",
+    "requests",
+    "PyYAML",
+    "python-dotenv",
+    "types-PyYAML",
+    "types-requests",
+]
+license = {file = "LICENSE"}
+
+[project.urls]
+Homepage = "https://github.com/madpin/cellmage"
+Repository = "https://github.com/madpin/cellmage"
+Changelog = "https://github.com/madpin/cellmage/blob/main/CHANGELOG.md"
+# Documentation = "https://cellmage.readthedocs.io/"
+
+[project.optional-dependencies]
+langchain = [
+    "langchain==0.3.24",
+    "langchain-core>=0.1.20",
+    "langchain-community>=0.1.20",
+    "langchain-openai>=0.0.8"
+]
+confluence = [
+    "atlassian-python-api>=3.32.0",
+    "python-dotenv>=1.0.0"
+]
+jira = [
+    "jira>=3.5.0",
+    "python-dotenv>=1.0.0"
+]
+gitlab = [
+    "python-gitlab>=3.15.0",
+    "python-dotenv>=1.0.0",
+    "tiktoken>=0.5.0"
+]
+github = [
+    "PyGithub>=2.1.0",
+    "python-dotenv>=1.0.0",
+    "tiktoken>=0.5.0"
+]
+dev = [
+    "ruff",
+    "mypy>=1.0,<2.0",
+    "black>=23.0,<25.0",
+    "isort>=5.12,<5.14",
+    "pytest",
+    "pytest-sphinx",
+    "pytest-cov",
+    "twine>=1.11.0",
+    "build",
+    "setuptools",
+    "wheel",
+    "Sphinx>=6.0,<9.0",
+    "furo==2024.8.6",
+    "myst-parser>=1.0",
+    "sphinx-copybutton",
+    "sphinx-autobuild",
+    "sphinx-autodoc-typehints==1.23.3",
+    "packaging"
+]
+all = [
+    "cellmage[langchain,jira,gitlab,github,confluence]"
+]
+
+[tool.setuptools.packages.find]
+exclude = [
+    "*.tests",
+    "*.tests.*",
+    "tests.*",
+    "tests",
+    "docs*",
+    "scripts*"
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+cellmage = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = {attr = "cellmage.version.VERSION"}
+
+[tool.black]
+line-length = 100
+include = '\.pyi?$'
+exclude = '''
+(
+      __pycache__
+    | \.git
+    | \.mypy_cache
+    | \.pytest_cache
+    | \.vscode
+    | \.venv
+    | \.tox
+    | \bdist\b
+    | \bdoc\b
+)
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+# You can override these pyright settings by adding a personal pyrightconfig.json file.
+[tool.pyright]
+reportPrivateImportUsage = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.mypy]
+ignore_missing_imports = true
+no_site_packages = true
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+strict_optional = false
+
+[tool.pytest.ini_options]
+testpaths = "tests/"
+python_classes = [
+  "Test*",
+  "*Test"
+]
+log_format = "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+log_level = "DEBUG"
