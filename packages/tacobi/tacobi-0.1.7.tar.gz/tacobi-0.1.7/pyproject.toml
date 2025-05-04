@@ -1,0 +1,35 @@
+[project]
+name = "tacobi"
+version = "0.1.7"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "diskcache>=5.6.3",
+    "fastapi>=0.115.12",
+    "pandera>=0.23.1",
+    "pydantic>=2.11.1",
+    "requests>=2.32.3",
+    "uvicorn>=0.34.0",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[dependency-groups]
+dev = [
+    "pandas>=2.2.3",
+    "pytest-asyncio>=0.26.0",
+    "pytest>=8.3.5",
+    "pandas-stubs>=2.2.3.250308",
+    "requests>=2.32.3",
+    "httpx>=0.28.1",
+]
