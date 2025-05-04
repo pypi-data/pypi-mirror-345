@@ -1,0 +1,124 @@
+{
+  "type": "object",
+  "properties": {
+    "image-name": {
+      "type": "string",
+      "description": "The name of the generated image.",
+      "default": ""
+    },
+    "source-directory": {
+      "type": "string",
+      "description": "The source directory (where to find the source code)",
+      "default": "./"
+    },
+    "root-directory": {
+      "type": "string",
+      "description": "The root directory (where to find the package manager files).",
+      "default": "./"
+    },
+    "delete-generated-dockerfile": {
+      "type": "boolean",
+      "description": "Delete the generated Dockerfile.",
+      "default": false
+    },
+    "daemon": {
+      "type": "string",
+      "description": "The daemon provided by the host.",
+      "default": "docker",
+      "enum": ["podman", "docker"]
+    },
+    "output-type": {
+      "type": "string",
+      "default": "normal",
+      "description": "The output type of the generated image (standard, tar, push to repo).",
+      "enum": ["tar", "push", "normal"]
+    },
+    "platform": {
+      "type": "array",
+      "description": "The build platform(s) to use.",
+      "default": ["linux/amd64", "linux/arm64"],
+      "items": {
+        "type": "string"
+      }
+    },
+    "pre-build": {
+      "type": "array",
+      "description": "The commands to be run before the application build commands.",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "build": {
+      "type": "array",
+      "description": "The commands to be run to build the application.",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "env-vars": {
+      "type": "array",
+      "description": "The environment variables required.",
+      "default": [],
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the environment variable."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the environment variable."
+          },
+          "type": {
+            "type": "string",
+            "enum": ["runtime", "buildtime", "both"],
+            "description": "The type of environment variable."
+          }
+        },
+        "required": ["name", "value", "type"]
+      }
+    },
+    "port": {
+      "type": "string",
+      "description": "The port the application will be running on.",
+      "default": "8080"
+    },
+    "remote-source-repository": {
+      "type": "object",
+      "description": "The version control repository and branch to build.",
+      "properties": {
+        "git": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "The git repository URL."
+            },
+            "branch": {
+              "type": "string",
+              "description": "The git repository branch to work on."
+            }
+          },
+          "required": ["url", "branch"]
+        }
+      }
+    },
+    "images": {
+      "type": "object",
+      "description": "The images to use for building the application image.",
+      "properties": {
+        "build": {
+          "type": "string",
+          "description": "The build time image to be used."
+        },
+        "run-time": {
+          "type": "string",
+          "description": "The run time image to be used."
+        }
+      }
+    }
+  }
+}
