@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ioihelper"
+version = "0.7.1"
+dependencies = ["pygvas>=0.9.3", "jsonpath_ng>=1.7.0"]
+description = "Edits and updates Islands of Insight save game files to make your offline experience more fun."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "CC-BY-NC-SA-4.0"
+authors = [{name = "Robin Fredericksen", email = "refredericksen@gmail.com"}]
+
+# Link to GitHub and elsewhere
+[project.urls]
+Homepage = "https://github.com/Ryzhara/IslandsOfInsightHelper"
+Source = "https://github.com/Ryzhara/IslandsOfInsightHelper.git"
+LibrarySource = "https://github.com/Ryzhara/pygvas.git"
+Tracker = "https://github.com/Ryzhara/IslandsOfInsightHelper/issues"
+SteamGame = "https://store.steampowered.com/app/2071500/Islands_of_Insight/"
+
+[project.scripts]
+ioihelper = "ioihelper.ioihelper_cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.data-files]
+"data" = ["ioi_helper/data/*.json"]
