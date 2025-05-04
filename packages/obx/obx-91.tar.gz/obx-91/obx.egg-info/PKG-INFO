@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: obx
+Version: 91
+Summary: OBX
+Author-email: Bart Thate <bthate@dds.nl>
+License: Public Domain
+Project-URL: home, https://pypi.org/project/obx
+Project-URL: bugs, https://github.com/bthate/obx/issues
+Project-URL: source, https://github.com/bthate/obx
+Classifier: Development Status :: 1 - Planning
+Classifier: License :: Public Domain
+Classifier: Programming Language :: Python
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/x-rst
+
+OBX
+===
+
+
+**NAME**
+
+
+``obx`` - OBX
+
+
+**SYNOPSIS**
+
+
+::
+
+    >>> from obx import Object, read, write
+    >>> o = Object()
+    >>> oo = Object()
+    >>> o.a = "b"
+    >>> pth = write(o)
+    >>> read(oo, pth)
+    'store/obx.object.Object/2025-04-15/13:53:24.685981'
+    >>> print(oo)
+    {'a': 'b'}
+
+
+**DESCRIPTION**
+
+
+``OBX`` allows for easy json save//load to/from disk of objects. It
+provides an "clean namespace" Object class that only has dunder
+methods, so the namespace is not cluttered with method names. This
+makes storing and reading to/from json possible.
+
+
+**INSTALL**
+
+
+installation is done with pip
+
+|
+| ``$ pip install obx``
+|
+
+
+**AUTHOR**
+
+|
+| ``Bart Thate`` <``bthate@dds.nl``>
+|
+
+**COPYRIGHT**
+
+|
+| ``OBX`` is Public Domain.
+|
