@@ -1,0 +1,284 @@
+Metadata-Version: 2.4
+Name: inspectomat
+Version: 0.1.4
+Summary: System cleanup and file management toolbox
+Author: multigit-com
+Author-email: multigit-com <info@multigit.com>
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: System Administrators
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Topic :: System :: Systems Administration
+Classifier: Topic :: Utilities
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: full
+Requires-Dist: pillow; extra == "full"
+Requires-Dist: numpy; extra == "full"
+Requires-Dist: tqdm; extra == "full"
+Requires-Dist: psutil; extra == "full"
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-python
+
+# Inspectomat Toolbox
+
+This `toolbox` folder contains a set of simple, interactive utilities for cleaning up files and directories on your computer. Each tool is a separate Python script, launched from a central menu.
+
+
+## How to run?
+
+1. Go to the toolbox directory:
+   ```bash
+   cd toolbox
+   ```
+2. Activate your virtual environment (if needed):
+   ```bash
+   source ../venv/bin/activate
+   ```
+3. Start the menu:
+   ```bash
+   python menu.py
+   ```
+
+## Installation
+
+To install the inspectomat package and make it available as a command-line tool, run:
+
+```bash
+# Install in development mode
+pip install -e .
+```
+
+This will install the `inspectomat` command in your system.
+
+## Usage
+
+After installation, you can use the inspectomat tool in three ways:
+
+### Interactive Shell
+
+Simply run the `inspectomat` command without arguments to start the interactive shell:
+
+```bash
+inspectomat
+# or explicitly
+inspectomat -i
+```
+
+This will show a prompt where you can type commands. Use `list` to see all available commands:
+
+```
+inspectomat> list
+```
+
+### Direct Command Execution
+
+You can run specific commands directly:
+
+```bash
+inspectomat cleanemptydirs
+inspectomat findbigfiles
+inspectomat comparefolders
+# etc.
+```
+
+Use `inspectomat -l` or `inspectomat --list` to see all available commands.
+
+### Scriptable Shell Interface
+
+You can also use the scriptable shell interface to call specific functions with parameters:
+
+```bash
+# List all available commands
+inspectomat -l
+
+# Call a specific function in a module
+inspectomat cleanemptydirs -f find_empty_dirs -p /path/to/directory
+
+# Call with named parameters
+inspectomat findbigfiles -f find_big_files -p min_size=1000000 dir_path=/home/user/Documents
+```
+
+Command line arguments:
+- `-f, --function`: Function to call within the module
+- `-p, --params`: Parameters for the function (space-separated, use key=value format for named parameters)
+- `-i, --interactive`: Start interactive shell
+- `-l, --list`: List available commands
+- `-y, --yes`: Automatically answer yes to all prompts
+- `--repair`: Check and repair dependencies
+
+### Dependency Management and Self-Repair
+
+The inspectomat package includes a self-repair mechanism that can automatically detect and install missing dependencies. If a command fails due to a missing dependency, the system will offer to install it for you.
+
+To manually check and install dependencies:
+
+```bash
+# Interactive mode (will ask for confirmation)
+inspectomat repair
+
+# Non-interactive mode (automatically installs dependencies)
+inspectomat repair -y
+```
+
+In the interactive shell, you can use the `repair` command:
+
+```
+inspectomat> repair
+```
+
+The system will automatically detect the following types of dependencies:
+- Core dependencies required for basic functionality
+- Optional dependencies required for specific modules
+
+If you want to install all optional dependencies at once:
+
+```bash
+pip install -e .[full]
+```
+
+## Development
+
+### Running Tests
+
+The package includes unit tests to ensure functionality works as expected. To run the tests:
+
+```bash
+# Run all tests
+python run_tests.py
+
+# Run tests with unittest directly
+python -m unittest discover tests
+
+# Run a specific test
+python -m unittest tests.test_cli
+```
+
+### Project Structure
+
+```
+inspectomat/
+├── inspectomat/             # Package directory
+│   ├── __init__.py      # Package initialization
+│   ├── cli.py           # Command-line interface
+│   ├── clean_empty_dirs.py  # Utility modules
+│   ├── ...
+├── tests/               # Test directory
+│   ├── __init__.py
+│   ├── test_cli.py      # Tests for CLI
+│   ├── test_clean_empty_dirs.py  # Tests for utilities
+├── setup.py             # Package setup file
+├── run_tests.py         # Test runner script
+├── README.md            # This file
+└── LICENSE              # License file
+```
+
+### Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Tools Overview
+
+- **compare_equal_folders.py** – Compare contents of folders up to a chosen depth, log equal folders, and show progress.
+- **git_projects_audit.py** – Audit local git projects, check remote existence and equality, log results.
+- **clean_empty_dirs.py** – Remove empty directories recursively.
+- **find_big_files.py** – Find and list the largest files in a directory tree.
+- **batch_compare_folders.py** – Batch compare multiple folders and show results.
+- **move_batch_duplicates.py** – Move detected duplicate folders/files in batch mode.
+- **resolve_folder_differences.py** – Powerful, interactive N-way folder comparison and resolution tool (see below).
+- **find_similar_projects.py** – Wyszukuje w wybranej lokalizacji grupy folderów-projektów o podobnej strukturze (np. pliki, podfoldery). Wynik: gotowe grupy ścieżek do porównania narzędziem resolve_folder_differences.py. Przy każdym folderze pokazuje liczbę plików (rekurencyjnie) i całkowity rozmiar.
+
+## resolve_folder_differences.py
+
+Interaktywny skrypt do porównywania podfolderów (do wybranej głębokości) w wielu katalogach bazowych. Pozwala szybko wykryć i rozwiązać różnice w strukturze projektów, nawet dla dużych zbiorów.
+
+### Najważniejsze funkcje:
+- **Porównanie N folderów naraz** – Wprowadź dowolną liczbę ścieżek do katalogów do porównania.
+- **Dogłębna analiza** – Porównuje wszystkie pliki w podfolderach (do wybranej głębokości), wykrywa brakujące i różniące się pliki.
+- **Tabela różnic** – Przejrzysta, szeroka tabela z pełnymi ścieżkami folderów i datami modyfikacji plików (najstarsze/nowe podświetlone kolorami). Wyświetlane są tylko pliki, które się różnią.
+- **Interaktywne menu** – Dla każdej grupy różniących się podfolderów możesz: usunąć wybrany folder, przenieść wybrany folder do subfolderu `different` w innym i usunąć oryginał, pominąć lub zakończyć.
+- **Obsługa .ignore** – Plik `.ignore` (tworzony automatycznie) pozwala wykluczyć z porównań katalogi i pliki (np. `.git`, `.idea`, `venv`).
+- **Kolorowy, czytelny interfejs** – Kolory dla nagłówków, dat, menu, paska postępu.
+- **Pasek postępu** – Wskazuje postęp skanowania i porównywania.
+- **Informacja o braku różnic** – Czytelny komunikat, jeśli nie znaleziono żadnych różnic.
+- **Dowolna głębokość skanowania** – Na starcie wybierasz głębokość (domyślnie 2).
+
+### Szybki start
+
+1. **Dodaj katalogi do porównania:**
+   ```bash
+   python resolve_folder_differences.py
+   ```
+   Podaj ścieżki do katalogów, zakończ pustą linią. Zostaniesz zapytany o głębokość skanowania.
+
+2. **Dostosuj wykluczenia:**
+   Edytuj plik `.ignore` w katalogu toolbox, aby wykluczyć nieistotne katalogi/pliki.
+
+3. **Postępuj zgodnie z menu:**
+   Skrypt wyświetli różnice i zapyta o akcję dla każdej grupy podfolderów.
+
+### Przykład wykluczania
+
+Plik `.ignore` (domyślnie tworzony z wpisem `.git`):
+```
+.git
+.idea
+venv
+*.log
+```
+
+![img.png](resolve_folder_differences.png)
+
+
+### Wymagania
+- Python 3.7+
+- Terminal obsługujący kolory ANSI
+
+### Autor
+Tom Sapletta
+
+## find_similar_projects.py
+
+Ten skrypt pozwala automatycznie odnaleźć podobne projekty w dużej strukturze katalogów. Ułatwia szybkie przygotowanie listy ścieżek do dalszego porównania.
+
+### Funkcje:
+- Wskazujesz ścieżkę startową oraz głębokość penetracji (domyślnie 2).
+- Skrypt wyszukuje foldery, które wyglądają jak projekty (np. zawierają setup.py, .git, package.json, itp.).
+- Grupuje projekty o bardzo podobnej strukturze plików i folderów.
+- Dla każdej ścieżki pokazuje liczbę plików (rekurencyjnie) oraz rozmiar całkowity folderu.
+- Wynikiem są grupy ścieżek, które możesz podać do resolve_folder_differences.py.
+
+### Przykład użycia
+```
+python find_similar_projects.py
+Enter root path to search for projects: /home/tom/Projects
+How deep should be scanned? (default 2): 2
+
+Groups of similar projects:
+
+Group 1:
+  /home/tom/Projects/app1   files:   123   size: 12.3 MB
+  /home/tom/Projects/app2   files:   121   size: 12.2 MB
+
+You can use the above paths as input to resolve_folder_differences.py for comparison.
+```
+
+### Wskazówki
+- Im większa głębokość, tym więcej potencjalnych projektów zostanie znalezionych (ale wolniej).
+- Możesz edytować plik .ignore, aby wykluczyć katalogi typu .git, .idea, node_modules itd.
