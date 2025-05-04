@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "extratools-html"
+version = "0.1.11"
+description = ""
+authors = [{ name = "Chuancong Gao", email = "chuanconggao@users.noreply.github.com" }]
+requires-python = ">=3.11"
+readme = "README.md"
+license = "MIT"
+dependencies = [
+    "backoff>=2.2.1",
+    "html2text>=2024.2.26",
+    "httpx>=0.28.1",
+    "truststore>=0.10.1",
+]
+
+[project.urls]
+Repository = "https://github.com/chuanconggao/extratools-html"
+
+[project.optional-dependencies]
+browser = [
+    "playwright>=1.51.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=4.1.0",
+    "mypy>=1.7.1",
+    "ipython>=9.1.0",
+]
+
+[tool.coverage.run]
+source = [
+    "src",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "--cov --cov-report xml:cov.xml --cov-report html --cov-report term-missing test"
+pythonpath = [
+    "src",
+]
