@@ -1,0 +1,63 @@
+ai:
+  llm:
+    max_tokens: 1024
+    model: llama2
+    provider: ollama
+    system_prompt: You are a helpful voice assistant for a home automation system.
+      Keep responses concise and helpful. If asked to control a device, respond with
+      the appropriate command.
+    temperature: 0.7
+  nlp:
+    extract_entities: true
+    extract_intents: true
+    model: en_core_web_sm
+    provider: spacy
+  stt:
+    language: en
+    model: base
+    provider: whisper
+  tts:
+    provider: pyttsx3
+    rate: 150
+    voice: null
+    volume: 1.0
+commands:
+  devices:
+    command_prefix: turn
+    device_types:
+    - light
+    - fan
+    - tv
+    - thermostat
+    enabled: true
+    locations:
+    - living room
+    - kitchen
+    - bedroom
+    - bathroom
+  information:
+    enabled: true
+    facts: true
+    jokes: true
+    news: false
+    time: true
+    weather: true
+hardware:
+  enabled: false
+  gpio_pins:
+    bathroom_light: 23
+    bedroom_light: 22
+    fan: 24
+    kitchen_light: 18
+    living_room_light: 17
+    tv_relay: 25
+  platform: raspberry_pi
+logging:
+  console: true
+  file: server.log
+  level: INFO
+server:
+  host: 0.0.0.0
+  max_connections: 5
+  port: 9523
+  timeout: 30.0
