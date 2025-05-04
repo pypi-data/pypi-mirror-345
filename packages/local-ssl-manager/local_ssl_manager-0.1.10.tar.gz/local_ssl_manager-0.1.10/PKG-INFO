@@ -1,0 +1,130 @@
+Metadata-Version: 2.4
+Name: local-ssl-manager
+Version: 0.1.10
+Summary: Manage local SSL certificates for development environments
+Author: Maximilian Bertram
+Author-email: Maximilian Bertram <contact@maxbertram.com>
+License: MIT
+Project-URL: Homepage, https://github.com/MaxBer04/local_ssl_manager
+Project-URL: Bug Tracker, https://github.com/MaxBer04/local_ssl_manager/issues
+Project-URL: Documentation, https://github.com/MaxBer04/local_ssl_manager#readme
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: System :: Systems Administration
+Classifier: Topic :: Security :: Cryptography
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click>=8.0.0
+Requires-Dist: colorama>=0.4.4
+Requires-Dist: rich>=10.0.0
+Requires-Dist: certifi>=2022.12.7
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=3.0.0; extra == "dev"
+Requires-Dist: black>=22.3.0; extra == "dev"
+Requires-Dist: isort>=5.10.1; extra == "dev"
+Requires-Dist: flake8>=4.0.1; extra == "dev"
+Requires-Dist: mypy>=0.942; extra == "dev"
+Requires-Dist: pre-commit>=2.20.0; extra == "dev"
+Requires-Dist: pre-commit>=2.20.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: mkdocs>=1.3.0; extra == "docs"
+Requires-Dist: mkdocstrings>=0.18.1; extra == "docs"
+Requires-Dist: mkdocs-material>=8.2.8; extra == "docs"
+Dynamic: license-file
+
+# Local SSL Manager
+
+A command-line tool to create and manage local SSL certificates for development environments.
+
+## Features
+
+- Create self-signed SSL certificates for local domains
+- Automatically update /etc/hosts file
+- Set up browser trust for the certificates
+- Domain-specific logging
+- Interactive domain management
+
+## Installation
+
+```bash
+pip install local-ssl-manager
+```
+
+## Requirements
+
+- Python 3.8 or higher
+- `mkcert` tool (will be installed automatically if possible)
+- Admin/sudo privileges (for /etc/hosts and certificate installation)
+
+## Usage
+
+### Create a new local domain with SSL certificate
+
+```bash
+ssl-manager create --domain myproject.local
+```
+
+### Create a single certificate for multiple domains
+
+```bash
+ssl-manager create-multi --domains "app.local,api.local,admin.local"
+```
+
+### Delete a domain and its certificate
+
+```bash
+ssl-manager delete
+```
+
+This will show an interactive selector to choose which domain to delete.
+
+### List all managed domains
+
+```bash
+ssl-manager list
+```
+
+### Export a certificate for use elsewhere
+
+```bash
+ssl-manager export --domain myproject.local --output /path/to/export/dir
+```
+
+### Import an existing certificate
+
+```bash
+ssl-manager import-cert --domain myproject.local --cert /path/to/cert.crt --key /path/to/key.key
+```
+
+### View help
+
+```bash
+ssl-manager --help
+```
+
+## Configuration
+
+By default, Local SSL Manager stores all certificates and configuration in `~/.local-ssl-manager/`.
+You can customize the location by setting the `SSL_MANAGER_HOME` environment variable.
+
+## How it works
+
+1. Creates a local Certificate Authority (CA) using mkcert
+2. Installs the CA certificate in your system and browser trust stores
+3. Creates domain-specific certificates signed by your local CA
+4. Updates your hosts file to point the domains to 127.0.0.1
+5. Maintains metadata about your certificates for easy management
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
