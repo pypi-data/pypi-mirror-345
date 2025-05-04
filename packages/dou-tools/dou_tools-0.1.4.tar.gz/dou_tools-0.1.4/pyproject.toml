@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dou-tools"
+version = "0.1.4"
+description = "Example DOU tools Python library"
+authors = [{ name = "Valentyn Druzhynin" }]
+readme = "README.md"
+license = {text = "MIT"}
+dependencies = []  # залежності самої бібліотеки
+
+[project.optional-dependencies]
+dev = [
+    "pytest",  # для локально тестування
+    "twine",  # для публікації в pypi.org
+    "build"  # для побудови дистрибутивів
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
