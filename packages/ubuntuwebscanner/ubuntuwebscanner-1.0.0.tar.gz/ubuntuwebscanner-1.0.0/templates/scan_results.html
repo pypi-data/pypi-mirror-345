@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Network Scan Results</title>
+    <meta http-equiv="refresh" content="15">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 60%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            position: sticky;
+            top: 0;
+            background-color: #333;
+            color: white;
+            z-index: 1;
+        }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 12px;
+            color: white;
+        }
+        .badge.cisco { background-color: #0078D7; }
+        .badge.yealink { background-color: #28a745; }
+        .badge.ubiquiti { background-color: #17a2b8; }
+        .badge.polycom { background-color: #6f42c1; }
+        .badge.default { background-color: #6c757d; }
+        tfoot td {
+            text-align: center;
+            font-size: 12px;
+            padding: 10px;
+            color: #666;
+        }
+        .refresh-button {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .refresh-button button {
+            background-color: #0078D7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .refresh-button button:hover {
+            background-color: #0056b3;
+        }
+        .vendor-icon {
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+    </style>
+    <script>
+        function filterTable() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let rows = document.querySelectorAll("table tbody tr");
+            rows.forEach(row => {
+                let text = row.innerText.toLowerCase();
+                row.style.display = text.includes(input) ? "" : "none";
+            });
+        }
+    </script>
+</head>
+<body>
+    <h2>🛁 Network Scan Results</h2>
+    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search by IP, MAC, Hostname, or Vendor">
+
+    <table>
+        <thead>
+            <tr>
+                <th>IP Address</th>
+                <th>Hostname</th>
+                <th>MAC Address</th>
+                <th>Vendor</th>
+                <th>OS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for host in results %}
+            <tr>
+                <td>{{ host.ip }}</td>
+                <td>{{ host.hostname }}</td>
+                <td>{{ host.mac }}</td>
+                <td>
+                    <span class="badge {{ host.vendor|lower|replace(' ', '') }}">
+                        {{ host.vendor }}
+                    </span>
+                </td>
+                <td>{{ host.os }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5">Auto-refreshes every 15 seconds — Last scanned: {{ timestamp }}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="refresh-button">
+        <form method="get" action="/">
+            <button type="submit">Refresh Now</button>
+        </form>
+    </div>
+</body>
+</html>
