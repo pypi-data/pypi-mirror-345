@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: grammateus
+Version: 0.1.2
+Summary: A role responsible for documenting legal proceedings in Greece
+Author-email: Alexander Fedotov <alex.fedotov@aol.com>
+Project-URL: Homepage, https://github.com/multilogue/grammateus
+Project-URL: Bug Tracker, https://github.com/multilogue/grammateus/issues
+Keywords: grammateus,recording,ai
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.32.3
+Requires-Dist: jsonlines>=4.0.0
+Requires-Dist: PyYAML>=6.0.2
+Provides-Extra: arrow
+Requires-Dist: pyarrow>=20.0.0; extra == "arrow"
+Dynamic: license-file
+
+# Grammateus 
+<pre>
+    In ancient Greece the specific role responsible for documenting
+    legal proceedings, similar to a scribe or notary, was called a 
+    "grammateus" (γραμματεύς).
+</pre>
+Documenting interactions with Language Models requires several types of records, namely: a 'technical log' - the exact queries presented to the Model through the API and API responses; a 'conversation history' - the formatted messages and responses that can be re-sent back to the model (a local 'cache'); and, finally, a human-readable 'record of conversation' which can be easily ingested back into the Python code querying the Model and transformed for continuation of the conversation.
+
+The first and second tasks are easily solvable with `jsonlines` library and `jl` format. It took me some time to realize that the best format for human-readable record is `YAML`.
+
+There are two main reasons for that: YAML lets you drop double quotes, and YAML (unlike JSON)permits comments which are absolutely necessary if you are systematically working on natural language interactions with Language Models.
+
+In particular, a human-readable record of conversation can look like this:
+```yaml
+- instruction: Be an Abstract Intellect.      # this is a comment
+- Human: Let's talk about Human Nature.       # this is a comment
+- machine: Yes, let's do that, it's a complex topic...
+```
