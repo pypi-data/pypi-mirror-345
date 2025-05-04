@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "mizuhara"
+version = "0.0.56"
+authors = [
+  { name="luna-negra", email="" },
+]
+description = "Package Description"
+keywords = ["pypi", "Python", "First", "Test"]
+readme = "README.md"
+quires-python = ">=3.11"
+dependencies = [
+    'coloredlogs>=15.0.1',
+    'pyTelegramBotAPI>=4.26.0',
+    'PyYAML>=6.0.2',
+    'requests>=2.32.3',
+    'aiohttp>=3.11.11'
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+
+[project.scripts]
+mizuhara = "mizuhara.core.commands.mizuhara:main"
+
+[tool.setuptools.package-data]
+"mizuhara" = ["translation/default/*.yml"]
+
+[prject.ulrs]
+Homepage = "https://example.com"
+DOWNLOAD = "https://example.com/abc.tar.gz"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/me/spam.git"
+Issues = "https://github.com/me/spam/issues"
+Changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"
