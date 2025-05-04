@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "miniwdl-omics-run"
+description = "WDL launcher for Amazon Omics"
+dynamic = ["version"]
+readme = "./README.md"
+dependencies = [
+  "miniwdl>=1.9.1,<2",
+  "boto3>=1.34.98",
+]
+requires-python = "~=3.8"
+urls = { repository = "https://github.com/miniwdl-ext/miniwdl-omics-run.git" }
+classifiers = ["License :: OSI Approved :: MIT License"]
+
+
+[project.scripts]
+miniwdl-omics-run = "miniwdl_omics_run:main"
+miniwdl_omics_run = "miniwdl_omics_run:main"
+
+
+[project.optional-dependencies]
+# pip install --upgrade -e .[dev]
+dev = [
+  "setuptools",
+  "build",
+  "twine",
+  "pre-commit",
+  "ruff",
+]
+
+
+[tool.setuptools_scm]
+write_to = "miniwdl_omics_run/_version.py"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "miniwdl_omics_run._version.__version__"}
+
+
+[tool.ruff]
+lint.select = ["E", "F", "I"]
+line-length = 88
