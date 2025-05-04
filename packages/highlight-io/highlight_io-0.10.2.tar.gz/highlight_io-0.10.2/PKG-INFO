@@ -1,0 +1,131 @@
+Metadata-Version: 2.3
+Name: highlight-io
+Version: 0.10.2
+Summary: Session replay and error monitoring: stop guessing why bugs happen!
+License: Apache-2.0
+Keywords: web,framework
+Author: Vadim Korolik
+Author-email: vadim@highlight.io
+Requires-Python: >=3.9,<4
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Flask
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development
+Classifier: Topic :: System :: Monitoring
+Requires-Dist: opentelemetry-api (==1.28.2)
+Requires-Dist: opentelemetry-distro (==0.49b2)
+Requires-Dist: opentelemetry-exporter-otlp-proto-grpc (==1.28.2)
+Requires-Dist: opentelemetry-instrumentation (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-aiohttp-client (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-aiohttp-server (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-anthropic (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-bedrock (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-boto (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-boto3sqs (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-celery (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-chromadb (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-cohere (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-django (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-fastapi (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-flask (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-grpc (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-haystack (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-httpx (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-jinja2 (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-langchain (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-llamaindex (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-logging (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-openai (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-pinecone (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-psycopg (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-psycopg2 (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-qdrant (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-redis (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-replicate (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-requests (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-sqlalchemy (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-sqlite3 (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-starlette (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-system-metrics (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-transformers (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-urllib (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-urllib3 (==0.49b2)
+Requires-Dist: opentelemetry-instrumentation-vertexai (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-watsonx (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-weaviate (==0.33.12)
+Requires-Dist: opentelemetry-instrumentation-wsgi (==0.49b2)
+Requires-Dist: opentelemetry-proto (==1.28.2)
+Requires-Dist: opentelemetry-sdk (==1.28.2)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: urllib3 (>=2.2.1,<3.0.0)
+Project-URL: Documentation, https://www.highlight.io/docs
+Project-URL: Homepage, https://www.highlight.io
+Project-URL: Repository, https://github.com/highlight/highlight
+Description-Content-Type: text/markdown
+
+# highlight-io Python SDK
+
+This directory contains the source code for the Highlight Python SDK.
+
+### E2E
+
+The `e2e` directory contains supported Python frameworks integrated with our SDK for local development and testing.
+Do not use the snippets verbatim as they are configured for local development and will not work in production without changes.
+
+
+## Install
+
+* Install [poetry](https://python-poetry.org/docs/#installing-with-the-official-installer)
+* `poetry install --all-extras`
+
+## Run e2e apps
+
+### Django
+
+* `cd e2e/highlight_django`
+* `poetry run python manage.py runserver`
+
+### Flask
+
+* `cd e2e/highlight_flask`
+* `poetry run flask run`
+
+### Fastapi
+
+Start Redis:
+* `cd docker`
+* `./start_infra` (in order to start Redis)
+
+Using Boto/Boto3 endpoints:
+* Update the have the following environment variables (edit Run Confirguration in PyCharm)
+* `E2E_AWS_ACCESS_KEY` (from IAM account)
+* `E2E_AWS_SECRET_KEY` (from IAM account)
+* `SQS_QUEUE_URL` (from SQS queue information)
+
+Running the main app:
+* `cd e2e/highlight_fastapi`
+* `poetry run uvicorn main:app`
+
+Running Celery worker:
+* `cd e2e/highlight_fastapi`
+* `poetry run celery -A e2e.highlight_fastapi.work worker --loglevel=INFO`
+
+### Loguru
+
+* `cd e2e/highlight_loguru`
+* `poetry run python main.py`
+
+## Run tests
+
+* `poetry run pytest`
+
+## Lint
+
+* `poetry run black  .`
