@@ -1,0 +1,33 @@
+"""
+SlamDunk visualization library
+"""
+from __future__ import annotations
+import numpy
+import typing
+from . import _geom
+from . import geom
+from . import geom2d
+__all__ = ['Canvas', 'Scene', 'Visualizer', 'geom', 'geom2d', 'spawn_window']
+class Canvas:
+    def __init__(self) -> None:
+        ...
+    def set_object(self, path: str, object: ...) -> None:
+        ...
+    def set_transform(self, path: str, transform: numpy.ndarray) -> None:
+        ...
+class Scene:
+    def __init__(self) -> None:
+        ...
+    def set_object(self, path: str, object: ...) -> None:
+        ...
+    def set_transform(self, path: str, transform: numpy.ndarray) -> None:
+        ...
+class Visualizer:
+    def __init__(self, name: str, port: int = 5555) -> None:
+        ...
+    def add_canvas(self, name: str, canvas: Canvas) -> None:
+        ...
+    def add_scene(self, name: str, scene: Scene) -> None:
+        ...
+def spawn_window(port: int = 5555, executable_path: str | None = None) -> None:
+    ...
