@@ -1,0 +1,13 @@
+include(CMakeFindDependencyMacro)
+
+@PACKAGE_INIT@
+
+find_dependency(pxr-arch REQUIRED)
+find_dependency(TBB 2017.0 REQUIRED)
+
+set(_with_py_bindings "@BUILD_PYTHON_BINDINGS@")
+if(_with_py_bindings)
+    find_dependency(pxr-boost REQUIRED)
+endif()
+
+include(${CMAKE_CURRENT_LIST_DIR}/pxr-tf-targets.cmake)
