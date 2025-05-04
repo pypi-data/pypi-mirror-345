@@ -1,0 +1,200 @@
+Metadata-Version: 2.2
+Name: storeErrorLogging
+Version: 0.2.10
+Summary: # 🧩 SQL-Based Error & Print Logging for Flask
+Home-page: https://github.com/brighamturner12/storeErrorLogging.git
+Author: Brigham Turner
+Author-email: brighamturner@narratebay.com
+License: MIT
+Project-URL: Documentation, https://github.com/brighamturner12/storeErrorLogging/blob/main/readme.md
+Project-URL: Source Code, https://github.com/brighamturner12/storeErrorLogging/blob/main/simpleDescription.md
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: sqlalchemy
+Requires-Dist: sqlalchemy
+Requires-Dist: sqlalchemy
+Requires-Dist: relativePathImport
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# 🧩 SQL-Based Error & Print Logging for Flask
+
+This module enhances error tracking in Flask by logging both **Flask errors** and **standard Python errors** directly into an **SQLite database**, in addition to the terminal.
+
+It also introduces a `printt()` function that logs printed messages to the database. This is useful because:
+
+- Conventional `print()` statements often fail in background processes unless `.flush()` is called.
+- However, calling `.flush()` can raise exceptions if the terminal is closed.
+- `printt()` handles this cleanly and persistently logs messages.
+
+### 🎯 Key Features
+
+- ✅ Logs **Flask errors**, **standard exceptions**, and **custom print statements** to a database.
+- 🧵 Includes full **stack trace** (if enabled) for debugging context.
+- 🧠 Optionally saves the full content of the main `app.py` file and its path at each startup.
+- 🎚 Customizable error **log level threshold** (e.g., only log `ERROR` and above).
+- 🧰 Fully compatible with **Flask's logger**, **Werkzeug**, and the base `logging` module.
+
+---
+
+## 🗃️ Database Structure
+
+The logging system uses three tables:
+
+### 📄 `overall_run`
+
+| Column             | Description                                                                 |
+|--------------------|-----------------------------------------------------------------------------|
+| `overallRun_id`    | Unique ID for each execution of the app.                                    |
+| `overallFileContent` | *(Optional)* Full contents of the main app file.                          |
+| `filePath`         | Full file path to the app.                                                   |
+| `timestamp`        | Time the app started.                                                        |
+
+---
+
+### 🐞 `log_entries`
+
+| Column           | Description                                                           |
+|------------------|-----------------------------------------------------------------------|
+| `logEntry_id`    | Unique ID for each error log.                                         |
+| `level`          | Error level (e.g., `ERROR`, `WARNING`).                               |
+| `traceBack`      | *(Optional)* Stack trace leading to the error.                        |
+| `message`        | Error message content.                                                |
+| `timestamp`      | When the error occurred.                                              |
+| `overallRun_id`  | Foreign key linking to the `overall_run` entry.                      |
+
+---
+
+### 🖨️ `print_entries`
+
+| Column           | Description                                                            |
+|------------------|------------------------------------------------------------------------|
+| `printEntry_id`  | Unique ID for each printed message.                                     |
+| `traceBack`      | *(Optional)* Stack trace leading to the print statement.               |
+| `message`        | The printed content.                                                    |
+| `timestamp`      | When the message was printed.                                           |
+| `overallRun_id`  | Foreign key linking to the `overall_run` entry.                        |
+
+# Docs
+
+### `__init__(self, pathToDB="../allData/errorLogging.db", includeStackForPrint=True, includeStackForError=True, saveEntireFileContentsAtStart=True, stackLimit=20, debuggingLevelStored="DEBUG")`
+
+Initializes a persistent logging system that:
+- Mimics `print()` while storing messages and traceback information into a database.
+- Captures print statements and logged errors with optional Python stack traces.
+- Records the contents of the primary application file at startup.
+- Integrates with the Python `logging` module (including Flask/Werkzeug) and stores errors and critical logs in a SQL database.
+- Automatically manages SQLAlchemy session lifecycles to prevent connection issues over long runs.
+
+#### **Parameters:**
+
+- **`pathToDB`** (`str`, default: `"../allData/errorLogging.db"`):  
+Path to the SQLite database file where logs will be stored. You can change this to a different path or database engine URI.
+
+- **`includeStackForPrint`** (`bool`, default: `True`):  
+Whether to save a traceback (function stack) for each `printt()` call. If `True`, the stack is recorded up to `stackLimit` frames.
+
+- **`includeStackForError`** (`bool`, default: `True`):  
+Whether to save a traceback for errors and logs handled by the `logging` module (e.g., `logger.error(...)`).
+
+- **`saveEntireFileContentsAtStart`** (`bool`, default: `True`):  
+If `True`, saves the contents of the main script file into the database at startup for traceability and auditability.
+
+- **`stackLimit`** (`int`, default: `20`):  
+Number of stack frames to include when generating tracebacks. This applies to both printed and logged errors.
+
+- **`debuggingLevelStored`** (`str`, default: `"DEBUG"`):  
+The minimum logging level that will be stored in the database. Must be one of:  
+`"DEBUG"`, `"INFO"`, `"WARNING"`, `"ERROR"`, `"CRITICAL"`.
+
+---
+
+#### **How It Works:**
+
+- At initialization:
+- Creates SQLAlchemy table schemas for logging print and error entries.
+- Sets up a scoped session maker for thread-safe DB interaction.
+- Records the contents of the main Python script.
+- Registers a custom `logging.Handler` to insert error logs directly into the database.
+- Redirects Flask and Werkzeug logs to the same database handler.
+- Auto-recycles the SQLAlchemy session every ~10 commits to reduce risk of stale DB connections.
+
+---
+
+#### **Database Tables Created:**
+
+- `overall_run`: Stores the main file content and file path at the beginning of each run.
+- `log_entries`: Stores errors or logs with traceback, log level, and message.
+- `print_entries`: Stores custom print-style logs (via `printt()`) with optional stack trace.
+
+---
+
+#### **Example Usage:**
+
+```python
+from your_logger_module import YourLoggerClass
+
+# Initialize the logger
+logger = YourLoggerClass(
+pathToDB="logs/my_app_logs.db",
+includeStackForPrint=True,
+includeStackForError=True,
+saveEntireFileContentsAtStart=True,
+stackLimit=15,
+debuggingLevelStored="WARNING"
+)
+
+# Example logging
+logger.printt("Initialization complete.")
+
+import logging
+logging.warning("This warning will be saved in the database.")
+```
+
+### Error Levels
+
+| Level Name | Constant           | Description                                              |
+|------------|--------------------|----------------------------------------------------------|
+| `DEBUG`    | `logging.DEBUG`    | Detailed internal info (e.g., for developers).           |
+| `INFO`     | `logging.INFO`     | General operational messages.                            |
+| `WARNING`  | `logging.WARNING`  | Something unexpected happened, but not fatal.            |
+| `ERROR`    | `logging.ERROR`    | A serious problem that may affect behavior.              |
+| `CRITICAL` | `logging.CRITICAL` | A severe error that likely causes the application to crash. |
+
+### `printt(*args, flushIfPrinting=True, **kwargs)`
+
+Functions like a normal `print()` statement, but also logs the message to a database for later review.
+
+**Parameters:**
+- `*args`: Any number of positional arguments to print and log.
+- `flushIfPrinting` (`bool`, default `True`): When `True`, forces `print()` to flush output immediately to stdout. This is helpful in environments like Flask where output is often buffered.
+- `**kwargs`: Additional keyword arguments passed to the built-in `print()` function.
+
+**Behavior:**
+- Joins all arguments into a single string and ensures UTF-8 safe encoding.
+- Optionally includes a traceback stack (based on `self.includeStackForPrint`) to help trace where the `printt()` call was made.
+- Logs this message and stack to a database via SQLAlchemy.
+- Every 10 log entries, the current SQLAlchemy session is closed and reopened to avoid keeping a stale session open.
+
+**Example:**
+```python
+logger.printt("Processing user input:", user_input)
+```
+'''
+'''
+functions like a normal print statement.
+my observation is that print statements in flask often don't show unless you force it to flush to the system after each statement, so that is set to default true with this variable flushIfPrinting.
+
+
