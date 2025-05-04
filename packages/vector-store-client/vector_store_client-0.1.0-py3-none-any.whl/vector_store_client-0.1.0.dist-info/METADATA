@@ -1,0 +1,308 @@
+Metadata-Version: 2.4
+Name: vector-store-client
+Version: 0.1.0
+Summary: Async Python client for Vector Store API
+Author-email: Your Name <your.email@example.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: async,client,embeddings,store,vector
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Requires-Dist: httpx>=0.24.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: typing-extensions>=4.0.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: isort>=5.0.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Requires-Dist: ruff>=0.1.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Vector Store Client
+
+[![PyPI version](https://badge.fury.io/py/vector-store-client.svg)](https://badge.fury.io/py/vector-store-client)
+[![Python versions](https://img.shields.io/pypi/pyversions/vector-store-client.svg)](https://pypi.org/project/vector-store-client/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Async Python client for Vector Store API. Provides convenient interface for storing and searching vector embeddings.
+
+[Русская версия документации](README_ru.md)
+
+## Features
+
+- ✨ Fully async API
+- 🔍 Vector and text search
+- 📝 Automatic text vectorization
+- 🛡️ Strong typing
+- 🧪 Full test coverage
+- 📚 Comprehensive documentation
+
+## Installation
+
+```bash
+pip install vector-store-client
+```
+
+## Quick Start
+
+```python
+from vector_store_client import VectorStoreClient
+
+async def main():
+    # Initialize client
+    client = VectorStoreClient(base_url="http://localhost:8007")
+    
+    # Create record from text
+    record_id = await client.create_text_record(
+        text="Example text to vectorize",
+        metadata={"source": "example"}
+    )
+    
+    # Search similar records
+    results = await client.search_by_text(
+        text="similar text",
+        limit=5
+    )
+    
+    for result in results:
+        print(f"Score: {result.score}, Text: {result.text}")
+
+```
+
+## Documentation
+
+Full documentation is available at [Read the Docs](https://vector-store-client.readthedocs.io/).
+
+### Basic Operations
+
+#### Creating Records
+
+```python
+# Create from vector
+record_id = await client.create_record(
+    vector=[0.1, 0.2, ...],  # 384-dimensional vector
+    metadata={"key": "value"}
+)
+
+# Create from text
+record_id = await client.create_text_record(
+    text="Example text",
+    metadata={"source": "example"},
+    model="default"  # optional
+)
+```
+
+#### Search
+
+```python
+# Search by vector
+results = await client.search_by_vector(
+    vector=[0.1, 0.2, ...],
+    limit=5
+)
+
+# Search by text
+results = await client.search_by_text(
+    text="query text",
+    limit=5
+)
+
+# Filter by metadata
+results = await client.filter_records(
+    criteria={"source": "example"},
+    limit=10
+)
+```
+
+## Development
+
+### Installing Development Dependencies
+
+```bash
+pip install -e ".[dev]"
+```
+
+### Running Tests
+
+```bash
+pytest
+```
+
+### Linting and Formatting
+
+```bash
+# Code formatting
+black .
+isort .
+
+# Type checking
+mypy .
+
+# Linting
+ruff check .
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Dynamic API adaptation and abstraction layer
+
+### Overview
+
+Vector Store Client is designed to work with evolving server APIs. The client automatically loads the server's command schema at runtime and provides a stable, user-friendly interface, regardless of changes in the server's internal API. This is achieved through a dynamic mapping (adapter) layer that connects the client's public methods to the actual server commands and parameters.
+
+### How it works
+
+- **Schema loading**: On initialization, the client fetches the server's command schema (e.g., from `/api/commands`).
+- **Mapping layer**: The client maintains a mapping between its stable public methods (such as `create_record`, `search_by_text`, etc.) and the actual server commands and parameters, as defined in the loaded schema.
+- **Validation**: All parameters are validated against the server schema using the `jsonschema` package before sending any request.
+- **Adaptability**: If the server API changes (e.g., command names, parameter structure), only the mapping layer needs to be updated, not the public interface or user code.
+
+### Benefits
+
+- **Stable API for users**: Your code does not break if the server API changes.
+- **Automatic validation**: All parameters are checked against the live server schema.
+- **Easy maintenance**: Adapting to server changes requires only updating the mapping, not rewriting the client.
+- **Extensible**: New server commands can be exposed by simply adding new mappings.
+
+### Example usage
+
+```python
+import asyncio
+from vector_store_client import VectorStoreClient
+
+async def main():
+    # Create client and load schema
+    client = await VectorStoreClient.create(base_url="http://localhost:8007")
+
+    # Create a record (public method, stable signature)
+    record_id = await client.create_record(
+        vector=[0.1] * 384,
+        metadata={"source": "example"}
+    )
+    print("Created record:", record_id)
+
+    # Search by text (public method, stable signature)
+    results = await client.search_by_text(
+        text="example query",
+        limit=5
+    )
+    for result in results:
+        print(f"Score: {result.score}, Text: {result.text}")
+
+    # You can also call any server command directly (advanced)
+    # This will be validated against the live schema
+    raw_result = await client.call_command("search_by_vector", vector=[0.1]*384, limit=3)
+    print("Raw search result:", raw_result)
+
+asyncio.run(main())
+```
+
+### How to adapt to server API changes
+
+If the server changes its API (e.g., renames a command, changes parameter names), update only the mapping layer in the client. The public methods and user code remain unchanged.
+
+---
+
+See the documentation and code for more details on the mapping/adapter mechanism and how to extend or customize it for your needs.
+
+## Ideology and implementation of the abstraction/mapping layer
+
+### Why an abstraction/mapping layer?
+
+Modern APIs evolve: command names, parameters, and even the set of available operations may change over time. Relying directly on the server's raw API makes your client code fragile and hard to maintain. The abstraction/mapping layer in Vector Store Client solves this by providing:
+
+- **Stable, user-friendly methods**: The client exposes a fixed set of high-level methods (e.g., `create_record`, `search_by_text`) that remain unchanged even if the server API changes.
+- **Loose coupling**: The mapping layer decouples your code from the server's internal details. If the server changes, only the mapping needs to be updated.
+- **Automatic validation**: All parameters are checked against the live server schema before any request is sent.
+- **Extensibility**: New server features can be exposed by simply adding new mappings and wrapper methods.
+
+### How the mapping layer works
+
+- On startup, the client loads the server's command schema (e.g., from `/api/commands`).
+- The client maintains a mapping (dictionary or class attribute) that links each public method to the corresponding server command and parameter names.
+- Each public method:
+  - Accepts stable, user-friendly arguments.
+  - Translates them (if needed) to the actual server command and parameter names using the mapping.
+  - Calls the universal `call_command` method, which validates and sends the request.
+- If the server API changes, only the mapping and (optionally) the wrapper method need to be updated.
+
+#### Example mapping (Python):
+
+```python
+_method_map = {
+    "create_record": {"command": "create_record", "params": ["vector", "metadata", "session_id", "message_id", "timestamp"]},
+    "search_by_text": {"command": "search_by_text", "params": ["text", "limit", "model", "include_vectors", "include_metadata"]},
+    # ... add more as needed
+}
+```
+
+#### Example wrapper method:
+
+```python
+async def create_record(self, vector, metadata=None, session_id=None, message_id=None, timestamp=None, **kwargs):
+    return await self.call_command(
+        self._method_map["create_record"]["command"],
+        vector=vector,
+        metadata=metadata,
+        session_id=session_id,
+        message_id=message_id,
+        timestamp=timestamp,
+        **kwargs
+    )
+```
+
+### Checklist for adding a new public method
+
+1. **Check the server schema**: Identify the new command and its parameters in `/api/commands`.
+2. **Update the mapping**: Add a new entry to `_method_map` with the public method name, server command, and parameter list.
+3. **Implement the wrapper**: Write a new public method in the client that:
+    - Accepts user-friendly arguments.
+    - Maps them to the server command and parameters using `_method_map`.
+    - Calls `call_command` with the correct arguments.
+4. **(Optional) Add docstrings and examples**: Document the new method for users.
+5. **Test**: Add or update tests to cover the new method, ensuring it works with the live schema and server.
+
+#### Example: Adding a new method `delete_by_filter`
+
+Suppose the server adds a command `delete_by_filter`.
+
+- **Step 1**: Find its parameters in `/api/commands` (e.g., `criteria`, `limit`).
+- **Step 2**: Update mapping:
+
+```python
+_method_map = {
+    # ...
+    "delete_by_filter": {"command": "delete_by_filter", "params": ["criteria", "limit"]},
+}
+```
+
+- **Step 3**: Implement wrapper:
+
+```python
+async def delete_by_filter(self, criteria, limit=100):
+    return await self.call_command(
+        self._method_map["delete_by_filter"]["command"],
+        criteria=criteria,
+        limit=limit
+    )
+```
+
+- **Step 4**: Add docstring and usage example.
+- **Step 5**: Add tests for the new method.
+
+---
+
+By following this approach, you ensure your client remains robust, maintainable, and easy to extend as the server evolves.
