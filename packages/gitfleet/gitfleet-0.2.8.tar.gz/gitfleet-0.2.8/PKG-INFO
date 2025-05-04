@@ -1,0 +1,188 @@
+Metadata-Version: 2.4
+Name: gitfleet
+Version: 0.2.8
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Rust
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Version Control :: Git
+Requires-Dist: httpx>=0.24.0
+Requires-Dist: pytest-asyncio>=0.26.0
+Requires-Dist: cryptography>=44.0.2 ; extra == 'crypto'
+Requires-Dist: pandas>=2.0.0 ; extra == 'pandas'
+Requires-Dist: pydantic>=2.0.0 ; extra == 'pydantic'
+Requires-Dist: black>=22.1.0 ; extra == 'dev'
+Requires-Dist: isort>=5.10.1 ; extra == 'dev'
+Requires-Dist: pytest>=6.0.0 ; extra == 'dev'
+Requires-Dist: maturin>=1.8.3 ; extra == 'dev'
+Requires-Dist: pandas>=2.0.0 ; extra == 'examples'
+Requires-Dist: cryptography>=44.0.2 ; extra == 'examples'
+Requires-Dist: cryptography>=44.0.2 ; extra == 'all'
+Requires-Dist: pandas>=2.0.0 ; extra == 'all'
+Requires-Dist: pydantic>=2.0.0 ; extra == 'all'
+Provides-Extra: crypto
+Provides-Extra: pandas
+Provides-Extra: pydantic
+Provides-Extra: dev
+Provides-Extra: examples
+Provides-Extra: all
+License-File: LICENSE
+Summary: GitFleet is a high-performance Python library (powered by Rust) for managing and analyzing Git repositories in bulk. It supports asynchronous cloning, parallel git blame and commit analysis using Rayon, and integrates with GitHub, GitLab, and BitBucket APIs. Designed for large-scale repository analysis, GitFleet handles API token rotation, monitors rate limits, and provides detailed progress tracking across operations.
+Author: Ben Meddeb <bmeddeb@asu.edu>
+Author-email: Ben <bmeddeb@asu.edu>
+License: MIT OR Apache-2.0
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Homepage, https://github.com/bmeddeb/GitFleet
+Project-URL: Bug Tracker, https://github.com/bmeddeb/GitFleet/issues
+
+# 🚀 GitFleet
+
+**High-performance Git repository analysis and management in Python, powered by Rust**
+
+[![PyPI version](https://img.shields.io/pypi/v/gitfleet)](https://pypi.org/project/gitfleet/)
+[![License](https://img.shields.io/github/license/bmeddeb/gitfleet)](LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/bmeddeb/gitfleet/ci.yml)](https://github.com/bmeddeb/gitfleet/actions)
+[![Documentation](https://img.shields.io/badge/docs-available-brightgreen)](https://bmeddeb.github.io/GitFleet/)
+
+---
+
+## ⚡ Overview
+
+**GitFleet** is a high-performance Python library built in Rust for asynchronous Git repository analysis at scale. It combines the speed and memory efficiency of Rust with the ease of use of Python's async/await syntax.
+
+It supports bulk operations like:
+
+- Parallel `git blame` across many files (10-50x faster than pure Python)
+- Async cloning of hundreds of repositories with progress monitoring
+- GitHub, GitLab, and GitBucket integration with native API clients
+- API token rotation and rate limit monitoring to prevent 429 errors
+- Real-time progress tracking for long-running tasks
+
+Ideal for:
+
+- Grading systems (e.g., student GitHub repos)
+- Research in software engineering and code evolution
+- DevOps and CI insights at scale
+- Custom git analytics platforms
+- Any application requiring efficient handling of multiple Git repositories
+
+---
+
+## 🔧 Features
+
+- ✅ **Rayon-powered multithreaded Git operations**
+- ✅ **Asynchronous repo cloning with async/await**
+- ✅ **Integrated clients for GitHub, GitLab, GitBucket**
+- ✅ **Multiple token management with auto-rotation**
+- ✅ **Rate limit tracking and resilience**
+- ✅ **Modular architecture: easily extendable**
+
+---
+
+## 📚 Documentation
+
+Visit our [comprehensive documentation](https://bmeddeb.github.io/GitFleet/) for:
+- Detailed API reference
+- Usage examples
+- Provider integrations
+- Advanced configuration
+
+---
+
+## 📦 Installation
+
+```bash
+pip install gitfleet
+```
+
+> Requires Python 3.8+ and a Rust toolchain for building native extensions.
+> Pre-built wheels are available for most common platforms.
+
+---
+
+## 🚀 Quick Start
+
+```python
+import asyncio
+from gitfleet import RepoManager
+
+async def main():
+    manager = RepoManager()
+    await manager.clone_repos([
+        "https://github.com/user/repo1.git",
+        "https://github.com/user/repo2.git"
+    ])
+    results = await manager.blame_all("target_file.py")
+    print(results)
+
+asyncio.run(main())
+```
+
+---
+
+## 🔌 Integration
+
+GitFleet is designed to interoperate with:
+
+- **GitHub, GitLab, GitBucket** via async clients
+- Jupyter notebooks (Pandas-friendly outputs)
+- Flask, FastAPI, and async dashboards (e.g., Plotly Dash)
+- CI/CD pipelines or grading systems
+
+---
+
+## 🛠 Architecture
+
+| Layer            | Technology    | Purpose                                      |
+|------------------|---------------|----------------------------------------------|
+| Rust Core        | `git2`, `rayon` | Fast Git ops and parallelism                |
+| Python Interface | `PyO3`, `maturin` | Native bindings and async APIs             |
+| Async Clients    | `httpx`, `aiohttp` | GitHub/GitLab API access                   |
+| Token Manager    | Custom        | Multi-token rotation & rate monitoring       |
+
+---
+
+## 📈 Roadmap
+
+- [ ] Git diff and patch inspection
+- [ ] Repository graph & commit visualizations
+- [ ] CSV/JSON export for data analysis
+- [ ] Web dashboard example with live metrics
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! To get started:
+
+```bash
+git clone https://github.com/bmeddeb/gitfleet
+cd gitfleet
+pip install -e ".[dev]"
+```
+
+Run tests with:
+
+```bash
+pytest
+```
+
+For more details on contributing, see our [development documentation](https://bmeddeb.github.io/GitFleet/development/architecture/).
+
+---
+
+## 📄 License
+
+[MIT License](LICENSE)
+
+---
+
+## ✨ Credits
+
+GitFleet is inspired by the needs of large-scale Git analysis in grading, research, and dev tooling. Built with ❤️ using Rust + Python.
+
