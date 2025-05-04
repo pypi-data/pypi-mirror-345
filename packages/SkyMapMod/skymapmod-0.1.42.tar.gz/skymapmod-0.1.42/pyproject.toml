@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "SkyMapMod"
+version = "0.1.42"
+authors = [
+ { name="Anna Amineva", email="amineva.2219@physics.msu.ru" },
+]
+description = "for modeling"
+readme = "README.md"
+requires-python = ">=3.10.0"
+classifiers = [
+   "Programming Language :: Python :: 3",
+   "License :: OSI Approved :: MIT License",
+   "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://istina.msu.ru/profile/aminevann/"
+
+[tool.hatch.build.targets.wheel]
+include = [
+    "SkyMapMod/data/star_temperatures.npy",
+    "SkyMapMod/data/star_brightness.npy",
+    "SkyMapMod/__init__.py",
+    "SkyMapMod/*.py",
+    "SkyMapMod/data/*.py",
+]
