@@ -1,0 +1,144 @@
+Metadata-Version: 2.4
+Name: infrash
+Version: 0.1.2
+Summary: Inteligentny runner do rozwiązywania problemów infrastrukturalnych
+Home-page: https://infrash.infrash.com
+Author: Tom Sapletta
+Author-email: Twoje Imię <twoj.email@example.com>
+License: MIT
+Project-URL: Homepage, https://github.com/username/infrash
+Project-URL: Bug Tracker, https://github.com/username/infrash/issues
+Keywords: infrastructure,deployment,automation,diagnostics,devops
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Installation/Setup
+Classifier: Topic :: System :: Systems Administration
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click>=8.0.0
+Requires-Dist: GitPython>=3.1.0
+Requires-Dist: requests>=2.25.0
+Requires-Dist: rich>=10.0.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: psutil>=5.9.0
+Requires-Dist: packaging>=21.0
+Dynamic: license-file
+
+# Infrash
+
+Inteligentny runner do rozwiązywania problemów infrastrukturalnych, zarządzania repozytoriami i automatyzacji wdrożeń.
+
+## Opis
+
+Infrash to narzędzie wiersza poleceń zaprojektowane do automatyzacji i rozwiązywania problemów związanych z infrastrukturą IT. Umożliwia zarządzanie repozytoriami, instalację zależności, diagnostykę i naprawę problemów oraz wdrażanie aplikacji na różnych systemach operacyjnych.
+
+## Główne funkcje
+
+- **Zarządzanie repozytoriami**: klonowanie, aktualizacja, synchronizacja
+- **Zarządzanie zależnościami**: automatyczne wykrywanie i instalacja wymaganych pakietów
+- **Diagnostyka i naprawa**: inteligentne wykrywanie i rozwiązywanie problemów
+- **Automatyzacja wdrożeń**: instalacja, uruchamianie, monitorowanie aplikacji
+- **Integracja z CI/CD**: obsługa GitLab CI i GitHub Actions
+- **Baza danych rozwiązań**: aktualizowana baza wiedzy dotycząca popularnych problemów
+
+## Instalacja
+
+```bash
+pip install infrash
+```
+
+## Szybki start
+
+```bash
+# Inicjalizacja projektu
+infrash init
+
+# Klonowanie repozytorium
+infrash repo clone https://github.com/username/project.git
+
+# Instalacja zależności
+infrash install
+
+# Uruchomienie aplikacji
+infrash start
+
+# Sprawdzenie statusu
+infrash status
+
+# Zdiagnozowanie problemów
+infrash diagnose
+```
+
+## Zaawansowane użycie
+
+### Uruchomienie z pełną diagnostyką
+
+```bash
+infrash start --diagnostic-level=full
+```
+
+### Automatyczna naprawa problemu
+
+```bash
+infrash repair --auto
+```
+
+### Aktualizacja bazy danych rozwiązań
+
+```bash
+infrash solutions update
+```
+
+## Integracja z unimcp
+
+Infrash jest kompatybilny z projektem unimcp. Aby zintegrować infrash z unimcp, dodaj następującą konfigurację:
+
+```yaml
+# unimcp-config.yaml
+runners:
+  - type: infrash
+    enabled: true
+    config:
+      auto_repair: true
+      solution_db: auto_update
+```
+
+## Wymagania
+
+- Python 3.8+
+- Git
+- Dostęp do internetu (dla aktualizacji bazy danych rozwiązań)
+
+## Licencja
+
+
+
+## Autor
+
+
+
+
+
+[<span style='font-size:20px;'>&#x270D;</span>](git@github.com:UnitApi/python/edit/main/docs/footer.md)
+<script type="module">    
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  //import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js';
+  mermaid.initialize({
+    startOnReady:true,
+    theme: 'forest',
+    flowchart:{
+            useMaxWidth:false,
+            htmlLabels:true
+        }
+  });
+  mermaid.init(undefined, '.language-mermaid');
+</script>
+
