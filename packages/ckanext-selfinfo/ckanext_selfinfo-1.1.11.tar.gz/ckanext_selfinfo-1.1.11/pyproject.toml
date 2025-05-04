@@ -1,0 +1,60 @@
+[build-system]
+requires = [
+    "setuptools>=61.2",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ckanext-selfinfo"
+version = "1.1.11"
+description = ""
+authors = [
+    {name = "DataShades", email = "datashades@linkdigital.com.au"},
+    { name = "Yan R", email = "yan.rudenko@linkdigital.com.au" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = [
+    "CKAN",
+]
+dependencies = ["prettytable>=3.10.0", "psutil>=5.9.6", "GitPython>=3.1.32", "distro>=1.9.0"]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/DataShades/ckanext-selfinfo"
+
+[project.entry-points."ckan.plugins"]
+selfinfo = "ckanext.selfinfo.plugin:SelfinfoPlugin"
+
+[project.entry-points."babel.extractors"]
+ckan = "ckan.lib.extract:extract_ckan"
+
+[project.optional-dependencies]
+docs = ["mkdocs", "mkdocs-material", "mkdocstrings[python]"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::sqlalchemy.exc.SADeprecationWarning",
+    "ignore::sqlalchemy.exc.SAWarning",
+    "ignore::DeprecationWarning",
+]
+addopts = "--ckan-ini test.ini"

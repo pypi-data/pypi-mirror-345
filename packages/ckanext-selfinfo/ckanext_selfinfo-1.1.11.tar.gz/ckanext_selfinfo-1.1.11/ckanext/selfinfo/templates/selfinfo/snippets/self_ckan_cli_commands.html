@@ -1,0 +1,98 @@
+<h3 class="mt-3">
+    CLI Commands
+</h3>
+
+<input type="text" class="form-control mb-3" placeholder="Search items..." data-module="search-through-content" data-module-target="#ckan_cli_commands-accrd-parent .accordion-item">
+<div>
+    <div class="accordion" id="ckan_cli_commands-accrd-parent">
+        {% for command in data.ckan_cli_commands %}
+        <div class="accordion-item mb-3 border">
+            <h2 class="accordion-header" id="command-{{ command.name }}-heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#command-{{ command.name }}" aria-expanded="false" aria-controls="command-{{ command.name }}">
+                    <span class="h4 mb-0">{{ command.name }}</span>
+                </button>
+            </h2>
+            <div id="command-{{ command.name }}" class="accordion-collapse collapse" aria-labelledby="command-{{ command.name }}-heading">
+                <div class="accordion-body">
+                    {% if command.help %}
+                        <p><strong>Help:</strong></p>
+                        <pre>{{ command.help }}</pre>
+                    {% else %}
+                        <p><em>No help text available.</em></p>
+                    {% endif %}
+    
+                    {% if command.arguments %}
+                        <p><strong>Arguments:</strong></p>
+                        <ul>
+                            {% for arg in command.arguments %}
+                            <li><code>{{ arg.name }}</code> — {{ arg.help or 'No description' }} {% if arg.required %}(required){% endif %}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+    
+                    {% if command.options %}
+                        <p><strong>Options:</strong></p>
+                        <ul>
+                            {% for opt in command.options %}
+                            <li>
+                                <code>{{ opt.opts | join(', ') }}</code> — {{ opt.help or 'No description' }}
+                                {% if opt.required %}(required){% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+    
+                    <p><strong>Example usage:</strong></p>
+                    <pre>ckan {{ command.name }} {% for arg in command.arguments if arg.required %}&lt;{{ arg.name }}&gt; {% endfor %}</pre>
+    
+                    {% if command.subcommands %}
+                        <div class="accordion mt-3" id="subcommands-{{ command.name }}">
+                            {% for sub in command.subcommands %}
+                            <div class="accordion-item mb-2 border">
+                                <h2 class="accordion-header" id="subcommand-{{ command.name }}-{{ sub.name }}-heading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#subcommand-{{ command.name }}-{{ sub.name }}" aria-expanded="false" aria-controls="subcommand-{{ command.name }}-{{ sub.name }}">
+                                        <span class="h6 mb-0">{{ command.name }} {{ sub.name }}</span>
+                                    </button>
+                                </h2>
+                                <div id="subcommand-{{ command.name }}-{{ sub.name }}" class="accordion-collapse collapse" aria-labelledby="subcommand-{{ command.name }}-{{ sub.name }}-heading">
+                                    <div class="accordion-body">
+                                        {% if sub.help %}
+                                            <p><strong>Help:</strong></p>
+                                            <pre>{{ sub.help }}</pre>
+                                        {% endif %}
+    
+                                        {% if sub.arguments %}
+                                            <p><strong>Arguments:</strong></p>
+                                            <ul>
+                                                {% for arg in sub.arguments %}
+                                                <li><code>{{ arg.name }}</code> — {{ arg.help or 'No description' }} {% if arg.required %}(required){% endif %}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+    
+                                        {% if sub.options %}
+                                            <p><strong>Options:</strong></p>
+                                            <ul>
+                                                {% for opt in sub.options %}
+                                                <li>
+                                                    <code>{{ opt.opts | join(', ') }}</code> — {{ opt.help or 'No description' }}
+                                                    {% if opt.required %}(required){% endif %}
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+
+                                        <p><strong>Example usage:</strong></p>
+                                        <pre>ckan {{ command.name }} {{ sub.name }} {% for arg in sub.arguments if arg.required %}&lt;{{ arg.name }}&gt; {% endfor %}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
