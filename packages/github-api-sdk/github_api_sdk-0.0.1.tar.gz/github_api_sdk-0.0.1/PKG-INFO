@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: github_api_sdk
+Version: 0.0.1
+Summary: GitHub API
+Home-page: https://github.com/trevorhobenshield/github_api_client
+Author: Trevor Hobenshield
+Author-email: trevorhobenshield@gmail.com
+License: MIT
+Keywords: fluent github api client
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.12.10
+Description-Content-Type: text/markdown
+Requires-Dist: nest-asyncio
+Requires-Dist: httpx[http2]
+Requires-Dist: pydantic<3,>=1.9.0
+Requires-Dist: typing-extensions<5,>=4.10
+Requires-Dist: anyio<5,>=3.5.0
+Requires-Dist: distro<2,>=1.7.0
+Requires-Dist: sniffio
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# GitHub API
+
+Fluent GitHub API generated from OpenAPI spec using [Stainless](https://github.com/stainless-api) with modifications
+
+## Installation
+
+```bash
+pip install github-api-sdk
+```
+
+## Usage
+
+```python
+from github_api_sdk import GitHubAPI
+
+gh = GitHubAPI(api_key=...)
+
+issues = gh.repos.issues.list(
+    owner="foo",
+    repo="bar",
+    creator="kenny",
+    assignee="spenny",
+    direction="desc",
+    labels="bug,ui,@high",
+    mentioned="bobby",
+    milestone=123,
+    page=1,
+    per_page=100,
+    since="2025-04-23T00:00:00Z",
+    sort="created",
+    state="open",
+)
+
+for issue in issues:
+    print(issue.number, issue.title)
+
+```
