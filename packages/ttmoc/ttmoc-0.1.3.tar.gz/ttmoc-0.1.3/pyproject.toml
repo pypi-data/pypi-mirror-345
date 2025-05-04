@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ttmoc"
+version = "0.1.3"
+description = "Talk-To-My-Org-Chart: CLI MCP server for org chart queries."
+authors = [
+    { name = "ttthree", email = "ttthree@gmail.com" }
+]
+readme = "README_mcp.md"
+requires-python = ">=3.8"
+dependencies = [
+    "requests",
+    "pydantic",
+    "azure-identity",
+    "mcp",
+    "python-dotenv",
+    "httpx"
+]
+
+[project.scripts]
+ttmoc = "ttmoc.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ttmoc", "mcp_server"]
