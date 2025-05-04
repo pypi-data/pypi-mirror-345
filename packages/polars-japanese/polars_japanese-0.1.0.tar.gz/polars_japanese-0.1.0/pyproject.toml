@@ -1,0 +1,72 @@
+[project]
+name = "polars-japanese"
+version = "0.1.0"
+description = "polarsの日本向けのplugin library"
+readme = { file = "README.md", content-type = "text/markdown" }
+authors = [
+  { name="Jin Tanaka", email="jin3355.eco@gmail.com" }
+]
+license = { file="LICENSE" }
+
+requires-python = ">=3.9"
+dependencies = [
+    "japanera>=2.1.2",
+    "jpholiday>=1.0.1",
+    "kanjize>=1.5.0",
+    "polars>=1.0.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/tanaka-jin/polars-japanese"
+Repository = "https://github.com/tanaka-jin/polars-japanese"
+
+[build-system]
+requires = ["maturin>=1.8.3"]
+build-backend = "maturin"
+
+[tool.maturin]
+manifest-path = "./Cargo.toml"
+features = ["pyo3/extension-module"]
+python-source = "python"
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "F",  # Pyflakes
+    "W",  # pycodestyle warnings
+    "I",  # isort
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["python"]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["python"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+
+[tool.mypy]
+files = ["python"]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+
+[project.optional-dependencies]
+dev = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.6.12",
+    "mkdocstrings[python]>=0.29.1",
+    "mypy>=1.15.0",
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+    "ruff>=0.11.5",
+    "patchelf>=0.17.2.2",
+]
