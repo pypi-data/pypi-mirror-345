@@ -1,0 +1,1 @@
+"""Definitions of SVG elements."""
