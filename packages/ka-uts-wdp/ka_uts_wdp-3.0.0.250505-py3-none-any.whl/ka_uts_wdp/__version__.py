@@ -1,0 +1,10 @@
+__title__ = 'ka_uts_wdp'
+__description__ = 'Watch Dog Processor.'
+__url__ = 'https://kosakya.de'
+__version__ = '3.0.0.250505'
+__build__ = 0x024200
+__author__ = 'Bernd Stroehle'
+__author_email__ = 'bernd.stroehle@gmail.com'
+__license__ = 'Apache 3.0'
+__copyright__ = 'Copyright 2025 Bernd Stroehle'
+__cake__ = u'\u2728 \U0001f370 \u2728'
