@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyspark-fixtures"
+version = "1.0.0-rc3"
+description = "Simple unit testing for PySpark jobs with readable fixtures for humans and machines, plus helpers to eliminate boilerplate"
+authors = [
+    { name="Juan Pablo Guereca", email="juanpablo@guereca.com" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = ["pyspark>=3.0.0"]
+keywords = ["pyspark", "fixtures", "tests", "readable"]
+
+[tool.poetry.package.include]
+file = "pyspark_fixtures/py.typed"
+
+[tool.ruff]
+line-length = 120
+
+[tool.mypy]
+strict = false
+ignore_missing_imports = true
