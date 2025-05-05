@@ -1,0 +1,309 @@
+# MCP Proxy Adapter
+
+Adapter for integrating [Command Registry](docs/README.md) with MCP Proxy, allowing you to use commands as tools for AI models.
+
+## Overview
+
+MCP Proxy Adapter transforms commands registered in the Command Registry into a format compatible with MCP Proxy. This enables:
+
+1. Using existing commands as tools for AI models
+2. Creating a hybrid REST/JSON-RPC API for command execution
+3. Automatic generation of OpenAPI schemas optimized for MCP Proxy
+4. Managing tool metadata for better AI system integration
+
+## Installation
+
+```bash
+pip install mcp-proxy-adapter
+```
+
+## Quick Start
+
+```python
+from mcp_proxy_adapter import MCPProxyAdapter, CommandRegistry
+from fastapi import FastAPI
+
+# Create a command registry instance
+registry = CommandRegistry()
+
+# Register commands
+def calculate_total(prices: list[float], discount: float = 0.0) -> float:
+    """
+    Calculates the total price with discount.
+    Args:
+        prices: List of item prices
+        discount: Discount percentage (0-100)
+    Returns:
+        Total price with discount
+    """
+    subtotal = sum(prices)
+    return subtotal * (1 - discount / 100)
+
+registry.register_command("calculate_total", calculate_total)
+
+# Create FastAPI app
+app = FastAPI()
+
+# Create and configure MCP Proxy adapter
+adapter = MCPProxyAdapter(registry)
+
+# Register endpoints in FastAPI app
+adapter.register_endpoints(app)
+
+# Generate and save MCP Proxy config
+adapter.save_config_to_file("mcp_proxy_config.json")
+```
+
+## Supported Request Formats
+
+The adapter supports three request formats for command execution:
+
+### 1. JSON-RPC format
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "command_name",
+  "params": {
+    "param1": "value1",
+    "param2": "value2"
+  },
+  "id": 1
+}
+```
+
+Example request to `/cmd` endpoint:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+  "jsonrpc": "2.0",
+  "method": "calculate_total",
+  "params": {
+    "prices": [100, 200, 300],
+    "discount": 10
+  },
+  "id": 1
+}' http://localhost:8000/cmd
+```
+
+Response:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": 540.0,
+  "id": 1
+}
+```
+
+### 2. MCP Proxy format
+
+```json
+{
+  "command": "command_name",
+  "params": {
+    "param1": "value1",
+    "param2": "value2"
+  }
+}
+```
+
+Example request:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+  "command": "calculate_total",
+  "params": {
+    "prices": [100, 200, 300],
+    "discount": 10
+  }
+}' http://localhost:8000/cmd
+```
+
+Response:
+
+```json
+{
+  "result": 540.0
+}
+```
+
+### 3. Params-only format
+
+```json
+{
+  "params": {
+    "command": "command_name",
+    "param1": "value1",
+    "param2": "value2"
+  }
+}
+```
+
+or
+
+```json
+{
+  "params": {
+    "query": "command_name",
+    "param1": "value1",
+    "param2": "value2"
+  }
+}
+```
+
+Example request:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+  "params": {
+    "command": "calculate_total",
+    "prices": [100, 200, 300],
+    "discount": 10
+  }
+}' http://localhost:8000/cmd
+```
+
+Response:
+
+```json
+{
+  "result": 540.0
+}
+```
+
+## Full Example: Integration with FastAPI
+
+```python
+import logging
+from fastapi import FastAPI, APIRouter
+from mcp_proxy_adapter import CommandRegistry, MCPProxyAdapter, configure_logger
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+project_logger = logging.getLogger("my_project")
+
+# Create FastAPI app
+app = FastAPI(title="My API with MCP Proxy Integration")
+
+# Create existing API router
+router = APIRouter()
+
+@router.get("/items")
+async def get_items():
+    """Returns a list of items."""
+    return [
+        {"id": 1, "name": "Smartphone X", "price": 999.99},
+        {"id": 2, "name": "Laptop Y", "price": 1499.99},
+    ]
+
+app.include_router(router)
+
+# Register commands
+registry = CommandRegistry()
+
+def get_discounted_price(price: float, discount: float = 0.0) -> float:
+    """
+    Returns the price after applying a discount.
+    """
+    return price * (1 - discount / 100)
+
+registry.register_command("get_discounted_price", get_discounted_price)
+
+# Create and register MCP Proxy adapter
+adapter = MCPProxyAdapter(registry)
+adapter.register_endpoints(app)
+
+# Save MCP Proxy config
+adapter.save_config_to_file("mcp_proxy_config.json")
+```
+
+## Features
+- Universal JSON-RPC endpoint for command execution
+- Automatic OpenAPI schema generation and optimization for MCP Proxy
+- Tool metadata for AI models
+- Customizable endpoints and logging
+- Full test coverage and examples
+
+## FAQ
+
+**Q: Почему не удаётся использовать декоратор @registry.command для регистрации команд?**
+A: В последних версиях пакета декоратор @registry.command больше не поддерживается. Теперь команды регистрируются только явно, через вызов метода:
+
+```python
+registry.register_command("имя_команды", функция)
+```
+
+**Q: Почему не удаётся импортировать CommandRegistry напрямую из mcp_proxy_adapter?**
+A: Класс CommandRegistry находится в подмодуле registry. Используйте:
+
+```python
+from mcp_proxy_adapter.registry import CommandRegistry
+```
+
+**Q: Какой способ импорта MCPProxyAdapter и configure_logger?**
+A: Импортируйте их из подмодуля adapter:
+
+```python
+from mcp_proxy_adapter.adapter import MCPProxyAdapter, configure_logger
+```
+
+**Q: Как добавить свою команду?**
+A: Зарегистрируйте функцию через registry.register_command или декоратор (см. примеры выше).
+
+**Q: Как получить OpenAPI-схему?**
+A: После регистрации адаптера вызовите /openapi.json в вашем FastAPI-приложении.
+
+**Q: Какой формат запроса поддерживается?**
+A: JSON-RPC, MCP Proxy и params-only (см. раздел Supported Request Formats).
+
+## HOWTO
+
+**Как интегрировать MCP Proxy Adapter с FastAPI:**
+1. Установите пакет:
+   ```bash
+   pip install mcp-proxy-adapter
+   ```
+2. Импортируйте нужные классы:
+   ```python
+   from mcp_proxy_adapter.registry import CommandRegistry
+   from mcp_proxy_adapter.adapter import MCPProxyAdapter
+   ```
+3. Зарегистрируйте команды и настройте FastAPI:
+   ```python
+   registry = CommandRegistry()
+   registry.register_command("my_command", my_function)
+   app = FastAPI()
+   adapter = MCPProxyAdapter(registry)
+   adapter.register_endpoints(app)
+   ```
+4. (Опционально) Сохраните конфиг для MCP Proxy:
+   ```python
+   adapter.save_config_to_file("mcp_proxy_config.json")
+   ```
+
+**Как добавить поддержку кастомного логгера:**
+```python
+import logging
+from mcp_proxy_adapter.adapter import configure_logger
+logger = logging.getLogger("my_project")
+adapter_logger = configure_logger(logger)
+```
+
+**Как получить список всех команд через API:**
+Вызовите GET `/api/commands` на вашем сервере FastAPI.
+
+## License
+MIT
+
+## Documentation
+See [docs/](docs/) for detailed guides, architecture, and examples.
+
+## CI/CD & PyPI automation
+
+This project uses GitHub Actions for continuous integration and automated publishing to PyPI.
+
+- All tests are run on every push and pull request.
+- On push of a new tag (vX.Y.Z), the package is built and published to PyPI automatically.
+
+See `.github/workflows/publish.yml` for details. 
