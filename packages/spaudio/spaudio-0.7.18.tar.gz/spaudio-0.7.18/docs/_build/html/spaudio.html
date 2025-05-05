@@ -1,0 +1,1142 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>spaudio module &mdash; spAudio  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/custom_theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom_theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="spplugin module" href="spplugin.html" />
+    <link rel="prev" title="API Documentation" href="apidoc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #1060A0" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> spAudio
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#change-log">Change Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#build">Build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#official-site">Official Site</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="apidoc.html">API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">spaudio module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spplugin.html">spplugin module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#spaudio"><span class="xref std std-doc">spaudio</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#fullduplex-i-o">Fullduplex I/O</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#fullduplex-i-o-using-with-statement-version-0-7-15">Fullduplex I/O (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-python-array-version">Read and plot (Python array version)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-raw-data-version">Read and plot (raw data version)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-numpy-ndarray-version">Read and plot (NumPy ndarray version)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-numpy-ndarray-version-using-with-statement-version-0-7-16">Read and plot (NumPy ndarray version; using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.16+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-numpy-raw-ndarray-version">Read and plot (NumPy raw ndarray version)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file">Play a WAV file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file-using-with-statement-version-0-7-15">Play a WAV file (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file-with-callback">Play a WAV file with callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file-with-callback-using-with-statement-version-0-7-15">Play a WAV file with callback (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#record-to-a-wav-file">Record to a WAV file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#record-to-a-wav-file-using-with-statement-version-0-7-15">Record to a WAV file (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#block-read-version-0-7-15">Block read (version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#block-write-version-0-7-15">Block write (version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-readframes-and-writeframes-version-0-7-16">An example of <code class="xref py py-func docutils literal notranslate"><span class="pre">readframes()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">writeframes()</span></code> (version 0.7.16+)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#spplugin"><span class="xref std std-doc">spplugin</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-audioread-version-0-7-16">An example of <code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code> (version 0.7.16+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-audiowrite-version-0-7-16">An example of <code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code> (version 0.7.16+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-audioread-and-audiowrite-version-0-7-16">An example of <code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code> (version 0.7.16+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#plot-an-audio-file-contents-by-plugin">Plot an audio file contents by plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-an-audio-file-contents-by-plugin">Play an audio file contents by plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-raw-file-contents-by-plugin">Play a raw file contents by plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-an-audio-file-by-plugin-and-write-it">Read an audio file by plugin and write it</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-an-audio-file-and-write-it-by-plugin">Read an audio file and write it by plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#convert-an-audio-file-by-plugin">Convert an audio file by plugin</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">spAudio</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="apidoc.html">API Documentation</a> &raquo;</li>
+        
+      <li>spaudio module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="module-spaudio">
+<span id="spaudio-module"></span><h1>spaudio module<a class="headerlink" href="#module-spaudio" title="Permalink to this heading">¶</a></h1>
+<p>A python module for audio I/O based on <a class="reference external" href="http://www-ie.meijo-u.ac.jp/labs/rj001/spLibs/index.html">spAudio</a>.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following is the example to realize fullduplex audio I/O (version 0.7.15+).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">spaudio</span>
+
+<span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;rw&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+    <span class="n">nloop</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nloop</span><span class="p">):</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">readraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py exception">
+<dt class="sig sig-object py" id="spaudio.DeviceError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">DeviceError</span></span><a class="reference internal" href="_modules/spaudio.html#DeviceError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.DeviceError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spaudio.Error" title="spaudio.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>Exception raised by audio device problems.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spaudio.DriverError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">DriverError</span></span><a class="reference internal" href="_modules/spaudio.html#DriverError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.DriverError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spaudio.Error" title="spaudio.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>Exception raised by audio driver problems.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spaudio.Error">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">Error</span></span><a class="reference internal" href="_modules/spaudio.html#Error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.Error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Base exception class for spaudio.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spaudio.SpAudio">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">SpAudio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drivername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for audio I/O.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>drivername</strong> (<em>str</em>) – the driver name to initialize.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the current audio device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.createarray">
+<span class="sig-name descname"><span class="pre">createarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.createarray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.createarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a double-precision array for the current device settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> – A length of the array. Note that this length is
+not identical to the number of frames
+(length = nframes * nchannels).
+If you want to specify the number of frames,
+the second argument must be <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> makes the first argument
+be treated as the number of frames.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An array class object for the current device settings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.createndarray">
+<span class="sig-name descname"><span class="pre">createndarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.createndarray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.createndarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a numpy double-precision array for the current device settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> – A length of the array. Note that this length is
+not identical to the number of frames
+(length = nframes * nchannels).
+If you want to specify the number of frames,
+the second argument must be <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> makes the first argument
+be treated as the number of frames.</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> resizes the returned array
+into (nframes, nchannels) matrix.
+This argument is introduced in Version 0.7.16.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An ndarray class object for the current device
+settings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.createrawarray">
+<span class="sig-name descname"><span class="pre">createrawarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.createrawarray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.createrawarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a raw array for the current device settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> – A length of the array. Note that this length is
+not identical to the number of frames
+(length = nframes * nchannels).
+If you want to specify the number of frames,
+the second argument must be <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> makes the first argument
+be treated as the number of frames.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An array class object for the current device settings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.createrawndarray">
+<span class="sig-name descname"><span class="pre">createrawndarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.createrawndarray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.createrawndarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a raw numpy ndarray for the current device settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> – A length of the array. Note that this length is
+not identical to the number of frames
+(length = nframes * nchannels).
+If you want to specify the number of frames,
+the second argument must be <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> makes the first argument
+be treated as the number of frames.</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> resizes the returned array
+into (nframes, nchannels) matrix.
+This argument is introduced in Version 0.7.16.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An ndarray class object for the current device
+settings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getarraytypecode">
+<span class="sig-name descname"><span class="pre">getarraytypecode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getarraytypecode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getarraytypecode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the type code for python array to store double-precision data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A type code of a double-precision array for the current settings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>char</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getblockingmode">
+<span class="sig-name descname"><span class="pre">getblockingmode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getblockingmode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getblockingmode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the blocking mode of the current device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0 = blocking mode (default), 1 = nonblocking mode.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getbuffersize">
+<span class="sig-name descname"><span class="pre">getbuffersize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getbuffersize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getbuffersize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the buffer size of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getcompname">
+<span class="sig-name descname"><span class="pre">getcompname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decodebytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getcompname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getcompname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns human-readable name of compression type. Currently,
+<code class="docutils literal notranslate"><span class="pre">'not</span> <span class="pre">compressed'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">True</span></code>) or <code class="docutils literal notranslate"><span class="pre">b'not</span> <span class="pre">compressed'</span></code>
+(decodebytes = <code class="docutils literal notranslate"><span class="pre">False</span></code>) will be returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getcomptype">
+<span class="sig-name descname"><span class="pre">getcomptype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decodebytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getcomptype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getcomptype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns compression type. Currently, <code class="docutils literal notranslate"><span class="pre">'NONE'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">True</span></code>)
+or <code class="docutils literal notranslate"><span class="pre">b'NONE'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">False</span></code>) will be returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getdevicelist">
+<span class="sig-name descname"><span class="pre">getdevicelist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getdevicelist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getdevicelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the list of audio devices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getdevicename">
+<span class="sig-name descname"><span class="pre">getdevicename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deviceindex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getdevicename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getdevicename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the name of the audio device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getframerate">
+<span class="sig-name descname"><span class="pre">getframerate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getframerate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getframerate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets sample rate of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getnbuffers">
+<span class="sig-name descname"><span class="pre">getnbuffers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getnbuffers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getnbuffers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of buffers of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getnchannels">
+<span class="sig-name descname"><span class="pre">getnchannels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getnchannels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getnchannels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of channels of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getndarraydtype">
+<span class="sig-name descname"><span class="pre">getndarraydtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getndarraydtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getndarraydtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the dtype string for numpy ndarray to store double-precision data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dtype string for the current settings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getndevices">
+<span class="sig-name descname"><span class="pre">getndevices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getndevices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getndevices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of audio devices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getparams">
+<span class="sig-name descname"><span class="pre">getparams</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getparams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getparams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets supported all parameters of the current device in dict object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dict object including all parameters of the current device
+whose keys are <code class="docutils literal notranslate"><span class="pre">'nchannels'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sampbit'</span></code>, <code class="docutils literal notranslate"><span class="pre">'samprate'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'blockingmode'</span></code>, <code class="docutils literal notranslate"><span class="pre">'buffersize'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'nbuffers'</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getparamstuple">
+<span class="sig-name descname"><span class="pre">getparamstuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decodebytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getparamstuple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getparamstuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets supported all parameters of the current device in namedtuple object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>decodebytes</strong> (<em>bool</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> decodes bytes objects into
+string objects for <code class="docutils literal notranslate"><span class="pre">'comptype'</span></code> and <code class="docutils literal notranslate"><span class="pre">'compname'</span></code>.
+The standard libraries of wave and sunau expect a decoded
+string object while the standard aifc library expects
+a bytes object.</p></li>
+<li><p><strong>nframes</strong> (<em>int</em><em>, </em><em>optional</em>) – Specify the number of frames of an audio
+file, otherwise 4th element of the output tuple will be 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A namedtuple object including all parameters of
+the current device whose entries are
+<code class="docutils literal notranslate"><span class="pre">(nchannels,</span> <span class="pre">sampwidth,</span> <span class="pre">framerate,</span> <span class="pre">nframes,</span> <span class="pre">comptype,</span> <span class="pre">compname)</span></code> .
+This object is compatible with the argument of <code class="docutils literal notranslate"><span class="pre">setparams()</span></code>
+of standard libraries such as aifc, wave, or sunau.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getrawarraytypecode">
+<span class="sig-name descname"><span class="pre">getrawarraytypecode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getrawarraytypecode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getrawarraytypecode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the type code for python array to store raw data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A type code for the current settings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>char</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getrawndarraydtype">
+<span class="sig-name descname"><span class="pre">getrawndarraydtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getrawndarraydtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getrawndarraydtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the dtype string for numpy ndarray to store raw data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dtype string for the current settings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getrawsampbit">
+<span class="sig-name descname"><span class="pre">getrawsampbit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getrawsampbit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getrawsampbit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the bits/sample for a raw array.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getrawsampwidth">
+<span class="sig-name descname"><span class="pre">getrawsampwidth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getrawsampwidth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getrawsampwidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the bytes/sample for a raw array.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getsampbit">
+<span class="sig-name descname"><span class="pre">getsampbit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getsampbit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getsampbit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets bits/sample of the current device. sampbit = 33 means
+32bit float.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getsamprate">
+<span class="sig-name descname"><span class="pre">getsamprate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getsamprate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getsamprate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets sample rate of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getsampwidth">
+<span class="sig-name descname"><span class="pre">getsampwidth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getsampwidth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getsampwidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets bytes/sample of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deviceindex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samprate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampbit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nchannels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blockingmode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffersize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbuffers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens the current audio device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<em>str</em>) – Device opening mode. <code class="docutils literal notranslate"><span class="pre">'r'</span></code> means read mode, <code class="docutils literal notranslate"><span class="pre">'w'</span></code>
+means write mode. <code class="docutils literal notranslate"><span class="pre">'ro'</span></code> and <code class="docutils literal notranslate"><span class="pre">'wo'</span></code> which mean read only
+and write only modes are also supported. Although these modes
+validate only the specified mode, some environments recieve
+a benefit that the processing becomes faster.</p></li>
+<li><p><strong>callback</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The callback function included in tuple
+which contains all arguments for
+<a class="reference internal" href="#spaudio.SpAudio.setcallback" title="spaudio.SpAudio.setcallback"><code class="xref py py-func docutils literal notranslate"><span class="pre">setcallback()</span></code></a> method.</p></li>
+<li><p><strong>deviceindex</strong> (<em>int</em><em>, </em><em>optional</em>) – The index of the audio device.</p></li>
+<li><p><strong>samprate</strong> (<em>double</em><em>, </em><em>optional</em>) – Sample rate of the device.</p></li>
+<li><p><strong>sampbit</strong> (<em>int</em><em>, </em><em>optional</em>) – Bits/sample of the device.</p></li>
+<li><p><strong>nchannels</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of channels of the device.</p></li>
+<li><p><strong>blockingmode</strong> (<em>int</em><em>, </em><em>optional</em>) – 0 = blocking mode (default),
+1 = nonblocking mode.</p></li>
+<li><p><strong>buffersize</strong> (<em>int</em><em>, </em><em>optional</em>) – The buffer size of the device.</p></li>
+<li><p><strong>nbuffers</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of buffers of the device.</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dict object which can contain any
+above parameters from <cite>samprate</cite> to <cite>nbuffers</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Support for the keyword arguments was added in Version 0.7.15.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads data to a double-precision array from the audio device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) – A double-precision array to receive data from the audio device.</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) – A weighting factor multiplied
+to data after reading.</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) – Optional offset location for the array.</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) – Optional read length for the array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The read size if successful, -1 otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The keyword arguments of <cite>offset</cite> and <cite>length</cite> were
+introduced in Version 0.7.15.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.readframes">
+<span class="sig-name descname"><span class="pre">readframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nframes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arraytype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ndarray'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.readframes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.readframes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads and returns the next <cite>nframes</cite> data of a double-precision array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nframes</strong> (<em>int</em>) – The number of frames to read.</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) – A weighting factor multiplied
+to data after reading.</p></li>
+<li><p><strong>arraytype</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of output array. The value must
+be <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> (default), <code class="docutils literal notranslate"><span class="pre">'array'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'bytearray'</span></code>.</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> resizes the returned ndarray
+into (nframes, nchannels) matrix.
+This argument is valid only in <code class="docutils literal notranslate"><span class="pre">arraytype='ndarray'</span></code> case.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The output array object
+containing read data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray, array.array or bytearray</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function was introduced in Version 0.7.16.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.readraw">
+<span class="sig-name descname"><span class="pre">readraw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.readraw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.readraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads raw data from the audio device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) – A raw array to receive raw data from the audio device.</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) – Optional offset location for the array.</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) – Optional read length for the array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The read size if successful, -1 otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The keyword arguments of <cite>offset</cite> and <cite>length</cite> were
+introduced in Version 0.7.15.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.readrawframes">
+<span class="sig-name descname"><span class="pre">readrawframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nframes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arraytype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ndarray'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.readrawframes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.readrawframes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads and returns the next <cite>nframes</cite> data of a raw array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nframes</strong> (<em>int</em>) – The number of frames to read.</p></li>
+<li><p><strong>arraytype</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of output array. The value must
+be <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> (default), <code class="docutils literal notranslate"><span class="pre">'array'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'bytearray'</span></code>.</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> resizes the returned ndarray
+into (nframes, nchannels) matrix.
+This argument is valid only in <code class="docutils literal notranslate"><span class="pre">arraytype='ndarray'</span></code> case.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The output array object
+containing read data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray, array.array or bytearray</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function was introduced in Version 0.7.16.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.reload">
+<span class="sig-name descname"><span class="pre">reload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drivername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.reload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reloads a new audio driver.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.selectdevice">
+<span class="sig-name descname"><span class="pre">selectdevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deviceindex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.selectdevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.selectdevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects an audio device which has the index specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deviceindex</strong> (<em>int</em>) – The index associated with an audio device.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If <cite>deviceindex</cite> is greater than or equal to
+    the number of devices.</p></li>
+<li><p><a class="reference internal" href="#spaudio.DriverError" title="spaudio.DriverError"><strong>DriverError</strong></a> – If the audio device cannot be selected.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setblockingmode">
+<span class="sig-name descname"><span class="pre">setblockingmode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setblockingmode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setblockingmode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the blocking mode of the current device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode</strong> (<em>int</em>) – 0 = blocking mode (default), 1 = nonblocking mode.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setbuffersize">
+<span class="sig-name descname"><span class="pre">setbuffersize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffersize</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setbuffersize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setbuffersize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the buffer size of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setcallback">
+<span class="sig-name descname"><span class="pre">setcallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calltype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setcallback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setcallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a callback function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>calltype</strong> (<em>int</em>) – A combination of callback types.
+<code class="docutils literal notranslate"><span class="pre">OUTPUT_POSITION_CALLBACK</span></code> and <code class="docutils literal notranslate"><span class="pre">OUTPUT_BUFFER_CALLBACK</span></code>
+are supported currently.</p></li>
+<li><p><strong>func</strong> (<em>callable</em>) – Callback function. The callback must have
+a signature in the <a class="reference internal" href="#spaudio.callbacksignature" title="spaudio.callbacksignature"><code class="xref py py-func docutils literal notranslate"><span class="pre">callbacksignature()</span></code></a> document.</p></li>
+<li><p><strong>*args</strong> – Variable length argument list.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#spaudio.DriverError" title="spaudio.DriverError"><strong>DriverError</strong></a> – If the callback function cannot be set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setcomptype">
+<span class="sig-name descname"><span class="pre">setcomptype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encodestr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setcomptype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setcomptype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets compression type. This parameter is ignored.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setframerate">
+<span class="sig-name descname"><span class="pre">setframerate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samprate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setframerate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setframerate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets sample rate of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setnbuffers">
+<span class="sig-name descname"><span class="pre">setnbuffers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nbuffers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setnbuffers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setnbuffers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the number of buffers of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setnchannels">
+<span class="sig-name descname"><span class="pre">setnchannels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nchannels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setnchannels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setnchannels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the number of channels of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setparams">
+<span class="sig-name descname"><span class="pre">setparams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setparams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setparams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets supported all parameters described in dict or
+namedtuple object to the device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) – a dict object of parameters whose keys are
+<code class="docutils literal notranslate"><span class="pre">'nchannels'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sampbit'</span></code>, <code class="docutils literal notranslate"><span class="pre">'samprate'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'blockingmode'</span></code>, <code class="docutils literal notranslate"><span class="pre">'buffersize'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'nbuffers'</span></code>.
+The namedtuple generated by standard libraries
+such as aifc, wave, or sunau is also acceptable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setsampbit">
+<span class="sig-name descname"><span class="pre">setsampbit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampbit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setsampbit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setsampbit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets bits/sample of the current device. sampbit = 33 means
+32bit float.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setsamprate">
+<span class="sig-name descname"><span class="pre">setsamprate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samprate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setsamprate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setsamprate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets sample rate of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setsampwidth">
+<span class="sig-name descname"><span class="pre">setsampwidth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floatflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setsampwidth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setsampwidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets bytes/sample of the current device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops audio I/O.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.sync">
+<span class="sig-name descname"><span class="pre">sync</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.sync"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synchronizes audio I/O.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.terminate">
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.terminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminates the current audio driver.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes data of a double-precision array to the audio device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) – A double-precision array to send data to the audio device.</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) – A weighting factor multiplied
+to data before writing.</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) – Optional offset location for the array.</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) – Optional write length for the array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The written size if successful, -1 otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The keyword arguments of <cite>offset</cite> and <cite>length</cite> were
+introduced in Version 0.7.15.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.writeframes">
+<span class="sig-name descname"><span class="pre">writeframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.writeframes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.writeframes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes data of a double-precision array to the audio device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) – A double-precision array to send data to the audio device.</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) – A weighting factor multiplied
+to data before writing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The written number of frames if successful, -1 otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function was introduced in Version 0.7.16.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.writeraw">
+<span class="sig-name descname"><span class="pre">writeraw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.writeraw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.writeraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes data of a raw array to the audio device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) – A raw array to send data to the audio device.</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) – Optional offset location for the array.</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) – Optional write length for the array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The written size if successful, -1 otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The keyword arguments of <cite>offset</cite> and <cite>length</cite> were
+introduced in Version 0.7.15.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.writerawframes">
+<span class="sig-name descname"><span class="pre">writerawframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.writerawframes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.writerawframes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes data of a raw array to the audio device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) – A raw array to send data to the audio device.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The written number of frames if successful, -1 otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function was introduced in Version 0.7.16.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.callbacksignature">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">callbacksignature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calltype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#callbacksignature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.callbacksignature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signature of the callback function for <a class="reference internal" href="#spaudio.SpAudio.setcallback" title="spaudio.SpAudio.setcallback"><code class="xref py py-func docutils literal notranslate"><span class="pre">setcallback()</span></code></a> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audio</strong> (<a class="reference internal" href="#spaudio.SpAudio" title="spaudio.SpAudio"><em>SpAudio</em></a>) – An instance of <a class="reference internal" href="#spaudio.SpAudio" title="spaudio.SpAudio"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpAudio</span></code></a> class.</p></li>
+<li><p><strong>calltype</strong> (<em>int</em>) – The callback type. <code class="docutils literal notranslate"><span class="pre">OUTPUT_POSITION_CALLBACK</span></code> or
+<code class="docutils literal notranslate"><span class="pre">OUTPUT_BUFFER_CALLBACK</span></code>.</p></li>
+<li><p><strong>cbdata</strong> – Callback-depend data. A position (int) on <code class="docutils literal notranslate"><span class="pre">OUTPUT_POSITION_CALLBACK</span></code>
+or a buffer (bytes) on <code class="docutils literal notranslate"><span class="pre">OUTPUT_BUFFER_CALLBACK</span></code>.</p></li>
+<li><p><strong>args</strong> – Variable length argument list specified at <a class="reference internal" href="#spaudio.SpAudio.setcallback" title="spaudio.SpAudio.setcallback"><code class="xref py py-func docutils literal notranslate"><span class="pre">setcallback()</span></code></a>.
+Note that this <cite>args</cite> variable does not require the prefix <code class="docutils literal notranslate"><span class="pre">*</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code> if you don’t want to fire callbacks anymore.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.getdriverdevicename">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">getdriverdevicename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drivername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#getdriverdevicename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.getdriverdevicename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the name of the device in the driver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>int</em>) – The index associated with the audio device.</p></li>
+<li><p><strong>drivername</strong> (<em>str</em>) – Optional driver name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string containing the device name.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>index</cite> is greater than or equal to
+    the number of devices.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.getdriverlist">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">getdriverlist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#getdriverlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.getdriverlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a list of driver names.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.getdrivername">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">getdrivername</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#getdrivername"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.getdrivername" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the name of the driver which has the index specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index associated with the audio driver.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string containing the driver name.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>index</cite> is greater than or equal to
+    the number of drivers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.getndriverdevices">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">getndriverdevices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drivername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#getndriverdevices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.getndriverdevices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of devices in the driver.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.getndrivers">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">getndrivers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#getndrivers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.getndrivers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of drivers.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.open">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drivername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deviceindex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samprate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampbit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nchannels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blockingmode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffersize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbuffers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spaudio.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens an audio device. This function may be used in a <code class="docutils literal notranslate"><span class="pre">with</span></code> statement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<em>str</em>) – Device opening mode. <code class="docutils literal notranslate"><span class="pre">'r'</span></code> means read mode, <code class="docutils literal notranslate"><span class="pre">'w'</span></code>
+means write mode. <code class="docutils literal notranslate"><span class="pre">'ro'</span></code> and <code class="docutils literal notranslate"><span class="pre">'wo'</span></code> which mean read only
+and write only modes are also supported. Although these modes
+validate only the specified mode, some environments recieve
+a benefit that the processing becomes faster.
+In this function, <code class="docutils literal notranslate"><span class="pre">'rw'</span></code> which means open with <code class="docutils literal notranslate"><span class="pre">'w'</span></code>
+after <code class="docutils literal notranslate"><span class="pre">'r'</span></code> is also supported.</p></li>
+<li><p><strong>drivername</strong> (<em>str</em><em>, </em><em>optional</em>) – The driver name to initialize.</p></li>
+<li><p><strong>callback</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The callback function included in
+tuple which contains all arguments for
+<a class="reference internal" href="#spaudio.SpAudio.setcallback" title="spaudio.SpAudio.setcallback"><code class="xref py py-func docutils literal notranslate"><span class="pre">setcallback()</span></code></a> method.</p></li>
+<li><p><strong>deviceindex</strong> (<em>int</em><em>, </em><em>optional</em>) – The index of the audio device.</p></li>
+<li><p><strong>samprate</strong> (<em>double</em><em>, </em><em>optional</em>) – Sample rate of the device.</p></li>
+<li><p><strong>sampbit</strong> (<em>int</em><em>, </em><em>optional</em>) – Bits/sample of the device.</p></li>
+<li><p><strong>nchannels</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of channels of the device.</p></li>
+<li><p><strong>blockingmode</strong> (<em>int</em><em>, </em><em>optional</em>) – 0 = blocking mode (default),
+1 = nonblocking mode.</p></li>
+<li><p><strong>buffersize</strong> (<em>int</em><em>, </em><em>optional</em>) – The buffer size of the device.</p></li>
+<li><p><strong>nbuffers</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of buffers of the device.</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dict object which can contain any
+above parameters from <cite>samprate</cite> to <cite>nbuffers</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new instance of <a class="reference internal" href="#spaudio.SpAudio" title="spaudio.SpAudio"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpAudio</span></code></a> class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#spaudio.SpAudio" title="spaudio.SpAudio">SpAudio</a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function was introduced in Version 0.7.15.</p>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="spplugin.html" class="btn btn-neutral float-right" title="spplugin module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="apidoc.html" class="btn btn-neutral float-left" title="API Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019  Hideki Banno
+      <span class="lastupdated">
+        Last updated on 2022-07-24 11:53:26 PM.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+    <p><img src="/cgi-bin/labs/rj001/counter/count.cgi?id=spAudio_python"></p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

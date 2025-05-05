@@ -1,0 +1,826 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017-2019  Hideki Banno
+# This file is distributed under the same license as the spAudio package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: spAudio \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-11 00:11+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.11.0\n"
+
+#: ../spplugin.rst:2
+msgid "spplugin module"
+msgstr "sppluginモジュール"
+
+#: of spplugin:1
+msgid ""
+"A python module for plugin-based audio file I/O based on `spPlugin <https://www-ie.meijo-u.ac.jp/labs/rj001/spLibs/index.html>`_ "
+"which supports several sound formats including WAV, AIFF, MP3, Ogg Vorbis, FLAC, ALAC, "
+"raw, and more."
+msgstr ""
+"`spPlugin <https://www-ie.meijo-u.ac.jp/labs/rj001/spLibs/index-j.html>`_ "
+"に基づく音声ファイル入出力のpythonモジュールです．WAV，AIFF，MP3，Ogg "
+"Vorbis，FLAC，ALAC，rawなど，様々なファイル形式をプラグインによりサポートしています．"
+
+#: of spplugin:6
+msgid "Example"
+msgstr "例"
+
+#: of spplugin:8
+msgid ""
+"The following is the example plotting the waveform of an input audio "
+"file. ::"
+msgstr "下記は入力音声ファイルの波形をプロットする例です． ::"
+
+#: of spplugin:50
+msgid ""
+"The following is the another example using a high-level function of "
+":func:`~spplugin.audioread` which is similar to MATLAB's one (version "
+"0.7.16+). ::"
+msgstr ""
+"また，下記は，MATLABの同名関数と似た高レベル関数 :func:`~spplugin.audioread` "
+"を使用した例です（バージョン0.7.16以降）． ::"
+
+#: of spplugin:79
+msgid ""
+"The following is the 'write' version of above example using a high-level "
+"function of :func:`~spplugin.audiowrite` which is similar to MATLAB's one"
+" (version 0.7.16+). ::"
+msgstr ""
+"さらに，上記の例の'write'バージョンとも言える，MATLABの同名関数と似た高レベル関数 "
+":func:`~spplugin.audiowrite` を使用した例です（バージョン0.7.16以降）． ::"
+
+#: of spplugin.BogusFileError:1 spplugin.FileError:1 spplugin.FileTypeError:1
+#: spplugin.NChannelsError:1 spplugin.NFramesRequiredError:1
+#: spplugin.SampleBitError:1 spplugin.SampleRateError:1
+#: spplugin.SuitableNotFoundError:1 spplugin.WrongPluginError:1
+msgid "Bases: :py:class:`~spplugin.Error`"
+msgstr ""
+
+#: of spplugin.BogusFileError:1
+msgid "Exception raised if the audio file is bogus."
+msgstr "音声ファイルに異常がある場合に発生する例外です．"
+
+#: of spplugin.Error:1
+msgid "Bases: :py:class:`Exception`"
+msgstr ""
+
+#: of spplugin.Error:1
+msgid "Base exception class for spplugin."
+msgstr "sppluginの基本例外クラスです．"
+
+#: of spplugin.FileError:1
+msgid "Exception raised by audio file problems."
+msgstr "音声ファイルの問題により発生する例外です．"
+
+#: of spplugin.FileTypeError:1
+msgid "Exception raised if the specified file type is not accepted."
+msgstr "ファイル形式がサポートされていない場合に発生する例外です．"
+
+#: of spplugin.NChannelsError:1
+msgid "Exception raised if the specified number of channels is not accepted."
+msgstr "チャネル数がサポートされていない場合に発生する例外です．"
+
+#: of spplugin.NFramesRequiredError:1
+msgid ""
+"Exception raised if the total number of frames is required to use the "
+"plugin."
+msgstr "ファイルの全フレーム数が要求されるプラグインの場合に発生する例外です．"
+
+#: of spplugin.SampleBitError:1
+msgid "Exception raised if the specified bits/sample is not accepted."
+msgstr "ビット/サンプルがサポートされていない場合に発生する例外です．"
+
+#: of spplugin.SampleRateError:1
+msgid "Exception raised if the specified sample rate is not accepted."
+msgstr "サンプルレートがサポートされていない場合に発生する例外です．"
+
+#: of spplugin.SpFilePlugin:1
+msgid "Bases: :py:class:`object`"
+msgstr ""
+
+#: of spplugin.SpFilePlugin:1
+msgid ""
+"A class for audio file I/O. This class is similar to one provided by the "
+"standard libraries such as aifc, wave, or sunau. The important difference"
+" is that ``set*()`` functions must be called before "
+":func:`~spplugin.SpFilePlugin.open` in this class. You can set parameters"
+" by using optional arguments of :func:`~spplugin.open` function."
+msgstr ""
+"音声ファイル入出力のためのクラスです．このクラスは，標準ライブラリのaifcやwave，sunauと同じように用いることができます．異なる点としては，パラメータを指定する"
+" ``set*()`` 関数群が :func:`~spplugin.SpFilePlugin.open` "
+"の前に呼び出す必要がある点などが挙げられます．これらのパラメータは，関数 :func:`~spplugin.open` "
+"のオプション引数でも指定できます．"
+
+#: of spplugin.SpFilePlugin.appendsonginfo:1
+msgid "Appends song information to the current internal information."
+msgstr "ソング情報を現在保持されている内部変数に追加します．"
+
+#: of spplugin.SpFilePlugin.close:1
+msgid "Closes the current audio file."
+msgstr "音声ファイルを閉じます．"
+
+#: of spplugin.SpFilePlugin.copyarray2raw:1
+msgid ""
+"Copies raw array (array.array) contents to a new raw bytes (bytearray) "
+"data."
+msgstr "Raw形式の配列 (array.array) の内容を，新たなRaw形式のbytesまたはbytearrayのデータにコピーします．"
+
+#: of spplugin.SpFilePlugin.copyarray2raw spplugin.SpFilePlugin.copyraw2array
+#: spplugin.SpFilePlugin.createarray spplugin.SpFilePlugin.createndarray
+#: spplugin.SpFilePlugin.createrawarray spplugin.SpFilePlugin.createrawndarray
+#: spplugin.SpFilePlugin.getparamstuple spplugin.SpFilePlugin.open
+#: spplugin.SpFilePlugin.read spplugin.SpFilePlugin.readframes
+#: spplugin.SpFilePlugin.readraw spplugin.SpFilePlugin.readrawframes
+#: spplugin.SpFilePlugin.setparams spplugin.SpFilePlugin.setpos
+#: spplugin.SpFilePlugin.write spplugin.SpFilePlugin.writeframes
+#: spplugin.SpFilePlugin.writeraw spplugin.SpFilePlugin.writerawframes
+#: spplugin.audioread spplugin.audiowrite spplugin.open
+msgid "Parameters"
+msgstr "パラメータ"
+
+#: of spplugin.SpFilePlugin.copyarray2raw:4
+msgid "Input array object."
+msgstr "入力のbytearrayオブジェクトを指定します．"
+
+#: of spplugin.SpFilePlugin.copyarray2raw:6
+msgid "bytes/sample of output data."
+msgstr "出力データのバイト/サンプルを指定します．"
+
+#: of spplugin.SpFilePlugin.copyarray2raw:8
+msgid ""
+"Specify ``True`` if endianness of output data is big endian (16- or "
+"32-bit case) or data type of output data is signed 8-bit (8-bit case)."
+msgstr ""
+"出力データのエンディアンがビッグエンディアンの場合（16ビットか32ビットの場合）もしくは出力データのデータ型が符号付き8ビットデータの場合（8ビットの場合のみ）に"
+" ``True`` を指定します．"
+
+#: of spplugin.SpFilePlugin.copyarray2raw spplugin.SpFilePlugin.copyraw2array
+#: spplugin.SpFilePlugin.createarray spplugin.SpFilePlugin.createndarray
+#: spplugin.SpFilePlugin.createrawarray spplugin.SpFilePlugin.createrawndarray
+#: spplugin.SpFilePlugin.getarraytypecode spplugin.SpFilePlugin.getndarraydtype
+#: spplugin.SpFilePlugin.getparams spplugin.SpFilePlugin.getparamstuple
+#: spplugin.SpFilePlugin.getrawarraytypecode
+#: spplugin.SpFilePlugin.getrawndarraydtype spplugin.SpFilePlugin.read
+#: spplugin.SpFilePlugin.readframes spplugin.SpFilePlugin.readraw
+#: spplugin.SpFilePlugin.readrawframes spplugin.SpFilePlugin.write
+#: spplugin.SpFilePlugin.writeframes spplugin.SpFilePlugin.writeraw
+#: spplugin.SpFilePlugin.writerawframes spplugin.audioread spplugin.audiowrite
+#: spplugin.open
+msgid "Returns"
+msgstr "戻り値"
+
+#: of spplugin.SpFilePlugin.copyarray2raw:14
+msgid "A bytearray class object which contains converted data."
+msgstr "変換されたデータを含む bytearray クラスのオブジェクトが返ります．"
+
+#: of spplugin.SpFilePlugin.copyarray2raw spplugin.SpFilePlugin.copyraw2array
+#: spplugin.SpFilePlugin.createarray spplugin.SpFilePlugin.createndarray
+#: spplugin.SpFilePlugin.createrawarray spplugin.SpFilePlugin.createrawndarray
+#: spplugin.SpFilePlugin.getarraytypecode spplugin.SpFilePlugin.getndarraydtype
+#: spplugin.SpFilePlugin.getparams spplugin.SpFilePlugin.getparamstuple
+#: spplugin.SpFilePlugin.getrawarraytypecode
+#: spplugin.SpFilePlugin.getrawndarraydtype spplugin.SpFilePlugin.read
+#: spplugin.SpFilePlugin.readframes spplugin.SpFilePlugin.readraw
+#: spplugin.SpFilePlugin.readrawframes spplugin.SpFilePlugin.write
+#: spplugin.SpFilePlugin.writeframes spplugin.SpFilePlugin.writeraw
+#: spplugin.SpFilePlugin.writerawframes spplugin.audioread spplugin.audiowrite
+#: spplugin.open
+msgid "Return type"
+msgstr "戻り値の型"
+
+#: of spplugin.SpFilePlugin.copyraw2array:1
+msgid ""
+"Copies raw bytes (bytearray) data contents to a new raw array "
+"(array.array)."
+msgstr "Raw形式のbytesまたはbytearrayのデータの内容を，新たなRaw形式の配列 (array.array) にコピーします．"
+
+#: of spplugin.SpFilePlugin.copyraw2array:3
+msgid "Input bytes or bytearray object."
+msgstr "入力の bytes オブジェクトまたは bytearray オブジェクトを指定します．"
+
+#: of spplugin.SpFilePlugin.copyraw2array:5
+msgid "bytes/sample of rawdata"
+msgstr "rawdataのバイト/サンプルを指定します．"
+
+#: of spplugin.SpFilePlugin.copyraw2array:7
+msgid ""
+"Specify ``True`` if endianness of rawdata is big endian (16- or 32-bit "
+"case) or data type of rawdata (8-bit case) is signed 8-bit."
+msgstr ""
+"rawdata のエンディアンがビッグエンディアンの場合（16ビットか32ビットの場合）もしくはrawdata "
+"のデータ型が符号付き8ビットデータの場合（8ビットの場合のみ）に ``True`` を指定します．"
+
+#: of spplugin.SpFilePlugin.copyraw2array:12
+msgid "An array class object which contains converted data."
+msgstr "変換されたデータを含む array クラスのオブジェクトが返ります．"
+
+#: of spplugin.SpFilePlugin.createarray:1
+msgid "Creates a double-precision array for the current file settings."
+msgstr "現在のファイル設定に応じたdouble型配列を作成します．"
+
+#: of spplugin.SpFilePlugin.createarray:3 spplugin.SpFilePlugin.createndarray:3
+#: spplugin.SpFilePlugin.createrawarray:3
+#: spplugin.SpFilePlugin.createrawndarray:3
+msgid ""
+"A length of the array. Note that this length is not identical to the "
+"number of frames (length = nframes * nchannels). If you want to specify "
+"the number of frames, the second argument must be ``True``."
+msgstr ""
+"配列の長さを指定します．この長さはいわゆるフレーム数とは異なりますのでご注意ください（length = nframes * "
+"nchannels）．フレーム数を指定したい場合は第2引数に ``True`` を指定します．"
+
+#: of spplugin.SpFilePlugin.createarray:8 spplugin.SpFilePlugin.createndarray:8
+#: spplugin.SpFilePlugin.createrawarray:8
+#: spplugin.SpFilePlugin.createrawndarray:8
+msgid "``True`` makes the first argument be treated as the number of frames."
+msgstr "第1引数にフレーム数を指定したい場合は ``True`` を指定します．"
+
+#: of spplugin.SpFilePlugin.createarray:12
+#: spplugin.SpFilePlugin.createrawarray:12
+msgid "An array class object for the current file settings."
+msgstr "現在のファイルの設定に応じたarrayクラスのオブジェクトが返ります．"
+
+#: of spplugin.SpFilePlugin.createndarray:1
+msgid "Creates a numpy double-precision array for the current file settings."
+msgstr "現在のファイルの設定に応じたnumpyのdouble型配列を作成します．"
+
+#: of spplugin.SpFilePlugin.createndarray:11
+#: spplugin.SpFilePlugin.createrawndarray:11
+msgid ""
+"``True`` resizes the returned array into (nframes, nchannels) matrix. "
+"This argument is introduced in Version 0.7.16."
+msgstr ""
+"``True`` を指定すると出力配列が  (nframes, nchannels) "
+"の行列にリサイズされます．この引数はバージョン0.7.16にて導入されました．"
+
+#: of spplugin.SpFilePlugin.createndarray:16
+#: spplugin.SpFilePlugin.createrawndarray:16
+msgid "An ndarray class object for the current file settings."
+msgstr "現在のファイルの設定に応じたndarrayクラスのオブジェクトです．"
+
+#: of spplugin.SpFilePlugin.createrawarray:1
+msgid "Creates a raw array for the current file settings."
+msgstr "現在のファイルの設定に応じたRaw形式の配列を作成します．"
+
+#: of spplugin.SpFilePlugin.createrawndarray:1
+msgid "Creates a raw numpy ndarray for the current file settings."
+msgstr "現在のファイルの設定に応じたRaw形式のnumpyのndarrayを作成します．"
+
+#: of spplugin.SpFilePlugin.getarraytypecode:1
+msgid "Gets the type code for python array to store double-precision data."
+msgstr "double型配列を保持する場合の型コードを取得します．"
+
+#: of spplugin.SpFilePlugin.getarraytypecode:3
+msgid "A type code of a double-precision array for the current settings."
+msgstr "現在の設定に応じたdouble型配列の型コードが返ります．"
+
+#: of spplugin.SpFilePlugin.getcompname:1
+msgid ""
+"Returns human-readable name of compression type. Currently, ``'not "
+"compressed'`` (decodebytes = ``True``) or ``b'not compressed'`` "
+"(decodebytes = ``False``) will be returned."
+msgstr ""
+"圧縮形式の詳細名が返ります．現在の所， ``'not compressed'`` (decodebytes = ``True`` の場合) または"
+" ``b'not compressed'`` (decodebytes = ``False`` の場合) のいずれかになります．"
+
+#: of spplugin.SpFilePlugin.getcomptype:1
+msgid ""
+"Returns compression type. Currently, ``'NONE'`` (decodebytes = ``True``) "
+"or ``b'NONE'`` (decodebytes = ``False``) will be returned."
+msgstr ""
+"圧縮形式が返ります．現在の所， ``'NONE'`` (decodebytes = ``True`` の場合) または ``b'NONE'`` "
+"(decodebytes = ``False`` の場合) のいずれかになります．"
+
+#: of spplugin.SpFilePlugin.getfiledesc:1
+msgid ""
+"Gets file description of the current file. For example, ``'Microsoft "
+"PCM'`` for a WAV file in PCM format."
+msgstr "現在のファイルの説明を取得します．例えば，PCM形式のWAVファイルは， ``'Microsoft PCM'`` になります．"
+
+#: of spplugin.SpFilePlugin.getfilefilter:1
+msgid "Gets file filter (e.g. ``'*.wav'``) of the current file."
+msgstr "現在のファイルのファイルフィルター（例えば ``'*.wav'`` ）を取得します．"
+
+#: of spplugin.SpFilePlugin.getfiletype:1
+msgid "Gets file type of the current file."
+msgstr "現在のファイルのファイル形式を取得します．"
+
+#: of spplugin.SpFilePlugin.getframerate:1 spplugin.SpFilePlugin.getsamprate:1
+msgid "Gets sample rate of the current file."
+msgstr "現在のファイルのサンプルレートを取得します．"
+
+#: of spplugin.SpFilePlugin.getmark:1 spplugin.SpFilePlugin.getmarkers:1
+#: spplugin.SpFilePlugin.setmark:1
+msgid ""
+"Does nothing (for compatibility with standard libraries such as aifc, "
+"wave, and sunau)."
+msgstr "何もしません（aifc，wave，sunauの標準ライブラリとの互換性のために用意されています）．"
+
+#: of spplugin.SpFilePlugin.getnchannels:1
+msgid "Gets the number of channels of the current file."
+msgstr "現在のファイルのチャネル数を取得します．"
+
+#: of spplugin.SpFilePlugin.getndarraydtype:1
+msgid "Gets the dtype string for numpy ndarray to store double-precision data."
+msgstr "double型配列を保持するためのnumpyのndarray用のdtype文字列を取得します．"
+
+#: of spplugin.SpFilePlugin.getndarraydtype:3
+#: spplugin.SpFilePlugin.getrawndarraydtype:3
+msgid "A dtype string for the current settings."
+msgstr "現在の設定のdtype文字列が返ります．"
+
+#: of spplugin.SpFilePlugin.getnframes:1
+msgid "Gets the total number of frames of the current file."
+msgstr "現在のファイルのフレーム数を取得します．"
+
+#: of spplugin.SpFilePlugin.getparams:1
+msgid "Gets supported all parameters of the current file in dict object."
+msgstr "現在のファイルの全てのパラメータをdictオブジェクトで取得します．"
+
+#: of spplugin.SpFilePlugin.getparams:3
+msgid ""
+"A dict object including all parameters of the current file whose keys are"
+" ``'nchannels'``, ``'sampbit'``, ``'samprate'``, ``'nframes'``, "
+"``'filetype'``, and ``'songinfo'``."
+msgstr ""
+"キーが ``'nchannels'``, ``'sampbit'``, ``'samprate'``, ``'nframes'``, "
+"``'filetype'``, ``'songinfo'`` になっているdictオブジェクトが返ります．"
+
+#: of spplugin.SpFilePlugin.getparamstuple:1
+msgid "Gets supported all parameters of the current file in namedtuple object."
+msgstr "現在のファイルの全てのパラメータをnamedtupleオブジェクトで取得します．"
+
+#: of spplugin.SpFilePlugin.getparamstuple:3
+msgid ""
+"``True`` decodes bytes objects into string objects obtained by "
+":func:`~spplugin.SpFilePlugin.getcomptype` and "
+":func:`~spplugin.SpFilePlugin.getcompname` . The standard libraries of "
+"wave and sunau expect a decoded string object while the standard aifc "
+"library expects a bytes object."
+msgstr ""
+"``True`` の場合は， :func:`~spplugin.SpFilePlugin.getcomptype` 及び "
+":func:`~spplugin.SpFilePlugin.getcompname` "
+"で得られるbytesオブジェクトを文字列オブジェクトにデコードします．標準ライブラリのwave，sunauはデコードされた文字列オブジェクトを要求するのに対し，こちらも標準ライブラリのaifcはbytesオブジェクトを要求するため，この引数が用意されています．"
+
+#: of spplugin.SpFilePlugin.getparamstuple:12
+msgid ""
+"A namedtuple object including all parameters of the current file whose "
+"entries are ``(nchannels, sampwidth, framerate, nframes, comptype, "
+"compname)`` . This object is compatible with the argument of "
+"``setparams()`` of standard libraries such as aifc, wave, or sunau."
+msgstr ""
+"現在のファイルの全てのパラメータを含むnamedtupleオブジェクトが返ります．このnamedtupleオブジェクトは，内容が "
+"``(nchannels, sampwidth, framerate, nframes, comptype, compname)`` "
+"になっており，aifc，wave，sunauの標準ライブラリにおける ``setparams()`` の引数として与えることが可能です．"
+
+#: of spplugin.SpFilePlugin.getplugindesc:1
+msgid "Gets the short description of the plugin currently used."
+msgstr "現在使用しているプラグインの短い情報を取得します．"
+
+#: of spplugin.SpFilePlugin.getpluginid:1
+msgid "Gets the ID of the plugin currently used."
+msgstr "現在使用しているプラグインのIDを取得します．"
+
+#: of spplugin.SpFilePlugin.getplugininfo:1
+msgid "Gets the detailed information of the plugin currently used."
+msgstr "現在使用しているプラグインの詳細情報を取得します．"
+
+#: of spplugin.SpFilePlugin.getpluginname:1
+msgid "Gets the name of the plugin currently used."
+msgstr "現在使用しているプラグインの名前を取得します．"
+
+#: of spplugin.SpFilePlugin.getpluginversion:1
+msgid "Gets the version of the plugin currently used."
+msgstr "現在使用しているプラグインのバージョンを取得します．"
+
+#: of spplugin.SpFilePlugin.getrawarraytypecode:1
+msgid "Gets the type code for python array to store raw data."
+msgstr "Raw形式のデータを保持するためのpythonの配列の型コードを取得します．"
+
+#: of spplugin.SpFilePlugin.getrawarraytypecode:3
+msgid "A type code for the current settings."
+msgstr "現在の設定の型コードが返ります．"
+
+#: of spplugin.SpFilePlugin.getrawndarraydtype:1
+msgid "Gets the dtype string for numpy ndarray to store raw data."
+msgstr "Raw形式のデータを保持するためのnumpyのndarray用のdtype文字列を取得します．"
+
+#: of spplugin.SpFilePlugin.getrawsampbit:1
+msgid "Gets the bits/sample for a raw array."
+msgstr "Raw形式配列用のビット/サンプルを取得します．"
+
+#: of spplugin.SpFilePlugin.getrawsampwidth:1
+msgid "Gets the bytes/sample for a raw array."
+msgstr "Raw形式配列用のバイト/サンプルを取得します．"
+
+#: of spplugin.SpFilePlugin.getsampbit:1
+msgid "Gets bits/sample of the current file. sampbit = 33 means 32bit float."
+msgstr "現在のファイルのビット/サンプルを取得します．sampbit = 33は，32ビットfloat型と対応します．"
+
+#: of spplugin.SpFilePlugin.getsampwidth:1
+msgid "Gets bytes/sample of the current file."
+msgstr "現在のファイルのバイト/サンプルを取得します．"
+
+#: of spplugin.SpFilePlugin.getsonginfo:1
+msgid "Gets song information of the current file."
+msgstr "現在のファイルのソング情報を取得します．"
+
+#: of spplugin.SpFilePlugin.open:1
+msgid "Opens the file associated with the filename by using a plugin."
+msgstr "プラグインを用いてファイル名と対応するファイルを開きます．"
+
+#: of spplugin.SpFilePlugin.open:3 spplugin.audioread:3 spplugin.audiowrite:3
+#: spplugin.open:4
+msgid "The name of the file to open."
+msgstr "開くファイルのファイル名を指定します．"
+
+#: of spplugin.SpFilePlugin.open:5 spplugin.open:6
+msgid "The opening mode. ``'r'`` means read mode, ``'w'`` means write mode."
+msgstr "ファイルを開く際のモードを指定します．読み込みモードの ``'r'`` ，書き込みモードの ``'w'`` があります．"
+
+#: of spplugin.SpFilePlugin.open:8 spplugin.audioread:32 spplugin.open:9
+msgid ""
+"The name of the plugin used when this function cannot find the suitable "
+"plugin. Otherwise, :class:`~spplugin.SuitableNotFoundError` exception "
+"will be raised. If you want to read a raw file, specify ``'input_raw'`` ."
+msgstr ""
+"適切なプラグインが見つからなかった際に用いられるプラグイン名を指定します．指定しなかった場合は， "
+":class:`~spplugin.SuitableNotFoundError` の例外が発生します．Raw形式のファイルを読み込みたい場合は， "
+"``'input_raw'`` を指定します．"
+
+#: of spplugin.SpFilePlugin.open:14 spplugin.audioread:38 spplugin.audiowrite:8
+#: spplugin.open:15
+msgid "Sample rate."
+msgstr "サンプルレート．"
+
+#: of spplugin.SpFilePlugin.open:16 spplugin.audioread:40
+#: spplugin.audiowrite:12 spplugin.open:17
+msgid "Bits/sample."
+msgstr "ビット/サンプル．"
+
+#: of spplugin.SpFilePlugin.open:18 spplugin.audioread:42
+#: spplugin.audiowrite:10 spplugin.open:19
+msgid "The number of channels."
+msgstr "チャネル数．"
+
+#: of spplugin.SpFilePlugin.open:20 spplugin.audioread:44
+#: spplugin.audiowrite:34 spplugin.open:21
+msgid "File type string."
+msgstr "ファイル形式の文字列"
+
+#: of spplugin.SpFilePlugin.open:22 spplugin.audioread:46
+#: spplugin.audiowrite:36 spplugin.open:23
+msgid "Song information."
+msgstr "ソング情報．"
+
+#: of spplugin.SpFilePlugin.open:24 spplugin.audioread:48
+#: spplugin.audiowrite:38 spplugin.open:25
+msgid "All acceptable parameters in dict format."
+msgstr "dict形式の設定可能な全てのパラメータ．"
+
+#: of spplugin.SpFilePlugin.open spplugin.audioread spplugin.audiowrite
+#: spplugin.open
+msgid "Raises"
+msgstr "例外"
+
+#: of spplugin.SpFilePlugin.open:28 spplugin.audioread:69
+#: spplugin.audiowrite:45 spplugin.open:32
+msgid "If no suitable plugin is found."
+msgstr "適切なプラグインが見つからなかった場合に発生します．"
+
+#: of spplugin.SpFilePlugin.read:1
+msgid "Reads data to a double-precision array from the audio file."
+msgstr "音声ファイルからdouble型配列にデータを読み込みます．"
+
+#: of spplugin.SpFilePlugin.read:3
+msgid "A double-precision array to receive data from the audio file."
+msgstr "音声ファイルから読み込むためのdouble型配列を指定します．"
+
+#: of spplugin.SpFilePlugin.read:5 spplugin.SpFilePlugin.readframes:6
+#: spplugin.audioread:15
+msgid "A weighting factor multiplied to data after reading."
+msgstr "読み込み後のデータに乗じられる重み係数を指定します．"
+
+#: of spplugin.SpFilePlugin.read:8 spplugin.SpFilePlugin.readraw:5
+#: spplugin.SpFilePlugin.write:8 spplugin.SpFilePlugin.writeraw:5
+#: spplugin.audiowrite:24
+msgid "Optional offset location for the array."
+msgstr "オプションの配列に対するオフセットを指定します．"
+
+#: of spplugin.SpFilePlugin.read:10 spplugin.SpFilePlugin.readraw:7
+msgid "Optional read length for the array."
+msgstr "オプションのファイルの全体の時間長を設定します．"
+
+#: of spplugin.SpFilePlugin.read:13 spplugin.SpFilePlugin.readraw:10
+msgid "The read size if successful, -1 otherwise."
+msgstr "成功した場合には読み込みサイズが返り，失敗した場合には-1が返ります．"
+
+#: of spplugin.SpFilePlugin.read:18 spplugin.SpFilePlugin.readraw:15
+#: spplugin.SpFilePlugin.write:18 spplugin.SpFilePlugin.writeraw:15
+msgid ""
+"The keyword arguments of `offset` and `length` were introduced in Version"
+" 0.7.15."
+msgstr "キーワード引数の `offset` と `length` はバージョン0.7.15で導入されました．"
+
+#: of spplugin.SpFilePlugin.readframes:1
+msgid "Reads and returns the next `nframes` data of a double-precision array."
+msgstr "次の `nframes` 分のデータを読み込み，double型配列を返します．"
+
+#: of spplugin.SpFilePlugin.readframes:3 spplugin.SpFilePlugin.readrawframes:3
+msgid ""
+"The number of frames to read. A negative value means the total number of "
+"frames."
+msgstr "読み込むフレーム数を指定します．負の値は全フレーム数を意味します．"
+
+#: of spplugin.SpFilePlugin.readframes:9 spplugin.SpFilePlugin.readrawframes:6
+#: spplugin.audioread:18
+msgid ""
+"The type of output array. The value must be ``'ndarray'`` (default), "
+"``'array'``, or ``'bytearray'``."
+msgstr ""
+"出力配列の型を指定します． ``'ndarray'`` （デフォルト）, ``'array'``, ``'bytearray'`` "
+"のいずれかを指定します．"
+
+#: of spplugin.SpFilePlugin.readframes:12 spplugin.SpFilePlugin.readrawframes:9
+#: spplugin.audioread:21
+msgid ""
+"``True`` resizes the returned ndarray into (nframes, nchannels) matrix. "
+"This argument is valid only in ``arraytype='ndarray'`` case."
+msgstr ""
+"``True`` を指定すると出力のndarrayが  (nframes, nchannels) の行列にリサイズされます．この引数は  "
+"``'ndarray'`` の場合にだけ有効となります．"
+
+#: of spplugin.SpFilePlugin.readframes:17
+#: spplugin.SpFilePlugin.readrawframes:14
+msgid "The output array object containing read data."
+msgstr "読み込まれたデータが含まれる配列が返ります．"
+
+#: of spplugin.SpFilePlugin.readframes:21
+#: spplugin.SpFilePlugin.readrawframes:18 spplugin.SpFilePlugin.writeframes:12
+#: spplugin.SpFilePlugin.writerawframes:9 spplugin.audioread:71
+#: spplugin.audiowrite:47
+msgid "This function was introduced in Version 0.7.16."
+msgstr "この関数はバージョン0.7.16にて導入されました．"
+
+#: of spplugin.SpFilePlugin.readraw:1
+msgid "Reads raw data from the audio file."
+msgstr "音声ファイルからRaw形式のデータを読み込みます．"
+
+#: of spplugin.SpFilePlugin.readraw:3
+msgid "A raw array to receive raw data from the audio file."
+msgstr "音声ファイルからRaw形式のデータを読み込むためのRaw形式配列を指定します．"
+
+#: of spplugin.SpFilePlugin.readrawframes:1
+msgid "Reads and returns the next `nframes` data of a raw array."
+msgstr "次の `nframes` 分のデータを読み込み，Raw形式配列を返します．"
+
+#: of spplugin.SpFilePlugin.rewind:1
+msgid "Rewinds to the beginning of the file."
+msgstr "ファイルの先頭に移動します．"
+
+#: of spplugin.SpFilePlugin.setcomptype:1
+msgid "Sets compression type. Currently, this parameter is ignored."
+msgstr "圧縮形式を設定します．現在，このパラメータは無視されます．"
+
+#: of spplugin.SpFilePlugin.setfiletype:1
+msgid "Sets file type to the file."
+msgstr "ファイルにファイル形式を設定します．"
+
+#: of spplugin.SpFilePlugin.setframerate:1 spplugin.SpFilePlugin.setsamprate:1
+msgid "Sets sample rate to the file."
+msgstr "ファイルにサンプルレートを設定します．"
+
+#: of spplugin.SpFilePlugin.setnchannels:1
+msgid "Sets the number of channels to the file."
+msgstr "ファイルにチャネル数を設定します．"
+
+#: of spplugin.SpFilePlugin.setnframes:1
+msgid "Sets the total number of frames of the current file."
+msgstr "現在のファイルの総フレーム数を設定します．"
+
+#: of spplugin.SpFilePlugin.setparams:1
+msgid ""
+"Sets supported all parameters described in dict or namedtuple object to "
+"the file."
+msgstr "dictオブジェクトもしくはnamedtupleオブジェクトの形でパラメータを設定します．"
+
+#: of spplugin.SpFilePlugin.setparams:4
+msgid ""
+"a dict object of parameters whose keys are ``'nchannels'``, "
+"``'sampbit'``, ``'samprate'``, ``'nframes'``, ``'filetype'``, or "
+"``'songinfo'``. The namedtuple generated by standard libraries such as "
+"aifc, wave, or sunau is also acceptable."
+msgstr ""
+"``'nchannels'``, ``'sampbit'``, ``'samprate'``, ``'nframes'``, "
+"``'filetype'``, ``'songinfo'`` "
+"のキーを持つdictオブジェクトを指定します．標準ライブラリのaifc，wave，sunauで用いられるnamedtupleオブジェクトを指定することもできます．"
+
+#: of spplugin.SpFilePlugin.setpos:1
+msgid "Seeks to the specified position."
+msgstr "指定した位置に移動します．"
+
+#: of spplugin.SpFilePlugin.setpos:3
+msgid "a position to seek."
+msgstr "移動先の位置を指定します．"
+
+#: of spplugin.SpFilePlugin.setsampbit:1
+msgid "Sets bits/sample to the file. sampbit = 33 means 32bit float."
+msgstr "ファイルにビット/サンプルを設定します．sampbit = 33は，32ビットfloat型と対応します．"
+
+#: of spplugin.SpFilePlugin.setsampwidth:1
+msgid "Sets bytes/sample of the current file."
+msgstr "現在のファイルのバイト/サンプルを設定します．"
+
+#: of spplugin.SpFilePlugin.setsonginfo:1
+msgid "Sets song information to the file."
+msgstr "ファイルにソング情報を設定します．"
+
+#: of spplugin.SpFilePlugin.tell:1
+msgid "Gets the current position in the file."
+msgstr "ファイルの中の現在の位置を取得します．"
+
+#: of spplugin.SpFilePlugin.write:1 spplugin.SpFilePlugin.writeframes:1
+msgid "Writes data of a double-precision array to the audio file."
+msgstr "double型配列のデータを音声ファイルへ書き込みます．"
+
+#: of spplugin.SpFilePlugin.write:3 spplugin.SpFilePlugin.writeframes:3
+msgid "A double-precision array to send data to the audio file."
+msgstr "音声ファイルに書き込むためのdouble型配列を指定します．"
+
+#: of spplugin.SpFilePlugin.write:5 spplugin.SpFilePlugin.writeframes:5
+#: spplugin.audiowrite:21
+msgid "A weighting factor multiplied to data before writing."
+msgstr "書き込み前のデータに乗じられる重み係数を指定します．"
+
+#: of spplugin.SpFilePlugin.write:10 spplugin.SpFilePlugin.writeraw:7
+#: spplugin.audiowrite:26
+msgid "Optional write length for the array."
+msgstr "オプションの配列に対する書き込み長を指定します．"
+
+#: of spplugin.SpFilePlugin.write:13 spplugin.SpFilePlugin.writeraw:10
+msgid "The written size if successful, -1 otherwise."
+msgstr "成功した場合には書き込まれたサイズが返り，失敗した場合には-1が返ります．"
+
+#: of spplugin.SpFilePlugin.writeframes:9
+#: spplugin.SpFilePlugin.writerawframes:6 spplugin.audiowrite:42
+msgid "The written number of frames if successful, -1 otherwise."
+msgstr "成功した場合には書き込まれたフレーム数が返り，失敗した場合には-1が返ります．"
+
+#: of spplugin.SpFilePlugin.writeraw:1 spplugin.SpFilePlugin.writerawframes:1
+msgid "Writes data of a raw array to the audio file."
+msgstr "音声ファイルにRaw形式配列のデータを書き込みます．"
+
+#: of spplugin.SpFilePlugin.writeraw:3 spplugin.SpFilePlugin.writerawframes:3
+msgid "A raw array to send data to the audio file."
+msgstr "音声ファイルにデータを書き込むためのRaw形式配列を指定します．"
+
+#: of spplugin.SuitableNotFoundError:1
+msgid "Exception raised if no suitable plugin is found."
+msgstr "適切なプラグインが見つからなかった場合に発生する例外です．"
+
+#: of spplugin.WrongPluginError:1
+msgid "Exception raised by a wrong plugin."
+msgstr "不適切なプラグインの場合に発生する例外です．"
+
+#: of spplugin.audioread:1
+msgid "Reads contents of an audio file by using a plugin."
+msgstr "プラグインを用いてファイルの内容を読み込みます．"
+
+#: of spplugin.audioread:5
+msgid ""
+"The audio sample (frame) range which has the form ``(start, finish)`` . "
+"If ``finish`` is negative, it means the end of the file."
+msgstr ""
+"サンプル（フレーム）の範囲を ``(start, finish)`` の形で指定します． ``finish`` "
+"が負の場合はファイルの最後を意味します．"
+
+#: of spplugin.audioread:9
+msgid ""
+"The format of the output data. ``'double'`` case makes "
+":func:`~spplugin.SpFilePlugin.readframes` method used and ``'raw'`` case "
+"makes :func:`~spplugin.SpFilePlugin.readrawframes` method used "
+"internally. Note that ``'raw'`` case ignores `weight` argument."
+msgstr ""
+"出力データの形式を指定します． ``'double'`` の場合は， "
+":func:`~spplugin.SpFilePlugin.readframes` が， ``'raw'`` の場合は， "
+":func:`~spplugin.SpFilePlugin.readrawframes` "
+"が内部的に呼ばれることになります．なお，``'raw'`` の場合には `weight` の引数は無視されます．"
+
+#: of spplugin.audioread:25
+msgid ""
+"``True`` makes :func:`~spplugin.SpFilePlugin.getparamstuple` used "
+"internally."
+msgstr ""
+"``True`` の場合は内部で :func:`~spplugin.SpFilePlugin.getparamstuple` "
+"が使われるようになります．"
+
+#: of spplugin.audioread:28
+msgid ""
+"``True`` decodes bytes objects into string objects in calling "
+":func:`~spplugin.SpFilePlugin.getparamstuple` method. This argument is "
+"valid only in ``getparamstuple=True`` case."
+msgstr ""
+"``True`` の場合は， :func:`~spplugin.SpFilePlugin.getparamstuple`  "
+"の呼び出しの際にbytesオブジェクトを文字列オブジェクトにデコードします．この引数は ``getparamstuple=True`` "
+"の場合のみで有効です．"
+
+#: of spplugin.audioread:52
+msgid ""
+"The output tuple whose elements are the following.  * `numpy.ndarray, "
+"array.array or bytearray` --   The output array object containing read "
+"data.  * `double` --   Sample rate of the audio file.  * `dict or "
+"namedtuple` --   If ``getparamstuple=False`` , A dict object same as that"
+"   obtained by :func:`~spplugin.SpFilePlugin.getparams` method   will be "
+"returned.   If ``getparamstuple=True`` , A namedtuple object same as   "
+"that obtained by :func:`~spplugin.SpFilePlugin.getparamstuple`   method "
+"will be returned."
+msgstr ""
+
+#: of spplugin.audioread:52
+msgid "The output tuple whose elements are the following."
+msgstr "要素が以下のものになっているtupleが返ります．"
+
+#: of spplugin.audioread:54
+msgid ""
+"`numpy.ndarray, array.array or bytearray` -- The output array object "
+"containing read data."
+msgstr "`numpy.ndarray, array.array or bytearray` -- 読み込まれたデータが含まれる配列が返ります．"
+
+#: of spplugin.audioread:57
+msgid "`double` -- Sample rate of the audio file."
+msgstr "`double` -- 音声ファイルのサンプルレートが返ります．"
+
+#: of spplugin.audioread:60
+msgid ""
+"`dict or namedtuple` -- If ``getparamstuple=False`` , A dict object same "
+"as that obtained by :func:`~spplugin.SpFilePlugin.getparams` method will "
+"be returned. If ``getparamstuple=True`` , A namedtuple object same as "
+"that obtained by :func:`~spplugin.SpFilePlugin.getparamstuple` method "
+"will be returned."
+msgstr ""
+"`dict or namedtuple` -- ``getparamstuple=False`` の場合は， "
+":func:`~spplugin.SpFilePlugin.getparams` で返されるものと同じdictオブジェクトが返ります． "
+"``getparamstuple=True``  の場合は， "
+":func:`~spplugin.SpFilePlugin.getparamstuple` "
+"で返されるものと同じnamedtupleオブジェクトが返ります．"
+
+#: of spplugin.audiowrite:1
+msgid "Writes data to an audio file by using a plugin."
+msgstr "プラグインを用いて音声ファイルにデータを書き込みます．"
+
+#: of spplugin.audiowrite:5
+msgid "A array to send data to the audio file."
+msgstr "音声ファイルにデータを書き込むための配列を指定します．"
+
+#: of spplugin.audiowrite:14
+msgid ""
+"The format of the input data. ``'double'`` case makes "
+":func:`~spplugin.SpFilePlugin.write` method used and ``'raw'`` case makes"
+" :func:`~spplugin.SpFilePlugin.writeraw` method used internally. Note "
+"that ``'raw'`` case ignores `weight` argument. In some array types, this "
+"parameter can be detected automatically."
+msgstr ""
+"入力データの形式を指定します． ``'double'`` の場合は， :func:`~spplugin.SpFilePlugin.write` "
+"が， ``'raw'`` の場合は， :func:`~spplugin.SpFilePlugin.writeraw` "
+"が内部的に呼ばれることになります．なお，``'raw'`` の場合には `weight` "
+"の引数は無視されます．配列の種類によっては，このパラメータは自動判定されます．"
+
+#: of spplugin.audiowrite:28
+msgid ""
+"The name of the plugin used when this function cannot find the suitable "
+"plugin. Otherwise, :class:`~spplugin.SuitableNotFoundError` exception "
+"will be raised. If you want to write data to a raw file, specify "
+"``'output_raw'`` ."
+msgstr ""
+"適切なプラグインが見つからなかった際に用いられるプラグイン名を指定します．指定しなかった場合は， "
+":class:`~spplugin.SuitableNotFoundError` の例外が発生します．Raw形式のファイルへ書き込みたい場合は， "
+"``'output_raw'`` を指定します．"
+
+#: of spplugin.getplugindesc:1
+msgid "Gets short description of the plugin which has a name specified."
+msgstr "プラグイン名からプラグインの短い情報を取得します．"
+
+#: of spplugin.getplugininfo:1
+msgid "Gets detailed information of the plugin which has a name specified."
+msgstr "プラグイン名からプラグインの詳細情報を取得します．"
+
+#: of spplugin.open:1
+msgid ""
+"Opens the file associated with the filename by using a plugin. This "
+"function may be used in a ``with`` statement."
+msgstr "プラグインを用いてファイル名と対応するファイルを開きます．この関数は ``with`` 文の中で使うことを想定しています．"
+
+#: of spplugin.open:29
+msgid "A new instance of :class:`~spplugin.SpFilePlugin` class."
+msgstr ":class:`~spplugin.SpFilePlugin` クラスの新規インスタンスが返ります．"
+

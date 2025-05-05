@@ -1,0 +1,1268 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sppluginモジュール &mdash; spAudio  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom_theme.css?v=97d91ad3" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4eb6406d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=4755f45a"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="サンプルコード" href="examples.html" />
+    <link rel="prev" title="spaudioモジュール" href="spaudio.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #1060A0" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            spAudio
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">目次</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main.html">はじめに</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#installation">インストール</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#change-log">更新履歴</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#build">ビルド</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#official-site">オフィシャルサイト</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="apidoc.html">APIドキュメント</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="spaudio.html">spaudioモジュール</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.DeviceError"><code class="docutils literal notranslate"><span class="pre">DeviceError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.DriverError"><code class="docutils literal notranslate"><span class="pre">DriverError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.SpAudio"><code class="docutils literal notranslate"><span class="pre">SpAudio</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.close"><code class="docutils literal notranslate"><span class="pre">SpAudio.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.createarray"><code class="docutils literal notranslate"><span class="pre">SpAudio.createarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.createndarray"><code class="docutils literal notranslate"><span class="pre">SpAudio.createndarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.createrawarray"><code class="docutils literal notranslate"><span class="pre">SpAudio.createrawarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.createrawndarray"><code class="docutils literal notranslate"><span class="pre">SpAudio.createrawndarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getarraytypecode"><code class="docutils literal notranslate"><span class="pre">SpAudio.getarraytypecode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getblockingmode"><code class="docutils literal notranslate"><span class="pre">SpAudio.getblockingmode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getbuffersize"><code class="docutils literal notranslate"><span class="pre">SpAudio.getbuffersize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getcompname"><code class="docutils literal notranslate"><span class="pre">SpAudio.getcompname()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getcomptype"><code class="docutils literal notranslate"><span class="pre">SpAudio.getcomptype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getdevicelist"><code class="docutils literal notranslate"><span class="pre">SpAudio.getdevicelist()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getdevicename"><code class="docutils literal notranslate"><span class="pre">SpAudio.getdevicename()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getframerate"><code class="docutils literal notranslate"><span class="pre">SpAudio.getframerate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getnbuffers"><code class="docutils literal notranslate"><span class="pre">SpAudio.getnbuffers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getnchannels"><code class="docutils literal notranslate"><span class="pre">SpAudio.getnchannels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getndarraydtype"><code class="docutils literal notranslate"><span class="pre">SpAudio.getndarraydtype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getndevices"><code class="docutils literal notranslate"><span class="pre">SpAudio.getndevices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getparams"><code class="docutils literal notranslate"><span class="pre">SpAudio.getparams()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getparamstuple"><code class="docutils literal notranslate"><span class="pre">SpAudio.getparamstuple()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getrawarraytypecode"><code class="docutils literal notranslate"><span class="pre">SpAudio.getrawarraytypecode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getrawndarraydtype"><code class="docutils literal notranslate"><span class="pre">SpAudio.getrawndarraydtype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getrawsampbit"><code class="docutils literal notranslate"><span class="pre">SpAudio.getrawsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getrawsampwidth"><code class="docutils literal notranslate"><span class="pre">SpAudio.getrawsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getsampbit"><code class="docutils literal notranslate"><span class="pre">SpAudio.getsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getsamprate"><code class="docutils literal notranslate"><span class="pre">SpAudio.getsamprate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.getsampwidth"><code class="docutils literal notranslate"><span class="pre">SpAudio.getsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.open"><code class="docutils literal notranslate"><span class="pre">SpAudio.open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.read"><code class="docutils literal notranslate"><span class="pre">SpAudio.read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.readframes"><code class="docutils literal notranslate"><span class="pre">SpAudio.readframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.readraw"><code class="docutils literal notranslate"><span class="pre">SpAudio.readraw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.readrawframes"><code class="docutils literal notranslate"><span class="pre">SpAudio.readrawframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.reload"><code class="docutils literal notranslate"><span class="pre">SpAudio.reload()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.selectdevice"><code class="docutils literal notranslate"><span class="pre">SpAudio.selectdevice()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setblockingmode"><code class="docutils literal notranslate"><span class="pre">SpAudio.setblockingmode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setbuffersize"><code class="docutils literal notranslate"><span class="pre">SpAudio.setbuffersize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setcallback"><code class="docutils literal notranslate"><span class="pre">SpAudio.setcallback()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setcomptype"><code class="docutils literal notranslate"><span class="pre">SpAudio.setcomptype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setframerate"><code class="docutils literal notranslate"><span class="pre">SpAudio.setframerate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setnbuffers"><code class="docutils literal notranslate"><span class="pre">SpAudio.setnbuffers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setnchannels"><code class="docutils literal notranslate"><span class="pre">SpAudio.setnchannels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setparams"><code class="docutils literal notranslate"><span class="pre">SpAudio.setparams()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setsampbit"><code class="docutils literal notranslate"><span class="pre">SpAudio.setsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setsamprate"><code class="docutils literal notranslate"><span class="pre">SpAudio.setsamprate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.setsampwidth"><code class="docutils literal notranslate"><span class="pre">SpAudio.setsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.stop"><code class="docutils literal notranslate"><span class="pre">SpAudio.stop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.sync"><code class="docutils literal notranslate"><span class="pre">SpAudio.sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.terminate"><code class="docutils literal notranslate"><span class="pre">SpAudio.terminate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.write"><code class="docutils literal notranslate"><span class="pre">SpAudio.write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.writeframes"><code class="docutils literal notranslate"><span class="pre">SpAudio.writeframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.writeraw"><code class="docutils literal notranslate"><span class="pre">SpAudio.writeraw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spaudio.html#spaudio.SpAudio.writerawframes"><code class="docutils literal notranslate"><span class="pre">SpAudio.writerawframes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.callbacksignature"><code class="docutils literal notranslate"><span class="pre">callbacksignature()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.getdriverdevicename"><code class="docutils literal notranslate"><span class="pre">getdriverdevicename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.getdriverlist"><code class="docutils literal notranslate"><span class="pre">getdriverlist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.getdrivername"><code class="docutils literal notranslate"><span class="pre">getdrivername()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.getndriverdevices"><code class="docutils literal notranslate"><span class="pre">getndriverdevices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.getndrivers"><code class="docutils literal notranslate"><span class="pre">getndrivers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spaudio.html#spaudio.open"><code class="docutils literal notranslate"><span class="pre">open()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">sppluginモジュール</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.BogusFileError"><code class="docutils literal notranslate"><span class="pre">BogusFileError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.FileError"><code class="docutils literal notranslate"><span class="pre">FileError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.FileTypeError"><code class="docutils literal notranslate"><span class="pre">FileTypeError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.NChannelsError"><code class="docutils literal notranslate"><span class="pre">NChannelsError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.NFramesRequiredError"><code class="docutils literal notranslate"><span class="pre">NFramesRequiredError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.SampleBitError"><code class="docutils literal notranslate"><span class="pre">SampleBitError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.SampleRateError"><code class="docutils literal notranslate"><span class="pre">SampleRateError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.SpFilePlugin"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.appendsonginfo"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.appendsonginfo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.close"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.copyarray2raw"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.copyarray2raw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.copyraw2array"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.copyraw2array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.createarray"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.createarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.createndarray"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.createndarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.createrawarray"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.createrawarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.createrawndarray"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.createrawndarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getarraytypecode"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getarraytypecode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getcompname"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getcompname()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getcomptype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getcomptype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getfiledesc"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getfiledesc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getfilefilter"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getfilefilter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getfiletype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getfiletype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getframerate"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getframerate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getmark"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getmark()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getmarkers"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getmarkers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getnchannels"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getnchannels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getndarraydtype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getndarraydtype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getnframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getnframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getparams"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getparams()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getparamstuple"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getparamstuple()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getplugindesc"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getplugindesc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getpluginid"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getpluginid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getplugininfo"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getplugininfo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getpluginname"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getpluginname()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getpluginversion"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getpluginversion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getrawarraytypecode"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getrawarraytypecode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getrawndarraydtype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getrawndarraydtype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getrawsampbit"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getrawsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getrawsampwidth"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getrawsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getsampbit"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getsamprate"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getsamprate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getsampwidth"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.getsonginfo"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getsonginfo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.open"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.read"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.readframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.readframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.readraw"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.readraw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.readrawframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.readrawframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.rewind"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.rewind()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setcomptype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setcomptype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setfiletype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setfiletype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setframerate"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setframerate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setmark"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setmark()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setnchannels"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setnchannels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setnframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setnframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setparams"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setparams()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setpos"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setpos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setsampbit"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setsamprate"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setsamprate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setsampwidth"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.setsonginfo"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setsonginfo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.tell"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.tell()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.write"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.writeframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.writeframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.writeraw"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.writeraw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spplugin.SpFilePlugin.writerawframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.writerawframes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.SuitableNotFoundError"><code class="docutils literal notranslate"><span class="pre">SuitableNotFoundError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.WrongPluginError"><code class="docutils literal notranslate"><span class="pre">WrongPluginError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.audioread"><code class="docutils literal notranslate"><span class="pre">audioread()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.audiowrite"><code class="docutils literal notranslate"><span class="pre">audiowrite()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.getplugindesc"><code class="docutils literal notranslate"><span class="pre">getplugindesc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.getplugininfo"><code class="docutils literal notranslate"><span class="pre">getplugininfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spplugin.open"><code class="docutils literal notranslate"><span class="pre">open()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">サンプルコード</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#spaudio"><span class="xref std std-doc">spaudio</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#fullduplex-i-o">フルデュプレックスI/O</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#fullduplex-i-o-using-with-statement-version-0-7-15">フルデュプレックスI/O（ <code class="docutils literal notranslate"><span class="pre">with</span></code> 文を使用; バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-python-array-version">読み込みとプロット（Python配列バージョン）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-raw-data-version">読み込みとプロット（Rawデータバージョン）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-numpy-ndarray-version">読み込みとプロット（NumPy ndarrayバージョン）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-numpy-ndarray-version-using-with-statement-version-0-7-16">読み込みとプロット（NumPy ndarrayバージョン; <code class="docutils literal notranslate"><span class="pre">with</span></code> 文を使用; バージョン0.7.16以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-numpy-raw-ndarray-version">読み込みとプロット（NumPy Raw ndarrayバージョン）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file">WAVファイルの再生</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file-using-with-statement-version-0-7-15">WAVファイルの再生（ <code class="docutils literal notranslate"><span class="pre">with</span></code> 文を使用; バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file-with-callback">WAVファイルの再生（コールバックあり）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file-with-callback-using-with-statement-version-0-7-15">WAVファイルの再生（コールバックあり; <code class="docutils literal notranslate"><span class="pre">with</span></code> 文を使用; バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#record-to-a-wav-file">WAVファイルへの録音</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#record-to-a-wav-file-using-with-statement-version-0-7-15">WAVファイルへの録音（ <code class="docutils literal notranslate"><span class="pre">with</span></code> 文を使用; バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#block-read-version-0-7-15">ブロックごとに読み込み（バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#block-write-version-0-7-15">ブロックごとに書き込み（バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-readframes-and-writeframes-version-0-7-16"><code class="xref py py-func docutils literal notranslate"><span class="pre">readframes()</span></code> と <code class="xref py py-func docutils literal notranslate"><span class="pre">writeframes()</span></code> の使用例（バージョン0.7.16以降）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#spplugin"><span class="xref std std-doc">spplugin</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-audioread-version-0-7-16"><code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code> の使用例（バージョン0.7.16以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-audiowrite-version-0-7-16"><code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code> の使用例（バージョン0.7.16以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-audioread-and-audiowrite-version-0-7-16"><code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code> と <code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code> の使用例（バージョン0.7.16以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#plot-an-audio-file-contents-by-plugin">プラグインによる音声ファイルの読み込みと，その内容のプロット</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-an-audio-file-contents-by-plugin">プラグインによる音声ファイルの再生</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-raw-file-contents-by-plugin">プラグインによるRawファイルの再生</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-an-audio-file-by-plugin-and-write-it">プラグインによる音声ファイルの読み込み</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-an-audio-file-and-write-it-by-plugin">プラグインによる音声ファイルの書き込み</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#convert-an-audio-file-by-plugin">プラグインによる音声ファイルの変換</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #1060A0" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">spAudio</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="apidoc.html">APIドキュメント</a></li>
+      <li class="breadcrumb-item active">sppluginモジュール</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-spplugin">
+<span id="spplugin-module"></span><h1>sppluginモジュール<a class="headerlink" href="#module-spplugin" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://www-ie.meijo-u.ac.jp/labs/rj001/spLibs/index-j.html">spPlugin</a> に基づく音声ファイル入出力のpythonモジュールです．WAV，AIFF，MP3，Ogg Vorbis，FLAC，ALAC，rawなど，様々なファイル形式をプラグインによりサポートしています．</p>
+<div class="admonition- admonition">
+<p class="admonition-title">サンプル</p>
+<p>下記は入力音声ファイルの波形をプロットする例です．</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spplugin</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plotfilebyplugin</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pf</span><span class="p">:</span>
+        <span class="n">nchannels</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getnchannels</span><span class="p">()</span>
+        <span class="n">samprate</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getsamprate</span><span class="p">()</span>
+        <span class="n">sampbit</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getsampbit</span><span class="p">()</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">nframes</span> <span class="o">/</span> <span class="n">samprate</span>
+
+        <span class="n">y</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">createndarray</span><span class="p">(</span><span class="n">nframes</span> <span class="o">*</span> <span class="n">nchannels</span><span class="p">)</span>
+        <span class="n">nread</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+        <span class="n">y</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">nframes</span><span class="p">,</span> <span class="n">nchannels</span><span class="p">))</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">nframes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nchannels</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [s]&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (normalized)&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">plotfilebyplugin</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>また，下記は，MATLABの同名関数と似た高レベル関数 <a class="reference internal" href="#spplugin.audioread" title="spplugin.audioread"><code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code></a> を使用した例です（バージョン0.7.16以降）．</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spplugin</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spaudio</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">audioreadexample</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">audioread</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;samprate = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, params =</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+
+    <span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+        <span class="n">nwframes</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;write frames = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwframes</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">audioreadexample</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>さらに，上記の例の'write'バージョンとも言える，MATLABの同名関数と似た高レベル関数 <a class="reference internal" href="#spplugin.audiowrite" title="spplugin.audiowrite"><code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code></a> を使用した例です（バージョン0.7.16以降）．</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spplugin</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spaudio</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">audiowriteexample</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="mf">2.0</span>
+    <span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">duration</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">getsamprate</span><span class="p">())</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">nframes</span><span class="p">,</span> <span class="n">channelwise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+        <span class="n">nwframes</span> <span class="o">=</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">audiowrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">getsamprate</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;write frames = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwframes</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">audiowriteexample</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<dl class="py exception">
+<dt class="sig sig-object py" id="spplugin.BogusFileError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">BogusFileError</span></span><a class="reference internal" href="_modules/spplugin.html#BogusFileError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.BogusFileError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spplugin.Error" title="spplugin.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>音声ファイルに異常がある場合に発生する例外です．</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spplugin.Error">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">Error</span></span><a class="reference internal" href="_modules/spplugin.html#Error"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.Error" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>sppluginの基本例外クラスです．</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spplugin.FileError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">FileError</span></span><a class="reference internal" href="_modules/spplugin.html#FileError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.FileError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spplugin.Error" title="spplugin.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>音声ファイルの問題により発生する例外です．</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spplugin.FileTypeError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">FileTypeError</span></span><a class="reference internal" href="_modules/spplugin.html#FileTypeError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.FileTypeError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spplugin.Error" title="spplugin.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>ファイル形式がサポートされていない場合に発生する例外です．</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spplugin.NChannelsError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">NChannelsError</span></span><a class="reference internal" href="_modules/spplugin.html#NChannelsError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.NChannelsError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spplugin.Error" title="spplugin.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>チャネル数がサポートされていない場合に発生する例外です．</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spplugin.NFramesRequiredError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">NFramesRequiredError</span></span><a class="reference internal" href="_modules/spplugin.html#NFramesRequiredError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.NFramesRequiredError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spplugin.Error" title="spplugin.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>ファイルの全フレーム数が要求されるプラグインの場合に発生する例外です．</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spplugin.SampleBitError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">SampleBitError</span></span><a class="reference internal" href="_modules/spplugin.html#SampleBitError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SampleBitError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spplugin.Error" title="spplugin.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>ビット/サンプルがサポートされていない場合に発生する例外です．</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spplugin.SampleRateError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">SampleRateError</span></span><a class="reference internal" href="_modules/spplugin.html#SampleRateError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SampleRateError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spplugin.Error" title="spplugin.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>サンプルレートがサポートされていない場合に発生する例外です．</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">SpFilePlugin</span></span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>音声ファイル入出力のためのクラスです．このクラスは，標準ライブラリのaifcやwave，sunauと同じように用いることができます．異なる点としては，パラメータを指定する <code class="docutils literal notranslate"><span class="pre">set*()</span></code> 関数群が <a class="reference internal" href="#spplugin.SpFilePlugin.open" title="spplugin.SpFilePlugin.open"><code class="xref py py-func docutils literal notranslate"><span class="pre">open()</span></code></a> の前に呼び出す必要がある点などが挙げられます．これらのパラメータは，関数 <a class="reference internal" href="#spplugin.open" title="spplugin.open"><code class="xref py py-func docutils literal notranslate"><span class="pre">open()</span></code></a> のオプション引数でも指定できます．</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.appendsonginfo">
+<span class="sig-name descname"><span class="pre">appendsonginfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">songinfo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.appendsonginfo"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.appendsonginfo" title="Link to this definition"></a></dt>
+<dd><p>ソング情報を現在保持されている内部変数に追加します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.close"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.close" title="Link to this definition"></a></dt>
+<dd><p>音声ファイルを閉じます．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.copyarray2raw">
+<span class="sig-name descname"><span class="pre">copyarray2raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bigendian_or_signed8bit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.copyarray2raw"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.copyarray2raw" title="Link to this definition"></a></dt>
+<dd><p>Raw形式の配列 (array.array) の内容を，新たなRaw形式のbytesまたはbytearrayのデータにコピーします．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inarray</strong> (<em>array.array</em>) -- 入力のbytearrayオブジェクトを指定します．</p></li>
+<li><p><strong>sampwidth</strong> (<em>int</em>) -- 出力データのバイト/サンプルを指定します．</p></li>
+<li><p><strong>bigendian_or_signed8bit</strong> (<em>bool</em><em>, </em><em>optional</em>) -- 出力データのエンディアンがビッグエンディアンの場合（16ビットか32ビットの場合）もしくは出力データのデータ型が符号付き8ビットデータの場合（8ビットの場合のみ）に <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>変換されたデータを含む bytearray クラスのオブジェクトが返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytearray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.copyraw2array">
+<span class="sig-name descname"><span class="pre">copyraw2array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bigendian_or_signed8bit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.copyraw2array"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.copyraw2array" title="Link to this definition"></a></dt>
+<dd><p>Raw形式のbytesまたはbytearrayのデータの内容を，新たなRaw形式の配列 (array.array) にコピーします．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rawdata</strong> (<em>bytes</em><em> or </em><em>bytearray</em>) -- 入力の bytes オブジェクトまたは bytearray オブジェクトを指定します．</p></li>
+<li><p><strong>sampwidth</strong> (<em>int</em>) -- rawdataのバイト/サンプルを指定します．</p></li>
+<li><p><strong>bigendian_or_signed8bit</strong> (<em>bool</em><em>, </em><em>optional</em>) -- rawdata のエンディアンがビッグエンディアンの場合（16ビットか32ビットの場合）もしくはrawdata のデータ型が符号付き8ビットデータの場合（8ビットの場合のみ）に <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>変換されたデータを含む array クラスのオブジェクトが返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.createarray">
+<span class="sig-name descname"><span class="pre">createarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.createarray"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.createarray" title="Link to this definition"></a></dt>
+<dd><p>現在のファイル設定に応じたdouble型配列を作成します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> -- 配列の長さを指定します．この長さはいわゆるフレーム数とは異なりますのでご注意ください（length = nframes * nchannels）．フレーム数を指定したい場合は第2引数に <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) -- 第1引数にフレーム数を指定したい場合は <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>現在のファイルの設定に応じたarrayクラスのオブジェクトが返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.createndarray">
+<span class="sig-name descname"><span class="pre">createndarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.createndarray"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.createndarray" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルの設定に応じたnumpyのdouble型配列を作成します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> -- 配列の長さを指定します．この長さはいわゆるフレーム数とは異なりますのでご注意ください（length = nframes * nchannels）．フレーム数を指定したい場合は第2引数に <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) -- 第1引数にフレーム数を指定したい場合は <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定すると出力配列が  (nframes, nchannels) の行列にリサイズされます．この引数はバージョン0.7.16にて導入されました．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>現在のファイルの設定に応じたndarrayクラスのオブジェクトです．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.createrawarray">
+<span class="sig-name descname"><span class="pre">createrawarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.createrawarray"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.createrawarray" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルの設定に応じたRaw形式の配列を作成します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> -- 配列の長さを指定します．この長さはいわゆるフレーム数とは異なりますのでご注意ください（length = nframes * nchannels）．フレーム数を指定したい場合は第2引数に <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) -- 第1引数にフレーム数を指定したい場合は <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>現在のファイルの設定に応じたarrayクラスのオブジェクトが返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.createrawndarray">
+<span class="sig-name descname"><span class="pre">createrawndarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.createrawndarray"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.createrawndarray" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルの設定に応じたRaw形式のnumpyのndarrayを作成します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> -- 配列の長さを指定します．この長さはいわゆるフレーム数とは異なりますのでご注意ください（length = nframes * nchannels）．フレーム数を指定したい場合は第2引数に <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) -- 第1引数にフレーム数を指定したい場合は <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定すると出力配列が  (nframes, nchannels) の行列にリサイズされます．この引数はバージョン0.7.16にて導入されました．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>現在のファイルの設定に応じたndarrayクラスのオブジェクトです．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getarraytypecode">
+<span class="sig-name descname"><span class="pre">getarraytypecode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getarraytypecode"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getarraytypecode" title="Link to this definition"></a></dt>
+<dd><p>double型配列を保持する場合の型コードを取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>現在の設定に応じたdouble型配列の型コードが返ります．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>char</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getcompname">
+<span class="sig-name descname"><span class="pre">getcompname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decodebytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getcompname"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getcompname" title="Link to this definition"></a></dt>
+<dd><p>圧縮形式の詳細名が返ります．現在の所， <code class="docutils literal notranslate"><span class="pre">'not</span> <span class="pre">compressed'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">True</span></code> の場合) または <code class="docutils literal notranslate"><span class="pre">b'not</span> <span class="pre">compressed'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">False</span></code> の場合) のいずれかになります．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getcomptype">
+<span class="sig-name descname"><span class="pre">getcomptype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decodebytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getcomptype"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getcomptype" title="Link to this definition"></a></dt>
+<dd><p>圧縮形式が返ります．現在の所， <code class="docutils literal notranslate"><span class="pre">'NONE'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">True</span></code> の場合) または <code class="docutils literal notranslate"><span class="pre">b'NONE'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">False</span></code> の場合) のいずれかになります．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getfiledesc">
+<span class="sig-name descname"><span class="pre">getfiledesc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getfiledesc"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getfiledesc" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルの説明を取得します．例えば，PCM形式のWAVファイルは， <code class="docutils literal notranslate"><span class="pre">'Microsoft</span> <span class="pre">PCM'</span></code> になります．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getfilefilter">
+<span class="sig-name descname"><span class="pre">getfilefilter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getfilefilter"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getfilefilter" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルのファイルフィルター（例えば <code class="docutils literal notranslate"><span class="pre">'*.wav'</span></code> ）を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getfiletype">
+<span class="sig-name descname"><span class="pre">getfiletype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getfiletype"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getfiletype" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルのファイル形式を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getframerate">
+<span class="sig-name descname"><span class="pre">getframerate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getframerate"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getframerate" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルのサンプルレートを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getmark">
+<span class="sig-name descname"><span class="pre">getmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getmark"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getmark" title="Link to this definition"></a></dt>
+<dd><p>何もしません（aifc，wave，sunauの標準ライブラリとの互換性のために用意されています）．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getmarkers">
+<span class="sig-name descname"><span class="pre">getmarkers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getmarkers"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getmarkers" title="Link to this definition"></a></dt>
+<dd><p>何もしません（aifc，wave，sunauの標準ライブラリとの互換性のために用意されています）．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getnchannels">
+<span class="sig-name descname"><span class="pre">getnchannels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getnchannels"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getnchannels" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルのチャネル数を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getndarraydtype">
+<span class="sig-name descname"><span class="pre">getndarraydtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getndarraydtype"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getndarraydtype" title="Link to this definition"></a></dt>
+<dd><p>double型配列を保持するためのnumpyのndarray用のdtype文字列を取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>現在の設定のdtype文字列が返ります．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getnframes">
+<span class="sig-name descname"><span class="pre">getnframes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getnframes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getnframes" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルのフレーム数を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getparams">
+<span class="sig-name descname"><span class="pre">getparams</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getparams"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getparams" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルの全てのパラメータをdictオブジェクトで取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>キーが <code class="docutils literal notranslate"><span class="pre">'nchannels'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sampbit'</span></code>, <code class="docutils literal notranslate"><span class="pre">'samprate'</span></code>, <code class="docutils literal notranslate"><span class="pre">'nframes'</span></code>, <code class="docutils literal notranslate"><span class="pre">'filetype'</span></code>, <code class="docutils literal notranslate"><span class="pre">'songinfo'</span></code> になっているdictオブジェクトが返ります．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getparamstuple">
+<span class="sig-name descname"><span class="pre">getparamstuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decodebytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getparamstuple"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getparamstuple" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルの全てのパラメータをnamedtupleオブジェクトで取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>decodebytes</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> の場合は， <a class="reference internal" href="#spplugin.SpFilePlugin.getcomptype" title="spplugin.SpFilePlugin.getcomptype"><code class="xref py py-func docutils literal notranslate"><span class="pre">getcomptype()</span></code></a> 及び <a class="reference internal" href="#spplugin.SpFilePlugin.getcompname" title="spplugin.SpFilePlugin.getcompname"><code class="xref py py-func docutils literal notranslate"><span class="pre">getcompname()</span></code></a> で得られるbytesオブジェクトを文字列オブジェクトにデコードします．標準ライブラリのwave，sunauはデコードされた文字列オブジェクトを要求するのに対し，こちらも標準ライブラリのaifcはbytesオブジェクトを要求するため，この引数が用意されています．</p>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>現在のファイルの全てのパラメータを含むnamedtupleオブジェクトが返ります．このnamedtupleオブジェクトは，内容が <code class="docutils literal notranslate"><span class="pre">(nchannels,</span> <span class="pre">sampwidth,</span> <span class="pre">framerate,</span> <span class="pre">nframes,</span> <span class="pre">comptype,</span> <span class="pre">compname)</span></code> になっており，aifc，wave，sunauの標準ライブラリにおける <code class="docutils literal notranslate"><span class="pre">setparams()</span></code> の引数として与えることが可能です．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getplugindesc">
+<span class="sig-name descname"><span class="pre">getplugindesc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getplugindesc"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getplugindesc" title="Link to this definition"></a></dt>
+<dd><p>現在使用しているプラグインの短い情報を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getpluginid">
+<span class="sig-name descname"><span class="pre">getpluginid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getpluginid"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getpluginid" title="Link to this definition"></a></dt>
+<dd><p>現在使用しているプラグインのIDを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getplugininfo">
+<span class="sig-name descname"><span class="pre">getplugininfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getplugininfo"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getplugininfo" title="Link to this definition"></a></dt>
+<dd><p>現在使用しているプラグインの詳細情報を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getpluginname">
+<span class="sig-name descname"><span class="pre">getpluginname</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getpluginname"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getpluginname" title="Link to this definition"></a></dt>
+<dd><p>現在使用しているプラグインの名前を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getpluginversion">
+<span class="sig-name descname"><span class="pre">getpluginversion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getpluginversion"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getpluginversion" title="Link to this definition"></a></dt>
+<dd><p>現在使用しているプラグインのバージョンを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getrawarraytypecode">
+<span class="sig-name descname"><span class="pre">getrawarraytypecode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getrawarraytypecode"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getrawarraytypecode" title="Link to this definition"></a></dt>
+<dd><p>Raw形式のデータを保持するためのpythonの配列の型コードを取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>現在の設定の型コードが返ります．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>char</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getrawndarraydtype">
+<span class="sig-name descname"><span class="pre">getrawndarraydtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getrawndarraydtype"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getrawndarraydtype" title="Link to this definition"></a></dt>
+<dd><p>Raw形式のデータを保持するためのnumpyのndarray用のdtype文字列を取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>現在の設定のdtype文字列が返ります．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getrawsampbit">
+<span class="sig-name descname"><span class="pre">getrawsampbit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getrawsampbit"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getrawsampbit" title="Link to this definition"></a></dt>
+<dd><p>Raw形式配列用のビット/サンプルを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getrawsampwidth">
+<span class="sig-name descname"><span class="pre">getrawsampwidth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getrawsampwidth"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getrawsampwidth" title="Link to this definition"></a></dt>
+<dd><p>Raw形式配列用のバイト/サンプルを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getsampbit">
+<span class="sig-name descname"><span class="pre">getsampbit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getsampbit"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getsampbit" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルのビット/サンプルを取得します．sampbit = 33は，32ビットfloat型と対応します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getsamprate">
+<span class="sig-name descname"><span class="pre">getsamprate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getsamprate"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getsamprate" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルのサンプルレートを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getsampwidth">
+<span class="sig-name descname"><span class="pre">getsampwidth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getsampwidth"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getsampwidth" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルのバイト/サンプルを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.getsonginfo">
+<span class="sig-name descname"><span class="pre">getsonginfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.getsonginfo"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.getsonginfo" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルのソング情報を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">pluginname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samprate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampbit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nchannels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">songinfo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.open"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.open" title="Link to this definition"></a></dt>
+<dd><p>プラグインを用いてファイル名と対応するファイルを開きます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) -- 開くファイルのファイル名を指定します．</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) -- ファイルを開く際のモードを指定します．読み込みモードの <code class="docutils literal notranslate"><span class="pre">'r'</span></code> ，書き込みモードの <code class="docutils literal notranslate"><span class="pre">'w'</span></code> があります．</p></li>
+<li><p><strong>pluginname</strong> (<em>str</em><em>, </em><em>optional</em>) -- 適切なプラグインが見つからなかった際に用いられるプラグイン名を指定します．指定しなかった場合は， <a class="reference internal" href="#spplugin.SuitableNotFoundError" title="spplugin.SuitableNotFoundError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuitableNotFoundError</span></code></a> の例外が発生します．Raw形式のファイルを読み込みたい場合は， <code class="docutils literal notranslate"><span class="pre">'input_raw'</span></code> を指定します．</p></li>
+<li><p><strong>samprate</strong> (<em>double</em><em>, </em><em>optional</em>) -- サンプルレート．</p></li>
+<li><p><strong>sampbit</strong> (<em>int</em><em>, </em><em>optional</em>) -- ビット/サンプル．</p></li>
+<li><p><strong>nchannels</strong> (<em>int</em><em>, </em><em>optional</em>) -- チャネル数．</p></li>
+<li><p><strong>filetype</strong> (<em>str</em><em>, </em><em>optional</em>) -- ファイル形式の文字列</p></li>
+<li><p><strong>songinfo</strong> (<em>dict</em><em>, </em><em>optional</em>) -- ソング情報．</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dict形式の設定可能な全てのパラメータ．</p></li>
+</ul>
+</dd>
+<dt class="field-even">例外<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#spplugin.SuitableNotFoundError" title="spplugin.SuitableNotFoundError"><strong>SuitableNotFoundError</strong></a> -- 適切なプラグインが見つからなかった場合に発生します．</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.read"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.read" title="Link to this definition"></a></dt>
+<dd><p>音声ファイルからdouble型配列にデータを読み込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- 音声ファイルから読み込むためのdouble型配列を指定します．</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) -- 読み込み後のデータに乗じられる重み係数を指定します．</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対するオフセットを指定します．</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションのファイルの全体の時間長を設定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には読み込みサイズが返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>キーワード引数の <cite>offset</cite> と <cite>length</cite> はバージョン0.7.15で導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.readframes">
+<span class="sig-name descname"><span class="pre">readframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nframes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arraytype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ndarray'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.readframes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.readframes" title="Link to this definition"></a></dt>
+<dd><p>次の <cite>nframes</cite> 分のデータを読み込み，double型配列を返します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nframes</strong> (<em>int</em>) -- 読み込むフレーム数を指定します．負の値は全フレーム数を意味します．</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) -- 読み込み後のデータに乗じられる重み係数を指定します．</p></li>
+<li><p><strong>arraytype</strong> (<em>str</em><em>, </em><em>optional</em>) -- 出力配列の型を指定します． <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> （デフォルト）, <code class="docutils literal notranslate"><span class="pre">'array'</span></code>, <code class="docutils literal notranslate"><span class="pre">'bytearray'</span></code> のいずれかを指定します．</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定すると出力のndarrayが  (nframes, nchannels) の行列にリサイズされます．この引数は  <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> の場合にだけ有効となります．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>読み込まれたデータが含まれる配列が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray, array.array or bytearray</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.16にて導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.readraw">
+<span class="sig-name descname"><span class="pre">readraw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.readraw"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.readraw" title="Link to this definition"></a></dt>
+<dd><p>音声ファイルからRaw形式のデータを読み込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- 音声ファイルからRaw形式のデータを読み込むためのRaw形式配列を指定します．</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対するオフセットを指定します．</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションのファイルの全体の時間長を設定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には読み込みサイズが返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>キーワード引数の <cite>offset</cite> と <cite>length</cite> はバージョン0.7.15で導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.readrawframes">
+<span class="sig-name descname"><span class="pre">readrawframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nframes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arraytype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ndarray'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.readrawframes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.readrawframes" title="Link to this definition"></a></dt>
+<dd><p>次の <cite>nframes</cite> 分のデータを読み込み，Raw形式配列を返します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nframes</strong> (<em>int</em>) -- 読み込むフレーム数を指定します．負の値は全フレーム数を意味します．</p></li>
+<li><p><strong>arraytype</strong> (<em>str</em><em>, </em><em>optional</em>) -- 出力配列の型を指定します． <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> （デフォルト）, <code class="docutils literal notranslate"><span class="pre">'array'</span></code>, <code class="docutils literal notranslate"><span class="pre">'bytearray'</span></code> のいずれかを指定します．</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定すると出力のndarrayが  (nframes, nchannels) の行列にリサイズされます．この引数は  <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> の場合にだけ有効となります．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>読み込まれたデータが含まれる配列が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray, array.array or bytearray</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.16にて導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.rewind">
+<span class="sig-name descname"><span class="pre">rewind</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.rewind"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.rewind" title="Link to this definition"></a></dt>
+<dd><p>ファイルの先頭に移動します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setcomptype">
+<span class="sig-name descname"><span class="pre">setcomptype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encodestr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setcomptype"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setcomptype" title="Link to this definition"></a></dt>
+<dd><p>圧縮形式を設定します．現在，このパラメータは無視されます．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setfiletype">
+<span class="sig-name descname"><span class="pre">setfiletype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filetype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setfiletype"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setfiletype" title="Link to this definition"></a></dt>
+<dd><p>ファイルにファイル形式を設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setframerate">
+<span class="sig-name descname"><span class="pre">setframerate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samprate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setframerate"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setframerate" title="Link to this definition"></a></dt>
+<dd><p>ファイルにサンプルレートを設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setmark">
+<span class="sig-name descname"><span class="pre">setmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setmark"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setmark" title="Link to this definition"></a></dt>
+<dd><p>何もしません（aifc，wave，sunauの標準ライブラリとの互換性のために用意されています）．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setnchannels">
+<span class="sig-name descname"><span class="pre">setnchannels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nchannels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setnchannels"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setnchannels" title="Link to this definition"></a></dt>
+<dd><p>ファイルにチャネル数を設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setnframes">
+<span class="sig-name descname"><span class="pre">setnframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nframes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setnframes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setnframes" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルの総フレーム数を設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setparams">
+<span class="sig-name descname"><span class="pre">setparams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setparams"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setparams" title="Link to this definition"></a></dt>
+<dd><p>dictオブジェクトもしくはnamedtupleオブジェクトの形でパラメータを設定します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) -- <code class="docutils literal notranslate"><span class="pre">'nchannels'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sampbit'</span></code>, <code class="docutils literal notranslate"><span class="pre">'samprate'</span></code>, <code class="docutils literal notranslate"><span class="pre">'nframes'</span></code>, <code class="docutils literal notranslate"><span class="pre">'filetype'</span></code>, <code class="docutils literal notranslate"><span class="pre">'songinfo'</span></code> のキーを持つdictオブジェクトを指定します．標準ライブラリのaifc，wave，sunauで用いられるnamedtupleオブジェクトを指定することもできます．</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setpos">
+<span class="sig-name descname"><span class="pre">setpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setpos"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setpos" title="Link to this definition"></a></dt>
+<dd><p>指定した位置に移動します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> -- 移動先の位置を指定します．</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setsampbit">
+<span class="sig-name descname"><span class="pre">setsampbit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampbit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setsampbit"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setsampbit" title="Link to this definition"></a></dt>
+<dd><p>ファイルにビット/サンプルを設定します．sampbit = 33は，32ビットfloat型と対応します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setsamprate">
+<span class="sig-name descname"><span class="pre">setsamprate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samprate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setsamprate"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setsamprate" title="Link to this definition"></a></dt>
+<dd><p>ファイルにサンプルレートを設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setsampwidth">
+<span class="sig-name descname"><span class="pre">setsampwidth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floatflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setsampwidth"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setsampwidth" title="Link to this definition"></a></dt>
+<dd><p>現在のファイルのバイト/サンプルを設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.setsonginfo">
+<span class="sig-name descname"><span class="pre">setsonginfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">songinfo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.setsonginfo"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.setsonginfo" title="Link to this definition"></a></dt>
+<dd><p>ファイルにソング情報を設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.tell">
+<span class="sig-name descname"><span class="pre">tell</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.tell"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.tell" title="Link to this definition"></a></dt>
+<dd><p>ファイルの中の現在の位置を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.write"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.write" title="Link to this definition"></a></dt>
+<dd><p>double型配列のデータを音声ファイルへ書き込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- 音声ファイルに書き込むためのdouble型配列を指定します．</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) -- 書き込み前のデータに乗じられる重み係数を指定します．</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対するオフセットを指定します．</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対する書き込み長を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には書き込まれたサイズが返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>キーワード引数の <cite>offset</cite> と <cite>length</cite> はバージョン0.7.15で導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.writeframes">
+<span class="sig-name descname"><span class="pre">writeframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.writeframes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.writeframes" title="Link to this definition"></a></dt>
+<dd><p>double型配列のデータを音声ファイルへ書き込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- 音声ファイルに書き込むためのdouble型配列を指定します．</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) -- 書き込み前のデータに乗じられる重み係数を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には書き込まれたフレーム数が返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.16にて導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.writeraw">
+<span class="sig-name descname"><span class="pre">writeraw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.writeraw"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.writeraw" title="Link to this definition"></a></dt>
+<dd><p>音声ファイルにRaw形式配列のデータを書き込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- 音声ファイルにデータを書き込むためのRaw形式配列を指定します．</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対するオフセットを指定します．</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対する書き込み長を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には書き込まれたサイズが返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>キーワード引数の <cite>offset</cite> と <cite>length</cite> はバージョン0.7.15で導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spplugin.SpFilePlugin.writerawframes">
+<span class="sig-name descname"><span class="pre">writerawframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#SpFilePlugin.writerawframes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SpFilePlugin.writerawframes" title="Link to this definition"></a></dt>
+<dd><p>音声ファイルにRaw形式配列のデータを書き込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- 音声ファイルにデータを書き込むためのRaw形式配列を指定します．</p>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には書き込まれたフレーム数が返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.16にて導入されました．</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spplugin.SuitableNotFoundError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">SuitableNotFoundError</span></span><a class="reference internal" href="_modules/spplugin.html#SuitableNotFoundError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.SuitableNotFoundError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spplugin.Error" title="spplugin.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>適切なプラグインが見つからなかった場合に発生する例外です．</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spplugin.WrongPluginError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">WrongPluginError</span></span><a class="reference internal" href="_modules/spplugin.html#WrongPluginError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.WrongPluginError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spplugin.Error" title="spplugin.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>不適切なプラグインの場合に発生する例外です．</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spplugin.audioread">
+<span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">audioread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">-1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'double'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arraytype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ndarray'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">getparamstuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decodebytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pluginname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samprate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampbit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nchannels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#audioread"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.audioread" title="Link to this definition"></a></dt>
+<dd><p>プラグインを用いてファイルの内容を読み込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) -- 開くファイルのファイル名を指定します．</p></li>
+<li><p><strong>samples</strong> (<em>tuple</em><em>, </em><em>optional</em>) -- サンプル（フレーム）の範囲を <code class="docutils literal notranslate"><span class="pre">(start,</span> <span class="pre">finish)</span></code> の形で指定します． <code class="docutils literal notranslate"><span class="pre">finish</span></code> が負の場合はファイルの最後を意味します．</p></li>
+<li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) -- 出力データの形式を指定します． <code class="docutils literal notranslate"><span class="pre">'double'</span></code> の場合は， <a class="reference internal" href="#spplugin.SpFilePlugin.readframes" title="spplugin.SpFilePlugin.readframes"><code class="xref py py-func docutils literal notranslate"><span class="pre">readframes()</span></code></a> が， <code class="docutils literal notranslate"><span class="pre">'raw'</span></code> の場合は， <a class="reference internal" href="#spplugin.SpFilePlugin.readrawframes" title="spplugin.SpFilePlugin.readrawframes"><code class="xref py py-func docutils literal notranslate"><span class="pre">readrawframes()</span></code></a> が内部的に呼ばれることになります．なお，<code class="docutils literal notranslate"><span class="pre">'raw'</span></code> の場合には <cite>weight</cite> の引数は無視されます．</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) -- 読み込み後のデータに乗じられる重み係数を指定します．</p></li>
+<li><p><strong>arraytype</strong> (<em>str</em><em>, </em><em>optional</em>) -- 出力配列の型を指定します． <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> （デフォルト）, <code class="docutils literal notranslate"><span class="pre">'array'</span></code>, <code class="docutils literal notranslate"><span class="pre">'bytearray'</span></code> のいずれかを指定します．</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定すると出力のndarrayが  (nframes, nchannels) の行列にリサイズされます．この引数は  <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> の場合にだけ有効となります．</p></li>
+<li><p><strong>getparamstuple</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> の場合は内部で <a class="reference internal" href="#spplugin.SpFilePlugin.getparamstuple" title="spplugin.SpFilePlugin.getparamstuple"><code class="xref py py-func docutils literal notranslate"><span class="pre">getparamstuple()</span></code></a> が使われるようになります．</p></li>
+<li><p><strong>decodebytes</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> の場合は， <a class="reference internal" href="#spplugin.SpFilePlugin.getparamstuple" title="spplugin.SpFilePlugin.getparamstuple"><code class="xref py py-func docutils literal notranslate"><span class="pre">getparamstuple()</span></code></a>  の呼び出しの際にbytesオブジェクトを文字列オブジェクトにデコードします．この引数は <code class="docutils literal notranslate"><span class="pre">getparamstuple=True</span></code> の場合のみで有効です．</p></li>
+<li><p><strong>pluginname</strong> (<em>str</em><em>, </em><em>optional</em>) -- 適切なプラグインが見つからなかった際に用いられるプラグイン名を指定します．指定しなかった場合は， <a class="reference internal" href="#spplugin.SuitableNotFoundError" title="spplugin.SuitableNotFoundError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuitableNotFoundError</span></code></a> の例外が発生します．Raw形式のファイルを読み込みたい場合は， <code class="docutils literal notranslate"><span class="pre">'input_raw'</span></code> を指定します．</p></li>
+<li><p><strong>samprate</strong> (<em>double</em><em>, </em><em>optional</em>) -- サンプルレート．</p></li>
+<li><p><strong>sampbit</strong> (<em>int</em><em>, </em><em>optional</em>) -- ビット/サンプル．</p></li>
+<li><p><strong>nchannels</strong> (<em>int</em><em>, </em><em>optional</em>) -- チャネル数．</p></li>
+<li><p><strong>filetype</strong> (<em>str</em><em>, </em><em>optional</em>) -- ファイル形式の文字列</p></li>
+<li><p><strong>songinfo</strong> (<em>dict</em><em>, </em><em>optional</em>) -- ソング情報．</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dict形式の設定可能な全てのパラメータ．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>要素が以下のものになっているtupleが返ります．</p>
+<ul class="simple">
+<li><p><cite>numpy.ndarray, array.array or bytearray</cite> -- 読み込まれたデータが含まれる配列が返ります．</p></li>
+<li><p><cite>double</cite> -- 音声ファイルのサンプルレートが返ります．</p></li>
+<li><p><cite>dict or namedtuple</cite> -- <code class="docutils literal notranslate"><span class="pre">getparamstuple=False</span></code> の場合は， <a class="reference internal" href="#spplugin.SpFilePlugin.getparams" title="spplugin.SpFilePlugin.getparams"><code class="xref py py-func docutils literal notranslate"><span class="pre">getparams()</span></code></a> で返されるものと同じdictオブジェクトが返ります． <code class="docutils literal notranslate"><span class="pre">getparamstuple=True</span></code>  の場合は， <a class="reference internal" href="#spplugin.SpFilePlugin.getparamstuple" title="spplugin.SpFilePlugin.getparamstuple"><code class="xref py py-func docutils literal notranslate"><span class="pre">getparamstuple()</span></code></a> で返されるものと同じnamedtupleオブジェクトが返ります．</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">例外<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#spplugin.SuitableNotFoundError" title="spplugin.SuitableNotFoundError"><strong>SuitableNotFoundError</strong></a> -- 適切なプラグインが見つからなかった場合に発生します．</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.16にて導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spplugin.audiowrite">
+<span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">audiowrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samprate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nchannels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampbit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pluginname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">songinfo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#audiowrite"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.audiowrite" title="Link to this definition"></a></dt>
+<dd><p>プラグインを用いて音声ファイルにデータを書き込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) -- 開くファイルのファイル名を指定します．</p></li>
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- 音声ファイルにデータを書き込むための配列を指定します．</p></li>
+<li><p><strong>samprate</strong> (<em>double</em><em>, </em><em>optional</em>) -- サンプルレート．</p></li>
+<li><p><strong>nchannels</strong> (<em>int</em><em>, </em><em>optional</em>) -- チャネル数．</p></li>
+<li><p><strong>sampbit</strong> (<em>int</em><em>, </em><em>optional</em>) -- ビット/サンプル．</p></li>
+<li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) -- 入力データの形式を指定します． <code class="docutils literal notranslate"><span class="pre">'double'</span></code> の場合は， <a class="reference internal" href="#spplugin.SpFilePlugin.write" title="spplugin.SpFilePlugin.write"><code class="xref py py-func docutils literal notranslate"><span class="pre">write()</span></code></a> が， <code class="docutils literal notranslate"><span class="pre">'raw'</span></code> の場合は， <a class="reference internal" href="#spplugin.SpFilePlugin.writeraw" title="spplugin.SpFilePlugin.writeraw"><code class="xref py py-func docutils literal notranslate"><span class="pre">writeraw()</span></code></a> が内部的に呼ばれることになります．なお，<code class="docutils literal notranslate"><span class="pre">'raw'</span></code> の場合には <cite>weight</cite> の引数は無視されます．配列の種類によっては，このパラメータは自動判定されます．</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) -- 書き込み前のデータに乗じられる重み係数を指定します．</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対するオフセットを指定します．</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対する書き込み長を指定します．</p></li>
+<li><p><strong>pluginname</strong> (<em>str</em><em>, </em><em>optional</em>) -- 適切なプラグインが見つからなかった際に用いられるプラグイン名を指定します．指定しなかった場合は， <a class="reference internal" href="#spplugin.SuitableNotFoundError" title="spplugin.SuitableNotFoundError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuitableNotFoundError</span></code></a> の例外が発生します．Raw形式のファイルへ書き込みたい場合は， <code class="docutils literal notranslate"><span class="pre">'output_raw'</span></code> を指定します．</p></li>
+<li><p><strong>filetype</strong> (<em>str</em><em>, </em><em>optional</em>) -- ファイル形式の文字列</p></li>
+<li><p><strong>songinfo</strong> (<em>dict</em><em>, </em><em>optional</em>) -- ソング情報．</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dict形式の設定可能な全てのパラメータ．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には書き込まれたフレーム数が返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">例外<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#spplugin.SuitableNotFoundError" title="spplugin.SuitableNotFoundError"><strong>SuitableNotFoundError</strong></a> -- 適切なプラグインが見つからなかった場合に発生します．</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.16にて導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spplugin.getplugindesc">
+<span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">getplugindesc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#getplugindesc"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.getplugindesc" title="Link to this definition"></a></dt>
+<dd><p>プラグイン名からプラグインの短い情報を取得します．</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spplugin.getplugininfo">
+<span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">getplugininfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#getplugininfo"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.getplugininfo" title="Link to this definition"></a></dt>
+<dd><p>プラグイン名からプラグインの詳細情報を取得します．</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spplugin.open">
+<span class="sig-prename descclassname"><span class="pre">spplugin.</span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">pluginname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samprate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampbit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nchannels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">songinfo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spplugin.html#open"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spplugin.open" title="Link to this definition"></a></dt>
+<dd><p>プラグインを用いてファイル名と対応するファイルを開きます．この関数は <code class="docutils literal notranslate"><span class="pre">with</span></code> 文の中で使うことを想定しています．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) -- 開くファイルのファイル名を指定します．</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) -- ファイルを開く際のモードを指定します．読み込みモードの <code class="docutils literal notranslate"><span class="pre">'r'</span></code> ，書き込みモードの <code class="docutils literal notranslate"><span class="pre">'w'</span></code> があります．</p></li>
+<li><p><strong>pluginname</strong> (<em>str</em><em>, </em><em>optional</em>) -- 適切なプラグインが見つからなかった際に用いられるプラグイン名を指定します．指定しなかった場合は， <a class="reference internal" href="#spplugin.SuitableNotFoundError" title="spplugin.SuitableNotFoundError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuitableNotFoundError</span></code></a> の例外が発生します．Raw形式のファイルを読み込みたい場合は， <code class="docutils literal notranslate"><span class="pre">'input_raw'</span></code> を指定します．</p></li>
+<li><p><strong>samprate</strong> (<em>double</em><em>, </em><em>optional</em>) -- サンプルレート．</p></li>
+<li><p><strong>sampbit</strong> (<em>int</em><em>, </em><em>optional</em>) -- ビット/サンプル．</p></li>
+<li><p><strong>nchannels</strong> (<em>int</em><em>, </em><em>optional</em>) -- チャネル数．</p></li>
+<li><p><strong>filetype</strong> (<em>str</em><em>, </em><em>optional</em>) -- ファイル形式の文字列</p></li>
+<li><p><strong>songinfo</strong> (<em>dict</em><em>, </em><em>optional</em>) -- ソング情報．</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dict形式の設定可能な全てのパラメータ．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#spplugin.SpFilePlugin" title="spplugin.SpFilePlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpFilePlugin</span></code></a> クラスの新規インスタンスが返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#spplugin.SpFilePlugin" title="spplugin.SpFilePlugin">SpFilePlugin</a></p>
+</dd>
+<dt class="field-even">例外<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#spplugin.SuitableNotFoundError" title="spplugin.SuitableNotFoundError"><strong>SuitableNotFoundError</strong></a> -- 適切なプラグインが見つからなかった場合に発生します．</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="spaudio.html" class="btn btn-neutral float-left" title="spaudioモジュール" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="サンプルコード" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017-2025  Hideki Banno.
+      <span class="lastupdated">最終更新: 2025-05-04 19:08:50
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p><img src="/cgi-bin/labs/rj001/counter/count.cgi?id=spAudio_python"></p>
+     
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

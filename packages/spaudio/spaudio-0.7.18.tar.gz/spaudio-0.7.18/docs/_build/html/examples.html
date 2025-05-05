@@ -1,0 +1,1358 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Examples &mdash; spAudio  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/custom_theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom_theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="spplugin module" href="spplugin.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #1060A0" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> spAudio
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#change-log">Change Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#build">Build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#official-site">Official Site</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc.html">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spaudio.html">spaudio module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spplugin.html">spplugin module</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#spaudio"><span class="xref std std-doc">spaudio</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fullduplex-i-o">Fullduplex I/O</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fullduplex-i-o-using-with-statement-version-0-7-15">Fullduplex I/O (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-and-plot-python-array-version">Read and plot (Python array version)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-and-plot-raw-data-version">Read and plot (raw data version)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-and-plot-numpy-ndarray-version">Read and plot (NumPy ndarray version)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-and-plot-numpy-ndarray-version-using-with-statement-version-0-7-16">Read and plot (NumPy ndarray version; using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.16+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-and-plot-numpy-raw-ndarray-version">Read and plot (NumPy raw ndarray version)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#play-a-wav-file">Play a WAV file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#play-a-wav-file-using-with-statement-version-0-7-15">Play a WAV file (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#play-a-wav-file-with-callback">Play a WAV file with callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#play-a-wav-file-with-callback-using-with-statement-version-0-7-15">Play a WAV file with callback (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#record-to-a-wav-file">Record to a WAV file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#record-to-a-wav-file-using-with-statement-version-0-7-15">Record to a WAV file (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#block-read-version-0-7-15">Block read (version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#block-write-version-0-7-15">Block write (version 0.7.15+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#an-example-of-readframes-and-writeframes-version-0-7-16">An example of <code class="xref py py-func docutils literal notranslate"><span class="pre">readframes()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">writeframes()</span></code> (version 0.7.16+)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#spplugin"><span class="xref std std-doc">spplugin</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#an-example-of-audioread-version-0-7-16">An example of <code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code> (version 0.7.16+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#an-example-of-audiowrite-version-0-7-16">An example of <code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code> (version 0.7.16+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#an-example-of-audioread-and-audiowrite-version-0-7-16">An example of <code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code> (version 0.7.16+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plot-an-audio-file-contents-by-plugin">Plot an audio file contents by plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#play-an-audio-file-contents-by-plugin">Play an audio file contents by plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#play-a-raw-file-contents-by-plugin">Play a raw file contents by plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-an-audio-file-by-plugin-and-write-it">Read an audio file by plugin and write it</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-an-audio-file-and-write-it-by-plugin">Read an audio file and write it by plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#convert-an-audio-file-by-plugin">Convert an audio file by plugin</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">spAudio</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Examples</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#spaudioexamples"><span class="std std-ref">spaudio</span></a></p></li>
+<li><p><a class="reference internal" href="#sppluginexamples"><span class="std std-ref">spplugin</span></a></p></li>
+</ul>
+<section id="spaudio">
+<span id="spaudioexamples"></span><h2><a class="reference internal" href="spaudio.html"><span class="doc">spaudio</span></a><a class="headerlink" href="#spaudio" title="Permalink to this heading">¶</a></h2>
+<section id="fullduplex-i-o">
+<h3>Fullduplex I/O<a class="headerlink" href="#fullduplex-i-o" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/3ffaae8801e6ff32bb93f5f872a25d2d/iotest.py"><code class="xref download docutils literal notranslate"><span class="pre">iotest.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">setsamprate</span><span class="p">(</span><span class="mi">44100</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">setbuffersize</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+
+<span class="n">nloop</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nloop</span><span class="p">):</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">readraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="fullduplex-i-o-using-with-statement-version-0-7-15">
+<h3>Fullduplex I/O (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)<a class="headerlink" href="#fullduplex-i-o-using-with-statement-version-0-7-15" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/7db8036ac445b1be3541c7bf943b8858/iotestwith.py"><code class="xref download docutils literal notranslate"><span class="pre">iotestwith.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.15+ required.</span>
+
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+<span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;rw&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+    <span class="n">nloop</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nloop</span><span class="p">):</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">readraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="read-and-plot-python-array-version">
+<h3>Read and plot (Python array version)<a class="headerlink" href="#read-and-plot-python-array-version" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/89feb1c25d97b309f5904ee910fb05f7/readplot.py"><code class="xref download docutils literal notranslate"><span class="pre">readplot.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">spaudio</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">setsamprate</span><span class="p">(</span><span class="mi">8000</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">createarray</span><span class="p">(</span><span class="mi">16000</span><span class="p">)</span>
+
+<span class="n">nread</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">)</span>
+
+<span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nwrite = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwrite</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="read-and-plot-raw-data-version">
+<h3>Read and plot (raw data version)<a class="headerlink" href="#read-and-plot-raw-data-version" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/a29fc8f71dc17ebb336646586e3ede8f/readplotraw.py"><code class="xref download docutils literal notranslate"><span class="pre">readplotraw.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">spaudio</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">setsamprate</span><span class="p">(</span><span class="mi">8000</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">createrawarray</span><span class="p">(</span><span class="mi">16000</span><span class="p">)</span>
+
+<span class="n">nread</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">readraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">)</span>
+
+<span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nwrite = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwrite</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="read-and-plot-numpy-ndarray-version">
+<h3>Read and plot (NumPy ndarray version)<a class="headerlink" href="#read-and-plot-numpy-ndarray-version" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/45114539688415088cd8bd1d4a3dd712/readndarray.py"><code class="xref download docutils literal notranslate"><span class="pre">readndarray.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">setsamprate</span><span class="p">(</span><span class="mi">8000</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">createndarray</span><span class="p">(</span><span class="mi">16000</span><span class="p">)</span>
+
+<span class="n">nread</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">)</span>
+
+<span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nwrite = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwrite</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">16000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [s]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (normalized)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="read-and-plot-numpy-ndarray-version-using-with-statement-version-0-7-16">
+<h3>Read and plot (NumPy ndarray version; using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.16+)<a class="headerlink" href="#read-and-plot-numpy-ndarray-version-using-with-statement-version-0-7-16" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/7f47639842e47eca38c06c28cd21a002/readndarray2.py"><code class="xref download docutils literal notranslate"><span class="pre">readndarray2.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.16+ required.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+<span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="mi">44100</span><span class="p">,</span> <span class="n">channelwise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">44100</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">getnchannels</span><span class="p">()):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [s]&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (normalized)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="read-and-plot-numpy-raw-ndarray-version">
+<h3>Read and plot (NumPy raw ndarray version)<a class="headerlink" href="#read-and-plot-numpy-raw-ndarray-version" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/25d2dc866a1903eaa84c940c7e840dfe/readrawndarray.py"><code class="xref download docutils literal notranslate"><span class="pre">readrawndarray.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">setsamprate</span><span class="p">(</span><span class="mi">8000</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">createrawndarray</span><span class="p">(</span><span class="mi">16000</span><span class="p">)</span>
+
+<span class="n">nread</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">readraw</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">)</span>
+
+<span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nwrite = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwrite</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">16000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [s]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (raw)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="play-a-wav-file">
+<h3>Play a WAV file<a class="headerlink" href="#play-a-wav-file" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/e0f82c7573c33d1ac3e67b745d2aa474/playfromwav.py"><code class="xref download docutils literal notranslate"><span class="pre">playfromwav.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">wave</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+
+<span class="k">def</span> <span class="nf">playfromwav</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wf</span><span class="p">:</span>
+        <span class="n">nchannels</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getnchannels</span><span class="p">()</span>
+        <span class="n">samprate</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getframerate</span><span class="p">()</span>
+        <span class="n">sampwidth</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getsampwidth</span><span class="p">()</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, samprate = </span><span class="si">%d</span><span class="s1">, sampwidth = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">,</span> <span class="n">nframes</span><span class="p">))</span>
+
+        <span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+        <span class="n">a</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="n">nchannels</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setsamprate</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setsampwidth</span><span class="p">(</span><span class="n">sampwidth</span><span class="p">)</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">nframes</span><span class="p">)</span>
+
+        <span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">)</span>
+
+        <span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nwrite = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwrite</span><span class="p">)</span>
+
+        <span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">playfromwav</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="play-a-wav-file-using-with-statement-version-0-7-15">
+<h3>Play a WAV file (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)<a class="headerlink" href="#play-a-wav-file-using-with-statement-version-0-7-15" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/7709d7871e2f76923698dc353960927c/playfromwav2.py"><code class="xref download docutils literal notranslate"><span class="pre">playfromwav2.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.15+ required.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">wave</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+
+<span class="k">def</span> <span class="nf">playfromwav2</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wf</span><span class="p">:</span>
+        <span class="n">paramstuple</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getparams</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, framerate = </span><span class="si">%d</span><span class="s1">, sampwidth = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">paramstuple</span><span class="o">.</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">paramstuple</span><span class="o">.</span><span class="n">framerate</span><span class="p">,</span>
+                 <span class="n">paramstuple</span><span class="o">.</span><span class="n">sampwidth</span><span class="p">,</span> <span class="n">paramstuple</span><span class="o">.</span><span class="n">nframes</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">paramstuple</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">paramstuple</span><span class="o">.</span><span class="n">nframes</span><span class="p">)</span>
+            <span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nwrite = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwrite</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">playfromwav2</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="play-a-wav-file-with-callback">
+<h3>Play a WAV file with callback<a class="headerlink" href="#play-a-wav-file-with-callback" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/baa59b0a7d8ece985bf864720e0d3b8c/playfromwavcb.py"><code class="xref download docutils literal notranslate"><span class="pre">playfromwavcb.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">wave</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+
+<span class="k">def</span> <span class="nf">myaudiocb</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">cbtype</span><span class="p">,</span> <span class="n">cbdata</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">cbtype</span> <span class="o">==</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">OUTPUT_POSITION_CALLBACK</span><span class="p">:</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">cbdata</span>
+        <span class="n">samprate</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">position_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">position</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span>
+        <span class="n">total_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">nframes</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Time: </span><span class="si">%.3f</span><span class="s1"> / </span><span class="si">%.3f</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">position_s</span><span class="p">,</span> <span class="n">total_s</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">cbtype</span> <span class="o">==</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">OUTPUT_BUFFER_CALLBACK</span><span class="p">:</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="n">cbdata</span>
+        <span class="c1"># print(&#39;OUTPUT_BUFFER_CALLBACK: buffer type = %s, size = %d&#39; % (type(buf), len(buf)))</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="k">def</span> <span class="nf">playfromwav</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wf</span><span class="p">:</span>
+        <span class="n">nchannels</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getnchannels</span><span class="p">()</span>
+        <span class="n">samprate</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getframerate</span><span class="p">()</span>
+        <span class="n">sampwidth</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getsampwidth</span><span class="p">()</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, samprate = </span><span class="si">%d</span><span class="s1">, sampwidth = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">,</span> <span class="n">nframes</span><span class="p">))</span>
+
+        <span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+        <span class="n">a</span><span class="o">.</span><span class="n">setbuffersize</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="n">nchannels</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setsamprate</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setsampwidth</span><span class="p">(</span><span class="n">sampwidth</span><span class="p">)</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">nframes</span><span class="p">)</span>
+
+        <span class="n">a</span><span class="o">.</span><span class="n">setcallback</span><span class="p">(</span><span class="n">spaudio</span><span class="o">.</span><span class="n">OUTPUT_POSITION_CALLBACK</span> <span class="o">|</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">OUTPUT_BUFFER_CALLBACK</span><span class="p">,</span>
+                      <span class="n">myaudiocb</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">nframes</span><span class="p">)</span>
+
+        <span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">)</span>
+
+        <span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="c1"># print(&#39;nwrite = %d&#39; % nwrite)</span>
+
+        <span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">playfromwav</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="play-a-wav-file-with-callback-using-with-statement-version-0-7-15">
+<h3>Play a WAV file with callback (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)<a class="headerlink" href="#play-a-wav-file-with-callback-using-with-statement-version-0-7-15" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/d1d9d5a752cbbb3813c0f28cebff0092/playfromwavcb2.py"><code class="xref download docutils literal notranslate"><span class="pre">playfromwavcb2.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">wave</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+
+<span class="k">def</span> <span class="nf">myaudiocb</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">cbtype</span><span class="p">,</span> <span class="n">cbdata</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">cbtype</span> <span class="o">==</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">OUTPUT_POSITION_CALLBACK</span><span class="p">:</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">cbdata</span>
+        <span class="n">samprate</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">position_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">position</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span>
+        <span class="n">total_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">nframes</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Time: </span><span class="si">%.3f</span><span class="s1"> / </span><span class="si">%.3f</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">position_s</span><span class="p">,</span> <span class="n">total_s</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">cbtype</span> <span class="o">==</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">OUTPUT_BUFFER_CALLBACK</span><span class="p">:</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="n">cbdata</span>
+        <span class="c1"># print(&#39;OUTPUT_BUFFER_CALLBACK: buffer type = %s, size = %d&#39; % (type(buf), len(buf)))</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="k">def</span> <span class="nf">playfromwav2</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wf</span><span class="p">:</span>
+        <span class="n">paramstuple</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getparams</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, samprate = </span><span class="si">%d</span><span class="s1">, sampwidth = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">paramstuple</span><span class="o">.</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">paramstuple</span><span class="o">.</span><span class="n">framerate</span><span class="p">,</span>
+                 <span class="n">paramstuple</span><span class="o">.</span><span class="n">sampwidth</span><span class="p">,</span> <span class="n">paramstuple</span><span class="o">.</span><span class="n">nframes</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">paramstuple</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+                          <span class="n">callback</span><span class="o">=</span><span class="p">(</span><span class="n">spaudio</span><span class="o">.</span><span class="n">OUTPUT_POSITION_CALLBACK</span> <span class="o">|</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">OUTPUT_BUFFER_CALLBACK</span><span class="p">,</span>
+                                    <span class="n">myaudiocb</span><span class="p">,</span> <span class="n">paramstuple</span><span class="o">.</span><span class="n">framerate</span><span class="p">,</span> <span class="n">paramstuple</span><span class="o">.</span><span class="n">nframes</span><span class="p">))</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">paramstuple</span><span class="o">.</span><span class="n">nframes</span><span class="p">)</span>
+            <span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">playfromwav2</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="record-to-a-wav-file">
+<h3>Record to a WAV file<a class="headerlink" href="#record-to-a-wav-file" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/af185505cff65f495a49f5e4b48042f0/rectowav.py"><code class="xref download docutils literal notranslate"><span class="pre">rectowav.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">wave</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+
+<span class="k">def</span> <span class="nf">rectowav</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">nchannels</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wf</span><span class="p">:</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">duration</span> <span class="o">*</span> <span class="n">samprate</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, samprate = </span><span class="si">%d</span><span class="s1">, sampwidth = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">,</span> <span class="n">nframes</span><span class="p">))</span>
+
+        <span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+        <span class="n">a</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="n">nchannels</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setsamprate</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setsampwidth</span><span class="p">(</span><span class="n">sampwidth</span><span class="p">)</span>
+
+        <span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">createrawarray</span><span class="p">(</span><span class="n">nframes</span> <span class="o">*</span> <span class="n">nchannels</span><span class="p">)</span>
+
+        <span class="n">nread</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">readraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+        <span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">wf</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="n">nchannels</span><span class="p">)</span>
+        <span class="n">wf</span><span class="o">.</span><span class="n">setframerate</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span>
+        <span class="n">wf</span><span class="o">.</span><span class="n">setsampwidth</span><span class="p">(</span><span class="n">sampwidth</span><span class="p">)</span>
+        <span class="n">wf</span><span class="o">.</span><span class="n">setnframes</span><span class="p">(</span><span class="n">nframes</span><span class="p">)</span>
+
+        <span class="n">wf</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;output file: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Record to a wave file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;name of output wave file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;--samprate&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;sampling rate [Hz]&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--nchannels&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of channels&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-w&#39;</span><span class="p">,</span> <span class="s1">&#39;--sampwidth&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;sample width [byte]&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="s1">&#39;--duration&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;recording duration [s]&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">rectowav</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">samprate</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">nchannels</span><span class="p">,</span>
+             <span class="n">args</span><span class="o">.</span><span class="n">sampwidth</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="record-to-a-wav-file-using-with-statement-version-0-7-15">
+<h3>Record to a WAV file (using <code class="docutils literal notranslate"><span class="pre">with</span></code> statement; version 0.7.15+)<a class="headerlink" href="#record-to-a-wav-file-using-with-statement-version-0-7-15" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/044ea161792e1cc4cbf04e2aa7650da4/rectowav2.py"><code class="xref download docutils literal notranslate"><span class="pre">rectowav2.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.15+ required.</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">wave</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+
+<span class="k">def</span> <span class="nf">rectowav2</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">nchannels</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wf</span><span class="p">:</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">duration</span> <span class="o">*</span> <span class="n">samprate</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, samprate = </span><span class="si">%d</span><span class="s1">, sampwidth = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">,</span> <span class="n">nframes</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="n">samprate</span><span class="p">,</span>
+                          <span class="n">sampbit</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">sampwidth</span><span class="p">))</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">createrawarray</span><span class="p">(</span><span class="n">nframes</span> <span class="o">*</span> <span class="n">nchannels</span><span class="p">)</span>
+
+            <span class="n">nread</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">readraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+            <span class="n">paramstuple</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">getparamstuple</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">nframes</span><span class="p">)</span>
+            <span class="n">wf</span><span class="o">.</span><span class="n">setparams</span><span class="p">(</span><span class="n">paramstuple</span><span class="p">)</span>
+            <span class="n">wf</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;output file: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Record to a wave file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;name of output wave file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;--samprate&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;sampling rate [Hz]&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--nchannels&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of channels&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-w&#39;</span><span class="p">,</span> <span class="s1">&#39;--sampwidth&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;sample width [byte]&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="s1">&#39;--duration&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;recording duration [s]&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">rectowav2</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">samprate</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">nchannels</span><span class="p">,</span>
+              <span class="n">args</span><span class="o">.</span><span class="n">sampwidth</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="block-read-version-0-7-15">
+<h3>Block read (version 0.7.15+)<a class="headerlink" href="#block-read-version-0-7-15" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/6f1172f273665d5607772a44c1813af9/blockread.py"><code class="xref download docutils literal notranslate"><span class="pre">blockread.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.15+ required.</span>
+
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+<span class="n">blocklen</span> <span class="o">=</span> <span class="mi">8192</span>
+<span class="n">nchannels</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">samprate</span> <span class="o">=</span> <span class="mi">44100</span>
+<span class="n">nframes</span> <span class="o">=</span> <span class="mi">88200</span>  <span class="c1"># 2.0 [s]</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="n">samprate</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">createarray</span><span class="p">(</span><span class="n">nframes</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">nloop</span> <span class="o">=</span> <span class="p">((</span><span class="n">nframes</span> <span class="o">*</span> <span class="n">nchannels</span><span class="p">)</span> <span class="o">+</span> <span class="n">blocklen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">blocklen</span>  <span class="c1"># ceil</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nloop</span><span class="p">):</span>
+    <span class="n">nread</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">blocklen</span><span class="p">),</span> <span class="n">length</span><span class="o">=</span><span class="n">blocklen</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">: nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nread</span><span class="p">))</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="n">samprate</span><span class="p">)</span>
+
+<span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nwrite = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwrite</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="block-write-version-0-7-15">
+<h3>Block write (version 0.7.15+)<a class="headerlink" href="#block-write-version-0-7-15" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/aec45351ba6c2e177d08888d7b1827e6/blockwrite.py"><code class="xref download docutils literal notranslate"><span class="pre">blockwrite.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.15+ required.</span>
+
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+<span class="n">blocklen</span> <span class="o">=</span> <span class="mi">8192</span>
+<span class="n">nchannels</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">samprate</span> <span class="o">=</span> <span class="mi">44100</span>
+<span class="n">nframes</span> <span class="o">=</span> <span class="mi">88200</span>  <span class="c1"># 2.0 [s]</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="n">samprate</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">createarray</span><span class="p">(</span><span class="n">nframes</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">nread</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="n">samprate</span><span class="p">)</span>
+<span class="n">nloop</span> <span class="o">=</span> <span class="p">((</span><span class="n">nframes</span> <span class="o">*</span> <span class="n">nchannels</span><span class="p">)</span> <span class="o">+</span> <span class="n">blocklen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">blocklen</span>  <span class="c1"># ceil</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nloop</span><span class="p">):</span>
+    <span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">blocklen</span><span class="p">),</span> <span class="n">length</span><span class="o">=</span><span class="n">blocklen</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">: write = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nwrite</span><span class="p">))</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="an-example-of-readframes-and-writeframes-version-0-7-16">
+<h3>An example of <a class="reference internal" href="spaudio.html#spaudio.SpAudio.readframes" title="spaudio.SpAudio.readframes"><code class="xref py py-func docutils literal notranslate"><span class="pre">readframes()</span></code></a> and <a class="reference internal" href="spaudio.html#spaudio.SpAudio.writeframes" title="spaudio.SpAudio.writeframes"><code class="xref py py-func docutils literal notranslate"><span class="pre">writeframes()</span></code></a> (version 0.7.16+)<a class="headerlink" href="#an-example-of-readframes-and-writeframes-version-0-7-16" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/f689dba134d500598fc15f50bcce2219/rwframesexample.py"><code class="xref download docutils literal notranslate"><span class="pre">rwframesexample.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.16+ required.</span>
+
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+<span class="n">blocklen</span> <span class="o">=</span> <span class="mi">8192</span>
+<span class="n">nchannels</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">samprate</span> <span class="o">=</span> <span class="mi">44100</span>
+<span class="n">nframes</span> <span class="o">=</span> <span class="mi">88200</span>  <span class="c1"># 2.0 [s]</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">SpAudio</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="n">samprate</span><span class="p">)</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">nframes</span><span class="p">,</span> <span class="n">arraytype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="n">samprate</span><span class="p">)</span>
+
+<span class="n">nwframes</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;write frames = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwframes</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="spplugin">
+<span id="sppluginexamples"></span><h2><a class="reference internal" href="spplugin.html"><span class="doc">spplugin</span></a><a class="headerlink" href="#spplugin" title="Permalink to this heading">¶</a></h2>
+<section id="an-example-of-audioread-version-0-7-16">
+<h3>An example of <a class="reference internal" href="spplugin.html#spplugin.audioread" title="spplugin.audioread"><code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code></a> (version 0.7.16+)<a class="headerlink" href="#an-example-of-audioread-version-0-7-16" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/b645f96d3ffb11122b253982f96b0b80/audioreadexample.py"><code class="xref download docutils literal notranslate"><span class="pre">audioreadexample.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.16+ required.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">spplugin</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+
+<span class="k">def</span> <span class="nf">audioreadexample</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">audioread</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;samprate = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, params =</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+
+    <span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+        <span class="n">nwframes</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;write frames = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwframes</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">audioreadexample</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="an-example-of-audiowrite-version-0-7-16">
+<h3>An example of <a class="reference internal" href="spplugin.html#spplugin.audiowrite" title="spplugin.audiowrite"><code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code></a> (version 0.7.16+)<a class="headerlink" href="#an-example-of-audiowrite-version-0-7-16" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/7bf363b32f15508f15ed4ba2d45b83c7/audiowriteexample.py"><code class="xref download docutils literal notranslate"><span class="pre">audiowriteexample.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.16+ required.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">spplugin</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+
+<span class="k">def</span> <span class="nf">audiowriteexample</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="mf">2.0</span>
+    <span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">duration</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">getsamprate</span><span class="p">())</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">nframes</span><span class="p">,</span> <span class="n">channelwise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+        <span class="n">nwframes</span> <span class="o">=</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">audiowrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">getsamprate</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;write frames = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwframes</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">audiowriteexample</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="an-example-of-audioread-and-audiowrite-version-0-7-16">
+<h3>An example of <a class="reference internal" href="spplugin.html#spplugin.audioread" title="spplugin.audioread"><code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code></a> and <a class="reference internal" href="spplugin.html#spplugin.audiowrite" title="spplugin.audiowrite"><code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code></a> (version 0.7.16+)<a class="headerlink" href="#an-example-of-audioread-and-audiowrite-version-0-7-16" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/739ccd7ece02a7998f1512cd4b341699/audiorwexample.py"><code class="xref download docutils literal notranslate"><span class="pre">audiorwexample.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.16+ required.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">spplugin</span>
+
+
+<span class="k">def</span> <span class="nf">audiorwexample</span><span class="p">(</span><span class="n">ifilename</span><span class="p">,</span> <span class="n">ofilename</span><span class="p">):</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">audioread</span><span class="p">(</span><span class="n">ifilename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;samprate = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">samprate</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, params =</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">nwframes</span> <span class="o">=</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">audiowrite</span><span class="p">(</span><span class="n">ofilename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span>
+                                       <span class="n">sampbit</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;sampbit&#39;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nwframes</span> <span class="o">=</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">audiowrite</span><span class="p">(</span><span class="n">ofilename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;write frames = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwframes</span><span class="p">)</span>
+
+    <span class="n">data2</span><span class="p">,</span> <span class="n">samprate2</span><span class="p">,</span> <span class="n">params2</span> <span class="o">=</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">audioread</span><span class="p">(</span><span class="n">ofilename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reload: nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">data2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reload: samprate = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">samprate2</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, params =</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">params2</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> ifilename ofilename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">audiorwexample</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-an-audio-file-contents-by-plugin">
+<h3>Plot an audio file contents by plugin<a class="headerlink" href="#plot-an-audio-file-contents-by-plugin" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/973afae3494047e3b673ba61a7ff910b/plotfilebyplugin.py"><code class="xref download docutils literal notranslate"><span class="pre">plotfilebyplugin.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">spplugin</span>
+
+
+<span class="k">def</span> <span class="nf">plotfilebyplugin</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pf</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;input plugin: </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">getpluginid</span><span class="p">(),</span> <span class="n">pf</span><span class="o">.</span><span class="n">getplugindesc</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;plugin version: </span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pf</span><span class="o">.</span><span class="n">getpluginversion</span><span class="p">())</span>
+
+        <span class="n">nchannels</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getnchannels</span><span class="p">()</span>
+        <span class="n">samprate</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getsamprate</span><span class="p">()</span>
+        <span class="n">sampbit</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getsampbit</span><span class="p">()</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">nframes</span> <span class="o">/</span> <span class="n">samprate</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, samprate = </span><span class="si">%d</span><span class="s1">, sampbit = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">, duration = </span><span class="si">%.2f</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">sampbit</span><span class="p">,</span> <span class="n">nframes</span><span class="p">,</span> <span class="n">duration</span><span class="p">))</span>
+
+        <span class="c1"># In version 0.7.16+, y.resize() can be omitted by channelwise=True.</span>
+        <span class="c1"># y = pf.createndarray(nframes, True, channelwise=True)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">createndarray</span><span class="p">(</span><span class="n">nframes</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">nread</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+        <span class="n">y</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">nframes</span><span class="p">,</span> <span class="n">nchannels</span><span class="p">))</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">nframes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nchannels</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [s]&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (normalized)&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">plotfilebyplugin</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="play-an-audio-file-contents-by-plugin">
+<h3>Play an audio file contents by plugin<a class="headerlink" href="#play-an-audio-file-contents-by-plugin" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/9ed0de75b13870aab8ec450abbcaa1e1/playfilebyplugin.py"><code class="xref download docutils literal notranslate"><span class="pre">playfilebyplugin.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.15+ required.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">spplugin</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+
+<span class="k">def</span> <span class="nf">playfilebyplugin</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pf</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;input plugin: </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">getpluginid</span><span class="p">(),</span> <span class="n">pf</span><span class="o">.</span><span class="n">getplugindesc</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;plugin version: </span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pf</span><span class="o">.</span><span class="n">getpluginversion</span><span class="p">())</span>
+
+        <span class="n">nchannels</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getnchannels</span><span class="p">()</span>
+        <span class="n">samprate</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getsamprate</span><span class="p">()</span>
+        <span class="n">sampbit</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getsampbit</span><span class="p">()</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, samprate = </span><span class="si">%d</span><span class="s1">, sampbit = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">sampbit</span><span class="p">,</span> <span class="n">nframes</span><span class="p">))</span>
+
+        <span class="n">filetype</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getfiletype</span><span class="p">()</span>
+        <span class="n">filedesc</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getfiledesc</span><span class="p">()</span>
+        <span class="n">filefilter</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getfilefilter</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">filetype</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;filetype = </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span>
+                  <span class="o">%</span> <span class="p">(</span><span class="n">filetype</span><span class="p">,</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">filedesc</span> <span class="o">+</span>
+                     <span class="p">(</span><span class="s1">&#39;; &#39;</span> <span class="o">+</span> <span class="n">filefilter</span> <span class="k">if</span> <span class="n">filefilter</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span> <span class="k">if</span> <span class="n">filedesc</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="n">songinfo</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getsonginfo</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">songinfo</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;songinfo = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">songinfo</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="n">samprate</span><span class="p">,</span>
+                          <span class="n">sampbit</span><span class="o">=</span><span class="n">sampbit</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">createarray</span><span class="p">(</span><span class="n">nframes</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">nread</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+            <span class="n">nwrite</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nwrite = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwrite</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> filename&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">playfilebyplugin</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="play-a-raw-file-contents-by-plugin">
+<h3>Play a raw file contents by plugin<a class="headerlink" href="#play-a-raw-file-contents-by-plugin" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/3529e53422fe0784f3a94a78594466c0/playrawbyplugin.py"><code class="xref download docutils literal notranslate"><span class="pre">playrawbyplugin.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Version 0.7.15+ required.</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">spplugin</span>
+<span class="kn">import</span> <span class="nn">spaudio</span>
+
+
+<span class="k">def</span> <span class="nf">playrawbyplugin</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">nchannels</span><span class="p">,</span> <span class="n">sampbit</span><span class="p">,</span> <span class="n">filetype</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">pluginname</span><span class="o">=</span><span class="s1">&#39;input_raw&#39;</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="n">samprate</span><span class="p">,</span>
+                       <span class="n">nchannels</span><span class="o">=</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">sampbit</span><span class="o">=</span><span class="n">sampbit</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="n">filetype</span><span class="p">)</span> <span class="k">as</span> <span class="n">pf</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;input plugin: </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">getpluginid</span><span class="p">(),</span> <span class="n">pf</span><span class="o">.</span><span class="n">getplugindesc</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;plugin version: </span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pf</span><span class="o">.</span><span class="n">getpluginversion</span><span class="p">())</span>
+
+        <span class="n">nchannels</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getnchannels</span><span class="p">()</span>
+        <span class="n">samprate</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getsamprate</span><span class="p">()</span>
+        <span class="n">sampbit</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getsampbit</span><span class="p">()</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, samprate = </span><span class="si">%d</span><span class="s1">, sampbit = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="p">,</span> <span class="n">sampbit</span><span class="p">,</span> <span class="n">nframes</span><span class="p">))</span>
+
+        <span class="n">filetype</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getfiletype</span><span class="p">()</span>
+        <span class="n">filedesc</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getfiledesc</span><span class="p">()</span>
+        <span class="n">filefilter</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getfilefilter</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">filetype</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;filetype = </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span>
+                  <span class="o">%</span> <span class="p">(</span><span class="n">filetype</span><span class="p">,</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">filedesc</span> <span class="o">+</span>
+                     <span class="p">(</span><span class="s1">&#39;; &#39;</span> <span class="o">+</span> <span class="n">filefilter</span> <span class="k">if</span> <span class="n">filefilter</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span> <span class="k">if</span> <span class="n">filedesc</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="n">songinfo</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getsonginfo</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">songinfo</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;songinfo = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">songinfo</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;wo&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="n">samprate</span><span class="p">,</span>
+                          <span class="n">sampbit</span><span class="o">=</span><span class="n">sampbit</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">nframes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+
+            <span class="n">nwframes</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;write frames = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwframes</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Play an audio file including a raw file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;name of input file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;--samprate&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;sampling rate [Hz]&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--nchannels&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of channels&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="s1">&#39;--sampbit&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;bits/sample&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-t&#39;</span><span class="p">,</span> <span class="s1">&#39;--filetype&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;file type string&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">playrawbyplugin</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">samprate</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">nchannels</span><span class="p">,</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">sampbit</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">filetype</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="read-an-audio-file-by-plugin-and-write-it">
+<h3>Read an audio file by plugin and write it<a class="headerlink" href="#read-an-audio-file-by-plugin-and-write-it" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/ac30e171bae6710060963a6e627d8a4b/writefrombyplugin.py"><code class="xref download docutils literal notranslate"><span class="pre">writefrombyplugin.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">aifc</span>
+<span class="kn">import</span> <span class="nn">wave</span>
+<span class="kn">import</span> <span class="nn">sunau</span>
+<span class="kn">import</span> <span class="nn">spplugin</span>
+
+
+<span class="k">def</span> <span class="nf">writefrombyplugin</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">):</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">ofileext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">outputfile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ofileext</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;.wav&#39;</span><span class="p">,</span> <span class="s1">&#39;.wave&#39;</span><span class="p">):</span>
+        <span class="n">sndlib</span> <span class="o">=</span> <span class="n">wave</span>
+        <span class="n">decodebytes</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">obigendian_or_signed8bit</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">ofileext</span> <span class="o">==</span> <span class="s1">&#39;.au&#39;</span><span class="p">:</span>
+        <span class="n">sndlib</span> <span class="o">=</span> <span class="n">sunau</span>
+        <span class="n">decodebytes</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">obigendian_or_signed8bit</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">ofileext</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;.aif&#39;</span><span class="p">,</span> <span class="s1">&#39;.aiff&#39;</span><span class="p">,</span> <span class="s1">&#39;.aifc&#39;</span><span class="p">,</span> <span class="s1">&#39;.afc&#39;</span><span class="p">):</span>
+        <span class="n">sndlib</span> <span class="o">=</span> <span class="n">aifc</span>
+        <span class="n">decodebytes</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">obigendian_or_signed8bit</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;output file format is not supported&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pf</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;input plugin: </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">getpluginid</span><span class="p">(),</span> <span class="n">pf</span><span class="o">.</span><span class="n">getplugindesc</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;plugin version: </span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pf</span><span class="o">.</span><span class="n">getpluginversion</span><span class="p">())</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getparams</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, samprate = </span><span class="si">%d</span><span class="s1">, sampbit = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;nchannels&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;samprate&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;sampbit&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;nframes&#39;</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filetype&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;filetype = </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span>
+                  <span class="o">%</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;filetype&#39;</span><span class="p">],</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filedesc&#39;</span><span class="p">]</span> <span class="o">+</span>
+                     <span class="p">(</span><span class="s1">&#39;; &#39;</span> <span class="o">+</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filefilter&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filefilter&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span>
+                     <span class="s1">&#39;)&#39;</span> <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filedesc&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;songinfo&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;songinfo = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;songinfo&#39;</span><span class="p">]))</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">createrawarray</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;nframes&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">nread</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">readraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+        <span class="n">paramstuple</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getparamstuple</span><span class="p">(</span><span class="n">decodebytes</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">sndlib</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sf</span><span class="p">:</span>
+            <span class="n">sf</span><span class="o">.</span><span class="n">setparams</span><span class="p">(</span><span class="n">paramstuple</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">copyarray2raw</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">paramstuple</span><span class="o">.</span><span class="n">sampwidth</span><span class="p">,</span> <span class="n">bigendian_or_signed8bit</span><span class="o">=</span><span class="n">obigendian_or_signed8bit</span><span class="p">)</span>
+            <span class="n">sf</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;output file: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> inputfile outputfile&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">writefrombyplugin</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="read-an-audio-file-and-write-it-by-plugin">
+<h3>Read an audio file and write it by plugin<a class="headerlink" href="#read-an-audio-file-and-write-it-by-plugin" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/067ace04590502ffae4bb4844cf7b856/writetobyplugin.py"><code class="xref download docutils literal notranslate"><span class="pre">writetobyplugin.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">aifc</span>
+<span class="kn">import</span> <span class="nn">wave</span>
+<span class="kn">import</span> <span class="nn">sunau</span>
+<span class="kn">import</span> <span class="nn">spplugin</span>
+
+
+<span class="k">def</span> <span class="nf">writefrombyplugin</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">):</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">ifileext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputfile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ifileext</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;.wav&#39;</span><span class="p">,</span> <span class="s1">&#39;.wave&#39;</span><span class="p">):</span>
+        <span class="n">sndlib</span> <span class="o">=</span> <span class="n">wave</span>
+        <span class="n">decodebytes</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">ibigendian_or_signed8bit</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">ifileext</span> <span class="o">==</span> <span class="s1">&#39;.au&#39;</span><span class="p">:</span>
+        <span class="n">sndlib</span> <span class="o">=</span> <span class="n">sunau</span>
+        <span class="n">decodebytes</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">ibigendian_or_signed8bit</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">ifileext</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;.aif&#39;</span><span class="p">,</span> <span class="s1">&#39;.aiff&#39;</span><span class="p">,</span> <span class="s1">&#39;.aifc&#39;</span><span class="p">,</span> <span class="s1">&#39;.afc&#39;</span><span class="p">):</span>
+        <span class="n">sndlib</span> <span class="o">=</span> <span class="n">aifc</span>
+        <span class="n">decodebytes</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">ibigendian_or_signed8bit</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;input file format is not supported&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">sndlib</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sf</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">getparams</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, framerate = </span><span class="si">%d</span><span class="s1">, sampwidth = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">framerate</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">sampwidth</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">nframes</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">comptype</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;comptype = </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span>
+                  <span class="o">%</span> <span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">comptype</span><span class="p">,</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">compname</span> <span class="o">+</span>
+                     <span class="s1">&#39;)&#39;</span> <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">compname</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+
+        <span class="n">y</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">nframes</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span> <span class="k">as</span> <span class="n">pf</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;output plugin: </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">getpluginid</span><span class="p">(),</span> <span class="n">pf</span><span class="o">.</span><span class="n">getplugindesc</span><span class="p">()))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;plugin version: </span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pf</span><span class="o">.</span><span class="n">getpluginversion</span><span class="p">())</span>
+
+            <span class="n">b</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">copyraw2array</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">sampwidth</span><span class="p">,</span> <span class="n">bigendian_or_signed8bit</span><span class="o">=</span><span class="n">ibigendian_or_signed8bit</span><span class="p">)</span>
+            <span class="n">nwrite</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nwrite = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwrite</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;output file: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> inputfile outputfile&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">writefrombyplugin</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="convert-an-audio-file-by-plugin">
+<h3>Convert an audio file by plugin<a class="headerlink" href="#convert-an-audio-file-by-plugin" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference download internal" download="" href="_downloads/08fdd0598b7cf04d66faee07114b7c76/convbyplugin.py"><code class="xref download docutils literal notranslate"><span class="pre">convbyplugin.py</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">spplugin</span>
+
+
+<span class="k">def</span> <span class="nf">convbyplugin</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pf</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;input plugin: </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">getpluginid</span><span class="p">(),</span> <span class="n">pf</span><span class="o">.</span><span class="n">getplugindesc</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;plugin version: </span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pf</span><span class="o">.</span><span class="n">getpluginversion</span><span class="p">())</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">getparams</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nchannels = </span><span class="si">%d</span><span class="s1">, samprate = </span><span class="si">%d</span><span class="s1">, sampbit = </span><span class="si">%d</span><span class="s1">, nframes = </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;nchannels&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;samprate&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;sampbit&#39;</span><span class="p">],</span>
+                 <span class="n">params</span><span class="p">[</span><span class="s1">&#39;nframes&#39;</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filetype&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;filetype = </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span>
+                  <span class="o">%</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;filetype&#39;</span><span class="p">],</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filedesc&#39;</span><span class="p">]</span> <span class="o">+</span>
+                     <span class="p">(</span><span class="s1">&#39;; &#39;</span> <span class="o">+</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filefilter&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filefilter&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span>
+                     <span class="s1">&#39;)&#39;</span> <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filedesc&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;songinfo&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;songinfo = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;songinfo&#39;</span><span class="p">]))</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">createrawarray</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;nframes&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">nread</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">readraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nread = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nread</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">spplugin</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span> <span class="k">as</span> <span class="n">pf</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;output plugin: </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">getpluginid</span><span class="p">(),</span> <span class="n">pf</span><span class="o">.</span><span class="n">getplugindesc</span><span class="p">()))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;plugin version: </span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pf</span><span class="o">.</span><span class="n">getpluginversion</span><span class="p">())</span>
+
+            <span class="n">nwrite</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nwrite = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nwrite</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;output file: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;usage: </span><span class="si">%s</span><span class="s1"> inputfile outputfile&#39;</span>
+              <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+
+    <span class="n">convbyplugin</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="spplugin.html" class="btn btn-neutral float-left" title="spplugin module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019  Hideki Banno
+      <span class="lastupdated">
+        Last updated on 2022-07-24 11:53:26 PM.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+    <p><img src="/cgi-bin/labs/rj001/counter/count.cgi?id=spAudio_python"></p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

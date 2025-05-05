@@ -1,0 +1,1098 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spaudioモジュール &mdash; spAudio  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom_theme.css?v=97d91ad3" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4eb6406d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=4755f45a"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="sppluginモジュール" href="spplugin.html" />
+    <link rel="prev" title="APIドキュメント" href="apidoc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #1060A0" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            spAudio
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">目次</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main.html">はじめに</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#installation">インストール</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#change-log">更新履歴</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#build">ビルド</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#official-site">オフィシャルサイト</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="apidoc.html">APIドキュメント</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">spaudioモジュール</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.DeviceError"><code class="docutils literal notranslate"><span class="pre">DeviceError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.DriverError"><code class="docutils literal notranslate"><span class="pre">DriverError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.SpAudio"><code class="docutils literal notranslate"><span class="pre">SpAudio</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.close"><code class="docutils literal notranslate"><span class="pre">SpAudio.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.createarray"><code class="docutils literal notranslate"><span class="pre">SpAudio.createarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.createndarray"><code class="docutils literal notranslate"><span class="pre">SpAudio.createndarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.createrawarray"><code class="docutils literal notranslate"><span class="pre">SpAudio.createrawarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.createrawndarray"><code class="docutils literal notranslate"><span class="pre">SpAudio.createrawndarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getarraytypecode"><code class="docutils literal notranslate"><span class="pre">SpAudio.getarraytypecode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getblockingmode"><code class="docutils literal notranslate"><span class="pre">SpAudio.getblockingmode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getbuffersize"><code class="docutils literal notranslate"><span class="pre">SpAudio.getbuffersize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getcompname"><code class="docutils literal notranslate"><span class="pre">SpAudio.getcompname()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getcomptype"><code class="docutils literal notranslate"><span class="pre">SpAudio.getcomptype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getdevicelist"><code class="docutils literal notranslate"><span class="pre">SpAudio.getdevicelist()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getdevicename"><code class="docutils literal notranslate"><span class="pre">SpAudio.getdevicename()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getframerate"><code class="docutils literal notranslate"><span class="pre">SpAudio.getframerate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getnbuffers"><code class="docutils literal notranslate"><span class="pre">SpAudio.getnbuffers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getnchannels"><code class="docutils literal notranslate"><span class="pre">SpAudio.getnchannels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getndarraydtype"><code class="docutils literal notranslate"><span class="pre">SpAudio.getndarraydtype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getndevices"><code class="docutils literal notranslate"><span class="pre">SpAudio.getndevices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getparams"><code class="docutils literal notranslate"><span class="pre">SpAudio.getparams()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getparamstuple"><code class="docutils literal notranslate"><span class="pre">SpAudio.getparamstuple()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getrawarraytypecode"><code class="docutils literal notranslate"><span class="pre">SpAudio.getrawarraytypecode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getrawndarraydtype"><code class="docutils literal notranslate"><span class="pre">SpAudio.getrawndarraydtype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getrawsampbit"><code class="docutils literal notranslate"><span class="pre">SpAudio.getrawsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getrawsampwidth"><code class="docutils literal notranslate"><span class="pre">SpAudio.getrawsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getsampbit"><code class="docutils literal notranslate"><span class="pre">SpAudio.getsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getsamprate"><code class="docutils literal notranslate"><span class="pre">SpAudio.getsamprate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.getsampwidth"><code class="docutils literal notranslate"><span class="pre">SpAudio.getsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.open"><code class="docutils literal notranslate"><span class="pre">SpAudio.open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.read"><code class="docutils literal notranslate"><span class="pre">SpAudio.read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.readframes"><code class="docutils literal notranslate"><span class="pre">SpAudio.readframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.readraw"><code class="docutils literal notranslate"><span class="pre">SpAudio.readraw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.readrawframes"><code class="docutils literal notranslate"><span class="pre">SpAudio.readrawframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.reload"><code class="docutils literal notranslate"><span class="pre">SpAudio.reload()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.selectdevice"><code class="docutils literal notranslate"><span class="pre">SpAudio.selectdevice()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setblockingmode"><code class="docutils literal notranslate"><span class="pre">SpAudio.setblockingmode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setbuffersize"><code class="docutils literal notranslate"><span class="pre">SpAudio.setbuffersize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setcallback"><code class="docutils literal notranslate"><span class="pre">SpAudio.setcallback()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setcomptype"><code class="docutils literal notranslate"><span class="pre">SpAudio.setcomptype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setframerate"><code class="docutils literal notranslate"><span class="pre">SpAudio.setframerate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setnbuffers"><code class="docutils literal notranslate"><span class="pre">SpAudio.setnbuffers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setnchannels"><code class="docutils literal notranslate"><span class="pre">SpAudio.setnchannels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setparams"><code class="docutils literal notranslate"><span class="pre">SpAudio.setparams()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setsampbit"><code class="docutils literal notranslate"><span class="pre">SpAudio.setsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setsamprate"><code class="docutils literal notranslate"><span class="pre">SpAudio.setsamprate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.setsampwidth"><code class="docutils literal notranslate"><span class="pre">SpAudio.setsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.stop"><code class="docutils literal notranslate"><span class="pre">SpAudio.stop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.sync"><code class="docutils literal notranslate"><span class="pre">SpAudio.sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.terminate"><code class="docutils literal notranslate"><span class="pre">SpAudio.terminate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.write"><code class="docutils literal notranslate"><span class="pre">SpAudio.write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.writeframes"><code class="docutils literal notranslate"><span class="pre">SpAudio.writeframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.writeraw"><code class="docutils literal notranslate"><span class="pre">SpAudio.writeraw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spaudio.SpAudio.writerawframes"><code class="docutils literal notranslate"><span class="pre">SpAudio.writerawframes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.callbacksignature"><code class="docutils literal notranslate"><span class="pre">callbacksignature()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.getdriverdevicename"><code class="docutils literal notranslate"><span class="pre">getdriverdevicename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.getdriverlist"><code class="docutils literal notranslate"><span class="pre">getdriverlist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.getdrivername"><code class="docutils literal notranslate"><span class="pre">getdrivername()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.getndriverdevices"><code class="docutils literal notranslate"><span class="pre">getndriverdevices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.getndrivers"><code class="docutils literal notranslate"><span class="pre">getndrivers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spaudio.open"><code class="docutils literal notranslate"><span class="pre">open()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="spplugin.html">sppluginモジュール</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.BogusFileError"><code class="docutils literal notranslate"><span class="pre">BogusFileError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.FileError"><code class="docutils literal notranslate"><span class="pre">FileError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.FileTypeError"><code class="docutils literal notranslate"><span class="pre">FileTypeError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.NChannelsError"><code class="docutils literal notranslate"><span class="pre">NChannelsError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.NFramesRequiredError"><code class="docutils literal notranslate"><span class="pre">NFramesRequiredError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.SampleBitError"><code class="docutils literal notranslate"><span class="pre">SampleBitError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.SampleRateError"><code class="docutils literal notranslate"><span class="pre">SampleRateError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.appendsonginfo"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.appendsonginfo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.close"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.copyarray2raw"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.copyarray2raw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.copyraw2array"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.copyraw2array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.createarray"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.createarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.createndarray"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.createndarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.createrawarray"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.createrawarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.createrawndarray"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.createrawndarray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getarraytypecode"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getarraytypecode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getcompname"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getcompname()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getcomptype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getcomptype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getfiledesc"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getfiledesc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getfilefilter"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getfilefilter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getfiletype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getfiletype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getframerate"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getframerate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getmark"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getmark()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getmarkers"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getmarkers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getnchannels"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getnchannels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getndarraydtype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getndarraydtype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getnframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getnframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getparams"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getparams()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getparamstuple"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getparamstuple()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getplugindesc"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getplugindesc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getpluginid"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getpluginid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getplugininfo"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getplugininfo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getpluginname"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getpluginname()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getpluginversion"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getpluginversion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getrawarraytypecode"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getrawarraytypecode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getrawndarraydtype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getrawndarraydtype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getrawsampbit"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getrawsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getrawsampwidth"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getrawsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getsampbit"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getsamprate"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getsamprate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getsampwidth"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.getsonginfo"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.getsonginfo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.open"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.read"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.readframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.readframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.readraw"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.readraw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.readrawframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.readrawframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.rewind"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.rewind()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setcomptype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setcomptype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setfiletype"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setfiletype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setframerate"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setframerate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setmark"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setmark()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setnchannels"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setnchannels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setnframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setnframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setparams"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setparams()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setpos"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setpos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setsampbit"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setsampbit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setsamprate"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setsamprate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setsampwidth"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setsampwidth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.setsonginfo"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.setsonginfo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.tell"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.tell()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.write"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.writeframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.writeframes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.writeraw"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.writeraw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spplugin.html#spplugin.SpFilePlugin.writerawframes"><code class="docutils literal notranslate"><span class="pre">SpFilePlugin.writerawframes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.SuitableNotFoundError"><code class="docutils literal notranslate"><span class="pre">SuitableNotFoundError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.WrongPluginError"><code class="docutils literal notranslate"><span class="pre">WrongPluginError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.audioread"><code class="docutils literal notranslate"><span class="pre">audioread()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.audiowrite"><code class="docutils literal notranslate"><span class="pre">audiowrite()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.getplugindesc"><code class="docutils literal notranslate"><span class="pre">getplugindesc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.getplugininfo"><code class="docutils literal notranslate"><span class="pre">getplugininfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spplugin.html#spplugin.open"><code class="docutils literal notranslate"><span class="pre">open()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">サンプルコード</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#spaudio"><span class="xref std std-doc">spaudio</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#fullduplex-i-o">フルデュプレックスI/O</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#fullduplex-i-o-using-with-statement-version-0-7-15">フルデュプレックスI/O（ <code class="docutils literal notranslate"><span class="pre">with</span></code> 文を使用; バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-python-array-version">読み込みとプロット（Python配列バージョン）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-raw-data-version">読み込みとプロット（Rawデータバージョン）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-numpy-ndarray-version">読み込みとプロット（NumPy ndarrayバージョン）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-numpy-ndarray-version-using-with-statement-version-0-7-16">読み込みとプロット（NumPy ndarrayバージョン; <code class="docutils literal notranslate"><span class="pre">with</span></code> 文を使用; バージョン0.7.16以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-and-plot-numpy-raw-ndarray-version">読み込みとプロット（NumPy Raw ndarrayバージョン）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file">WAVファイルの再生</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file-using-with-statement-version-0-7-15">WAVファイルの再生（ <code class="docutils literal notranslate"><span class="pre">with</span></code> 文を使用; バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file-with-callback">WAVファイルの再生（コールバックあり）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-wav-file-with-callback-using-with-statement-version-0-7-15">WAVファイルの再生（コールバックあり; <code class="docutils literal notranslate"><span class="pre">with</span></code> 文を使用; バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#record-to-a-wav-file">WAVファイルへの録音</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#record-to-a-wav-file-using-with-statement-version-0-7-15">WAVファイルへの録音（ <code class="docutils literal notranslate"><span class="pre">with</span></code> 文を使用; バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#block-read-version-0-7-15">ブロックごとに読み込み（バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#block-write-version-0-7-15">ブロックごとに書き込み（バージョン0.7.15以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-readframes-and-writeframes-version-0-7-16"><code class="xref py py-func docutils literal notranslate"><span class="pre">readframes()</span></code> と <code class="xref py py-func docutils literal notranslate"><span class="pre">writeframes()</span></code> の使用例（バージョン0.7.16以降）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#spplugin"><span class="xref std std-doc">spplugin</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-audioread-version-0-7-16"><code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code> の使用例（バージョン0.7.16以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-audiowrite-version-0-7-16"><code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code> の使用例（バージョン0.7.16以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#an-example-of-audioread-and-audiowrite-version-0-7-16"><code class="xref py py-func docutils literal notranslate"><span class="pre">audioread()</span></code> と <code class="xref py py-func docutils literal notranslate"><span class="pre">audiowrite()</span></code> の使用例（バージョン0.7.16以降）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#plot-an-audio-file-contents-by-plugin">プラグインによる音声ファイルの読み込みと，その内容のプロット</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-an-audio-file-contents-by-plugin">プラグインによる音声ファイルの再生</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#play-a-raw-file-contents-by-plugin">プラグインによるRawファイルの再生</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-an-audio-file-by-plugin-and-write-it">プラグインによる音声ファイルの読み込み</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#read-an-audio-file-and-write-it-by-plugin">プラグインによる音声ファイルの書き込み</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#convert-an-audio-file-by-plugin">プラグインによる音声ファイルの変換</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #1060A0" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">spAudio</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="apidoc.html">APIドキュメント</a></li>
+      <li class="breadcrumb-item active">spaudioモジュール</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-spaudio">
+<span id="spaudio-module"></span><h1>spaudioモジュール<a class="headerlink" href="#module-spaudio" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://www-ie.meijo-u.ac.jp/labs/rj001/spLibs/index-j.html">spAudio</a> に基づくオーディオ入出力のpythonモジュールです．</p>
+<div class="admonition- admonition">
+<p class="admonition-title">サンプル</p>
+<p>下記はフルデュプレックスオーディオ入出力を実現する例です（バージョン0.7.15以上）．</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spaudio</span>
+
+<span class="k">with</span> <span class="n">spaudio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;rw&#39;</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">samprate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
+    <span class="n">nloop</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nloop</span><span class="p">):</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">readraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">writeraw</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py exception">
+<dt class="sig sig-object py" id="spaudio.DeviceError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">DeviceError</span></span><a class="reference internal" href="_modules/spaudio.html#DeviceError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.DeviceError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spaudio.Error" title="spaudio.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>オーディオデバイスの問題による例外です．</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spaudio.DriverError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">DriverError</span></span><a class="reference internal" href="_modules/spaudio.html#DriverError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.DriverError" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#spaudio.Error" title="spaudio.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>オーディオドライバーの問題による例外です．</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spaudio.Error">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">Error</span></span><a class="reference internal" href="_modules/spaudio.html#Error"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.Error" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>spaudioの基本例外クラスです．</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spaudio.SpAudio">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">SpAudio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drivername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio" title="Link to this definition"></a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>オーディオ入出力のためのクラスです．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>drivername</strong> (<em>str</em>) -- 初期化するドライバー名を指定します．</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.close"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.close" title="Link to this definition"></a></dt>
+<dd><p>オーディオデバイスを閉じます．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.createarray">
+<span class="sig-name descname"><span class="pre">createarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.createarray"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.createarray" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイス設定に応じたdouble型配列を作成します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> -- 配列の長さを指定します．この長さはいわゆるフレーム数とは異なりますのでご注意ください（length = nframes * nchannels）．フレーム数を指定したい場合は第2引数に <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) -- 第1引数にフレーム数を指定したい場合は <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>現在のデバイスの設定に応じたarrayクラスのオブジェクトが返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.createndarray">
+<span class="sig-name descname"><span class="pre">createndarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.createndarray"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.createndarray" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスの設定に応じたnumpyのdouble型配列を作成します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> -- 配列の長さを指定します．この長さはいわゆるフレーム数とは異なりますのでご注意ください（length = nframes * nchannels）．フレーム数を指定したい場合は第2引数に <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) -- 第1引数にフレーム数を指定したい場合は <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定すると出力配列が  (nframes, nchannels) の行列にリサイズされます．この引数はバージョン0.7.16にて導入されました．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>現在のデバイスの設定に応じたndarrayクラスのオブジェクトが返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.createrawarray">
+<span class="sig-name descname"><span class="pre">createrawarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.createrawarray"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.createrawarray" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスの設定に応じたRaw形式配列を作成します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> -- 配列の長さを指定します．この長さはいわゆるフレーム数とは異なりますのでご注意ください（length = nframes * nchannels）．フレーム数を指定したい場合は第2引数に <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) -- 第1引数にフレーム数を指定したい場合は <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>現在のデバイスの設定に応じたarrayクラスのオブジェクトが返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.createrawndarray">
+<span class="sig-name descname"><span class="pre">createrawndarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframesflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.createrawndarray"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.createrawndarray" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスの設定に応じたRaw形式のnumpyのndarrayを作成します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> -- 配列の長さを指定します．この長さはいわゆるフレーム数とは異なりますのでご注意ください（length = nframes * nchannels）．フレーム数を指定したい場合は第2引数に <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>nframesflag</strong> (<em>bool</em><em>, </em><em>optional</em>) -- 第1引数にフレーム数を指定したい場合は <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定します．</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定すると出力配列が  (nframes, nchannels) の行列にリサイズされます．この引数はバージョン0.7.16にて導入されました．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>現在のデバイスの設定に応じたndarrayクラスのオブジェクトが返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getarraytypecode">
+<span class="sig-name descname"><span class="pre">getarraytypecode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getarraytypecode"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getarraytypecode" title="Link to this definition"></a></dt>
+<dd><p>double型配列を保持する場合の型コードを取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>現在の設定に応じたdouble型配列の型コードが返ります．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>char</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getblockingmode">
+<span class="sig-name descname"><span class="pre">getblockingmode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getblockingmode"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getblockingmode" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのブロッキングモードを取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0 = ブロッキングモード（デフォルト），1 = ノンブロッキングモード．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getbuffersize">
+<span class="sig-name descname"><span class="pre">getbuffersize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getbuffersize"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getbuffersize" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのバッファサイズを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getcompname">
+<span class="sig-name descname"><span class="pre">getcompname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decodebytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getcompname"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getcompname" title="Link to this definition"></a></dt>
+<dd><p>圧縮形式の詳細名が返ります．現在の所， <code class="docutils literal notranslate"><span class="pre">'not</span> <span class="pre">compressed'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">True</span></code> の場合) または <code class="docutils literal notranslate"><span class="pre">b'not</span> <span class="pre">compressed'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">False</span></code> の場合) のいずれかになります．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getcomptype">
+<span class="sig-name descname"><span class="pre">getcomptype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decodebytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getcomptype"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getcomptype" title="Link to this definition"></a></dt>
+<dd><p>圧縮形式が返ります．現在の所， <code class="docutils literal notranslate"><span class="pre">'NONE'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">True</span></code> の場合) または <code class="docutils literal notranslate"><span class="pre">b'NONE'</span></code> (decodebytes = <code class="docutils literal notranslate"><span class="pre">False</span></code> の場合) のいずれかになります．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getdevicelist">
+<span class="sig-name descname"><span class="pre">getdevicelist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getdevicelist"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getdevicelist" title="Link to this definition"></a></dt>
+<dd><p>オーディオデバイスのリストを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getdevicename">
+<span class="sig-name descname"><span class="pre">getdevicename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deviceindex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getdevicename"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getdevicename" title="Link to this definition"></a></dt>
+<dd><p>オーディオデバイスの名前を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getframerate">
+<span class="sig-name descname"><span class="pre">getframerate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getframerate"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getframerate" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのサンプルレートを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getnbuffers">
+<span class="sig-name descname"><span class="pre">getnbuffers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getnbuffers"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getnbuffers" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのバッファ数を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getnchannels">
+<span class="sig-name descname"><span class="pre">getnchannels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getnchannels"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getnchannels" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのチャネル数を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getndarraydtype">
+<span class="sig-name descname"><span class="pre">getndarraydtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getndarraydtype"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getndarraydtype" title="Link to this definition"></a></dt>
+<dd><p>double型配列を保持するためのnumpyのndarray用のdtype文字列を取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>現在の設定のdtype文字列が返ります．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getndevices">
+<span class="sig-name descname"><span class="pre">getndevices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getndevices"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getndevices" title="Link to this definition"></a></dt>
+<dd><p>オーディオデバイスの数を取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getparams">
+<span class="sig-name descname"><span class="pre">getparams</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getparams"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getparams" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスの全てのパラメータをdictオブジェクトで取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>キーが <code class="docutils literal notranslate"><span class="pre">'nchannels'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sampbit'</span></code>, <code class="docutils literal notranslate"><span class="pre">'samprate'</span></code>, <code class="docutils literal notranslate"><span class="pre">'blockingmode'</span></code>, <code class="docutils literal notranslate"><span class="pre">'buffersize'</span></code>, <code class="docutils literal notranslate"><span class="pre">'nbuffers'</span></code> になっているdictオブジェクトが返ります．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getparamstuple">
+<span class="sig-name descname"><span class="pre">getparamstuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decodebytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nframes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getparamstuple"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getparamstuple" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスの全てのパラメータをnamedtupleオブジェクトで取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>decodebytes</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> の場合は， <code class="docutils literal notranslate"><span class="pre">'comptype'</span></code> 及び  <code class="docutils literal notranslate"><span class="pre">'compname'</span></code> 用のbytesオブジェクトを文字列オブジェクトにデコードします．標準ライブラリのwave，sunauはデコードされた文字列オブジェクトを要求するのに対し，こちらも標準ライブラリのaifcはbytesオブジェクトを要求するため，この引数が用意されています．</p></li>
+<li><p><strong>nframes</strong> (<em>int</em><em>, </em><em>optional</em>) -- 音声ファイルのフレーム数を指定します．指定がない場合は，出力されるtupleの第4要素は0になります．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>現在のデバイスの全てのパラメータを含むnamedtupleオブジェクトが返ります．このnamedtupleオブジェクトは，内容が <code class="docutils literal notranslate"><span class="pre">(nchannels,</span> <span class="pre">sampwidth,</span> <span class="pre">framerate,</span> <span class="pre">nframes,</span> <span class="pre">comptype,</span> <span class="pre">compname)</span></code> になっており，aifc，wave，sunauの標準ライブラリにおける <code class="docutils literal notranslate"><span class="pre">setparams()</span></code> の引数として与えることが可能です．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getrawarraytypecode">
+<span class="sig-name descname"><span class="pre">getrawarraytypecode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getrawarraytypecode"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getrawarraytypecode" title="Link to this definition"></a></dt>
+<dd><p>Raw形式のデータを保持するためのpythonの配列の型コードを取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>現在の設定の型コードが返ります．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>char</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getrawndarraydtype">
+<span class="sig-name descname"><span class="pre">getrawndarraydtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getrawndarraydtype"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getrawndarraydtype" title="Link to this definition"></a></dt>
+<dd><p>Raw形式のデータを保持するためのnumpyのndarray用のdtype文字列を取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>現在の設定のdtype文字列が返ります．</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getrawsampbit">
+<span class="sig-name descname"><span class="pre">getrawsampbit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getrawsampbit"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getrawsampbit" title="Link to this definition"></a></dt>
+<dd><p>Raw形式配列用のビット/サンプルを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getrawsampwidth">
+<span class="sig-name descname"><span class="pre">getrawsampwidth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getrawsampwidth"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getrawsampwidth" title="Link to this definition"></a></dt>
+<dd><p>Raw形式配列用のバイト/サンプルを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getsampbit">
+<span class="sig-name descname"><span class="pre">getsampbit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getsampbit"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getsampbit" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのビット/サンプルを取得します．sampbit = 33は，32ビットfloat型と対応します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getsamprate">
+<span class="sig-name descname"><span class="pre">getsamprate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getsamprate"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getsamprate" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのサンプルレートを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.getsampwidth">
+<span class="sig-name descname"><span class="pre">getsampwidth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.getsampwidth"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.getsampwidth" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのバイト/サンプルを取得します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deviceindex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samprate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampbit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nchannels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blockingmode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffersize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbuffers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.open"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.open" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスを開きます</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<em>str</em>) -- デバイスを開く際のモードを指定します．読み込みモードの <code class="docutils literal notranslate"><span class="pre">'r'</span></code> ，書き込みモードの <code class="docutils literal notranslate"><span class="pre">'w'</span></code> があります．また，読み込み専用モードの <code class="docutils literal notranslate"><span class="pre">'ro'</span></code> と書き込み専用モードの <code class="docutils literal notranslate"><span class="pre">'wo'</span></code> も用意されており，これらのモードではいずれかのモードでしか開けなくなりますが，環境によっては処理が軽くなることがあります．</p></li>
+<li><p><strong>callback</strong> (<em>tuple</em><em>, </em><em>optional</em>) -- コールバック関数などが含まれる， <a class="reference internal" href="#spaudio.SpAudio.setcallback" title="spaudio.SpAudio.setcallback"><code class="xref py py-func docutils literal notranslate"><span class="pre">setcallback()</span></code></a> に与える全ての引数を含むtupleを指定します．</p></li>
+<li><p><strong>deviceindex</strong> (<em>int</em><em>, </em><em>optional</em>) -- 選択したいオーディオデバイスのインデックスを指定します．</p></li>
+<li><p><strong>samprate</strong> (<em>double</em><em>, </em><em>optional</em>) -- 現在のデバイスのサンプルレートを設定します．</p></li>
+<li><p><strong>sampbit</strong> (<em>int</em><em>, </em><em>optional</em>) -- 現在のデバイスのビット/サンプルを設定します．</p></li>
+<li><p><strong>nchannels</strong> (<em>int</em><em>, </em><em>optional</em>) -- 現在のデバイスのチャネル数を設定します．</p></li>
+<li><p><strong>blockingmode</strong> (<em>int</em><em>, </em><em>optional</em>) -- 0 = ブロッキングモード（デフォルト），1 = ノンブロッキングモード．</p></li>
+<li><p><strong>buffersize</strong> (<em>int</em><em>, </em><em>optional</em>) -- 現在のデバイスのバッファサイズを設定します．</p></li>
+<li><p><strong>nbuffers</strong> (<em>int</em><em>, </em><em>optional</em>) -- 現在のデバイスのバッファ数を設定します．</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) -- 上記の <cite>samprate</cite> から <cite>nbuffers</cite> までの任意のパラメータが含まれ得るdictオブジェクトを指定します．</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>キーワード引数のサポートはバージョン0.7.15で追加されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.read"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.read" title="Link to this definition"></a></dt>
+<dd><p>オーディオデバイスからdouble型配列にデータを読み込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- オーディオデバイスから読み込むためのdouble型配列を指定します．</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) -- 読み込み後のデータに乗じられる重み係数を指定します．</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対するオフセットを指定します．</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対する読み込み長を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には読み込みサイズが返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>キーワード引数の <cite>offset</cite> と <cite>length</cite> はバージョン0.7.15で導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.readframes">
+<span class="sig-name descname"><span class="pre">readframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nframes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arraytype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ndarray'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.readframes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.readframes" title="Link to this definition"></a></dt>
+<dd><p>次の <cite>nframes</cite> 分のデータを読み込み，double型配列を返します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nframes</strong> (<em>int</em>) -- 読み込むフレーム数を指定します．</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) -- 読み込み後のデータに乗じられる重み係数を指定します．</p></li>
+<li><p><strong>arraytype</strong> (<em>str</em><em>, </em><em>optional</em>) -- 出力配列の型を指定します． <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> （デフォルト）, <code class="docutils literal notranslate"><span class="pre">'array'</span></code>, <code class="docutils literal notranslate"><span class="pre">'bytearray'</span></code> のいずれかを指定します．</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定すると出力のndarrayが  (nframes, nchannels) の行列にリサイズされます．この引数は  <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> の場合にだけ有効となります．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>読み込まれたデータが含まれる配列が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray, array.array or bytearray</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.16にて導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.readraw">
+<span class="sig-name descname"><span class="pre">readraw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.readraw"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.readraw" title="Link to this definition"></a></dt>
+<dd><p>オーディオデバイスからRaw形式のデータを読み込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- オーディオデバイスからRaw形式のデータを読み込むためのRaw形式配列を指定します．</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対するオフセットを指定します．</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対する読み込み長を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には読み込みサイズが返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>キーワード引数の <cite>offset</cite> と <cite>length</cite> はバージョン0.7.15で導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.readrawframes">
+<span class="sig-name descname"><span class="pre">readrawframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nframes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arraytype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ndarray'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channelwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.readrawframes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.readrawframes" title="Link to this definition"></a></dt>
+<dd><p>次の <cite>nframes</cite> 分のデータを読み込み，Raw形式配列を返します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nframes</strong> (<em>int</em>) -- 読み込むフレーム数を指定します．</p></li>
+<li><p><strong>arraytype</strong> (<em>str</em><em>, </em><em>optional</em>) -- 出力配列の型を指定します． <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> （デフォルト）, <code class="docutils literal notranslate"><span class="pre">'array'</span></code>, <code class="docutils literal notranslate"><span class="pre">'bytearray'</span></code> のいずれかを指定します．</p></li>
+<li><p><strong>channelwise</strong> (<em>bool</em><em>, </em><em>optional</em>) -- <code class="docutils literal notranslate"><span class="pre">True</span></code> を指定すると出力のndarrayが  (nframes, nchannels) の行列にリサイズされます．この引数は  <code class="docutils literal notranslate"><span class="pre">'ndarray'</span></code> の場合にだけ有効となります．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>読み込まれたデータが含まれる配列が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray, array.array or bytearray</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.16にて導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.reload">
+<span class="sig-name descname"><span class="pre">reload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drivername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.reload"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.reload" title="Link to this definition"></a></dt>
+<dd><p>別のオーディオドライバーを再読込します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.selectdevice">
+<span class="sig-name descname"><span class="pre">selectdevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deviceindex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.selectdevice"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.selectdevice" title="Link to this definition"></a></dt>
+<dd><p>指定されたインデックスと対応するオーディオデバイスを選択します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deviceindex</strong> (<em>int</em>) -- オーディオデバイスのインデックスを指定します．</p>
+</dd>
+<dt class="field-even">例外<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> -- <cite>deviceindex</cite> がデバイス数以上の場合に発生します．</p></li>
+<li><p><a class="reference internal" href="#spaudio.DriverError" title="spaudio.DriverError"><strong>DriverError</strong></a> -- オーディオデバイスが選択できない場合に発生します．</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setblockingmode">
+<span class="sig-name descname"><span class="pre">setblockingmode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setblockingmode"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setblockingmode" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのブロッキングモードを設定します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode</strong> (<em>int</em>) -- 0 = ブロッキングモード（デフォルト），1 = ノンブロッキングモード．</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setbuffersize">
+<span class="sig-name descname"><span class="pre">setbuffersize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffersize</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setbuffersize"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setbuffersize" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのバッファサイズを設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setcallback">
+<span class="sig-name descname"><span class="pre">setcallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calltype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setcallback"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setcallback" title="Link to this definition"></a></dt>
+<dd><p>コールバック関数を設定します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>calltype</strong> (<em>int</em>) -- コールバックタイプのコンビネーションで指定します．現在は， <code class="docutils literal notranslate"><span class="pre">OUTPUT_POSITION_CALLBACK</span></code> と <code class="docutils literal notranslate"><span class="pre">OUTPUT_BUFFER_CALLBACK</span></code> がサポートされています．</p></li>
+<li><p><strong>func</strong> (<em>callable</em>) -- コールバック関数を指定します．コールバック関数は，<a class="reference internal" href="#spaudio.callbacksignature" title="spaudio.callbacksignature"><code class="xref py py-func docutils literal notranslate"><span class="pre">callbacksignature()</span></code></a> で説明されるシグネチャを持つ必要があります．</p></li>
+<li><p><strong>*args</strong> -- コールバック関数に渡す可変長の引数リストを指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">例外<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#spaudio.DriverError" title="spaudio.DriverError"><strong>DriverError</strong></a> -- コールバック関数が設定できなかった時に発生します．</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setcomptype">
+<span class="sig-name descname"><span class="pre">setcomptype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encodestr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setcomptype"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setcomptype" title="Link to this definition"></a></dt>
+<dd><p>圧縮形式を設定します．現在，このパラメータは無視されます．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setframerate">
+<span class="sig-name descname"><span class="pre">setframerate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samprate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setframerate"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setframerate" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのサンプルレートを設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setnbuffers">
+<span class="sig-name descname"><span class="pre">setnbuffers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nbuffers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setnbuffers"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setnbuffers" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのバッファ数を設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setnchannels">
+<span class="sig-name descname"><span class="pre">setnchannels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nchannels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setnchannels"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setnchannels" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのチャネル数を設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setparams">
+<span class="sig-name descname"><span class="pre">setparams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setparams"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setparams" title="Link to this definition"></a></dt>
+<dd><p>サポートされている全てのパラメータを，dictオブジェクトもしくは namedtupleオブジェクトの形でデバイスに設定します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) -- <code class="docutils literal notranslate"><span class="pre">'nchannels'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sampbit'</span></code>, <code class="docutils literal notranslate"><span class="pre">'samprate'</span></code>, <code class="docutils literal notranslate"><span class="pre">'blockingmode'</span></code>, <code class="docutils literal notranslate"><span class="pre">'buffersize'</span></code>, <code class="docutils literal notranslate"><span class="pre">'nbuffers'</span></code> のキーを持つdictオブジェクトを指定します．標準ライブラリのaifc，wave，sunauで用いられるnamedtupleオブジェクトを指定することもできます．</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setsampbit">
+<span class="sig-name descname"><span class="pre">setsampbit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampbit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setsampbit"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setsampbit" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのビット/サンプルを設定します．sampbit = 33は，32ビットfloat型と対応します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setsamprate">
+<span class="sig-name descname"><span class="pre">setsamprate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samprate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setsamprate"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setsamprate" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのサンプルレートを設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.setsampwidth">
+<span class="sig-name descname"><span class="pre">setsampwidth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floatflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.setsampwidth"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.setsampwidth" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスのバイト/サンプルを設定します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.stop"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.stop" title="Link to this definition"></a></dt>
+<dd><p>オーディオ入出力を停止します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.sync">
+<span class="sig-name descname"><span class="pre">sync</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.sync"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.sync" title="Link to this definition"></a></dt>
+<dd><p>オーディオ入出力を同期します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.terminate">
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.terminate"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.terminate" title="Link to this definition"></a></dt>
+<dd><p>現在のオーディオドライバーの使用を終了します．</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.write"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.write" title="Link to this definition"></a></dt>
+<dd><p>double型配列のデータをオーディオデバイスへ書き込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- オーディオデバイスに書き込むためのdouble型配列を指定します．</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) -- 書き込み前のデータに乗じられる重み係数を指定します．</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対するオフセットを指定します．</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対する書き込み長を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には書き込まれたサイズが返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>キーワード引数の <cite>offset</cite> と <cite>length</cite> はバージョン0.7.15で導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.writeframes">
+<span class="sig-name descname"><span class="pre">writeframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.writeframes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.writeframes" title="Link to this definition"></a></dt>
+<dd><p>double型配列のデータをオーディオデバイスへ書き込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- オーディオデバイスに書き込むためのdouble型配列を指定します．</p></li>
+<li><p><strong>weight</strong> (<em>double</em><em>, </em><em>optional</em>) -- 書き込み前のデータに乗じられる重み係数を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には書き込まれたフレーム数が返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.16にて導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.writeraw">
+<span class="sig-name descname"><span class="pre">writeraw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.writeraw"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.writeraw" title="Link to this definition"></a></dt>
+<dd><p>オーディオデバイスにRaw形式配列のデータを書き込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- オーディオデバイスに書き込むためのRaw形式配列を指定します．</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対するオフセットを指定します．</p></li>
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>optional</em>) -- オプションの配列に対する書き込み長を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には書き込まれたサイズが返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>キーワード引数の <cite>offset</cite> と <cite>length</cite> はバージョン0.7.15で導入されました．</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spaudio.SpAudio.writerawframes">
+<span class="sig-name descname"><span class="pre">writerawframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#SpAudio.writerawframes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.SpAudio.writerawframes" title="Link to this definition"></a></dt>
+<dd><p>オーディオデバイスにRaw形式配列のデータを書き込みます．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>bytearray</em><em>, </em><em>array.array</em><em> or </em><em>numpy.ndarray</em>) -- オーディオデバイスに書き込むためのRaw形式配列を指定します．</p>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>成功した場合には書き込まれたフレーム数が返り，失敗した場合には-1が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.16にて導入されました．</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.callbacksignature">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">callbacksignature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calltype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#callbacksignature"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.callbacksignature" title="Link to this definition"></a></dt>
+<dd><p><a class="reference internal" href="#spaudio.SpAudio.setcallback" title="spaudio.SpAudio.setcallback"><code class="xref py py-func docutils literal notranslate"><span class="pre">setcallback()</span></code></a> で指定するコールバック関数のシグネチャです．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audio</strong> (<a class="reference internal" href="#spaudio.SpAudio" title="spaudio.SpAudio"><em>SpAudio</em></a>) -- <a class="reference internal" href="#spaudio.SpAudio" title="spaudio.SpAudio"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpAudio</span></code></a> クラスのインスタンスです．</p></li>
+<li><p><strong>calltype</strong> (<em>int</em>) -- コールバックタイプです． <code class="docutils literal notranslate"><span class="pre">OUTPUT_POSITION_CALLBACK</span></code> か <code class="docutils literal notranslate"><span class="pre">OUTPUT_BUFFER_CALLBACK</span></code> になります．</p></li>
+<li><p><strong>cbdata</strong> -- コールバック依存データです． <code class="docutils literal notranslate"><span class="pre">OUTPUT_POSITION_CALLBACK</span></code> では位置 (int) ， <code class="docutils literal notranslate"><span class="pre">OUTPUT_BUFFER_CALLBACK</span></code> ではバッファ (bytes) です．</p></li>
+<li><p><strong>args</strong> -- <a class="reference internal" href="#spaudio.SpAudio.setcallback" title="spaudio.SpAudio.setcallback"><code class="xref py py-func docutils literal notranslate"><span class="pre">setcallback()</span></code></a> にて指定された可変長の引数リストです．この関数内では， <cite>args</cite> には <code class="docutils literal notranslate"><span class="pre">*</span></code> の接頭辞は必要ありません．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>コールバックをこれ以上呼び出したくない場合は， <code class="docutils literal notranslate"><span class="pre">False</span></code> を返します．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.getdriverdevicename">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">getdriverdevicename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drivername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#getdriverdevicename"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.getdriverdevicename" title="Link to this definition"></a></dt>
+<dd><p>ドライバーにおけるオーディオデバイスの名前を取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>int</em>) -- オーディオデバイスのインデックスを指定します．</p></li>
+<li><p><strong>drivername</strong> (<em>str</em>) -- オプションのドライバー名を指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>デバイス名が含まれる文字列が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+<dt class="field-even">例外<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> -- <cite>index</cite> がデバイス数以上の場合に発生します．</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.getdriverlist">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">getdriverlist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#getdriverlist"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.getdriverlist" title="Link to this definition"></a></dt>
+<dd><p>ドライバー名のリストを取得します．</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.getdrivername">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">getdrivername</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#getdrivername"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.getdrivername" title="Link to this definition"></a></dt>
+<dd><p>指定されたインデックスと対応するオーディオドライバーの名前を取得します．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) -- オーディオドライバーのインデックスを指定します．</p>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>ドライバー名が含まれる文字列が返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+<dt class="field-even">例外<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> -- <cite>index</cite> がドライバー数以上の場合に発生します．</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.getndriverdevices">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">getndriverdevices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drivername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#getndriverdevices"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.getndriverdevices" title="Link to this definition"></a></dt>
+<dd><p>ドライバーにおけるデバイス数を取得します．</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.getndrivers">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">getndrivers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#getndrivers"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.getndrivers" title="Link to this definition"></a></dt>
+<dd><p>ドライバー数を取得します．</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spaudio.open">
+<span class="sig-prename descclassname"><span class="pre">spaudio.</span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">drivername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deviceindex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samprate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampbit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nchannels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blockingmode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffersize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbuffers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spaudio.html#open"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#spaudio.open" title="Link to this definition"></a></dt>
+<dd><p>現在のデバイスを開きます．この関数は <code class="docutils literal notranslate"><span class="pre">with</span></code> 文の中で使うことを想定しています．</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<em>str</em>) -- デバイスを開く際のモードを指定します．読み込みモードの <code class="docutils literal notranslate"><span class="pre">'r'</span></code> ，書き込みモードの <code class="docutils literal notranslate"><span class="pre">'w'</span></code> があります．また，読み込み専用モードの <code class="docutils literal notranslate"><span class="pre">'ro'</span></code> と書き込み専用モードの <code class="docutils literal notranslate"><span class="pre">'wo'</span></code> も用意されており，これらのモードではいずれかのモードでしか開けなくなりますが，環境によっては処理が軽くなることがあります．この関数では，  <code class="docutils literal notranslate"><span class="pre">'r'</span></code> モードの後に <code class="docutils literal notranslate"><span class="pre">'w'</span></code> で開く <code class="docutils literal notranslate"><span class="pre">'rw'</span></code> モードもサポートされています．</p></li>
+<li><p><strong>drivername</strong> (<em>str</em><em>, </em><em>optional</em>) -- 初期化するドライバー名を指定します．</p></li>
+<li><p><strong>callback</strong> (<em>tuple</em><em>, </em><em>optional</em>) -- コールバック関数などが含まれる， <a class="reference internal" href="#spaudio.SpAudio.setcallback" title="spaudio.SpAudio.setcallback"><code class="xref py py-func docutils literal notranslate"><span class="pre">setcallback()</span></code></a> に与える全ての引数を含むtupleを指定します．</p></li>
+<li><p><strong>deviceindex</strong> (<em>int</em><em>, </em><em>optional</em>) -- 選択したいオーディオデバイスのインデックスを指定します．</p></li>
+<li><p><strong>samprate</strong> (<em>double</em><em>, </em><em>optional</em>) -- 現在のデバイスのサンプルレートを設定します．</p></li>
+<li><p><strong>sampbit</strong> (<em>int</em><em>, </em><em>optional</em>) -- 現在のデバイスのビット/サンプルを設定します．</p></li>
+<li><p><strong>nchannels</strong> (<em>int</em><em>, </em><em>optional</em>) -- 現在のデバイスのチャネル数を設定します．</p></li>
+<li><p><strong>blockingmode</strong> (<em>int</em><em>, </em><em>optional</em>) -- 0 = ブロッキングモード（デフォルト），1 = ノンブロッキングモード．</p></li>
+<li><p><strong>buffersize</strong> (<em>int</em><em>, </em><em>optional</em>) -- 現在のデバイスのバッファサイズを設定します．</p></li>
+<li><p><strong>nbuffers</strong> (<em>int</em><em>, </em><em>optional</em>) -- 現在のデバイスのバッファ数を設定します．</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) -- 上記の <cite>samprate</cite> から <cite>nbuffers</cite> までの任意のパラメータが含まれ得るdictオブジェクトを指定します．</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#spaudio.SpAudio" title="spaudio.SpAudio"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpAudio</span></code></a> クラスのインスタンスが返ります．</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#spaudio.SpAudio" title="spaudio.SpAudio">SpAudio</a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>この関数はバージョン0.7.15にて導入されました．</p>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="apidoc.html" class="btn btn-neutral float-left" title="APIドキュメント" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="spplugin.html" class="btn btn-neutral float-right" title="sppluginモジュール" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017-2025  Hideki Banno.
+      <span class="lastupdated">最終更新: 2025-05-04 19:08:50
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p><img src="/cgi-bin/labs/rj001/counter/count.cgi?id=spAudio_python"></p>
+     
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
