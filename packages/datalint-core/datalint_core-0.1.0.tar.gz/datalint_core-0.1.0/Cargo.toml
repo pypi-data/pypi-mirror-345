@@ -1,0 +1,27 @@
+[package]
+name = "datalint-core"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+readme = "README.md"
+include = [
+    "/pyproject.toml",
+    "/README.md",
+    "/LICENSE",
+    "/Makefile",
+    "/src",
+    "!__pycache__",
+    "!tests/.pytest_cache",
+    "!*.so",
+]
+rust-version = "1.75"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "datalint_core"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = "0.24.0"
+anyhow = "1.0"
+serde = { version = "1", features = ["derive"] }
