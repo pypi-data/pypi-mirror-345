@@ -1,0 +1,160 @@
+
+# BUILD
+# Poetry https://python-poetry.org/docs/pyproject/
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "dmc-view"
+version = "0.3.2"
+description = "Digital Magnatic Compass View"
+authors = [{name="Iso"}, {name="Alan"}] # must be an object
+maintainers = [{name="Iso"}, {name="Alan"}] # must be an object 
+license = "AGPL-3.0-only"
+readme = "README.rst"
+
+homepage = "https://github.com/Issamricin/dmc-view"
+repository = "https://github.com/Issamricin/dmc-view"
+documentation = "https://dmc-view.readthedocs.io/"
+
+keywords = [
+    "digital Magnatic view", "dmc",
+]
+
+requires-python = ">=3.8"
+
+# Troves classifer see https://pypi.org/classifiers/
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Manufacturing",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Natural Language :: English",
+    "Operating System :: Unix",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Desktop Environment",
+]
+
+
+# PyPi url links, that appear in 'Project Links' section
+urls."Bug Tracker" = "https://github.com/Issamricin/dmc-view/issues"
+urls."CI: Github Actions" = "https://github.com/Issamricin/dmc-view/actions"
+urls.Documentation = "https://dmc-view.readthedocs.io/"
+urls."Source Code" = "https://github.com/Issamricin/dmc-view"
+urls.Changelog = "https://github.com/Issamricin/dmc-view/blob/master/CHANGELOG.rst"
+urls."Code of Conduct" = "https://github.com/Issamricin/dmc-view/blob/master/CONTRIBUTING.md"
+
+
+
+
+### Dependency Constraints, aka Requirements ###
+dependencies = [
+  "pyside6>=6.6.1",
+  "matplotlib>=3.10.1",
+]
+
+## optional dependency for test or other purpose 
+## Install in edit mode with the test dependencies 
+## $ pip install -e .  dmc-view[test]
+[project.optional-dependencies]
+test = [
+  "pytest>=8.0.0",
+  "pytest-qt>=4.4.0",
+  "pytest-mock>=3.14",
+  "pytest-cov>4.1.0",
+]
+
+
+# Information required for building (sdist/wheel)
+[tool.poetry]
+packages = [
+    { include = "dmcview", from = "src" },
+]
+
+include = [
+    { path = "tests", format = "sdist" },
+    { path = "docs/**/*.rst", format = "sdist" },
+    { path = "docs/conf.py", format = "sdist" },
+    { path = "src/**/*.typed", format = "sdist" },
+    { path = "src/stubs/*.pyi", format = "sdist" },
+    "pyproject.toml",
+    "LICENSE",
+    "README.rst",
+    "CONTRIBUTING.md",
+    "CHANGELOG.rst",
+]
+
+exclude = [
+    "docs/*",
+    "requirements/*",
+    "scripts/*.py",
+    "tox.ini",
+    ".circleci/config.yml",
+    ".coveragerc",
+    ".DS_Store",
+    ".gitignore",
+    ".prospector.yml",
+    ".pylintrc",
+    ".readthedocs.yml",
+    ".scrutinizer.yml",
+    ".travis.yml"
+]
+
+
+
+# Docs: dev and build dependencies
+sphinx = { version = ">=8.1.3", optional = true }
+sphinx-autodoc-typehints = { version = ">= 2.5.0", optional = true }
+sphinx-rtd-theme = { version = ">= 3.0.1", optional = true }
+sphinxcontrib-spelling = { version = ">= 8.0.0", optional = true }
+sphinx-autobuild = { version = "^2024.10.3", optional = true }
+sphinx-inline-tabs = { version = "^2023.4.21", optional = true, python = ">=3.8,<3.13" }
+sphinxcontrib-mermaid = { version = "^1.0.0", optional = true, python = ">=3.7,<3.13" }
+
+
+
+#https://python-poetry.org/docs/pyproject/#scripts
+# we will have the dmcview script installed which will execute the main function in the console module in the dmcview package.
+[project.scripts]
+dmcview = 'dmcview.cli:main'
+
+[tool.poetry.extras] #see https://realpython.com/dependency-management-python-poetry/
+ docs = ["sphinx", "sphinx-rtd-theme", "sphinx-notfound-page", "sphinxcontrib-spelling"]
+ 
+
+##########
+# TOOLS
+##########
+
+# see https://black.readthedocs.io/en/stable/  code format with max line 95
+[tool.black]
+line-length = 95
+include = '\.pyi?$'
+extend-exclude = '''
+'''
+
+# see https://pycqa.github.io/isort/index.html arrange the import in right order 
+[tool.isort]
+profile = 'black'
+
+# see https://bandit.readthedocs.io/en/latest/  check for security volubility
+#  Issue: [B311:blacklist] Standard pseudo-random generators are not suitable for security/cryptographic purposes.
+#  Issue: [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+[tool.bandit]
+tests = []
+skips = [
+    "B101","B311"
+]
+
+# see scripts/parse_version.py 
+[tool.software-release]
+version_variable = "src/dmcview/__init__.py:__version__"
