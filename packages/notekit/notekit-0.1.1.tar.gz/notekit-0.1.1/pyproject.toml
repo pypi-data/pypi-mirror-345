@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "notekit"
+version = "0.1.1"
+description = "A package to extract certain files"
+authors = [{ name="Aditya Khalkar", email="khalkaraditya8@gmail.com" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+
+[tool.setuptools]
+packages = ["notekit"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+notekit = ["notebooks/*.ipynb"]
+
+[project.scripts]
+notekit = "notekit.cli:main"
+
