@@ -1,0 +1,37 @@
+Metadata-Version: 2.4
+Name: makehlp
+Version: 0.1.1
+Summary: makehlp
+Project-URL: Homepage, https://github.com/personalcomputer/makehlp
+Author-email: John Miller <john@johngm.com>
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+
+# makehlp (make help)
+
+Always-available script to analyze any unknown makefile and print out an inferred usage/help message explaining the available targets.
+
+Many versions of this concept exist.. but this one is mine.
+
+## Usage
+
+```
+usage: makehlp [-h] [--file MAKEFILE] [--inject] [target]
+
+Process a Makefile and display help information
+
+positional arguments:
+  target                Print the full recipe (code) of a specific target
+
+options:
+  -h, --help            show this help message and exit
+  --file, --makefile, -f MAKEFILE
+                        Path to the Makefile (defaults to "Makefile" or "makefile" in current
+                        directory)
+  --inject              Inject a `help` target into the Makefile that calls makehelp (entirely
+                        optional)
+```
