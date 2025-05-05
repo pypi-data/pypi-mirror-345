@@ -1,0 +1,59 @@
+[build-system]
+requires = ["meson-python>=0.7.0", "meson>=1.1.0", "cython", "numpy>=2.0"]
+build-backend = "mesonpy"
+
+[project]
+name = "qbindiff"
+description = "QBindiff binary diffing tool based on a Network Alignment problem"
+authors = [{ name = "Quarkslab", email = "diffing@quarkslab.com" }]
+license = { text = "Apache Software License (Apache License, Version 2)" }
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.10"
+dependencies = [
+    "rich-click",
+    "numpy",
+    "scipy",
+
+    # Current hot-fix for supporting numpy 2.x until https://github.com/src-d/lapjv/pull/85 is merged
+    # "lapjv>=1.35",
+    # lapjv only supports Windows/Linux
+    "lapjv-numpy2; sys_platform == 'linux' or sys_platform == 'windows'",
+    "lapx; sys_platform != 'linux' and sys_platform != 'windows'",
+
+    "networkx",
+    "capstone>=5.0.1",
+    "datasketch",
+    "scikit-learn",
+    "python-louvain",
+    "enum_tools",
+    "python-bindiff>=0.3.1",
+    "python-binexport>=0.3.2",
+    "quokka-project",
+    "idascript",
+]
+dynamic = ["version"]
+
+[project.scripts]
+qbindiff = 'qbindiff.__main__:main'
+
+[project.urls]
+Homepage = "https://github.com/quarkslab/qbindiff"
+Repository = "https://github.com/quarkslab/qbindiff"
+Documentation = "https://github.com/quarkslab/qbindiff"
+
+[project.optional-dependencies]
+doc = [
+    "sphinx>=7.2.0",
+    "sphinx-design",
+    "sphinx-rtd-theme>=1.3",
+    "enum-tools[sphinx]",
+    "sphinx_autodoc_typehints",
+]
+dev = ["tox", "pypcode"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
