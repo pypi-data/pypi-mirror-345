@@ -1,0 +1,46 @@
+[project]
+name = "ezbatch"
+description = "A Python Library for Simplified AWS Batch"
+authors = [{ name = "Andrew Van", email = "vanandrew77@gmail.com" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+dynamic = ["version"]
+dependencies = [
+    "boto3",
+    "boto3-stubs[full]",
+    "dataclasses-json",
+    "pandas",
+    "random_word",
+    "tabulate",
+    "textual",
+    "toml",
+]
+
+[project.scripts]
+ezbatch-cli = "ezbatch.scripts.cli:ezbatch_cli"
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit",
+    "pytest",
+    "textual-dev",
+    "sphinx",
+    "myst-parser",
+    "pydata-sphinx-theme",
+]
+
+[tool.setuptools.packages.find]
+include = ["ezbatch*"]
+
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 120
+
+[tool.setuptools_scm]
+version_file = "ezbatch/_version.py"
+
+[tool.isort]
+profile = "black"
