@@ -1,0 +1,26 @@
+# SWE-Dev Configuration
+
+paths:
+  conda_bin: /path/to/conda/bin/conda
+  conda_base: /path/to/conda/base
+  local_repo_dir: /path/to/local/repo/dir
+  playground: /path/to/playground
+
+github:
+  tokens: ghp_1,ghp_2 # split by comma
+  
+# Pipeline stage-specific model settings
+# These settings allow using different models for each stage
+# If not specified, fallback to openai.base_model and openai.base_url
+description:
+  model: ${openai.base_model}
+  base_url: ${openai.base_url}
+  api_key: ${openai.api_key}
+  max_tokens: ${openai.max_tokens}
+
+testcase:
+  model: ${openai.base_model}
+  base_url: ${openai.base_url}
+  api_key: ${openai.api_key}
+  revise_rounds: 0  # Number of rounds to revise testcases
+  max_tokens: ${openai.max_tokens}
