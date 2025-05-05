@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: mcp-server-websearch
+Version: 0.1.3
+Summary: A MCP server for websearch
+Author-email: UnieAI Eric <chouwei88929@gmail.com>
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.10
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: tzdata>=2024.2
+Description-Content-Type: text/markdown
+
+version = 1
+requires-python = ">=3.10"
+
+將 config.json 添加以下內容：
+```bash
+        "websearch": {
+            "command": "uvx",
+            "args": [
+                "mcp-server-websearch"
+            ]
+        },
+```
+
+接著使用llm時
+只要"有請求查詢網路資料的意圖" 即會自動觸發本爬蟲功能
