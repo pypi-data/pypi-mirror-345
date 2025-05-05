@@ -1,0 +1,14 @@
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow import fields
+from app.models.{{ model_name_lower }} import {{ model_name }}
+from app.models import db
+
+class {{ model_name }}Schema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = {{ model_name }}
+        include_relationships = True
+        load_instance = True
+        sqla_session = db.session
+
+    created_at = fields.DateTime(format="%Y-%m-%d %H:%M:%S")
+    updated_at = fields.DateTime(format="%Y-%m-%d %H:%M:%S")
