@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <center>
+        <h1>Past Contests</h1>
+        <p>Total Contests: {{ pagination.total_pages * pagination.limit }}</p>
+        <p><a href="/contest/">See running contests</a></p>
+    </center>
+    <div class="contest-list">
+        {% for contest in contest_list %}
+            <div class="contest-item">
+                <hr>
+                <h2>{{ contest.title }}</h2>
+                <p>
+                    <a href="{{ contest.link }}">{{ contest.title }}</a><br>
+                    Start Date: {{ contest.startDate }}<br>
+                    Deadline: {{ contest.deadline }}<br>
+                    Entries: {{ contest.numEntries }}<br>
+                    Status: {{ contest.state }}<br>
+                </p>
+                <img src="{{ contest.bannerUrl }}" alt="{{ contest.title }} banner" style="max-width:100%;">
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+    <hr>
+    <div class="pagination">
+        <ul class="pagination-list">
+            {% if pagination.has_prev %}
+                <li><a href="?page={{ pagination.current_page - 1 }}">Previous</a></li>
+            {% endif %}
+            <li>Page {{ pagination.current_page }} of {{ pagination.total_pages }}</li>
+            {% if pagination.has_next %}
+                <li><a href="?page={{ pagination.current_page + 1 }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}
