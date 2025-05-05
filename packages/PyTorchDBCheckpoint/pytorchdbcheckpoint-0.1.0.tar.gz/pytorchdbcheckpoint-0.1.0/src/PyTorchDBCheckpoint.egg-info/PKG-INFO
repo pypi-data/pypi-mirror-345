@@ -1,0 +1,43 @@
+Metadata-Version: 2.4
+Name: PyTorchDBCheckpoint
+Version: 0.1.0
+Summary: Checkpoint PyTorch training runs into PostgreSQL database.
+Author-email: lakaeso <antonio.lakos1@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/lakaeso/pytorch-db-checkpoint
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: torch>=2.0.0
+Requires-Dist: psycopg2>=2.9.0
+Requires-Dist: numpy
+Dynamic: license-file
+
+# PyTorchDBCheckpoint
+Checkpoint PyTorch training runs into your database.
+
+Save model weights, optimizer state and metrics at any time. This library allows you to save your model and not worry about .pt files scattered across your file system.
+
+## Quickstart
+* Set up database schema (DDL available in ```src/ddl``` folder)
+* Import ```DefaultCheckpointer``` from the package
+* Configure ```DefaultCheckpointer``` class by specifying a handler and path to a config file
+* Use available methods to save or load model and optim state
+
+## Config file example - database.ini
+
+```
+[postgresql]
+host=your_host
+database=your_database
+user=your_user
+password=your_password
+port=your_port
+```
+
+#### Roadmap
+* Support for MongoDB
+* Better error handling
+* Toggle for SSL mode
