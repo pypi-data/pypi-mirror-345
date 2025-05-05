@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: gllm-agents-binary
+Version: 0.0.2
+Summary: A library for managing agents in Gen AI applications.
+Author: Raymond Christopher
+Author-email: raymond.christopher@gdplabs.id
+Requires-Python: >=3.11,<3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: langchain (>=0.3.0,<0.4.0)
+Requires-Dist: langchain-mcp-adapters (>=0.0.9,<0.0.10)
+Requires-Dist: langchain-openai (>=0.3.0,<0.4.0)
+Requires-Dist: pydantic (>=2.9.1,<3.0.0)
+Requires-Dist: python-dotenv (>=1.0.0,<2.0.0)
+Description-Content-Type: text/markdown
+
+# GLLM Agents
+
+## Description
+
+A library for managing agents in Generative AI applications.
+
+## Installation
+
+### Prerequisites
+- Python 3.11+ - [Install here](https://www.python.org/downloads/)
+- Pip (if using Pip) - [Install here](https://pip.pypa.io/en/stable/installation/)
+- Poetry 1.8.1+ (if using Poetry) - [Install here](https://python-poetry.org/docs/#installation)
+- Git (if using Git) - [Install here](https://git-scm.com/downloads)
+- For git installation:
+  - Access to the [GDP Labs SDK github repository](https://github.com/GDP-ADMIN/gen-ai-internal)
+
+### 1. Installation from Artifact Registry
+Choose one of the following methods to install the package:
+
+#### Using pip
+```bash
+pip install gllm-agents-binary
+```
+
+#### Using Poetry
+```bash
+poetry add gllm-agents-binary
+```
+
+### 2. Development Installation (Git)
+For development purposes, you can install directly from the Git repository:
+```bash
+poetry add "git+ssh://git@github.com/GDP-ADMIN/gen-ai-internal.git#subdirectory=libs/gllm-agents"
+```
+
+## Managing Dependencies
+1. Go to root folder of `gllm-agents` module, e.g. `cd libs/gllm-agents`.
+2. Run `poetry shell` to create a virtual environment.
+3. Run `poetry lock` to create a lock file if you haven't done it yet.
+4. Run `poetry install` to install the `gllm-agents` requirements for the first time.
+5. Run `poetry update` if you update any dependency module version at `pyproject.toml`.
+
+## Contributing
+Please refer to this [Python Style Guide](https://docs.google.com/document/d/1uRggCrHnVfDPBnG641FyQBwUwLoFw0kTzNqRm92vUwM/edit?usp=sharing)
+to get information about code style, documentation standard, and SCA that you need to use when contributing to this project
+
+1. Activate `pre-commit` hooks using `pre-commit install`
+2. Run `poetry shell` to create a virtual environment.
+3. Run `poetry lock` to create a lock file if you haven't done it yet.
+4. Run `poetry install` to install the `gllm-agents` requirements for the first time.
+5. Run `which python` to get the path to be referenced at Visual Studio Code interpreter path (`Ctrl`+`Shift`+`P` or `Cmd`+`Shift`+`P`)
+6. Try running the unit test to see if it's working:
+```bash
+poetry run pytest -s tests/unit_tests/
+```
+
