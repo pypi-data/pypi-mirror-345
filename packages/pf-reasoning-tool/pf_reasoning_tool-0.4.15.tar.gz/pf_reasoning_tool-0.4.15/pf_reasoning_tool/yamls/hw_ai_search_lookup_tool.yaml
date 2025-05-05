@@ -1,0 +1,123 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Tool.schema.json
+# Replace `your_module_path` with the actual Python module path
+your_module_path.hw_ai_search_lookup_with_embed.hw_ai_search_lookup_with_embed:
+  name: HW AI Search Lookup (Internal Embedding)
+  description: >-
+    Performs keyword, semantic, vector, or hybrid search over Azure AI Search.
+    Uses a CustomConnection for AI Search credentials and AzureOpenAI/OpenAI connection
+    to automatically embed the input text queries. Returns list of lists of results.
+  type: python
+  category: HW_PF_tools # Or your desired category
+  tool_state: preview
+  # Update module path to where the python file resides
+  module: your_module_path.hw_ai_search_lookup_with_embed
+  function: hw_ai_search_lookup_with_embed
+
+  inputs:
+    connection:
+      type: [CustomConnection]                             # Using CustomConnection
+      description: >-
+        Connection to Azure AI Search. Requires fields for endpoint/URL
+        (e.g., 'endpoint', 'api_base', 'value1') and API key
+        (e.g., 'api_key', 'key', 'value2').
+
+    index_name:
+      type: [string]
+      description: 'Name of the target Azure AI Search index.'
+      dynamic_list:
+        # Update function path according to your module structure
+        func_path: your_module_path.hw_ai_search_lookup_with_embed.list_indexes
+        func_kwargs:
+          connection: ${inputs.connection}
+
+    queries:
+      type: [string, list]                                # Accepts string or list of strings
+      description: 'The text query or a list of text queries to search for.'
+
+    embeddings_connection:
+      type: [AzureOpenAIConnection, OpenAIConnection]      # Re-added for internal embedding
+      description: >-
+        Connection to Azure OpenAI or OpenAI service for generating query embeddings.
+        Required if `query_type` involves vectors (vector, hybrid, hybrid_semantic).
+      optional: true                                      # Technically optional, but required conditionally
+
+    embedding_model_name:
+      type: [string]
+      default: text-embedding-3-large                     # Re-added default
+      description: >-
+        The embedding model name (for OpenAI, e.g., "text-embedding-3-large") or
+        deployment name (for Azure OpenAI) to use for generating query vectors.
+
+    query_type:
+      type: [string]
+      default: hybrid
+      enum: ['keyword', 'semantic', 'vector', 'hybrid', 'hybrid_semantic']
+      description: >-
+        Specifies the search strategy:
+        'keyword': Basic full-text search.
+        'semantic': Keyword search enhanced with Semantic Ranker (requires semantic config).
+        'vector': Pure vector similarity search (requires embeddings connection).
+        'hybrid': Combines keyword and vector results using RRF.
+        'hybrid_semantic': Combines keyword and vector, then applies Semantic Ranker.
+
+    top_k:
+      type: [int]
+      default: 3
+      description: 'The maximum number of search results to return for each query.'
+
+    text_field:
+      type: [string]
+      default: content                                     # Reverted name
+      description: 'The field in the search index that contains the main text content to return.'
+      dynamic_list:
+        # Update function path
+        func_path: your_module_path.hw_ai_search_lookup_with_embed.list_text_fields
+        func_kwargs:
+          connection: ${inputs.connection}
+          index_name: ${inputs.index_name}
+
+    vector_field:
+      type: [string]
+      default: vector                                      # Reverted name
+      description: >-
+        The field in the search index that contains the vector embeddings.
+        Required if `query_type` involves vectors.
+      dynamic_list:
+        # Update function path
+        func_path: your_module_path.hw_ai_search_lookup_with_embed.list_vector_fields
+        func_kwargs:
+          connection: ${inputs.connection}
+          index_name: ${inputs.index_name}
+
+    search_filters:
+      type: [string]
+      description: >-
+        Optional OData filter expression to apply to the search (e.g., "category eq 'news'").
+        Filters are applied *before* the search.
+      optional: true
+
+    select_fields:
+      type: [list]
+      description: 'Optional list of specific field names to retrieve from the index. If empty, retrieves all retrievable fields.'
+      optional: true
+
+    semantic_config:                                       # Reverted name
+      type: [string]
+      description: >-
+        The name of the semantic configuration defined in the Azure AI Search index.
+        Required for `query_type` 'semantic' or 'hybrid_semantic'.
+      optional: true
+      dynamic_list:
+        # Update function path
+        func_path: your_module_path.hw_ai_search_lookup_with_embed.list_semantic_configs
+        func_kwargs:
+          connection: ${inputs.connection}
+          index_name: ${inputs.index_name}
+
+  outputs:
+    output:
+      type: [list]                                       # Represents List[List[Dict]]
+      description: >-
+        A list containing one list of search results for each input query.
+        Each result dictionary within the inner lists includes 'text' (the content),
+        'score' (the search relevance score), and 'metadata' (other retrieved fields).
