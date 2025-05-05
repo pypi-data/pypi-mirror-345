@@ -1,0 +1,136 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+
+requires = [
+  "setuptools",
+  "setuptools-scm",
+]
+
+[project]
+name = "modification-timekeeper"
+description = "Tool for keeping the modified time in front matter up to date."
+readme = "README.md"
+keywords = [
+  "front matter",
+  "markdown",
+  "metadata",
+  "modification time",
+  "pre-commit",
+]
+license = "MIT"
+license-files = [ "LICENSE" ]
+authors = [
+  { name = "Stefanie Molin", email = "modification-timekeeper@stefaniemolin.com" },
+]
+requires-python = ">=3.8"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dynamic = [
+  "version",
+]
+
+dependencies = [
+  "pyyaml",
+]
+optional-dependencies.dev = [
+  "pre-commit",
+  "pytest",
+  "pytest-cov",
+  "pytest-randomly",
+]
+urls.Documentation = "https://github.com/stefmolin/modification-timekeeper"
+urls.Homepage = "https://github.com/stefmolin/modification-timekeeper"
+urls.Source = "https://github.com/stefmolin/modification-timekeeper"
+scripts.modification-timekeeper = "modification_timekeeper.cli:main"
+
+[tool.setuptools.packages.find]
+where = [
+  "src",
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "modification_timekeeper.__version__" }
+
+[tool.ruff]
+line-length = 88
+format.indent-style = "space"
+format.quote-style = "single"
+format.docstring-code-format = true
+lint.select = [
+  "ANN",  # flake8-annotations
+  "B",    # flake8-bugbear
+  "C4",   # flake8-comprehensions
+  "E",    # pycodestyle error
+  "ERA",  # eradicate (commented out code)
+  "F",    # pyflakes
+  "FA",   # flake8-future-annotations
+  "I",    # isort
+  "ICN",  # flake8-import-conventions
+  "N",    # pep8-naming
+  "PERF", # perflint
+  "PT",   # flake8-pytest-style
+  "PTH",  # flake8-use-pathlib
+  "RET",  # flake8-return
+  "RSE",  # flake8-raise
+  "RUF",  # ruff-specific rules
+  "SIM",  # flake8-simplify
+  "TC",   # flake8-type-checking (performance improvements)
+  "TRY",  # tryceratops
+  "UP",   # pyupgrade
+  "W",    # pycodestyle warning
+]
+lint.ignore = [
+  "E501", # line-too-long
+]
+
+lint.extend-per-file-ignores."tests/*" = [ "ANN" ] # don't require annotations for tests
+lint.isort.known-first-party = [
+  "modification_timekeeper",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+  "-ra",
+  "-l",
+  "-v",
+  "--tb=short",
+  "--import-mode=importlib",
+  "--strict-markers",
+  "--strict-config",
+  "--cov=modification_timekeeper",
+  "--cov=tests",
+  "--no-cov-on-fail",
+  "--cov-report=term-missing",
+]
+xfail_strict = true
+testpaths = [
+  "tests",
+]
+
+[tool.numpydoc_validation]
+checks = [
+  "all",  # report on all checks
+  "ES01", # but don't require an extended summary
+  "EX01", # or examples
+  "SA01", # or a see also section
+  "SS06", # and don't require the summary to fit on one line
+]
+exclude = [ # don't report on checks for these
+  '\.__init__$',
+  '\.__repr__$',
+  '\.__str__$',
+]
+override_SS05 = [ # allow docstrings to start with these words
+  '^Process ',
+  '^Assess ',
+  '^Access ',
+]
