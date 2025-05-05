@@ -1,0 +1,9 @@
+from adapters.manager.base import BaseManager
+from adapters.manager.npm import NpmManager
+
+
+def get_manager(project_manager: str) -> type[BaseManager]:
+    if project_manager == "npm":
+        return NpmManager
+    else:
+        raise ValueError(f"Invalid project manager: {project_manager}")
