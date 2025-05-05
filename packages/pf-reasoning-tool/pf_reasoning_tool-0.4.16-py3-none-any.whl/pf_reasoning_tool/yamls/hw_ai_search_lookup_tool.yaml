@@ -1,0 +1,135 @@
+# Ensure this schema line is present
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Tool.schema.json
+
+# CRITICAL: This identifier MUST exactly match your module path and function name.
+# Adjust 'pf_reasoning_tool.tools' if your actual path differs.
+pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed.hw_ai_search_lookup_with_embed:
+  # --- Tool Metadata (Matches original structure) ---
+  name: HW AI Search Lookup (Internal Embedding) # Descriptive name
+  description: >-
+    Performs keyword, semantic, vector, or hybrid search over Azure AI Search.
+    Uses a CustomConnection for AI Search credentials and AzureOpenAI/OpenAI connection
+    to automatically embed the input text queries. Returns list of lists of results.
+  type: python # Tool type
+  category: HW_PF_tools # Your custom category
+  tool_state: preview # Tool state
+
+  # --- Link to Python Code (Matches original structure) ---
+  # CRITICAL: Ensure this module path is correct
+  module: pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed
+  # CRITICAL: Ensure this function name is correct
+  function: hw_ai_search_lookup_with_embed
+
+  # --- Inputs (Matches original structure, using keys from latest Python code) ---
+  inputs:
+    connection: # Matches Python arg name
+      type: [CustomConnection] # Matches Python type hint
+      description: >-
+        Connection to Azure AI Search. Requires fields for endpoint/URL
+        (e.g., 'endpoint', 'api_base', 'value1') and API key
+        (e.g., 'api_key', 'key', 'value2').
+
+    index_name: # Matches Python arg name
+      type: [string] # Matches Python type hint
+      description: 'Name of the target Azure AI Search index.'
+      # Dynamic list structure matches original
+      dynamic_list:
+        # CRITICAL: Ensure func_path is correct
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed.list_indexes
+        # func_kwargs structure matches original
+        func_kwargs:
+          connection: ${inputs.connection} # References the connection input above
+
+    queries: # Matches Python arg name
+      type: [string, list] # Matches Python Union[str, List[str]]
+      description: 'The text query or a list of text queries to search for.'
+
+    embeddings_connection: # Matches Python arg name
+      type: [AzureOpenAIConnection, OpenAIConnection] # Matches Python type hint
+      description: >-
+        Connection to Azure OpenAI or OpenAI service for generating query embeddings.
+        Required if `query_type` involves vectors (vector, hybrid, hybrid_semantic).
+      optional: true # Added for clarity, matches Optional in Python
+
+    embedding_model_name: # Matches Python arg name
+      type: [string] # Matches Python type hint
+      default: text-embedding-3-large # Matches Python default
+      description: >-
+        The embedding model name (for OpenAI, e.g., "text-embedding-3-large") or
+        deployment name (for Azure OpenAI) to use for generating query vectors.
+
+    query_type: # Matches Python arg name
+      type: [string] # Matches Python type hint
+      default: hybrid # Matches Python default
+      # Enum structure matches original
+      enum: ['keyword', 'semantic', 'vector', 'hybrid', 'hybrid_semantic']
+      description: >-
+        Specifies the search strategy:
+        'keyword': Basic full-text search.
+        'semantic': Keyword search enhanced with Semantic Ranker (requires semantic config).
+        'vector': Pure vector similarity search (requires embeddings connection).
+        'hybrid': Combines keyword and vector results using RRF.
+        'hybrid_semantic': Combines keyword and vector, then applies Semantic Ranker.
+
+    top_k: # Matches Python arg name
+      type: [int] # Matches Python type hint
+      default: 3 # Matches Python default
+      description: 'The maximum number of search results to return for each query.'
+
+    text_field: # Matches Python arg name
+      type: [string] # Matches Python type hint
+      default: content # Matches Python default
+      description: 'The field in the search index that contains the main text content to return.'
+      dynamic_list:
+        # CRITICAL: Ensure func_path is correct
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed.list_text_fields
+        func_kwargs:
+          connection: ${inputs.connection}
+          index_name: ${inputs.index_name} # References the index_name input
+
+    vector_field: # Matches Python arg name
+      type: [string] # Matches Python type hint
+      default: vector # Matches Python default
+      description: >-
+        The field in the search index that contains the vector embeddings.
+        Required if `query_type` involves vectors.
+      dynamic_list:
+        # CRITICAL: Ensure func_path is correct
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed.list_vector_fields
+        func_kwargs:
+          connection: ${inputs.connection}
+          index_name: ${inputs.index_name}
+
+    search_filters: # Matches Python arg name
+      type: [string] # Matches Python type hint
+      description: >-
+        Optional OData filter expression to apply to the search (e.g., "category eq 'news'").
+        Filters are applied *before* the search.
+      optional: true # Added for clarity, matches Optional in Python
+
+    select_fields: # Matches Python arg name
+      type: [list] # Matches Python type hint
+      description: 'Optional list of specific field names to retrieve from the index. If empty, retrieves all retrievable fields.'
+      optional: true # Added for clarity, matches Optional in Python
+
+    semantic_config: # Matches Python arg name
+      type: [string] # Matches Python type hint
+      description: >-
+        The name of the semantic configuration defined in the Azure AI Search index.
+        Required for `query_type` 'semantic' or 'hybrid_semantic'.
+      optional: true # Added for clarity, matches Optional in Python
+      dynamic_list:
+        # CRITICAL: Ensure func_path is correct
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed.list_semantic_configs
+        func_kwargs:
+          connection: ${inputs.connection}
+          index_name: ${inputs.index_name}
+
+  # --- Outputs (Matches original structure) ---
+  outputs:
+    output: # Name of the output defined in the function's return type hint (implicitly 'output' if single return)
+      type: [list] # Matches the outer list in List[List[Dict]]
+      description: >-
+        A list containing one list of search results for each input query.
+        Each result dictionary within the inner lists includes 'text' (the content),
+        'score' (the search relevance score), and 'metadata' (other retrieved fields).
