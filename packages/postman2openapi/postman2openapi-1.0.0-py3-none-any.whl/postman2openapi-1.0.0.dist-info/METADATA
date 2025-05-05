@@ -1,0 +1,116 @@
+Metadata-Version: 2.4
+Name: postman2openapi
+Version: 1.0.0
+Summary: A Python module to convert Postman collections to OpenAPI/Swagger format
+Home-page: https://github.com/Pulkit-Py/postman2openapi
+Author: Pulkit-Py
+Author-email: pulkitsaini127@gmail.com
+Project-URL: Bug Tracker, https://github.com/Pulkit-Py/postman2openapi/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Documentation
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyyaml>=5.1
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=22.0; extra == "dev"
+Requires-Dist: isort>=5.0; extra == "dev"
+Requires-Dist: flake8>=3.9; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+
+# Postman2OpenAPI
+
+A Python module to convert Postman collections to OpenAPI (Swagger) format without any third-party dependencies.
+
+## Installation
+
+```bash
+pip install postman2openapi
+```
+
+## Usage
+
+```python
+from postman2openapi import PostmanToOpenAPIConverter, read_postman_collection, write_openapi_spec
+
+# Read your Postman collection
+collection_data = read_postman_collection("path/to/collection.json")
+
+# Create converter instance
+converter = PostmanToOpenAPIConverter()
+
+# Convert to OpenAPI
+openapi_spec = converter.parse_postman_collection(collection_data)
+
+# Save as YAML (default) or JSON
+write_openapi_spec(openapi_spec, "openapi_spec.yaml")  # For YAML
+write_openapi_spec(openapi_spec, "openapi_spec.json", format="json")  # For JSON
+```
+
+## Features
+
+- Converts Postman collections to OpenAPI 3.0.0 specification
+- Supports:
+  - Basic request information (URL, method, description)
+  - Query parameters
+  - Request bodies (JSON and form-data)
+  - Path parameters
+  - Folder structure
+- No third-party dependencies except PyYAML
+- Outputs in both YAML and JSON formats
+
+## Development
+
+To set up the development environment:
+
+```bash
+# Clone the repository
+git clone https://github.com/Pulkit-Py/postman2openapi.git
+cd postman2openapi
+
+# Create a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run tests
+pytest
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+Created by [Pulkit-Py](https://github.com/Pulkit-Py)
