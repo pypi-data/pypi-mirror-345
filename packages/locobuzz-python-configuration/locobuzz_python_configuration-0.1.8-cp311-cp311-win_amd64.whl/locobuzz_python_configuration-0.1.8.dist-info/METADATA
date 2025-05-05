@@ -1,0 +1,113 @@
+Metadata-Version: 2.1
+Name: locobuzz_python_configuration
+Version: 0.1.8
+Summary: A configuration builder package
+Home-page: https://github.com/LocoBuzz-Solutions-Pvt-Ltd/locobuzz_python_configuration
+Author: Sheikh Muhammed Shoaib
+Author-email: shoaib.sheikh@locobuzz.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: Cython
+Requires-Dist: jsonschema
+Requires-Dist: pytz
+Requires-Dist: requests
+Requires-Dist: aiohttp
+
+# Configuration Builder Package
+
+This package provides a flexible and extensible way to load and validate configuration data from JSON files or dictionaries. It supports the Builder design pattern to allow customization and extension of configuration properties.
+
+## Installation
+
+Install the package using pip:
+
+```sh
+pip install locobuzz-python-configuration
+```
+# Usage
+## Basic Usage
+To create a configuration object use the `create_configuration` function. You can load configuration data from a JSON file or dictionary.
+```python
+from locobuzz_python_configuration import create_configuration
+
+config = create_configuration(file_path='settings.json', required_components=["sql", "clickhouse", "aws", "elastic"])
+print(config.__dict__)
+```
+## Extending Configuration
+You can extend the existing builder classes to add new properties. Here's how to extend the SQL configuration:
+
+Step 1: Create an Extended Builder Class
+Create a new file named extended_sql_config_builder.py and define the extended builder class:
+
+```python
+from locobuzz_python_configuration.sql_config_builder import SQLConfigurationBuilder, InvalidSQLConfigurationError
+
+class ExtendedSQLConfigurationBuilder(SQLConfigurationBuilder):
+    def __init__(self, config):
+        super().__init__(config)
+        self._sql_database_name = None
+
+    def build(self, data):
+        super().build(data)
+        self._sql_database_name = data.get('sql_database_name')
+        if not self._sql_database_name:
+            raise InvalidSQLConfigurationError("Missing SQL database name configuration property")
+        self._config._sql_database_name = self._sql_database_name
+```
+
+Step 2: Use the New Builder Class
+Update your main script to use the new builder class:
+```python
+from locobuzz_python_configuration import create_configuration
+from new_builder_class import NewBuilderClass
+
+custom_builders = {
+    'new_builder': NewBuilderClass
+}
+
+config = create_configuration(file_path='settings.json', required_components=["sql", "clickhouse", "aws", "elastic", "new_builder"], builder_classes=custom_builders)
+print(config.__dict__)
+
+```
+# Handling Errors
+The package includes specific error classes for different components. Here's how to handle errors:
+
+```python
+from locobuzz_python_configuration import create_configuration, InvalidConfigurationError
+from extended_sql_config_builder import ExtendedSQLConfigurationBuilder
+
+try:
+    custom_builders = {
+        'sql': ExtendedSQLConfigurationBuilder
+    }
+
+    config = create_configuration(file_path='settings.json', required_components=["sql", "clickhouse", "aws", "elastic"], builder_classes=custom_builders)
+    if config:
+        print("Configuration loaded successfully:", config.__dict__)
+except InvalidConfigurationError as e:
+    print(f"Error loading configuration: {e}")
+```
+
+# Customizing Validation
+If you need to customize the validation process for a specific component, extend the validation logic in your builder class:
+```python
+from locobuzz_python_configuration.sql_config_builder import SQLConfigurationBuilder, InvalidSQLConfigurationError
+
+class CustomSQLConfigurationBuilder(SQLConfigurationBuilder):
+    def __init__(self, config):
+        super().__init__(config)
+
+    def validate(self, data):
+        super().validate(data)
+        if not data.get('sql_custom_property'):
+            raise InvalidSQLConfigurationError("Missing SQL custom property")
+
+    def build(self, data):
+        self.validate(data)
+        super().build(data)
+        self._config._sql_custom_property = data.get('sql_custom_property')
+
+```
