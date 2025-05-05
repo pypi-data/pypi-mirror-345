@@ -1,0 +1,1 @@
+from .telemoji import Golden,Emoji
