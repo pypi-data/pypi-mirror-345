@@ -1,0 +1,177 @@
+{% extends "admin/base.html" %}
+
+{% block secondary %}
+{% endblock %}
+
+{% block primary %}
+    <div class="primary col-md-12 col-xs-12" role="main">
+    {% block primary_content %}
+        <article class="module">
+        {% block page_header %}
+            {{ super() }}
+        {% endblock %}
+        <div class="module-content">
+            {% if self.page_primary_action() | trim %}
+            <div class="page_primary_action">
+                {% block page_primary_action %}{{ super() }}{% endblock %}
+            </div>
+            {% endif %}
+            {% block primary_content_inner %}
+            {% set full_url = h.full_current_url() %}
+            <div class="">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    {% for profile, data in profiles.items() %}
+                        <li class="nav-item" role="presentation">
+                        <a href="#pills-selfinfo-{{ profile }}" class="nav-link {% if loop.index == 1 %} active {% endif %}" id="pills-selfinfo-{{ profile }}-tab" data-bs-toggle="pill" data-bs-target="#pills-selfinfo-{{ profile }}" type="button" role="tab" aria-controls="pills-selfinfo-{{ profile }}" aria-selected="true">
+                            {% if "label" in data %}
+                                {{ data.label }}
+                            {% else %}
+                                {{ profile }}
+                            {% endif %}
+                        </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content d-block" id="pills-tabContent">
+                    {% for profile, data in profiles.items() %}
+                    <div class="tab-pane fade {% if loop.index == 1 %} show active {% endif %}" id="pills-selfinfo-{{ profile }}" role="tabpanel" aria-labelledby="pills-selfinfo-{{ profile }}-tab">
+                        {% if data.provided_on %}
+                            <div class="badge bg-success mb-3">
+                                Provided on: {{ h.render_datetime(data.provided_on, date_format='%d/%m/%y %H:%M') }}
+                            </div>
+                        {% endif %}
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a href="#nav-system-{{ profile }}" class="nav-link active" id="nav-system-{{ profile }}-tab" data-bs-toggle="tab" data-bs-target="#nav-system-{{ profile }}" role="tab" aria-controls="nav-system-{{ profile }}" aria-selected="true">System Info</a>
+                                <a href="#nav-ckan-{{ profile }}" class="nav-link" id="nav-ckan-{{ profile }}-tab" data-bs-toggle="tab" data-bs-target="#nav-ckan-{{ profile }}" role="tab" aria-controls="nav-ckan-{{ profile }}" aria-selected="false">CKAN Info</a>
+                                {% if data.git_info %}
+                                    <a href="#nav-git-{{ profile }}" class="nav-link" id="nav-git-{{ profile }}-tab" data-bs-toggle="tab" data-bs-target="#nav-git-{{ profile }}" role="tab" aria-controls="nav-git-{{ profile }}" aria-selected="false">GIT Info</a>
+                                {% endif %}
+                                {% if data.python_modules %}
+                                    <a href="#nav-python-{{ profile }}" class="nav-link" id="nav-python-{{ profile }}-tab" data-bs-toggle="tab" data-bs-target="#nav-python-{{ profile }}" role="tab" aria-controls="nav-python-{{ profile }}" aria-selected="false">Python Info</a>
+                                {% endif %}
+                                {% if data.freeze %}
+                                    <a href="#nav-freeze-{{ profile }}" class="nav-link" id="nav-freeze-{{ profile }}-tab" data-bs-toggle="tab" data-bs-target="#nav-freeze-{{ profile }}" role="tab" aria-controls="nav-freeze-{{ profile }}" aria-selected="false">PIP Freeze</a>
+                                {% endif %}
+                                {% if data.ckan_queues %}
+                                    <a href="#nav-ckan_queues-{{ profile }}" class="nav-link" id="nav-ckan_queues-{{ profile }}-tab" data-bs-toggle="tab" data-bs-target="#nav-ckan_queues-{{ profile }}" role="tab" aria-controls="nav-ckan_queues-{{ profile }}" aria-selected="false">CKAN Queues</a>
+                                {% endif %}
+                                {% if data.ckan_solr_schema %}
+                                    <a href="#nav-ckan_solr_schema-{{ profile }}" class="nav-link" id="nav-ckan_solr_schema-{{ profile }}-tab" data-bs-toggle="tab" data-bs-target="#nav-ckan_solr_schema-{{ profile }}" role="tab" aria-controls="nav-ckan_solr_schema-{{ profile }}" aria-selected="false">Solr Schema</a>
+                                {% endif %}
+                                {% if 'errors' in data %}
+                                    <a href="#nav-errors-{{ profile }}" class="nav-link" id="nav-errors-{{ profile }}-tab" data-bs-toggle="tab" data-bs-target="#nav-errors-{{ profile }}" role="tab" aria-controls="nav-errors-{{ profile }}" aria-selected="false">Errors</a>
+                                {% endif %}
+
+                                {% snippet 'selfinfo/snippets/additional_navigation_tabs.html', profile=profile, data=data, full_url=full_url %}
+
+                            </div>
+                        </nav>
+                    
+                        <div class="tab-content d-block" id="nav-data">
+                            <div class="tab-pane fade show active" id="nav-system-{{ profile }}" role="tabpanel" aria-labelledby="nav-system-tab">
+                                {% snippet 'selfinfo/snippets/self_system_info.html', profile=profile, data=data, full_url=full_url, id='nav-system-' ~ profile %}
+                            </div>
+                            <div class="tab-pane fade" id="nav-ckan-{{ profile }}" role="tabpanel" aria-labelledby="nav-ckan-tab">
+                                {% snippet 'selfinfo/snippets/self_ckan_information.html', profile=profile, data=data, full_url=full_url, id='nav-ckan-' ~ profile %}
+                            </div>
+                            <div class="tab-pane fade" id="nav-git-{{ profile }}" role="tabpanel" aria-labelledby="nav-git-tab">
+                                {% snippet 'selfinfo/snippets/self_git_info.html', profile=profile, data=data, full_url=full_url, id='nav-git-' ~ profile %}
+                            </div>
+                            {% if data.python_modules %}
+                            <div class="tab-pane fade" id="nav-python-{{ profile }}" role="tabpanel" aria-labelledby="nav-python-tab">
+                                {% snippet 'selfinfo/snippets/self_python_packages.html', profile=profile, data=data, full_url=full_url, id='nav-python-' ~ profile %}
+                            </div>
+                            {% endif %}
+                            {% if data.freeze %}
+                            <div class="tab-pane fade mt-3" id="nav-freeze-{{ profile }}" role="tabpanel" aria-labelledby="nav-freeze-tab">
+                                {% snippet 'selfinfo/snippets/self_freeze.html', profile=profile, data=data, full_url=full_url, id='nav-freeze-' ~ profile %}
+                            </div>
+                            {% endif %}
+                            {% if data.ckan_queues %}
+                            <div class="tab-pane fade mt-3" id="nav-ckan_queues-{{ profile }}" role="tabpanel" aria-labelledby="nav-ckan_queues-tab">
+                                {% snippet 'selfinfo/snippets/ckan_queues.html', profile=profile, data=data, full_url=full_url, id='nav-ckan_queues-' ~ profile %}
+                            </div>
+                            {% endif %}
+                            {% if data.ckan_solr_schema %}
+                            <div class="tab-pane fade mt-3" id="nav-ckan_solr_schema-{{ profile }}" role="tabpanel" aria-labelledby="nav-ckan_solr_schema-tab">
+                                {% snippet 'selfinfo/snippets/self_ckan_solr_schema.html', profile=profile, data=data, full_url=full_url, id='nav-ckan_solr_schema-' ~ profile %}
+                            </div>
+                            {% endif %}
+                            {% if 'errors' in data %}
+                            <div class="tab-pane fade mt-3" id="nav-errors-{{ profile }}" role="tabpanel" aria-labelledby="nav-errors-tab">
+                                {% snippet 'selfinfo/snippets/self_errors.html', profile=profile, data=data, full_url=full_url, id='nav-errors-' ~ profile %}
+                            </div>
+                            {% endif %}
+
+                            {% snippet 'selfinfo/snippets/additional_content_tabs.html', profile=profile, data=data, full_url=full_url %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endblock %}        
+        </div>
+        </article>
+    {% endblock %}
+    </div>
+    <script>
+        function copyTextareaClip(id) {
+            let clip = document.getElementById(id);
+            clip.select();
+            navigator.clipboard.writeText(clip.value);
+        }
+
+        function copyElementContent(id) {
+        var preElement = document.getElementById(id);
+
+        var tempTextArea = document.createElement("textarea");
+        tempTextArea.value = preElement.textContent.trim();
+        document.body.appendChild(tempTextArea);
+
+        tempTextArea.select();
+        document.execCommand("copy");
+
+        document.body.removeChild(tempTextArea);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const hash = window.location.hash;
+
+            if (hash) {
+                const secondLevelTab = document.querySelector(`[href="${hash}"]`);
+
+                if (secondLevelTab) {
+                    const parentTabPane = secondLevelTab.closest('.tab-pane');
+                    if (parentTabPane && parentTabPane.id) {
+                        const parentTabLink = document.querySelector(`[href="#${parentTabPane.id}"]`);
+                        if (parentTabLink) {
+                            new bootstrap.Tab(parentTabLink).show();
+                        }
+                    }
+                    new bootstrap.Tab(secondLevelTab).show();
+                }
+            }
+        });
+
+        grabRam = false;
+        var ram_monitor = document.getElementById("ram-monitor");
+
+        if (ram_monitor) {
+            document.getElementById("ram-monitor").addEventListener("click", function() {
+                if (this.classList.contains('active')) {
+                    this.textContent = "Start monitoring";
+                    grabRam = false;
+                } else {
+                    this.textContent = "Stop monitoring";
+                    grabRam = true;
+                }
+                this.classList.toggle('active');
+            });
+            function getRam() {
+                return grabRam;
+            }
+        }
+
+    </script>
+{% endblock %}
