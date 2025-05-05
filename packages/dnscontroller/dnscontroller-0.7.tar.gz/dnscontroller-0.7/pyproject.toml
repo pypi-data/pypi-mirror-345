@@ -1,0 +1,79 @@
+[project]
+name = "dnscontroller"
+version = "0.7"
+description = "A CLI tool for managing Cloudflare DNS records"
+readme = "README.md"
+authors = [
+    { name = "John Miller", email = "john@johngm.com" },
+]
+dependencies = [
+    "click>=8.1.7",
+    "rich>=13.7.0",
+    "cloudflare>=2.12.0",
+    "pyyaml>=6.0.1",
+    "rich-click>=1.8.8",
+]
+requires-python = ">=3.11"
+
+[project.urls]
+Homepage = "https://github.com/personalcomputer/dnscontroller"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+dnscontroller = "dnscontroller.main:main"
+
+[dependency-groups]
+dev = [
+    "black",
+    "coverage",
+    "hatchling",
+    "pytest",
+    "mypy",
+    "types-PyYAML",
+    "types-python-dateutil",
+    "types-requests",
+    "types-tabulate",
+    "types-boto3",
+    "codespell",
+    "isort",
+    "ruff",
+    "ipdb",
+]
+
+[tool.hatch.build]
+only-include = [
+    "dnscontroller",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+]
+ignore = [
+    "UP038", "E203", "SIM108"
+]
+
+[tool.isort]
+line_length = 120
+default_section = "THIRDPARTY"  # codespell:ignore
+order_by_type = true
+profile = "black"
+
+[tool.black]
+line-length = 120
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"

@@ -1,0 +1,72 @@
+Metadata-Version: 2.4
+Name: dnscontroller
+Version: 0.7
+Summary: A CLI tool for managing Cloudflare DNS records
+Project-URL: Homepage, https://github.com/personalcomputer/dnscontroller
+Author-email: John Miller <john@johngm.com>
+Requires-Python: >=3.11
+Requires-Dist: click>=8.1.7
+Requires-Dist: cloudflare>=2.12.0
+Requires-Dist: pyyaml>=6.0.1
+Requires-Dist: rich-click>=1.8.8
+Requires-Dist: rich>=13.7.0
+Description-Content-Type: text/markdown
+
+# dnscontroller
+
+A minimal command-line tool for managing DNS records via Cloudflare with a clean and intuitive interface.
+
+For more powerful similar tools I recommend:
+- [cfcli](https://github.com/danielpigott/cloudflare-cli)
+- [dnscontrol](https://github.com/StackExchange/dnscontrol)
+
+
+## Installation
+
+The package can be installed using `uv`:
+
+```bash
+uv tool install dnscontroller
+```
+
+## Configuration
+
+Create a configuration file at `~/.cfcli.yml` with your Cloudflare API token:
+
+```yaml
+defaults:
+  token: your-cloudflare-api-token
+```
+
+## Usage
+
+### List Domains and Records
+
+List all available domains:
+```bash
+dnscontroller ls
+```
+
+List DNS records for a specific domain:
+```bash
+dnscontroller ls example.com
+```
+
+### Manage DNS Records
+
+Create or update a DNS record:
+```bash
+dnscontroller set A www.example.com 192.168.1.1 --ttl 1h
+```
+
+Supported TTL formats:
+- `auto` (default)
+- Seconds (e.g., `300`)
+- Minutes (e.g., `5min`)
+- Hours (e.g., `1h`)
+- Days (e.g., `1d`)
+
+Delete a DNS record:
+```bash
+dnscontroller rm A www.example.com
+```
