@@ -1,0 +1,229 @@
+kubernetes:
+  pod_config:
+    metadata:
+      {% if accelerator_type %}
+      labels:
+        parent: trainy
+        trainy.ai/accelerator: {{ accelerator_type }}
+        trainy.ai/username: {{ user }}
+      {% endif %}
+    spec:
+      restartPolicy: "Never"
+      # trigger this on GPU request
+      {% if num_gpus > 0 %}
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+      {% endif %}
+      containers:
+        # TODO(asaiacai): should decide here whether we add the fabric interfaces/containers init etc.        
+        - name: konduktor-container
+          image: {{ image_id }}
+          # this is set during jobset definition since we need to know the jobset
+          # name and number of nodes to set all the environment variables correctly here
+          # as well as the additional from the job definition
+          env:
+          # flush logs immediately to stdout for more reactive log streaming
+          - name: PYTHONUNBUFFERED
+            value: "0"
+          - name: NODE_HOST_IPS
+            value: "{{ node_hostnames }}"
+          - name: MASTER_ADDR
+            value: "{{ master_addr }}"
+          - name: RANK
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
+          - name: NUM_NODES
+            value: "{{ num_nodes }}"
+          - name: NUM_GPUS_PER_NODE
+            value: "{{ num_gpus }}"
+          {% if tailscale_secret %}
+          - name: TS_USERSPACE
+            value: "true"
+          - name: TS_AUTHKEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ tailscale_secret }}
+                key: TS_AUTHKEY
+                optional: true
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_UID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.uid
+          {% endif %}
+          # these are for compatibility with skypilot
+          - name: SKYPILOT_NODE_IPS
+            value: "{{ node_hostnames }}"
+          - name: SKYPILOT_NODE_RANK
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
+          - name: SKYPILOT_NUM_NODES
+            value: "{{ num_nodes }}"
+          - name: SKYPILOT_NUM_GPUS_PER_NODE
+            value: "{{ num_gpus }}"
+          volumeMounts:
+          - name: shared-memory
+            mountPath: /dev/shm
+          {% for secret_type, secret_name in mount_secrets.items() %}
+          - name: {{ secret_type }}-secret
+            mountPath: /run/konduktor/{{ secret_type }}-secret
+          {% endfor %}
+          command: ["bash", "-c"]
+          args:
+            - |
+              # TODO(asaiacai): add debug environment variable for printing the apt-update, apt-install, sync-files output
+              # Helper function to conditionally use sudo
+              set -eo pipefail
+              mkdir -p ~/.konduktor/tmp
+              start_epoch=$(date +%s);
+              start_setup=$(date +%s);
+              echo "===== KONDUKTOR: Running setup and installing packages ====="
+              prefix_cmd() { if [ $(id -u) -ne 0 ]; then echo "sudo"; else echo ""; fi; }
+              [ $(id -u) -eq 0 ] && function sudo() { "$@"; } || true;
+
+
+              PACKAGES="";
+              {% if 'rsync' in run_cmd %}
+              PACKAGES="$PACKAGES rsync";
+              {% endif %}
+              {% if 'curl' in run_cmd or tailscale_secret %}
+              PACKAGES="$PACKAGES curl";
+              {% endif %}
+              {% if 'gs' in mount_secrets or 's3' in mount_secrets %}
+              PACKAGES="$PACKAGES unzip wget";
+              {% endif %}
+              {% if 'git' in run_cmd %}
+              PACKAGES="$PACKAGES git";
+              {% endif %}
+
+              if [ ! -z "${PACKAGES}" ]; then
+                # Run apt update, install missing packages
+                DEBIAN_FRONTEND=noninteractive $(prefix_cmd) apt-get update > ~/.konduktor/tmp/apt-update.log 2>&1 || \
+                $(prefix_cmd) echo "Warning: apt-get update failed. Continuing anyway..." >> ~/.konduktor/tmp/apt-update.log
+              fi
+              
+
+              # Separate packages into two groups: packages that are installed first
+              # so that curl and rsync are available sooner to unblock the following
+              # conda installation and rsync.
+              INSTALL_FIRST="";
+              MISSING_PACKAGES="";
+              for pkg in $PACKAGES; do
+                if ! dpkg -l | grep -q "^ii  $pkg "; then
+                  if [ "$pkg" == "curl" ] || [ "$pkg" == "rsync" ]; then
+                    INSTALL_FIRST="$INSTALL_FIRST $pkg";
+                  else
+                    MISSING_PACKAGES="$MISSING_PACKAGES $pkg";
+                  fi
+                fi
+              done;
+              if [ ! -z "$INSTALL_FIRST" ]; then
+                $(prefix_cmd) echo "Installing core packages: $INSTALL_FIRST";
+                DEBIAN_FRONTEND=noninteractive $(prefix_cmd) apt-get install -y $INSTALL_FIRST >> ~/.konduktor/tmp/apt-install.log;
+              fi;
+
+              if [ ! -z "$MISSING_PACKAGES" ]; then
+                $(prefix_cmd) echo "Installing missing packages: $MISSING_PACKAGES";
+                DEBIAN_FRONTEND=noninteractive $(prefix_cmd) apt-get install -y $MISSING_PACKAGES >> ~/.konduktor/tmp/apt-install.log;
+              fi;
+              end_epoch=$(date +%s);
+
+              {% if tailscale_secret %}
+              if ! command -v tailscale >/dev/null 2>&1; then
+                export TS_HOSTNAME=$(echo "$POD_NAME" | sed 's/-[^-]*$//')
+                $(prefix_cmd) curl -fsSL https://tailscale.com/install.sh | DEBIAN_FRONTEND=noninteractive $(prefix_cmd) sh >> ~/.konduktor/tmp/tailscale-install.log
+                $(prefix_cmd) tailscaled --tun=userspace-networking >/dev/null 2>&1 &
+                $(prefix_cmd) tailscale up --auth-key=${TS_AUTHKEY} --ssh --hostname=${TS_HOSTNAME} >/dev/null 2>&1
+              fi
+              {% endif %}
+              end_epoch=$(date +%s);
+
+              $(prefix_cmd) echo "===== KONDUKTOR: Installing packages took $((end_epoch - start_epoch)) seconds ====="
+
+              # unpack secrets credentials
+              $(prefix_cmd) echo "===== KONDUKTOR: Unpacking secrets credentials ====="
+              start_epoch=$(date +%s);
+              mkdir -p ~/.konduktor
+              mkdir -p {{ remote_workdir }}
+              {% for secret_type, secret_name in mount_secrets.items() %}
+              {% if secret_type == "gs" %}
+              $(prefix_cmd) echo "Unpacking GCP secret"
+              $(prefix_cmd) mkdir -p ~/.config
+              $(prefix_cmd) unzip /run/konduktor/gs-secret/gcpcredentials -d ~/.config/gcloud
+              {% elif secret_type == "s3" %}
+              $(prefix_cmd) echo "Unpacking AWS secret"
+              $(prefix_cmd) mkdir -p ~/.aws
+              $(prefix_cmd) unzip /run/konduktor/s3-secret/awscredentials -d ~/.aws
+              {% endif %}
+              {% endfor %}
+              end_epoch=$(date +%s);
+              $(prefix_cmd) echo "===== KONDUKTOR: Unpacking secrets credentials took $((end_epoch - start_epoch)) seconds ====="
+
+              # sync file mounts
+              {% for mkdir_command in mkdir_commands %}
+              $(prefix_cmd) {{ mkdir_command }}
+              {% endfor %}
+              {% if sync_commands|length > 0 %}
+              $(prefix_cmd) echo "===== KONDUKTOR: Syncing files ====="
+              start_epoch=$(date +%s);
+              {% for sync_command in sync_commands %}
+              $(prefix_cmd) {{ sync_command }} >> ~/.konduktor/tmp/sync-files.log
+              {% endfor %}
+              end_epoch=$(date +%s);
+              $(prefix_cmd) echo "===== KONDUKTOR: Syncing files took $((end_epoch - start_epoch)) seconds ====="
+              {% endif %}
+              end_epoch=$(date +%s);
+              end_setup_time=$((end_epoch - start_setup));
+              ulimit -Sc 0 && ulimit -Hc 0
+              $(prefix_cmd) echo "===== KONDUKTOR: Initialization took $end_setup_time seconds ====="
+              # run task  
+              $(prefix_cmd) cd {{ remote_workdir }}
+              set +eo pipefail
+              $(prefix_cmd) echo "===== KONDUKTOR: Running task ====="
+              start_epoch=$(date +%s);
+              {{ run_cmd | indent( width=14 ) }}
+              end_epoch=$(date +%s);
+              exit_code=$?
+              $(prefix_cmd) echo "===== KONDUKTOR: Running task took $((end_epoch - start_epoch)) seconds and finished with exit code: $exit_code ====="
+              exit $exit_code
+          resources:
+            limits:
+              cpu: {{ cpu }}
+              memory: {{ memory }}Gi
+              # TODO(asaiacai): need to decide whether we include fabric configuration here
+              {% if num_gpus > 0 %}
+              nvidia.com/gpu: {{ num_gpus }}
+              {% endif %}
+            requests:
+              cpu: {{ cpu }}
+              memory: {{ memory }}Gi
+              {% if num_gpus > 0 %}
+              nvidia.com/gpu: {{num_gpus}}
+              {% endif %}
+          securityContext:
+            capabilities:
+              add: 
+              - "IPC_LOCK"  # May be needed for memlock
+
+      volumes:
+      - name: shared-memory
+        emptyDir:
+          medium: "Memory"
+          sizeLimit: 4Gi
+      {% for secret_type, secret_name in mount_secrets.items() %}
+      - name: {{ secret_type }}-secret
+        secret:
+          secretName: {{ secret_name }}
+      {% endfor %}
+
+        
+        
+      # TODO(asaiacai): should we add nodeSelectors here or leave to
+      # kueue resource flavors. leaning towards defining
+      # in kueue and just querying for the kueue resource flavor
