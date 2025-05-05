@@ -1,0 +1,50 @@
+%YAML 1.2
+# palaestrAI Runtime Configuration
+
+---
+data_path: ./_outputs
+executor_bus_port: 4242
+logger_port: 4243
+logging:
+  filters:
+    debug_filter: {(): palaestrai.core.runtime_config.DebugLogFilter}
+  formatters:
+    debug: {format: '%(asctime)s %(name)s[%(process)d]: %(levelname)s - %(message)s
+        (%(module)s.%(funcName)s in %(filename)s:%(lineno)d)'}
+    simple: {format: '%(asctime)s %(name)s[%(process)d]: %(levelname)s - %(message)s'}
+  handlers:
+    console: {class: logging.StreamHandler, formatter: simple, level: DEBUG, stream: 'ext://sys.stdout'}
+    console_debug:
+      class: logging.StreamHandler
+      filters: [debug_filter]
+      formatter: debug
+      level: DEBUG
+      stream: ext://sys.stdout
+    logfile: {class: logging.FileHandler, filename: palaestrai.log, formatter: simple,
+      level: INFO, mode: w}
+  loggers:
+    palaestrai.agent: {level: WARNING}
+    palaestrai.agent.brain_dumper: {level: WARNING}
+    palaestrai.core: {level: WARNING}
+    palaestrai.environment: {level: WARNING}
+    palaestrai.experiment: {level: WARNING}
+    palaestrai.simulation: {level: WARNING}
+    palaestrai.store: {level: ERROR}
+    palaestrai.types: {level: ERROR}
+    palaestrai.util: {level: ERROR}
+    palaestrai.visualization: {level: ERROR}
+    sqlalchemy.engine: {level: ERROR}
+    midas: {level: WARNING}
+    palaestrai_mosaik: {level: DEBUG}
+    palaestrai_mosaik.simulator: {level: DEBUG}
+  root:
+    handlers: [logfile, console]
+    level: ERROR
+  version: 1
+major_domo_client_retries: 3
+major_domo_client_timeout: 300000
+profile: false
+public_bind: false
+store_buffer_size: 1
+store_uri: ~
+time_series_store_uri: influx+localhost:8086

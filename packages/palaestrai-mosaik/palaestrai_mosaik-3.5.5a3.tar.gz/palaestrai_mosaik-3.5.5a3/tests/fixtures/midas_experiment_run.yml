@@ -1,0 +1,97 @@
+######################################################################
+# Example experiment configuration file:                             #
+# This file is used in the CI/CD pipeline.                           #
+# Do not change it! But can copy it and modify it to your needs      #
+# Below the configuration are some additional information            #
+######################################################################
+uid: "Experiment Run with Mosaik and Midas"
+seed: 123
+version: 3.5.4
+schedule:
+  - the_only_phase:
+      environments:
+        - environment:
+            name: palaestrai_mosaik:MosaikEnvironment
+            uid: env
+            params:
+              module: midas_palaestrai:Descriptor
+              description_func: describe
+              instance_func: get_world
+              arl_sync_freq: &step_size 900
+              end: &end 24*60*60  # One simulated day
+              start_date: random
+              params:  # Parameters that are passed to description_func and
+                       # instance_func
+                name: midas_palaestrai
+                config: tests/fixtures/midasmv_palaestrai.yml
+                step_size: *step_size
+          reward:
+            name: midas_palaestrai.rewards:ExtendedGridHealthReward
+            params: {}
+
+      agents:
+        - name: mighty_defender
+          brain: 
+            name: palaestrai.agent.dummy_brain:DummyBrain
+            params: {}
+          muscle: 
+            name: palaestrai.agent.dummy_muscle:DummyMuscle
+            params: {}
+          objective:
+            name: palaestrai.agent.dummy_objective:DummyObjective
+            params: {"params": 1}
+          sensors: 
+            - env.Powergrid-0.0-bus-2.vm_pu
+            - env.Powergrid-0.0-bus-3.vm_pu
+            - env.Powergrid-0.0-bus-4.vm_pu
+            - env.Powergrid-0.0-bus-5.vm_pu
+            - env.Powergrid-0.0-bus-6.vm_pu
+            - env.Powergrid-0.0-bus-7.vm_pu
+          actuators: 
+            - env.Pysimmods-0.Photovoltaic-0.p_set_mw
+            - env.Pysimmods-0.Photovoltaic-1.p_set_mw
+        - name: mighty_Attacker
+          brain: 
+            name: palaestrai.agent.dummy_brain:DummyBrain
+            params: {}
+          muscle: 
+            name: palaestrai.agent.dummy_muscle:DummyMuscle
+            params: {}
+          objective: 
+            name: palaestrai.agent.dummy_objective:DummyObjective
+            params: {"params": 1 }
+          sensors:
+            - env.Powergrid-0.0-bus-10.vm_pu
+            - env.Powergrid-0.0-bus-11.vm_pu
+            - env.Powergrid-0.0-bus-12.vm_pu
+            - env.Powergrid-0.0-bus-13.vm_pu
+            - env.Powergrid-0.0-bus-14.vm_pu
+          actuators: 
+            - env.Pysimmods-0.Photovoltaic-2.p_set_mw
+      simulation:
+        name: palaestrai.simulation:TakingTurns
+        conditions:
+          - name: palaestrai.simulation:VanillaSimControllerTerminationCondition
+            params: {}
+      phase_config:
+        mode: train
+        worker: 1
+        episodes: 1
+run_config: 
+  condition:
+    name: palaestrai.experiment:VanillaRunGovernorTerminationCondition
+    params: {}
+
+
+######################################################################
+# Some additional information:                                       #
+# To get a list of all possible sensors or actuators of a given      #
+# midas environment, you can use the midasctl show command:          #
+#                                                                    #
+#     midasctl show -c tests/fixtures/midasmv_palaestrai \           #
+#          midas_palaestrai --sensors --prefix "env."                #
+# or                                                                 #
+#     midasctl show -c tests/fixtures/midasmv_palaestrai \           #
+#          midas_palaestrai --actuators --prefix "env."              #
+######################################################################
+
