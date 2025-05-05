@@ -1,0 +1,62 @@
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required: []
+    properties:
+      jdbcxLogLevel:
+        type: string
+        default: DEBUG
+        description: Log level for the JDBCX MCP Server
+      jdbcxServerUrl:
+        type: string
+        default: http://localhost:8080
+        description: JDBCX server URL
+      jdbcxServerToken:
+        type: string
+        default: ""
+        description: JDBCX server access token
+      defaultQueryTimeoutSeconds:
+        type: number
+        default: 10
+        description: Default query timeout in seconds
+      defaultDataFormat:
+        type: string
+        default: csv
+        description: Default data format (e.g., md, jsonl, csv)
+      defaultRowsLimit:
+        type: number
+        default: 100
+        description: Default number of rows returned
+      maxRowsLimit:
+        type: number
+        default: 1000
+        description: Maximum number of rows allowed
+      mcpTransport:
+        type: string
+        default: stdio
+        description: MCP transport mechanism
+      mcpServerHost:
+        type: string
+        default: 0.0.0.0
+        description: MCP server bind address
+      mcpServerPort:
+        type: number
+        default: 8080
+        description: MCP server port
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => { return { command: 'pydbcx-mcp', env: { JDBCX_LOG_LEVEL: config.jdbcxLogLevel, JDBCX_SERVER_URL: config.jdbcxServerUrl, JDBCX_SERVER_TOKEN: config.jdbcxServerToken, DEFAULT_QUERY_TIMEOUT_SECONDS: config.defaultQueryTimeoutSeconds.toString(), DEFAULT_DATA_FORMAT: config.defaultDataFormat, DEFAULT_ROWS_LIMIT: config.defaultRowsLimit.toString(), MAX_ROWS_LIMIT: config.maxRowsLimit.toString(), MCP_TRANSPORT: config.mcpTransport, MCP_SERVER_HOST: config.mcpServerHost, MCP_SERVER_PORT: config.mcpServerPort.toString() } }; }
+  exampleConfig:
+    jdbcxLogLevel: DEBUG
+    jdbcxServerUrl: http://localhost:8080
+    jdbcxServerToken: your_token_here
+    defaultQueryTimeoutSeconds: 10
+    defaultDataFormat: csv
+    defaultRowsLimit: 100
+    maxRowsLimit: 1000
+    mcpTransport: stdio
+    mcpServerHost: 0.0.0.0
+    mcpServerPort: 8080

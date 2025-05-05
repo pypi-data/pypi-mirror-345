@@ -1,0 +1,69 @@
+[project]
+name = "mseep-pydbcx-mcp"
+version = "0.1.1"
+description = "JDBCX MCP Server"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Zhichun Wu", email = "zhicwu@gmail.com" },
+]
+keywords = [
+    "automation",
+    "database",
+    "jdbc",
+    "mcp",
+    "llm",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+]
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.6.0",
+]
+
+[project.license]
+text = "Apache License (2.0)"
+
+[project.scripts]
+pydbcx-mcp = "pydbcx_mcp:main"
+
+[project.urls]
+Homepage = "https://github.com/jdbcx/pydbcx-mcp"
+Documentation = "https://github.com/jdbcx/pydbcx-mcp/blob/main/README.md"
+Repository = "https://github.com/jdbcx/pydbcx-mcp.git"
+"Bug Tracker" = "https://github.com/jdbcx/pydbcx-mcp/issues"
+
+[build-system]
+requires = [
+    "hatchling",
+]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "pydbcx_mcp",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+]
+ignore = []
+
+[dependency-groups]
+dev = [
+    "pytest-asyncio>=0.26.0",
+    "socksio>=1.0.0",
+]
