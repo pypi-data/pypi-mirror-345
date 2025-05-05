@@ -1,0 +1,39 @@
+# MCP Translator Server
+
+This project provides an MCP (Model Context Protocol) server designed to facilitate the translation of long-form text documents.
+
+## Features
+
+*   Accepts paths to multiple text files for concurrent translation jobs.
+*   Splits each text file into manageable chunks.
+*   Stores chunks and their translation status in a SQLite database (`translation_progress.db`), keeping track of which file each chunk belongs to.
+*   Provides tools to:
+    *   Initialize or restart the translation process for a specific file (`start_translation file_path=...`). Clears previous progress for that file if it existed.
+    *   List all ongoing translation jobs and their progress (`list_jobs`).
+    *   Fetch the next untranslated chunk for a specific file (`get_next_chunk file_path=...`).
+    *   Submit the translation for a specific chunk ID (`submit_translation chunk_id=... translated_text=...`).
+
+## Setup
+
+1.  Install dependencies:
+    ```bash
+    pip install .
+    # Or pip install -e . for development mode
+    ```
+
+2.  Download the spaCy model:
+    ```bash
+    python -m spacy download xx_sent_ud_sm
+    ```
+
+## Running the Server
+
+```bash
+mcp-translator
+```
+
+This will start the MCP server, listening for client connections. The database file (`translation_progress.db`) will be created in the same directory as `server.py`.
+
+## Usage
+
+Connect an MCP client (like a compatible AI assistant or script) to the running server. The client can then use the available tools, making sure to specify the `file_path` where required (`start_translation`, `get_next_chunk`), to manage the translation workflow for different files. 
