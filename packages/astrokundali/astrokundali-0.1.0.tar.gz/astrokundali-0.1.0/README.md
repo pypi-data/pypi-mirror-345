@@ -1,0 +1,64 @@
+# project
+## name = "astrokundali"
+- version = "0.1.0"
+- description = "Flexible astrokundali package with Different house calculation methods and interpretation JSONs"
+- authors = [ { name="Mirjan Ali Sha", email="mastools.help@gmail.com" } ]
+- readme = "README.md"
+- requires-python = ">=3.7"
+
+<hr>
+**project.scripts**
+<p>astrokundali = "astrokundali.core:main"
+
+# Example Usage (Windows)
+<pre>
+  cd .\astrokundali\
+  .\.venv\Scripts\activate
+  pip install -e . [Optional]
+  python
+    </pre>
+  **Configure AstroData**
+  <pre>
+  from astrokundali import AstroData
+  data = AstroData(2009,3,30,9,36,0,5,30,19.0760,72.8777,ayanamsa='lahiri')
+  </pre>
+  **Plot Lagna Chart**
+  <pre>
+  from astrokundali import plot_lagna_chart
+  plot_lagna_chart(data, house_system= 'whole_sign') 
+    or 
+  plot_lagna_chart(data) </pre>
+  **Plot Moon/Chandra Chart**
+  <pre>
+  from astrokundali import plot_moon_chart
+  plot_moon_chart(data, house_system= 'whole_sign') 
+    or 
+  plot_moon_chart(data) </pre>
+  **Plot Navamsa/Navamsha/D9 Chart**
+  <pre>
+  from astrokundali import plot_navamsa_chart
+  plot_navamsa_chart(data, house_system= 'whole_sign') 
+    or 
+  plot_navamsa_chart(data)</pre>
+  **Get Planetary Positions and Dispositions**
+  <pre>
+  from astrokundali import get_dispositions
+  import json
+  disp = get_dispositions(data, house_system= 'whole_sign')
+    or
+  disp = get_dispositions(data)
+  print(json.dumps(report, ensure_ascii=False, indent=2)) </pre>
+  **Get Interpretation Report**
+  <pre>
+  from astrokundali import generate_report, json_sanitize
+  import json
+  report  = json_sanitize(generate_report(data))
+  print(json.dumps(report, ensure_ascii=False, indent=2))</pre>
+  **Marriage Matching**
+  <pre>
+  from astokundali import AstroData, match_kundli
+  boy = AstroData(1990,1,1,10,0,0,5,30,19.07,72.88)
+  girl = AstroData(1992,6,15,16,30,0,5,30,28.61,77.23)
+  from pprint import pprint
+  pprint(match_kundli(boy, girl))</pre>
+  
