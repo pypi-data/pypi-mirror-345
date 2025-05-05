@@ -1,0 +1,36 @@
+# Include data files
+include purpose_classifier/config/*.json
+include purpose_classifier/data/*.json
+
+# Include model files (but exclude large binary files)
+include models/model_version.json
+include models/confidence_calibration.json
+include models/README.md
+include purpose_classifier/models/README.md
+
+# Documentation
+include README.md
+include LICENSE
+include docs/*.md
+
+# Exclude unnecessary files
+global-exclude *.py[cod]
+global-exclude __pycache__
+global-exclude *.so
+global-exclude .DS_Store
+global-exclude *.pkl
+global-exclude *.csv
+global-exclude *.txt
+global-exclude *.log
+
+# Explicitly exclude large model files that should be downloaded separately
+exclude models/*.pkl
+exclude models/*.pt
+exclude purpose_classifier/models/*.pkl
+exclude purpose_classifier/models/*.pt
+global-exclude *.pt
+
+# Specific model files (for clarity)
+exclude models/combined_model.pkl
+exclude models/combined_model.pkl.pt
+exclude models/word_embeddings.pkl
