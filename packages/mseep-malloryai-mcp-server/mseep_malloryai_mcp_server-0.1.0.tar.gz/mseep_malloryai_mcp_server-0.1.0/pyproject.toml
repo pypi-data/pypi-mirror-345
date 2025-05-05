@@ -1,0 +1,67 @@
+[project]
+name = "mseep-malloryai-mcp-server"
+version = "0.1.0"
+description = "MalloryAI Intelligence MCP Server"
+authors = [
+    { name = "Mallory Team", email = "hello@mallory.ai" },
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "malloryai-sdk>=0.3.2",
+    "python-dotenv>=1.1.0",
+    "pydantic>=2.11.0",
+    "mcp[cli]>=1.6.0",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/malloryai/mallory-mcp-server"
+Documentation = "https://github.com/malloryai/mallory-mcp-server#readme"
+Repository = "https://github.com/malloryai/mallory-mcp-server.git"
+Issues = "https://github.com/malloryai/mallory-mcp-server/issues"
+
+[project.optional-dependencies]
+lint = [
+    "black>=24.10.0",
+    "isort>=5.13.2",
+    "flake8>=7.1.1",
+]
+tools = [
+    "bandit>=1.8.2",
+    "pre-commit>=4.1.0",
+]
+
+[project.scripts]
+malloryai-mcp-server = "malloryai.mcp.app:main"
+
+[build-system]
+requires = [
+    "setuptools>=68.0.0",
+    "wheel>=0.40.0",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = []
+packages = [
+    "malloryai.mcp",
+]
+
+[tool.black]
+line-length = 88
+target-version = [
+    "py311",
+]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = [
+    "E203",
+]
