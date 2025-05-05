@@ -1,0 +1,155 @@
+{
+    "schema_url": "http://jhnnsrs-lab/fluss/graphql",
+    "documents": "graphql/fluss-next/*/**.graphql",
+    "extensions": {
+        "turms": {
+            "pydantic_version": "v2",
+            "domain": null,
+            "out_dir": "fluss_next/api",
+            "dump_configuration": true,
+            "configuration_name": "project.json",
+            "dump_schema": true,
+            "schema_name": "schema.graphql",
+            "generated_name": "schema.py",
+            "documents": "graphql/fluss-next/*/**.graphql",
+            "verbose": false,
+            "exit_on_error": true,
+            "allow_introspection": true,
+            "object_bases": [
+                "pydantic.BaseModel"
+            ],
+            "interface_bases": null,
+            "always_resolve_interfaces": true,
+            "exclude_typenames": true,
+            "scalar_definitions": {
+                "uuid": "str",
+                "Callback": "str",
+                "Any": "typing.Any",
+                "ID": "rath.scalars.ID",
+                "EventValue": "fluss_next.scalars.EventValue",
+                "ValueMap": "typing.Dict",
+                "AnyDefault": "typing.Any",
+                "ValidatorFunction": "fluss_next.scalars.ValidatorFunction",
+                "Identifier": "str",
+                "SearchQuery": "str"
+            },
+            "freeze": {
+                "enabled": true,
+                "types": [
+                    "input",
+                    "fragment",
+                    "object"
+                ],
+                "exclude": null,
+                "include": null,
+                "exclude_fields": [],
+                "include_fields": [],
+                "convert_list_to_tuple": true
+            },
+            "create_catchall": true,
+            "options": {
+                "enabled": true,
+                "extra": "forbid",
+                "allow_mutation": null,
+                "allow_population_by_field_name": true,
+                "orm_mode": null,
+                "use_enum_values": true,
+                "validate_assignment": null,
+                "types": [
+                    "input"
+                ],
+                "exclude": null,
+                "include": null
+            },
+            "skip_forwards": false,
+            "additional_bases": {
+                "FlowGraph": [
+                    "fluss_next.traits.Graph"
+                ],
+                "StreamItem": [
+                    "fluss_next.traits.MockableTrait"
+                ],
+                "StreamItemChild": [
+                    "fluss_next.traits.MockableTrait"
+                ]
+            },
+            "additional_config": {
+                "EdgeInput": {
+                    "allow_population_by_field_name": true
+                }
+            },
+            "force_plugin_order": true,
+            "parsers": [],
+            "plugins": [
+                {
+                    "type": "turms.plugins.enums.EnumsPlugin"
+                },
+                {
+                    "type": "turms.plugins.inputs.InputsPlugin"
+                },
+                {
+                    "type": "turms.plugins.fragments.FragmentsPlugin"
+                },
+                {
+                    "type": "turms.plugins.operations.OperationsPlugin"
+                },
+                {
+                    "type": "turms.plugins.funcs.FuncsPlugin",
+                    "expand_input_types": [
+                        "input"
+                    ],
+                    "global_kwargs": [
+                        {
+                            "type": "fluss_next.rath.FlussRath",
+                            "key": "rath",
+                            "description": "The client we want to use (defaults to the currently active client)"
+                        }
+                    ],
+                    "definitions": [
+                        {
+                            "type": "subscription",
+                            "is_async": true,
+                            "use": "fluss_next.funcs.asubscribe"
+                        },
+                        {
+                            "type": "query",
+                            "is_async": true,
+                            "use": "fluss_next.funcs.aexecute"
+                        },
+                        {
+                            "type": "mutation",
+                            "is_async": true,
+                            "use": "fluss_next.funcs.aexecute"
+                        },
+                        {
+                            "type": "subscription",
+                            "use": "fluss_next.funcs.subscribe"
+                        },
+                        {
+                            "type": "query",
+                            "use": "fluss_next.funcs.execute"
+                        },
+                        {
+                            "type": "mutation",
+                            "use": "fluss_next.funcs.execute"
+                        }
+                    ]
+                }
+            ],
+            "processors": [
+                {
+                    "type": "turms.processors.black.BlackProcessor"
+                }
+            ],
+            "stylers": [
+                {
+                    "type": "turms.stylers.default.DefaultStyler"
+                },
+                {
+                    "type": "turms.stylers.appender.AppenderStyler",
+                    "append_fragment": ""
+                }
+            ]
+        }
+    }
+}
