@@ -1,0 +1,64 @@
+[project]
+name = "sqlalchemy-crud-plus"
+description = "Asynchronous CRUD operation based on SQLAlchemy2 model"
+version = '1.9.0'
+authors = [
+    { name = "Wu Clan", email = "jianhengwu0407@gmail.com" },
+]
+dependencies = [
+    "sqlalchemy>=2.0.0",
+    "pydantic>=2.0",
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "MIT" }
+
+[project.urls]
+homepage = "https://github.com/fastapi-practices/sqlalchemy-crud-plus"
+repository = "https://github.com/fastapi-practices/sqlalchemy-crud-plus"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.1.1",
+    "aiosqlite>=0.20.0",
+    "pytest-asyncio>=0.23.6",
+]
+lint = [
+    "pre-commit>=3.5.0",
+]
+
+[tool.uv]
+python-downloads = "manual"
+default-groups = ["dev", "lint"]
+
+[tool.ruff]
+line-length = 120
+unsafe-fixes = true
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I"
+]
+preview = true
+
+[tool.ruff.lint.isort]
+lines-between-types = 1
+order-by-type = true
+
+[tool.ruff.format]
+quote-style = "single"
+docstring-code-format = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

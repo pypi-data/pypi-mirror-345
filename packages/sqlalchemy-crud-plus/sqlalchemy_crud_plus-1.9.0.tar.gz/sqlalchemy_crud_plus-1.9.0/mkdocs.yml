@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+site_name: SQLAlchemy CRUD Plus
+site_description: Asynchronous CRUD operations based on SQLAlChemy 2.0
+site_url: https://wu-clan.github.io/sqlalchemy-crud-plus
+site_author: Wu Clan
+repo_name: sqlalchemy-crud-plus
+repo_url: https://github.com/wu-clan/sqlalchemy-crud-plus
+nav:
+  - 主页: index.md
+  - 安装: installing.md
+  - 用法:
+      - 新增:
+          - 单条: usage/create_model.md
+          - 多条: usage/create_models.md
+      - 查询:
+          - 主键: usage/select_model.md
+          - 列: usage/select_model_by_column.md
+          - Select: usage/select.md
+          - Select 排序: usage/select_order.md
+          - 列表: usage/select_models.md
+          - 列表排序: usage/select_models_order.md
+          - Count: usage/count.md
+          - Exists: usage/exists.md
+      - 更新:
+          - 主键: usage/update_model.md
+          - 列: usage/update_model_by_column.md
+      - 删除:
+          - 主键: usage/delete_model.md
+          - 列: usage/delete_model_by_column.md
+  - 高级用法:
+      - 主键: advanced/primary_key.md
+      - 冲洗: advanced/flush.md
+      - 提交: advanced/commit.md
+      - 条件过滤: advanced/filter.md
+  - 变更日志: changelog.md
+theme:
+  name: material
+  font:
+    code: Roboto Mono
+  palette:
+    - media: '(prefers-color-scheme)'
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      primary: pink
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - content.code.annotate
+    - content.code.select
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.path
+    - navigation.tracking
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - toc.follow
+plugins:
+  - search
+markdown_extensions:
+  - toc:
+      permalink: true
+  - tables
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
