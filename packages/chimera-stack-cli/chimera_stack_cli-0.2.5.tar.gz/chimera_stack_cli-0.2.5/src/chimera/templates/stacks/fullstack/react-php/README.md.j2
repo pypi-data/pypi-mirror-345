@@ -1,0 +1,90 @@
+# React PHP Fullstack Template
+
+Welcome to your ChimeraStack-generated full-stack development environment! This stack gives you:
+
+- **Modern Frontend**: React (TypeScript) with Vite and Tailwind CSS
+- **Production-ready Backend**: PHP-FPM with API routing through Nginx
+- **Database**: {{ "PostgreSQL" if DB_ENGINE == "postgresql" else ("MariaDB" if DB_ENGINE == "mariadb" else "MySQL") }}
+- **Admin Console**: {{ "pgAdmin" if DB_ENGINE == "postgresql" else "phpMyAdmin" }}
+
+---
+
+## 🚀 Getting started
+
+```bash
+# start containers
+$ docker compose up -d
+
+# tail logs (optional)
+$ docker compose logs -f --tail=50
+```
+
+Once **healthy**, open:
+
+| Service                     | URL                               |
+| --------------------------- | --------------------------------- |
+| Frontend (SPA)              | http://localhost:${WEB_PORT}      |
+| React Dev Server (HMR)      | http://localhost:${FRONTEND_PORT} |
+| Backend API                 | http://localhost:${WEB_PORT}/api  |
+| DB Admin                    | http://localhost:${ADMIN_PORT}    |
+
+---
+
+## 🛠️ Development workflow
+
+### Frontend
+
+```bash
+# enter container
+$ docker compose exec frontend sh
+
+# add a package
+/app $ npm install <pkg>
+
+# build for production (already in Dockerfile)
+/app $ npm run build
+```
+
+Edit files in `frontend/src/` and Vite will hot-reload your browser. Pre-configured with:
+
+- TypeScript + React 18
+- Tailwind CSS 3
+- Vite dev server proxying `/api`
+
+### Backend
+
+PHP lives under `backend/`. Nginx serves `backend/public/` and proxies `/api` to PHP-FPM.
+
+- Add endpoints in `backend/public/api/`
+- Shared bootstrap: `backend/bootstrap.php`
+
+### Database
+
+```
+DB_USER=${DB_USERNAME}
+DB_PASSWORD=${DB_PASSWORD}
+DB_DATABASE=${DB_DATABASE}
+DB_HOST=db
+DB_PORT={{ "5432" if DB_ENGINE == "postgresql" else "3306" }}
+```
+
+Connect via {{ "pgAdmin" if DB_ENGINE == "postgresql" else "phpMyAdmin" }} at http://localhost:${ADMIN_PORT}.
+
+{% if DB_ENGINE == "postgresql" %}
+`docker compose exec db psql -U $DB_USERNAME -d $DB_DATABASE`
+{% else %}
+`docker compose exec db mysql -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE`
+{% endif %}
+
+---
+
+## 🏗️ Infrastructure
+
+- Nginx reverse proxy
+- PHP-FPM 8.2
+- {{ "PostgreSQL" if DB_ENGINE == "postgresql" else ("MariaDB" if DB_ENGINE == "mariadb" else "MySQL") }} database
+- Healthchecks & volumes
+
+---
+
+Happy coding 🚀

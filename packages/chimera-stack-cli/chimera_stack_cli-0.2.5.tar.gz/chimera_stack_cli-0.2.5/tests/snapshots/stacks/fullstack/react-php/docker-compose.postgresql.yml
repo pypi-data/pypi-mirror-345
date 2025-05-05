@@ -1,0 +1,103 @@
+version: '3.8'
+
+services:
+  # Frontend React development server with Vite
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ${PROJECT_NAME}-frontend
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - "VITE_API_URL=http://localhost:${WEB_PORT}/api"
+      - "FRONTEND_PORT=${FRONTEND_PORT}"
+    networks:
+      - ${PROJECT_NAME}_network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:${FRONTEND_PORT}"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Backend PHP-FPM service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: "8.2"
+    container_name: ${PROJECT_NAME}-backend
+    volumes:
+      - ./backend:/var/www/html
+    environment:
+      - "APP_ENV=local"
+      - "DB_CONNECTION=postgresql"
+      - "DB_HOST=db"
+      - "DB_PORT=5432"
+      - "DB_DATABASE=${DB_DATABASE}"
+      - "DB_USERNAME=${DB_USERNAME}"
+      - "DB_PASSWORD=${DB_PASSWORD}"
+    networks:
+      - ${PROJECT_NAME}_network
+    depends_on:
+      - db
+
+  # Nginx web server/reverse proxy
+  nginx:
+    image: nginx:stable-alpine
+    container_name: ${PROJECT_NAME}-nginx
+    ports:
+      - "${WEB_PORT}:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      # Mount core welcome dashboard content
+      - ./public:/usr/share/nginx/html
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - ${PROJECT_NAME}_network
+
+  # Database - PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: ${PROJECT_NAME}-db
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      - "POSTGRES_DB=${DB_DATABASE}"
+      - "POSTGRES_USER=${DB_USERNAME}"
+      - "POSTGRES_PASSWORD=${DB_PASSWORD}"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - ${PROJECT_NAME}_network
+    restart: unless-stopped
+
+  # Database admin tool - pgAdmin
+  db_admin:
+    image: dpage/pgadmin4
+    container_name: ${PROJECT_NAME}-db-admin
+    ports:
+      - "${ADMIN_PORT}:80"
+    environment:
+      - "PGADMIN_DEFAULT_EMAIL=admin@example.com"
+      - "PGADMIN_DEFAULT_PASSWORD=${DB_PASSWORD}"
+      - "PGADMIN_LISTEN_PORT=80"
+    depends_on:
+      - db
+    networks:
+      - ${PROJECT_NAME}_network
+
+networks:
+  ${PROJECT_NAME}_network:
+    driver: bridge
+
+volumes:
+  db_data:
+    name: ${PROJECT_NAME}_postgres
