@@ -1,0 +1,105 @@
+Metadata-Version: 2.4
+Name: pydapter
+Version: 0.1.0
+Summary: Tiny trait + adapter toolkit for pydantic models
+Author-email: Ocean <quantocean.li@gmail.com>
+License-File: LICENSE
+Requires-Python: >=3.10
+Requires-Dist: pydantic>=2.6
+Requires-Dist: toml>=0.10.2
+Provides-Extra: aiohttp
+Requires-Dist: aiohttp>=3.11.10; extra == 'aiohttp'
+Provides-Extra: all
+Requires-Dist: aiohttp>=3.11.10; extra == 'all'
+Requires-Dist: asyncpg>=0.29; extra == 'all'
+Requires-Dist: greenlet>=3.0.0; extra == 'all'
+Requires-Dist: motor>=3; extra == 'all'
+Requires-Dist: neo4j>=5.19; extra == 'all'
+Requires-Dist: pandas>=2.2; extra == 'all'
+Requires-Dist: psycopg2-binary>=2.9.10; extra == 'all'
+Requires-Dist: psycopg[binary]>=3; extra == 'all'
+Requires-Dist: pymongo>=4.7; extra == 'all'
+Requires-Dist: qdrant-client>=1.14; extra == 'all'
+Requires-Dist: sqlalchemy>=2.0; extra == 'all'
+Requires-Dist: weaviate-client>=4.4; extra == 'all'
+Requires-Dist: xlsxwriter>=3.2; extra == 'all'
+Provides-Extra: excel
+Requires-Dist: pandas>=2.2; extra == 'excel'
+Requires-Dist: xlsxwriter>=3.2; extra == 'excel'
+Provides-Extra: mongo
+Requires-Dist: pymongo>=4.7; extra == 'mongo'
+Provides-Extra: motor
+Requires-Dist: motor>=3; extra == 'motor'
+Provides-Extra: neo4j
+Requires-Dist: neo4j>=5.19; extra == 'neo4j'
+Provides-Extra: pandas
+Requires-Dist: pandas>=2.2; extra == 'pandas'
+Provides-Extra: postgres
+Requires-Dist: asyncpg>=0.29; extra == 'postgres'
+Requires-Dist: greenlet>=3.0.0; extra == 'postgres'
+Requires-Dist: psycopg2-binary>=2.9.10; extra == 'postgres'
+Requires-Dist: psycopg[binary]>=3; extra == 'postgres'
+Requires-Dist: sqlalchemy>=2.0; extra == 'postgres'
+Provides-Extra: qdrant
+Requires-Dist: qdrant-client>=1.14; extra == 'qdrant'
+Provides-Extra: sql
+Requires-Dist: sqlalchemy>=2.0; extra == 'sql'
+Provides-Extra: weaviate
+Requires-Dist: weaviate-client>=4.4; extra == 'weaviate'
+Description-Content-Type: text/markdown
+
+# pydapter
+
+[![CI](https://github.com/ohdearquant/pydapter/actions/workflows/ci.yml/badge.svg)](https://github.com/ohdearquant/pydapter/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/ohdearquant/pydapter/branch/main/graph/badge.svg)](https://codecov.io/gh/ohdearquant/pydapter)
+
+**pydapter** is a micro-library that lets any Pydantic model become _adaptable_
+to / from arbitrary external representations (JSON, CSV, vector stores,
+databases …).
+
+```python
+from pydapter import Adaptable
+from pydapter.adapters import JsonAdapter
+from pydantic import BaseModel
+
+class User(Adaptable, BaseModel):
+    name: str
+    age: int
+
+User.register_adapter(JsonAdapter)
+
+u   = User(name="Alice", age=30)
+raw = u.adapt_to(obj_key="json")
+u2  = User.adapt_from(raw, obj_key="json")
+assert u == u2
+```
+
+The library ships with a tiny core and optional extra adapters you can drop in
+only when you need them.
+
+## Features
+
+- **Simple API**: Just mix in `Adaptable` and register adapters
+- **Extensible**: Create your own adapters for any data source
+- **Type-safe**: Leverages Pydantic's validation system
+- **Async support**: Works with async data sources via `AsyncAdaptable`
+- **Robust error handling**: Comprehensive exception hierarchy for clear error
+  messages
+
+## Error Handling
+
+pydapter provides a robust error handling system with a comprehensive exception
+hierarchy:
+
+```python
+try:
+    user = User.adapt_from(invalid_data, obj_key="json")
+except pydapter.exceptions.ParseError as e:
+    print(f"Failed to parse JSON: {e}")
+except pydapter.exceptions.ValidationError as e:
+    print(f"Validation failed: {e}")
+except pydapter.exceptions.AdapterError as e:
+    print(f"Other adapter error: {e}")
+```
+
+See [Error Handling Documentation](docs/error_handling.md) for more details.
