@@ -1,0 +1,24 @@
+image: python:3.11.9
+
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          name: Test
+          caches:
+            - pip
+          script:
+            - python -m pip install --upgrade setuptools
+            - make install && make install-dev
+            - make test
+            - make coverage
+  tags:
+    '*':
+      - step:
+          name: Publish to PyPI
+          image: python:3.11.9-alpine
+          script:
+            - apk add gcc git libffi-dev musl-dev openssl-dev python3-dev
+            - pip install setuptools setuptools_scm twine
+            - python setup.py sdist bdist_wheel
+            - twine upload -u __token__ -p $PYPI_TOKEN --skip-existing dist/*
