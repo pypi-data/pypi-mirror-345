@@ -1,0 +1,129 @@
+# mkdocs.yml
+site_name: Psymple Docs
+site_url: https://casasglobal-org.github.io/psymple/
+
+repo_url: https://github.com/casasglobal-org/psymple/
+repo_name: casasglobal-org/psymple
+
+theme:
+  name: "material"
+  icon:
+    annotation: material/plus-circle
+  features:
+    - content.tooltips
+    - content.code.copy
+    - content.code.annotate
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.indexes
+    - navigation.sections
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+  - attr_list
+  - md_in_html
+  - abbr
+  - pymdownx.snippets
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+plugins:
+- autorefs:
+    resolve_closest: true
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          docstring_options:
+            ignore_init_summary: true
+          merge_init_into_class: true
+          show_root_heading: true
+          show_root_full_path: false
+          docstring_section_style: spacy
+- search
+
+extra:
+  version:
+    provider: mike
+    alias: true
+
+nav:
+  - Home: index.md
+  - Overview:
+    - Introduction: overview/introduction.md
+    - Statement of need: overview/statement_of_need.md
+    - Hybrid systems modelling: overview/modelling_systems.md
+    - Mechanistic and correlative models: overview/modelling_types.md
+    - System design: overview/system_design.md
+  - User guide:
+    - Building a model:
+      - Defining functions: components/functional_ported_objects.md
+      - Defining ODEs: components/variable_ported_objects.md
+      - Defining composite models: components/composite_ported_objects.md
+    - Building a simulable system:
+      - Compilation: user_guide/compilation.md
+      - Building a system: user_guide/system.md
+    - Running a simulation: 
+      - Simulations: user_guide/simulation.md
+  - Examples:
+    - Examples: examples/index.md
+    - Population dynamics:
+      - Population modelling: examples/population_dynamics/index.md
+      - Malthusian growth: examples/population_dynamics/malthusian_population.md
+      - Logistic growth: examples/population_dynamics/logistic_growth.md
+      - Predator-prey systems: examples/population_dynamics/predator_prey.md
+    - Mixing problems: 
+      - Mixing problems: examples/mixing_problems/index.md
+      - Single tank: examples/mixing_problems/single_tank.md
+      - Multiple tanks: examples/mixing_problems/multiple_tanks.md
+    - Second-order ODEs:
+      - Second-order ODEs: examples/second_order_odes/index.md
+      - Projectile motion: examples/second_order_odes/projectile_motion.md
+      - Three body problem: examples/second_order_odes/three_body_problem.md
+  - Mathematical components:
+    - Ported objects: mathematics/ported_objects.md
+    - Variables and parameters: mathematics/variables_parameters.md
+    - Functional substitution: mathematics/functional_substitution.md
+    - Variable aggregation: mathematics/variable_aggregation.md
+  - Reference:
+    - psymple.build:
+      - Assignments: reference/build/assignments.md
+      - Compilation: reference/build/compilation.md
+      - Data: reference/build/data.md
+      - Ported objects: reference/build/ported_objects.md
+      - Ports: reference/build/ports.md
+      - Wires: reference/build/wires.md
+      - System: reference/build/system.md
+    - psymple.simulate:
+      - Simulation: reference/simulate/simulation.md
+      - Solvers: reference/simulate/solvers.md
+    - psymple.core:
+      - Variables: reference/variables.md
+  - Development:
+    - Get involved: development/development.md
+    - Development team: development/development_team.md
+    - Community guidelines: development/community_guidelines.md
+    - Testing psymple: development/testing_psymple.md
+  
