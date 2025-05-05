@@ -1,0 +1,30 @@
+{% load util %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Ansible WebUI</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="color-scheme" content="light dark" />
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src * data:; style-src 'self' 'unsafe-inline'; script-src-elem 'self' 'sha256-cQ9xCH3WIkOcdnghiinxGOIpzxIYR6hPc6TY3BcTRXc='">
+        <link href="/static/css/global.css" rel="stylesheet" type="text/css" crossorigin="anonymous" referrerpolicy="no-referrer">
+        <link href="/static/dist/tailwind.min.css" rel="stylesheet" type="text/css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    </head>
+    <body class="bg-white dark:bg-gray-600">
+        <noscript>
+            <div class="noscript-error">
+                You need to enable Javascript to use this app!
+            </div>
+        </noscript>
+        <div id="nav"></div>
+        <div id="main" class="w-full h-full">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div id="footer-bg"></div>
+        <div id="footer"></div>
+        {% csrf_token %}
+        <script type="module" src="/static/dist/main.js?v={% get_version %}"></script>
+    </body>
+</html>
