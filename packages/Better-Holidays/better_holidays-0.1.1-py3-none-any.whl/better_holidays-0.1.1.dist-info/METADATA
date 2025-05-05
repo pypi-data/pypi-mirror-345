@@ -1,0 +1,56 @@
+Metadata-Version: 2.4
+Name: Better-Holidays
+Version: 0.1.1
+Summary: A better way to get market holidays
+Home-page: https://github.com/Better-Python/better-holidays
+Author: R5dan
+Keywords: python,better holidays,better,market,stocks,finance,holidays,better python
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: better-md>=0.3.4
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+# Better Markets
+
+A better way to get market holidays
+
+## Installation
+
+```bash
+pip install better-holidays
+```
+
+## Usage
+
+```python
+import BetterHolidays as bh
+import datetime as dt
+
+NYSE = bh.get_market("NYSE")
+# or
+NYSE = bh.NYSE()
+print(NYSE.is_holiday(dt.date(1979, 4, 13)))
+print(NYSE.is_trading_day(dt.date(1979, 4, 13)))
+print(NYSE.is_partial_day(dt.date(1979, 4, 13)))
+print(NYSE.is_weekday(dt.date(1979, 4, 13)))
+print(NYSE.is_weekend(dt.date(1979, 4, 13)))
+print(NYSE.get_holidays(dt.date(1979, 4, 1), dt.date(1979, 4, 30)))
+```
+
+## Contributing
+
+Pull requests are welcome.
