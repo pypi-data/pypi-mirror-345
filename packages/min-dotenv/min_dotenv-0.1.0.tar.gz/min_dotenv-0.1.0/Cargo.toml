@@ -1,0 +1,20 @@
+[package]
+name = "min_dotenv"
+version = "0.1.0"
+edition = "2021"
+
+[profile.release-pidgeot]
+inherits = "release"
+strip = true
+lto = true
+codegen-units = 1
+opt-level = "z"
+
+[lib]
+name = "min_dotenv"
+path = "rust/src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.24.2", features = ["extension-module", "abi3-py312"] }
+
