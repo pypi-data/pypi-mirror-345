@@ -1,0 +1,85 @@
+{% extends 'generic/object.html' %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col col-md-6">
+        <div class="card">
+            <h5 class="card-header">{% trans "Security Zone Policies" %}</h5>
+            <table class="table table-hover attr-table">
+                <tr>
+                    <th scope="row">{% trans "Name" %}</th>
+                    <td>{{ object.name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">{% trans "Index" %}</th>
+                    <td>{{ object.index|placeholder }}</td>
+                </tr>
+                {% if object.description %}
+                <tr>
+                    <th scope="row">{% trans "Description" %}</th>
+                    <td>{{ object.description|placeholder }}</td>
+                </tr>
+                {% endif %}
+                {% if object.source_zone %}
+                <tr>
+                    <th scope="row">{% trans "Source Zone" %}</th>
+                    <td>
+                        {{ object.source_zone|linkify|placeholder }}
+                    </td>
+                </tr>
+                {% endif %}
+                {% if object.destination_zone %}
+                <tr>
+                    <th scope="row">{% trans "Destination Zone" %}</th>
+                    <td>
+                        {{ object.destination_zone|linkify|placeholder }}
+                    </td>
+                </tr>
+                {% endif %}
+                {% if object.application %}
+                <tr>
+                    <th scope="row">{% trans "Application" %}</th>
+                    <td>
+                        {{ object.application }}
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td>{% trans "Policy Actions" %}</td>
+                    <td>
+                        {% for action in object.policy_actions %}
+                            <span class="badge text-bg-{% if action == 'permit' %}green
+                            {% elif action == 'deny' %}reg
+                            {% elif action == 'log' %}orange
+                            {% elif action == 'count' %}orange
+                            {% elif action == 'reject' %}red
+                            {% endif %}"
+                            >{{ action }}</span>
+                        {% endfor %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+      {% include 'inc/panels/custom_fields.html' %}
+      {% include 'inc/panels/tags.html' %}
+      {% include 'inc/panels/comments.html' %}
+    </div>
+    <div class="col col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                {% trans "Source Addresses" %}
+            </h5>
+            {% render_table source_address_table 'inc/table.html' %}
+        </div>
+        <div class="card">
+            <h5 class="card-header">
+                {% trans "Destination Addresses" %}
+            </h5>
+            {% render_table destination_address_table 'inc/table.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}
