@@ -1,0 +1,86 @@
+{# crate_anon/crateweb/research/templates/pe_choose.html #}
+
+{% extends "base.html" %}
+
+{% block extrahead %}
+    <style>{{ sql_highlight_css }}</style>
+{% endblock %}
+
+{% block content %}
+
+    {% comment %}
+        {% include "query_nav.html" %}
+    {% endcomment %}
+
+    <h1>Choose Patient Explorer</h1>
+
+    <h2>Saved Patient Explorers</h2>
+
+    {% include "expand_collapse_buttons.html" %}
+
+    {% if patient_explorers %}
+        <table>
+            <tr>
+                <th>Created at</th>
+                <th>Delete PE</th>
+                <th>OK?</th>
+                <th>Active?</th>
+                <th>Choose/activate</th>
+                <th>Edit</th>
+                <th>Details</th>
+            </tr>
+            {% for pe in patient_explorers %}
+                <tr>
+                    <td>{{ pe.created }}</td>
+                    <td>
+                        <form action="{% url 'pe_delete' pe.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Delete" />
+                        </form>
+                    </td>
+                    <td>
+                        {% if pe.has_patient_id_query %}
+                            {% if pe.has_output_columns %}
+                                <div>OK</div>
+                            {% else %}
+                                <div class="warning">No output columns!</div>
+                            {% endif %}
+                        {% else %}
+                            <div class="warning">Missing patient criteria!</div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pe.active %}<b>{% endif %}
+                        {{ pe.active|yesno }}
+                        {% if pe.active %}</b>{% endif %}
+                    </td>
+                    <td>
+                        {% if pe.active %}
+                            (activated)
+                        {% else %}
+                            <form action="{% url 'pe_activate' pe.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" value="Choose" />
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{% url 'pe_edit' pe.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Edit" />
+                        </form>
+                    </td>
+                    {% comment %}Widest, so last:{% endcomment %}
+                    <td>{{ pe.summary_html|safe }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% include "page_nav.html" with page=patient_explorers %}
+
+    {% else %}
+        <div>None.</div>
+    {% endif %}
+
+{% endblock %}
+
+{% block helpurl %}{{ HelpUrl.patient_explorer }}{% endblock %}

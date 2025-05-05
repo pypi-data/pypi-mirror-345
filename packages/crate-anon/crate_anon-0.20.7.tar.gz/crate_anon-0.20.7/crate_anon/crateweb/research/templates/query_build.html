@@ -1,0 +1,172 @@
+{# crate_anon/crateweb/research/templates/query_build.html #}
+
+{% extends "base.html" %}
+
+{% block collapsejs %}{% endblock %}
+{% block extrahead %}
+    {% include "querybuilder_extrahead.html" %}
+{% endblock %}
+{% block onload %}onload="populate()"{% endblock %}
+
+{% block content %}
+
+    {% comment %}
+        {% include "query_nav.html" %}
+    {% endcomment %}
+
+    <h1>Build a simple query</h1>
+    <p>For more advanced queries, see the
+        <a href="{% url 'query' %}">SQL view</a>.</p>
+
+    <h2>Current query</h2>
+    {% if parse_error %}
+        <div class="warning">
+            SQL FAILED TO PARSE. Please clear the query or edit it manually in
+            the SQL view. Error was: {{ parse_error }}
+        </div>
+    {% endif %}
+    {% if sql %}
+        <div class="sql">{{ sql|safe }}</div>
+
+        <form action="{% url 'build_query' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" name="global_clear" value="Clear" />
+            {% if not parse_error %}
+                <input type="submit" name="global_toggle_distinct"
+                       value="Toggle DISTINCT" />
+                <input type="submit" name="global_save" value="Save as query" />
+                <input type="submit" name="global_run" value="Run" />
+            {% endif %}
+        </form>
+    {% else %}
+        {# single space to show the area visually #}
+        <pre class="sql"> </pre>
+    {% endif %}
+
+    <h2>Build your query!</h2>
+
+    {% include "querybuilder_form.html" with form_submit_url='build_query' %}
+
+    <h2>Tips</h2>
+    <ul>
+        {% if dialect_mysql %}
+            <li>This server is running MySQL. (A database and a schema
+            are synonymous under MySQL, so the heirarchy is
+            schema, table, column.)</li>
+        {% elif dialect_mssql %}
+            <li>This server is running Microsoft SQL Server. (The hierarchy
+            is: database, schema, table, column.)</li>
+        {% else %}
+            <li><b>BUG: UNKNOWN SQL DIALECT.</b></li>
+        {% endif %}
+        <li>Inexact string comparison can be done in several ways:
+            <ul>
+                {% if dialect_mysql %}
+                    <li><a href="https://dev.mysql.com/doc/refman/5.7/en/pattern-matching.html">LIKE</a>,
+                        in which ‘%’ stands for any number of characters, and ‘_’
+                        for one unknown character. For example, use
+                        <span class="code">%schizophreni%</span> to find text
+                        containing ‘schizophrenia’, ‘schizophrenic’, or
+                        ‘schizophreniform’.</li>
+                    <li><a href="https://dev.mysql.com/doc/refman/5.7/en/fulltext-search.html">MATCH</a>,
+                        which is much faster than LIKE. MATCH can be used if there
+                        is a full-text index on the column in question. You can
+                        MATCH AGAINST words or phrases.</li>
+                    <li><a href="https://dev.mysql.com/doc/refman/5.7/en/pattern-matching.html">REGEXP</a>,
+                        using <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expressions</a>.
+                        This is complicated; see a <a href="https://regexone.com/">tutorial</a>
+                        and use a <a href="https://regexr.com/">regular expression tester</a>.</li>
+                {% endif %}
+
+                {% if dialect_mssql %}
+                    <li><a href="https://msdn.microsoft.com/en-us/library/ms179859.aspx">LIKE</a>,
+                        in which ‘%’ stands for any number of characters, and ‘_’
+                        for one unknown character. For example, use
+                        <span class="code">%schizophreni%</span> to find text
+                        containing ‘schizophrenia’, ‘schizophrenic’, or
+                        ‘schizophreniform’. You can also match (or anti-match)
+                        character groups; see the
+                        <a href="https://msdn.microsoft.com/en-us/library/ms179859.aspx">help</a>.</li>
+                    <li><a href="https://msdn.microsoft.com/en-us/library/ms187787.aspx">CONTAINS</a>,
+                        which is much faster than LIKE. CONTAINS can be used if there
+                        is a full-text index on the column in question. You can
+                        use CONTAINS with words or phrases.</li>
+                {% endif %}
+            </ul></li>
+
+        <li>This query builder parses the SQL you start with, and then
+            adds more pieces. It is less powerful than arbitrary SQL.</li>
+
+        <li>
+            Things that are are better done with raw SQL include:
+            <ul>
+                <li>Combining expressions with OR, or in complex ways.</li>
+                <li>Restricting to a set of values with IN.</li>
+                <li>Finding information about patients P that “have” something
+                    (e.g. a diagnosis) using EXISTS.</li>
+            </ul>
+        </li>
+
+        <li>If you use a file (for IN or NOT IN clauses), this file should be
+            in ASCII or UTF-8 format, with one value per line. Lines will
+            be stripped of whitespace (left + right). Lines starting with
+            a # character will be treated as comments and ignored.</li>
+
+        <li>Browsers: Firefox doesn’t support date pickers (as of
+        version 50.0.2, Nov 2016). Chrome does. See
+        <a href="https://caniuse.com/#feat=input-datetime">https://caniuse.com/#feat=input-datetime</a>.
+        This page hacks in date picker support for browsers as required.</li>
+
+    </ul>
+
+    <h2>Explanation</h2>
+    <ul>
+        <li>This query builder <b>only looks at tables that contain patient
+            information</b> (as judged by the presence of the field used
+            to auto-join tables, as defined by your database manager).
+            It ignores “system” tables with no connection to a patient.
+            If you want to explore all the tables, explore the database
+            structure using the options on the
+            <a href="{% url 'home' %}">Main menu</a>, and use the
+            <a href="{% url 'query' %}">SQL view</a> to create a more complex
+            query.</li>
+
+        <li>The query builder will automatically JOIN tables based on a shared
+            field (i.e. records for the same patient).
+            This field is typically the “transient research ID” (TRID).
+            The TRID is a numerical value that identifies a patient.
+            It’s quicker for queries than the “research ID” (RID), but the RID
+            will stay constant if/when the research database is rebuilt, and
+            the TRID might change, so you should make a note of the RID if you
+            want to save data.
+            The RID is typically an encrypted patient identifier from the
+            source database; the TRID is taken from a one-time pad.</li>
+
+        <li>The query builder will also automatically join tables across
+            schemas/databases. If the administrator has said that patient
+            tables in the databases use a common research ID (RID), that field
+            will be used. [Example: both databases use the same patient
+            numbers, and they have been hashed in the same way.]
+            Otherwise, if they both have tables containing a master research
+            ID (MRID), that is used to bridge the databases.
+            [Example: two databases use different patient numbers, but they
+            both contain a table with a hashed UK NHS number.]</li>
+
+        <li><b>NOTE, though, that JOINs are many-to-many unless otherwise
+            restricted.</b> So if a patient has 10 values for C-reactive
+            protein, and 20 progress notes mentioning depression, a simple
+            JOIN will give 10 * 20 = 200 rows. You can easily create very
+            large queries by accident. If you want to do something more
+            sophisticated, like “show me the progress notes THAT mention
+            depression for patients WHO HAVE a CRP of >20 at some point”,
+            you want a query more like “SELECT rid, progress_note FROM
+            my_progress_note_table
+            WHERE CONTAINS(progress_note, 'depression') AND rid IN
+            (SELECT DISTINCT rid FROM my_crp_table WHERE crp > 20)”.
+            Use the SQL editor to create such queries.</li>
+
+    </ul>
+
+{% endblock %}
+
+{% block helpurl %}{{ HelpUrl.querybuilder }}{% endblock %}

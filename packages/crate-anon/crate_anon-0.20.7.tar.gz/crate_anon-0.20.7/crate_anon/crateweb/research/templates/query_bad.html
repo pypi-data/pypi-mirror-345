@@ -1,0 +1,27 @@
+{# crate_anon/crateweb/research/templates/query_bad.html #}
+
+{% extends "base.html" %}
+
+{% block extrahead %}
+    <style>{{ sql_highlight_css }}</style>
+{% endblock %}
+
+{% block content %}
+
+    {% comment %}
+        {% include "query_nav.html" %}
+    {% endcomment %}
+
+    <h1>Failed: error in query</h1>
+    <p>There’s an error in your query. Please edit it and try again.</p>
+
+    <h1>Error</h1>
+    <div class="code">{{ exception }}</div>
+
+    <h1>SQL from you</h1>
+    {{ original_sql|safe }}
+
+    <h1>SQL sent to database engine</h1>
+    {{ final_sql|safe }}
+
+{% endblock %}

@@ -1,0 +1,152 @@
+{# crate_anon/crateweb/consent/templates/consent_table.html #}
+
+{% comment %}
+    template parameters:
+        LEAFLET_URL_CPFTRD_CLINRES_SHORT: str
+        patient_lookup: PatientLookup
+        settings: Django settings object
+        with_page_break: bool
+{% endcomment %}
+
+{% if with_page_break %}
+<table class="consent page_break_before">
+{% else %}
+<table class="consent">
+{% endif %}
+    <colgroup>
+        <col style="width:19%">
+        <col style="width:10%">
+        <col style="width:18%">
+        <col style="width:10%">
+        <col style="width:18%">
+        <col style="width:10%">
+        <col style="width:18%">
+    </colgroup>
+    <tbody>
+        {% if generic or patient_lookup.is_under_16 %}
+            <!-- "Under 16" box -->
+            <tr>
+                <td colspan=7>
+                    <b>
+                        {% if patient_lookup.is_under_15 and not generic %}
+                            As
+                        {% else %}
+                            If
+                        {% endif %}
+                        you are under 16:
+                    </b>
+                    <ol>
+                        <li>We would like to know your wishes. Please fill in
+                            the form above and sign it.</li>
+
+                        <li>If you choose not to consent, we don’t need any
+                            signature except yours. If you consent, then because
+                            you are under 16, we would also like the assent/consent
+                            of your parent or guardian. Please show them the
+                            accompanying details and this form and ask them to
+                            countersign below to indicate that they agree.</li>
+
+                        <li>If you sign to indicate your consent, but refuse to
+                            allow your parent or guardian to see and sign, then we
+                            must ask your clinician to sign below to confirm that
+                            you understand fully what you’re signing.
+                            (If you’re returning this form by post, we can
+                            ask your clinician for their signature.)
+                            We’re afraid we can only accept your consent via
+                            this form if it’s signed by you and your
+                            parent/guardian, or you and your clinician.
+                        </li>
+                    </ol>
+                    Thank you!
+                </td>
+            </tr>
+            <tr class="persontype">
+                <td class="signature_label"><br><b>Parent or guardian:</b></td>
+                <td class="signature_label">Name:</td>
+                <td class="signature_box"></td>
+                <td class="signature_label">Signed:</td>
+                <td class="signature_box"></td>
+                <td class="signature_label">Date:</td>
+                <td class="signature_box"></td>
+            </tr>
+            <tr class="persontype">
+                <td class="signature_label"><br><b>Clinician:</b></td>
+                <td class="signature_label">Name:</td>
+                <td class="signature_box"></td>
+                <td class="signature_label">Signed:</td>
+                <td class="signature_box"></td>
+                <td class="signature_label">Date:</td>
+                <td class="signature_box"></td>
+            </tr>
+        {% endif %}
+
+        {# Are we showing two boxes? If so, insert a visual divider. #}
+        {# Note: you can't use brackets in Django logic expressions. #}
+        {% if generic %}
+            <tr class="tabledivider"><td colspan="7"><br></td></tr>
+        {% elif patient_lookup.is_under_16 and not patient_lookup.is_under_15 %}
+            <tr class="tabledivider"><td colspan="7"><br></td></tr>
+        {% endif %}
+
+        {% if generic or not patient_lookup.is_under_15 %}
+            <!-- MCA box -->
+            {# MCA doesn't apply to under-16s, but this form may go out shortly before 16th birthday #}
+            <tr>
+                <td colspan=7>
+                    <b>If
+                        {# let's not offend adults! #}
+                        {% if generic or patient_lookup.is_under_16 %}
+                            you are an adult and
+                        {% endif %}
+                        another adult is making decisions on your behalf:</b>
+
+                    <ol>
+                        <li>We would like the person responsible for making
+                            decisions on your behalf to fill in the details above,
+                            and sign below, ensuring that you yourself don’t object
+                            to what they’ve chosen.</li>
+
+                        <li>We need your clinician’s signature to confirm that you
+                            currently lack the capacity to decide about the
+                            question(s) being asked above, and that someone is
+                            making decisions on your behalf.*
+                            (If you’re returning this form by post, we can
+                            ask your clinician for their signature.)
+                        </li>
+                    </ol>
+                    Thank you!
+                </td>
+            </tr>
+            <tr class="persontype">
+                <td class="signature_label"><br><b>Representative:</b></td>
+                <td class="signature_label">Name:</td>
+                <td class="signature_box"></td>
+                <td class="signature_label">Signed:</td>
+                <td class="signature_box"></td>
+                <td class="signature_label">Date:</td>
+                <td class="signature_box"></td>
+            </tr>
+            <tr class="persontype">
+                <td class="signature_label"><br><b>Clinician:</b></td>
+                <td class="signature_label">Name:</td>
+                <td class="signature_box"></td>
+                <td class="signature_label">Signed:</td>
+                <td class="signature_box"></td>
+                <td class="signature_label">Date:</td>
+                <td class="signature_box"></td>
+            </tr>
+            <tr>
+                <td colspan=7 class="footnote">
+                    <br>
+                    * Note to clinicians: for decisions about clinical trials, this
+                    must be the patient’s <i>legal representative</i>.
+                    For decisions about other research studies or the database
+                    traffic-light system, this must be the patient’s <i>carer or
+                    consultee</i>.
+                    For more details, see {{ settings.LEAFLET_URL_CPFTRD_CLINRES_SHORT }}.
+                </td>
+            </tr>
+        {% endif %}
+    </tbody>
+
+</table>

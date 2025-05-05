@@ -1,0 +1,21 @@
+{# crate_anon/crateweb/consent/templates/generate_random_nhs.html #}
+{% extends "base.html" %}
+
+{% comment %}
+    template parameters:
+        nhs_numbers: List[int]
+{% endcomment %}
+
+{% block content %}
+
+    <h1>Randomly generated NHS numbers</h1>
+
+    <div class="warning">Any equivalence to real NHS numbers is purely
+        coincidental (but certainly possible!).</div>
+
+    <pre>{% for nhs in nhs_numbers %}{{ nhs }}
+{% endfor %}</pre>
+
+{% endblock %}
+
+{% block helpurl %}{{ HelpUrl.developer }}{% endblock %}

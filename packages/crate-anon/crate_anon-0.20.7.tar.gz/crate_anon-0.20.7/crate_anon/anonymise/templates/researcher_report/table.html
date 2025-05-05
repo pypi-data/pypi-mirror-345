@@ -1,0 +1,64 @@
+<div class="database_table_section">
+    <h2>{{ table_name }}</h2>
+    {% if table_comment %}
+        <p class="table_comment">
+            {{ table_comment }}
+        </p>
+    {% endif %}
+    {% if show_counts %}
+        <p>
+            Number of rows in this table:
+            <span class="result">{{ n_rows }}</span>
+        </p>
+    {% endif %}
+    <table class="database_table">
+        <colgroup>
+            <col class="col_colname">
+            <col class="col_sqltype">
+            <col class="col_keys">
+            <col class="col_nullable">
+            <col class="col_comment">
+            {% if use_dd %}<col class="col_ddinfo">{% endif %}
+            {% if show_values %}<col class="col_values">{% endif %}
+        </colgroup>
+        <tr>
+            <th>Column</th>
+            <th>SQL type</th>
+            <th>Keys</th>
+            <th>Nullable</th>
+            <th>Comment</th>
+            {% if use_dd %}<th>DD info</th>{% endif %}
+            {% if show_values %}<th>Values</th>{% endif %}
+        </tr>
+        {% for c in columns %}
+            <tr>
+                <td class="name_col{% if c.pk %} pk{% endif %}">
+                    {{ c.name }}
+                </td>
+                <td{% if c.pk %} class="pk"{% endif %}>
+                    {{ c.sql_type }}
+                </td>
+                <td{% if c.pk %} class="pk"{% endif %}>
+                    {{ c.pk_str }}{% if c.pk_str and c.fk_str %};{% endif %}
+                    {{ c.fk_str }}
+                </td>
+                <td{% if c.pk %} class="pk"{% endif %}>
+                    {{ c.nullable_str }}
+                </td>
+                <td{% if c.pk %} class="pk"{% endif %}>
+                    {{ c.comment }}
+                </td>
+                {% if use_dd %}
+                    <td{% if c.pk %} class="pk"{% endif %}>
+                        {{ c.crate_annotation_str }}
+                    </td>
+                {% endif %}
+                {% if show_values %}
+                    <td{% if c.pk %} class="pk"{% endif %}>
+                        {{ c.values_info_str }}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+</div>

@@ -1,0 +1,25 @@
+# MANIFEST.in file for the CRATE Python package
+#
+# Note that paths are relative to the location of MANIFEST.in and setup.py.
+
+# =============================================================================
+# Pick directories to include (graft) or exclude (prune):
+# =============================================================================
+
+graft crate_anon
+
+# =============================================================================
+# Now exclude duff things:
+# =============================================================================
+
+# Git:
+global-exclude .gitignore
+
+# Temporary/backup files:
+global-exclude ~* *~
+
+# Compiled Java:
+global-exclude *.class
+
+# Compiled Python:
+global-exclude *.py[co]

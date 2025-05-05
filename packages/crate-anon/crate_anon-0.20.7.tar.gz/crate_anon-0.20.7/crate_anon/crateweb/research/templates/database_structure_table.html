@@ -1,0 +1,48 @@
+{# crate_anon/crateweb/research/templates/database_structure_table.html #}
+
+<table>
+    <tr>
+        {% if with_database %}
+            <th>Database</th>
+        {%  endif %}
+        <th>Schema</th>
+        <th>Table</th>
+        <th>Column</th>
+        <th>Comment</th>
+        <th>Data type</th>
+        <th>May be NULL?</th>
+        <th>Indexed?</th>
+        <th>FULLTEXT index?</th>
+    </tr>
+    {% for c in colinfolist %}
+        <tr>
+            {% if with_database %}
+                <td>
+                    {% if c.table_catalog == default_database %}
+                        {{ c.table_catalog }}
+                    {% else %}
+                        <b>{{ c.table_catalog }}</b>
+                    {% endif %}
+                </td>
+            {% endif %}
+            <td>
+                {% if c.table_schema == default_schema %}
+                    {{ c.table_schema }}
+                {% else %}
+                    <b>{{ c.table_schema }}</b>
+                {% endif %}
+            </td>
+            <td><b>{{ c.table_name }}</b></td>
+            <td><b>{{ c.column_name }}</b></td>
+            <td>{{ c.column_comment }}</td>
+            <td>{{ c.column_type|upper }}</td>
+            <td>{{ c.is_nullable|yesno }}</td>
+            <td>{{ c.indexed|yesno }}</td>
+            <td>
+                {% if c.indexed_fulltext %}<b>{% endif %}
+                {{ c.indexed_fulltext|yesno }}
+                {% if c.indexed_fulltext %}</b>{% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>

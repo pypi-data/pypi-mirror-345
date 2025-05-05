@@ -1,0 +1,70 @@
+{# crate_anon/crateweb/research/templates/query_result.html #}
+{% extends "base.html" %}
+
+{% comment %}
+    template parameters:
+        sql_highlight_css: str
+        table_html: str
+
+    ... and as per
+        query_nav.html
+        page_nav_results.html
+{% endcomment %}
+
+{% block extrahead %}
+    <style>{{ sql_highlight_css }}</style>
+{% endblock %}
+
+{% block content %}
+
+    {% comment %}
+        {% include "query_nav.html" %}
+    {% endcomment %}
+
+    <h1>Results</h1>
+
+    {% include "page_nav_results.html" with page=page %}
+
+    {% include "expand_collapse_buttons.html" %}
+
+    {{ table_html|safe }}
+
+    {% include "page_nav_results.html" with page=page %}
+
+    <h1>SQL</h1>
+    {{ sql|safe }}
+
+    <h3>Display</h3>
+
+    {% if query_id is not None %}
+        {# query_id might be None from pe_one_table() #}
+        {# This might be suboptimal; q.v. #}
+
+        <form action="{% url 'edit_display' query_id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" name="submit_filter" value="Filter" />
+        </form>
+
+        <p>Columns included:</p>
+        <ul>
+            {% for column in display_columns %}
+                <li>{{ column }}</li>
+            {% endfor %}
+        </ul>
+
+        <p>Columns excluded:</p>
+        <ul>
+            {% for column in omit_columns %}
+                <li>{{ column }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if no_null is True %}
+            <p><strong>Null columns excluded</strong></p>
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}
+
+{% block helpurl %}{{ HelpUrl.results }}{% endblock %}

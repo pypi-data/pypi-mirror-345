@@ -1,0 +1,81 @@
+body {
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: {{ base_font_size }};
+    /*
+        NB wkhtmltopdf seems to cope with relative sizes like "smaller" but
+        less so with absolute ones like "small" or "x-small", even when the
+        content is within <body>.
+    */
+    margin: none;
+    padding: none;
+}
+
+.pdf_header, .pdf_footer {
+    color: #005EB8;  /* NHS Blue */
+    font-size: x-small;
+}
+.left {
+    text-align: left;
+}
+.right {
+    text-align: right;
+}
+
+.database_table_section {
+    page-break-before: always;
+}
+
+.info {
+    color: #005EB8;  /* NHS Blue */
+    font-size: smaller;
+}
+
+table, tr, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    font-size: smaller;
+    padding: 2px;
+    text-align: left;
+    vertical-align: top;
+}
+th {
+    color: white;
+    background: gray;
+}
+tr:nth-child(odd) {
+    background-color: #DDDDDD;  /* quite light grey */
+}
+
+/*
+    Table header repetition on subsequent pages (see
+    https://stackoverflow.com/questions/274149/) is not respected:
+
+thead { display: table-header-group; }
+tfoot { display: table-footer-group; }
+
+    Fixed layout is worse than auto mode. Also, as the user can turn columns
+    on/off, a fixed layout becomes impractical.
+
+.database_table { table-layout: fixed; width: 100%; }
+.col_colname { width: 10%; }
+.col_sqltype { width: 7%; }
+.col_keys { width: 5%; }
+.col_nullable { width: 5%; }
+.col_comment { width: 35%; }
+.col_ddinfo { width: 5%; }
+.col_values { width: 33%; }
+*/
+
+.name_col {
+    font-weight: bold;
+}
+.pk {
+    color: red;
+}
+.result {
+    font-weight: bold;
+}
+.table_comment {
+    font-style: italic;
+}

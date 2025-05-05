@@ -1,0 +1,16 @@
+{# crate_anon/crateweb/research/templates/querybuilder_extrahead.html #}
+
+{% load static %}
+
+<style>{{ sql_highlight_css }}</style>
+
+{% include "include_jquery.html" %}
+
+<script type="text/javascript" src="{% static 'querybuilder.js' %}"></script>
+
+<script type="text/javascript">
+    //noinspection JSUnusedLocalSymbols
+    const DATABASE_STRUCTURE = {{ database_structure|safe }},
+          STARTING_VALUES = {{ starting_values|safe }},
+          SQL_DIALECT = "{{ sql_dialect }}";
+</script>

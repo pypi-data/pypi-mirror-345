@@ -1,0 +1,30 @@
+{# crate_anon/crateweb/research/templates/database_structure.html #}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if paginated %}
+        <h1>Research database structure: paginated</h1>
+    {% else %}
+        <h1>Research database structure: long form</h1>
+    {% endif %}
+
+    {% if with_database %}
+        <p>Default database: {{ default_database }}</p>
+    {% endif %}
+    <p>Default schema: {{ default_schema }}</p>
+
+    {% if paginated %}
+        {% include "page_nav_results.html" with page=colinfolist %}
+    {% endif %}
+
+    {% include "database_structure_table.html" %}
+
+    {% if paginated %}
+        {% include "page_nav_results.html" with page=colinfolist %}
+    {% endif %}
+
+{% endblock %}
+
+{% block helpurl %}{{ HelpUrl.research_db_structure }}{% endblock %}

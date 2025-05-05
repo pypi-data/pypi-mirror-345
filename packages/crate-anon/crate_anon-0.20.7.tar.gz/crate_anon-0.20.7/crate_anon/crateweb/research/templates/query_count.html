@@ -1,0 +1,19 @@
+{# crate_anon/crateweb/research/templates/query_count.html #}
+
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+    {% comment %}
+        {% include "query_nav.html" %}
+    {% endcomment %}
+
+    <h1>Count</h1>
+    <div>There are <b>{{ rowcount|intcomma }}</b> records.</div>
+    <div><a href="{% url 'results' current_query_id %}">view results</a></div>
+
+    <h1>SQL</h1>
+    <pre>{{ sql }}</pre>
+
+{% endblock %}

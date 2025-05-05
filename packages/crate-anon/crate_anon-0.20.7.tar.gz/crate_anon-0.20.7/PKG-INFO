@@ -1,0 +1,205 @@
+Metadata-Version: 2.4
+Name: crate-anon
+Version: 0.20.7
+Summary: CRATE: clinical records anonymisation and text extraction
+Home-page: https://crateanon.readthedocs.io
+Author: Rudolf Cardinal
+Author-email: rudolf@pobox.com
+License: GNU General Public License v3 or later (GPLv3+)
+Keywords: anonymisation
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: System :: Hardware
+Classifier: Topic :: System :: Networking
+License-File: LICENSE
+Requires-Dist: amqp==5.0.9
+Requires-Dist: appdirs==1.4.4
+Requires-Dist: arrow==0.15.7
+Requires-Dist: beautifulsoup4==4.9.1
+Requires-Dist: cardinal_pythonlib==2.0.4
+Requires-Dist: cairosvg==2.7.0
+Requires-Dist: celery==5.2.7
+Requires-Dist: chardet==5.2.0
+Requires-Dist: cherrypy==18.6.0
+Requires-Dist: colorlog==4.1.0
+Requires-Dist: distro==1.5.0
+Requires-Dist: django==4.2.20
+Requires-Dist: django-debug-toolbar==3.2.1
+Requires-Dist: django-extensions==3.1.1
+Requires-Dist: django-picklefield==3.0.1
+Requires-Dist: djangorestframework==3.15.2
+Requires-Dist: django-sslserver==0.22
+Requires-Dist: drf-spectacular==0.27.2
+Requires-Dist: drf-spectacular-sidecar==2024.7.1
+Requires-Dist: flashtext==2.7
+Requires-Dist: flower==2.0.1
+Requires-Dist: fuzzy==1.2.2
+Requires-Dist: gunicorn==23.0.0
+Requires-Dist: gutenbergpy==0.3.4
+Requires-Dist: jsonlines==3.0.0
+Requires-Dist: kombu==5.2.3
+Requires-Dist: mako==1.2.2
+Requires-Dist: MarkupSafe==2.0.1
+Requires-Dist: mmh3==2.5.1
+Requires-Dist: numba==0.60.0
+Requires-Dist: numpy==1.26.4
+Requires-Dist: openpyxl==3.0.7
+Requires-Dist: ordered-set==4.1.0
+Requires-Dist: pendulum==2.1.2
+Requires-Dist: Pillow==10.3.0
+Requires-Dist: pdfkit==0.6.1
+Requires-Dist: prettytable==3.2.0
+Requires-Dist: psutil==6.0.0
+Requires-Dist: pyexcel-ods==0.6.0
+Requires-Dist: pyexcel-xlsx==0.6.0
+Requires-Dist: pygments==2.15.0
+Requires-Dist: pyparsing==2.4.7
+Requires-Dist: pypdf==3.17.1
+Requires-Dist: python-dateutil==2.8.1
+Requires-Dist: regex==2020.11.13
+Requires-Dist: rich-argparse==0.5.0
+Requires-Dist: semantic_version==2.8.5
+Requires-Dist: sortedcontainers==2.2.2
+Requires-Dist: SQLAlchemy==2.0.36
+Requires-Dist: sqlparse==0.5.0
+Requires-Dist: unidecode==1.1.1
+Requires-Dist: bcrypt==3.2.2
+Requires-Dist: cryptography==44.0.1
+Requires-Dist: paste==3.4.2
+Requires-Dist: pyramid==1.10.4
+Requires-Dist: pyramid_tm==2.4
+Requires-Dist: redis==4.5.4
+Requires-Dist: requests==2.32.2
+Requires-Dist: tornado==6.4.2
+Requires-Dist: transaction==3.0.0
+Requires-Dist: urllib3==2.3.0
+Requires-Dist: waitress==3.0.1
+Requires-Dist: zope.sqlalchemy==1.3
+Requires-Dist: black==24.3.0
+Requires-Dist: factory_boy==3.3.0
+Requires-Dist: faker==13.3.1
+Requires-Dist: faker-file[common]==0.17.13
+Requires-Dist: flake8==5.0.4
+Requires-Dist: docutils==0.19
+Requires-Dist: mistune<2.0.0
+Requires-Dist: paramiko==3.4.1
+Requires-Dist: pre-commit==2.20.0
+Requires-Dist: pytest==8.3.4
+Requires-Dist: pytest-django==4.5.2
+Requires-Dist: pytest-env==1.1.5
+Requires-Dist: python-on-whales==0.68.0
+Requires-Dist: sphinx==7.1.2
+Requires-Dist: sphinx_rtd_theme==3.0.2
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+..  README.rst
+    GitHub README.
+    This is visible at https://github.com/ucam-department-of-psychiatry/crate
+
+
+Clinical Records Anonymisation and Text Extraction (CRATE)
+==========================================================
+
+.. Build status:
+
+.. image:: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/docker.yml/badge.svg
+    :target: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/docker.yml/
+
+.. image:: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/docs.yml/badge.svg
+    :target: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/docs.yml/
+
+.. image:: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/gate.yml/badge.svg
+    :target: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/gate.yml/
+
+.. image:: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/installer.yml/badge.svg
+    :target: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/installer.yml/
+
+.. image:: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/integration-tests.yml/badge.svg
+    :target: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/integration-tests.yml/
+
+.. image:: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/precommit.yml/badge.svg
+    :target: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/precommit.yml/
+
+.. image:: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/python-checks.yml/badge.svg
+    :target: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/python-checks.yml/
+
+.. image:: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/python-tests.yml/badge.svg
+    :target: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/python-tests.yml/
+
+.. image:: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/release.yml/badge.svg
+    :target: https://github.com/ucam-department-of-psychiatry/crate/actions/workflows/release.yml/
+
+.. Code style:
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+
+
+Purpose
+-------
+
+Create and use de-identified databases for research.
+
+- Anonymises relational databases.
+
+- Extracts and de-identifies text from associated binary files.
+
+- Performs some specific preprocessing tasks; e.g.
+
+  - preprocesses some specific databases (e.g. Servelec RiO EMR);
+  - drafts a "data dictionary" for anonymisation, with special knowledge of
+    some databases (e.g. TPP SystmOne);
+  - fetches some word lists, e.g. forenames/surnames/eponyms.
+
+- Provides tools to link databases, including via Bayesian personal identity
+  matching, in identifiable or de-identified fashion.
+
+- Provides a natural language processing (NLP) pipeline, including built-in
+  NLP, support for external tools, and client/server support for the Natural
+  Language Processing Request Protocol (NLPRP).
+
+- Web app for
+
+  - querying the anonymised database;
+  - providing a de-identification API;
+  - managing a consent-to-contact process.
+
+
+Documentation
+-------------
+
+See https://crateanon.readthedocs.io
+
+
+Sources
+-------
+
+- Python package: https://pypi.org/project/crate-anon/
+- Source code: https://github.com/ucam-department-of-psychiatry/crate
+
+
+Licence
+-------
+
+- Copyright (C) 2015, University of Cambridge, Department of Psychiatry.
+  Created by Rudolf Cardinal (rnc1001@cam.ac.uk).
+
+- Licensed under the GNU GPL v3+: see LICENSE file.
+
+- Some third-party libraries have slightly different licences;
+  see the documentation.

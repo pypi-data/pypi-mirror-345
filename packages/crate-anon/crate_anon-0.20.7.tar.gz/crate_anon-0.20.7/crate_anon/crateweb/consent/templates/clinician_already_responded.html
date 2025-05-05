@@ -1,0 +1,38 @@
+{# crate_anon/crateweb/consent/templates/clinician_already_responded.html #}
+{% extends "base.html" %}
+
+{% comment %}
+    template parameters:
+        clinician_response: ClinicianResponse
+        consent_mode: ConsentMode
+        contact_request: ContactRequest
+        Leaflet: Leaflet class
+        passed_to_pt: bool
+        patient_lookup: PatientLookup
+        settings: Django settings object
+        study: Study
+{% endcomment %}
+
+{% block mainsiteheader %}{% endblock %}
+
+{% block content %}
+
+    <div class="error">
+    You have already responded to this request.
+    Your response was <b>{{ clinician_response.get_response_explanation }}</b>.
+    Thank you!
+    </div>
+
+    <h2>Patient</h2>
+
+    {% include "patient_table.html" with patient_lookup=patient_lookup consent_mode=consent_mode verbose=True %}
+
+    <h2>Study</h2>
+
+    {% include 'study_table.html' with study=study contact_request=contact_request to_clinician=True include_details=True include_clinician_form=passed_to_pt include_clinician_pack=passed_to_pt clinician_response=clinician_response %}
+
+    <h2>Notes</h2>
+
+    {% include "clinician_notes.html" with settings=settings Leaflet=Leaflet %}
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{# crate_anon/crateweb/consent/templates/patient_p.html #}
+
+{% comment %}
+    template parameters:
+        patient_lookup: PatientLookup
+{% endcomment %}
+
+<p class="patient_details">
+    Date of birth: {{ patient_lookup.pt_dob|date }}<br>
+
+    NHS number: {{ patient_lookup.nhs_number }}.
+    {% if patient_lookup.pt_local_id_description %}
+        {{ patient_lookup.pt_local_id_description}}:
+        {{ patient_lookup.pt_local_id_number }}.
+    {% endif %}
+    <br>
+
+    GP: {{ patient_lookup.gp_name_address_str }}
+</p>

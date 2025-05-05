@@ -1,0 +1,15 @@
+{# crate_anon/crateweb/research/templates/page_nav_results.html #}
+{% extends "page_nav.html" %}
+
+{% comment %}
+    template parameters:
+        page: Page
+        rowcount: int
+{% endcomment %}
+
+{% load humanize %}
+
+{% block current %}
+    Page {{ page.number }} of {{ page.paginator.num_pages }}
+    (<b>{{ rowcount|intcomma }}</b> rows found).
+{% endblock %}

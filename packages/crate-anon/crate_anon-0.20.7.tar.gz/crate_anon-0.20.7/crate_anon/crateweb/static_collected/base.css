@@ -1,0 +1,325 @@
+/* base.css */
+
+/* General HTML tags: */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+    /*line-height: 1.2em;*/
+}
+em {
+    color: rgb(0, 94, 184); /* NHS Blue; rgb(0, 94, 184) = #005EB8; https://www.england.nhs.uk/nhsidentity/identity-guidelines/colours/ */
+    font-style: normal;
+}
+p {
+    margin: 0.4em 0;
+}
+pre {
+    margin: 0;
+}
+span {
+    display: inline;
+}
+table, .table {  /* ".table" is for e.g. <div class="table"> */
+    display: table;  /* with table-cell, auto-resizing goes wrong */
+    border-collapse: collapse;
+    vertical-align: top;
+    margin: 0.25em 0;
+    /* width: 100%; */
+}
+tr, .table>* {
+    display: table-row;
+}
+th, td, .table>*>* {
+    display: table-cell;
+    vertical-align: top;
+    border: 1px solid black;
+    margin: 0.25em;
+    padding: 0.1em 0.3em;
+}
+th, .th {
+    font-weight: bold;
+}
+td p {  /* p within td */
+    margin: 0 0 0.4em 0;
+}
+
+/* Named classes: */
+
+.action {
+    color: rgb(0, 0, 150);  /* close to navy blue */
+}
+.addresses {
+    /*
+        https://stackoverflow.com/questions/10272605/align-two-inline-blocks-left-and-right-on-same-line
+        https://stackoverflow.com/questions/57020675/using-flex-css-with-wkhtmltopdf
+        https://github.com/wkhtmltopdf/wkhtmltopdf/issues/1522
+        https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content
+        NB:
+        - browsers -- display: flex; justify-content: space-between;
+        - wkhtmltopdf -- display: -webkit-box; -webkit-box-pack: justify;
+    */
+    clear: both;
+    font-size: 0.8em;
+}
+.address_to {
+    float: left;
+    width: 50%;
+    text-align: left;
+    padding-bottom: 1em;
+}
+.address_from {
+    float: right;
+    width: 50%;
+    text-align: right;
+    padding-bottom: 1em;
+}
+.code {
+    font-family: monospace;
+}
+.collapsible {
+    margin: 0;
+}
+.collapse_visible {}
+.collapse_invisible {
+    display: none;
+}
+.collapse_big {}
+.collapse_small {
+    background-color: rgb(240, 240, 255);  /* very pale blue */
+    max-height: 5em;
+    overflow: hidden;
+}
+.consent {
+    background-color: rgb(230, 230, 230);  /* pale grey */
+    border: 0.5mm solid black;
+    padding: 0.5em;
+    margin: 0.25em 0;
+}
+.consent tr, .consent th, .consent td {
+    border-style: none;
+    font-size: 0.9em;
+}
+.consent .persontype {
+    vertical-align: bottom;
+    font-size: 0.8em;
+    line-height: 1.2em;
+}
+.consent .label {
+    text-align: right;
+    vertical-align: bottom;
+    font-size: 0.8em;
+    line-height: 1.2em;
+}
+.consent .footnote {
+    font-size: 0.7em;
+    line-height: 1.2em;
+}
+.deadcell {
+    background-color: rgb(200, 200, 200);  /* grey */
+}
+.ditto {
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgb(230, 230, 230);  /* pale grey */
+}
+.email_label {
+    text-align: left;
+    vertical-align: bottom;
+}
+.email_box, .options .email_box {
+    /* Increase CSS specificity to have this override ".options td" etc. */
+    padding-top: 0.5em;
+    border-bottom: 0.5mm solid black;
+}
+.error {
+    color: red;
+}
+
+/*noinspection CssUnusedSymbol*/
+.errorlist {  /* Django forms */
+    color: red;
+}
+.expandcollapsewrapper {
+    display: table;
+    margin: 0;
+}
+.expandcollapse {
+    display: table-cell;
+    margin: 0;
+}
+.expandcollapse_span {
+    display: inline;
+    margin: 0;
+}
+.formtable, .formtable th, .formtable tr, .formtable td {
+    border: none;
+}
+.formtitle {
+    font-size: 1.6em;
+    line-height: 1.2em;
+    color: rgb(0, 114, 198);  /* "dark washed azure" */
+}
+
+.hangingindent {
+    padding-left: 1.5em;
+    text-indent: -1.5em;
+}
+.highlight {
+    background-color: lightyellow;
+}
+
+/*
+    User highlight colours.
+    Chrome v77 uses yellow for Ctrl-F "all instances" and orange for "instance
+    at the cursor". Firefox uses a pale green for Ctrl-F "instance at the
+    cursor".
+*/
+
+/*noinspection CssUnusedSymbol*/
+.highlight0 { background-color: lime; }
+/*noinspection CssUnusedSymbol*/
+.highlight1 { background-color: rgb(136, 136, 255); }  /* blue-ish */
+/*noinspection CssUnusedSymbol*/
+.highlight2 { background-color: magenta; }
+/* If altering: change also N_CSS_HIGHLIGHT_CLASSES in the source */
+
+.important {
+    color: rgb(150, 0, 0);  /* dark red */
+}
+.indent {
+    margin-left: 3em;
+}
+.letterbody {
+    clear: both;
+}
+.letterdate {
+    text-align: right;
+}
+.logo {
+    text-align: right;
+    padding-bottom: 0.3em;
+}
+.office {
+    background-color: rgb(200, 200, 200);  /* grey */
+    padding: 0.3em;
+    font-size: 0.8em;
+}
+
+.options {
+    border: none;
+    width: 100%;
+    vertical-align: top;
+}
+table.options, .options table {
+    border-collapse: separate;
+    border-spacing: 0 0.5em;  /* horizontal, vertical */
+}
+.options tr, .options th, .options td {
+    border: none;
+}
+
+.patient {
+    background-color: rgb(127, 255, 127);  /* vivid green */
+}
+.patient_withdrawal {
+    background-color: rgb(255, 127, 127);  /* red/pink */
+}
+.patient, .patient_withdrawal {
+    /* width: 100%; */
+}
+.patient_details {
+    margin-left: 3em;
+    font-style: italic;
+}
+.patientprefs {
+    border: 0.5mm solid black;
+}
+.patientprefs tr {
+    border-style: none;
+}
+.patientprefs th {
+    border-style: solid none;
+}
+.patientprefs td {
+    border-style: none;
+}
+.queryresult {
+    /* font-family: Georgia, "Times New Roman", Times, serif; */
+    font-family: "Times New Roman", Times, serif;
+}
+.rjust {
+    text-align: right;
+}
+.rjust img {
+    /* The align tag on img is deprecated; https://stackoverflow.com/questions/23021145 */
+    float: right;
+}
+.signature {
+    width: 100%;
+    border: none;
+    padding: 0.3em;
+    table-layout: fixed;
+}
+.signature tr, .signature th, .signature td {
+    border: 0.5mm none black;
+}
+.signature_label {
+    text-align: right;
+    vertical-align: bottom;
+}
+.signature_label_left {
+    text-align: left;
+    vertical-align: bottom;
+}
+.signature_box, .consent .signature_box, .signature .signature_box {
+    /* Increase CSS specificity to have this override ".signature td" etc. */
+    padding-top: 2.0em;
+    border-bottom: 0.5mm solid black;
+}
+.smallertext {
+    font-size: 0.8em;
+}
+.study {
+    background-color: rgb(200, 200, 255);  /* close to lavender */
+}
+.stripy_odd {
+}
+.stripy_even {
+    background-color: rgb(245, 255, 230);  /* very pale cream */
+}
+.sql {
+    background-color: rgb(230, 230, 255);  /* very pale blue */
+}
+.tabledivider, .tabledivider tr, .tabledivider th, .tabledivider td {
+    border-bottom: 0.5mm solid black;
+    height: 1mm;
+}
+.template {
+    color: rgb(0, 0, 255);
+}
+.template_comment {
+    font-style: italic;
+    font-weight: bold;
+}
+.tickbox {
+    font-family: 'Consolas', 'Monaco', 'Bitstream Vera Sans Mono', monospace;
+    text-align: right;
+}
+.titlecolour {
+    color: rgb(0, 114, 198);  /* "dark washed azure" */
+}
+.underline {
+    text-decoration: underline;
+}
+.warning {
+    font-weight: bold;
+    color: red;
+}
+
+/* For paged media: */
+
+.page_break_before {
+    page-break-before: always;
+}
