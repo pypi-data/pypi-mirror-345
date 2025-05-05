@@ -1,0 +1,123 @@
+# Crawl4AI MCP Server
+
+A Model Context Protocol server for web crawling using the Crawl4ai library.
+
+## 📋 Overview
+
+Crawl4AI MCP Server provides a set of tools and prompts for web crawling through the Model Context Protocol (MCP). It allows AI assistants to autonomously crawl websites, extract content, and save information as Markdown files.
+
+## ✨ Features
+
+- 🕸️ **Single Page Crawling**: Extract content from a single webpage in Markdown format
+- 🌐 **Deep Website Crawling**: Crawl multiple pages of a website with configurable depth and limits
+- 🔍 **Structured Data Extraction**: Use CSS selectors to extract specific structured data from webpages
+- 💾 **Markdown Export**: Save crawled content directly as Markdown files
+
+## 🚀 Installation
+
+```bash
+pip install crawl4ai-mcp-server
+```
+
+## 🛠️ Usage
+
+### Command Line
+
+Run the server directly from the command line:
+
+```bash
+crawl4ai-mcp
+```
+
+### Python API
+
+```python
+import asyncio
+from crawl4ai_mcp import serve
+
+# Run the server
+asyncio.run(serve())
+```
+
+## 📝 Available Tools
+
+### crawl_webpage
+
+Crawls a single webpage and returns its content as markdown.
+
+**Parameters**:
+
+- `url` (string, required): URL to crawl
+- `include_images` (boolean, optional): Whether to include images in the result (default: true)
+- `bypass_cache` (boolean, optional): Whether to bypass cache (default: false)
+
+### crawl_website
+
+Crawls a website starting from the given URL, with specified depth and page limit.
+
+**Parameters**:
+
+- `url` (string, required): Starting URL
+- `max_depth` (integer, optional): Maximum crawl depth (default: 1)
+- `max_pages` (integer, optional): Maximum number of pages to crawl (default: 5)
+- `include_images` (boolean, optional): Whether to include images (default: true)
+
+### extract_structured_data
+
+Extracts structured data from a webpage using CSS selectors.
+
+**Parameters**:
+
+- `url` (string, required): URL to extract data from
+- `schema` (object, optional): Schema defining what to extract
+- `css_selector` (string, optional): CSS selector to locate specific parts of the page (default: "body")
+
+### save_as_markdown
+
+Crawls a webpage and saves the content as a Markdown file.
+
+**Parameters**:
+
+- `url` (string, required): URL to crawl
+- `filename` (string, required): Filename to save the Markdown
+- `include_images` (boolean, optional): Whether to include images (default: true)
+
+## 🔌 Available Prompts
+
+### crawl
+
+Crawls a webpage and retrieves its content.
+
+**Arguments**:
+
+- `url` (required): URL to crawl
+
+### save_page
+
+Crawls a webpage and saves it as a Markdown file.
+
+**Arguments**:
+
+- `url` (required): URL to crawl
+- `filename` (required): Filename to save the Markdown
+
+## 🧩 Requirements
+
+- Python 3.8+
+- mcp>=1.0.0
+- crawl4ai
+- pydantic
+
+## 📄 License
+
+MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
