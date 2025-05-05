@@ -1,0 +1,34 @@
+[project]
+name = "gamesir-t1d"
+version = "0.1.2"
+description = "Python interface for GameSir T1d controller with pygame compatibility"
+readme = "README.md"
+authors = [
+    { name = "Mark Pors", email = "mark@pors.net" }
+]
+requires-python = ">=3.9"
+dependencies = [
+    "bleak>=0.22.3",
+    "pygame>=2.6.1",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Games/Entertainment",
+]
+
+[project.urls]
+Homepage = "https://github.com/pors/gamesir-t1d"
+"Bug Tracker" = "https://github.com/pors/gamesir-t1d/issues"
+
+[project.scripts]
+gamesir-scan = "gamesir_t1d.tools.ble_scanner:run_scanner"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gamesir_t1d"]
