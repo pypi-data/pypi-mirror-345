@@ -1,0 +1,73 @@
+# pyproject.toml
+# Integrated Risk Centre s.r.l.
+
+
+# Black formatter configuration
+[tool.black]
+line-length = 100                  # Maximum line length (matches pylint)
+target-version = ['py312']         # Target Python version
+include = '\.pyi?$'                # Files to include (Python files)
+preview = true                     # Enable preview features for better multiline handling
+skip-string-normalization = true   # Preserve string quote style
+exclude = '''
+/(
+    \.git                          # Git directory
+  | \.hg                           # Mercurial directory
+  | \.mypy_cache                   # MyPy cache
+  | \.tox                          # Tox directory
+  | \.venv                         # Virtual environment
+  | _build                         # Build directory
+  | buck-out                       # Buck build output
+  | build                          # Build artifacts
+  | dist                           # Distribution packages
+  | migrations                     # Django migrations
+)/
+'''
+
+# Import sorting configuration
+[tool.isort]
+profile = "black"                  # Use black-compatible settings
+line_length = 100                  # Match black's line length
+multi_line_output = 3              # Vertical hanging indent style
+include_trailing_comma = true      # Include trailing commas in multi-line imports
+force_grid_wrap = 0                # Don't force grid wrapping
+use_parentheses = true             # Use parentheses for line continuation
+ensure_newline_before_comments = true  # Add newline before comments
+skip_glob = ["*/migrations/*", "*/venv/*", "*/.venv/*"]  # Skip these directories
+
+# MyPy type checking configuration
+[tool.mypy]
+python_version = "3.12"            # Target Python version
+warn_return_any = true             # Warn when a function returns Any
+warn_unused_configs = true         # Warn about unused configurations
+disallow_untyped_defs = true       # Disallow functions without type annotations
+disallow_incomplete_defs = true    # Disallow functions with partial type annotations
+check_untyped_defs = true          # Check the body of functions without annotations
+disallow_untyped_decorators = true # Disallow decorators without type annotations
+no_implicit_optional = true        # Disallow implicit Optional types
+strict_optional = true             # Enable strict Optional type checking
+
+# Override settings for specific modules
+[[tool.mypy.overrides]]
+module = "*.migrations.*"          # Django migrations
+ignore_errors = true               # Ignore all type errors in migrations
+
+[[tool.mypy.overrides]]
+module = "django.*"                # Django framework
+ignore_missing_imports = true      # Ignore missing imports in Django
+
+[tool.flake8]
+max-line-length = 100              # Match black's line length
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    "migrations",
+    ".venv",
+    "venv",
+]
+ignore = [
+    "E203",                        # Whitespace before ':' (black formats this differently)
+    "W503",                        # Line break before binary operator (conflicts with black)
+]
