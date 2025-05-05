@@ -1,0 +1,68 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [main, "version-*"]
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  run_tests:
+    name: Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ["3.8"] #Only test with Python 3.8 for this branch
+        os: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Ert Ubuntu dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install libegl1
+
+      - name: Install fmu-dataio
+        run: |
+          pip install pip -U
+          pip install -e .[dev]
+
+      - name: Install fmu-sumo-uploader for Python 3.8
+        if: matrix.python-version == '3.8'
+        run:
+          pip install \
+            "fmu-sumo-uploader @ git+https://github.com/equinor/fmu-sumo-uploader.git@66a9f9b"
+
+        # fmu-sumo-uploader blocked by OpenVDS on Python 3.12
+      - name: Install fmu-sumo-uploader for Python 3.9+
+        if: matrix.python-version != '3.12' && matrix.python-version != '3.8'
+        run:
+          pip install \
+            "fmu-sumo-uploader @ git+https://github.com/equinor/fmu-sumo-uploader.git"
+
+      - name: Full test
+        run: |
+
+          # Reinstall pydantic to force latest version
+          pip install -U pydantic
+
+          if [[ "${{ github.event.pull_request.base.ref }}" == "staging" ]]; then
+            pytest -n auto -v --cov --cov-report term-missing --prod
+          else
+            pytest -n auto -v --cov --cov-report term-missing
+          fi
+
+  docker_build:
+    name: Build Docker image
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test Docker image can build
+        run: docker build .

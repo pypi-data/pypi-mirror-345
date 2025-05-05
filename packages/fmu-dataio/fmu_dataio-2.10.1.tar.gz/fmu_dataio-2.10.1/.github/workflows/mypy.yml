@@ -1,0 +1,33 @@
+name: Mypy
+
+on:
+  pull_request:
+    branches: [main, "version-*"]
+
+jobs:
+  mypy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"] #Only test with Python 3.8 for this branch
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dev-env.
+        run: |
+          pip install -U pip
+          pip install ".[dev]"
+
+      - name: Mypy
+        run: |
+
+          # Reinstall pydantic to force latest version
+          pip install -U pydantic
+
+          mypy .
