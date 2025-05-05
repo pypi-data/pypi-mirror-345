@@ -1,0 +1,32 @@
+[project]
+name = "ai_article_generator"
+version = "0.1.3"
+description = "A Python library for generating articles using AI."
+authors = [ { name = "Ihor Tykhonenko", email = "tykhonenkoigor@gmail.com" } ]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+dependencies = [
+    "openai>=1.0.0",
+    "httpx>=0.24.0"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 120
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+python_version = 3.8
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 120
+select = ["E", "F", "W"]
+ignore = []
