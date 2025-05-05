@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "openapi-fastapi-client"
+version = "0.2.1"
+description = "A tool to autogenerate FastApi Clients from given openapi.yaml."
+authors = ["FelixTheC <felixeisenmenger@gmx.net>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/FelixTheC/openapi-fastapi-client"
+keywords = ["openapi", "pydantic", "python3"]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4"
+pyyaml = "^6.0.2"
+black = "^24.3.0"
+typing-extensions = "^4.13.2"
+pydantic = "^2.4.0"
+isort = "^6.0.1"
+typer = "^0.15.3"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+requests = "^2.32.3"
+aiohttp = "^3.11.18"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+combine_as_imports = true
+line_length = 100
+profile = "black"
+
+[tool.black]
+line-length = 100
+target-version = ['py312']
+
+[tool.poetry.scripts]
+openapi-fastapi-client = "openapi_fastapi_client.main:app"
