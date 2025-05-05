@@ -1,0 +1,32 @@
+---
+title: Clone
+---
+
+Clone a remote repository to a local directory.
+
+```sh
+zssc clone url [--target_dir TARGET_DIR]
+```
+
+The priority of `TARGET_DIR` is:
+1. Directory specified by `--target_dir`
+2. Environment variable `GITHUB_ROOT`
+3. Current directory
+
+Supported URL schemes:
+- `https://github.com/user/repo`
+- `git@github.com:user/repo.git`
+- `user/repo` (default to HTTPS)
+
+<Callout title="HTTPS URL" type="info">
+Suffixes of `.git`, `#`, and `?` will be ignored. For example,
+```
+https://github.com/user/repo.git
+https://github.com/user/repo.git#branch
+https://github.com/user/repo.git?ref=tag
+```
+will be all treated as
+```
+https://github.com/user/repo
+```
+</Callout>

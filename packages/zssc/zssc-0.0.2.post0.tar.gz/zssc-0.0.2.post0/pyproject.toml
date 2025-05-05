@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zssc"
+dynamic = ["version", "dependencies"]
+description = "Personal tools"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Shunchi Zhang", email = "shunchizhang.cs@gmail.com" }]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["zssc"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools_scm]
+write_to = "src/zssc/_version.py"
+version_scheme = "post-release"
+local_scheme = "no-local-version"
+
+[project.scripts]
+zssc = "zssc.cli:main"

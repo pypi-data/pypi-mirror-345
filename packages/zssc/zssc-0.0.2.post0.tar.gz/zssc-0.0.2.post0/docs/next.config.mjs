@@ -1,0 +1,15 @@
+import { createMDX } from 'fumadocs-mdx/next';
+
+const withMDX = createMDX();
+
+const isGithubActions = process.env.GITHUB_ACTIONS === "true";
+
+/** @type {import('next').NextConfig} */
+const config = {
+  reactStrictMode: true,
+  output: "export",
+  basePath: isGithubActions ? "/zssc" : "",
+  assetPrefix: isGithubActions ? "/zssc/" : undefined,
+};
+
+export default withMDX(config);

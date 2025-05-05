@@ -1,0 +1,24 @@
+---
+title: How to release ZSSC
+---
+
+## Local Test
+
+```sh
+uv-activate zssc
+uv pip install -e .
+```
+
+## Release
+
+```sh
+git tag v0.0.1
+rm -rf dist && python -m build
+python -m twine upload dist/*
+```
+
+<Callout title="版本号" type="info">
+- 当进行不兼容的重大变更时，增加**主版本号**
+- 当添加向后兼容的功能时，增加**次版本号**
+- 当进行向后兼容的 bug 修复时，增加**修订版本号**
+</Callout>
