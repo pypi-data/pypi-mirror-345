@@ -1,0 +1,74 @@
+Metadata-Version: 2.1
+Name: jh_scrapyd
+Version: 0.3.6
+Summary: Preemptive scraping cluster
+Home-page: https://github.com/mrye5869/jh_scrapyd
+Author: Mr Ye
+Author-email: mrye5869@gmail.com
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: Twisted>=20.3.0
+Requires-Dist: scrapy>=2.0.0
+Requires-Dist: redis>=5.2.1
+Requires-Dist: pytz>=2024.2
+Requires-Dist: psutil>=6.1.1
+Requires-Dist: pywin32; platform_system == "Windows"
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0.0; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.0.0; extra == "docs"
+Requires-Dist: sphinx_rtd_theme; extra == "docs"
+
+Jh Scrapyd
+==========
+
+A preemptive scrapyd cluster built using Redis queues
+
+* Free software: MIT license (including the work distributed under the Apache 2.0 licen[WHEEL](..%2F..%2Fscrapy-cluster%2Fpyppeteer_frame%2Fvenv%2FLib%2Fsite-packages%2Fjh_scrapyd-0.0.1.dist-info%2FWHEEL)se)
+* Documentation: https://scrapyd.readthedocs.org/en/latest/
+
+## Installation
+
+python >= 3.7.0
+
+Install with `pip` from PyPI:
+
+```
+pip install jh_scrapyd
+```
+
+## Configuration
+editor scrapyd.conf
+```
+[api]
+# interface md5 key
+signature_key = 48jwmeX3iF6X0MdZy4atj2RpmNbQjAkm
+
+# Interface signature expiration time
+signature_expired_time = 300
+
+[cluster]
+# Add Redis to configure celarclear
+host = 127.0.0.1
+password = 
+port = 6379
+db = 1
+
+# Is there a unified queue (mainly used for different projects to share queue priority)
+is_unified_queue = 1
+
+# Queue prefix
+queue_prefix = jh_scrapyd
+```
