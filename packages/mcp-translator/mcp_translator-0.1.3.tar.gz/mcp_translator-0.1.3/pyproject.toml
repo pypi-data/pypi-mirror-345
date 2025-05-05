@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-translator"
+version = "0.1.3"
+authors = [
+  { name="Jiayao Yu", email="jiayao.yu@gmail.com" },
+]
+description = "An MCP server for translating long-form text in chunks."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", # Or your chosen license
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "mcp[cli]>=1.7.1",
+    "click",
+    "google-genai"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jiayao/mcp-translator" # Optional: Link to your repo
+"Bug Tracker" = "https://github.com/jiayao/mcp-translator/issues" # Optional
+
+[project.scripts]
+mcp-translator = "mcp_translator.server:main"
+
+# Explicitly tell setuptools which top-level modules to include
+[tool.setuptools]
+packages = ["mcp_translator"]
