@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Video</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+        }
+        video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+        }
+        /* .debug-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            font-size: 12px;
+            z-index: 9999;
+            user-select: none;
+        } */
+    </style>
+</head>
+<body>
+    <!-- <div class="debug-overlay">{{ filename }}</div> -->
+    <video id="vid" controls autoplay aria-label="Video player">
+        <source src="{{ url_for('static', filename='videos/' + filename) }}" type="video/mp4">
+        <source src="{{ url_for('static', filename='videos/' + filename.rsplit('.', 1)[0] + '.webm') }}" type="video/webm">
+        Your browser does not support the video tag.
+    </video>
+    <script>
+        const start = Date.now();
+        const video = document.getElementById("vid");
+        let pausedBeforeEnd = false;
+
+        video.onpause = () => {
+            if (!video.ended) {
+                pausedBeforeEnd = true;
+            }
+        };
+
+        video.onended = () => {
+            const duration = Date.now() - start;
+            parent.nextStep(pausedBeforeEnd ? 'paused' : null, duration);
+        };
+    </script>
+</body>
+</html>
