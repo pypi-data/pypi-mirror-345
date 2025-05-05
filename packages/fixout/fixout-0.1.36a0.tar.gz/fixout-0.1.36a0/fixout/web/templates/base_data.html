@@ -1,0 +1,78 @@
+
+<div style="display: inline-center;">
+  <ul class="nav mb-3" id="pills-tab-data" role="tablist">
+    <div style="display: flex; align-items: center; border: 5px solid #ffffff00;" ><b style="color: rgb(104, 104, 104)">Data slices available:   </b></div>
+    <li class="nav-item">
+      <a class="btn btn-light active" id="pills-training-tab" data-toggle="pill" href="#pills-training" role="tab" aria-controls="pills-training" aria-selected="true">Training</a>
+    </li>
+    {% for i in range(num_data_slices): %}
+    <li class="nav-item">
+      <a class="btn btn-light" id="pills-testing-tab" data-toggle="pill" href="#pills-testing" role="tab" aria-controls="pills-testing" aria-selected="false">Testing {{ i+1 }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="tab-content" id="pills-tabContent-data">
+
+  <div class="tab-pane fade show active" id="pills-training" role="tabpanel" aria-labelledby="pills-training-tab">
+
+    <div id="data_overview_0"></div>
+    <div id="correlation_analysis_0"></div>
+    <div id="visu_0"></div>
+    <div id="reversed_0"></div>
+
+    <script> 
+      $("#data_overview_0").load("histo/0");
+    </script> 
+
+    <script> 
+      $("#reversed_0").load("rev/0");
+    </script> 
+
+    <script> 
+      $("#visu_0").load("visu/0");
+    </script> 
+    
+    <script> 
+      $("#correlation_analysis_0").load("corr/0");
+    </script> 
+    
+  </div>
+
+  {% for i in range(num_data_slices): %}
+
+    <div class="tab-pane fade" id="pills-testing" role="tabpanel" aria-labelledby="pills-testing-tab">
+
+      <div id="data_overview_{{ i+1 }}"></div>
+      <div id="correlation_analysis_{{ i+1 }}"></div>
+      <div id="visu_{{ i+1 }}"></div>
+      <div id="reversed_{{ i+1 }}"></div>
+  
+      <script> 
+        $("#data_overview_{{ i+1 }}").load("histo/{{ i+1 }}");
+      </script> 
+  
+      <script> 
+        $("#reversed_{{ i+1 }}").load("rev/{{ i+1 }}");
+      </script> 
+  
+      <script> 
+        $("#visu_{{ i+1 }}").load("visu/{{ i+1 }}");
+      </script> 
+      
+      <script> 
+        $("#correlation_analysis_{{ i+1 }}").load("corr/{{ i+1 }}");
+      </script> 
+      
+    
+    </div>
+  {% endfor %}
+
+</div>
+
+
+
+
+
+
