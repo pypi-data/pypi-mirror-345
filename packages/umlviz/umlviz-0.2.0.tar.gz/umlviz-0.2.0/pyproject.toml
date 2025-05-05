@@ -1,0 +1,31 @@
+[project]
+name = "umlviz"
+version = "0.2.0"
+dependencies = ["ply", "graphviz"]
+
+[project.scripts]
+umlviz = "umlviz.cli:main"
+
+[tool.tox]
+requires = ["tox>=4.19"]
+env_list = ["3.11", "3.12", "3.13", "type"]
+
+[tool.tox.env_run_base]
+description = "Run test under {base_python}"
+deps = ["pytest", "coverage"]
+commands = [
+	["coverage", "run", "-m", "pytest", "--junitxml=pytest.xml"],
+	["coverage", "report"],
+	["coverage", "xml"]
+]
+
+[tool.tox.env.type]
+description = "run type check on code base"
+deps = ["mypy", "types-cachetools>=5.5.0.20240820", "types-chardet>=5.0.4.6"]
+commands = [["mypy", "umlviz"], ["mypy", "tests"]]
+
+[tool.mypy]
+exclude = ["umlviz/parsetab.py"] 
+
+[tool.pytest]
+pythonpath = ["."]
