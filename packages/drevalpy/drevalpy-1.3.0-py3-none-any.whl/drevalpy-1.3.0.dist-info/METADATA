@@ -1,0 +1,151 @@
+Metadata-Version: 2.3
+Name: drevalpy
+Version: 1.3.0
+Summary: Drug response evaluation of cancer cell line drug response models in a fair setting
+License: GPL-3.0
+Author: DrEvalPy development team
+Requires-Python: >=3.11,<3.13
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Provides-Extra: multiprocessing
+Requires-Dist: curve-curator
+Requires-Dist: flaky
+Requires-Dist: importlib-resources
+Requires-Dist: matplotlib
+Requires-Dist: networkx
+Requires-Dist: numpy (>=1.20)
+Requires-Dist: pandas
+Requires-Dist: plotly
+Requires-Dist: poetry (>=2.0.1,<3.0.0)
+Requires-Dist: pytorch-lightning (>=2.5)
+Requires-Dist: pyyaml
+Requires-Dist: requests
+Requires-Dist: scikit-learn (>=1.4)
+Requires-Dist: scikit-posthocs
+Requires-Dist: scipy
+Requires-Dist: toml (>=0.10.2,<0.11.0)
+Requires-Dist: torch (>=2.1)
+Requires-Dist: torch-geometric
+Description-Content-Type: text/markdown
+
+# DrEvalPy: Python Cancer Cell Line Drug Response Prediction Suite
+
+[![PyPI version](https://img.shields.io/pypi/v/drevalpy.svg)](https://pypi.org/project/drevalpy/)
+![Python versions](https://img.shields.io/pypi/pyversions/drevalpy)
+[![License](https://img.shields.io/github/license/daisybio/drevalpy)](https://opensource.org/licenses/GPL3)
+[![Read the Docs](https://img.shields.io/readthedocs/drevalpy/latest.svg?label=Read%20the%20Docs)](https://drevalpy.readthedocs.io/)
+[![Test status](https://github.com/daisybio/drevalpy/actions/workflows/run_tests.yml/badge.svg)](https://github.com/daisybio/drevalpy/actions?workflow=Tests)
+[![Precommit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+Focus on Innovating Your Models — DrEval Handles the Rest!
+
+- DrEval is a toolkit that ensures drug response prediction evaluations are statistically sound, biologically meaningful, and reproducible.
+- Focus on model innovation while using our automated standardized evaluation protocols and preprocessing workflows.
+- A flexible model interface supports all model types (e.g. Machine Learning, Stats, Network-based analyses)
+
+By contributing your model to the DrEval catalog, you can increase your work's exposure, reusability, and transferability.
+
+![DrEval](docs/_static/img/overview.png)
+
+Use DrEval to Build Drug Response Models That Have an Impact
+
+    1. Maintained, up-to-date baseline catalog, no need to re-implement literature models
+
+    2. Gold standard datasets for benchmarking
+
+    3. Consistent application-driven evaluation
+
+    4. Ablation studies with permutation tests
+
+    5. Cross-study evaluation for generalization analysis
+
+    6. Optimized nextflow pipeline for fast experiments
+
+    7. Easy-to-use hyperparameter tuning
+
+    8. Paper-ready visualizations to display performance
+
+This project is a collaboration of the Technical University of Munich (TUM, Germany)
+and the Freie Universität Berlin (FU, Germany).
+
+## Installation
+
+Using pip:
+
+```bash
+pip install drevalpy
+```
+
+Using docker:
+
+```bash
+docker pull ghcr.io/daisybio/drevalpy:main
+```
+
+From source:
+
+```bash
+git clone https://github.com/daisybio/drevalpy.git
+cd drevalpy
+pip install poetry
+poetry install
+```
+
+## Quickstart
+
+To run models from the catalog, you can run:
+
+```bash
+python run_suite.py --run_id my_first_run --models ElasticNet SimpleNeuralNetwork --dataset GDSC2 --test_mode LCO
+```
+
+This will train and tune a neural network and an elastic net model on gene expression features and drug fingerprint
+features to predict IC50 values of the GDSC2 database. It will evaluate in "LCO" which is the leave-cell-line-out
+splitting strategy using 5 fold cross validation.
+The results will be stored in
+
+```bash
+results/my_first_run/LCO
+```
+
+You can visualize them using
+
+```bash
+python create_report.py --run_id my_first_run --dataset GDSC2
+```
+
+This will create an index.html file which you can open in your webbrowser.
+
+You can also run a drug response experiment using Python:
+
+```python
+
+from drevalpy.experiment import drug_response_experiment
+
+drug_response_experiment(
+            models=["MultiOmicsNeuralNetwork"],
+            baselines=["RandomForest"],
+            response_data="GDSC1",
+            metric="mse",
+            n_cv_splits=5,
+            test_mode="LPO",
+            run_id="my_second_run",
+        )
+```
+
+We recommend the use of our nextflow pipeline for computational demanding runs and for improved reproducibility. No knowledge of nextflow is required to run it. The nextflow pipeline is available here: [nf-core-drugresponseeval](https://github.com/JudithBernett/nf-core-drugresponseeval).
+
+## Example Report
+
+[Browse our benchmark results here.](https://dilis-lab.github.io/drevalpy-report/)
+
+## Contact
+
+Main developers:
+
+- [Judith Bernett](mailto:judith.bernett@tum.de), [Data Science in Systems Biology](https://www.mls.ls.tum.de/daisybio/startseite/), TUM
+- [Pascal Iversen](mailto:Pascal.Iversen@hpi.de), [Data Integration in the Life Sciences](https://www.mi.fu-berlin.de/w/DILIS/WebHome), FU Berlin, Hasso Plattner Institute
+
