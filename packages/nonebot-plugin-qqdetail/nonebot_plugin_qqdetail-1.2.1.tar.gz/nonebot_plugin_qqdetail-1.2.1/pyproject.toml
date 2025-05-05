@@ -1,0 +1,61 @@
+# pyproject.toml
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nonebot-plugin-qqdetail"
+version = "1.2.1" 
+description = "让机器人查询QQ详细信息 (A NoneBot plugin to query QQ details)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "GNU Affero General Public License v3" } 
+authors = [
+    { name = "006lp", email = "kirakirai8023@gmail.com" }
+]
+keywords = ["qq", "detail", "info", "nonebot", "nonebot2", "plugin"]
+
+# 项目依赖
+dependencies = [
+    "nonebot2>=2.1.0",
+    "nonebot-adapter-onebot>=2.2.0",
+    "httpx>=0.24.0",
+    "pydantic>=1.10.0,<3.0.0",
+]
+
+# 项目元数据和链接
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3", 
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications :: Chat",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/006lp/nonebot-plugin-qqdetail"
+Repository = "https://github.com/006lp/nonebot-plugin-qqdetail"
+# "Bug Tracker" = "https://github.com/006lp/nonebot-plugin-qqdetail/issues"
+
+# --- Hatchling 配置 ---
+
+[tool.hatch.build.targets.sdist]
+# 包含在源码分发包 (sdist) 中的文件
+include = [
+    "/nonebot_plugin_qqdetail", # <-- 包含你的插件代码目录
+    "/pyproject.toml",
+    "/README.md",
+    "/LICENSE",                 # <-- 如果你有 LICENSE 文件，确保它包含在内
+]
+
+[tool.hatch.build.targets.wheel]
+# 包含在 wheel 包中的 Python 包目录
+# 这告诉构建系统 `nonebot_plugin_qqdetail` 是一个可导入的包
+packages = ["nonebot_plugin_qqdetail"]
