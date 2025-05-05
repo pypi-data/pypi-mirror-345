@@ -1,0 +1,168 @@
+
+                             README
+
+                 for the ExamplesDiffusion directory
+
+
+
+DOWNLOADING THE DATASET:
+
+    You will need to install the PurdueShapes5GAN dataset before you
+    can execute this script.
+
+    This is the same dataset that is used for Adversarial Learning
+    in DLStudio.  
+
+    Download the dataset archive
+
+            datasets_for_AdversarialLearning.tar.gz
+
+    through the link "Download the image dataset for
+    AdversarialLearning and Diffusion" provided at the top of main doc
+    page for DLStudio and store it in the
+
+            ExamplesDiffusion
+
+    directory of the distribution.  Subsequently, execute the
+    following command in that directory:
+
+            tar zxvf datasets_for_AdversarialLearning.tar.gz
+
+    This command will create a 'dataGAN' subdirectory and deposit the
+    following dataset archive in that subdirectory:
+
+            PurdueShapes5GAN-20000.tar.gz
+
+    Now execute the following in the "dataGAN" directory:
+
+            tar zxvf PurdueShapes5GAN-20000.tar.gz
+
+    With that, you should be able to execute the diffusion related
+    scripts in the 'ExamplesDiffusion' directory.
+
+
+
+          *******************************************
+
+
+
+HOW TO EXECUTE THE CODE IN THIS DIRECTORY:
+
+
+A demonstration of the diffusion code in DLStudio requires that you go
+through the three major steps mentioned below:
+
+
+STEP 1:
+
+        Execute the script 
+        
+                     RunCodeForDiffusion.py
+        
+        At the least, you would need to make one change in this script
+        before executing it: You would need to make sure that the
+               
+                     data_dir
+        
+        constructor parameter for the GenerativeDiffusion class.
+        
+        Obviously, you would also need to set the parameters
+
+                     batch_size
+
+                     log_interval
+                
+                     save_interval
+
+        When I am debugging the code on my laptop, I set the
+        batch_size to 8.  However, when I run the code on our lab's
+        RVL Cloud, I set the same to 32.
+
+        The parameter log_interval is for how often you want to see
+        the loss as the training proceeds.  Again, for debugging, I
+        set it to 10, and for execution in the cloud to 100.
+
+        The parameter save_interval controls how often you would like
+        for the checkpoints to be written out to a disk file.  For
+        debugging, I set it to 100 on my laptop, and, for code
+        execution in the cloud, I set it to 10,000.
+
+        NOTE: The training occurs in an infinite loop while it
+               spitting out the checkpoints with the frequency
+               controlled by the parameter save_interval.
+
+
+STEP 2:
+
+        After the first checkpoint is produced, you can test the image
+        generation ability of the model trained so far by executing
+        the script
+
+            GenerateNewImageSamples.py
+
+        with a call that looks like:
+
+            python3 GenerateNewImageSamples.py  --model_path  RESULTS/ema_0.9999_020000.pt        
+        
+        where the value for the command-line argument '--model_path'
+        points to the exact checkpoint you want to work with.  In the
+        example shown here, this checkpoint was produced at the 20,000
+        iteration of the training loop.
+
+        IMPORTANT:
+
+        Before you make the call shown above, you'd need to set the
+        parameters in the constructors called in the script so that
+        they are consistent with how they were set in the script
+        
+             RunCodeForDiffusion.py
+
+        For example, you would want the 'attention' parameter in the
+        UNetModel constructor to be the same.  The same would be case
+        for several other parameters, especially what may look an
+        optional parameter clip_denoised.
+
+        The only parameter that's likely to be set independently in
+        GenerateNewImageSamples.py is batch_size_image_generation The
+        batch size for image generation with a trained model is
+        independent of the batch size for training the model.
+
+        Calling GenerateNewImageSamples.py in the manner indicated
+        above deposits in the 'RESULTS' subdirectory a compressed
+        numpy archive with a name like
+
+             samples_8x64x64x3.npz
+
+        If you asked GenerateNewImageSamples.py to produce 8 color
+        images, each of size 64x64.  The number 3 is for the number of
+        channels in each image. The suffix ".npz" is for numpy
+        compressed format for compressed arrays.
+
+
+STEP 3:
+
+        Finally, execute the script 
+
+            VisualizeSamples.py
+
+        to extract the individual images from the ndarray archive
+        deposited in the RESULTS directory.  These would be written
+        out to a subdirectory called
+
+            visualize_samples
+
+        IMPORTANT:
+       
+           Currently, the 
+
+                 batch_size_image_generation
+
+           is set to 4.  If you change this in the script
+           GenerateNewImageSamples.py, that will change the name of
+           the ndarray archive of the generated images.  That would
+           require that you edit the script VisualizeSamples.py and
+           enter the new name for that archive there.
+
+
+
+********************************************************************************
