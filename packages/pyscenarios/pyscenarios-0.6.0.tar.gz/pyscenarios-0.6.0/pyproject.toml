@@ -1,0 +1,146 @@
+[project]
+name = "pyscenarios"
+authors = [{name = "Guido Imperiale", email = "guido.imperiale@gmail.com"}]
+license = {text = "Apache"}
+description = "Python Monte Carlo Scenario Generator"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "dask[array] >= 2022.4.0",
+    "numpy >= 1.22",
+    "scipy >= 1.7",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+numba = ["numba >= 0.56"]
+all = ["numba >= 0.56"]
+
+[project.urls]
+Homepage = "https://github.com/crusaderky/pyscenarios"
+"Bug Tracker" = "https://github.com/crusaderky/pyscenarios/issues"
+Changelog = "https://pyscenarios.readthedocs.io/en/latest/whats-new.html"
+
+
+[project.readme]
+text = """
+- SOBOL generator
+- Copulas (Gaussian, Student T, IT)
+- Statistical analysis tools for copulas"""
+content-type = "text/x-rst"
+
+[tool.setuptools]
+packages = ["pyscenarios"]
+zip-safe = false # https://mypy.readthedocs.io/en/latest/installed_packages.html
+include-package-data = true
+
+[tool.setuptools_scm]
+# Use hardcoded version when .git has been removed and this is not a package created
+# by sdist. This is the case e.g. of a remote deployment with PyCharm.
+fallback_version = "9999"
+
+[tool.setuptools.package-data]
+pyscenarios = [
+    "py.typed",
+    "*.txt.xz",
+]
+
+[build-system]
+requires = [
+    "setuptools>=66",
+    "setuptools_scm[toml]",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config -v -r sxfE --color=yes"
+xfail_strict = true
+python_files = ["test_*.py"]
+testpaths = ["pyscenarios/tests"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+filterwarnings = ["error"]
+
+[tool.coverage.report]
+show_missing = true
+
+
+[tool.ruff]
+exclude = [".eggs"]
+target-version = "py38"
+
+[tool.ruff.lint]
+ignore = [
+  "EM101",    # Exception must not use a string literal, assign to variable first
+  "EM102",    # Exception must not use an f-string literal, assign to variable first
+  "N802",     # Function name should be lowercase
+  "N803",     # Argument name should be lowercase
+  "N806",     # Variable should be lowercase
+  "N816",     # Variable in global scope should not be mixedCase
+  "PT006",    # Wrong type passed to first argument of `pytest.mark.parametrize`; expected `tuple`
+  "PLC0414",  # Import alias does not rename original package
+  "PLR0912",  # Too many branches
+  "PLR0913",  # Too many arguments in function definition
+  "PLR2004",  # Magic value used in comparison, consider replacing `123` with a constant variable
+  "PLW0603",  # Using the global statement
+  "PLW2901",  # for loop variable overwritten by assignment target
+  "SIM108",   # Use ternary operator instead of if-else block
+]
+select = [
+  "YTT",  # flake8-2020
+  "B",    # flake8-bugbear
+  "C4",   # flake8-comprehensions
+  "EM",   # flake8-errmsg
+  "EXE",  # flake8-executable
+  "ICN",  # flake8-import-conventions
+  "G",    # flake8-logging-format
+  "PIE",  # flake8-pie
+  "PT",   # flake8-pytest-style
+  "RET",  # flake8-return
+  "SIM",  # flake8-simplify
+  "ARG",  # flake8-unused-arguments
+  "I",    # isort
+  "NPY",  # NumPy specific rules
+  "N",    # pep8-naming
+  "E",    # Pycodestyle
+  "W",    # Pycodestyle
+  "PGH",  # pygrep-hooks
+  "F",    # Pyflakes
+  "PL",   # pylint
+  "UP",   # pyupgrade
+  "RUF",  # unused-noqa
+  "TID",  # tidy-ups
+  "EXE001",  #  Shebang is present but file is not executable
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["TEMPLATE"]
+
+[tool.mypy]
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = ["*.tests.*"]
+disallow_untyped_defs = false
