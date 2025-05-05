@@ -1,0 +1,104 @@
+[build-system]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+build-backend = "hatchling.build"
+
+[project]
+name = "userhub-sdk"
+dynamic = ["readme", "version"]
+description = "UserHub Python SDK"
+license = "MIT"
+requires-python = ">=3.8"
+authors = [
+    { name = "UserHub", email = "hello@userhub.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: AsyncIO",
+    "Framework :: Trio",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "httpcore>=1,<2",
+]
+
+[project.optional-dependencies]
+asyncio = [
+    "httpcore[asyncio]",
+]
+trio = [
+    "httpcore[trio]",
+]
+
+[tool.hatch.envs.test]
+dependencies = [
+    "mypy>=1,<2",
+    "pytest-asyncio>=0.24,<0.25",
+    "pytest-httpserver>=1,<2",
+    "pytest>=8,<9",
+    "userhub-sdk[asyncio]",
+    "userhub-sdk[trio]",
+]
+
+[project.urls]
+Homepage = "https://userhub.com"
+Source = "https://github.com/userhubdev/python-sdk"
+
+[tool.hatch.version]
+path = "src/userhub_sdk/_internal/constants.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/LICENSE",
+    "/README.md",
+    "/src/userhub_sdk",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/userhub_sdk"]
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"
+
+[tool.mypy]
+strict = true
+
+[tool.ruff]
+target-version = "py38"
+line-length = 88
+extend-exclude = ["src/userhub_sdk/types/_str_enum.py"]
+unsafe-fixes = true
+
+[tool.ruff.lint]
+ignore = [
+     "A",
+     "BLE001",
+     "E501",
+     "EM",
+     "FA100",
+     "N818",
+     "PLR2004",
+     "SLF001",
+     "TID252",
+     "TRY003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"examples/*" = ["INP001", "T201"]
+"examples/http-server-webhook/main.py" = ["N802"]
+"tests/*" = ["S101", "S106", "TRY002"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
