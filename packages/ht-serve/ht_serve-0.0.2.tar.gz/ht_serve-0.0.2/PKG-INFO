@@ -1,0 +1,117 @@
+Metadata-Version: 2.4
+Name: ht-serve
+Version: 0.0.2
+Summary: A secure HTTPS live reload server for front-end prototyping and dashboard development
+Home-page: https://github.com/HermiTech-LLC/HT-Serve
+Author: HermiTech Labs
+Author-email: support@hermitech.dev
+License: MIT
+Project-URL: Homepage, https://github.com/HermiTech-LLC/HT-Serve
+Project-URL: Documentation, https://github.com/HermiTech-LLC/HT-Serve#readme
+Project-URL: Issues, https://github.com/HermiTech-LLC/HT-Serve/issues
+Project-URL: Source, https://github.com/HermiTech-LLC/HT-Serve
+Keywords: https,tls,live-reload,webdev,dashboard,frontend,hot-reload,dev-server
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Framework :: AsyncIO
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Software Development :: User Interfaces
+Classifier: Typing :: Typed
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: watchdog>=3.0
+Requires-Dist: rich>=13.0
+Requires-Dist: websockets>=11.0
+Requires-Dist: typer[all]>=0.9
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: requires-python
+
+# HT-Serve
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
+**HT-Serve** is a secure HTTPS file server with live reload support, built for UI/dashboard prototyping. It enables frontend developers to test real-time changes under TLS with zero configuration, WebSocket-triggered reloads, and a CLI interface for orchestration.
+
+---
+
+## 🔧 Features
+
+- 🔒 Auto HTTPS via self-signed certificates (or use custom certs)
+- 🔁 WebSocket-based live reload on file changes
+- 🧩 Automatic HTML injection of live-reload script
+- 🧪 Built-in test UI (`ht-serve reset-demo`)
+- 🔍 Health check endpoint at `/healthz`
+- 🧠 CLI interface with `serve`, `check`, and `reset-demo`
+- 🧾 Production-grade logging and debug mode (`HT_DEBUG=1`)
+
+---
+
+## 📦 Installation
+
+```bash
+pip install .
+```
+
+---
+
+## 🚀 Usage
+
+Launch the development server:
+
+```bash
+ht-serve serve --open-browser
+```
+
+Check if HTTPS/WebSocket ports are available:
+
+```bash
+ht-serve check
+```
+
+Reset and regenerate a demo UI site:
+
+```bash
+ht-serve reset-demo
+```
+
+---
+
+## ⚙️ Environment Variables
+
+| Variable         | Description                                                     |
+|------------------|-----------------------------------------------------------------|
+| `DASH_CERT_PATH` | Full path to the HTTPS certificate (`.pem`)                    |
+| `DASH_KEY_PATH`  | Full path to the HTTPS private key (`.key`)                    |
+| `DASH_PORT`      | Port to serve HTTPS on (default: `443`; fallback: `8443`)      |
+| `HT_DEBUG`       | Set to `1` to enable verbose logging and file event tracking   |
+| `HT_FORCE_CERT`  | Set to `1` to regenerate the TLS cert/key on next launch       |
+
+---
+
+## 📁 Directory Structure
+
+```
+HT-Serve/
+├── ht_serve/
+│   ├── cli.py               # Typer-based CLI commands
+│   ├── server.py            # Core HTTPS + WebSocket server logic
+│   ├── templates/
+│   │   └── inject.js        # Injected live-reload script
+│   └── testsite/            # Sample demo UI assets
+├── pyproject.toml
+├── requirements.txt
+├── setup.py
+└── README.md
+```
+
+---
+
+## 🪪 License
+
+MIT © [HermiTech Labs](https://github.com/HermiTech-LLC)
