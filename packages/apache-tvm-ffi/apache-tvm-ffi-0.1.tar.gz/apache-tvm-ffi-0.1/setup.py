@@ -1,0 +1,20 @@
+from distutils.core import setup
+setup(
+    name = "apache-tvm-ffi",
+    packages = ["tvm"],
+    version = "0.1",
+    license="Apache-2.0",
+    description = "Machine learning for systems",
+    author = "",
+    author_email = "tianqi.tchen@gmail.com",
+    url = "https://github.com/apache/tvm",
+    keywords = [],
+    install_requires=[],
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Build Tools",
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python :: 3"
+  ],
+)
