@@ -1,0 +1,22 @@
+name: Run Package Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  call-reusable-tests:
+    name: Test on Python ${{ matrix.python-version }}
+    uses: ./.github/workflows/test-package.yaml
+    secrets: inherit
+    with:
+      python-version: ${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+
