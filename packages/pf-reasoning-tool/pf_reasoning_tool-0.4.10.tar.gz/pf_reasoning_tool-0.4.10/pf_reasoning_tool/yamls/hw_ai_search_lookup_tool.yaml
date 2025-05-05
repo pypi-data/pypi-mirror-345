@@ -1,0 +1,91 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Tool.schema.json
+pf_reasoning_tool.tools.hw_ai_search_lookup_tool.hw_ai_search_lookup:
+  name: HW AI Search Lookup Tool
+  description: Vector / keyword / semantic / hybrid search over Azure AI Search.
+  type: python
+  category: HW_PF_tools
+  tool_state: preview
+  module: pf_reasoning_tool.tools.hw_ai_search_lookup_tool
+  function: hw_ai_search_lookup
+
+  inputs:
+    connection:
+      type: [CustomConnection]
+      description: 'CustomConnection with endpoint & api_key of the search service.'
+
+    index_name:
+      type: [string]
+      description: 'Azure AI Search index name.'
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_tool.list_indexes
+        func_kwargs: []
+
+    query_text:
+      type: [string]
+      description: 'Natural-language query.'
+
+    vector:
+      type: [list]
+      description: 'Pre-computed query embedding.'
+
+    embeddings_connection:
+      type: [AzureOpenAIConnection, OpenAIConnection]
+      description: 'Embedding connection (needed when query_text is used).'
+
+    embedding_model_name:
+      type: [string]
+      default: text-embedding-3-large
+      description: 'Embedding deployment / model.'
+
+    search_type:
+      type: [string]
+      default: hybrid
+      enum: ['keyword', 'semantic', 'vector', 'hybrid', 'hybrid_semantic']
+      description: |
+        keyword           – keyword search
+        semantic          – keyword + semantic ranking
+        vector            – pure vector search
+        hybrid            – keyword + vector
+        hybrid_semantic   – keyword + vector + semantic
+
+    top_k:
+      type: [int]
+      default: 3
+      description: 'Number of documents to return.'
+
+    text_field:
+      type: [string]
+      default: content
+      description: 'Field that stores document text.'
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_tool.list_text_fields
+        func_kwargs: []
+
+    vector_field:
+      type: [string]
+      default: vector
+      description: 'Field that stores embeddings.'
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_tool.list_vector_fields
+        func_kwargs: []
+
+    filter_expression:
+      type: [string]
+      description: "OData filter, e.g. category eq 'contracts'."
+
+    select_fields:
+      type: [list]
+      description: 'Fields to include in the response.'
+
+    semantic_config:
+      type: [string]
+      description: 'Semantic configuration name for semantic search.'
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_tool.list_semantic_configs
+        func_kwargs: []
+
+  outputs:
+    output:
+      type: [list]
+      description: >
+        List of dicts: {text, vector, score, metadata, original_entity}.
