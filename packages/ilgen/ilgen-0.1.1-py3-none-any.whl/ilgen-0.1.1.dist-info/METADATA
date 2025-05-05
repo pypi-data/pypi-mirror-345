@@ -1,0 +1,115 @@
+Metadata-Version: 2.4
+Name: ilgen
+Version: 0.1.1
+Summary: Helps managing your project's instance list
+Project-URL: Homepage, https://git.private.coffee/privatecoffee/ilgen
+Project-URL: Bug Tracker, https://git.private.coffee/privatecoffee/ilgen/issues
+Project-URL: Source Code, https://git.private.coffee/privatecoffee/ilgen
+Author-email: "Private.coffee Team" <support@private.coffee>
+License: Copyright (c) 2025 Private.coffee <support@private.coffee>
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: pycountry
+Description-Content-Type: text/markdown
+
+# ILGen - The Instance List Generator
+
+A Python script for "translating" a list of application instances from an instances.json to a Markdown table.
+
+## Installation
+
+To install the script, you can clone the repository and run the following command:
+
+```bash
+pip install .
+```
+
+## Usage
+
+First, ensure that you have an `instances.json` file. The file should have the following structure:
+
+```json
+[
+    {
+        "name": "Instance 1",
+        "url": "https://example.com",
+        "provider": {
+            "name": "Provider 1",
+            "url": "https://provider1.com"
+        },
+        "location": "AT", // This is the ISO 3166-1 alpha-2 country code
+        "notes": "This is a note."
+    },
+    {
+        …
+    }
+]
+```
+
+Also ensure that you have a `README.md` file with the following placeholder:
+
+```markdown
+<!-- START_INSTANCE_LIST -->
+<!-- END_INSTANCE_LIST -->
+```
+
+To use the script, you can run the following command:
+
+```bash
+ilgen
+```
+
+This will insert the data from the instances.json file into the placeholder in the README.md file.
+
+### Filters
+
+You can add filters to the placeholder to only include instances that match the filter. For example, you can add the following filter to only include instances from Austria:
+
+```markdown
+<!-- START_INSTANCE_LIST location:eq="AT" -->
+<!-- END_INSTANCE_LIST -->
+```
+
+You can also add multiple filters by separating them with a space. These types of filters are combined with an AND operation. For example, you can add the following filter to only include instances from Austria that have a note:
+
+```markdown
+<!-- START_INSTANCE_LIST location:eq="AT" notes:neq="" -->
+<!-- END_INSTANCE_LIST -->
+```
+
+The following filters are available:
+
+- `eq`: Equal to
+- `ne`: Not equal to
+- `lt`: Less than
+- `lte`: Less than or equal to
+- `gt`: Greater than
+- `gte`: Greater than or equal to
+- `contains`: Contains
+- `startswith`: Starts with
+- `endswith`: Ends with
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
