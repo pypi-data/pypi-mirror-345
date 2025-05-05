@@ -1,0 +1,36 @@
+[main]
+mkdocs_dir = "docs"
+docs_dir_name = "docs"
+input_path = "meowdoc"
+create_mkdocs = false
+
+[project]
+name = "Meowdoc"
+description = "Meow! Meowdoc is a tool to generate documentation so that you don't have to :3. Read the documentation to find more!"
+repo_url = "https://github.com/re-masashi/meowdoc"
+
+[ignore]
+patterns = [
+    ".venv",
+    "venv",
+    "node_modules",
+    ".git",
+    "__pycache__",
+    ".env",
+    "requirements.txt"
+]
+
+[llm]
+provider = "gemini"  # Options: gemini, openai, ollama, etc.
+api_key_file = "secrets/gemini_api_key.txt"  # Path to the file containing the API key
+# base_url = "http://localhost:11434"  # Required for Ollama
+model = "gemini-2.0-flash-exp"  # Model name
+
+[mkdocs]
+
+[mkdocs.theme]
+name = "material"
+
+[mkdocs.theme.palette]
+scheme = "slate"
+primary = "black"
