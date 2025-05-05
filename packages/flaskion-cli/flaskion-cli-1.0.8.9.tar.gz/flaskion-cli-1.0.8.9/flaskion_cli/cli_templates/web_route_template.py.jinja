@@ -1,0 +1,7 @@
+from app.controllers.{{ resource_name }}_controller import {{ controller_name }}
+
+web_routes.add_url_rule("/{{ resource_name }}", view_func={{ controller_name }}.index, methods=["GET"], endpoint="{{ resource_name }}_index")
+web_routes.add_url_rule("/{{ resource_name }}/create", view_func={{ controller_name }}.create, methods=["GET"], endpoint="{{ resource_name }}_create")
+web_routes.add_url_rule("/{{ resource_name }}/<int:id>", view_func={{ controller_name }}.show, methods=["GET"], endpoint="{{ resource_name }}_show")
+web_routes.add_url_rule("/{{ resource_name }}/<int:id>/update", view_func={{ controller_name }}.update, methods=["POST"], endpoint="{{ resource_name }}_update")
+web_routes.add_url_rule("/{{ resource_name }}/<int:id>/delete", view_func={{ controller_name }}.delete, methods=["POST"], endpoint="{{ resource_name }}_delete")
