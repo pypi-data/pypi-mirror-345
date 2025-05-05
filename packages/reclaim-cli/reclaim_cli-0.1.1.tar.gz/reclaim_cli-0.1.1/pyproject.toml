@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=45", "packaging>=24.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reclaim-cli"
+version = "0.1.1"
+description = "CLI for Reclaim.ai service"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+dependencies = [
+    "PyYAML>=6.0",
+    "dateparser==1.2.1",
+    "rich==13.9.4",
+    "reclaim-sdk-fixed==0.6.3.post1",
+]
+
+[project.scripts]
+reclaim = "reclaim.__main__:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["reclaim", "reclaim.commands"]
+
+# Testing configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --cov=reclaim"
+filterwarnings = [
+    "ignore::DeprecationWarning:pydantic.*"
+]
+
+# Type checking
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+# Code formatting
+[tool.black]
+line-length = 79
+target-version = ['py38']
+include = '\.pyi?$'
+
+# Import sorting
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "isort",
+    "pre-commit",
+    "flake8",
+    "flake8-docstrings",
+    "flake8-bugbear",
+    "flake8-quotes",    
+]
