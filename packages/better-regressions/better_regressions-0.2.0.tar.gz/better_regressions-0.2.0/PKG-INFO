@@ -1,0 +1,63 @@
+Metadata-Version: 2.4
+Name: better-regressions
+Version: 0.2.0
+Summary: Advanced regression methods with sklearn-like interface
+License: MIT
+License-File: LICENSE
+Requires-Python: >=3.10
+Requires-Dist: beartype>=0.10.0
+Requires-Dist: build>=1.2.2.post1
+Requires-Dist: ipykernel>=6.29.5
+Requires-Dist: jaxtyping>=0.2.11
+Requires-Dist: lightgbm>=4.6.0
+Requires-Dist: loguru>=0.7.3
+Requires-Dist: matplotlib>=3.10.1
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: pandas>=2.2.3
+Requires-Dist: rich>=14.0.0
+Requires-Dist: scikit-learn>=1.0.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: setuptools>=78.1.0
+Requires-Dist: supersmoother>=0.4
+Requires-Dist: twine>=6.1.0
+Requires-Dist: xgboost>=3.0.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: isort>=5.12.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Better Regressions
+
+Advanced regression methods with an sklearn-like interface.
+
+## Current Features
+
+- `Linear`:
+  - Configurable regularization: Ridge with given `alpha` / BayesianRidge / ARD
+  - "Better bias" option to properly regularize the intercept term
+- `Scaler`:
+  - Configurable preprocessing: Standard scaling (by second moment) / Quantile transformation with uniform/normal output / Power transformation
+  - `AutoScaler` to automatically select the best scaling method based on validation split
+- `Smooth`: Boosting-based regression using smooth functions for features
+  - `SuperSmoother`: Adaptive-span smoother for arbitrary complex functions.
+  - `Angle`: Bagging of piecewise-linear functions, it's less flexible but because of that it's more robust to overfitting.
+
+## Installation
+
+```bash
+pip install better-regressions
+```
+
+## Basic Usage
+
+```python
+from better_regressions import auto_angle, auto_linear, Linear, Scaler
+from sklearn.datasets import make_regression
+import numpy as np
+
+X, y = make_regression(n_samples=100, n_features=5, noise=0.1)
+model = auto_angle(n_breakpoints=2)
+model.fit(X, y)
+y_pred = model.predict(X)
+print(repr(model))
+```
