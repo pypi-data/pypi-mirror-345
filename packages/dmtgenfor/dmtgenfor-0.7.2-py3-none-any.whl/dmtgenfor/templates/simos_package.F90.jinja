@@ -1,0 +1,12 @@
+module {{module.name}}
+{%- for type in module.types | sort(attribute='module') %}
+    use {{type.module}}, only: {{type.name}}
+{%- endfor %}
+    implicit none
+
+    private
+{%- for type in module.types | sort(attribute='module') %}
+    public {{type.name}}
+{%- endfor %}
+
+end module
