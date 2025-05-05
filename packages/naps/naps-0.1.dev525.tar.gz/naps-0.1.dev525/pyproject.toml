@@ -1,0 +1,87 @@
+[tool.pdm.version]
+source = "scm"
+version_format = "pdm_build:format_version"
+
+[tool.pdm.dev-dependencies]
+test = [
+    "PiDNG",
+    "bitarray",
+    "imageio>=2.16.2",
+    "matplotlib",
+    "numba",
+    "numpy",
+    "psutil",
+    "pytest",
+    "pytest-github-actions-annotate-failures",
+    "pytest-pycharm",
+    "pytest-xdist",
+    "rawpy",
+    "scipy",
+]
+doc = [
+    "sphinx<9",
+    "sphinx_rtd_theme",
+]
+
+[tool.pdm.build]
+excludes = [
+    "**/.sim_results",
+]
+
+[tool.pdm.scripts]
+test = "pytest"
+
+[tool.pytest.ini_options]
+python_files = [
+    "*_test.py",
+]
+addopts = [
+    "-n",
+    "auto",
+]
+testpaths = [
+    "naps",
+    "applets",
+]
+filterwarnings = [
+    "ignore::cryptography.utils.CryptographyDeprecationWarning",
+]
+
+[project]
+dynamic = []
+name = "naps"
+description = "naps - The Relaxed Amaranth Packages Collection"
+authors = [
+    { name = "Robin Heinemann", email = "robin.ole.heinemann+naps@gmail.com" },
+    { name = "Jaro Habiger", email = "jarohabiger@googlemail.com" },
+]
+dependencies = [
+    "amaranth==0.5.4",
+    "huffman",
+    "paramiko",
+]
+requires-python = ">=3.11"
+readme = "README.rst"
+keywords = [
+    "amaranth apertus fpga gateware video camera",
+]
+version = "0.1.dev525"
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://github.com/apertus-open-source-cinema/naps"
+Documentation = "https://docs.niemo.de/naps/commit/25195ff0fa29cbd9ca71dbdf4fd79a6924e32fab"
+"Bug Tracker" = "https://github.com/apertus-open-source-cinema/naps/issues"
+
+[project.optional-dependencies]
+publish = [
+    "twine>=4.0.2",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
