@@ -1,0 +1,63 @@
+[project]
+name = "dailylog-lib"
+version = "0.2.1"
+description = "A minimal logger that will suppress all but first message in a specified time to screen"
+dynamic = ["classifiers"]
+authors = [
+    {name = "Quien Sabe",email = "qs5779@mail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    "wtforglib (>=1.1.1,<2.0.0)"
+]
+
+[tool.poetry]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Operating System :: POSIX :: Linux",
+  "Typing :: Typed",
+]
+
+packages = [
+    {include = "dailylog_lib", from = "src"},
+    {include = "dailylog_lib/py.typed", from = "src"}
+]
+
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+isort = "^6.0.1"
+black = "^25.1.0"
+mypy = "^1.15.0"
+wemake-python-styleguide = "^1.1.0"
+flake8-pytest-style = "^2.1.0"
+doc8 = "^1.1.2"
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
+nitpick = "^0.35.0"
+darglint = "^1.8.1"
+pyfakefs = "^5.8.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+sphinx = ">=7.0,<9.0"
+sphinx-autodoc-typehints = ">=1.24,<4.0"
+sphinx-mdinclude = "^0.6.2"
+tomli = "^2.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.nitpick]
+style = "https://www.wtfo-guru.com/.well-known/nitpick-wtf-style.toml"
