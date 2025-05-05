@@ -1,0 +1,58 @@
+# pyproject.toml (No GitHub / No Specific OS License Version)
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentshield-sdk"
+version = "0.2.0"
+authors = [
+  # --- REPLACE WITH YOUR DETAILS ---
+  { name="AgentShield Admin", email="hello@sanjayck.com" },
+]
+description = "Python SDK for the AgentShield API - Runtime security for agentic AI applications."
+readme = "README.md" # Assumes README.md is in the same directory
+requires-python = ">=3.8" # Minimum Python version your SDK supports
+# license = {text = "Proprietary"} # Optional: Uncomment if it's not open source
+classifiers = [
+    # See https://pypi.org/classifiers/
+    "Development Status :: 3 - Alpha", # Change as appropriate (Beta, Production/Stable)
+    "Intended Audience :: Developers",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    # "License :: Other/Proprietary License", # Optional classifier if proprietary
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+# Dependencies required ONLY by the SDK client code (agentshield_sdk/client.py)
+dependencies = [
+    "httpx >= 0.20.0",  # For making async HTTP requests
+    "pydantic >= 2.0",   # For URL validation within the SDK
+    "click >= 8.0",
+]
+
+# --- ACTION: Add this section for the CLI command ---
+[project.scripts]
+agentshield = "agentshield_cli.main:cli"
+# --- End scripts section ---
+
+# --- Add/Modify this section to specify package discovery ---
+[tool.setuptools.packages.find]
+where = ["."]  # Look for packages in the current directory (where pyproject.toml is)
+include = ["agentshield_sdk*", "agentshield_cli*"]
+# Optional: Explicitly exclude backend directories if needed, though 'include' is usually sufficient
+# exclude = ["api*", "auth*", "crud*", "db_models*", "models*", "services*", "tests*"]
+# --- End Package Discovery Section ---
+
+# Make sure any old [project.license] table is removed to avoid the deprecation warning
+
+# NOTE: The [project.urls] section has been removed as no GitHub repo exists yet.
+# NOTE: If you don't specify a license, PyPI might display 'UNKNOWN'.
+#       You can uncomment the 'license' and 'License :: Other/Proprietary License'
+#       lines above if the code is proprietary and not intended to be open source.
