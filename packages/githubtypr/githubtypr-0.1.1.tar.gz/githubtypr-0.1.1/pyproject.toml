@@ -1,0 +1,32 @@
+[project]
+name = "githubtypr"
+version = "0.1.1"
+description = "GitHub CLI for managing GitHub repositories"
+readme = "README.md"
+authors = [
+    { name = "utkarshg1", email = "gaikwadujg@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "jmespath>=1.0.1",
+    "python-dotenv>=1.1.0",
+    "requests>=2.32.3",
+    "typer>=0.15.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/utkarshg1/githubtypr"
+Issues = "https://github.com/utkarshg1/githubtypr/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/githubtypr"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+githubtypr = "githubtypr.main:app"
