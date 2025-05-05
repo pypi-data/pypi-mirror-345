@@ -1,0 +1,87 @@
+# Email Autoreply Bot Configuration
+
+# IMAP settings for receiving mail
+imap:
+  server: imap.example.com
+  port: 993 # Standard SSL port for IMAP
+  username: your_email@example.com
+  password: your_password
+  ssl: true # Use SSL/TLS for connection
+  ssl_context: null # Options: null (default), "default", "trusted", or path to cert file
+  verify_ssl: true # Verify SSL certificates
+  sent_folder: Sent # Name of the folder in which to store the sent message - unset to not store the message
+
+# SMTP settings for sending replies
+smtp:
+  server: smtp.example.com
+  port: 465 # SSL port for SMTP
+  username: your_email@example.com
+  password: your_password
+  use_ssl: true # Use SSL for connection (port 465)
+  use_tls: false # Use STARTTLS (usually with port 587)
+  ssl_context: null # Options: null (default), "default", "trusted", or path to cert file
+  verify_ssl: true # Verify SSL certificates
+  timeout: 30 # Connection timeout in seconds
+
+# How many hours of emails to check when the bot first starts
+# Set to 0 to only check for new emails after the bot starts
+# Set to a larger value (e.g., 72) to process emails from the past few days
+backfill_hours: 0
+
+# How many hours must pass before sending another auto-reply to the same sender
+# Set to 24 for one reply per day, 0 to disable rate limiting
+rate_limit_hours: 24
+
+# Timezone for date/time operations
+# Examples: "Europe/Vienna", "America/New_York", "Asia/Tokyo", "UTC", "+08:00"
+# Leave empty to use the system's local timezone
+timezone: ""
+
+# Date format for all dates in auto-reply messages
+# Uses Python's strftime format: https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+date_format: "%A, %B %d, %Y" # Example: Monday, January 1, 2024
+
+# Date range for when auto-replies should be active
+# Both start and end are optional. If not specified, auto-reply is always active.
+# You can specify just the date (YYYY-MM-DD) or date with time (YYYY-MM-DD HH:MM:SS)
+date_range:
+  start: "2024-12-24" # Will use 00:00:00 if time not specified
+  end: "2025-01-02" # Will use 23:59:59 if time not specified
+
+# Autoreply configuration with placeholders
+autoreply:
+  subject: "Re: {original_subject} - Out of Office"
+  message: |
+    Hello {sender_name},
+
+    Thank you for your email regarding "{original_subject}".
+
+    I am currently out of the office from {start_date} until {end_date} and will have limited access to email.
+    I will respond to your message when I return on {return_date}.
+
+    For urgent matters, please contact support@example.com.
+
+    Best regards,
+    Your Name
+
+  # CC settings for auto-replies
+  cc_include_to: true   # Include original To recipients in CC
+  cc_include_cc: false  # Include original CC recipients in CC
+
+
+# Rules for who should receive autoreplies
+rules:
+  # Optional: If allowlist is specified, ONLY these patterns will receive replies
+  allowlist:
+    - "@company\\.com$"
+    - "@client\\.org$"
+
+  # Optional: These patterns will never receive autoreplies
+  denylist:
+    - "noreply@"
+    - "donotreply@"
+    - "automated@"
+    - "notification@"
+
+# How often to check for new emails (in seconds)
+check_interval: 300 # 5 minutes
