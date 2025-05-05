@@ -1,0 +1,69 @@
+name: Test across Python versions
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    services:
+      rabbitmq:
+        image: rabbitmq:latest
+        ports:
+          - 5672/tcp
+        env:
+          RABBITMQ_USER: guest
+          RABBITMQ_PASSWORD: guest
+          RABBITMQ_VHOST: "/"
+        options: --health-cmd "rabbitmqctl node_health_check" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    strategy:
+      matrix:
+        python: ['3.11', '3.12', '3.13']
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install UV
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          # Install tox using UV's native tool command
+          uv tool install tox --with tox-uv
+
+      - name: Check links in Documentation
+        run: tox -e linkcheck
+        if: matrix.python == '3.11'
+
+      - name: Run linter
+        run: tox -e linting
+        if: matrix.python == '3.11'
+
+      - name: Run test suite
+        env:
+          RABBITMQ_PORT: ${{ job.services.rabbitmq.ports[5672] }}
+          RABBITMQ_HOST: localhost
+          REPORT: xml
+        # Run tox using the version of Python in `PATH`
+        run: tox -e py
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          file: ./coverage.xml
+          flags: tests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+        if: matrix.python == '3.11'
