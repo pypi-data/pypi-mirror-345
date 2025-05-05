@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HT-Serve Documentation</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0b0c10;
+      color: #c5c6c7;
+      margin: 0;
+      padding: 0 2rem;
+    }
+    header {
+      text-align: center;
+      padding: 3rem 0 1rem;
+      border-bottom: 1px solid #1f2833;
+    }
+    header h1 {
+      color: #66fcf1;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #c5c6c7;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      line-height: 1.7;
+    }
+    h2 {
+      color: #45a29e;
+      border-bottom: 1px solid #1f2833;
+      padding-bottom: 0.3rem;
+    }
+    code {
+      background: #1f2833;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      color: #66fcf1;
+    }
+    ul {
+      margin-top: 0.5rem;
+      padding-left: 1.5rem;
+    }
+    footer {
+      text-align: center;
+      margin: 3rem 0 2rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+    #status {
+      font-weight: bold;
+      color: #66fcf1;
+      text-align: center;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>HT-Serve</h1>
+    <p>A Secure HTTPS Live Reload Server for Front-End Development & UI Testing</p>
+  </header>
+
+  <main>
+    <h2>About</h2>
+    <p>
+      <strong>HT-Serve</strong> is a self-contained, production-grade development server that serves static content over HTTPS,
+      watches for changes in your working directory, and automatically reloads all connected browsers using WebSockets.
+    </p>
+
+    <h2>Features</h2>
+    <ul>
+      <li>Zero-config TLS via auto-generated self-signed certificates</li>
+      <li>Live reload of HTML/CSS/JS when files are updated</li>
+      <li>WebSocket-based reload push system</li>
+      <li>Structured CLI with commands like <code>serve</code>, <code>check</code>, and <code>reset-demo</code></li>
+      <li>Health check endpoint at <code>/healthz</code></li>
+      <li>Debug mode with verbose logging via <code>HT_DEBUG=1</code></li>
+    </ul>
+
+    <h2>Usage</h2>
+    <p>To start the server:</p>
+    <pre><code>ht-serve serve --open-browser</code></pre>
+
+    <p>To check if ports 443/8001 are available:</p>
+    <pre><code>ht-serve check</code></pre>
+
+    <p>To reset the demo site:</p>
+    <pre><code>ht-serve reset-demo</code></pre>
+
+    <h2>Status</h2>
+    <div id="status">🔄 Connecting to live reload...</div>
+  </main>
+
+  <footer>
+    HT-Serve by HermiTech Labs — MIT License
+  </footer>
+
+  <script>
+    (function connectLiveReload() {
+      const status = document.getElementById("status");
+      const ws = new WebSocket(`wss://${location.hostname}:8001`);
+      ws.onopen = () => status.textContent = "✅ Live reload connected.";
+      ws.onmessage = () => {
+        status.textContent = "♻️ Reloading...";
+        location.reload();
+      };
+      ws.onerror = () => status.textContent = "⚠️ Live reload WebSocket error.";
+      ws.onclose = () => {
+        status.textContent = "❌ Disconnected. Reconnecting in 3s...";
+        setTimeout(connectLiveReload, 3000);
+      };
+    })();
+  </script>
+</body>
+</html>
