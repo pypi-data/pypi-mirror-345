@@ -1,0 +1,40 @@
+dir() {
+if [ $# -eq 0 ]; then
+    dirmarks --list
+    return
+fi
+OPT=$1;
+shift;
+case $OPT in
+        -l)
+        dirmarks --list
+        ;;
+        -h)
+        dirmarks --help
+        ;;
+        -d)
+        dirmarks --delete $1
+        ;;
+        -m)
+        dirmarks --add $1 $PWD
+        ;;
+        -u)
+        dirmarks --update $1 $2
+        ;;
+        -a)
+        dirmarks --add $1 $2
+        ;;
+        -p)
+        GO=$(dirmarks --get $1);
+        if [ "X$GO" != "X" ]; then
+                echo $GO;
+        fi
+        ;;
+        *)
+        GO=$(dirmarks --get $OPT);
+        if [ "X$GO" != "X" ]; then
+                cd $GO;
+        fi
+        ;;
+esac
+}
