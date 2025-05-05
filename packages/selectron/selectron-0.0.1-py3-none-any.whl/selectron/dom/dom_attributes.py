@@ -1,0 +1,20 @@
+DOM_STRING_INCLUDE_ATTRIBUTES = [
+    "id",
+    "class",
+    "name",
+    "role",
+    "aria-label",
+    "aria-labelledby",
+    "aria-describedby",
+    "placeholder",
+    "title",
+    "alt",
+    "href",
+    "type",
+    "value",
+    "for",
+    "data-testid",
+    "data-cy",
+    "data-qa",
+    # NOTE: Add other relevant attributes like 'pattern', 'required', 'disabled', etc. if needed
+]
