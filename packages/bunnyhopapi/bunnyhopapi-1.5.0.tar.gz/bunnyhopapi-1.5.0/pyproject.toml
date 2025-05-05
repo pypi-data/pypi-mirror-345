@@ -1,0 +1,30 @@
+[project]
+name = "bunnyhopapi"
+version = "1.5.0"
+description = "BunnyHopApi is a lightweight and fast web framework designed to handle modern web development needs."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "jinja2==3.1.6",
+    "pydantic==2.11.4",
+    "uvloop==0.21.0",
+    "watchdog==6.0.0",
+]
+
+[project.optional-dependencies]
+lint = [
+    "ruff==0.11.4",
+]
+dev = [
+    "pytest==8.3.5",
+    "pytest-asyncio==0.26.0",
+    "pytest-cov==6.1.1",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
