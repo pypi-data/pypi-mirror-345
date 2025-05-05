@@ -1,0 +1,196 @@
+<html>
+  <head>
+     <script>
+    function ShowAll(){
+      var elements = document.getElementsByClassName('work_done');
+
+      for (var i = 0; i < elements.length; i ++) {
+          elements[i].style.display = 'table-row';
+      }
+    }
+
+    function HideWorkDone(){
+      var elements = document.getElementsByClassName('work_done');
+
+      for (var i = 0; i < elements.length; i ++) {
+          elements[i].style.display = 'none';
+      }
+    }
+ </script>
+  </head>
+  <body>
+    <h1>Migration Analysis</h1>
+    <table border="1" width="100%">
+      <thead>
+        <tr>
+          <th>Initial Version</th>
+          <th>Final Version</th>
+          <th>Project Name</th>
+          <th>Analysis Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ ctx.obj['config']['odoo_versions'][0] }}</td>
+          <td>{{ ctx.obj['config']['odoo_versions'][-1] }}</td>
+          <td>{{ ctx.obj['config']['project_name'] }}</td>
+          <td>{{ current_date }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" style="text-align: center;">
+            <a href="#" onclick="ShowAll()">Show All Modules</a>
+            <a href="#" onclick="HideWorkDone()">Hide Done Modules</a>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <h2>Summary</h2>
+    <table border="1" width="100%">
+      <thead>
+        <tr>
+          <th>Module Type</th>
+          <th>Module Quantity</th>
+          <th>Remaining Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Odoo</td>
+          <td>{{ analysis.get_module_qty('odoo') }}</td>
+          <td>{{ time_to_text(analysis.workload('odoo', False)) }}</td>
+        </tr>
+        <tr>
+          <td>OCA</td>
+          <td>{{ analysis.get_module_qty('oca') }}</td>
+          <td>{{ time_to_text(analysis.workload('oca', False)) }}</td>
+        </tr>
+        <tr>
+          <td>Custom</td>
+          <td>{{ analysis.get_module_qty('custom') }}</td>
+          <td>{{ time_to_text(analysis.workload('custom', False)) }}</td>
+        </tr>
+{%- if analysis.get_module_qty('not_found') -%}
+        <tr>
+          <td>Not Found</td>
+          <td>{{ analysis.get_module_qty('not_found') }}</td>
+          <td>&nbsp;</td>
+        </tr>
+{%- endif -%}
+      </tbody>
+      <tfood>
+        <tr>
+          <th>Total</th>
+          <td>{{ analysis.get_module_qty() }}</td>
+          <td>{{ time_to_text(analysis.workload(False, False)) }}</td>
+        </tr>
+      </tfood>
+    </table>
+
+    <h2>Details</h2>
+    <table border="1" width="100%">
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Total</th>
+{%- for odoo_version in ctx.obj['config']['odoo_versions'] %}
+          <th>{{ odoo_version }}</th>
+{%- endfor %}
+        </tr>
+      </thead>
+
+      <tbody>
+{%- set ns = namespace(current_repository='', current_module_type='') %}
+
+{%- for odoo_module in analysis.modules %}
+  {%- if (ns.current_module_type != odoo_module.module_type) %}
+    {%- set ns.current_module_type = odoo_module.module_type %}
+
+<!-- ------------------------------------------------ -->
+<!-- Handle New Module Type {{ns.current_module_type}}-->
+<!-- ------------------------------------------------ -->
+        <tr>
+          <th colspan="{{2 + ctx.obj['config']['odoo_versions']|length}}">
+            <h3>{{ odoo_module.module_type}}</h3>
+          </th>
+        <tr>
+  {%- endif %}
+
+  {%- if ns.current_repository != odoo_module.repository %}
+    {%- set ns.current_repository = odoo_module.repository %}
+    {%- set repository_workload = analysis.workload(False, odoo_module.repository) %}
+
+<!-- ---------------------------------------------- -->
+<!-- Handle New Repository {{ns.current_repository}}-->
+<!-- ---------------------------------------------- -->
+
+    {%- if ns.current_repository %}
+        <tr class="{{repository_workload == 0 and 'work_done' or ''}}">
+          <th colspan="{{2 + ctx.obj['config']['odoo_versions']|length}}">
+            <h4>{{ odoo_module.repository}}
+            {% if repository_workload %}
+              ({{ time_to_text(repository_workload) }})
+            {% endif %}
+            </h4>
+          </th>
+        <tr>
+    {%- endif %}
+  {%- endif %}
+
+        <tr class="{{odoo_module.workload == 0 and 'work_done' or ''}}">
+          <td>{{odoo_module.name}}
+  {%- if odoo_module.module_type == 'not_found' -%}
+    {%- set odoo_apps_url = odoo_module.get_odoo_apps_url() -%}
+    {%- if odoo_apps_url -%}
+            <a href="{{odoo_apps_url}}" target="_blank">AppsStore</a>
+    {%- else -%}
+      {%- set odoo_code_search_url = odoo_module.get_odoo_code_search_url() -%}
+      {%- if odoo_code_search_url -%}
+            <a href="{{odoo_code_search_url}}" target="_blank">OdooCodeSearch</a>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+          </td>
+          <td>
+          {%- if odoo_module.workload -%}
+            {{time_to_text(odoo_module.workload)}}
+          {%- endif -%}
+          </td>
+
+  {%- for version in odoo_module.analyse.all_versions %}
+    {%- set module_version = odoo_module.get_module_version(version) %}
+    {%- if module_version %}
+      {%- set size_text = module_version.get_size_text() %}
+      {%- set analysis_text = module_version.get_analysis_text() %}
+      {%- set workload = module_version.workload %}
+
+          <td style="background-color:{{module_version.get_bg_color()}};">
+            {{module_version.get_text()}}
+
+      {%- if workload -%}
+            <span style="background-color:lightblue;">({{time_to_text(workload)}})</span>
+      {%- endif -%}
+      {%- if size_text -%}
+            <br/>
+            <span style="color:gray;font-size:11px;font-family:monospace;">({{ size_text}})</span>
+      {%- endif -%}
+      {%- if analysis_text -%}
+            <br/>
+            <span style="color:gray;font-size:11px;font-family:monospace;">
+              <a href="{{module_version.analysis_url()}}" target="_blank">({{ analysis_text}})</a>
+            </span>
+      {%- endif %}
+          </td>
+    {%- else %}
+          <td style="background-color:gray;">&nbsp;</td>
+    {%- endif %}
+  {%- endfor %}
+        </tr>
+{%- endfor %}
+
+      </tbody>
+    </table>
+  </body>
+</html>
