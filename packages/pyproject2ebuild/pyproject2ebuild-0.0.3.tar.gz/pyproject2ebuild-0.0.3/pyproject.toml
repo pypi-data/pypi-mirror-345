@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyproject2ebuild"
+description = "Convert pyproject.toml to Gentoo ebuilds automatically."
+authors = [
+    { name="Oz Tiram", email="oz.tiram@gmail.com" }
+]
+dynamic = ["version"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "tomli; python_version<'3.11'"
+]
+
+[project.scripts]
+pyproject2ebuild = "pyproject2ebuild.main:main"
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "dirty-tag"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
