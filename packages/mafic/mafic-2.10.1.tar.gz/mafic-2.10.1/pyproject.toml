@@ -1,0 +1,174 @@
+[tool.poetry]
+name = "mafic"
+version = "2.10.1"
+description = "A properly typehinted lavalink client for discord.py, nextcord, disnake and py-cord."
+authors = ["ooliver1 <oliverwilkes2006@icloud.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/ooliver1/mafic"
+homepage = "https://github.com/ooliver1/mafic"
+keywords = [
+    "nextcord",
+    "disnake",
+    "discord",
+    "disnake.py",
+    "lavalink",
+    "lavalink.py",
+    "pycord",
+    "py-cord",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: AsyncIO",
+    "Framework :: aiohttp",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+
+packages = [{ include = "mafic" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+aiohttp = "^3.6.0"
+orjson = { version = "^3.8.0", optional = true }
+yarl = "^1.0.0"
+
+[tool.poetry.extras]
+speedups = ["orjson"]
+
+[tool.poetry.group.dev.dependencies]
+pyright = "1.1.306"
+black = "^22.8.0"
+taskipy = "^1.10.3"
+pre-commit = "^2.20.0"
+python-dotenv = "^0.21.0"
+slotscheck = "^0.15.0"
+typing-extensions = "^4.3.0"
+ruff = "^0.0.251"
+
+[tool.poetry.group.lint.dependencies]
+nextcord = "^2.0.0"
+disnake = "^2.0.0"
+py-cord = "^2.0.0"
+"discord.py" = "^2.0.0"
+orjson = "^3.8.0"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^6.1.3"
+sphinx-autobuild = "^2021.3.14"
+sphinxcontrib-trio = "^1.1.2"
+furo = "^2022.12.7"
+sphinx-inline-tabs = "^2022.1.2b11"
+# autodoc-typehints is much better than the default sphinx autodoc typehints
+# properly searching for typehints in the code, and using `code` elements to display them
+sphinx-autodoc-typehints = "^1.21.8"
+
+[tool.taskipy.tasks]
+pre-commit = "pre-commit install --install-hooks"
+lint = "pre-commit run --all-files"
+black = "task lint black"
+ruff = "task lint ruff"
+slotscheck = "task lint slotscheck"
+pyright = "dotenv -f task.env run -- pyright"
+docs = "cd docs && sphinx-autobuild . _build/html --ignore _build --watch ../mafic --port 8069"
+
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310"]
+
+[tool.ruff.isort]
+combine-as-imports = true
+
+[tool.slotscheck]
+strict-imports = true
+require-superclass = true
+require-subclass = false
+
+[tool.pyright]
+typeCheckingMode = "strict"
+pythonVersion = "3.8"
+ignore = ["test_bot", "examples/**"]
+
+[tool.ruff]
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "D",
+    "UP",
+    "YTT",
+    "ANN",
+    "S",
+    "BLE",
+    "FBT",
+    "B",
+    "C4",
+    "DTZ",
+    "T10",
+    "EM",
+    "ISC",
+    "G",
+    "PIE",
+    "T20",
+    "Q",
+    "RSE",
+    "RET",
+    "SIM",
+    "TCH",
+    "ARG",
+    "PGH",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "TRY",
+    "RUF",
+]
+# F403, F405 do not need to hate wildcard imports. Pyright can find undefined errors.
+# D107, class docstr is in the class level, may change in future.
+# D203 and D211, D212 and D213 intentionally clash
+# ANN101, ANN102 ask for `self` and `cls` annotations, what?
+# RET505-RET508 does not allow for any branches where it is an elif and else after a return
+# PLR2004 too much to deal with right now
+# PLR0913 a bit of a churn to deal with for Client and Filter
+# UP006-UP007, UP035,UP038 currently supporting 3.8, would like to keep Optional when needed
+# S311 I do not need cryptographically secure random node selection thanks
+ignore = [
+    "F403",
+    "F405",
+    "D107",
+    "D203",
+    "D213",
+    "ANN101",
+    "ANN102",
+    "RET505",
+    "RET506",
+    "RET507",
+    "RET508",
+    "PLR2004",
+    "PLR0913",
+    "UP006",
+    "UP007",
+    "UP035",
+    "UP038",
+    "S311",
+]
+unfixable = ["RET502", "RET503"]
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+"mafic/typings/*" = ["D"]
+"test_bot/*" = ["D", "ANN", "S101", "S106", "RET"]
+"docs/*" = ["D"]
+"examples/*" = ["D", "ANN", "S101", "S106", "RET"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
