@@ -1,0 +1,52 @@
+[project]
+name = "acp-mcp"
+version = "0.4.0"
+description = "Serve ACP agents over MCP"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "IBM Corp." }]
+maintainers = [{ name = "Tomas Pilar", email = "thomas7pilar@gmail.com" }]
+requires-python = ">=3.11, <4.0"
+dependencies = ["acp-sdk>=0.8.4", "mcp>=1.6.0"]
+
+[project.scripts]
+acp-mcp = "acp_mcp:main"
+serve = "acp_mcp:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+lint.select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "UP",    # pyupgrade
+    "I",     # isort
+    "B",     # bugbear
+    "ANN",   # annotations
+    "N",     # pep8-naming
+    "C4",    # Comprehensions
+    "DTZ",   # DatetimeZ
+    "Q",     # Quotes
+    "SIM",   # Simplify
+    "RUF",   # Ruff
+    "TID",   # tidy-imports
+    "ASYNC", # async
+]
+lint.ignore = ["ANN401", "B904", "ANN202"]
+lint.fixable = ["ALL"]
+lint.unfixable = []
+force-exclude = true
+line-length = 120
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-tidy-imports]
+# Disallow all relative imports, "parents" | "all"
+ban-relative-imports = "all"
+
+[dependency-groups]
+dev = ["pytest>=8.3.5", "pytest-asyncio>=0.26.0", "ruff>=0.11.8"]
