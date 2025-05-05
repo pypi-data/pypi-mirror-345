@@ -1,0 +1,56 @@
+# [build-system]
+# requires = ["setuptools"]
+# build-backend = "setuptools.build_meta"
+
+[project]
+name = "Win32Hooking"
+version = "0.0.1"
+dependencies = []
+authors = [
+    {name = "Maurice Lambert", email = "mauricelambert434@gmail.com"},
+]
+maintainers = [
+    {name = "Maurice Lambert", email = "mauricelambert434@gmail.com"},
+]
+description = 'This module hooks IAT and EAT to monitor all external functions calls, very useful for [malware] reverse and debugging.'
+readme = {file = "README.md", content-type = "text/markdown"}
+# url = "https://github.com/mauricelambert/Win32Hooking"
+# download-url = "https://mauricelambert.github.io/info/python/security/Win32Hooking.pyz"
+classifiers = [
+    "Topic :: System",
+    "Topic :: Security",
+    "Environment :: Console",
+    "Topic :: System :: Shells",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Intended Audience :: Developers",
+    "Topic :: System :: System Shells",
+    "Programming Language :: Python :: 3.8",
+    'Operating System :: Microsoft :: Windows',
+    "Topic :: System :: Systems Administration",
+    "Intended Audience :: System Administrators",
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+]
+keywords = ['reverse', 'win32', 'winapi', 'hook', 'iat', 'eat', 'hooking', 'api-hooking', 'malware-reverse', 'hook-import', 'hook-export', 'debugging']
+license = {text = "GPL-3.0 License"}
+requires-python = ">=3.8"
+
+[project.scripts]
+Win32Hooking = "Win32Hooking:main"
+
+[project.urls]
+"Github" = "https://github.com/mauricelambert/Win32Hooking"
+"Documentation" = "https://mauricelambert.github.io/info/python/security/Win32Hooking.html"
+"Python Executable" = "https://mauricelambert.github.io/info/python/security/Win32Hooking.pyz"
+"Windows Executable" = "https://mauricelambert.github.io/info/python/security/Win32Hooking.exe"
+
+[tool.setuptools]
+include-package-data = true
+platforms = ['Windows', 'Linux', "MacOS"]
+py-modules = ['Win32Hooking']
+packages = []
+script-files = []
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
