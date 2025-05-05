@@ -1,0 +1,66 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Tool.schema.json
+pf_reasoning_tool.tools.hw_ai_search_lookup_tool.hw_ai_search_lookup:
+  name: HW AI Search Lookup Tool
+  description: 'Vector / text / hybrid search over Azure AI Search.'
+  type: python
+  category: HW_PF_tools
+  tool_state: preview
+  module: pf_reasoning_tool.tools.hw_ai_search_lookup_tool
+  function: hw_ai_search_lookup
+
+  inputs:
+    connection:
+      type: [CustomConnection]
+      description: endpoint + api_key
+    index_name:
+      type: [string]
+
+    query_text:
+      type: [string]
+      optional: true
+    vector:
+      type: [list]
+      optional: true
+    embeddings_connection:
+      type: [AzureOpenAIConnection, OpenAIConnection]
+      optional: true
+    embedding_model_name:
+      type: [string]
+      default: text-embedding-ada-002
+      optional: true
+
+    search_type:
+      type: [string]
+      enum: ['vector', 'text', 'hybrid']
+      description: 'Auto-detected if blank.'
+      optional: true
+    top_k:
+      type: [int]
+      default: 3
+
+    text_field:
+      type: [string]
+      default: content
+      optional: true
+    vector_field:
+      type: [string]
+      default: vector
+      optional: true
+
+    filter_expression:
+      type: [string]
+      optional: true
+    select_fields:
+      type: [list]
+      description: 'Fields to return, e.g. ["id","url"].'
+      optional: true
+    semantic_config:
+      type: [string]
+      optional: true
+
+  outputs:
+    output:
+      type: [list]
+      description: |
+        List of dicts:
+          text, vector, score, metadata, original_entity
