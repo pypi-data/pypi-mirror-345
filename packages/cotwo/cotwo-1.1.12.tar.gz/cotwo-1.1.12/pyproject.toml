@@ -1,0 +1,28 @@
+[project]
+name = "cotwo"
+version = "1.1.12"
+description = "Simple visualizer for molecules and isosurfaces with Plotly"
+readme = "README.md"
+authors = [{ name = "crabby", email = "frederik.scherz@tu-darmstadt.de" }]
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.2.3",
+    "plotly>=6.0.0",
+    "polars>=1.24.0",
+    "rdkit>=2024.9.5",
+    "scikit-image>=0.25.2",
+    "scipy>=1.15.2",
+]
+
+[project.urls]
+repository = "https://codeberg.org/crabby/cotwo"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["cotwo", "marimo>=0.11.25"]
+
+[tool.uv.sources]
+cotwo = { workspace = true }
