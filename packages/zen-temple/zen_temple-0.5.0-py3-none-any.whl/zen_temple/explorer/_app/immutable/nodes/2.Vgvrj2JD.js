@@ -1,0 +1,1 @@
+import"../chunks/CWj6FrbW.js";import{s as n,f as i,n as s}from"../chunks/DJ4-OfXg.js";import{t as p,a as e}from"../chunks/BBucZf18.js";import{s as m}from"../chunks/ChUWOAj-.js";var f=p("<h1>The Transition Pathway</h1> <!>",1);function v(o,t){var a=f(),r=n(i(a),2);m(r,()=>t.children??s),e(o,a)}export{v as component};
