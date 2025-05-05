@@ -1,0 +1,29 @@
+[project]
+name = "pyspark-opendic"
+version = "0.3.18"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "akongstad", email = "kongstad@outlook.com" },
+    { name = "carlbrr", email = "carl99@live.dk" },
+]
+requires-python = ">=3.9"
+dependencies = [
+    "pandas>=2.2.3",
+    "pydantic>=2.10.6",
+    "pyspark>=3.5.5",
+    "requests>=2.32.3",
+]
+
+[project.scripts]
+pyspark-opendic = "pyspark_opendic:main"
+
+[build-system]
+requires = ["uv_build>=0.6.5,<0.7"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.1.0",
+    "pytest>=8.3.5",
+]
