@@ -1,0 +1,129 @@
+<?php
+/**
+ * ChimeraStack PHP Welcome Page
+ * Generated for {{ project_name }} with {{ db_variant }} database
+ */
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project_name }} - ChimeraStack PHP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 py-12">
+        <header class="mb-8">
+            <div class="flex items-center justify-between">
+                <h1 class="text-3xl font-bold text-gray-900">{{ project_name }}</h1>
+                <div class="flex space-x-2">
+                    <span class="px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-full">PHP</span>
+                    <span class="px-3 py-1 bg-<?php echo $dbBadgeColor = '{{ db_variant }}' === 'postgresql' ? 'indigo' : ('{{ db_variant }}' === 'mariadb' ? 'orange' : 'blue'); ?>-600 text-white text-sm font-medium rounded-full">
+                        {{ db_variant }}
+                    </span>
+                </div>
+            </div>
+            <p class="mt-2 text-gray-600">Your PHP application is running successfully!</p>
+        </header>
+
+        <div class="bg-white shadow rounded-lg overflow-hidden mb-8">
+            <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
+                <h2 class="text-xl font-semibold text-gray-800">🚀 Available Services</h2>
+            </div>
+            <div class="p-6">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- API Card -->
+                    <a href="http://localhost:{{ ports.web }}/api" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 transition">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">API</h3>
+                        <p class="text-gray-600 mb-4">Access your PHP API endpoints</p>
+                        <div class="text-blue-600 font-medium">http://localhost:{{ ports.web }}/api</div>
+                    </a>
+
+                    <!-- Database Admin Card -->
+                    <a href="http://localhost:{{ ports.admin }}" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 transition">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Database Admin</h3>
+                        <p class="text-gray-600 mb-4"><?php echo '{{ db_variant }}' === 'postgresql' ? 'pgAdmin' : 'phpMyAdmin'; ?></p>
+                        <div class="text-blue-600 font-medium">http://localhost:{{ ports.admin }}</div>
+                    </a>
+
+                    <!-- Welcome Dashboard -->
+                    <a href="http://localhost:{{ ports.web }}/welcome.html" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 transition">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Project Dashboard</h3>
+                        <p class="text-gray-600 mb-4">ChimeraStack dashboard</p>
+                        <div class="text-blue-600 font-medium">http://localhost:{{ ports.web }}/welcome.html</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg overflow-hidden mb-8">
+            <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
+                <h2 class="text-xl font-semibold text-gray-800">💾 Database Information</h2>
+            </div>
+            <div class="p-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <dl class="space-y-3">
+                            <div class="flex justify-between">
+                                <dt class="text-gray-600">Type:</dt>
+                                <dd class="font-medium text-gray-900">{{ db_variant }}</dd>
+                            </div>
+                            <div class="flex justify-between">
+                                <dt class="text-gray-600">Host:</dt>
+                                <dd class="font-medium text-gray-900">db</dd>
+                            </div>
+                            <div class="flex justify-between">
+                                <dt class="text-gray-600">Port:</dt>
+                                <dd class="font-medium text-gray-900">{{ "5432" if db_variant == "postgresql" else "3306" }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <div>
+                        <dl class="space-y-3">
+                            <div class="flex justify-between">
+                                <dt class="text-gray-600">Database:</dt>
+                                <dd class="font-medium text-gray-900">{{ project_name }}</dd>
+                            </div>
+                            <div class="flex justify-between">
+                                <dt class="text-gray-600">Username:</dt>
+                                <dd class="font-medium text-gray-900">{{ project_name }}</dd>
+                            </div>
+                            <div class="flex justify-between">
+                                <dt class="text-gray-600">Password:</dt>
+                                <dd class="font-medium text-gray-900">secret</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
+                <h2 class="text-xl font-semibold text-gray-800">📝 Project Information</h2>
+            </div>
+            <div class="p-6">
+                <dl class="space-y-3">
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">Template:</dt>
+                        <dd class="font-medium text-gray-900">{{ template_name }} v{{ template_version }}</dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">Created:</dt>
+                        <dd class="font-medium text-gray-900">{{ created_at }}</dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">PHP Version:</dt>
+                        <dd class="font-medium text-gray-900"><?php echo phpversion(); ?></dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>Powered by <a href="https://github.com/chimera/cli" class="text-blue-600 hover:text-blue-800">ChimeraStack CLI</a></p>
+        </footer>
+    </div>
+</body>
+</html>

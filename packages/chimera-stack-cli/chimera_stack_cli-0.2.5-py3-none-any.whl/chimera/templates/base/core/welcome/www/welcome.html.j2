@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ PROJECT_NAME }} - ChimeraStack Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-500 to-cyan-600 px-6 py-8">
+                <h1 class="text-3xl font-bold text-white">{{ PROJECT_NAME }}</h1>
+                <p class="mt-2 text-blue-100">ChimeraStack Project Dashboard</p>
+
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-800 text-white">
+                        {{ TEMPLATE_NAME }}
+                    </span>
+                    {% if DB_ENGINE %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-800 text-white">
+                        {{ DB_ENGINE }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="px-6 py-8">
+                <h2 class="text-2xl font-semibold text-gray-800">Available Services</h2>
+
+                <ul class="mt-6 space-y-2 text-lg">
+                    {% if FRONTEND_PORT %}<li><a class="text-blue-600 hover:text-blue-800 underline" href="http://localhost:{{ FRONTEND_PORT }}">Frontend</a></li>{% endif %}
+                    <li><a class="text-blue-600 hover:text-blue-800 underline" href="http://localhost:{{ WEB_PORT }}/api">API</a></li>
+                    {% if ADMIN_PORT %}<li><a class="text-blue-600 hover:text-blue-800 underline" href="http://localhost:{{ ADMIN_PORT }}">DB Admin</a></li>{% endif %}
+                </ul>
+
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">Project Information</h3>
+                    <dl class="mt-2 text-sm text-gray-600">
+                        <div class="mt-1 flex">
+                            <dt class="w-40 flex-shrink-0">Created:</dt>
+                            <dd>{{ CREATED_AT }}</dd>
+                        </div>
+                        <div class="mt-1 flex">
+                            <dt class="w-40 flex-shrink-0">Template:</dt>
+                            <dd>{{ TEMPLATE_NAME }} (v{{ TEMPLATE_VERSION }})</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 px-6 py-4 flex justify-between">
+                <a href="https://github.com/chimera/cli" class="text-gray-600 hover:text-gray-900">ChimeraStack CLI</a>
+                <span class="text-gray-500">v{{ CLI_VERSION }}</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

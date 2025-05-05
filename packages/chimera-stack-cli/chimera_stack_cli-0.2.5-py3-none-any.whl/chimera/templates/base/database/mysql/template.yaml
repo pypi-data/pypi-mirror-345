@@ -1,0 +1,69 @@
+name: "MySQL Database"
+version: "1.0.0"
+description: "MySQL database server"
+type: "component"
+
+# Component-specific configuration
+component:
+  type: "database"
+  engine: "mysql"
+  version: "8.0"
+
+# Provide quick-access config used by the CLI for port allocation
+config:
+  port_range: "3306-3399"
+  env_prefix: "DB"
+
+# Service definitions for port allocation
+services:
+  db:
+    type: "mysql"
+    port_range: "3306-3399"
+    required: true
+    env_prefix: "DB" # Will create DB_PORT
+    mysql:
+      port: "${DB_PORT}"
+      database: "${DB_DATABASE}"
+      user: "${DB_USERNAME}"
+      password: "${DB_PASSWORD}"
+      root_password: "${DB_ROOT_PASSWORD}"
+
+# Environment variables this component needs
+environment:
+  DB_DATABASE: "${PROJECT_NAME}" # Will be replaced with actual project name
+  DB_USERNAME: "${PROJECT_NAME}"
+  DB_PASSWORD: "secret" # Should be configurable/generated
+  DB_ROOT_PASSWORD: "rootsecret" # Should be configurable/generated
+  MYSQL_VERSION: "8.0"
+
+# Files that need variable substitution
+files:
+  - path: ".env"
+    variables:
+      - DB_PORT
+      - DB_DATABASE
+      - DB_USERNAME
+      - DB_PASSWORD
+      - DB_ROOT_PASSWORD
+
+# Docker configuration
+docker:
+  image: "mysql:${MYSQL_VERSION}"
+  volumes:
+    - type: "volume"
+      name: "${PROJECT_NAME}_mysql"
+      target: "/var/lib/mysql"
+
+# ----------------------------------------------------
+# Declarative cleanup tasks (executed only when MySQL engine is chosen)
+# ----------------------------------------------------
+post_copy:
+  # Remove directories belonging to other database engines if present
+  - remove_dir: "docker/mariadb"
+  - remove_dir: "docker/postgres"
+  - remove_dir: "docker/postgresql"
+
+  # Remove variant compose files that should not ship with a MySQL project
+  - remove: "docker-compose.mariadb.yml"
+  - remove: "docker-compose.postgresql.yml"
+  - remove: "docker-compose.pgsql.yml"

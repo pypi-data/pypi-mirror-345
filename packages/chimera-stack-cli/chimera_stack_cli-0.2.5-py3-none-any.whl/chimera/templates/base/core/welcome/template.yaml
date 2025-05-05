@@ -1,0 +1,19 @@
+name: core-welcome
+version: 1.0.0
+description: Static dashboard served by nginx‑proxy.
+type: core
+tags: [dashboard, welcome]
+
+files:
+  - {
+      path: nginx/conf.d/default.conf,
+      target: docker/nginx/conf.d/default.conf,
+    }
+  - { path: www/welcome.html.j2, target: www/welcome.html }
+
+post_copy:
+  # Ensure proxy container mounts /usr/share/nginx/html
+  - patch_file:
+      path: docker-compose.yml
+      replace: "root: /var/www/html"
+      with: "root: /usr/share/nginx/html"

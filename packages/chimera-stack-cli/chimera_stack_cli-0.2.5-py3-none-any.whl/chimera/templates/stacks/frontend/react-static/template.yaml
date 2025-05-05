@@ -1,0 +1,78 @@
+name: "React Static"
+description: "Vite + React + Tailwind single-service stack"
+type: "stack"
+version: "1.0.0"
+tags:
+  - frontend
+  - react
+  - vite
+  - tailwind
+
+stack:
+  default_database: none # ensures TemplateManager skips DB logic
+  frontend:
+    framework: "react"
+    version: "18"
+    dev_server: true
+
+variants: ["default"]
+
+components:
+  core_welcome:
+    source: "base/core/welcome"
+    required: true
+
+# Frontend service configuration
+services:
+  frontend:
+    type: "frontend"
+    port_range: "3000-3999"
+    env_prefix: "FRONTEND"
+    build:
+      context: "."
+      dockerfile: "Dockerfile"
+    volumes:
+      - ".:/app"
+      - "/app/node_modules"
+    environment:
+      - "VITE_BACKEND_URL=http://localhost:${WEB_PORT}/api"
+      - "FRONTEND_PORT=${FRONTEND_PORT}"
+
+  # Nginx service for production
+  nginx:
+    type: "web"
+    port_range: "8000-8999"
+    env_prefix: "WEB"
+
+# Welcome page configuration
+welcome_page:
+  sections:
+    - title: "Frontend (React)"
+      service: "frontend"
+      url: "http://localhost:${FRONTEND_PORT}"
+      dev_server: true
+
+# Files to be generated/processed
+files:
+  - source: "docker-compose.yml.j2"
+    target: "docker-compose.yml"
+    jinja: true
+  - source: "env.template"
+    target: ".env"
+
+# Post-creation cleanup
+post_copy:
+  # Remove any CRA remnants if they exist
+  - remove: "src/App.css"
+  - remove: "src/index.css.old"
+  - remove: "src/logo.svg"
+  - remove: "src/reportWebVitals.ts"
+  - remove: "src/setupTests.ts"
+  - rename:
+      from: "www/welcome.html"
+      to: "public/welcome.html"
+  - remove_dir: "www"
+  # Keep root index.html as Vite entry; only remove unused PHP placeholder
+  - remove: "public/index.php"
+  # Remove conflicting default.conf from core_welcome
+  - remove: "docker/nginx/conf.d/default.conf"

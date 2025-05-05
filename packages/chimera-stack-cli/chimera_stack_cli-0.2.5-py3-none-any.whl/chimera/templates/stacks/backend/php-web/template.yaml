@@ -1,0 +1,151 @@
+name: "PHP Web Stack"
+version: "1.0.0"
+description: "PHP web development stack with choice of database"
+type: "stack"
+
+# Define available variants
+variants:
+  - mysql
+  - postgresql
+  - mariadb
+
+# Stack composition
+components:
+  core_welcome:
+    source: "base/core/welcome"
+    required: true
+
+  backend:
+    source: "base/backend/php"
+    required: true
+
+  database:
+    source: "base/database/${DB_ENGINE}" # Will be mysql, postgresql, or mariadb
+    required: true
+
+# Stack-specific configuration
+stack:
+  type: "backend"
+  default_database: "mysql"
+  supported_databases:
+    - engine: "mysql"
+      name: "MySQL"
+      version: "8.0"
+    - engine: "postgresql"
+      name: "PostgreSQL"
+      version: "15"
+    - engine: "mariadb"
+      name: "MariaDB"
+      version: "11"
+
+# Tags for searching
+tags:
+  - php
+  - web
+  - mysql
+  - postgresql
+  - mariadb
+  - nginx
+  - development
+
+# Welcome page configuration
+welcome_page:
+  sections:
+    - title: "Web Server"
+      service: "nginx"
+      url: "http://localhost:${WEB_PORT}"
+    - title: "Database"
+      service: "${DB_ENGINE}"
+      port: "${DB_PORT}"
+      credentials:
+        database: "${DB_DATABASE}"
+        username: "${DB_USERNAME}"
+        password: "${DB_PASSWORD}"
+    - title: "Database Admin"
+      service: "admin"
+      url: "http://localhost:${ADMIN_PORT}"
+      show_if: "${ADMIN_ENABLED}"
+
+# Additional services (e.g., phpMyAdmin, pgAdmin)
+services:
+  admin:
+    type: "web"
+    port_range: "8080-8099"
+    required: true
+    env_prefix: "ADMIN"
+    depends_on: ["database"]
+    config:
+      mysql:
+        image: "phpmyadmin/phpmyadmin"
+        env:
+          PMA_HOST: "db"
+          PMA_PORT: "${DB_PORT}"
+      postgresql:
+        image: "dpage/pgadmin4"
+        env:
+          PGADMIN_DEFAULT_EMAIL: "admin@example.com"
+          PGADMIN_DEFAULT_PASSWORD: "${DB_PASSWORD}"
+      mariadb:
+        image: "phpmyadmin/phpmyadmin"
+        env:
+          PMA_HOST: "db"
+          PMA_PORT: "${DB_PORT}"
+
+# Files to be generated/processed
+files:
+  - source: "docker-compose.yml.j2"
+    target: "docker-compose.yml"
+  - source: "env.template"
+    target: ".env"
+  - source: "public/index.php.j2"
+    target: "public/index.php"
+  - source: "docker/nginx/conf.d/default.conf"
+    target: "docker/nginx/conf.d/default.conf"
+  - source: "docker/php/Dockerfile"
+    target: "docker/php/Dockerfile"
+  - source: "docker/mysql/my.cnf"
+    target: "docker/mysql/my.cnf"
+    condition: "${DB_ENGINE} == 'mysql'"
+  - source: "docker/mariadb/my.cnf"
+    target: "docker/mariadb/my.cnf"
+    condition: "${DB_ENGINE} == 'mariadb'"
+  - source: "README.md"
+    target: "README.md"
+
+# Network configuration
+network:
+  name: "${PROJECT_NAME}_network"
+  driver: "bridge"
+
+# Post-creation hooks
+post_create:
+  - "composer create-project"
+  - "php artisan key:generate"
+
+# ----------------------------------------------------
+# Declarative cleanup (v0.3)
+# ----------------------------------------------------
+post_copy:
+  # Remove compose variant files – a canonical docker-compose.yml is already in place
+  - remove: "docker-compose.mysql.yml"
+  - remove: "docker-compose.postgresql.yml"
+  - remove: "docker-compose.mariadb.yml"
+  - remove: "docker-compose.yml.j2"
+
+  # Remove unused variant config files
+  - remove: "docker/mysql/my.cnf"
+    condition: "${DB_ENGINE} != 'mysql'"
+  - remove: "docker/mariadb/my.cnf"
+    condition: "${DB_ENGINE} != 'mariadb'"
+
+  # Remove legacy override files should they exist
+  - remove: "docker-compose.mysql.override.yml"
+  - remove: "docker-compose.mariadb.override.yml"
+  - remove: "docker-compose.postgresql.override.yml"
+
+  # Move dashboard into public so Nginx can serve it with root /public
+  - rename:
+      from: "www/welcome.html"
+      to: "public/welcome.html"
+
+  # root already points correctly after dual-page update
