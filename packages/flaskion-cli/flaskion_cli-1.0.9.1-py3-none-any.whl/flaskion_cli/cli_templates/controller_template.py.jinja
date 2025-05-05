@@ -1,0 +1,27 @@
+from flask import render_template, request
+
+class {{ resource_name | capitalize }}Controller:
+    @staticmethod
+    def index():
+        """List all {{ resource_name }}."""
+        return render_template("{{ resource_name | lower }}/index.html")
+
+    @staticmethod
+    def create():
+        """Show form to create a new {{ resource_name }}."""
+        return render_template("{{ resource_name | lower }}/create.html")
+
+    @staticmethod
+    def show(id):
+        """Show details of a single {{ resource_name }}."""
+        return render_template("{{ resource_name | lower }}/show.html", id=id)
+
+    @staticmethod
+    def update(id):
+        """Handle update logic for a {{ resource_name }}."""
+        return f"Update {{ resource_name | lower }} {id}"
+
+    @staticmethod
+    def delete(id):
+        """Handle deletion of a {{ resource_name }}."""
+        return f"Delete {{ resource_name | lower }} {id}"
