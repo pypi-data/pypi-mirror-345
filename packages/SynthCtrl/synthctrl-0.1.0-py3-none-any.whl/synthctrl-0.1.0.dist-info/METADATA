@@ -1,0 +1,160 @@
+Metadata-Version: 2.4
+Name: SynthCtrl
+Version: 0.1.0
+Summary: A library for Synthetic Control methods
+Home-page: https://github.com/123yaroslav/SynthCtrl
+Author: Yaroslav Rogoza
+Author-email: r.yaroslav1w@gmail.com
+License: MIT
+Project-URL: Bug Tracker, https://github.com/123yaroslav/SynthCtrl/issues
+Project-URL: Documentation, https://github.com/123yaroslav/SynthCtrl
+Project-URL: Source Code, https://github.com/123yaroslav/SynthCtrl
+Keywords: synthetic control,causal inference,econometrics,statistics,difference-in-differences
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: pandas>=1.3.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: matplotlib>=3.4.0
+Requires-Dist: seaborn>=0.11.0
+Requires-Dist: statsmodels>=0.13.0
+Requires-Dist: joblib>=1.1.0
+Requires-Dist: scikit-learn>=1.0.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# SynthCtrl
+
+A Python library for implementing Synthetic Control methods for causal inference, including the Classical Synthetic Control method and Synthetic Difference-in-Differences (SDID).
+
+[![PyPI version](https://badge.fury.io/py/SynthCtrl.svg)](https://badge.fury.io/py/SynthCtrl)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Overview
+
+Synthetic Control is a statistical method used for comparative case studies. It constructs a weighted combination of control units to create a synthetic version of the treated unit, allowing for the estimation of causal effects in settings where a single unit receives treatment and multiple units remain untreated.
+
+This library provides implementations of:
+
+- **Classical Synthetic Control** (Abadie & Gardeazabal, 2003)
+- **Synthetic Difference-in-Differences** (Arkhangelsky et al., 2019)
+
+## Installation
+
+```bash
+pip install SynthCtrl
+```
+
+## Features
+
+- Easy-to-use API with scikit-learn-like interfaces
+- Bootstrap for statistical inference
+- Comprehensive visualization tools
+
+## Quick Start
+
+```python
+import pandas as pd
+from synthetic_control import ClassicSyntheticControl
+
+data = pd.read_csv("california_smoking.csv")
+
+sc = ClassicSyntheticControl(
+    data=data,
+    metric="cigarettes",
+    period_index="year",
+    unit_id="state",
+    treated="california",
+    after_treatment="after_treatment"
+)
+
+sc.fit()
+
+predictions = sc.predict()
+
+effect = sc.estimate_effect()
+print(f"Average Treatment Effect: {effect['att']:.4f}")
+
+bootstrap_results = sc.bootstrap_effect()
+print(f"Standard Error: {bootstrap_results['se']:.2f}")
+print(f"95% CI: [{bootstrap_results['ci_lower']:.2f}, {bootstrap_results['ci_upper']:.2f}]")
+
+sc.plot_model_results(figsize=(14, 7), show=True)
+```
+
+### Using Synthetic Difference-in-Differences
+
+```python
+from synthetic_control import SyntheticDIDModel
+
+sdid_model = SyntheticDIDModel(
+    data=data,
+    metric="cigarettes",
+    period_index="year", 
+    unit_id="state",
+    treated="california",
+    after_treatment="after_treatment"
+)
+
+sdid_model.fit()
+
+sdid_model.plot_model_results(figsize=(14, 7), show=True)
+```
+
+## Documentation
+
+For detailed documentation, visit the [GitHub pages](https://github.com/123yaroslav/SynthCtrl).
+
+## Examples
+
+The `examples/` directory contains Jupyter notebooks demonstrating various use cases:
+
+- Basic usage with California smoking data
+- Advanced features and customization
+- Comparison of different methods
+
+## Citation
+
+If you use this library in your research, please cite:
+
+```
+@software{SynthCtrl_python,
+  author = {Yaroslav Rogoza},
+  title = {SynthCtrl: A Python Library for Causal Inference},
+  year = {2025},
+  url = {https://github.com/123yaroslav/SynthCtrl},
+}
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. 
