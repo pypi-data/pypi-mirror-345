@@ -1,0 +1,52 @@
+variables:
+  UV_VERSION: 0.5
+  PYTHON_VERSION: 3.12
+  BASE_LAYER: bookworm-slim
+  # GitLab CI creates a separate mountpoint for the build directory,
+  # so we need to copy instead of using hard links.
+  UV_LINK_MODE: copy
+
+checks:
+  image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
+  script:
+    - uv run pytest --cov --cov-report term-missing --cov-report xml:obj/cov.xml --junitxml=obj/tests_report.xml
+    - uvx black --check .
+    - uv run pyright . --outputjson > obj/pyright.json || true
+  after_script:
+    - uvx pyright-to-gitlab-ci --src obj/pyright.json --out obj/pyright-codeclimate.json
+  coverage: /TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%).*$/
+  artifacts:
+    reports:
+      codequality: obj/pyright-codeclimate.json
+      coverage_report:
+        coverage_format: cobertura
+        path: obj/cov.xml
+      junit: obj/tests_report.xml
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+
+publish-to-pypi:
+  stage: deploy
+  image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
+  before_script: # sanity check for version tag, and changelog
+    - grep $CI_COMMIT_TAG README.md || (echo "version not present in changelog (README.md)?"; exit 1)
+    - >
+       uv run python -c '
+       import tomllib;
+       from os import environ;
+       from sys import exit, stderr;
+       prj = tomllib.load(open("pyproject.toml", "rb"));
+       ok = (environ["CI_COMMIT_TAG"] == "v" + prj["project"]["version"]);
+       if not ok: print ("version tag is incorrect", file=sys.stderr);
+       exit(0 if ok else 1)
+       '
+  script:
+    - uv build
+    - git diff --exit-code # sanity check for files changes
+    - uv publish
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v.*/
+      when: manual

@@ -1,0 +1,33 @@
+[project]
+name = "contractme"
+version = "1.3.0"
+description = "A powerful, expressive and lightweight design-by-contract framework"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Leo Germond", email = "leo.germond@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "annotated-types>=0.7.0",
+    "hypothesis>=6.131.9",
+]
+
+[project.urls]
+Repository = "https://gitlab.com/leogermond/contractme"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "epycs>=1.4.0",
+    "pyright>=1.1.400",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+]
+
+[tool.pytest.ini_options]
+filterwarnings = ["error"]
