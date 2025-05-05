@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "email-autoreply-bot"
+version = "0.1.3"
+description = "An email auto-reply bot with configurable rules and templates"
+readme = "README.md"
+authors = [{ name = "Kumi", email = "email-autoreply-bot@kumi.email" }]
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "pyyaml>=6.0",
+    "python-dateutil>=2.8.2",
+    "pytz>=2023.3",
+    "tzlocal>=5.0.1",
+]
+
+[project.urls]
+"Homepage" = "https://git.private.coffee/kumi/email-autoreply-bot"
+"Bug Tracker" = "https://git.private.coffee/kumi/email-autoreply-bot/issues"
+
+[project.scripts]
+email-autoreply-bot = "email_autoreply_bot.cli:main"
+
+[tool.setuptools.package-data]
+"email_autoreply_bot.templates" = ["*.yaml"]
