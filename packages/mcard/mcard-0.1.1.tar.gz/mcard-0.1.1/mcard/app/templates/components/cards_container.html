@@ -1,0 +1,9 @@
+{% from 'components/card_entry.html' import card_entry %}
+
+{% if cards %}
+    {% for card in cards %}
+        {{ card_entry(card) }}
+    {% endfor %}
+{% else %}
+    <div class="p-4 text-gray-500 text-center">No cards found</div>
+{% endif %}

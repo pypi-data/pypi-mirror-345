@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paginated Selectables View</title>
+</head>
+<body>
+    <div class="paginated-selectables">
+        {% from 'components/card_entry.html' import card_entry %}
+
+        <div class="flex flex-col h-full">
+            <!-- Search and Filter Section -->
+            <div class="p-4 border-b">
+                <div class="relative">
+                    <input type="text" 
+                        id="searchInput" 
+                        placeholder="Search cards..." 
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <!-- Pagination Section -->
+            <div class="border-b p-4">
+                <div class="flex justify-between items-center">
+                    <!-- Navigation Buttons -->
+                    <div class="flex space-x-2">
+                        <button id="prevPage" class="px-3 py-1 bg-blue-500 text-white rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed" {% if initial_pagination and not initial_pagination.has_previous %}disabled{% endif %}>
+                            Previous
+                        </button>
+                        <button id="nextPage" class="px-3 py-1 bg-blue-500 text-white rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed" {% if initial_pagination and not initial_pagination.has_next %}disabled{% endif %}>
+                            Next
+                        </button>
+                    </div>
+
+                    <!-- Pagination Info -->
+                    <div class="flex flex-col items-end text-sm text-gray-600">
+                        <span id="pageInfo" class="font-medium">
+                            {% if initial_pagination %}
+                                Page {{ initial_pagination.page }} of {{ initial_pagination.total_pages }} ({{ initial_pagination.total }} total items)
+                            {% endif %}
+                        </span>
+                        <span class="text-xs">{{ default_page_size }} items per page</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards Container -->
+            <div class="flex-1 overflow-y-auto p-4">
+                <div id="cardsContainer" class="divide-y divide-gray-200 border rounded-lg">
+                    {% if initial_cards %}
+                        {% for card in initial_cards %}
+                            {{ card_entry(card) }}
+                        {% endfor %}
+                    {% else %}
+                        <div class="p-4 text-gray-500 text-center">No cards found</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Loading indicator -->
+                <div id="loadingIndicator" class="hidden">
+                    <div class="flex justify-center items-center p-4">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination and Search Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Initialize elements
+                const searchInput = document.getElementById('searchInput');
+                const prevButton = document.getElementById('prevPage');
+                const nextButton = document.getElementById('nextPage');
+                const pageInfo = document.getElementById('pageInfo');
+                const cardsContainer = document.getElementById('cardsContainer');
+                const loadingIndicator = document.getElementById('loadingIndicator');
+
+                let currentPage = {{ initial_pagination.page if initial_pagination else 1 }};
+                let currentQuery = '';
+                let isLoading = false;
+
+                // Debounce function for search
+                function debounce(func, wait) {
+                    let timeout;
+                    return function executedFunction(...args) {
+                        const later = () => {
+                            clearTimeout(timeout);
+                            func(...args);
+                        };
+                        clearTimeout(timeout);
+                        timeout = setTimeout(later, wait);
+                    };
+                }
+
+                // Function to show/hide loading indicator
+                function setLoading(loading) {
+                    isLoading = loading;
+                    loadingIndicator.classList.toggle('hidden', !loading);
+                    prevButton.disabled = loading || (currentPage <= 1);
+                    nextButton.disabled = loading;
+                }
+
+                // Function to fetch cards
+                async function fetchCards(query = '', page = 1) {
+                    if (isLoading) return;
+                    
+                    try {
+                        setLoading(true);
+                        
+                        const params = new URLSearchParams({
+                            query: query,
+                            page: page.toString(),
+                            per_page: '{{ default_page_size }}'
+                        });
+
+                        console.log('Fetching cards:', params.toString());
+                        const response = await fetch(`/cards?${params}`);
+                        const data = await response.json();
+
+                        if (data.status === 'success') {
+                            // Create a temporary container
+                            const tempContainer = document.createElement('div');
+                            
+                            // Add cards using the card_entry macro
+                            if (data.cards && data.cards.length > 0) {
+                                data.cards.forEach(card => {
+                                    // Create a card object that matches the template's expectations
+                                    const cardObj = {
+                                        hash: card.hash,
+                                        g_time: card.g_time,
+                                        get_content_type: function() {
+                                            return card.type;
+                                        }
+                                    };
+                                    
+                                    // Create card entry HTML
+                                    const cardDiv = document.createElement('div');
+                                    cardDiv.className = 'card-entry p-3 border-b hover:bg-gray-50 transition-colors flex items-center justify-between cursor-pointer';
+                                    cardDiv.setAttribute('data-hash', card.hash);
+                                    cardDiv.innerHTML = `
+                                        <div class="flex items-center space-x-4">
+                                            <div class="text-sm text-gray-600">${card.type.split('/')[1].toUpperCase()}</div>
+                                            <div class="font-mono text-sm text-gray-500">${card.hash.substring(0, 12)}</div>
+                                            <div class="text-sm text-gray-600">${card.g_time.substring(0, 15)}</div>
+                                        </div>
+                                    `;
+                                    tempContainer.appendChild(cardDiv);
+                                });
+                            } else {
+                                tempContainer.innerHTML = '<div class="p-4 text-gray-500 text-center">No cards found</div>';
+                            }
+                            
+                            // Update the container
+                            cardsContainer.innerHTML = tempContainer.innerHTML;
+
+                            // Update pagination info
+                            pageInfo.textContent = `Page ${data.pagination.page} of ${data.pagination.total_pages} (${data.pagination.total} total items)`;
+
+                            // Update button states
+                            currentPage = data.pagination.page;
+                            prevButton.disabled = !data.pagination.has_previous;
+                            nextButton.disabled = !data.pagination.has_next;
+
+                            // Add click handlers to new card entries
+                            cardsContainer.querySelectorAll('.card-entry').forEach(card => {
+                                card.addEventListener('click', () => {
+                                    const hash = card.getAttribute('data-hash');
+                                    fetch(`/card/${hash}/detail`)
+                                        .then(response => response.text())
+                                        .then(html => {
+                                            const cardDetailContainer = document.getElementById('cardDetailContainer');
+                                            if (cardDetailContainer) {
+                                                cardDetailContainer.innerHTML = html;
+                                            }
+                                        });
+                                });
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error fetching cards:', error);
+                        cardsContainer.innerHTML = '<div class="p-4 text-red-500 text-center">Error loading cards</div>';
+                    } finally {
+                        setLoading(false);
+                    }
+                }
+
+                // Add event listeners
+                searchInput.addEventListener('input', debounce((e) => {
+                    currentQuery = e.target.value.trim();
+                    currentPage = 1;  // Reset to first page on search
+                    fetchCards(currentQuery, currentPage);
+                }, 300));
+
+                prevButton.addEventListener('click', () => {
+                    if (currentPage > 1 && !isLoading) {
+                        currentPage--;
+                        fetchCards(currentQuery, currentPage);
+                    }
+                });
+
+                nextButton.addEventListener('click', () => {
+                    if (!isLoading) {
+                        currentPage++;
+                        fetchCards(currentQuery, currentPage);
+                    }
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
