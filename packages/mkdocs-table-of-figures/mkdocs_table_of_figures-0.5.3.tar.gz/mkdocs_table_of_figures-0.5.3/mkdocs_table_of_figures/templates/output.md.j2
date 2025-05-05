@@ -1,0 +1,12 @@
+{%- if figures.size > 0 -%}
+
+| {{ translations['table.header.figure'] or 'figure' }} | {{ translations['table.header.category'] or 'category' }} | {{ translations['table.header.caption'] or 'caption' }} |
+| --- | --- | --- |
+
+{%- for figure in figures %}
+| [{{ figure.caption_identifier }}]({{ figure.uri }}) | {{ ':' ~ figure.figure_type_metadata.icon ~ ': ' if 'attr_list' in config.markdown_extensions and 'pymdownx.emoji' in config.markdown_extensions and figure.figure_type_metadata.get('icon') is not none }}{{ figure.figure_type_label }} | {{ figure.caption_description or '*`' ~ translations['table.no_caption'] ~ '`*' or '*`no caption...`*' }} |
+{%- endfor -%}
+
+{%- else -%}
+*`{{ translations['table.no_figures'] or 'no figures...' }}`*
+{%- endif -%}
