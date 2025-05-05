@@ -1,0 +1,50 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "casm-bset"
+version = "2.0.0"
+authors = [
+  { name="CASM developers", email="casm-developers@lists.engr.ucsb.edu" },
+]
+description = "CASM cluster expansion basis set generation"
+readme = "README.md"
+requires-python = ">=3.9,<3.14"
+license = "LGPL-2.1-or-later"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "jinja2",
+    "libcasm-configuration>=2.0.0",
+    "numpy",
+    "opt-einsum",
+    "scipy",
+    "sortedcontainers",
+    "sparse"
+]
+
+[project.urls]
+Homepage = "https://prisms-center.github.io/CASMcode_docs/"
+Repository = "https://github.com/prisms-center/CASMcode_bset"
+
+[build_sphinx]
+source-dir = "doc"
+build-dir  = "doc/build"
+all_files  = 1
+
+
+[tool.ruff.lint]
+select = ["NPY201", "E", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["libcasm", "casm"]
