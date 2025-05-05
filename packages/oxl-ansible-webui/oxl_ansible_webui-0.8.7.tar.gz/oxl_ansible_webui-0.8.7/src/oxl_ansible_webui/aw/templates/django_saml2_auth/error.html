@@ -1,0 +1,17 @@
+{% extends "../base.html" %}
+{% load util %}
+{% block content %}
+    <div class="aw-backend-form-alert" hidden="hidden">You are not allowed to access this app</div>
+    {% if error_code %}
+    <div class="aw-backend-form-alert" hidden="hidden">
+        Error code: {{ error_code }}{{ error_code|saml_error_by_code }}
+    </div>
+    {% endif %}
+    {% if reason %}
+        <div class="aw-backend-form-alert" hidden="hidden">
+            Reason: {{ reason }}
+        </div>
+    {% endif %}
+    <div id="login-saml"></div>
+    <script type="module" src="/static/dist/login_saml.js?v={% get_version %}"></script>
+{% endblock %}

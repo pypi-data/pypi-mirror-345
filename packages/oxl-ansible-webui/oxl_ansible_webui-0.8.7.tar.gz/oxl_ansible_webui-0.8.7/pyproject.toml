@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "oxl-ansible-webui"
+authors = [
+    {name = "OXL IT-Services", email = "contact@OXL.at"},
+]
+description = "Basic WebUI for using Ansible"
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = ["ansible", "webui", "automation", "iac"]
+license = {file = "LICENSE.txt"}
+classifiers = [
+    'Programming Language :: Python :: 3',
+    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+    'Framework :: Django',
+]
+dynamic = ["dependencies", "version"]
+
+[project.urls]
+Homepage = "https://github.com/O-X-L/ansible-webui"
+Documentation = "https://ansible-webui.OXL.app/"
+Repository = "https://github.com/O-X-L/ansible-webui.git"
+Issues = "https://github.com/O-X-L/ansible-webui/issues"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+version = {file = ["VERSION"]}
+
+[project.optional-dependencies]
+mysql = [
+    "mysqlclient",
+]
+psql = [
+    "psycopg[binary,pool]",
+]
+saml = [
+    "grafana-django-saml2-auth",
+]
+ara = [
+    "ara",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.html", "*.js", "*.css", "*.svg", "*.txt"]
+
+[project.scripts]
+oxl-ansible-webui = "oxl_ansible_webui.__script__:main"
+oxl-ansible-webui-cli = "oxl_ansible_webui.__script__:cli"
+oxl-ansible-webui-manage = "oxl_ansible_webui.__script__:manage"
+
+[tool.pyproject-appimage]
+script = "oxl-ansible-webui"
+output = "OXL-Ansible-WebUI.AppImage"
+icon = "docs/source/_static/img/logo.svg"
+python-version = "3.11"
