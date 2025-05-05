@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>{% now "c" %}</responseDate>
+    <request verb="ListSets">{{ base_url }}oai/project/{{ project.pk }}/</request>
+    <ListSets>
+        {% for collection in collections %}
+        <set>
+            <setSpec>{{ collection.oai_setspec }}</setSpec>
+            <setName>{{ collection.dublin_core_title }}</setName>
+        </set>
+        {% endfor %}
+    </ListSets>
+</OAI-PMH>
