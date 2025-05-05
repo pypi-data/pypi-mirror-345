@@ -1,0 +1,65 @@
+Metadata-Version: 2.1
+Name: openapi-fastapi-client
+Version: 0.2.1
+Summary: A tool to autogenerate FastApi Clients from given openapi.yaml.
+Home-page: https://github.com/FelixTheC/openapi-fastapi-client
+License: MIT
+Keywords: openapi,pydantic,python3
+Author: FelixTheC
+Author-email: felixeisenmenger@gmx.net
+Requires-Python: >=3.9,<4
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: black (>=24.3.0,<25.0.0)
+Requires-Dist: isort (>=6.0.1,<7.0.0)
+Requires-Dist: pydantic (>=2.4.0,<3.0.0)
+Requires-Dist: pyyaml (>=6.0.2,<7.0.0)
+Requires-Dist: typer (>=0.15.3,<0.16.0)
+Requires-Dist: typing-extensions (>=4.13.2,<5.0.0)
+Project-URL: Repository, https://github.com/FelixTheC/openapi-fastapi-client
+Description-Content-Type: text/markdown
+
+[![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3100/)
+![Python application](https://github.com/FelixTheC/openapi-fastapi-client/workflows/Python%20application/badge.svg)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+
+
+# Openapi yaml file to FastApi Client
+A commandline tool to generate Api `functions` and their required `pydantic Model` Schema from an `openapi.yaml` of version 3
+
+## Installation
+```shell
+pip install openapi-fastapi-client
+```
+
+## Usage
+```shell
+openapi-fastapi-client ./openapi.yaml ./my-client
+```
+```shell
+openapi-fastapi-client ./openapi.yaml ./my-client --async
+```
+- this will generate under the folder `my-client` following files
+  - `__init__.py` if not exists
+  - `api.py` here are all function calls to the external api
+  - `schema.py` here are all pydantic Models
+  
+
+## Arguments
+- `OPENAPI_FILE  [required]`
+- `OUTPUT_PATH   [required]`
+
+## Options
+- `--sync`  All requests to the client are synchronous.  _default_
+- `--async` All requests to the client are asynchronous with __aiohttp__.
+
+## Help
+```shell
+openapi-fastapi-client --help
+```
+
+![](openapi-fastapi-client_long.gif)
+
