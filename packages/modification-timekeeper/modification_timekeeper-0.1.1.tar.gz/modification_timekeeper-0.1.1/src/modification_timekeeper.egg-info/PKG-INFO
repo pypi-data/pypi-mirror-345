@@ -1,0 +1,58 @@
+Metadata-Version: 2.4
+Name: modification-timekeeper
+Version: 0.1.1
+Summary: Tool for keeping the modified time in front matter up to date.
+Author-email: Stefanie Molin <modification-timekeeper@stefaniemolin.com>
+License-Expression: MIT
+Project-URL: Documentation, https://github.com/stefmolin/modification-timekeeper
+Project-URL: Homepage, https://github.com/stefmolin/modification-timekeeper
+Project-URL: Source, https://github.com/stefmolin/modification-timekeeper
+Keywords: front matter,markdown,metadata,modification time,pre-commit
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyyaml
+Provides-Extra: dev
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-randomly; extra == "dev"
+Dynamic: license-file
+
+# Modification Timekeeper
+Keep modification time in a Markdown file's YAML front matter up to date.
+
+## Usage as a pre-commit hook
+
+Add the following to your `.pre-commit-config.yaml` file:
+
+```yaml
+- repo: https://github.com/stefmolin/modification-timekeeper
+  rev: 0.1.1
+  hooks:
+    - id: modification-timekeeper
+```
+
+You can also configure the name of the last modified field (`--field-name`), which field to put the modified field after it it doesn't already exist (`--after-key`), whether to use UTC (`--as-utc`), and the number of seconds after which the modified time in the file is considered stale (`--tolerance`):
+
+```yaml
+- repo: https://github.com/stefmolin/modification-timekeeper
+  rev: 0.1.1
+  hooks:
+    - id: modification-timekeeper
+      args: [--field-name=modified, --after-key=publication_date, --as-utc, --tolerance=30]
+```
+
+Be sure to check out the [pre-commit documentation](https://pre-commit.com/#pre-commit-configyaml---hooks) for additional configuration options.
+
+## Contributing
+
+Please consult the [contributing guidelines](https://github.com/stefmolin/modification-timekeeper/blob/main/CONTRIBUTING.md).
