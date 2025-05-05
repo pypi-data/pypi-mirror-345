@@ -1,0 +1,86 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Tool.schema.json
+
+pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed.hw_ai_search_lookup_with_embed:
+  name: HW AI Search Lookup (Internal Embedding)
+  description: >
+    Keyword, semantic, vector or hybrid search over Azure AI Search.
+    Generates query embeddings automatically when needed.
+  type: python
+  category: HW_PF_tools
+  tool_state: preview
+  module: pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed
+  function: hw_ai_search_lookup_with_embed
+
+  inputs:
+    connection:
+      type: [CustomConnection]
+      description: Azure AI Search credentials (endpoint + key).
+
+    index_name:
+      type: [string]
+      description: Azure AI Search index name.
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed.list_indexes
+        func_kwargs:
+          connection: ${inputs.connection}
+
+    queries:
+      type: [string, list]
+      description: Single query string or list of query strings.
+
+    embeddings_connection:
+      type: [AzureOpenAIConnection, OpenAIConnection]
+      description: Connection used to embed queries.
+
+    embedding_model_name:
+      type: [string]
+      default: text-embedding-3-large
+      description: Embedding deployment / model name.
+
+    query_type:
+      type: [string]
+      default: hybrid
+      enum: [keyword, semantic, vector, hybrid, hybrid_semantic]
+
+    top_k:
+      type: [int]
+      default: 3
+
+    text_field:
+      type: [string]
+      default: content
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed.list_text_fields
+        func_kwargs:
+          connection: ${inputs.connection}
+          index_name: ${inputs.index_name}
+
+    vector_field:
+      type: [string]
+      default: vector
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed.list_vector_fields
+        func_kwargs:
+          connection: ${inputs.connection}
+          index_name: ${inputs.index_name}
+
+    search_filters:
+      type: [string]
+
+    select_fields:
+      type: [list]
+
+    semantic_config:
+      type: [string]
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_with_embed.list_semantic_configs
+        func_kwargs:
+          connection: ${inputs.connection}
+          index_name: ${inputs.index_name}
+
+  outputs:
+    output:
+      type: [list]
+      description: >
+        One list of result dictionaries per query; each dict contains
+        'text', 'score', 'metadata', and 'original_entity'.
