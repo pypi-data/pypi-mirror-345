@@ -1,0 +1,66 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Tool.schema.json
+pf_reasoning_tool.tools.hw_acs_vector_lookup_tool.hw_acs_vector_lookup:
+  name: HW ACS Vector Lookup Tool
+  description: 'Vector, text, or hybrid search over Azure AI Search (Cognitive Search).'
+  type: python
+  tool_state: preview
+  category: HW_PF_tools
+  module: pf_reasoning_tool.tools.hw_acs_vector_lookup_tool
+  function: hw_acs_vector_lookup
+
+  inputs:
+    # core
+    connection:
+      type: [CustomConnection]
+      description: endpoint + api_key
+    index_name:
+      type: [string]
+
+    # either vector OR (query_text + embeddings_connection)
+    vector:
+      type: [list]
+      description: 'Pre-computed query vector.'
+      optional: true
+    query_text:
+      type: [string]
+      description: 'Query to embed then search.'
+      optional: true
+    embeddings_connection:
+      type: [AzureOpenAIConnection, OpenAIConnection]
+      optional: true
+    embedding_model_name:
+      type: [string]
+      default: text-embedding-ada-002
+      optional: true
+
+    # search tuning
+    search_type:
+      type: [string]
+      enum: ['vector', 'text', 'hybrid']
+      description: 'Auto-detected if left blank.'
+      optional: true
+    top_k:
+      type: [int]
+      default: 3
+    text_field:
+      type: [string]
+      default: content
+      description: 'Field holding document text.'
+      optional: true
+    vector_field:
+      type: [string]
+      default: vector
+      optional: true
+    search_params:
+      type: [dict]
+      description: 'Extra Azure Search REST params, e.g. {"select": "id,url"}.'
+      optional: true
+    search_filters:
+      type: [dict]
+      description: 'OData filter dict, e.g. {"filter": "category eq ''legal''"}.'
+      optional: true
+
+  outputs:
+    output:
+      type: [list]
+      description: 'Each item: {text, vector, score, metadata, original_entity}'
