@@ -1,0 +1,2664 @@
+openapi: 3.0.3
+info:
+  description: |
+    Default API for Flask-Security.
+
+    __N.B. This is preliminary.__
+
+    Since Flask-Security is middleware, with many possible configurations this is a
+    guide to how the APIs will behave using standard defaults.
+
+    By default, all POST requests require a CSRF token. This is handled automatically
+    if you render the form from your Flask application. If you send JSON, then you must include a request header (configured via __SECURITY_CSRF_HEADER__).
+    Please read the online documentation to find out details on how CSRF can be configured.
+
+    You can download the latest spec from: https://github.com/pallets-eco/flask-security/blob/main/docs/openapi.yaml
+  version: 2.0.0
+  title: "Flask-Security External API"
+  contact:
+    name: Flask-Security
+    url: https://github.com/pallets-eco/flask-security
+  license:
+    name: MIT
+    url: https://github.com/pallets-eco/flask-security/blob/main/LICENSE
+paths:
+  /login:
+    get:
+      summary: GET login form and/or user information
+      responses:
+        200:
+          description: >
+            Login form or user information. The JSON response will always
+            carry the csrf_token information.
+            If SECURITY_CSRF_COOKIE_NAME is set then a cookie with the csrf token will be set.
+            If the caller is already authenticated, then
+            additional information is returned for JSON requests.
+            This can be very useful for single-page applications where during a force refresh, all state is lost.
+            By performing this GET, the session cookie will authenticate the user and the response will contain user information.
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_LOGIN_USER_TEMPLATE)
+                example: render_template(SECURITY_LOGIN_USER_TEMPLATE)
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultJsonResponse'
+                  - type: object
+                    properties:
+                      response:
+                        type: object
+                        properties:
+                          identity_attributes:
+                            type: array
+                            description: List of allowable identities
+                            items:
+                              type: string
+        302:
+          description: Response when already logged in (non-JSON request)
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_POST_LOGIN_VIEW``
+              schema:
+                type: string
+                format: uri
+    post:
+      summary: Login to application
+      description: Supports both json and form request types. If the caller is already logged in, then in the form case, they are redirected to SECURITY_POST_LOGIN_VIEW, for a json request, a 400 is returned.
+      parameters:
+        - name: next
+          in: query
+          description: >
+            URL to redirect to on successful login. Ignored for json request.
+          schema:
+            type: string
+        - $ref: "#/components/parameters/include_auth_token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Login"
+      responses:
+        200:
+          description: Login response
+          content:
+            application/json:
+              schema:
+                allOf:
+                 - description: >
+                    The user successfully signed in using their primary credential.
+                    Note that depending on SECURITY_TWO_FACTOR configuration variable, a second form of authentication might be required prior to the user being fully authenticated.
+                    `tf_required` will be set to True in this case.
+                    Note that if 2FA is not configured, none of the ``tf_`` properties will be returned.
+                 - $ref: "#/components/schemas/LoginJsonResponse"
+            text/html:
+              schema:
+                description: Unsuccessful login
+                type: string
+                example: render_template(SECURITY_LOGIN_USER_TEMPLATE) with error values
+        302:
+          description: >
+            If the caller is already authenticated, the form contents is ignored and a
+            redirect is done: redirect(SECURITY_POST_LOGIN_VIEW) (note that 'next' is ignored).
+
+            If the caller is NOT already authenticated, and the form contents are
+            validated the caller will be redirected to:
+            redirect(next) or redirect(SECURITY_POST_LOGIN_VIEW)
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_POST_LOGIN_VIEW``
+              schema:
+                type: string
+        400:
+          description: Errors while validating login, or caller already authenticated/logged in.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /login(passwordless):
+    get:
+      summary: GET passwordless login form
+      responses:
+        200:
+          description: Passwordless login form
+          content:
+            text/html:
+              schema:
+                type: string
+                example: render_template(SECURITY_SEND_LOGIN_TEMPLATE)
+    post:
+      summary: Send passwordless login instructions email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailLink"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/EmailLink"
+      responses:
+        200:
+          description: >
+            Passwordless login response. For forms both success and validation errors.
+          content:
+            text/html:
+              schema:
+                description: Passwordless login form - with errors.
+                type: string
+                example: render_template(SECURITY_SEND_LOGIN_TEMPLATE)
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponse"
+        400:
+          description: Errors while validating form
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /login(passwordless)/{token}:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Login via token
+      description: >
+        This is the result of getting a passwordless login token and is usually
+        the result of clicking the link from a passwordless email.
+        This ALWAYS results in a 302 redirect.
+      responses:
+        302:
+          description: >
+            Redirects depending on success/error and whether
+            __SECURITY_REDIRECT_BEHAVIOR__ == 'spa'.
+          headers:
+            Location:
+              description: |
+                On spa-success: SECURITY_POST_LOGIN_VIEW?identity={identity}&email={email}
+
+                On spa-error-expired: SECURITY_LOGIN_ERROR_VIEW?error={msg}&identity={identity}&email={email}
+
+                On spa-error-invalid-token: SECURITY_LOGIN_ERROR_VIEW?error={msg}
+
+                On form-success: SECURITY_POST_LOGIN_VIEW
+
+                On form-error-expired: SECURITY_LOGIN_VIEW
+
+                On form-error-invalid-token: SECURITY_LOGIN_VIEW
+              schema:
+                type: string
+  /logout:
+    get:
+      summary: Log out current user
+      responses:
+        302:
+          description: Successful logout
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_POST_LOGOUT_VIEW``
+              schema:
+                type: string
+    post:
+      summary: Log out current user
+      responses:
+        200:
+          description: Successful logout
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [meta]
+                properties:
+                  meta:
+                    type: object
+                    required: [code]
+                    properties:
+                      code:
+                        type: integer
+                        example: 200
+                        description: Http status code
+  /verify:
+    get:
+      summary: GET verify/reauthentication form
+      description: >
+        If an endpoint is protected with @auth_required() with a freshness declaration
+        this endpoint will be called to request an already signed in user to reauthenticate.
+      responses:
+        200:
+          description: Verify/reauthenticate form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_VERIFY_TEMPLATE)
+                example: render_template(SECURITY_VERIFY_TEMPLATE)
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_webauthn_verify_credential:
+                    type: boolean
+                    description: <
+                      True if caller has a registered WebAuthn Key which has a `usage` that
+                      is allowed by the SECURITY_WAN_ALLOW_AS_VERIFY configuration setting.
+    post:
+      summary: Verify/Reauthentication
+      parameters:
+        - $ref: "#/components/parameters/include_auth_token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Verify"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Verify"
+      responses:
+        200:
+          description: Verify/Reauthenticate response.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: >
+                      The user successfully reauthenticated.
+                  - $ref: "#/components/schemas/JsonResponseWithToken"
+            text/html:
+              schema:
+                description: Unsuccessful reauthentication.
+                type: string
+                example: render_template(SECURITY_VERIFY_TEMPLATE) with error values
+        302:
+          description: User successfully reauthenticated when using form based request.
+          headers:
+            Location:
+              description: Redirect to ``next`` or ``SECURITY_POST_VERIFY_VIEW``
+              schema:
+                type: string
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /register:
+    get:
+      summary: GET register form
+      responses:
+        200:
+          description: Register form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_REGISTER_USER_TEMPLATE)
+                example: render_template(SECURITY_REGISTER_USER_TEMPLATE)
+        302:
+          description: Response when already logged in
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_POST_LOGIN_VIEW``
+              schema:
+                type: string
+    post:
+      summary: Register new user with application
+      parameters:
+        - name: next
+          in: query
+          description: >
+            URL to redirect to on successful registration. Ignored for json request.
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Register"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/RegisterForm"
+      responses:
+        200:
+          description: Register response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponse"
+            text/html:
+              schema:
+                description: Unsuccessful registration
+                type: string
+                example: render_template(SECURITY_REGISTER_USER_TEMPLATE) with error values
+        302:
+          description: >
+            Successful registration with form data body.
+          headers:
+            Location:
+              description: redirect to ``next`` or ``SECURITY_POST_REGISTER_VIEW``
+              schema:
+                type: string
+        400:
+          description: Errors while validating registration form
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /change:
+    get:
+      summary: GET change password form
+      responses:
+        200:
+          description: change password form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_CHANGE_PASSWORD_TEMPLATE)
+                example: render_template(SECURITY_CHANGE_PASSWORD_TEMPLATE)
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultJsonResponse'
+                  - type: object
+                    properties:
+                      response:
+                        type: object
+                        properties:
+                          active_password:
+                            type: boolean
+                            description: Does user already have a password?
+    post:
+      summary: Change password
+      parameters:
+        - name: X-XSRF-Token
+          in: header
+          schema:
+            $ref: "#/components/headers/X-CSRF-Token"
+        - $ref: "#/components/parameters/include_auth_token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePassword"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ChangePassword"
+      responses:
+        200:
+          description: Change password response.
+          content:
+            text/html:
+              schema:
+                description: Change form validation error.
+                type: string
+                example: render_template(SECURITY_CHANGE_PASSWORD_TEMPLATE) with error values
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JsonResponseWithToken"
+        302:
+          description: Password has been changed (non-json)
+          headers:
+            Location:
+              description: |
+                On success: Redirect to ``SECURITY_POST_CHANGE_VIEW`` or
+                            ``SECURITY_POST_LOGIN_VIEW``
+              schema:
+                type: string
+        400:
+          description: Errors while validating form
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /change-email:
+    get:
+      summary: GET change email form
+      responses:
+        200:
+          description: change email form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_CHANGE_EMAIL_TEMPLATE)
+                example: render_template(SECURITY_CHANGE_EMAIL_TEMPLATE)
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultJsonResponse'
+                  - type: object
+                    properties:
+                      response:
+                        type: object
+                        properties:
+                          current_email:
+                            type: string
+                            description: User's currently registered email
+    post:
+      summary: Generate and send change email confirmation link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeEmail"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ChangeEmail"
+      responses:
+        200:
+          description: Change email response.
+          content:
+            text/html:
+              schema:
+                description: |
+                  Change email form (errors or not).
+                  If no errors then a confirmation instructions (with link) has been sent to the
+                  requested (new) email.
+                type: string
+                example: render_template(SECURITY_CHANGE_EMAIL_TEMPLATE) with error values
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponse"
+        400:
+          description: Errors while validating form
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultJsonErrorResponse'
+                  - type: object
+                    properties:
+                      response:
+                        type: object
+                        properties:
+                          current_email:
+                            type: string
+                            description: User's currently registered email
+  /change-email/{token}:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Confirm change of user's registered email
+      description: >
+        This is the result of getting a change-email token and is usually
+        the result of clicking the link from a change-email  email.
+        This always results in a redirect().
+      responses:
+        302:
+          description: >
+            Redirects depending on success/error and whether
+            __SECURITY_REDIRECT_BEHAVIOR__ == 'spa'.
+          headers:
+            Location:
+              description: |
+                On spa-success: SECURITY_POST_CHANGE_EMAIL_VIEW?success={SECURITY_MSG_CHANGE_EMAIL_CONFIRMED}
+
+                On spa-error-expired: SECURITY_CHANGE_EMAIL_ERROR_VIEW?error={SECURITY_MSG_CHANGE_EMAIL_EXPIRED}
+
+                On spa-error-invalid-token: SECURITY_CHANGE_EMAIL_ERROR_VIEW?error={SECURITY_MSG_API_ERROR}
+
+                On default-error: SECURITY_CHANGE_EMAIL_ERROR_VIEW || .change_email
+
+                On default-success: SECURITY_POST_CHANGE_EMAIL_VIEW || SECURITY_POST_LOGIN_VIEW
+              schema:
+                type: string
+
+  /change-username:
+    get:
+      summary: GET change username form
+      responses:
+        200:
+          description: change username form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_CHANGE_USERNAME_TEMPLATE)
+                example: render_template(SECURITY_CHANGE_USERNAME_TEMPLATE)
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultJsonResponse'
+                  - type: object
+                    properties:
+                      response:
+                        type: object
+                        properties:
+                          current_username:
+                            type: string
+                            description: Current username
+    post:
+      summary: Change username
+      parameters:
+        - name: X-XSRF-Token
+          in: header
+          schema:
+            $ref: "#/components/headers/X-CSRF-Token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeUsername"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ChangeUsername"
+      responses:
+        200:
+          description: Change username response.
+          content:
+            text/html:
+              schema:
+                description: Form validation error.
+                type: string
+                example: render_template(SECURITY_CHANGE_USERNAME_TEMPLATE) with error values
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponse"
+        302:
+          description: Username has been changed (non-json)
+          headers:
+            Location:
+              description: |
+                On success: Redirect to ``SECURITY_POST_CHANGE_USERNAME_VIEW`` or
+                            ``SECURITY_POST_LOGIN_VIEW``
+              schema:
+                type: string
+        400:
+          description: Errors while validating form
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /reset:
+    get:
+      summary: GET reset password form
+      responses:
+        200:
+          description: Reset password form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_FORGOT_PASSWORD_TEMPLATE)
+                example: render_template(SECURITY_FORGOT_PASSWORD_TEMPLATE)
+        302:
+          description: Response when already logged in
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_POST_LOGIN_VIEW``
+              schema:
+                type: string
+    post:
+      summary: Send reset password instructions email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailLink"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/EmailLink"
+      responses:
+        200:
+          description: >
+            Reset password response. For forms both success and validation errors.
+          content:
+            text/html:
+              schema:
+                description: Forgot password form - with errors.
+                type: string
+                example: render_template(SECURITY_FORGOT_PASSWORD_TEMPLATE)
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponseNoUser"
+        400:
+          description: Errors while validating form
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /reset/{token}:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Request to reset password
+      description: >
+        This is the result of getting a reset-password token and is usually
+        the result of clicking the link from a reset-password email.
+        If __SECURITY_REDIRECT_BEHAVIOR__ == 'spa' then a 302 is always returned.
+      responses:
+        200:
+          description: Reset password form
+          content:
+            text/html:
+              schema:
+                type: string
+                example: render_template(SECURITY_RESET_PASSWORD_TEMPLATE)
+        302:
+          description: >
+            Redirects depending on success/error and whether
+            __SECURITY_REDIRECT_BEHAVIOR__ == 'spa'.
+          headers:
+            Location:
+              description: |
+                On spa-success: SECURITY_RESET_VIEW?token={token}
+
+                On spa-error-expired: SECURITY_RESET_ERROR_VIEW?error={msg}
+
+                On spa-error-invalid-token: SECURITY_RESET_ERROR_VIEW?error={msg}
+
+                On default-error: redirect(SECURITY_FORGOT_PASSWORD)
+              schema:
+                type: string
+    post:
+      summary: Reset password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPassword"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ResetPassword"
+      responses:
+        200:
+          description: Reset response
+          content:
+            text/html:
+              schema:
+                description: Reset form validation error.
+                type: string
+                example: render_template(SECURITY_RESET_PASSWORD_TEMPLATE) with error values
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BaseJsonResponse"
+        302:
+          description: Password has been reset or validation error (non-json)
+          headers:
+            Location:
+              description: |
+                On success: redirect(SECURITY_POST_RESET_VIEW) or
+                    redirect(".login")
+
+                On invalid/expired token: redirect(SECURITY_FORGOT_PASSWORD)
+              schema:
+                type: string
+        400:
+          description: Errors while validating form
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /recover-username:
+    get:
+      summary: GET username recovery form
+      responses:
+        200:
+          description: Username recovery form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_USERNAME_RECOVERY_TEMPLATE)
+                example: render_template(SECURITY_USERNAME_RECOVERY_TEMPLATE)
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponseNoUser"
+    post:
+      summary: Request username recovery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecoverUsername"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/RecoverUsername"
+      responses:
+        200:
+          description: Send username recovery email
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_USERNAME_RECOVERY_TEMPLATE)
+                example: render_template(SECURITY_USERNAME_RECOVERY_TEMPLATE)
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponseNoUser"
+        400:
+          description: Error when trying to send recovery email (e.g. user doesn't exist)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /confirm:
+    get:
+      summary: GET send confirmation form
+      responses:
+        200:
+          description: Confirmation form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_SEND_CONFIRMATION_TEMPLATE)
+                example: render_template(SECURITY_SEND_CONFIRMATION_TEMPLATE)
+    post:
+      summary: Send confirmation email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailLink"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/EmailLink"
+      responses:
+        200:
+          description: >
+            Confirmation response. For forms both success and validation errors.
+          content:
+            text/html:
+              schema:
+                description: Confirmation form - with errors.
+                type: string
+                example: render_template(SECURITY_SEND_CONFIRMATION_TEMPLATE)
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponse"
+        400:
+          description: Errors while validating form
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /confirm/{token}:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Request to confirm account
+      description: >
+        This is the result of getting a confirmation token and is usually
+        the result of clicking the link from a confirmation email.
+        This ALWAYS results in a 302 redirect.
+        By default (unless __SECURITY_AUTO_LOGIN_AFTER_CONFIRM__ == True), the user
+        denoted by the token must authenticate using normal mechanisms.
+      responses:
+        302:
+          description: >
+            Redirects depending on success/error and whether
+            __SECURITY_REDIRECT_BEHAVIOR__ == 'spa'.
+          headers:
+            Location:
+              description: |
+                On spa-success: SECURITY_POST_CONFIRM_VIEW?identity={identity}&email={email}&{level}={msg}
+
+                On spa-error-expired: SECURITY_CONFIRM_ERROR_VIEW?error={msg}
+
+                On spa-error-invalid-token: SECURITY_CONFIRM_ERROR_VIEW?error={msg}
+
+                On form-success: SECURITY_POST_CONFIRM_VIEW or
+                                 SECURITY_POST_LOGIN_VIEW
+
+                On form-success (no auto-login): SECURITY_POST_CONFIRM_VIEW or
+                                 ".login"
+
+                On form-error-expired: SECURITY_CONFIRM_ERROR_VIEW or
+                                       SECURITY_CONFIRM_URL
+
+                On form-error-invalid-token: SECURITY_CONFIRM_ERROR_VIEW or
+                                             SECURITY_CONFIRM_URL
+              schema:
+                type: string
+  /us-signin:
+    get:
+      summary: GET Unified Sign In form
+      responses:
+        200:
+          description: >
+            Sign in form
+            If SECURITY_CSRF_COOKIE_NAME is set then a cookie with the csrf token will be set.
+            If the caller is already authenticated, then
+            additional information is returned for JSON requests.
+            This can be very useful for single-page applications where during a force refresh, all state is lost.
+            By performing this GET, the session cookie will authenticate the user and the response will contain user information.
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_US_SIGNIN_TEMPLATE)
+                example: render_template(SECURITY_US_SIGNIN_TEMPLATE)
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultJsonResponse'
+                  - type: object
+                    properties:
+                      available_methods:
+                        type: string
+                        description: Config setting SECURITY_US_ENABLED_METHODS
+                      code_methods:
+                        type: string
+                        description: All SECURITY_US_ENABLED_METHODS that require a code to be generated and sent.
+                      identity_attributes:
+                        type: string
+                        description: Configuration setting SECURITY_USER_IDENTITY_ATTRIBUTES
+    post:
+      summary: Unified Sign In
+      parameters:
+        - $ref: "#/components/parameters/include_auth_token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsSignin"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UsSignin"
+      responses:
+        200:
+          description: Unified Sign In response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: >
+                      The user successfully signed in using their primary credentials.
+                      Note that depending on the SECURITY_TWO_FACTOR and SECURITY_US_MFA_REQUIRED configuration variables, a second form of authentication might be required prior to the user being fully authenticated.
+                      `tf_required` will be set to True in this case.
+                  - $ref: "#/components/schemas/LoginJsonResponse"
+            text/html:
+              schema:
+                type: string
+                description: Unsuccessful sign in - render_template(SECURITY_US_SIGNIN_TEMPLATE) with error values
+                example: render_template(SECURITY_US_SIGNIN_TEMPLATE) with error values
+        302:
+          description: >
+            If the caller already authenticated, the form contents are ignored and a
+            redirect is done: redirect(SECURITY_POST_LOGIN_VIEW) (note that 'next' is ignored).
+
+            If the caller is NOT already authenticated, and the form contents are
+            validated the caller will be redirected to:
+            redirect(next) or redirect(SECURITY_POST_LOGIN_VIEW)
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_POST_LOGIN_VIEW``
+              schema:
+                type: string
+        400:
+          description: Errors while validating attributes, or caller already authenticated/logged in.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /us-signin/send-code:
+    post:
+      summary: Send Code for unified sign in.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsSigninSendCode"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UsSigninSendCode"
+      responses:
+        200:
+          description: Send code response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponse"
+            text/html:
+              schema:
+                description: Validation error, code send error, or code successfully sent
+                type: string
+                example: render_template(SECURITY_US_SIGNIN_TEMPLATE) with error values
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+        500:
+          description: Error when trying to send code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+
+  /us-verify:
+    get:
+      summary: GET Unified sign in verify/reauthentication form/information
+      description: >
+        If an endpoint is protected with @auth_required() with a freshness declaration
+        this endpoint will be called to request an already signed in user to reauthenticate.
+      responses:
+        200:
+          description: Verify/Reauthenticate form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_US_VERIFY_TEMPLATE)
+                example: render_template(SECURITY_US_VERIFY_TEMPLATE)
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available_methods:
+                    type: array
+                    description: Config setting SECURITY_US_ENABLED_METHODS
+                    items:
+                      type: string
+                      example: ["email", "sms"]
+                  code_methods:
+                    type: array
+                    description: All SECURITY_US_ENABLED_METHODS that the user has setup that require a code to be generated and sent.
+                    items:
+                      type: string
+                      example: ["sms"]
+                  has_webauthn_verify_credential:
+                    type: boolean
+                    description: <
+                      True if caller has a registered WebAuthn Key which has a `usage` that
+                      is allowed by the SECURITY_WAN_ALLOW_AS_VERIFY configuration setting.
+    post:
+      summary: Unified sign in verify/reauthentication
+      parameters:
+        - $ref: "#/components/parameters/include_auth_token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsSigninVerify"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UsSigninVerify"
+      responses:
+        200:
+          description: Verify/reauthenticate response.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: >
+                      The user successfully reauthenticated.
+                  - $ref: "#/components/schemas/JsonResponseWithToken"
+            text/html:
+              schema:
+                type: string
+                description: Unsuccessful reauthentication - render_template(SECURITY_US_VERIFY_TEMPLATE) with error values
+                example: render_template(SECURITY_US_VERIFY_TEMPLATE) with error values
+        302:
+          description: User successfully reauthenticated when using form based request.
+          headers:
+            Location:
+              description: Redirect to ``next`` or ``SECURITY_POST_VERIFY_VIEW``
+              schema:
+                type: string
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /us-verify/send-code:
+    post:
+      summary: Send Code for unified sign in verify.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsSigninVerifySendCode"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UsSigninVerifySendCode"
+      responses:
+        200:
+          description: Send code response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponse"
+            text/html:
+              schema:
+                description: Validation error, code send error, or code successfully sent
+                type: string
+                example: render_template(SECURITY_US_VERIFY_TEMPLATE) with error values
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+        500:
+          description: Error when trying to send code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /us-setup:
+    get:
+      summary: GET Unified sign in setup passcode options.
+      responses:
+        200:
+          description: Setup form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_US_SETUP_TEMPLATE)
+                example: render_template(SECURITY_US_SETUP_TEMPLATE)
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available_methods:
+                    type: array
+                    description: Config setting SECURITY_US_ENABLED_METHODS
+                    items:
+                      type: string
+                      example: ["email", "sms"]
+                  active_methods:
+                    type: array
+                    description: Methods that have already been setup.
+                    items:
+                      type: string
+                      example: ["sms"]
+                  setup_methods:
+                    type: array
+                    description: All SECURITY_US_ENABLED_METHODS that require setup.
+                    items:
+                      type: string
+                      example: ["email", "sms", "authenticator"]
+                  identity_attributes:
+                    type: array
+                    description: Configuration setting SECURITY_USER_IDENTITY_ATTRIBUTES
+                    items:
+                      type: string
+                      example: ["email"]
+                  phone:
+                    type: string
+                    description: existing configured phone number
+    post:
+      summary: Unified sign in setup.
+      description: >
+        An authenticated user can call this endpoint to update or add additional methods for authenticating (e.g. sms, authenticator app). This is controlled by application configuration settings SECURITY_US_ENABLED_METHODS. This endpoint is protected by a 'freshness' check - meaning the caller will be required to have authenticated recently. In addition, to ensure correctness, the newly setup method must be verified by sending and entering a code prior to it being permanently stored. This verification process is also time-limited.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsSetup"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UsSetup"
+      responses:
+        200:
+          description: Unified sign in setup response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsSetupJsonResponse"
+            text/html:
+              schema:
+                description: Invalid form values or verification code sent successfully and should be entered into the form.
+                type: string
+                example: render_template(SECURITY_US_SETUP_TEMPLATE) with error values
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+        500:
+          description: Error when trying to send code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /us-setup/{token}:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Validate passcode sent and store setup method.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsSetupValidateRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UsSetupValidateRequest"
+      responses:
+        200:
+          description: Successfully validated and persisted sign in method.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsSetupValidateJsonResponse"
+        302:
+          description: Redirect based on success or failure.
+          headers:
+            Location:
+              description: |
+                On form-success: SECURITY_US_POST_SETUP_VIEW
+
+                On form-error: .us-setup
+
+                Form errors include bad code, expired token, bad token.
+              schema:
+                type: string
+        400:
+          description: Failed - bad code, expired token, bad token.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /us-verify-link:
+    parameters:
+      - name: email
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: code
+        in: query
+        required: true
+        schema:
+          type: string
+    get:
+      summary: A magic link to authenticate (instead of manually entering a code).
+      description: >
+        This is the result of getting a passcode link and is usually
+        the result of clicking the link from an email.
+        This ALWAYS results in a 302 redirect.
+        N.B. Magic link with 2FA enabled does not work and the SPA will get a redirect to the login error page with tf_required. Must use code option instead.
+      responses:
+        302:
+          description: >
+            Redirects depending on success/error and whether
+            __SECURITY_REDIRECT_BEHAVIOR__ == 'spa'. Also, if Two-Factor authentication has been enabled, further authentication/redirects might be required.
+          headers:
+            Location:
+              description: |
+                On spa-success: SECURITY_POST_LOGIN_VIEW?identity={identity}&email={email}
+
+                On spa-error-expired: SECURITY_LOGIN_ERROR_VIEW?error={msg}
+
+                On spa-error-invalid-token: SECURITY_LOGIN_ERROR_VIEW?error={msg}
+
+                On spa-two-factor-required: SECURITY_LOGIN_ERROR_VIEW?tf_required=1
+
+                On form-success: SECURITY_POST_LOGIN_VIEW
+
+                On form-error-expired: SECURITY_US_SIGNIN_URL
+
+                On form-error-invalid-token: SECURITY_US_SIGNIN_URL
+
+                On form-success and two-factor: SECURITY_TWO_FACTOR_TOKEN_VALIDATION_URL or SECURITY_TWO_FACTOR_SETUP_URL
+              schema:
+                type: string
+
+  /tf-setup:
+    get:
+      summary: GET Two-factor authentication setup form/information
+      responses:
+        200:
+          description: Setup form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_TWO_FACTOR_SETUP_TEMPLATE)
+                example: render_template(SECURITY_TWO_FACTOR_SETUP_TEMPLATE)
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tf_required:
+                    type: string
+                    description: Config setting SECURITY_TWO_FACTOR_REQUIRED.
+                  tf_primary_method:
+                    type: string
+                    description: Current (if any) setup method (deprecated).
+                  tf_method:
+                    type: string
+                    description: Current (if any) setup method.
+                  tf_available_methods:
+                    type: string
+                    description: Config setting SECURITY_TWO_FACTOR_ENABLED_METHODS. If SECURITY_TWO_FACTOR_REQUIRED is false then 'disable' will be part of the set.
+                  tf_phone_number:
+                    type: string
+                    description: Currently configured (if any) phone number.
+    post:
+      summary: Two-Factor setup.
+      description: >
+        Two-factor setup can be used in three cases:
+
+        1) Initial login and application requires 2FA
+
+        2) An authenticated user wishing to change their 2FA configuration
+
+        3) An authenticated user wishes to enable or disable 2FA (assuming SECURITY_TWO_FACTOR_REQUIRED is False).
+
+        Allowed 2FA methods are controlled via the configuration SECURITY_TWO_FACTOR_ENABLED_METHODS.
+
+        This endpoint is protected by a 'freshness' check - meaning the caller will be required to have authenticated recently.
+        In addition, to ensure correctness, the newly setup method must be verified by sending and entering a code prior to it being permanently stored.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TfSetup"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/TfSetup"
+      responses:
+        200:
+          description: >
+            Two-Factor setup response. Please note that the newly setup method must be validated PRIOR to it being stored permanently.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TfSetupJsonResponse"
+            text/html:
+              schema:
+                description: Invalid form values or verification code sent successfully and should be entered into the form.
+                type: string
+                example: render_template(SECURITY_TWO_FACTOR_SETUP_TEMPLATE) with error values
+        302:
+          description: Successfully disabled two-factor.
+          headers:
+            Location:
+              description: |
+                On form-success: SECURITY_TWO_FACTOR_POST_SETUP_VIEW
+              schema:
+                type:
+                  string
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+        500:
+          description: Error when trying to send code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /tf-setup/{token}:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Validate code sent and store setup method.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TfSetupValidateRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/TfSetupValidateRequest"
+      responses:
+        200:
+          description: Successfully validated and persisted two-factor method.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TfSetupValidateJsonResponse"
+        302:
+          description: Success or Failure.
+          headers:
+            Location:
+              description: |
+                On form-success: SECURITY_TWO_FACTOR_POST_SETUP_VIEW
+
+                On form-error: .tf-setup
+
+                Form errors include bad code, expired token, bad token.
+              schema:
+                type: string
+        400:
+          description: Failed - bad code, expired token, bad token.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /tf-validate:
+    get:
+      summary: GET current two-factor validate code form
+      responses:
+        200:
+          description: Code validation
+          content:
+            text/html:
+              schema:
+                description: >
+                  If this is a normal, already setup method, then render_template(SECURITY_TWO_FACTOR_VERIFY_CODE_TEMPLATE) is returned.
+                type: string
+    post:
+      summary: Send two-factor code.
+      parameters:
+        - $ref: "#/components/parameters/include_auth_token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  description: The code sent via the configured method (e.g. SMS, email, authenticator).
+                  type: string
+                  example: 12345
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                code:
+                  description: The code sent via the configured method (e.g. SMS, email, authenticator).
+                  type: string
+                  example: 12345
+      responses:
+        200:
+          description: Two-Factor code validation response.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: >
+                      The code was correct. If this part of user authentication, the caller is now signed in.
+                      If this was part of changing a two-factor method, that was successful.
+                  - $ref: "#/components/schemas/JsonResponseWithToken"
+            text/html:
+              schema:
+                description: >
+                  Unsuccessfully processed code. As above, which form is
+                  rendered depends on the state of the user's two-factor configuration.
+                type: string
+        302:
+          description: User successfully sent code when using form based request.
+          headers:
+            Location:
+              description: >
+                On form-success for two-factor authentication: SECURITY_POST_LOGIN_VIEW
+
+                On form-success for two-factor change method: SECURITY_TWO_FACTOR_SETUP_VIEW
+              schema:
+                type: string
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+
+  /tf-rescue:
+    get:
+      summary: Help user that has lost authenticator or SMS device.
+      responses:
+        200:
+          description: Return form.
+          content:
+            text/html:
+              schema:
+                description: >
+                  render_template(SECURITY_TWO_FACTOR_VERIFY_CODE_TEMPLATE).
+                type: string
+    post:
+      summary: Request help.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                help_setup:
+                  description: What rescue option is desired.
+                  type: string
+                  enum: [help, email, recovery_code]
+                  example: "recovery_code"
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                help_setup:
+                  description: What rescue option is desired.
+                  type: string
+                  enum: [help, email, recovery_code]
+                  example: "email"
+      responses:
+        200:
+          description: >
+            If 'email' was specified and SECURITY_TWO_FACTOR_RESCUE_EMAIL is True,
+            then an authentication code was sent to the email
+            on record for the user. If 'help' then an email was sent to administrator address
+            specified by SECURITY_TWO_FACTOR_RESCUE_MAIL. If 'recovery_code' was specified
+            and SECURITY_MULTI_FACTOR_RECOVERY_CODES is True, and the user had previously
+            setup and downloaded a set of recovery codes the user will be redirected to
+            SECURITY_MULTI_FACTOR_RECOVERY_URL.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponseNoUser"
+            text/html:
+              schema:
+                description: Invalid form values or verification code sent successfully and should be entered into the form.
+                type: string
+                example: render_template(SECURITY_TWO_FACTOR_VERIFY_CODE_TEMPLATE) with error values
+        400:
+          description: Failed to send code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /tf-select:
+    get:
+      summary: Select between previously set up two-factor methods.
+      description: >
+        If a user has set up more than one way to provide a second factor of
+        authentication, this view will ask the user to choose.
+      responses:
+        200:
+          description: Two-factor method select form - SECURITY_TWO_FACTOR_SELECT_TEMPLATE
+          content:
+            text/html:
+              schema:
+                description: render_template(SECURITY_TWO_FACTOR_SELECT_TEMPLATE)
+                type: string
+                example: render_template(SECURITY_TWO_FACTOR_SELECT_TEMPLATE)
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/DefaultJsonResponseNoUser"
+                  - type: object
+                    properties:
+                      response:
+                        type: object
+                        properties:
+                          tf_setup_methods:
+                            type: array
+                            items:
+                              type: string
+                              description: A list of methods to choose from
+                          tf_select:
+                            type: boolean
+                            example: True
+    post:
+      summary: Select a two-factor method
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                which:
+                  type: string
+                  description: >
+                    Which two-factor method to use.
+                  example: "sms"
+          application/x-www-form-urlencoded:
+            schema:
+                description: Select Form
+                type: string
+                example: render_template(SECURITY_TWO_FACTOR_SELECT_TEMPLATE)
+      responses:
+        200:
+          description: Second factor select response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TfSelectJsonResponse"
+            text/html:
+              schema:
+                description: Form validation failure.
+                type: string
+                example: render_template(SECURITY_TWO_FACTOR_SELECT_TEMPLATE) with error values
+        302:
+          description: User selected which two-factor to use when using form based request.
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_TWO_FACTOR_TOKEN_VALIDATION_URL`` or ``SECURITY_WAN_SIGNIN_URL``.
+              schema:
+                type: string
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /mf-recovery-codes:
+    summary: Generate and retrieve one-time use recovery codes.
+    get:
+      summary: Retrieve one-time use recovery codes.
+      description: >
+        If a user has two-factor authentication enabled, they can generate and
+        use a recovery code if they lose or otherwise can't use their second factor
+        device.
+      parameters:
+        - name: show_codes
+          in: path
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Multi-factor recovery code form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_MULTI_FACTOR_RECOVERY_CODES_TEMPLATE)
+                example: render_template(SECURITY_MULTI_FACTOR_RECOVERY_CODES_TEMPLATE)
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/DefaultJsonResponseNoUser"
+                  - type: object
+                    properties:
+                      response:
+                        type: object
+                        properties:
+                          recovery_codes:
+                            type: array
+                            description: A list of codes
+                            items:
+                              type: string
+
+    post:
+      summary: Generate a new set of one-time recovery codes
+      responses:
+        200:
+          description: New one-time codes generated.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/DefaultJsonResponseNoUser"
+                  - type: object
+                    properties:
+                      response:
+                        type: object
+                        properties:
+                          recovery_codes:
+                            type: array
+                            description: List of new recovery codes
+                            items:
+                              type: string
+            text/html:
+              schema:
+                description: New codes generated - render_template(SECURITY_MULTI_FACTOR_RECOVERY_CODES_TEMPLATE)
+                type: string
+                example: render_template(SECURITY_MULTI_FACTOR_RECOVERY_CODES_TEMPLATE)
+        400:
+          description: Errors while generating new codes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+
+  /mf-recovery:
+    get:
+      summary: GET recovery code form.
+      description: >
+        If a user has two-factor authentication enabled, they can generate and
+        use a recovery code if they lose or otherwise can't use their second factor
+        device.
+      responses:
+        200:
+          description: Multi-factor recovery form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_MULTI_FACTOR_RECOVERY_TEMPLATE)
+                example: render_template(SECURITY_MULTI_FACTOR_RECOVERY_TEMPLATE)
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponseNoUser"
+
+    post:
+      summary: Use a one-time recovery code to satisfy a two-factor authentication requirement.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: One-time recovery code
+          application/x-www-form-urlencoded:
+            schema:
+                description: Use one-time code form
+                type: string
+                example: render_template(SECURITY_MULTI_FACTOR_RECOVERY_TEMPLATE)
+      responses:
+        200:
+          description: Successful authentication.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponse"
+        302:
+          description: Successful login
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_POST_LOGIN_VIEW``
+              schema:
+                type: string
+        400:
+          description: Error when validating code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+
+  /wan-register:
+    get:
+      summary: GET Register WebAuthn form
+      responses:
+        200:
+          description: Register WebAuthn form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_WAN_REGISTER_TEMPLATE)
+                example: render_template(SECURITY_WAN_REGISTER_TEMPLATE)
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BaseJsonResponse'
+                  - type: object
+                    properties:
+                      response:
+                        type: object
+                        properties:
+                          registered_credentials:
+                            type: array
+                            description: List of already registered WebAuthn keys
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                credential_id:
+                                  type: string
+                                transports:
+                                  type: string
+                                lastuse:
+                                  type: string
+                                usage:
+                                  type: string
+
+    post:
+      summary: Register a new WebAuthn key - Step 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WanRegister"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/WanRegister"
+      responses:
+        200:
+          description: WebAuthn Register Step 1 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WanRegisterJsonResponse"
+            text/html:
+              schema:
+                description: Validation failed - render_template(SECURITY_WAN_REGISTER_TEMPLATE)
+                type: string
+                example: render_template(SECURITY_WAN_REGISTER_TEMPLATE) with error values
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /wan-register/{token}:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Register a new WebAuthn key - Step 2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                credential:
+                  type: string
+                  description: Credential returned from browser
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                credential:
+                  type: string
+                  description: Credential returned from browser
+      responses:
+        200:
+          description: WebAuthn Register Step 2 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponse"
+        302:
+          description: >
+            Validation failed - since this form is often auto-submitted
+            the errors are flashed and user is redirected.
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_WAN_REGISTER_URL``
+              schema:
+                type: string
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /wan-signin:
+    get:
+      summary: GET WebAuthn sign in form
+      responses:
+        200:
+          description: Sign in with WebAuthn form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_WAN_SIGNIN_TEMPLATE)
+                example: render_template(SECURITY_WAN_SIGNIN_TEMPLATE)
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BaseJsonResponse'
+                  - type: object
+                    properties:
+                      response:
+                        type: object
+                        properties:
+                          registered_credentials:
+                            type: array
+                            description: List of already registered WebAuthn keys
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                credential_id:
+                                  type: string
+                                transports:
+                                  type: string
+                                lastuse:
+                                  type: string
+                                usage:
+                                  type: string
+
+    post:
+      summary: Sign in using a WebAuthn key - Step 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WanSignin"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/WanSignin"
+      responses:
+        200:
+          description: WebAuthn Sign in Step 1 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WanSigninJsonResponse"
+            text/html:
+              schema:
+                description: >
+                  Next step OR Validation failed.
+                  If valid form then "wan_state" and "credential_options" will be set.
+                  If not valid, form will have error values filled in.
+                type: string
+                example: render_template(SECURITY_WAN_SIGNIN_TEMPLATE)
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /wan-signin/{token}:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Sign in using a WebAuthn key - Step 2
+      parameters:
+        - $ref: "#/components/parameters/include_auth_token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WanSignin2"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/WanSignin2"
+      responses:
+        200:
+          description: WebAuthn Sign in Step 2 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JsonResponseWithToken"
+        302:
+          description: >
+            Validation failed - since this form is often auto-submitted
+            the errors are flashed and user is redirected.
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_WAN_SIGNIN_URL``
+              schema:
+                type: string
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /wan-delete:
+    get:
+      summary: GET Delete WebAuthn key - this method isn't very useful.
+      responses:
+        200:
+          description: Delete an existing WebAuthn Key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponseNoUser"
+        302:
+          description: >
+            This form is associated with the register endpoint and so redirects there.
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_WAN_REGISTER_URL``
+              schema:
+                type: string
+    post:
+      summary: Delete an existing WebAuthn key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WanDelete"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/WanDelete"
+      responses:
+        200:
+          description: Delete response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponseNoUser"
+        302:
+          description: >
+            Validation failed - this form is part of the registration form
+            so any errors or success redirects there.
+          headers:
+            Location:
+              description: Redirect to ``SECURITY_WAN_REGISTER_URL``
+              schema:
+                type: string
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /wan-verify:
+    get:
+      summary: GET Reauthenticate using WebAuthn form
+      description: >
+        If an endpoint is protected with @auth_required() with a freshness declaration
+        this endpoint can be used to reauthenticate with a previously registered WebAuthn Key.
+      responses:
+        200:
+          description: Verify/reauthenticate form
+          content:
+            text/html:
+              schema:
+                type: string
+                description: render_template(SECURITY_WAN_VERIFY_TEMPLATE)
+                example: render_template(SECURITY_WAN_VERIFY_TEMPLATE)
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonResponse"
+    post:
+      summary: Reauthenticate using a WebAuthn Key.
+      responses:
+        200:
+          description: Verify/Reauthenticate response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WanVerifyJsonResponse"
+            text/html:
+              schema:
+                description: >
+                  Next step OR Validation failed.
+                  If valid form then "wan_state" and "credential_options" will be set.
+                  If not valid, form will have error values filled in.
+                type: string
+                example: render_template(SECURITY_WAN_VERIFY_TEMPLATE)
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /wan-verify/{token}:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Reauthenticate using a WebAuthn Key - Part 2.
+      parameters:
+        - $ref: "#/components/parameters/include_auth_token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WanSignin2"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/WanSignin2"
+      responses:
+        200:
+          description: Verify/Reauthenticate response.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: >
+                      The user successfully reauthenticated.
+                  - $ref: "#/components/schemas/JsonResponseWithToken"
+        302:
+          description: User successfully reauthenticated or error in validation when using form based request.
+          headers:
+            Location:
+              description: >
+                Redirect to ``next`` or ``SECURITY_POST_VERIFY_VIEW`` (on success)
+                or ``SECURITY_WAN_VERIFY_URL`` on validation failure.
+              schema:
+                type: string
+        400:
+          description: Errors while validating attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /login/oauthstart/{name}:
+    parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+          description: provider name as registered with OAuth (e.g. 'github')
+    post:
+      summary: Start a 'social'/Oauth authentication exchange.
+      responses:
+        302:
+          description: >
+            Redirect to OAuth provider. The redirect URL will pass along, if provided,
+            the value of the `next` query argument. If the caller is already
+            authenticated redirect will be to ``SECURITY_POST_LOGIN_VIEW``
+        400:
+          description: Caller is already authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultJsonErrorResponse"
+  /login/oauthresponse/{name}:
+    parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+          description: provider name as registered with OAuth (e.g. 'github')
+    get:
+      summary: Response from OAuth provider.
+      responses:
+        302:
+          description: >
+            Caller will be redirected based on whether successful or not and whether
+            __SECURITY_REDIRECT_BEHAVIOR__ == 'spa'.
+          headers:
+            Location:
+              description: |
+                On spa-success: SECURITY_POST_OAUTH_ LOGIN_VIEW?identity={identity}&email={email}
+
+                On spa-oauth-error: SECURITY_LOGIN_ERROR_VIEW?error={msg}
+
+                On spa-unknown-user: SECURITY_LOGIN_ERROR_VIEW?error={msg}
+
+                On form-success: `next` or SECURITY_POST_LOGIN_VIEW
+              schema:
+                type: string
+
+
+components:
+  schemas:
+    Login:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          description: user email
+        password:
+          type: string
+          description: Password
+        remember:
+          type: boolean
+          description: >
+            If true, will remember userid as part of cookie. There is a configuration variable DEFAULT_REMEMBER_ME that can be set. This field will override that.
+    LoginJsonResponse:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/JsonResponseWithToken'
+        - type: object
+          properties:
+            response:
+              type: object
+              properties:
+                tf_required:
+                  type: boolean
+                  description: True if two-factor authentication is required for caller.
+                tf_state:
+                  type: string
+                  description: if "setup_from_login" then the caller must go through two-factor setup endpoint. If "ready" then a code has been sent and should be supplied to SECURITY_TWO_FACTOR_TOKEN_VALIDATION_URL.
+                tf_method:
+                  type: string
+                  description: Which method was used to send code.
+                  example: "webauthn"
+                tf_select:
+                  type: boolean
+                  description: >
+                    If user has setup multiple forms of two-factor authentication, this will be True
+                    and the application should prompt the user for which method they want to use.
+                tf_setup_methods:
+                  type: array
+                  items:
+                    type: string
+                    description: If user has setup multiple forms of two-factor authentication, they are listed
+
+    BaseJsonResponse:
+      type: object
+      required: [ meta, response ]
+      properties:
+        meta:
+          type: object
+          required: [ code ]
+          properties:
+            code:
+              type: integer
+              example: 200
+              description: Http status code
+    DefaultJsonResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - type: object
+          properties:
+            response:
+              type: object
+              properties:
+                user:
+                  type: object
+                  description: >
+                    By default an empty dictionary is returned. However by overriding _User::get_security_payload()_ any attributes of the User model can be returned.
+                csrf_token:
+                  type: string
+                  description: Session CSRF token
+    DefaultJsonResponseNoUser:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - type: object
+          properties:
+            response:
+              type: object
+              properties:
+                csrf_token:
+                  type: string
+                  description: Session CSRF token
+    JsonResponseWithToken:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - type: object
+          properties:
+            response:
+              type: object
+              properties:
+                user:
+                  type: object
+                  description: >
+                    By default an empty dictionary is returned. However by overriding _User::get_security_payload()_ any attributes of the User model can be returned.
+                  properties:
+                    authentication_token:
+                      type: string
+                      description: >
+                        Token to be used in future token-based API calls.
+                        Note this only returned from those APIs that accept a
+                        'include_auth_token' query param.
+                csrf_token:
+                  type: string
+                  description: Session CSRF token
+    DefaultJsonErrorResponse:
+      type: object
+      required: [ meta, response ]
+      properties:
+        meta:
+          type: object
+          required: [ code ]
+          properties:
+            code:
+              type: integer
+              example: 400
+              description: Http status code
+        response:
+          type: object
+          required: [ errors ]
+          description: >
+            For form validation errors, the 'field_errors' key will be set with a list of errors per
+            invalid form input field (i.e. a dict of 'field-name': list of error strings).
+            The 'errors' key will be a simple list of both form and non-form related
+            errors (all form errors will also be included here).
+          properties:
+            field_errors:
+              type: object
+              description: >
+                Errors per input/form field
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+                  example: field validation error.
+                  description: Error message (localized)
+            errors:
+              type: array
+              items:
+                type: string
+                example: "Unauthenticated"
+                description: Error message (localized)
+    Verify:
+      type: object
+      required: [ password ]
+      properties:
+        password:
+          type: string
+          description: Password
+    Register:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          description: >
+            user identifier. This is by default an email address, but can be any (unique)
+            field that is part of the User model and is defined in the __SECURITY_USER_IDENTITY_ATTRIBUTES__ configuration variable. It will also match against numeric User model fields.
+        password:
+          type: string
+          description: Password
+    RegisterForm:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          description: >
+            user identifier. This is by default an email address, but can be any (unique)
+            field that is part of the User model and is defined in the __SECURITY_USER_IDENTITY_ATTRIBUTES__ configuration variable. It will also match against numeric User model fields.
+        password:
+          type: string
+          description: Password
+        password_confirm:
+          type: string
+          description: >
+            If present, must re-type in password. This will not be present if the __SECURITY_CONFIRM__ configuration is true.
+        next:
+          type: string
+          description: >
+            Redirect URL. Overrides __SECURITY_POST_REGISTER_VIEW__.
+    ResetPassword:
+      type: object
+      required: [password, password_confirm]
+      properties:
+        password:
+          type: string
+          description: Password
+        password_confirm:
+          type: string
+          description: Password - again
+    ChangePassword:
+      type: object
+      required: [password, new_password, new_password_confirm]
+      properties:
+        password:
+          type: string
+          description: Password
+        new_password:
+          type: string
+          description: New password
+        new_password_confirm:
+          type: string
+          description: New password - again
+    ChangeEmail:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          description: New email requested
+    ChangeUsername:
+      type: object
+      required: [username]
+      properties:
+        username:
+          type: string
+          description: New username
+
+    EmailLink:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          description: >
+            Email address to send link email to.
+    RecoverUsername:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          description: >
+            Email address associated with the account.
+    UsSignin:
+      type: object
+      required: [identity, passcode]
+      properties:
+        identity:
+          type: string
+          description: Configured by SECURITY_USER_IDENTITY_ATTRIBUTES
+          example: me@you.com, +16505551212
+        passcode:
+          type: string
+          description: password or code
+        remember:
+          type: boolean
+    UsSigninSendCode:
+      type: object
+      required: [identity, chosen_method]
+      properties:
+        identity:
+          type: string
+          description: Configured by SECURITY_USER_IDENTITY_ATTRIBUTES
+          example: me@you.com, +16505551212
+        chosen_method:
+          type: string
+          description: which method should be used to send the code, as configured with SECURITY_US_ENABLED_METHODS
+    UsSigninVerify:
+      type: object
+      required: [passcode]
+      properties:
+        passcode:
+          type: string
+          description: password or code
+    UsSigninVerifySendCode:
+      type: object
+      required: [chosen_method]
+      properties:
+        chosen_method:
+          type: string
+          description: which method should be used to send the code, as configured with SECURITY_US_ENABLED_METHODS
+    UsSetup:
+      type: object
+      properties:
+        chosen_method:
+          type: string
+          description: which method should be used to send the code, as configured with SECURITY_US_ENABLED_METHODS
+        delete_method:
+          type: string
+          description: which previously set up method should be deleted.
+        phone:
+          type: string
+          description: phone number (this will be normalized). Required if chosen_method == "sms".
+    UsSetupJsonResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - type: object
+          properties:
+            response:
+              type: object
+              description: Response when setting up a new method. When deleting, nothing is returned.
+              properties:
+                chosen_method:
+                  type: string
+                  description: The chosen_method as passed into API.
+                phone:
+                  type: string
+                  description: The canonicalized phone number if setting up SMS
+                authr_key:
+                  type: string
+                  description: TOTP key for setting up authenticator (if chosen_method == 'authenticator')
+                authr_issuer:
+                  type: string
+                  description: Issuer as configured with TOTP_ISSUER (same as used in QRcode) (if chosen_method == 'authenticator')
+                authr_username:
+                  type: string
+                  description: Username (same as used in QRcode) (if chosen_method == 'authenticator')
+                state:
+                  type: string
+                  description: Opaque blob that must be pass to /us-setup/<state>. This is a signed, timed token.
+    UsSetupValidateRequest:
+      type: object
+      required: [passcode]
+      properties:
+        passcode:
+          type: string
+          description: Code/Passcode as received from method being setup.
+    UsSetupValidateJsonResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - type: object
+          properties:
+            response:
+              type: object
+              properties:
+                chosen_method:
+                  type: string
+                  description: The chosen_method as passed into API.
+                phone:
+                  type: string
+                  description: Phone number if set.
+    TfSetup:
+      type: object
+      required: [setup]
+      properties:
+        setup:
+          type: string
+          description: >
+            Which method should be used to send the code, as configured with SECURITY_TWO_FACTOR_ENABLED_METHODS.
+            If SECURITY_TWO_FACTOR_REQUIRED is False, the additional method 'disable' is available.
+          example: sms
+        phone:
+          type: string
+          description: phone number (this will be validated for format). Required if setup == "sms".
+          example: 650-555-1212
+    TfSetupJsonResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - type: object
+          properties:
+            response:
+              type: object
+              properties:
+                tf_state:
+                  type: string
+                  description: >
+                    Current state of Two-Factor configuration. Not present when disabling 2FA. This will be set to 'validating_profile'
+                    indicating the caller needs to call '/tf-validate' with the correct code.
+                    N.B. as of 5.5.0 this is only used for setting up as part of initial login when 2FA is required.
+                    See tf_state_token below for use when an authenticated user wants to change their 2FA method.
+                  example: validating_profile
+                tf_state_token:
+                  type: string
+                  description: >
+                    Timed and signed token containing necessary state to complete the setup. To validate the method POST
+                    the code to '/tf-setup/<tf_state_token>'.
+                tf_primary_method:
+                  type: string
+                  description: Current method being configured (deprecated).
+                  example: sms
+                tf_method:
+                  type: string
+                  description: Current method being configured.
+                  example: sms
+                tf_authr_key:
+                  type: string
+                  description: TOTP key for setting up authenticator (if tf_primary_method == 'authenticator')
+                tf_authr_issuer:
+                  type: string
+                  description: Issuer as configured with TOTP_ISSUER (same as used in QRcode) (if tf_primary_method == 'authenticator')
+                tf_authr_username:
+                  type: string
+                  description: Username (same as used in QRcode) (if tf_primary_method == 'authenticator')
+    TfSelectJsonResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - oneOf:
+          - type: object
+            description: >
+              The user requires two-factor authorization and has chosen which one to use.
+            properties:
+              response:
+                type: object
+                properties:
+                  tf_required:
+                    type: boolean
+                    description: Will be True since a second factor is required.
+                  tf_state:
+                    type: string
+                    description: if "setup_from_login" then the caller must go through two-factor setup endpoint. If "ready" then a code has been sent and should be supplied to SECURITY_TWO_FACTOR_TOKEN_VALIDATION_URL.
+                  tf_method:
+                    type: string
+                    description: Which method was used to send code/link.
+                    example: "sms"
+          - type: object
+            description: >
+              The user requires two-factor authorization and has chosen to use `webauthn`.
+            properties:
+              response:
+                type: object
+                properties:
+                  tf_required:
+                    type: boolean
+                    description: Will be True since a second factor is required.
+                  tf_state:
+                    type: string
+                    description: This will be set to `ready`.
+                  tf_method:
+                    type: string
+                    description: This will be set to `webauthn`.
+                  tf_signin_url:
+                    type: string
+                    description: The value of SECURITY_WAN_SIGNIN_URL
+    TfSetupValidateRequest:
+      type: object
+      required: [code]
+      properties:
+        code:
+          type: string
+          description: Code as received from method being setup.
+    TfSetupValidateJsonResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - type: object
+          properties:
+            response:
+              type: object
+              properties:
+                tf_method:
+                  type: string
+                  description: The method as passed into API.
+                tf_primary_method:
+                  type: string
+                  description: The method as passed into API.
+                tf_phone:
+                  type: string
+                  description: Phone number if set.
+    WanRegister:
+      type: object
+      required: [ name, usage ]
+      properties:
+        name:
+          type: string
+          example: Wankey1
+        usage:
+          type: string
+          enum: [ first, secondary ]
+    WanRegisterJsonResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - type: object
+          properties:
+            response:
+              type: object
+              properties:
+                credential_options:
+                  type: string
+                wan_state:
+                  type: string
+    WanSignin:
+      type: object
+      properties:
+        identity:
+          type: string
+          example: lp@me.com
+        remember:
+          type: boolean
+          description: >
+            If true, will remember userid as part of cookie. There is a configuration variable DEFAULT_REMEMBER_ME that can be set. This field will override that.
+    WanSigninJsonResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - type: object
+          properties:
+            response:
+              type: object
+              properties:
+                credential_options:
+                  type: string
+                wan_state:
+                  type: string
+                is_secondary:
+                  type: boolean
+                  description: Is this sign in part of a secondary authentication.
+                remember:
+                  type: boolean
+                  description: This is simply the same value as was passed in the body.
+    WanSignin2:
+      type: object
+      required: [ credential ]
+      properties:
+        credential:
+          type: string
+          description: Credential returned from browser
+        remember:
+          type: boolean
+    WanDelete:
+      type: object
+      required: [ name ]
+      properties:
+        name:
+          type: string
+          description: Name of WebAuthn key to delete.
+    WanVerifyJsonResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseJsonResponse'
+        - type: object
+          properties:
+            response:
+              type: object
+              properties:
+                credential_options:
+                  type: string
+                wan_state:
+                  type: string
+
+  headers:
+    X-CSRF-Token:
+      description: CSRF token
+      schema:
+        type: string
+  parameters:
+    include_auth_token:
+      name: include_auth_token
+      description: If set/sent, will return an Authentication Token for user
+      in: query
+      schema:
+        type: string
