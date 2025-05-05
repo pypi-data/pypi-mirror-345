@@ -1,0 +1,91 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm_insight_forge"
+version = "0.1.0"
+description = "A comprehensive toolkit for LLM evaluation, prompt engineering, fine-tuning, and inference optimization"
+readme = "README.md"
+authors = [
+    {name = "Biswanath Roul", email = "your.email@example.com"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+]
+keywords = ["llm", "nlp", "evaluation", "prompt-engineering", "fine-tuning", "quantization"]
+requires-python = ">=3.8"
+dependencies = [
+    "torch>=1.10.0",
+    "transformers>=4.20.0",
+    "numpy>=1.19.0",
+    "scikit-learn>=1.0.0",
+    "nltk>=3.6.0",
+    "rouge-score>=0.1.0",
+    "datasets>=2.0.0",
+    "tqdm>=4.62.0",
+]
+
+[project.optional-dependencies]
+fine-tuning = [
+    "peft>=0.4.0",
+    "accelerate>=0.20.0",
+    "bitsandbytes>=0.40.0",
+]
+quantization = [
+    "bitsandbytes>=0.40.0",
+    "optimum>=1.8.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "isort>=5.10.0",
+    "flake8>=4.0.0",
+    "mypy>=0.940",
+]
+docs = [
+    "sphinx>=4.4.0",
+    "sphinx-rtd-theme>=1.0.0",
+    "myst-parser>=0.18.0",
+]
+all = [
+    "peft>=0.4.0",
+    "accelerate>=0.20.0", 
+    "bitsandbytes>=0.40.0",
+    "optimum>=1.8.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/biswanathroul/llm_insight_forge"
+"Bug Tracker" = "https://github.com/biswanathroul/llm_insight_forge/issues"
+"Documentation" = "https://llm-insight-forge.readthedocs.io/"
+
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310", "py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
