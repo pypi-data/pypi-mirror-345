@@ -1,0 +1,18 @@
+type: scan
+name: domain
+description: Domain scan
+profile: default
+input_types:
+  - host
+workflows:
+  subdomain_recon:
+  host_recon:
+    targets_:
+    - target.name
+    - subdomain.host
+  url_crawl:
+    targets_:
+    - url.url
+  url_vuln:
+    targets_:
+    - url.url

@@ -1,0 +1,29 @@
+type: workflow
+name: url_crawl
+alias: urlcrawl
+description: URL crawl (fast)
+tags: [http, crawl]
+options:
+  match_codes: 200,204,301,302,307,401,403,405,500
+input_types:
+  - url
+tasks:
+  _group:
+    # gau:
+    #   description: Search for passive URLs
+    # gospider:
+    #   description: Crawl URLs
+    cariddi:
+      description: Hunt URLs patterns
+    katana:
+      description: Crawl URLs
+  httpx:
+    description: Run HTTP probes on crawled URLs
+    targets_:
+      type: url
+      field: url
+results:
+  - type: url
+    condition: item._source == 'httpx'
+
+  - type: tag
