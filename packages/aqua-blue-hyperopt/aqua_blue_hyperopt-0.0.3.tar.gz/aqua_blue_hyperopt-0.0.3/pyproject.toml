@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aqua-blue-hyperopt"
+dynamic = ["version"]
+description = "Hyperparameter optimization for aqua-blue models!"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+author = { name = "Hrishikesh Belagali", email = "hrishikesh.belagali@ccmc.global" }
+keywords = [
+    'aqua-blue',
+    'computing',
+    'optimization',
+]
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "numpy ~= 2.0.2",
+    "aqua-blue~=0.2.17", 
+    "hyperopt~=0.2.7",
+]
+
+[project.urls]
+Homepage = "https://github.com/Chicago-Club-Management-Company/aqua-blue-hyperopt"
+
+[project.optional-dependencies]
+dev = [
+    "hatchling~=1.27.0",
+    "pytest~=8.0.2",
+    "ruff~=0.9.4",
+    "mypy~=1.13.0",
+    "pdoc3~=0.11.5"
+]
+examples = [ 
+    "matplotlib~=3.9.4",
+]
+
+[tool.hatch.version]
+path = "aqua_blue_hyperopt/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/aqua_blue_hyperopt",
+]
