@@ -1,0 +1,45 @@
+"""Description of the used columns names in PedPy."""
+
+from typing import Final
+
+ID_COL: Final = "id"
+FRAME_COL: Final = "frame"
+X_COL: Final = "x"
+Y_COL: Final = "y"
+POINT_COL: Final = "point"
+
+DENSITY_COL: Final = "density"
+POLYGON_COL: Final = "polygon"
+INTERSECTION_COL: Final = "intersection"
+COUNT_COL: Final = "num_peds"
+
+CUMULATED_COL: Final = "cumulative_pedestrians"
+TIME_COL: Final = "time"
+SPEED_COL: Final = "speed"
+V_X_COL: Final = "v_x"
+V_Y_COL: Final = "v_y"
+FLOW_COL: Final = "flow"
+MEAN_SPEED_COL: Final = "mean_speed"
+
+ACC_COL: Final = "acceleration"
+A_X_COL: Final = "a_x"
+A_Y_COL: Final = "a_y"
+
+FIRST_FRAME_COL: Final = "entering_frame"
+MID_FRAME_COL: Final = "mid_frame"
+LAST_FRAME_COL: Final = "leaving_frame"
+NEIGHBORS_COL: Final = "neighbors"
+DISTANCE_COL: Final = "distance"
+CROSSING_FRAME_COL: Final = "crossing_frame"
+START_POSITION_COL: Final = "start_position"
+MID_POSITION_COL: Final = "mid_position"
+END_POSITION_COL: Final = "end_position"
+WINDOW_SIZE_COL: Final = "window_size"
+
+SPECIES_COL: Final = "species"
+DENSITY_SP1_COL: Final = "p_sp+1"
+DENSITY_SP2_COL: Final = "p_sp-1"
+SPEED_SP1_COL: Final = "s_sp+1"
+SPEED_SP2_COL: Final = "s_sp-1"
+FLOW_SP1_COL: Final = "j_sp+1"
+FLOW_SP2_COL: Final = "j_sp-1"
