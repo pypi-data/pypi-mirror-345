@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ignite-cli"
+version = "0.1.50"
+description = "IgniteOps Command-Line Interface"
+authors = [
+    { name = "IgniteOps", email = "support@igniteops.io" },
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = [
+    "typer[all]>=0.9.0",
+    "requests>=2.31.0",
+    "rich>=13.0.0",
+    "pydantic>=2.0.0",
+    "httpx>=0.23.0",
+    "attrs>=22.0.0",
+    "python-dateutil>=2.8.0",
+    "PyYAML>=6.0",
+    "click>=8.0.0"
+]
+
+[project.scripts]
+ignite = "ignite.cli:app"
+
+[project.optional-dependencies]
+dev = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["src", "."]
+include = ["ignite*", "igniteops_sdk*"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
