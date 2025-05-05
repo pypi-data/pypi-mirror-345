@@ -1,0 +1,119 @@
+Metadata-Version: 2.3
+Name: neomirdata
+Version: 0.1.5
+Summary: Common loaders for MIR datasets.
+License: BSD-3-Clause
+Author: Igor Bogicevic
+Author-email: igor.bogicevic@gmail.com
+Maintainer: Igor Bogicevic
+Maintainer-email: igor.bogicevic@gmail.com
+Requires-Python: >=3.12,<3.14
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Multimedia :: Sound/Audio :: Analysis
+Requires-Dist: Deprecated (>=1.2.14,<2.0.0)
+Requires-Dist: attrs (>=23.2.0,<24.0.0)
+Requires-Dist: audioop-lts (>=0.2.1,<0.3.0) ; python_version >= "3.13"
+Requires-Dist: chardet (>=5.2.0,<6.0.0)
+Requires-Dist: h5py (>=3.10.0,<4.0.0)
+Requires-Dist: librosa (>=0.10.1,<0.11.0)
+Requires-Dist: numpy (>=1.26.4,<2.0.0)
+Requires-Dist: openpyxl (>=3.1.2,<4.0.0)
+Requires-Dist: pandas (>=2.2.1,<3.0.0)
+Requires-Dist: pretty_midi (>=0.2.10,<0.3.0)
+Requires-Dist: pyyaml (>=6.0.1,<7.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: scipy (>=1.12.0,<2.0.0)
+Requires-Dist: smart_open[all] (>=6.4.0,<7.0.0)
+Requires-Dist: standard-aifc (>=3.13.0,<4.0.0) ; python_version >= "3.13"
+Requires-Dist: standard-sunau (>=3.13.0,<4.0.0) ; python_version >= "3.13"
+Requires-Dist: tqdm (>=4.66.2,<5.0.0)
+Project-URL: Documentation, https://neomirdata.readthedocs.io/en/stable/
+Project-URL: Homepage, https://github.com/probablyrobot/neomirdata
+Project-URL: Issues, https://github.com/probablyrobot/neomirdata/issues
+Project-URL: Releases, https://github.com/probablyrobot/neomirdata/releases
+Description-Content-Type: text/markdown
+
+# neomirdata
+Common loaders for Music Information Retrieval (MIR) datasets. Find the API documentation [here](https://mirdata.readthedocs.io/).
+
+![CI status](https://github.com/probablyrobot/neomirdata/actions/workflows/ci.yml/badge.svg?branch=master)
+[![Documentation Status](https://readthedocs.org/projects/neomirdata/badge/?version=latest)](https://neomirdata.readthedocs.io/en/latest/?badge=latest)
+![GitHub](https://img.shields.io/github/license/probablyrobot/neomirdata.svg)
+
+
+[![PyPI version](https://badge.fury.io/py/neomirdata.svg)](https://badge.fury.io/py/neomirdata)
+[![codecov](https://codecov.io/gh/probablyrobot/neomirdata/branch/master/graph/badge.svg)](https://codecov.io/gh/probablyrobot/neomirdata)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+This library is a fork of [mirdata](https://github.com/mir-dataset-loaders/mirdata) and provides tools for working with common MIR datasets, including tools for:
+* downloading datasets to a common location and format
+* validating that the files for a dataset are all present
+* loading annotation files to a common format, consistent with the format required by [mir_eval](https://github.com/craffel/mir_eval)
+* parsing track level metadata for detailed evaluations
+
+### Maintainer
+Igor Bogicevic (igor.bogicevic@gmail.com) - [@probablyrobot](https://github.com/probablyrobot)
+
+### Installation
+
+To install, simply run:
+
+```python
+pip install neomirdata
+```
+
+### Quick example
+```python
+import mirdata
+
+orchset = mirdata.initialize('orchset')
+orchset.download()  # download the dataset
+orchset.validate()  # validate that all the expected files are there
+
+example_track = orchset.choice_track()  # choose a random example track
+print(example_track)  # see the available data
+```
+See the [documentation](https://mirdata.readthedocs.io/) for more examples and the API reference.
+
+
+### Currently supported datasets
+
+
+Supported datasets include [AcousticBrainz](https://zenodo.org/record/2553414#.X8jTgulKhhE), [DALI](https://github.com/gabolsgabs/DALI), [Guitarset](http://github.com/marl/guitarset/), [MAESTRO](https://magenta.tensorflow.org/datasets/maestro), [TinySOL](https://www.orch-idea.org/), among many others.
+
+For the **complete list** of supported datasets, see the [documentation](https://mirdata.readthedocs.io/en/stable/source/quick_reference.html)
+
+
+### Citing
+
+This project is a fork of mirdata. When using this library, please cite both the original mirdata paper and this fork:
+
+Original mirdata paper:
+```
+"mirdata: Software for Reproducible Usage of Datasets"
+Rachel M. Bittner, Magdalena Fuentes, David Rubinstein, Andreas Jansson, Keunwoo Choi, and Thor Kell
+in International Society for Music Information Retrieval (ISMIR) Conference, 2019
+```
+
+```
+@inproceedings{
+  bittner_fuentes_2019,
+  title={mirdata: Software for Reproducible Usage of Datasets},
+  author={Bittner, Rachel M and Fuentes, Magdalena and Rubinstein, David and Jansson, Andreas and Choi, Keunwoo and Kell, Thor},
+  booktitle={International Society for Music Information Retrieval (ISMIR) Conference},
+  year={2019}
+}
+```
+
+When working with datasets, please cite both the original mirdata paper and include the reference of the dataset, which can be found in the respective dataset loader using the `cite()` method.
+
+### Contributing
+
+We welcome contributions to this library, especially new datasets. Please see [contributing](https://mirdata.readthedocs.io/en/latest/source/contributing.html) for guidelines.
+
