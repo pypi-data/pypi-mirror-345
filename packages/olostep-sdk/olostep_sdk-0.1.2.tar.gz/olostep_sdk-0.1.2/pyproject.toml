@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+respect-gitignore = true
+
+# These apply to linting rules (NOT formatting)
+extend-select = [
+  "F",    # pyflakes
+  "E",    # pycodestyle
+  "W",    # warnings
+  "I",    # isort
+  "UP",   # pyupgrade
+  "C90"   # mccabe complexity
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+force-single-line = false
+combine-as-imports = true
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
