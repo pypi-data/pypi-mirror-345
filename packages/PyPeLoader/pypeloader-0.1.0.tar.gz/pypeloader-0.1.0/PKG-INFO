@@ -1,0 +1,122 @@
+Metadata-Version: 2.2
+Name: PyPeLoader
+Version: 0.1.0
+Summary: This package implements a basic PE loader in python to load executables in memory.
+Home-page: https://github.com/mauricelambert/PyPeLoader
+Download-URL: https://mauricelambert.github.io/info/python/security/PyPeLoader.pyz
+Author: Maurice Lambert
+Author-email: Maurice Lambert <mauricelambert434@gmail.com>
+Maintainer: Maurice Lambert
+Maintainer-email: Maurice Lambert <mauricelambert434@gmail.com>
+License: GPL-3.0 License
+Project-URL: Github, https://github.com/mauricelambert/PyPeLoader
+Project-URL: Documentation, https://mauricelambert.github.io/info/python/security/PyPeLoader.html
+Project-URL: Python Executable, https://mauricelambert.github.io/info/python/security/PyPeLoader.pyz
+Project-URL: Windows Executable, https://mauricelambert.github.io/info/python/security/PyPeLoader.exe
+Keywords: PeLoader,Loader,Linker,WindowsLinker,Packer,MemoryExecution,AntivirusBypass,Antivirus,Bypass,Hooks,Win32,WinAPI,reverse,malware-reverse
+Platform: Windows
+Classifier: Topic :: System
+Classifier: Topic :: Security
+Classifier: Environment :: Console
+Classifier: Topic :: System :: Shells
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: System :: System Shells
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Topic :: System :: Systems Administration
+Classifier: Intended Audience :: System Administrators
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Dynamic: author
+Dynamic: download-url
+Dynamic: home-page
+Dynamic: maintainer
+Dynamic: requires-python
+
+![PyPeLoader Logo](https://mauricelambert.github.io/info/python/security/PyPeLoader_small.png "PyPeLoader logo")
+
+# PyPeLoader
+
+## Description
+
+This package implements a basic PE loader in python (can load simple
+executable like calc.exe, net1.exe, little malwares...)
+
+## Requirements
+
+This package require:
+ - python3
+ - python3 Standard Library
+
+## Installation
+
+### Pip
+
+```bash
+python3 -m pip install PyPeLoader
+```
+
+### Git
+
+```bash
+git clone "https://github.com/mauricelambert/PyPeLoader.git"
+cd "PyPeLoader"
+python3 -m pip install .
+```
+
+### Wget
+
+```bash
+wget https://github.com/mauricelambert/PyPeLoader/archive/refs/heads/main.zip
+unzip main.zip
+cd PyPeLoader-main
+python3 -m pip install .
+```
+
+### cURL
+
+```bash
+curl -O https://github.com/mauricelambert/PyPeLoader/archive/refs/heads/main.zip
+unzip main.zip
+cd PyPeLoader-main
+python3 -m pip install .
+```
+
+## Usages
+
+### Command line
+
+```bash
+PyPeLoader              # Using CLI package executable
+python3 -m PyPeLoader   # Using python module
+python3 PyPeLoader.pyz  # Using python executable
+PyPeLoader.exe          # Using python Windows executable
+
+PyPeLoader.exe "C:\Windows\System32\net1.exe" "C:\Windows\System32\calc.exe"
+```
+
+### Python script
+
+```python
+from PyPeLoader import load
+
+load(r'C:\Windows\System32\net1.exe') # for 32 bits python version use: C:\Windows\SysWOW64\net1.exe
+load(r'C:\Windows\System32\calc.exe') # for 32 bits python version use: C:\Windows\SysWOW64\calc.exe
+```
+
+## Links
+
+ - [Pypi](https://pypi.org/project/PyPeLoader)
+ - [Github](https://github.com/mauricelambert/PyPeLoader)
+ - [Documentation](https://mauricelambert.github.io/info/python/security/PyPeLoader.html)
+ - [Python executable](https://mauricelambert.github.io/info/python/security/PyPeLoader.pyz)
+ - [Python Windows executable](https://mauricelambert.github.io/info/python/security/PyPeLoader.exe)
+
+## License
+
+Licensed under the [GPL, version 3](https://www.gnu.org/licenses/).
