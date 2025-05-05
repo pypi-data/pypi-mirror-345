@@ -1,0 +1,1200 @@
+##########
+ka_uts_arr
+##########
+
+Overview
+********
+
+.. start short_desc
+
+**Array Utilities**
+
+.. end short_desc
+
+Installation
+************
+
+.. start installation
+
+Package ``ka_uts_array`` can be installed from PyPI or Anaconda.
+
+To install with ``pip``:
+
+.. code-block:: shell
+
+	$ python -m pip install ka_uts_arr
+
+To install with ``conda``:
+
+.. code-block:: shell
+
+	$ conda install -c conda-forge ka_uts_arr
+
+.. end installation
+
+Package logging
+***************
+
+(c.f.: **Appendix**: `Package Logging`)
+
+Package files
+*************
+
+Classification
+==============
+
+The Files of Package ``ka_uts_arr`` could be classified into the follwing file types
+(c.f.: **Appendix**: `Python Terminology`):
+
+#. **Special files**
+
+   a. *py.typed*
+
+#. **Special modules**
+
+   a. *__init__.py* 
+   #. *__version__.py*
+
+#. **Modules**
+
+   #. **Modules for dictionaries**
+
+      a. *dic.py*
+
+   #. **Modules for dictionaries of arrays**
+
+      a. *doaod.py*
+      #. *doa.py*
+
+   #. **Modules for dictionaries of callables**
+
+      a. *doc.py**
+
+   #. **Modules for dictionaries of dataframes**
+
+      a. *dopddf.py*
+
+
+Package Modules
+===============
+
+Overview
+--------
+
+The Modules of Package ``ka_uts_arr`` could be classified into the follwing module types:
+
+#. *Modules for arrays*
+#. *Modules for arrays of arrays*
+#. *Modules for arrays of basic objects*
+
+Modules for arrays
+******************
+
+The Module type ``Modules for arrays`` contains only the module ``arr.py``.
+
+
+Module: arr.py
+==============
+
+The Module ``arr.py`` contains only the static class ``Arr``.
+
+Class: Arr
+----------
+
+The Class ``Arr`` contains the following methods:
+
+Arr Methods
+^^^^^^^^^^^
+
+  .. Arr-methods-label:
+  .. table:: *Arr methods*
+
+   +-----------------------+---------------------------------------------------+
+   |Name                   |Short description                                  |
+   +=======================+===================================================+
+   |append                 |Append item to the array                           |
+   +-----------------------+---------------------------------------------------+
+   |append_unique          |Append item to the array if the item is not in the |
+   |                       |array.                                             |
+   +-----------------------+---------------------------------------------------+
+   |apply_function         |Apply function with the keyword arguments to all   |
+   |                       |non empty array elements.                          |
+   +-----------------------+---------------------------------------------------+
+   |apply_replace          |Replace source by target to all array elements.    |
+   +-----------------------+---------------------------------------------------+
+   |apply_str              |Apply function str to all non empty array elements.|
+   +-----------------------+---------------------------------------------------+
+   |encode                 |Join array elements with blank separator and encode|
+   |                       |result string.                                     |
+   +-----------------------+---------------------------------------------------+
+   |ex_intersection        |Intersection of first array with second array.     |
+   +-----------------------+---------------------------------------------------+
+   |extend                 |Extend first array with second array.              |
+   +-----------------------+---------------------------------------------------+
+   |get_key_value          |Get next array item value without line feed for the|
+   |                       |given index or the given default value if the item |
+   |                       |value is identical to the given value without line |
+   |                       |feeds.                                             |
+   +-----------------------+---------------------------------------------------+
+   |get_item               |Extend array of dicts. with non empty dict.        |
+   +-----------------------+---------------------------------------------------+
+   |get_text               |Extend array of dicts. with non empty dict.        |
+   +-----------------------+---------------------------------------------------+
+   |get_text_spli          |Extend array of dicts. with non empty dict.        |
+   +-----------------------+---------------------------------------------------+
+   |intersection           |Extend array of dicts. with non empty dict.        |
+   +-----------------------+---------------------------------------------------+
+   |is_empty               |Extend array of dicts. with non empty dict.        |
+   +-----------------------+---------------------------------------------------+
+   |is_not_empty           |Extend array of dicts. with non empty dict.        |
+   +-----------------------+---------------------------------------------------+
+   |join_not_none          |Extend array of dicts. with non empty dict.        |
+   +-----------------------+---------------------------------------------------+
+   |length                 |Extend array of dicts. with non empty dict.        |
+   +-----------------------+---------------------------------------------------+
+   |merge                  |Extend array of dicts. with non empty dict.        |
+   +-----------------------+---------------------------------------------------+
+   |sh_dic_from_keys_values|Extend array of dicts. with non empty dict.        |
+   +-----------------------+---------------------------------------------------+
+   |sh_dic_zip             |Join elements of array of dicts.                   |
+   +-----------------------+---------------------------------------------------+
+   |sh_item                |Show True if an element exists in the array        |
+   +-----------------------+---------------------------------------------------+
+   |sh_item_if             |Show True if an element exists in the array        |
+   +-----------------------+---------------------------------------------------+
+   |sh_item_lower          |Show True if an element exists in the array        |
+   +-----------------------+---------------------------------------------------+
+   |sh_item_str            |Show True if an element exists in the array        |
+   +-----------------------+---------------------------------------------------+
+   |sh_item0               |Deduplicate array of dicts.                        |
+   +-----------------------+---------------------------------------------------+
+   |sh_item0_if            |Deduplicate array of dicts.                        |
+   +-----------------------+---------------------------------------------------+
+   |sh_subarray            |Deduplicate array of dicts.                        |
+   +-----------------------+---------------------------------------------------+
+   |to_dic                 |Show arr. of arrays created from arr. of dict.     |
+   |                       |by using any key- and all value-arrays             |
+   +-----------------------+---------------------------------------------------+
+   |yield_items            |Convert array of dictionaries to array of          |
+   |                       |arrays controlled by key- and value-switch.        |
+   +-----------------------+---------------------------------------------------+
+
+Modules for array of arrays
+***************************
+
+The Module type ``Modules for array of arrays`` contains only the module ``aoa.py``.
+
+Module: aoa.py
+==============
+
+The Module ``aoa.py`` contains only the static class ``AoA``.
+
+aoa.py Class: AoA
+------------------
+
+The static Class ``AoA`` contains the subsequent methods.
+
+AoA Methods
+^^^^^^^^^^^
+
+  .. AoA-Methods-label:
+  .. table:: *AoA Methods*
+
+   +-----------------+-----------------------------------------+
+   |Name             |Short description                        |
+   +=================+=========================================+
+   |concatinate      |Concatinate all arrays of array of arrays|
+   +-----------------+-----------------------------------------+
+   |csv_writerows    |Write array of arrays to csv file        |
+   +-----------------+-----------------------------------------+
+   |nvl              |Replace empty array of arrays            |
+   +-----------------+-----------------------------------------+
+   |to_aod           |Convert array of arrays to array of      |
+   |                 |dictionaries using an array of keys      |
+   +-----------------+-----------------------------------------+
+   |to_arr_from_2cols|Convert array of arrays to array using   |
+   |                 |a 2-dimensional index array              |
+   +-----------------+-----------------------------------------+
+   |to_doa_from_2cols|Convert array of arrays to dictionary of |
+   |                 |arrays using a 2-dimensionl index array  |
+   +-----------------+-----------------------------------------+
+   |to_dic_from_2cols|Convert array of arrays to dictionary by |
+   |                 |using a 2-dimensional index array        |
+   +-----------------+-----------------------------------------+
+
+AoA Method: concatinate
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Description
+"""""""""""
+
+Concatinate all arrays of array of arrays.
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoA-Method-concatinate-label:
+  .. table:: *Parameter of: AoA Method: concatinate*
+
+   +-------+-----+-------+---------------+
+   |Name   |Type |Default|Description    |
+   +=======+=====+=======+===============+
+   |aoa    |TyAoA|       |Array of arrays|
+   +-------+-----+-------+---------------+
+
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoA-Method-concatinate-label:
+  .. table:: *Return Value of: AoA Method: concatinate*
+
+   +-------+-----+-----------+
+   |Name   |Type |Description|
+   +=======+=====+===========+
+   |arr_new|TyArr|new array  |
+   +-------+-----+-----------+
+
+AoA Method: csv_writerows
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Description
+"""""""""""
+
+Write Array of Arrays to Csv file defined by the path string 
+using the function "writerows" of module "csv".
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoA-Method-csv_writerows-label:
+  .. table:: *Parameter of: AoA Method: csv_writerows*
+
+   +------+------+----------------+
+   |Name  |Type  |Description     |
+   +======+======+================+
+   |aoa   |TyAoA |Array of arrays |
+   +------+------+----------------+
+   |path  |TyPath|Path string     |
+   +------+------+----------------+
+   |kwargs|TyDic |Keyword aruments|
+   +------+------+----------------+
+
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoA-Method-AoA-writerows-label:
+  .. table:: *Return Value of: AoA Method: csv_writerows*
+
+   +------+------+----------------+
+   |Name  |Type  |Description     |
+   +======+======+================+
+   |      |None  |                |
+   +------+------+----------------+
+
+AoA Method: nvl
+^^^^^^^^^^^^^^^
+
+Description
+"""""""""""
+
+Return the empty array if the Array of Arrays is None.
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoA-Method-nvl-label:
+  .. table:: *Parameter of: AoA Method nvl*
+
+   +-------+-----+-------+-------------------+
+   |Name   |Type |Default|Description        |
+   +=======+=====+=======+===================+
+   |aoa    |TyAoA|       |Array of arrays    |
+   +-------+-----+-------+-------------------+
+
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoA-method-AoA.nvl-label:
+  .. table:: *Return Value of: AoA Method: nvl*
+
+   +-------+-----+-------------------+
+   |Name   |Type |Description        |
+   +=======+=====+===================+
+   |aoa_new|TyAoA|new Array of arrays|
+   +-------+-----+-------------------+
+
+AoA Method: to_aod
+^^^^^^^^^^^^^^^^^^
+
+Description
+"""""""""""
+
+Convert array of arrays to array of Dictionaries.
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoA-Method-to_aod-label:
+  .. table:: *Parameter of: AoA Method: to_aod*
+
+   +----+-----+-------+---------------+
+   |Name|Type |Default|Description    |
+   +====+=====+=======+===============+
+   |aoa |TyAoA|       |Array of arrays|
+   +----+-----+-------+---------------+
+   |keys|TyArr|       |Array of keys  |
+   +----+-----+-------+---------------+
+
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoA-Method-to_aod-label:
+  .. table:: *Return Value of: AoA Method: to_aod*
+
+   +----+-----+---------------------+
+   |Name|Type |Description          |
+   +====+=====+=====================+
+   |aod |TyAoD|array of dictionaries|
+   +----+-----+---------------------+
+
+AoA Method: to_arr_from_2cols
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Description
+"""""""""""
+
+Convert Array of Arrays to unique array with distinct elements by
+selecting 2 columns of each Array as elements of the new array using a
+2-dimensional index-array.
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoA-Method-to_arr_from_2cols-label:
+  .. table:: *Parameter of: AoA Method: to_arr_from_2cols*
+
+   +----+-----+-------+----------------+
+   |Name|Type |Default|Description     |
+   +====+=====+=======+================+
+   |aoa |TyAoA|       |Array of arrays |
+   +----+-----+-------+----------------+
+   |a_ix|TyAoI|       |Array of integer|
+   +----+-----+-------+----------------+
+
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoA-Method-to_arr_from_2cols-label:
+  .. table:: *Return Value of: AoA Method: to_arr_from_2cols*
+
+   +----+-----+-------------------+
+   |Name|Type |Description        |
+   +====+=====+===================+
+   |arr |TyArr|Array              |
+   +----+-----+-------------------+
+
+AoA Method: to_doa_from_2cols
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Description
+"""""""""""
+
+Convert array of arrays to dictionary of unique arrays (array with distinct elements)
+
+#. Select 2 columns of each array as key-, value-candidates of the new dictionary
+   using a 2-dimensional index-array. 
+
+#. If the new key exists then 
+   the new value extends the key value as unique array, 
+   
+# otherwise
+   the new value is assigned as unique array to the key.
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoA-Method-to_doa_from_2cols-label:
+  .. table:: *Parameter of: AoA Method: to_doa_from_2cols*
+
+   +----+-----+-------+----------------+
+   |Name|Type |Default|Description     |
+   +====+=====+=======+================+
+   |aoa |TyAoA|       |Array of arrays |
+   +----+-----+-------+----------------+
+   |a_ix|TyAoI|       |Array of integer|
+   +----+-----+-------+----------------+
+
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoA-Method-to_doa_from_2cols-label:
+  .. table:: *Return Value of: AoA Method: to_doa_from_2cols*
+
+   +----+-----+-------------------+
+   |Name|Type |Description        |
+   +====+=====+===================+
+   |doa |TyDoA|Dictionry of arrays|
+   +----+-----+-------------------+
+
+AoA Method: to_dic_from_2cols
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Description
+"""""""""""
+
+Convert array of arrays to dictionary by selecting 2 columns of each array as
+key-, value-candidates of the new dictionary if the key is not none using a
+2-dimensional index-array.
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoA-Method-to_dic_from_2cols-label:
+  .. table:: *Parameter of: AoA Method: to_dic_from_2cols*
+
+   +----+-----+-------+----------------+
+   |Name|Type |Default|Description     |
+   +====+=====+=======+================+
+   |aoa |TyAoA|       |Array of arrays |
+   +----+-----+-------+----------------+
+   |a_ix|TyAoI|       |Array of integer|
+   +----+-----+-------+----------------+
+
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoA-Method-to_dic_from_2cols-label:
+  .. table:: *Return Value of: AoA Method: to_dic_from_2col**
+
+   +----+-----+-----------+
+   |Name|Type |Description|
+   +====+=====+===========+
+   |dic |TyDic|Dictionary |
+   +----+-----+-----------+
+
+Modules for array of objects
+****************************
+
+  .. Modules-for-array-of-dictionaries-label:
+  .. table:: **Modules-for-array-of-dictionaries**
+
+   +------+----------------+
+   |Name  |Description     |
+   +======+================+
+   |aoo.py|Array of objects|
+   +------+----------------+
+
+Module: aoo.py
+==============
+
+The Module ``aoo.py`` contains the single static class ``AoO``;
+
+aoo.py Class: AoO
+-----------------
+
+Methods
+^^^^^^^
+
+  .. AoO-Methods-label:
+  .. table:: *AoO Methods*
+
+   +---------+------------------------+
+   |Name     |short Description       |
+   +=========+========================+
+   |to_unique|Concatinate array arrays|
+   +---------+------------------------+
+
+AoO Method: to_unique
+^^^^^^^^^^^^^^^^^^^^^
+   
+Deduplicate array of objects
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoO-Method-to_unique-label:
+  .. table:: *Parameter of: AoO Method: to_unique*
+
+   +----+-----+----------------+
+   |Name|Type |Description     |
+   +====+=====+================+
+   |aoo |TyAoO|Array of objects|
+   +----+-----+----------------+
+   
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoO-Method-to_unique-label:
+  .. table:: *Return Value of: AoO Method: to_unique*
+
+   +-------+-----+--------------------+
+   |Name   |Type |Description         |
+   +=======+=====+====================+
+   |aoo_new|TyAoO|New array of objects|
+   +-------+-----+--------------------+
+   
+Module: aopath.py
+=================
+
+The Module ``aopath.py`` contains only thestatic class ``AoPath``;
+
+Class: AoPath
+-------------
+
+Methods
+^^^^^^^
+
+  .. AoPath-methods-label:
+  .. table:: *AoPath methods*
+
+   +--------------------------+-------------------------------------------------+
+   |Name                      |short Description                                |
+   +==========================+=================================================+
+   |join                      |Join array of paths using the os separator       |
+   +--------------------------+-------------------------------------------------+
+   |sh_a_path                 |Show array of paths for path template.           |
+   +--------------------------+-------------------------------------------------+
+   |sh_a_path_by_tmpl         |Convert array of path template keys and kwargs   |
+   |                          |to array of paths.                               |
+   +--------------------------+-------------------------------------------------+
+   |sh_path_tmpl              |Convert array of path templates to path template.|
+   +--------------------------+-------------------------------------------------+
+   |yield_path_kwargs         |yield path for path-array and kwargs.            |
+   +--------------------------+-------------------------------------------------+
+   |yield_path_kwargs_new     |yield path from dictionary- and path-array and   |
+   |                          |modified kwargs by dictionary item               |
+   +--------------------------+-------------------------------------------------+
+   |yield_path_item_kwargs    |yield path from path-array, item from array and  |
+   |                          |kwargs.                                          |
+   +--------------------------+-------------------------------------------------+
+   |yield_path_item_kwargs_new|yield path from path-array, item from array and  |
+   |                          |modified kwargs by dictionary item.              |
+   +--------------------------+-------------------------------------------------+
+
+AoPath Method: join
+^^^^^^^^^^^^^^^^^^^
+   
+#. Convert array of paths (1.argument) by striping the leading or trailing os separator.
+
+#. join the converted array of paths.
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoPath-Method-join-label:
+  .. table:: *Parameter of: AoPath Method: join*
+
+   +------+--------+-------+--------------+
+   |Name  |Type    |Default|Description   |
+   +======+========+=======+==============+
+   |aopath|TyAoPath|       |array of paths|
+   +------+--------+-------+--------------+
+   
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoPath-Method-join-label:
+  .. table:: *Return Value of: AoPath Method: join*
+
+   +----+------+-----------+
+   |Name|Type  |Description|
+   +====+======+===========+
+   |path|TyPath|Path       |
+   +----+------+-----------+
+   
+AoPath Method: sh_a_path
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Convert path template to array of paths using glob function of module glob.py.
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoPath-Method-sh_a_path-label:
+  .. table:: *Parameter of: AoPath Method: sh_a_path*
+
+   +----+------+-------+-----------+
+   |Name|Type  |Default|Description|
+   +====+======+=======+===========+
+   |path|TyPath|       |Path       |
+   +----+------+-------+-----------+
+   
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoPath-Method-sh_a_path-label:
+  .. table:: *Return Value of: AoPath Method: sh_a_path*
+
+   +------+--------+--------------+
+   |Name  |Type    |Description   |
+   +======+========+==============+
+   |a_path|TyAoPath|Array of paths|
+   +------+--------+--------------+
+   
+AoPath Method: sh_a_path_by_tmpl
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   
+#. Select array of path templates from keyword arguments (1.arguments) using the parameter
+
+   * array of path template keys (1.argument);
+
+#. join the array of path templates with the os separator
+
+#. convert the created final path template to an array of paths.
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoPath-Method-sh_a_path_by_tmpl-label:
+  .. table:: *Parameter of: AoPath Method: sh_a_path_by_tmpl*
+
+   +---------------+--------+-------+---------------------------+
+   |Name           |Type    |Default|Description                |
+   +===============+========+=======+===========================+
+   |a_path_tmpl_key|TyAoPath|       |array of path template keys|
+   +---------------+--------+-------+---------------------------+
+   |kwargs         |TyDic   |       |keyword arguments          |
+   +---------------+--------+-------+---------------------------+
+   
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoPath-Method-sh_a_path_by_tmpl-label:
+  .. table:: *Return Value of: AoPath Method: sh_a_path_by_tmpl*
+
+   +------+--------+-------+-----------+
+   |Name  |Type    |Default|Description|
+   +======+========+=======+===========+
+   |a_path|TyAoPath|       |Path       |
+   +------+--------+-------+-----------+
+   
+AoPath Method: yield_path_kwargs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   
+#. Create array of paths by executing the function sh_a_path_by_tmpl with the parameter:
+
+   * array of path template keys (2.argument).
+    
+#. Loop over array of paths to yield:
+
+   #. yield path, kwargs (3. argument)
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoPath-Method-yield_path_kwargs-label:
+  .. table:: *Parameter of: AoPath Method: yield_path_kwargs*
+
+   +---------------+--------+-------+---------------------------+
+   |Name           |Type    |Default|Description                |
+   +===============+========+=======+===========================+
+   |cls            |Tyclass |       |current class              |
+   +---------------+--------+-------+---------------------------+
+   |a_path_tmpl_key|TyAoPath|       |array of path template keys|
+   +---------------+--------+-------+---------------------------+
+   |kwargs         |TyDic   |       |keyword arguments          |
+   +---------------+--------+-------+---------------------------+
+
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoPath-Method-yield_path_kwargs-label:
+  .. table:: *Return Value of: AoPath Method: yield_path_kwargs*
+
+   +--------------+--------+-----------+
+   |Name          |Type    |Description|
+   +==============+========+===========+
+   |(path, kwargs)|TyAoPath|Path       |
+   +--------------+--------+-----------+
+   
+AoPath Method: yield_path_kwargs_new
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   
+Synopsis
+""""""""
+
+sh_a_path_by_tmpl(a_path_tmpl_key, kwargs)
+
+
+Description
+"""""""""""
+
+#. Create array of directories by executing the function sh_a_path_by_tmpl with the arguments:
+
+   * array of directory template keys (2.argument).
+
+#. Loop over array of directories to:
+
+   #. create kwargs_new by executing ths given function sh_kwargs_new (4. argument) with the arguments:
+
+      * directory, given kwargs (5. argument) 
+
+   #. create array of paths by executing the function sh_a_oath_by_tmpl with the arguments:
+
+      * given array of path template keys (3. argument), kwargs_new
+
+#. Loop over array of paths within the outer loop to:
+
+   #. yield path, kwargs_new
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoPath-Method-yield_path_kwargs_new-label:
+  .. table:: *Parameter of: AoPath Method: yield_path_kwargs_new*
+
+   +---------------+--------+-------+-----------------------------------+
+   |Name           |Type    |Default|Description                        |
+   +===============+========+=======+===================================+
+   |cls            |Tyclass |       |Current class                      |
+   +---------------+--------+-------+-----------------------------------+
+   |a_dir_tmpl_key |TyAoPath|       |Array of path template keys        |
+   +---------------+--------+-------+-----------------------------------+
+   |a_path_tmpl_key|TyAoPath|       |Array of path template keys        |
+   +---------------+--------+-------+-----------------------------------+
+   |sh_kwargs_new  |TyAoPath|       |Show new keyword arguments function|
+   +---------------+--------+-------+-----------------------------------+
+   |kwargs         |TyDic   |       |Keyword arguments                  |
+   +---------------+--------+-------+-----------------------------------+
+   
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoPath-Method-yield_path_kwargs_new-label:
+  .. table:: *Return Value of: AoPath Method: yield_path_kwargs_new*
+
+   +------------------+--------+---------------------------+
+   |Name              |Type    |Description                |
+   +==================+========+===========================+
+   |(path, kwargs_new)|TyAoPath|Path, new keyword arguments|
+   +------------------+--------+---------------------------+
+   
+AoPath Method: yield_path_item_kwargs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   
+#. Create array of paths by executing the function sh_a_path_by_tmpl with the arguments:
+
+   * array of path template keys (2.argument).
+
+#. Create array of items by selecting the value in the directory kwargs (4. argument) for
+   the kwargs key (3. argument)
+
+#. Loop over array of path and array of items to:
+
+   #. yield path, item, kwargs (4. argument)
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoPath-Method-yield_path_item_kwargs-label:
+  .. table:: *Parameter of: AoPath Method: yield_path_item_kwargs*
+
+   +---------------+--------+-------+---------------------------+
+   |Name           |Type    |Default|Description                |
+   +===============+========+=======+===========================+
+   |cls            |Tyclass |       |current class              |
+   +---------------+--------+-------+---------------------------+
+   |a_path_tmpl_key|TyAoPath|       |array of path template keys|
+   +---------------+--------+-------+---------------------------+
+   |a_arr_key      |TyAoPath|       |array of path template keys|
+   +---------------+--------+-------+---------------------------+
+   |kwargs         |TyDic   |       |keyword arguments          |
+   +---------------+--------+-------+---------------------------+
+   
+Return Value
+""""""""""""
+
+  .. Return Value-of-AoPath-Method-yield_path_item_kwargs-label:
+  .. table:: *Return Value of: AoPath Method: yield_path_item_kwargs*
+
+   +--------------------+--------+-----------------------------+
+   |Name                |Type    |Description                  |
+   +====================+========+=============================+
+   |(path, item, kwargs)|TyAoPath|Path, Item, keyword arguments|
+   +--------------------+--------+-----------------------------+
+   
+Method: AoPath.yield_path_item_kwargs_new
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   
+#. Create array of directories by executing the function sh_a_path_by_tmpl with the parameter:
+
+   * a_dir_tmpl_key (2.argument).
+
+#. Create  array of items by selecting the value in the directory kwargs (4. argument) for
+   the key arr_key (3. argument)
+
+#. Loop over the array of directories to:
+
+   #. create kwargs_new by executing ths function sh_kwargs_new (4. argument) with the arguments:
+
+      * directory, given kwargs (5. argument) 
+
+   #. create array of paths by executing the function sh_a_oath_by_tmpl with the arguments:
+
+      * given array of path template keys (3. argument), kwargs_new
+
+   #. Loop over array of path and array of items within the outer loop to:
+
+      #. yield path, item, kwargs_new
+
+Parameter
+"""""""""
+
+  .. Parameter-of-AoPath-Method-yield_path_item_kwargs_new-label:
+  .. table:: *Parameter of: AoPath Method: yield_path_item_kwargs_new*
+
+   +---------------+--------+-------+-----------------------------------+
+   |Name           |Type    |Default|Description                        |
+   +===============+========+=======+===================================+
+   |cls            |Tyclass |       |current class                      |
+   +---------------+--------+-------+-----------------------------------+
+   |a_dir_tmpl_key |TyAoPath|       |array of path template keys        |
+   +---------------+--------+-------+-----------------------------------+
+   |a_path_tmpl_key|TyAoPath|       |array of path template keys        |
+   +---------------+--------+-------+-----------------------------------+
+   |sh_kwargs_new  |TyAoPath|       |show new keyword arguments function|
+   +---------------+--------+-------+-----------------------------------+
+   |kwargs         |TyDic   |       |keyword arguments                  |
+   +---------------+--------+-------+-----------------------------------+
+   
+Return Value
+""""""""""""
+
+  .. Return-Value-of-AoPath-Method-yield_path_item_kwargs_new-label:
+  .. table:: *Return Value of: AoPath Method: yield_path_item_kwargs_new*
+
+   +------------------------+--------+---------------------------------+
+   |Name                    |Type    |Description                      |
+   +========================+========+=================================+
+   |(path, item, kwargs_new)|TyAoPath|Path, Item, new keyword arguments|
+   +------------------------+--------+---------------------------------+
+   
+Module: aos.py
+**************
+
+Classes
+=======
+
+The Module ``aos.py`` contains the single static class ``AoS``;
+
+Class: AoS
+----------
+
+AoS Methods
+^^^^^^^^^^^
+
+  .. AoS-Methods-label:
+  .. table:: *AoS Methods*
+
+   +-------------------------+------------------------------------------+
+   |Name                     |short Description                         |
+   +=========================+==========================================+
+   |nvl                      |Replace empty array of strings            |
+   +-------------------------+------------------------------------------+
+   |sh_a_date                |Convert array of strings to array of dates|
+   +-------------------------+------------------------------------------+
+   |to_lower                 |Convert array of strings to array of      |
+   |                         |lowered strings.                          |
+   +-------------------------+------------------------------------------+
+   |to_unique                |Deduplicate array of arrays               |
+   +-------------------------+------------------------------------------+
+   |to_unique_lower          |Convert array of strings to deduplicted   |
+   |                         |array of lowered strings.                 |
+   +-------------------------+------------------------------------------+
+   |to_unique_lower_invariant|Convert array of arrays to array of arrays|
+   +-------------------------+------------------------------------------+
+
+Method: AoS.to_unique
+^^^^^^^^^^^^^^^^^^^^^
+   
+Parameter
+"""""""""
+
+  .. Parameter-of-AoS-method-to_unique-label:
+  .. table:: *Parameter of: AoS Method: to_unique*
+
+   +----+-----+-------+----------------+
+   |Name|Type |Default|Description     |
+   +====+=====+=======+================+
+   |aoo |TyAoO|       |array of objects|
+   +----+-----+-------+----------------+
+
+Return Value
+""""""""""""
+
+  .. Return Value-of-AoS-Method-to_unique-label:
+  .. table:: *Return Value of: AoS Method: to_unique*
+
+   +-------+-----+--------------------+
+   |Name   |Type |Description         |
+   +=======+=====+====================+
+   |aoo_new|TyAoO|new array of objects|
+   +-------+-----+--------------------+
+
+Appendix
+********
+
+Package Logging
+===============
+
+Description
+-----------
+
+The Standard or user specifig logging is carried out by the log.py module of the logging
+package ka_uts_log using the configuration files **ka_std_log.yml** or **ka_usr_log.yml**
+in the configuration directory **cfg** of the logging package **ka_uts_log**.
+The Logging configuration of the logging package could be overriden by yaml files with
+the same names in the configuration directory **cfg** of the application packages.
+
+Log message types
+-----------------
+
+Logging defines log file path names for the following log message types: .
+
+#. *debug*
+#. *info*
+#. *warning*
+#. *error*
+#. *critical*
+
+Application parameter for logging
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  .. Application-parameter-used-in-log-naming-label:
+  .. table:: *Application parameter used in log naming*
+
+   +-----------------+---------------------------+----------+------------+
+   |Name             |Decription                 |Values    |Example     |
+   +=================+===========================+==========+============+
+   |dir_dat          |Application data directory |          |/otev/data  |
+   +-----------------+---------------------------+----------+------------+
+   |tenant           |Application tenant name    |          |UMH         |
+   +-----------------+---------------------------+----------+------------+
+   |package          |Application package name   |          |otev_xls_srr|
+   +-----------------+---------------------------+----------+------------+
+   |cmd              |Application command        |          |evupreg     |
+   +-----------------+---------------------------+----------+------------+
+   |pid              |Process ID                 |          |æevupreg    |
+   +-----------------+---------------------------+----------+------------+
+   |log_ts_type      |Timestamp type used in     |ts,       |ts          |
+   |                 |logging files|ts, dt       |dt        |            |
+   +-----------------+---------------------------+----------+------------+
+   |log_sw_single_dir|Enable single log directory|True,     |True        |
+   |                 |or multiple log directories|False     |            |
+   +-----------------+---------------------------+----------+------------+
+
+Log type and Log directories
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Single or multiple Application log directories can be used for each message type:
+
+  .. Log-types-and-Log-directories-label:
+  .. table:: *Log types and directoriesg*
+
+   +--------------+---------------+
+   |Log type      |Log directory  |
+   +--------+-----+--------+------+
+   |long    |short|multiple|single|
+   +========+=====+========+======+
+   |debug   |dbqs |dbqs    |logs  |
+   +--------+-----+--------+------+
+   |info    |infs |infs    |logs  |
+   +--------+-----+--------+------+
+   |warning |wrns |wrns    |logs  |
+   +--------+-----+--------+------+
+   |error   |errs |errs    |logs  |
+   +--------+-----+--------+------+
+   |critical|crts |crts    |logs  |
+   +--------+-----+--------+------+
+
+Log files naming
+^^^^^^^^^^^^^^^^
+
+Naming Conventions
+""""""""""""""""""
+
+  .. Naming-conventions-for-logging-file-paths-label:
+  .. table:: *Naming conventions for logging file paths*
+
+   +--------+-------------------------------------------------------+-------------------------+
+   |Type    |Directory                                              |File                     |
+   +========+=======================================================+=========================+
+   |debug   |/<dir_dat>/<tenant>/RUN/<package>/<cmd>/<Log directory>|<Log type>_<ts>_<pid>.log|
+   +--------+-------------------------------------------------------+-------------------------+
+   |info    |/<dir_dat>/<tenant>/RUN/<package>/<cmd>/<Log directory>|<Log type>_<ts>_<pid>.log|
+   +--------+-------------------------------------------------------+-------------------------+
+   |warning |/<dir_dat>/<tenant>/RUN/<package>/<cmd>/<Log directory>|<Log type>_<ts>_<pid>.log|
+   +--------+-------------------------------------------------------+-------------------------+
+   |error   |/<dir_dat>/<tenant>/RUN/<package>/<cmd>/<Log directory>|<Log type>_<ts>_<pid>.log|
+   +--------+-------------------------------------------------------+-------------------------+
+   |critical|/<dir_dat>/<tenant>/RUN/<package>/<cmd>/<Log directory>|<Log type>_<ts>_<pid>.log|
+   +--------+-------------------------------------------------------+-------------------------+
+
+Naming Examples
+"""""""""""""""
+
+  .. Naming-examples-for-logging-file-paths-label:
+  .. table:: *Naming examples for logging file paths*
+
+   +--------+--------------------------------------------+------------------------+
+   |Type    |Directory                                   |File                    |
+   +========+============================================+========================+
+   |debug   |/data/otev/umh/RUN/otev_xls_srr/evupreg/logs|debs_1737118199_9470.log|
+   +--------+--------------------------------------------+------------------------+
+   |info    |/data/otev/umh/RUN/otev_xls_srr/evupreg/logs|infs_1737118199_9470.log|
+   +--------+--------------------------------------------+------------------------+
+   |warning |/data/otev/umh/RUN/otev_xls_srr/evupreg/logs|wrns_1737118199_9470.log|
+   +--------+--------------------------------------------+------------------------+
+   |error   |/data/otev/umh/RUN/otev_xls_srr/evupreg/logs|errs_1737118199_9470.log|
+   +--------+--------------------------------------------+------------------------+
+   |critical|/data/otev/umh/RUN/otev_xls_srr/evupreg/logs|crts_1737118199_9470.log|
+   +--------+--------------------------------------------+------------------------+
+
+Python Terminology
+==================
+
+Python packages
+---------------
+
+  .. Python packages-label:
+  .. table:: *Python packages*
+
+   +-----------+-----------------------------------------------------------------+
+   |Name       |Definition                                                       |
+   +===========+==========+======================================================+
+   |Python     |Python packages are directories that contains the special module |
+   |package    |``__init__.py`` and other modules, packages files or directories.|
+   +-----------+-----------------------------------------------------------------+
+   |Python     |Python sub-packages are python packages which are contained in   |
+   |sub-package|another pyhon package.                                           |
+   +-----------+-----------------------------------------------------------------+
+
+Python package Sub-directories
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  .. Python package-Sub-directories-label:
+  .. table:: *Python packages Sub-directories*
+
+   +----------------------+-------------------------------+
+   |Name                  |Definition                     |
+   +======================+==========+====================+
+   |Python package        |Sub-directories are directories|
+   |sub-directory         |contained in python packages.  |
+   +----------------------+-------------------------------+
+   |Special Python package|Python package sub-directories |
+   |sub-directory         |with a special meaning.        |
+   +----------------------+-------------------------------+
+
+Special python package Sub-directories
+""""""""""""""""""""""""""""""""""""""
+
+  .. Special-python-package-Sub-directories-label:
+  .. table:: *Special python Sub-directories*
+
+   +-------+------------------------------------------+
+   |Name   |Description                               |
+   +=======+==========================================+
+   |bin    |Directory for package scripts.            |
+   +-------+------------------------------------------+
+   |cfg    |Directory for package configuration files.|
+   +-------+------------------------------------------+
+   |data   |Directory for package data files.         |
+   +-------+------------------------------------------+
+   |service|Directory for systemd service scripts.    |
+   +-------+------------------------------------------+
+
+Python package files
+^^^^^^^^^^^^^^^^^^^^
+
+  .. Python-package-files-label:
+  .. table:: *Python package files*
+
+   +--------------+---------------------------------------------------------+
+   |Name          |Definition                                               |
+   +==============+==========+==============================================+
+   |Python        |Files within a python package.                           |
+   |package files |                                                         |
+   +--------------+---------------------------------------------------------+
+   |Special python|Package files which are not modules and used as python   |
+   |package files |and used as python marker files like ``__init__.py``.    |
+   +--------------+---------------------------------------------------------+
+   |Python package|Files with suffix ``.py``; they could be empty or contain|
+   |module        |python code; other modules can be imported into a module.|
+   +--------------+---------------------------------------------------------+
+   |Special python|Modules like ``__init__.py`` or ``main.py`` with special |
+   |package module|names and functionality.                                 |
+   +--------------+---------------------------------------------------------+
+
+Special python package files
+""""""""""""""""""""""""""""
+
+  .. Special-python-package-files-label:
+  .. table:: *Special python package files*
+
+   +--------+--------+---------------------------------------------------------------+
+   |Name    |Type    |Description                                                    |
+   +========+========+===============================================================+
+   |py.typed|Type    |The ``py.typed`` file is a marker file used in Python packages |
+   |        |checking|to indicate that the package supports type checking. This is a |
+   |        |marker  |part of the PEP 561 standard, which provides a standardized way|
+   |        |file    |to package and distribute type information in Python.          |
+   +--------+--------+---------------------------------------------------------------+
+
+Special python package modules
+""""""""""""""""""""""""""""""
+
+  .. Special-Python-package-modules-label:
+  .. table:: *Special Python package modules*
+
+   +--------------+-----------+-----------------------------------------------------------------+
+   |Name          |Type       |Description                                                      |
+   +==============+===========+=================================================================+
+   |__init__.py   |Package    |The dunder (double underscore) module ``__init__.py`` is used to |
+   |              |directory  |execute initialisation code or mark the directory it contains as |
+   |              |marker     |a package. The Module enforces explicit imports and thus clear   |
+   |              |file       |namespace use and call them with the dot notation.               |
+   +--------------+-----------+-----------------------------------------------------------------+
+   |__main__.py   |entry point|The dunder module ``__main__.py`` serves as an entry point for   |
+   |              |for the    |the package. The module is executed when the package is called by|
+   |              |package    |the interpreter with the command **python -m <package name>**.   |
+   +--------------+-----------+-----------------------------------------------------------------+
+   |__version__.py|Version    |The dunder module ``__version__.py`` consist of assignment       |
+   |              |file       |statements used in Versioning.                                   |
+   +--------------+-----------+-----------------------------------------------------------------+
+
+Python elements
+---------------
+
+  .. Python elements-label:
+  .. table:: *Python elements*
+
+   +---------------------+--------------------------------------------------------+
+   |Name                 |Description                                             |
+   +=====================+========================================================+
+   |Python method        |Python functions defined in python modules.             |
+   +---------------------+--------------------------------------------------------+
+   |Special python method|Python functions with special names and functionalities.|
+   +---------------------+--------------------------------------------------------+
+   |Python class         |Classes defined in python modules.                      |
+   +---------------------+--------------------------------------------------------+
+   |Python class method  |Python methods defined in python classes                |
+   +---------------------+--------------------------------------------------------+
+
+Special python methods
+^^^^^^^^^^^^^^^^^^^^^^
+
+  .. Special-python-methods-label:
+  .. table:: *Special python methods*
+
+   +--------+------------+----------------------------------------------------------+
+   |Name    |Type        |Description                                               |
+   +========+============+==========================================================+
+   |__init__|class object|The special method ``__init__`` is called when an instance|
+   |        |constructor |(object) of a class is created; instance attributes can be|
+   |        |method      |defined and initalized in the method.                     |
+   +--------+------------+----------------------------------------------------------+
+
+Table of Contents
+=================
+
+.. contents:: **Table of Content**
