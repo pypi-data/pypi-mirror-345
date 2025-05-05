@@ -1,0 +1,56 @@
+﻿import weave
+from MetaRagTool.LLM.LLMIdentity import LLMIdentity
+from openai import OpenAI
+
+from MetaRagTool import Constants
+
+
+
+
+
+class OpenaiGpt(LLMIdentity):
+    endpoint_azure = "https://models.inference.ai.azure.com"
+    endpoint_openrouter = "https://openrouter.ai/api/v1"
+    MODEL_deepseek_v3="deepseek/deepseek-chat-v3-0324:free"
+    MODEL_gpt_4o="gpt-4o"
+
+    def __init__(self, model_name=MODEL_deepseek_v3, has_memory=True,custom_system_message=None,RequestPerMinute_limit=15,endpoint=endpoint_openrouter,api_key=None):
+        if api_key is None:
+            api_key = Constants.API_KEY_OPENROUTER
+        super().__init__(model_name=model_name, has_memory=has_memory,custom_system_message=custom_system_message,RequestPerMinute_limit=RequestPerMinute_limit)
+        self.client = OpenAI(
+            base_url=endpoint,
+            api_key=api_key,
+        )
+
+        self.reset_history()
+
+    def reset_history(self):
+        system_instruction = self.GetCorrectSystemMessage(None)
+        self.messages_history = [
+                {"role": "system", "content": system_instruction},
+            ]
+
+    @weave.op()
+    def generate(self, prompt: str,query_to_be_saved: str=None,tool_function=None) -> str:
+        if tool_function is not None:
+            print("OpenaiGpt does not support tool use")
+
+        self.messages_history.append({"role": "user", "content": prompt})
+
+
+        response = self.client.chat.completions.create(
+            messages=self.messages_history,
+            model=self.model_name,
+            # tools=
+
+        )
+
+        if not self.has_memory:
+            self.reset_history()
+
+        self.messages_history.append(response.choices[0].message)
+
+
+        return response.choices[0].message.content
+
