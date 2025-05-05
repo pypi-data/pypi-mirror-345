@@ -1,0 +1,10 @@
+# mvat
+
+[![Python](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/downloads/release/python-3130/)
+[![Release](https://img.shields.io/github/v/release/Jordan-Pierce/mvat)](https://img.shields.io/github/v/release/Jordan-Pierce/mvat)
+[![Build status](https://img.shields.io/github/actions/workflow/status/Jordan-Pierce/mvat/main.yml?branch=main)](https://github.com/Jordan-Pierce/mvat/actions/workflows/main.yml?query=branch%3Amain)
+[![Cross-Platform](https://img.shields.io/github/actions/workflow/status/Jordan-Pierce/mvat/cross-platform.yml?branch=main&label=cross-platform)](https://github.com/Jordan-Pierce/mvat/actions/workflows/cross-platform.yml?query=branch%3Amain)
+[![Installation](https://img.shields.io/github/actions/workflow/status/Jordan-Pierce/mvat/installation.yml?branch=main&label=install)](https://github.com/Jordan-Pierce/mvat/actions/workflows/installation.yml?query=branch%3Amain)
+[![Docker](https://img.shields.io/github/actions/workflow/status/Jordan-Pierce/mvat/docker.yml?branch=main&label=docker)](https://github.com/Jordan-Pierce/mvat/actions/workflows/docker.yml?query=branch%3Amain)
+[![Documentation](https://img.shields.io/github/actions/workflow/status/Jordan-Pierce/mvat/docs.yml?branch=main&label=docs)](https://github.com/Jordan-Pierce/mvat/actions/workflows/docs.yml?query=branch%3Amain)
+[![License](https://img.shields.io/github/license/Jordan-Pierce/mvat)](https://img.shields.io/github/license/Jordan-Pierce/mvat)
