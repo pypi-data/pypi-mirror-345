@@ -1,0 +1,29 @@
+[project]
+name = "matlab-publish-parser"
+version = "0.1.0"
+description = "The package parses the xml output of publish in MATLAB,."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "defusedxml>=0.7.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=6.0.0",
+    "ruff>=0.8.1",
+]
+
+[tool.pytest.ini_options]
+ pythonpath="src"
+ addopts= "--durations 10"
+
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
