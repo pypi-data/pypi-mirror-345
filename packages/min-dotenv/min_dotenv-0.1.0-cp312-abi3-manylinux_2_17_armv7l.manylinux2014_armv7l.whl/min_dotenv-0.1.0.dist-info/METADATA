@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: min_dotenv
+Version: 0.1.0
+Classifier: Development Status :: 1 - Planning
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Rust
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+License-File: LICENSE
+Summary: A minimal dotenv loader for Python, written in Rust.
+Keywords: automation,environmental,variables,dotenv
+Author-email: Raúl Telo Sánchez <raultelo@gmail.com>
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Repository, https://github.com/lRaulMN7/min_dotenv
+Project-URL: Changelog, https://github.com/lRaulMN7/min_dotenv/blob/main/CHANGELOG.md
+
+# min_dotenv
+
+Experimental dotenv loader
+
+## Usage
+
+Given an arbitrary environmental file
+```
+variable_name = "variable_content"
+# Comments in your .env file are allowed
+another_var_name=123
+```
+
+**Hydrate** your `os` module with the new environmental variables
+
+```python
+import os
+from min_dotenv import hyd_env
+hyd_env('.env')
+
+for name, val in os.environ.items()
+    print(f"{name}: {val}")
+```
+
+Outputs
+```
+... all your existing environmental variables
+variable_name: variable_content
+another_var_name: 123
+```
+
+## Installation
+
+TBD
+
