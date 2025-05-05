@@ -1,0 +1,72 @@
+[project]
+name = "edgar-tool"
+version = "2.1.0"
+description = "Search and retrieve corporate and financial data from the United States Securities and Exchange Commission (SEC)."
+readme = "README.md"
+authors = [
+  { name = "Bellingcat", email = "contact@bellingcat.com" }
+]
+maintainers = [
+  { name = "Jordan Gillard", email = "jordan@gaproject.com" }
+]
+license = "GNU General Public License v3 (GPLv3)"
+keywords = ["scraper", "edgar", "finance", "sec"]
+dynamic = ["dependencies", "classifiers"]
+requires-python = ">=3.9"
+
+[project.urls]
+Repository = "https://github.com/bellingcat/EDGAR"
+Issues = "https://github.com/bellingcat/EDGAR/issues"
+
+[project.scripts]
+edgar-tool = "edgar_tool.__main__:main"
+edgar = "edgar_tool.__main__:main"
+
+[tool.poetry]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Financial and Insurance Industry",
+  "Intended Audience :: Science/Research",
+  "Topic :: Office/Business :: Financial",
+]
+
+[tool.poetry.dependencies]
+jsonlines = "^4.0"
+requests = "^2.31"
+tenacity = "^8.2"
+xmltodict = "^0.13"
+pytest = "^8.2.2"
+click = "^8.1.7"
+typer = "^0.12.5"
+pydantic = "^2.10.5"
+python-dateutil = "^2.9.0.post0"
+
+[tool.poetry.group.dev.dependencies]
+black = { extras = ["jupyter"], version = "^25.1.0" }
+isort = "5.13.2"
+pre-commit = "^3.8.0"
+pytest = "^8.2.2"
+tox = "^4.16.0"
+ipykernel = "^6.29.5"
+freezegun = "^1.5.1"
+autoflake = "^2.3.1"
+mdformat = "^0.7.22"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+line_length = 88 # Should always match tool.black
+ensure_newline_before_comments = true
+
+[tool.black]
+line-length = 88 # black's default
+
+[tool.autoflake]
+remove_all_unused_imports = true
+remove_duplicate_keys = true
+remove_unused_variables = true
+expand_star_imports = true
