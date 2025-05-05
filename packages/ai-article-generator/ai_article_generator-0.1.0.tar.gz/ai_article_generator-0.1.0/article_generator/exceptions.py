@@ -1,0 +1,2 @@
+class ArticleGenerationError(Exception):
+    pass
