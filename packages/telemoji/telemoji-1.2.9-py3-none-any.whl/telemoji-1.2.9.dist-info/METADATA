@@ -1,0 +1,62 @@
+Metadata-Version: 2.2
+Name: telemoji
+Version: 1.2.9
+Summary: Telethon custom emoji By : t.me/goldenxpris.
+Author: Golden
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: colorama
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Telemoji Library
+
+Advanced custom emoji handler for Telethon .
+
+## Installation
+```bash
+pip install telemoji
+```
+
+## Usage
+
+### Basic Setup
+```python
+import telemoji
+from telethon import TelegramClient
+
+client = TelegramClient('session', api_id, api_hash)
+```
+
+### Golden Method (Emoji Conversion)
+```python
+emoji_map = {
+    '✨': '5280790529565536648',
+    '💃🏻': '5280790529565536648'
+}
+
+telemoji.Golden(client, emoji_map)
+```
+
+### Emoji Extraction
+```python
+@client.on(events.NewMessage)
+async def handler(event):
+    emoji_ids = telemoji.Emoji(event.message)
+    if emoji_ids:
+        print("Found custom emojis:", emoji_ids)
+```
+
+## Features
+- Convert regular emojis to custom emojis
+- Extract custom emoji IDs from messages
+- Works with all Telethon send methods
