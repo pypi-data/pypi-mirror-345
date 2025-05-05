@@ -1,0 +1,194 @@
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[project]
+name = "svglab"
+description = "A manipulation and optimization library for Scalable Vector Graphics"
+authors = [{ name = "Tomáš Režňák", email = "tomas.reznak@volny.cz" }]
+keywords = [
+  "svg",
+  "svg manipulation",
+  "image processing",
+  "vector graphics",
+  "image optimization",
+  "affine transformation",
+]
+license = "MIT"
+readme = "README.md"
+dynamic = ["classifiers"]
+requires-python = ">=3.10,<4.0"
+dependencies = [
+  "beautifulsoup4 (>=4.12.3,<5.0.0)",
+  "bidict (>=0.23.1,<0.24.0)",
+  "html5lib (>=1.1,<2.0)",
+  "lark (>=1.2.2,<2.0.0)",
+  "lxml (>=5.3.0,<6.0.0)",
+  "pydantic (>=2.0.0,<2.11.0)",
+  "pydantic-extra-types (>=2.10.1,<3.0.0)",
+  "useful-types (>=0.2.1,<0.3.0)",
+  "typing-extensions (>=4.12.2,<5.0.0)",
+  "resvg-py (>=0.1.6,<0.3.0)",
+  "pillow (>=11.1.0,<12.0.0)",
+  "affine (>=3.0b1,<4.0)",
+  "numpy (>=1.26.4,<3.0.0)",
+  "more-itertools (>=10.6.0,<11.0.0)",
+  "rfc3987 (>=1.3.8,<2.0.0)",
+]
+version = "0.9.0"
+
+[project.urls]
+"GitHub" = "https://github.com/reznakt/svglab"
+"Issues" = "https://github.com/reznakt/svglab/issues"
+
+[tool.poetry]
+classifiers = [
+  "Framework :: Pydantic :: 2",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Topic :: Multimedia :: Graphics :: Editors :: Vector-Based",
+  "Topic :: Multimedia :: Graphics",
+  "Topic :: Scientific/Engineering :: Image Processing",
+  "Topic :: Text Processing :: Markup :: XML",
+  "Typing :: Typed",
+]
+requires-poetry = ">=2.0.0,<3.0.0"
+
+[tool.poetry.requires-plugins]
+"poetry-dynamic-versioning" = ">=1.0.0,<2.0.0"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+vcs = "git"
+style = "semver"
+
+[tool.poetry.dependencies]
+affine = { allow-prereleases = true }
+
+[tool.poetry.group.types.dependencies]
+types-beautifulsoup4 = "^4.12.0.20241020"
+
+[tool.poetry.group.test.dependencies]
+hypothesis = "^6.131.9"
+pytest = "^8.3.4"
+pytest-accept = "^0.1.12"
+pytest-clarity = "^1.0.1"
+pytest-cov = "^6.0.0"
+pytest-randomly = "^3.16.0"
+pytest-sugar = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = ">=0.32,<0.35"
+pre-commit = "^4.0.1"
+pyright = "^1.1.400"
+ruff = ">=0.8.4,<0.12.0"
+vermin = "^1.6.0"
+
+[tool.poe.tasks]
+lint = "ruff check"
+lint-fix = "ruff check --fix"
+test = "pytest"
+typecheck = "pyright --warnings"
+versioncheck = "vermin ."
+format = "ruff format --diff"
+format-fix = "ruff format"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+  # https://bugs.launchpad.net/beautifulsoup/+bug/2076897
+  "ignore:The 'strip_cdata' option of HTMLParser\\(\\) has never done anything and will eventually be removed.",
+]
+addopts = ["--cov", "--doctest-continue-on-failure", "--doctest-modules"]
+
+[tool.coverage.run]
+omit = ["tests/*"]
+
+[tool.pyright]
+deprecateTypingAliases = false        # covered by Ruff + shows false positives
+enableReachabilityAnalysis = true
+pythonPlatform = "All"
+pythonVersion = "3.10"
+reportInvalidTypeVarUse = true
+reportMissingImports = true
+reportMissingTypeArgument = true
+reportMissingTypeStubs = false
+reportPrivateUsage = true
+reportUnknownArgumentType = false
+reportUnknownMemberType = false
+reportUnknownParameterType = false
+reportUnknownVariableType = false
+reportUnnecessaryCast = true
+reportUnnecessaryComparison = true
+reportUntypedFunctionDecorator = true
+reportUnusedImport = false            # covered by Ruff
+strictDictionaryInference = true
+strictListInference = true
+strictSetInference = true
+typeCheckingMode = "strict"
+
+[tool.ruff]
+target-version = "py310"
+show-fixes = true
+line-length = 75         # formatter
+
+[tool.ruff.lint]
+select = ["ALL"]
+fixable = ["ALL"]
+ignore = [
+  # conflicts
+  "D211",   # No blank lines allowed before class docstring
+  "D213",   # Multi-line docstring summary should start at the second line
+  "COM812", # Missing trailing comma in a tuple
+  "D203",   # 1 blank line required before class docstring
+  "ISC001", # Use of `is` with a literal
+  "UP035",  # Conflicts with ban on `typing`
+
+  # missing docstrings
+  "D105", # Missing docstring in magic method
+
+  # exceptions
+  "TRY003", # Avoid specifying long messages outside the exception class
+  "EM101",  # Exception must not use a string literal
+
+  # `TODO`s
+  "FIX002", # Line contains TODO
+  "TD002",  # Missing author in TODO
+  "TD003",  # Missing issue link on the line following this TODO
+
+  # misc
+  "S101",    # Use of assert detected
+  "TC001",   # Move application import into a type-checking block
+  "TC002",   # Move third-party import into a type-checking block
+  "TC003",   # Move standard library import into a type-checking block
+  "E741",    # Ambiguous variable name
+  "PLR0913", # Too many arguments in function definition
+  "C901",    # Function is too complex
+  "PLR0911", # Too many return statements
+  "PLR0912", # Too many branches
+  "TC006",   # Add quotes to type expression in `typing.cast()`
+]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/**/*" = [
+  "PLR200",  # Magic value used in comparison
+  "PLR0913", # Too many arguments in function definition
+  "S311",    # Standard pseudo-random generators are not suitable for security/cryptographic purposes
+]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 79 # linter
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+split-on-trailing-comma = false
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"abc.ABC".msg = "Use `metaclass=abc.ABCMeta` instead"
+"typing".msg = "Use `typing_extensions` instead"
+
+[tool.ruff.format]
+docstring-code-format = true
+skip-magic-trailing-comma = true
