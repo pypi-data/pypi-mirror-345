@@ -1,0 +1,77 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Tool.schema.json
+pf_reasoning_tool.tools.hw_ai_search_lookup_tool.hw_ai_search_lookup:
+  name: HW AI Search Lookup Tool
+  description: Vector / keyword / semantic / hybrid search over Azure AI Search.
+  type: python
+  category: HW_PF_tools
+  tool_state: preview
+  module: pf_reasoning_tool.tools.hw_ai_search_lookup_tool
+  function: hw_ai_search_lookup
+
+  inputs:
+    connection:
+      type: [CustomConnection]
+      description: 'CustomConnection with endpoint & api_key.'
+
+    index_name:
+      type: [string]
+      description: 'Search index name.'
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_tool.list_indexes
+        func_kwargs: []
+
+    query_text:
+      type: [string]
+      description: 'Query text.'
+
+    vector:
+      type: [list]
+      description: 'Pre-computed query vector.'
+
+    embeddings_connection:
+      type: [AzureOpenAIConnection, OpenAIConnection]
+      description: 'Needed when query_text is provided.'
+
+    embedding_model_name:
+      type: [string]
+      default: text-embedding-3-large
+      description: 'Embedding deployment / model.'
+
+    search_type:
+      type: [string]
+      default: hybrid
+      enum: ['keyword', 'semantic', 'vector', 'hybrid', 'hybrid_semantic']
+
+    top_k:
+      type: [int]
+      default: 3
+
+    text_field:
+      type: [string]
+      default: content
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_tool.list_text_fields
+        func_kwargs: []
+
+    vector_field:
+      type: [string]
+      default: vector
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_tool.list_vector_fields
+        func_kwargs: []
+
+    filter_expression:
+      type: [string]
+
+    select_fields:
+      type: [list]
+
+    semantic_config:
+      type: [string]
+      dynamic_list:
+        func_path: pf_reasoning_tool.tools.hw_ai_search_lookup_tool.list_semantic_configs
+        func_kwargs: []
+
+  outputs:
+    output:
+      type: [list]
