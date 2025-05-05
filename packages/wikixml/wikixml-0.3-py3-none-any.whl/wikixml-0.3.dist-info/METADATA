@@ -1,0 +1,67 @@
+Metadata-Version: 2.4
+Name: wikixml
+Version: 0.3
+Summary: A Python Library to process wiki dumps xml.
+Author: Hansimov
+Project-URL: Homepage, https://github.com/Hansimov/wikixml
+Project-URL: Issues, https://github.com/Hansimov/wikixml/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: tclogger
+Requires-Dist: lxml
+Requires-Dist: sedb
+Dynamic: license-file
+
+## wikixml
+A Python Library to process wiki dumps xml.
+
+![](https://img.shields.io/pypi/v/wikixml?label=wikixml&color=blue&cacheSeconds=60)
+
+## Install
+
+```sh
+pip install wikixml --upgrade
+```
+
+## Download Wiki Dumps
+ 
+Visit: https://dumps.wikimedia.org/zhwiki/latest/
+
+Download the latest wiki dump file with proxy:
+
+```sh
+curl -L --proxy http://127.0.0.1:11111 -o ~/repos/wikixml/data/zhwiki-latest-pages-meta-current.xml.bz2 https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-meta-current.xml.bz2
+```
+
+## `WikiXmlParser`
+
+Run example:
+
+```sh
+python example.py
+```
+
+See: [example.py](https://github.com/Hansimov/wikixml/blob/main/example.py)
+
+```python
+from wikixml import WikiXmlParser
+
+if __name__ == "__main__":
+    wiki_xml_bz2 = "zhwiki-20241101-pages-meta-current.xml.bz2"
+    file_path = Path(__file__).parent / "data" / wiki_xml_bz2
+    parser = WikiXmlParser(file_path)
+    # parser.preview_lines(5000)
+    parser.preview_pages(max_pages=100)
+```
+
+## `WikiPagesMongoWriter`
+
+Extract wiki pages from XML and write to MongoDB
+
+```sh
+python -m wikixml.mongo -d zhwiki -f "../data/zhwiki-latest-pages-meta-current.xml.bz2"
+```
