@@ -1,0 +1,20 @@
+include LICENSE
+include README.md
+include requirements.txt
+include requirements-dev.txt
+include pyproject.toml
+
+# Include all templates and data files
+recursive-include pyaddress/data *.json *.yaml *.yml
+recursive-include pyaddress/address_formatter/data *.json *.yaml *.yml
+
+# Include documentation
+recursive-include doc *.md *.txt *.rst
+
+# Include pre-processed address formatting templates
+recursive-include address-formatting/conf *
+
+# Exclude unnecessary files
+global-exclude *.py[cod] __pycache__ *.so *.dylib .DS_Store
+global-exclude .git* .vscode* .idea*
+prune .venv 
