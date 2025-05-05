@@ -1,0 +1,77 @@
+{
+    "title": "Schema for UBI config",
+    "type": "object",
+    "definitions": {
+        "content_sets_base": {
+            "type": "object",
+            "properties": {
+                "input": {"type": "string"},
+                "output": {"type": "string"}
+                },
+            "additionalProperties": false,
+            "required": ["input", "output"]
+            },
+        "module": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "stream": {"type": ["string", "number"]},
+                "profiles":{"type": "array",
+                            "items": {"type": "string"}
+                        }
+                },
+            "additionalProperties": false,
+            "required": ["name", "stream"]
+            }
+    },
+    "properties":{
+        "content_sets": {
+            "type": "object",
+            "properties":{
+                "debuginfo": {"$ref": "#/definitions/content_sets_base"},
+                "rpm": {"$ref": "#/definitions/content_sets_base"},
+                "srpm": {"$ref": "#/definitions/content_sets_base"}
+            },
+            "additionalProperties": false
+        },
+        "arches": {
+            "type": "array",
+            "items": {"type": "string"}
+        },
+        "modules": {
+            "type": "object",
+            "properties": {
+                "include": {
+                    "type": "array",
+                    "items":{"$ref": "#/definitions/module"}
+                    }
+                },
+            "additionalProperties": false
+            },
+        "packages": {
+            "type": "object",
+            "properties": {
+                "include": {
+                    "type": "array",
+                    "items": {"type":"string"}
+                    },
+                "exclude": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                    }
+                },
+            "additionalProperties": false,
+            "required": ["include"]
+            },
+        "flags": {
+            "type": "object",
+            "properties": {
+                "base_pkgs_only": {"type": ["string", "boolean"],
+                                   "$comment": "Include only packages defined in config file."}
+                },
+            "additionalProperties": false
+            }
+        },
+    "additionalProperties": false,
+    "required": ["content_sets", "packages"]
+}
