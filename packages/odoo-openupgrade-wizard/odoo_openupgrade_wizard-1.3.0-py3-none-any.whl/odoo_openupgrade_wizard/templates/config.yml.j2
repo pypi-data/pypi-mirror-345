@@ -1,0 +1,69 @@
+project_name: {{ project_name }}
+
+
+postgres_image_name: postgres:{{postgresql_version}}
+postgres_container_name: {{project_name}}-container-postgres-{{postgresql_version}}
+postgres_volume_name: {{project_name}}-volume-postgres-{{postgresql_version}}
+postgres_extra_settings:
+
+
+odoo_rpc_timeout: 3600
+odoo_host_xmlrpc_port: 9069
+odoo_default_company:
+  country_code: FR
+
+
+odoo_versions:
+{%- for odoo_version in odoo_versions %}
+  - {{ odoo_version }}
+{%- endfor %}
+
+
+odoo_version_settings:
+{%- for odoo_version in odoo_versions %}
+  {{odoo_version}}:
+{%- endfor %}
+
+
+migration_steps:
+{%- for step in steps %}
+  - name: {{ step['name'] }}
+    version: {{ step['version'] }}
+    execution_context: {{ step['execution_context'] }}
+    complete_name: {{ step['complete_name'] }}
+  {%- if step['execution_context'] == 'regular'%}
+    update: True
+  {%- endif %}
+{% endfor %}
+
+workload_settings:
+
+  # Ignored module list
+  ignored_module_list: []
+
+  # porting a module requires 45 minutes minimaly
+  port_minimal_time: 45
+
+  # a migration cost more for each version
+  port_per_version: 15
+
+  # Porting 120 lines of Python code costs 1 hour
+  port_per_python_line_time: 0.5
+
+  # Porting 120 lines of Javascript code costs 1 hour
+  port_per_javascript_line_time: 0.5
+
+  # Porting 10 lines of XML costs 1 minute
+  port_per_xml_line_time: 0.10
+
+  # Minimal time for Openupgrade PR
+  open_upgrade_minimal_time: 10
+
+  # time for a line of model in the openupgrade_analysis.txt
+  openupgrade_model_line_time: 10
+
+  # Time for a line of field in the openupgrade_analysis.txt
+  openupgrade_field_line_time: 5
+
+  # Time for a line of XML in the openupgrade_analysis.txt
+  openupgrade_xml_line_time: 0.1
