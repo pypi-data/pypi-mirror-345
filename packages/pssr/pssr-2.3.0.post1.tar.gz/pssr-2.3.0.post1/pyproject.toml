@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "pssr"
+version = "2.3.0-post1"
+description = "Point-Scanning Super-Resolution 2"
+authors = ["Hayden Stites"]
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/ucsdmanorlab/PSSR2"
+documentation = "https://ucsdmanorlab.github.io/PSSR2"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Environment :: GPU :: NVIDIA CUDA",
+    "Framework :: napari",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Documentation :: Sphinx",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+torch = ">=1.11.0"
+numpy = "^1.22.4"
+pillow = ">=9.1.0"
+czifile = "^2019.7.2"
+tifffile = ">=2019.7.26"
+scikit-image = ">=0.18.0"
+scikit-optimize = ">=0.9.0"
+tqdm = "^4.0.0"
+pytorch-msssim = "^1.0.0"
+psutil = ">=5.0.0"
+timm = ">=0.8.0"
+magicgui = ">=0.6.0, <=0.8.2"
+
+napari = {version = "^0.4.13", optional = true}
+
+[tool.poetry.extras]
+napari = ["napari"]
+
+[tool.poetry.scripts]
+pssr = "pssr.__main__:main"
+
+[tool.poetry.plugins."napari.manifest"]
+pssr = "pssr.napari:napari.yaml"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
