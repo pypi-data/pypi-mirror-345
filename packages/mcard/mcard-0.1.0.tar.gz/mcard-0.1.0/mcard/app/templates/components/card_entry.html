@@ -1,0 +1,9 @@
+{% macro card_entry(card) %}
+<div class="p-3 border-b hover:bg-gray-50 transition-colors flex items-center justify-between card-entry" data-hash="{{ card.hash }}">
+    <div class="flex items-center space-x-4">
+        <div class="text-sm text-gray-600">{{ card.get_content_type().split('/')[-1] | upper }}</div>
+        <div class="font-mono text-sm text-gray-500">{{ card.hash[:12] }}</div>
+        <div class="text-sm text-gray-600">{{ card.g_time[:15] }}</div>
+    </div>
+</div>
+{% endmacro %}

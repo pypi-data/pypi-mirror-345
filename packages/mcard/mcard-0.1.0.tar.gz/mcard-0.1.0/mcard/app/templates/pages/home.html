@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}MCard - Home{% endblock %}
+
+{% block head_extra %}{% endblock %}
+
+{% block content %}
+    {% include 'components/paginated_selectables_view.html' with context %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.0/split.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        Split(['#left-panel', '#right-panel'], {
+            direction: 'horizontal',
+            sizes: [30, 70],
+            minSize: [250, 400],
+            gutterSize: 5,
+            dragInterval: 1,
+            cursor: 'col-resize'
+        });
+    });
+</script>
+{% endblock %}

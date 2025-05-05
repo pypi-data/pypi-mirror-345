@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MCard{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        .layout-container {
+            display: flex;
+            height: calc(100vh - 4rem); /* Subtract navbar height */
+            overflow: hidden;
+        }
+        
+        .paginated-selectables-view {
+            flex: 0 0 auto;
+            width: 300px; /* Initial width */
+            height: 100%;
+            background-color: #f3f4f6;
+            position: relative;
+            border-right: 1px solid #e5e7eb;
+        }
+        
+        .main-content {
+            flex: 1 1 auto;
+            height: 100%;
+            overflow-y: auto;
+            background-color: white;
+            position: relative;
+        }
+        
+        .chat-interface {
+            flex: 0 0 auto;
+            width: 320px; /* Initial width */
+            height: 100%;
+            background-color: white;
+            position: relative;
+            border-left: 1px solid #e5e7eb;
+        }
+        
+        .gutter {
+            background-color: rgba(0, 0, 0, 0.1); /* Light gray background */
+            border-left: 2px solid #c7c6cc3c; /* Lighter color */
+            cursor: col-resize;
+            width: 10px; /* Increased width */
+            transition: background-color 0.3s, border-left 0.3s; /* Smooth transition */
+        }
+
+        .gutter:hover {
+            background-color: rgba(0, 255, 255, 0.5); /* Cyan on hover */
+            border-left: 4px solid #c7c6cc3c; /* Thicker cyan border on hover */
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="h-screen flex flex-col bg-gray-100">
+    <!-- Global Navigation Bar -->
+    {% include 'components/navigation.html' %}
+
+    <!-- Main Layout Container -->
+    <div class="layout-container">
+        <!-- Sidebar -->
+        <div class="w-16 flex-shrink-0">
+            {% include 'components/sidebar.html' %}
+        </div>
+
+        <!-- Tree Navigation -->
+        <div class="paginated-selectables-view">
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            {% include 'components/main_content_view.html' %}
+        </main>
+
+        <!-- Chat Interface -->
+        <div class="chat-interface">
+            <iframe
+                id="chainlit-chat"
+                src="http://127.0.0.1:8000"
+                class="w-full h-full border-0"
+                style="background: white;"
+                allow="clipboard-read; clipboard-write"
+            ></iframe>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.0/split.min.js"></script>
+    <script>
+        const DEFAULT_PAGE_SIZE = {{ default_page_size }};
+    </script>
+    
+    <script>
+        // Global function to initialize splits
+        function initializeSplits() {
+            // Main layout split
+            Split(['.paginated-selectables-view', '.main-content', '.chat-interface'], {
+                sizes: [20, 50, 30],
+                minSize: [200, 400, 300],
+                gutterSize: 5,
+                snapOffset: 0,
+                direction: 'horizontal',
+                cursor: 'col-resize'
+            });
+
+            // Initialize content splits if they exist
+            const leftPanel = document.getElementById('left-panel');
+            const rightPanel = document.getElementById('right-panel');
+            if (leftPanel && rightPanel) {
+                Split(['#left-panel', '#right-panel'], {
+                    direction: 'horizontal',
+                    sizes: [25, 75],
+                    minSize: [200, 200],
+                    gutterSize: 5,
+                    dragInterval: 1,
+                    cursor: 'col-resize'
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSplits();
+
+            const iframe = document.getElementById('chainlit-chat');
+            
+            // Ensure iframe loads properly
+            iframe.onload = function() {
+                console.log('Chainlit chat interface loaded');
+            };
+            
+            iframe.onerror = function() {
+                console.error('Failed to load Chainlit chat interface');
+            };
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
