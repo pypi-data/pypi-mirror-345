@@ -1,0 +1,41 @@
+{
+  "base_url": "https://test.skillcorner.fr",
+  "class_docstring": "Awesome class generated with fitrequest.",
+  "class_name": "RestApiClient",
+  "client_name": "rest_api",
+  "method_config_list": [
+    {
+      "add_async_method": true,
+      "base_name": "items",
+      "endpoint": "/items/",
+      "json_path": "[*].items",
+      "params_model": "Params",
+      "response_model": "Item"
+    },
+    {
+      "decorators": [
+        "retry(max_retries=3, on_status='500-600')"
+      ],
+      "endpoint": "/items/{item_id}",
+      "name": "get_item",
+      "params_model": [
+        "lang",
+        "resp_format"
+      ],
+      "response_model": "Item"
+    },
+    {
+      "decorators": [
+        "retry(max_retries=2, on_status='507')"
+      ],
+      "endpoint": "/items/{item_id}/details/{detail_id}",
+      "name": "get_item_details",
+      "params_model": [
+        "lang",
+        "resp_format"
+      ],
+      "response_model": "ItemDetails"
+    }
+  ],
+  "method_docstring": "Calling endpoint: {endpoint}"
+}

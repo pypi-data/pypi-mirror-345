@@ -1,0 +1,44 @@
+{
+  "base_url": "https://test.skillcorner",
+  "class_name": "ConfigWithDefaultDecoratorsString",
+  "client_name": "client_with_default_decorators",
+  "method_config_list": [
+    {
+      "decorators": [
+        "simple_decorator"
+      ],
+      "endpoint": "/",
+      "name": "get_index"
+    },
+    {
+      "decorators": [
+        "decorator_with_params(return_value='decorator_with_params')"
+      ],
+      "endpoint": "/version/",
+      "name": "get_version"
+    },
+    {
+      "add_async_method": true,
+      "add_verbs": [
+        "GET",
+        "POST"
+      ],
+      "base_name": "item",
+      "decorators": [
+        "simple_decorator",
+        "decorator_with_params(return_value='decorator_with_params')"
+      ],
+      "endpoint": "/items/{item_id}"
+    },
+    {
+      "add_async_method": true,
+      "add_save_method": true,
+      "base_name": "items",
+      "endpoint": "/items/"
+    }
+  ],
+  "method_decorators": [
+    "decorator_with_params(return_value='decorator_with_params')",
+    "simple_decorator"
+  ]
+}
