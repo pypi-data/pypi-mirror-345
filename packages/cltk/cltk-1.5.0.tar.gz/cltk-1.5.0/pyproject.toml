@@ -1,0 +1,86 @@
+[tool.poetry]
+name = "cltk"
+version = "1.5.0"
+description = "The Classical Language Toolkit"
+license = "MIT"
+authors = ["Kyle P. Johnson <kyle@kyle-p-johnson.com>", "Patrick J. Burns <patrick@diyclassics.org>", "John Stewart <johnstewart@aya.yale.edu>", "Todd Cook <todd.g.cook@gmail.com>", "Clément Besnier <clem@clementbesnier.fr>", "William J. B. Mattingly <https://github.com/wjbmattingly>"]
+readme = "README.rst"
+homepage = "http://cltk.org"
+repository = "https://github.com/cltk/cltk"
+documentation = "https://cltk.readthedocs.io/en/latest/"
+keywords = ["nlp", "ai", "nltk", "latin", "greek"]
+classifiers = [
+    "Intended Audience :: Education",
+    "Intended Audience :: Religion",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Chinese (Traditional)",
+    "Natural Language :: English",
+    "Natural Language :: French",
+    "Natural Language :: German",
+    "Natural Language :: Greek",
+    "Natural Language :: Latin",
+    "Natural Language :: Russian",
+    "Operating System :: POSIX",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: General",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+gitpython = "^3.0"
+requests = "^2.22.0"
+tqdm = "^4.41.1"
+# This is a transitive dependency (via `gensim`) and is required
+# because `gensim` does not specify any `scipy` version in its own
+# dependencies, but at <=4.32 implicitly relies on scipy<1.13.0.
+# This has been fixed (see https://github.com/piskvorky/gensim/pull/3524)
+# but is not yet part of any release.
+# After that fix makes it to a release, we should remove this requirement.
+scipy = "<1.13.0"
+gensim = "^4.3.2"
+boltons = "^21.0.0"
+greek-accentuation = "^1.2.0"
+rapidfuzz = "^3.4.0"
+stanza = "^1.10.1"
+nltk = "^3.7"
+spacy = "3.7.5"
+PyYAML = "^6.0.0"
+scikit-learn = "^1.0.2"
+# Note: Adding torch like this should not be necessary,
+# as it is a dependency upstream to other projects
+# however the following is necessary to make torch
+# build on Docker
+torch = ">=2.0.0, !=2.0.1, !=2.1.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.3"
+nose = "^1.3"
+ipython = "^8.2"
+pylint = "^3.0.3"
+sphinx = "^4.5.0"
+coverage = "^7.3.4"
+pylint-json2html = "^0.4.0"
+tox = "^3.24.5"
+tox-pyenv = "^1.1"
+pytest-cov = "^3.0"
+rtd-poetry = "^0.1.0"
+sphinx-autodoc-typehints = "^1.17"
+pre-commit = "3.6.0"
+mypy = "^1.8.0"
+lxml = "^4.9"
+black = "^23.12.1"
+isort = "^5.13.2"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.0.0"
+
+[build-system]
+requires = ["poetry>=1.1.13"]
+build-backend = "poetry.masonry.api"
+
+[tool.isort]
+profile = "black"
