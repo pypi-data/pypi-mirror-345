@@ -1,0 +1,63 @@
+.TH ARCHIVER-ZIM-ARCHIVE 1 "March 2024" "Archiver ZIM" "User Commands"
+.SH NAME
+archiver-zim-archive \- Download and archive media content into ZIM files
+.SH SYNOPSIS
+.B archiver-zim-archive
+[\fIOPTIONS\fR] \fIURLS\fR...
+.SH DESCRIPTION
+Download media content from provided URLs and create a ZIM archive.
+.SH OPTIONS
+.TP
+\fB\-o\fR, \fB\-\-output\-dir\fR \fIPATH\fR
+Output directory for archives (default: ./archive)
+.TP
+\fB\-q\fR, \fB\-\-quality\fR \fIQUALITY\fR
+Video quality (e.g., 720p, 1080p)
+.TP
+\fB\-t\fR, \fB\-\-title\fR \fITEXT\fR
+Archive title
+.TP
+\fB\-\-description\fR \fITEXT\fR
+Archive description
+.TP
+\fB\-\-cookies\fR \fIPATH\fR
+Path to cookies file for authentication
+.TP
+\fB\-\-cookies\-from\-browser\fR \fIBROWSER\fR
+Browser to extract cookies from (e.g., firefox, chrome)
+.TP
+\fB\-\-retry\-count\fR \fIN\fR
+Number of retries for failed downloads (default: 3)
+.TP
+\fB\-\-retry\-delay\fR \fIN\fR
+Base delay between retries in seconds (default: 5)
+.TP
+\fB\-\-max\-retries\fR \fIN\fR
+Maximum number of retries before giving up (default: 10)
+.TP
+\fB\-\-skip\-download\fR
+Skip download phase and create ZIM from existing media
+.TP
+\fB\-\-cleanup\fR
+Delete downloaded files after ZIM creation
+.TP
+\fB\-\-dry\-run\fR
+Simulate operations without downloading
+.SH EXAMPLES
+.TP
+Download a single video:
+.B archiver-zim-archive
+"https://www.youtube.com/watch?v=VIDEO_ID" \-\-quality 720p
+.TP
+Download with cookies:
+.B archiver-zim-archive
+"https://www.youtube.com/watch?v=VIDEO_ID" \-\-cookies cookies.txt
+.TP
+Download with browser cookies:
+.B archiver-zim-archive
+"https://www.youtube.com/watch?v=VIDEO_ID" \-\-cookies\-from\-browser firefox
+.SH SEE ALSO
+.BR archiver-zim (1),
+.BR archiver-zim-manage (1)
+.SH AUTHOR
+Written by Sudo-Ivan 
