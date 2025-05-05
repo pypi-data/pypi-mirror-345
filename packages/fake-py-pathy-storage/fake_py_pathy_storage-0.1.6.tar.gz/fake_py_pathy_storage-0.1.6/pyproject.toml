@@ -1,0 +1,230 @@
+[project]
+name = "fake-py-pathy-storage"
+description = "Pathy storage for fake.py"
+readme = "README.rst"
+version = "0.1.6"
+dependencies = [
+    "fake.py>=0.9.5",
+    "pathy>=0.10.0,<0.12.0",
+]
+authors = [
+    {name = "Artur Barseghyan", email = "artur.barseghyan@gmail.com"},
+]
+maintainers = [
+    {name = "Artur Barseghyan", email = "artur.barseghyan@gmail.com"},
+]
+license = "MIT"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development",
+]
+keywords = ["fake data", "test data"]
+
+[project.urls]
+Homepage = "https://github.com/barseghyanartur/fake-py-pathy-storage/"
+Issues = "https://github.com/barseghyanartur/fake-py-pathy-storage/issues"
+Documentation = "https://fake-py-pathy-storage.readthedocs.io/"
+Repository = "https://github.com/barseghyanartur/fake-py-pathy-storage/"
+Changelog = "https://fake-py-pathy-storage.readthedocs.io/en/latest/changelog.html"
+
+[project.optional-dependencies]
+all = ["fake-py-pathy-storage[gcs,s3,azure,dev,test,docs]"]
+dev = [
+    "black",
+    "build",
+    "detect-secrets",
+    "doc8",
+    "ipython",
+    "isort",
+    "mypy",
+    "pip-tools",
+    "pydoclint",
+    "ruff",
+    "twine",
+    "uv",
+    "wheel",
+]
+test = [
+    "django",
+    "moto[s3]",
+    "parametrize",
+    "pytest",
+    "pytest-codeblock",
+    "pytest-cov",
+    "pytest-django",
+]
+docs = [
+    "sphinx<6.0",
+    "sphinx-rtd-theme>=1.3.0",
+    "sphinx-no-pragma",
+]
+gcs = [
+    "pathy[gcs]>=0.10.0,<0.12.0",
+]
+s3 = [
+    "pathy[s3]>=0.10.0,<0.12.0",
+]
+azure = [
+    "pathy[azure]>=0.10.0,<0.12.0",
+]
+
+[project.scripts]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "fakepy.pathy_storage",
+    "fakepy.pathy_storage.tests",
+]
+namespaces = true
+
+# Build system information below.
+[build-system]
+requires = ["setuptools>=41.0", "setuptools-scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 80
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+force-exclude = '__copy_fake\.py'
+extend-exclude = '''
+/(
+  # The following are specific to Black, you probably don't want those.
+  | blib2to3
+  | tests/data
+  | profiling
+  | migrations
+)/
+'''
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+multi_line_output = 3
+force_single_line = false
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 80
+honor_noqa = true
+known_first_party = [
+    "address",
+    "article",
+    "config",
+    "data",
+    "fake_address",
+    "fake_band",
+]
+known_third_party = ["fake"]
+skip = ["wsgi.py", "builddocs/"]
+
+[tool.ruff]
+line-length = 80
+
+# Enable Pyflakes `E` and `F` codes by default.
+lint.select = ["E", "F"]
+lint.ignore = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "docs",
+]
+lint.per-file-ignores = {}
+
+# Allow unused variables when underscore-prefixed.
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python 3.8.
+target-version = "py38"
+
+[tool.doc8]
+ignore-path = [
+    "docs/requirements.txt",
+    "fake-py-pathy-storage.egg-info/SOURCES.txt",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "-ra",
+    "-vvv",
+    "-q",
+   "--cov=pathy_storage",
+   "--ignore=.tox",
+   "--ignore=requirements",
+   "--ignore=release",
+   "--ignore=tmp",
+   "--cov-report=html",
+   "--cov-report=term",
+   "--cov-report=annotate",
+   "--cov-append",
+   "--capture=no",
+]
+testpaths = [
+    "fakepy/pathy_storage/",
+    "fakepy/pathy_storage_beta/",
+    "tests.py",
+    "test_*.py",
+    "**/*.rst",
+]
+pythonpath = [
+    ".",
+    "fakepy/pathy_storage/",
+    "fakepy/pathy_storage_beta/",
+]
+
+[tool.coverage.run]
+relative_files = true
+omit = [
+    ".tox/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "@overload",
+]
+
+[tool.mypy]
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+
+[tool.pydoclint]
+style = 'sphinx'
+exclude = '\.git|\.tox|tests/data|__copy_fake\.py'
+require-return-section-when-returning-nothing = false
+allow-init-docstring = true
+arg-type-hints-in-docstring = false
