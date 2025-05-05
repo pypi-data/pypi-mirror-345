@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: my-libs-py
+Version: 0.0.6
+Summary: Wrapper para fins de estudo e cases de projetos pessoais
+Author: Felipe Pegoraro
+Author-email: felipepegoraro93@gmail.com
+License: MIT License
+Keywords: libs python
+Description-Content-Type: text/markdown
+License-File: LICENCE
+
+# RepositÃ³rio destinado a criaÃ§Ã£o de functions para tratativas de dados em Arquitetura MedalhÃ£o!
+
+## Conceito:
+
+A arquitetura medalhÃ£o descreve uma sÃ©rie de camadas de dados que denotam a qualidade dos dados armazenados no lakehouse.
+
+Essa arquitetura garante atomicidade, consistÃªncia, isolamento e durabilidade Ã  medida que os dados passam por vÃ¡rias camadas 
+de validaÃ§Ãµes e transformaÃ§Ãµes antes de serem armazenados em uma disposiÃ§Ã£o otimizada para uma anÃ¡lise eficiente.
+
+Os termos bronze (bruto), prata (validado) e ouro (enriquecido) descrevem a qualidade dos dados em cada uma dessas camadas.
+
+A arquitetura medalhÃ£o Ã© um padrÃ£o de design de dados usado para organizar dados logicamente. Seu objetivo Ã© melhorar de forma
+incremental e progressiva a estrutura e a qualidade dos dados Ã  medida que eles fluem por cada 
+camada da arquitetura (de Bronze â‡’ Prata â‡’ Ouro). 
+
+Com o avanÃ§o dos dados por essas camadas, as organizaÃ§Ãµes podem melhorar gradativamente a qualidade e a confiabilidade dos dados,
+tornando-os mais adequados para aplicativos de Business Intelligence e aprendizado de mÃ¡quina.
+
+fonte: 
+https://docs.databricks.com/aws/pt/lakehouse/medallion
+
+## FunÃ§Ãµes da Camada Silver
+
+Para utilizaÃ§Ã£o das funÃ§Ãµes abaixo. Ã© necessÃ¡rio utilizar um dataframe em pysaprk
+
+- column_to_date: Converte uma coluna de string para o tipo de dado de data.
+- column_to_timestamp: Converte uma coluna de string para o tipo timestamp.
+- numbers_to_date: Converte uma coluna de nÃºmeros em datas.
+- change_null_numeric: Substitui valores nulos em colunas numÃ©ricas por 0.
+- change_null_string: Substitui valores nulos em colunas de string por '-'.
+- remove_extra_spaces: Remove espaÃ§os em branco extras de todas as colunas de string em um DataFrame.
+- upper_string_column: Converte todos os caracteres de uma coluna de string para maiÃºsculas.
+- lower_string_column: Converte todos os caracteres de uma coluna de string para minÃºsculas.
+- change_column_name: Altera o nome de uma coluna em um DataFrame.
+- union_dataframes: Une uma lista de DataFrames .
+- filter_like: Filtra os registros de um DataFrame onde os valores de uma coluna especÃ­fica correspondem a um padrÃ£o regex.
+- filter_by_max_date: Filtra o DataFrame para manter apenas as linhas com a maior data.
+- organize_data: Ordena o dataframe de acordo com uma coluna de identificaÃ§Ã£o eliminando possivÃ©is duplicatas.
+
+## FunÃ§Ãµes da Camada Gold
+
+Para utilizaÃ§Ã£o das funÃ§Ãµes abaixo. Ã© necessÃ¡rio utilizar um dataframe em pysaprk
+
+- convert_currency_column: Converte uma coluna de moeda no DataFrame para o tipo double.
+- type_monetary: Identifica o tipo de 'moeda' com base de uma coluna especÃ­ficas.
+- extract_memory: Adiciona uma coluna com a quantidade de memÃ³ria em GB extraÃ­da de outra coluna do DataFrame.
+- concat_columns: Concatena duas colunas de um DataFrame com um separador "_".
+- replace_characters: Substitui um caracter especÃ­fico por outro em uma coluna do DataFrame.
+- extract_characters: Extrai caracteres especÃ­ficos de uma coluna e coloca o resultado em outra coluna do DataFrame.
+- condition_like: Adiciona uma nova coluna ao DataFrame com valores 'Sim' ou 'Nao' com base em uma condiÃ§Ã£o de correspondÃªncia de padrÃ£o.
+
+## FunÃ§Ãµes de Teste Funcional
+
+- df_not_empty: Verifica se o Dataframe nÃ£o estÃ¡ vazio retornando o nnÃºmero de linhas.
+- schema_equals_df_schema: Verifica se o schema corresponde ao que estÃ¡ ao dataframe (Utilizado apÃ³s a aplicaÃ§Ã£o do Schema ao df).
+- count_df_filtered_filter: Verifica se nÃ£o ocorreu perda de linhas em um filtro de dados.
+- count_df_filtered_is_not_null: Verifica a quantidade de linhas nulas e nÃ£o nulas sÃ£o iguais ao dataframe original.
+- count_union_df: Verifica a consistÃªncia da uniÃ£o de um conjunto de DataFrames.
+- list_names_equal_df_names: Verifica se os nomes das colunas de um DataFrame (df) sÃ£o exatamente iguais aos nomes presentes em uma lista (list_name).
+- number_columns_list_names_and_df: Verifica se o dataframe possuÃ­ a mesma quantidade de nomes em uma lista.
