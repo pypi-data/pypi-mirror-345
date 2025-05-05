@@ -1,0 +1,107 @@
+Metadata-Version: 2.4
+Name: swbf-pymunge
+Version: 0.2.43
+Summary: SWBF Python munger
+Author: styinx
+License: MIT License
+        
+        Copyright (c) 2025 Chris
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/styinx/pymunge
+Project-URL: Issues, https://github.com/styinx/pymunge/issues
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Text Processing
+Classifier: Topic :: Utilities
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: parxel~=0.0.5
+Requires-Dist: windows-curses~=2.4.1; sys_platform == "win32"
+Provides-Extra: docs
+Requires-Dist: furo~=2024.8.6; extra == "docs"
+Requires-Dist: Sphinx~=8.2.3; extra == "docs"
+Requires-Dist: yapf~=0.43.0; extra == "docs"
+Dynamic: license-file
+
+# pymunge
+
+Munge tool for Star Wars Battlefront 2004.
+
+
+## Install
+
+```
+python -m pip install swbf-pymunge
+```
+
+PyPi Mirror: [https://pypi.org/project/swbf-pymunge/](https://pypi.org/project/swbf-pymunge/)
+
+
+## Usage
+
+### Build a folder with mod files (at least one .req file required)
+```
+pymunge -s ./your_files
+```
+
+### Build a single ODF file
+```
+pymunge -s your_file.odf odfmunge
+```
+
+### Build a folder of ODF files
+```
+pymunge -s ./your_files odfmunge
+```
+
+
+See also `-h` for an up-to-date listing of all arguments.
+
+
+### Flags
+| Short Flag | Long Flag | Arguments | Description |
+| :--- | :--- | :--- | :--- |
+| `-p` | `--platform` | `pc , ps2 , xbox` | Platform to build for. |
+| `-s` | `--source` | `<Path to mod files>` | Looks for .req files and their dependencies. |
+| `-t` | `--target` | `<Path to write results>` | Munged files are written to this directory. |
+| `-v` | `--version` | - | Print the current version. |
+
+
+### Developer Flags
+| Short Flag | Long Flag | Arguments | Description |
+| :--- | :--- | :--- | :--- |
+| `-l` | `--log-level` | `debug , info , warning, error , critical` | Adjusts logger output accordingly. |
+
+
+## Documentation
+
+[pymunge docs](https://styinx.github.io/pymunge/)
+
+
+### Build local Documentation from sources
+
+```
+python .\source\pymunge\make.py docs --autogen --build
+```
+
