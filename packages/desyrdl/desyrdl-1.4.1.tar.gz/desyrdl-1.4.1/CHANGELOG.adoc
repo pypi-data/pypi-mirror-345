@@ -1,0 +1,61 @@
+= DesyRDL Changelog
+:url-repo: https://gitlab.desy.de/fpgafw/tools/desyrdl
+
+This document provides a high-level view of the changes introduced in DesyRDL by release.
+For an even more detailed look at what has changed, refer to the {url-repo}/commits/[commit history] on GitLab.
+
+This project utilizes semantic versioning.
+
+== 1.4.0 (2025-02-26)
+
+🚀 Features::
+
+  * Implementation of all software access properties with side effects
+  * Add onread and onwrite side effects
+  * Implementation of interrupt register
+  * Interrupts tree with ChimeraTK DeviceAccess
+
+🐛 Bug Fixes::
+
+  * Make interface comparison case-insensitive
+  * Use forward slashes on Windows in lists of files
+  * Fix register width computation
+  * 2D address maps instance templates fixes
+  * VHDL Templates
+  ** Declare a signal for fields that also need it
+  ** Use wr strobe reg also if only onwrite set
+  ** Assign l_sw_wr_stb_q in all cases
+  ** Handle sparse registers correctly
+  ** Avoid null ranges in records
+  ** Use field instance name on port, not type name.
+      Resolves problem of signal rename with property change
+  ** Fix mem instance for read only case
+  ** Ibus decoder, missing address decode enable signals. No more issues on external ibus access
+
+
+📚 Documentation::
+  * Add initial antora documentation structure with initial content
+  * Interrupts descriptions with examples
+
+
+=== Details
+
+{url-repo}/compare/1.3.0\...1.4.0[compare 1.3.0 - 1.4.0]
+
+
+== 1.3.0 (2023-10-25)
+
+🚀 Features::
+
+  * Add cocotb support and templates. Generates python module with address space model class.
+
+🐛 Bug Fixes::
+
+  * VHDL Templates
+  ** Default register value is now properly set with no external reset need
+
+=== Details
+
+{url-repo}/compare/1.2.2\...1.3.0[compare 1.2.2 - 1.3.0]
+
+
