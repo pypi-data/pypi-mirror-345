@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=52.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyrmv"
+dynamic = ["version", "dependencies", "optional-dependencies"]
+authors = [{ name = "Profitroll", email = "profitroll@end-play.xyz" }]
+maintainers = [{ name = "Profitroll", email = "profitroll@end-play.xyz" }]
+description = "Small module that makes your journey with RMV REST API somehow easier."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://git.end-play.xyz/profitroll/PythonRMV"
+Source = "https://git.end-play.xyz/profitroll/PythonRMV"
+Tracker = "https://git.end-play.xyz/profitroll/PythonRMV/issues"
+Documentation = "https://git.end-play.xyz/profitroll/PythonRMV/wiki"
+
+
+[tool.setuptools.dynamic]
+version = { attr = "pyrmv.__version__" }
+dependencies = { file = "requirements/_.txt" }
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = { file = "requirements/dev.txt" }
+dist = { file = "requirements/dist.txt" }
+speed = { file = "requirements/speed.txt" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+target-version = ['py39', 'py310', 'py311', 'py312']
+line-length = 94
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+python_files = ["test_*.py"]
+pythonpath = "."
+testpaths = ["tests"]
+
+[tool.mypy]
+namespace_packages = true
+install_types = true
+strict = true
+show_error_codes = true
+
+[tool.pylint.main]
+extension-pkg-whitelist = ["ujson"]
+py-version = 3.9
+
+[tool.coverage.run]
+source = ["pyrmv"]

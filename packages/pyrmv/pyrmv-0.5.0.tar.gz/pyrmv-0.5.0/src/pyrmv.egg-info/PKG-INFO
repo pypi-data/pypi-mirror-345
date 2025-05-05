@@ -1,0 +1,110 @@
+Metadata-Version: 2.4
+Name: pyrmv
+Version: 0.5.0
+Summary: Small module that makes your journey with RMV REST API somehow easier.
+Author-email: Profitroll <profitroll@end-play.xyz>
+Maintainer-email: Profitroll <profitroll@end-play.xyz>
+License: MIT
+Project-URL: Homepage, https://git.end-play.xyz/profitroll/PythonRMV
+Project-URL: Source, https://git.end-play.xyz/profitroll/PythonRMV
+Project-URL: Tracker, https://git.end-play.xyz/profitroll/PythonRMV/issues
+Project-URL: Documentation, https://git.end-play.xyz/profitroll/PythonRMV/wiki
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests~=2.32.3
+Requires-Dist: xmltodict~=0.14.0
+Requires-Dist: isodate~=0.7.0
+Provides-Extra: dev
+Requires-Dist: black~=25.1.0; extra == "dev"
+Requires-Dist: isort==5.13.2; extra == "dev"
+Requires-Dist: mypy~=1.15.0; extra == "dev"
+Requires-Dist: pylint<3.4.0,==3.3.7; extra == "dev"
+Requires-Dist: pytest-cov~=6.1.0; extra == "dev"
+Requires-Dist: pytest~=8.3.2; extra == "dev"
+Requires-Dist: tox==4.25.0; extra == "dev"
+Requires-Dist: types-ujson~=5.10.0.20240515; extra == "dev"
+Provides-Extra: dist
+Requires-Dist: build==1.2.2.post1; extra == "dist"
+Requires-Dist: twine~=6.1.0; extra == "dist"
+Provides-Extra: speed
+Requires-Dist: ujson~=5.10.0; extra == "speed"
+Dynamic: license-file
+
+<h1 align="center">PythonRMV</h1>
+
+<p align="center">
+<a href="https://git.end-play.xyz/profitroll/PythonRMV/src/branch/master/LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue"></a>
+<a href="https://git.end-play.xyz/profitroll/PythonRMV"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+</p>  
+
+Small module that makes your journey with RMV REST API somehow easier. Based fully on official RMV API reference and HAFAS documentation.
+
+## Requirements
+
+* RMV API key (Get it [here](https://opendata.rmv.de/site/start.html))
+* Python 3.9+
+* git (Only for installation from source)
+
+## Installation
+
+If you have everything listed in [requirements](#requirements), then let's begin.
+
+### Variant 1
+
+`python -m pip install pyrmv`
+
+### Variant 2
+
+`python -m pip install git+https://git.end-play.xyz/profitroll/PythonRMV.git`
+
+## Usage
+
+```py
+import pyrmv
+
+# Define a Client with API key
+client = pyrmv.Client("AcessId")
+
+# Get origin's and destination's location
+origin = client.stop_by_name("Frankfurt Hauptbahnhof", max_number=3)[0]
+destination = client.stop_by_coords(50.099613, 8.685449, max_number=3)[0]
+
+# Find a trip by locations you got above
+trip = client.trip_find(origin_id=origin.id, dest_id=destination.id)
+```
+
+## Frequently Asked Questions
+
+* [Why are there raw versions and formatted ones?](#why-are-there-raw-versions-and-formatted-ones)
+* [Some methods work slightly different](#some-methods-work-slightly-different)
+
+### Why are there raw versions and formatted ones?
+
+For the purposes of my projects I don't really need all the stuff RMV gives (even though it's not much).
+I only need some specific things. However I do understand that in some cases other users may find
+those methods quite useful so I implemented them as well.
+
+### Some methods work slightly different
+
+Can be. Not all function arguments written may work perfectly because I simply did not test each and
+every request. Some of arguments may be irrelevant in my use-case and the others are used quite rare at all.
+Just [make an issue](https://git.end-play.xyz/profitroll/PythonRMV/issues/new) and I'll implement it correct when I'll have some free time.
+
+## To-Do
+
+### General
+
+* [ ] Docs in Wiki
+* [ ] Tickets
