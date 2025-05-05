@@ -1,0 +1,10 @@
+from .D1 import print_code as D1
+from .D2 import print_code as D2
+from .D3 import print_code as D3
+from .D4 import print_code as D4
+from .D5 import print_code as D5
+from .D6 import print_code as D6
+from .D7 import print_code as D7
+from .D8 import print_code as D8
+from .D9_10 import print_code as D9_10
+from .D11 import print_code as D11
