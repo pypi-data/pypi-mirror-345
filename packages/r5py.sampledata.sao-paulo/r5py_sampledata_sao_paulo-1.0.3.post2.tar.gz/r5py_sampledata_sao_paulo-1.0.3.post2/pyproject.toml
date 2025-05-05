@@ -1,0 +1,50 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0.0", "wheel"]
+
+[project]
+name = "r5py.sampledata.sao_paulo"
+description = "Sample data for the r5py module, covering São Paulo city centre"
+readme = "README.md"
+
+authors = [
+    { name = "Christoph Fink" },
+    { name = "Willem Klumpenhouwer" },
+    { name = "Marcus Sairava" },
+    { name = "Rafael Pereira" },
+    { name = "Henrikki Tenkanen" }
+]
+
+dependencies = []
+requires-python = ">=3.10"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+keywords = ["accessibility", "transport", "routing", "research"]
+license = {text = "GPL-3.0-or-later or MIT"}
+
+dynamic = ["version"]
+
+[project.optional-dependencies]
+tests = ["pytest", "r5py>=0.1.0"]
+
+[project.urls]
+Documentation = "https://r5py.readthedocs.org/"
+Repository = "https://github.com/r5py/r5py.sampledata.sao_paulo.git"
+"Change log" = "https://github.com/r5py/r5py.sampledata.sao_paulo/blob/main/CHANGELOG.md"
+"Bug tracker" = "https://github.com/r5py/r5py.sampledata.sao_paulo/issues"
+
+[tool.pytest.ini_options]
+addopts = "-p no:faulthandler"
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.setuptools.dynamic]
+version = {attr = "r5py.sampledata.sao_paulo.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
