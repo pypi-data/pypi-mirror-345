@@ -1,0 +1,107 @@
+{
+  "version": 6,
+  "include": [
+    "generators/ninja.json",
+    "toolchains/vcpkg.json"
+  ],
+  "configurePresets": [
+    {
+      "name": "base-common",
+      "hidden":true,
+      "binaryDir":"${sourceDir}/out/build/${presetName}",
+      "installDir":"${sourceDir}/out/install/${presetName}",
+      "cacheVariables":{
+        "CMAKE_COMPILE_WARNING_AS_ERROR":false,
+        "CMAKE_EXPORT_COMPILE_COMMANDS":true,
+        "CMAKE_VERBOSE_MAKEFILE":"FALSE"
+      }
+    },
+    {
+      "name": "base",
+      "hidden": true,
+      "inherits": [
+        "base-common",
+        "ninja",
+        "vcpkg"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "base-config",
+      "hidden": true,
+      "inherits": [
+        "base-common",
+        "ninja-config",
+        "vcpkg"
+      ]
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "configurePreset": "base"
+    },
+    {
+      "name": "base-config-debug",
+      "hidden": true,
+      "configurePreset": "base-config",
+      "configuration": "Debug"
+    },
+    {
+      "name": "base-config-relwithdebinfo",
+      "hidden": true,
+      "configurePreset": "base-config",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "base-config-release",
+      "hidden": true,
+      "configurePreset": "base-config",
+      "configuration": "Release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "configurePreset": "base",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    },
+    {
+      "name": "base-config-relwithdebinfo",
+      "hidden": true,
+      "inherits": [
+        "base"
+      ],
+      "configurePreset": "base-config",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "base-config-debug",
+      "hidden": true,
+      "inherits": [
+        "base"
+      ],
+      "configurePreset": "base-config",
+      "configuration": "Debug"
+    },
+    {
+      "name": "base-config-release",
+      "hidden": true,
+      "inherits": [
+        "base"
+      ],
+      "configurePreset": "base-config",
+      "configuration": "Release"
+    }
+  ]
+}

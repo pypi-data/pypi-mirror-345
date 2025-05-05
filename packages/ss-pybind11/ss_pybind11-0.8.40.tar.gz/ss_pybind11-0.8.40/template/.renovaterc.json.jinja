@@ -1,0 +1,168 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":enablePreCommit"
+  ],
+  "automergeType": "pr",
+  "automergeStrategy": "squash",
+  "ignoreScripts": false,
+  "platformAutomerge": false,
+  "packageRules": [
+    {
+      "automerge": true,
+      "addLabels": [
+        "auto-approval"
+      ],
+      "schedule": [
+        "* 0-3 1-7 * *"
+      ],
+      "automergeSchedule": [
+        "* 0-3 1-7 * *"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ]
+    },
+[%- if repo_name == 'ss-pybind11' %]
+    {
+      "matchDepTypes": [
+        "action"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "find template -type f -exec sed -i -E {{ '\'s/{{{replace \\"/\\" \\"\\\\/\\" depName}}}(.*)@{{{currentValue}}}/{{{replace \\"/\\" \\"\\\\/\\" depName}}}\\\\1@{{{newValue}}}/g\' {} +' }}"
+        ]
+      }
+    },
+    {
+      "matchDepTypes": [
+        "github-runner"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "find template -type f -regex 'template/.*\\.github.*/workflows/.*' -exec sed -i {{ '\'s|{{{depName}}}-{{{currentValue}}}|{{{depName}}}-{{{newValue}}}|g\'' }} {} +"
+        ]
+      }
+    },
+    {
+      "matchManagers": [
+        "pre-commit"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "find template -type f -name '.pre-commit-config.yaml.jinja' -exec sed -i {{ '\'/{{{replace \\"/\\" \\"\\\\/\\" depName}}}/{N;s/rev: {{{currentValue}}}/rev: {{{newValue}}}/}\'' }} {} +"
+        ]
+      }
+    },
+    {
+      "matchDepTypes": [
+        "container",
+        "image",
+        "image-name",
+        "service-image"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "find template -type f -exec sed -i {{ '\'s|{{{depName}}}:{{{currentValue}}}@{{{currentDigest}}}$|{{{depName}}}:{{{newValue}}}@{{{newDigest}}}|g\' {} +' }}",
+          "find template -type f -exec sed -i {{ '\'s|{{{depName}}}:{{{currentValue}}}$|{{{depName}}}:{{{newValue}}}@{{{newDigest}}}|g\' {} +' }}"
+        ]
+      }
+    },
+[%- endif %]
+    {
+      "description": "Group renovate docker tag and pre-commit-hooks tag",
+      "groupName": "renovate group",
+      "addLabels": [
+        "renovate"
+      ],
+      "matchDatasources": [
+        "docker",
+        "github-tags"
+      ],
+      "matchDepNames": [
+[%- if repo_platform == 'github' %]
+        "ghcr.io/renovatebot/renovate",
+[%- endif %]
+[%- if repo_platform == 'gitlab' or reop_host_type == 'gitlab-self-managed' or repo_name == 'ss-pybind11' %]
+        "renovate/renovate",
+[%- endif %]
+        "renovatebot/pre-commit-hooks"
+      ]
+    }
+  ],
+  "customManagers": [
+    {
+      "description": "Update python packages installed with pip or pipx",
+      "customType": "regex",
+      "datasourceTemplate": "pypi",
+      "fileMatch": [
+        "^\\.github/workflows/.+\\.yml$",
+        "^\\.renovaterc\\.json$",
+        "^pyproject\\.toml$"
+[%- if repo_name == 'ss-pybind11' %],
+        "^template/.*?/workflows/.+\\.yml(\\.jinja)?$",
+        "^template/\\.renovaterc\\.json\\.jinja$",
+        "^template/pyproject\\.toml\\.jinja$"
+[%- endif %]
+      ],
+      "matchStrings": [
+        "pipx? install.* (?<depName>.*?)==(?<currentValue>.*?)[\\s\";']"
+      ]
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-runners",
+      "depTypeTemplate": "github-runner",
+      "description": "Match GitHub runner defined in GitHub Actions matrix strategy",
+      "fileMatch": [
+        "^\\.github/workflows/.+\\.yml$"
+[%- if repo_name == 'ss-pybind11' %],
+        "^template/.*\\.github.*/workflows/.+\\.yml(\\.jinja)?$"
+[%- endif %]
+      ],
+      "matchStringsStrategy": "recursive",
+      "matchStrings": [
+        "[-:] (.*) # renovate: github-runner",
+        "(?<depName>ubuntu|windows|macos)-(?<currentValue>[\\d\\.\\-\\w]+)"
+      ],
+      "versioningTemplate": "docker"
+    },
+    {
+      "description": "Update microsoft vcpkg baseline",
+      "customType": "regex",
+      "currentValueTemplate": "master",
+      "datasourceTemplate": "git-refs",
+      "depNameTemplate": "https://github.com/microsoft/vcpkg",
+      "depTypeTemplate": "vcpkg-baseline",
+      "fileMatch": [
+        "^vcpkg\\.json$"
+[%- if repo_name == 'ss-pybind11' %],
+        "^template/vcpkg\\.json\\.jinja$"
+[%- endif %]
+      ],
+      "matchStrings": [
+        "\"builtin-baseline\": \"(?<currentDigest>.*?)\""
+      ]
+    },
+    {
+      "description": "Update custom registry baseline",
+      "customType": "regex",
+      "currentValueTemplate": "master",
+      "datasourceTemplate": "git-refs",
+      "depTypeTemplate": "vcpkg-baseline",
+      "fileMatch": [
+        "^vcpkg\\.json$"
+[%- if repo_name == 'ss-pybind11' %],
+        "^template/vcpkg\\.json\\.jinja$"
+[%- endif %]
+      ],
+      "matchStrings": [
+        "\"baseline\": \"(?<currentDigest>.*?)\"[^}]+?\"repository\": \"(?<depName>.*?)\""
+      ]
+    }
+  ]
+}
