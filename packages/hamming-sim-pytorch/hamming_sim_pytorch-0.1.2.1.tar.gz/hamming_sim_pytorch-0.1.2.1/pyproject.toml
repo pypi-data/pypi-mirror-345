@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "hamming-sim-pytorch"
+version = "0.1.2.1"
+description = "A PyTorch extension for hamming similarity optimized for CPU usage."
+authors = [
+    "Yashasvi Ranawat <yashasvi.ranawat@iprally.com>",
+]
+maintainers = [
+    "Berker Peksag <berker.peksag@iprally.com>",
+]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "hamming_sim" },
+]
+include = [
+    { path = "hamming_sim/**/*.so", format = "wheel" },
+    { path = "hamming_sim/**/*.cpp", format = "sdist" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+torch = "2.4.0"
+numpy = "~1.26"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4"
+ruff = "^0.8"
+build = "^1.2"
+twine = "^6.1"
+
+[tool.poetry.build]
+script = "scripts/build_extension.py"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "setuptools", "torch==2.4.0"]
+build-backend = "poetry.core.masonry.api"
