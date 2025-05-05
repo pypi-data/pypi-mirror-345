@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<center>
+		<img width=150px height=150px style="display:inline-block;" src="{{ header_content.avatar }}" alt="{{ header_content.title }}">
+		<h1>{{ header_content.title }}</h1>
+		<span>{% if header_content.location %}{{ header_content.location }}&nbsp;&nbsp;{% endif %}</span>
+		<span>{{ header_content.signup }}</span>
+		<br>
+		<span>{{ header_content.instructables }} Instructables&nbsp;&nbsp;</span>
+		<span>{{ header_content.views }} Views&nbsp;&nbsp;</span>
+		<span>{{ header_content.comments }} Comments&nbsp;&nbsp;</span>
+		<span>{{ header_content.followers }} Followers</span>
+		<br>
+		<p>{{ header_content.bio }}</p>
+		{% if ible_list_title != "" %}
+		<hr>
+		{% endif %}
+		<h2>{{ ible_list_title }}</h2>
+		{% for ible in ibles %}
+		<div class="member-list">
+			<a href="{{ ible.link }}" style="color:#bbc2cf;">
+				<img style="max-width:200px;" src="{{ ible.img }}" alt="{{ ible.title }}">
+				<p>{{ ible.title }}</p>
+			</a>
+		</div>
+		{% endfor %}
+		<p><a href="/member/{{ header_content.title }}/instructables/">View all Instructables</a></p>
+		<br>
+		<h2>{{ ach_list_title }}</h2>
+		{% for ach in achs %}
+		<div class="member-list">
+			<p><b>{{ ach[0] }}</b></p>
+			<p>{{ ach[1] }}</p>
+		</div>
+		{% endfor %}
+
+	</center>
+{% endblock %}

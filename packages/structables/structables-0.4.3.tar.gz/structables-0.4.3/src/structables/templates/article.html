@@ -1,0 +1,87 @@
+{% extends "base.html" %} {% block content %}
+<div class="container my-5">
+  <div class="header-section text-center mb-5">
+    <h1 class="display-4">{{ title }}</h1>
+    <p class="text-muted">
+      by
+      <a href="{{ author_link }}" class="text-decoration-none">{{ author }}</a>
+      in
+      <a href="{{ category_link }}" class="text-decoration-none"
+        >{{ category }}</a
+      >
+      &gt;
+      <a href="{{ channel_link }}" class="text-decoration-none"
+        >{{ channel }}</a
+      >
+    </p>
+    <p class="text-muted">
+      {{ views }} Views, {{ favorites }} Favorites, {{ comment_count }} Comments
+    </p>
+  </div>
+
+  {% for step in steps %}
+  <section class="step-section mb-5 p-4 rounded shadow-sm">
+    <div class="step-header mb-4">
+      <h2>{{ step.title }}</h2>
+    </div>
+
+    {% if step.imgs %}
+    <div class="step-images row mb-4">
+      {% for step_img in step.imgs %}
+      <div class="col-md-4 mb-3">
+        <img
+          src="{{ step_img.src }}"
+          alt="{{ step_img.alt }}"
+          class="img-fluid rounded shadow-sm"
+        />
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %} {% if step.videos %}
+    <div class="step-videos row mb-4">
+      {% for step_video in step.videos %}
+      <div class="col-md-6 mb-3">
+        <video
+          src="{{ step_video }}"
+          controls
+          class="w-100 rounded shadow-sm"
+        ></video>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %} {% if step.iframes %}
+    <div class="step-iframes row mb-4">
+      {% for step_iframe in step.iframes %}
+      <div class="col-md-8 mb-3">
+        <iframe
+          src="{{ step_iframe.src }}"
+          width="100%"
+          height="{{ step_iframe.height }}"
+          frameborder="0"
+          class="rounded shadow-sm"
+        ></iframe>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="step-text mb-3">{{ step.text|safe }}</div>
+
+    {% if step.downloads %}
+    <div class="step-downloads row mb-4">
+      <div class="col-12">
+        <h3>Downloads</h3>
+      </div>
+      {% for step_download in step.downloads %}
+      <div class="col-md-2 mb-3">
+        <a href="{{ step_download.src }}" class="btn btn-primary w-100"
+          >{{ step_download.name }}</a
+        >
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

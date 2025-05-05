@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <center>
+        <h1>{{ title }}</h1>
+        <p>Total Running Contests: {{ contest_count }}</p>
+        <br>
+        <div class="contest-list">
+            {% for contest in contests %}
+            <div class="contest-list-item">
+                <a href="{{ contest.link }}">
+                    <img src="{{ contest.img }}" alt="{{ contest.alt }}">
+                </a>
+                <h2>{{ contest.title }}</h2>
+                <p>Closes: {{ contest.deadline }}</p>
+                <p class="ible-small">{{ contest.prizes }} Prizes, {{ contest.entries }} Entries</p>
+            </div>
+            {% endfor %}
+        </div>
+    </center>
+{% endblock %}
