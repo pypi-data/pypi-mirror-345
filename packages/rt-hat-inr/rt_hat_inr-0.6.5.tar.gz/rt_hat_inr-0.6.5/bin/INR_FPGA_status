@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+#programm reads current fpga status
+from rt_hat import FPGA as RT_HAT_FPGA
+import pprint
+
+RT_HAT_FPGA.init("/usr/share/InnoRoute/hat_env.sh")
+print("FPGA status:")
+pprint.pprint(RT_HAT_FPGA.status())
+print("available licenses:")
+pprint.pprint(RT_HAT_FPGA.license_features())
