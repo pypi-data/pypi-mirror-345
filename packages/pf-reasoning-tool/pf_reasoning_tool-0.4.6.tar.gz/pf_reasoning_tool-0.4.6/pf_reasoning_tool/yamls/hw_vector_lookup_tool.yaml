@@ -1,0 +1,69 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Tool.schema.json
+pf_reasoning_tool.tools.hw_ai_search_lookup_tool.hw_ai_search_lookup:
+  name: HW AI Search Lookup Tool
+  description: 'Vector / hybrid search over Azure AI Search (Cognitive Search).'
+  type: python
+  tool_state: preview
+  category: HW_PF_tools
+  module: pf_reasoning_tool.tools.hw_ai_search_lookup_tool
+  function: hw_ai_search_lookup
+
+  inputs:
+    query:
+      type: [string]
+
+    connection:
+      type: [CustomConnection]
+      description: |
+        CustomConnection with
+          endpoint: https://<search-name>.search.windows.net
+          api_key : <admin key or query key>
+
+    index_name:
+      type: [string]
+
+    embeddings_connection:
+      type: [AzureOpenAIConnection, OpenAIConnection]
+
+    model_name:
+      type: [string]
+      default: text-embedding-ada-002
+      optional: true
+
+    search_type:
+      type: [string]
+      enum: ['vector', 'text', 'hybrid']
+      default: hybrid
+
+    top_k:
+      type: [int]
+      default: 5
+
+    filter_expression:
+      type: [string]
+      description: "OData filter, e.g. category eq 'legal'."
+      optional: true
+
+    vector_fields:
+      type: [list]
+      description: "Vector column(s) (default: ['vector'])."
+      optional: true
+
+    text_fields:
+      type: [list]
+      description: "Main text column(s).  Default fallback: 'content' or 'text'."
+      optional: true
+
+    semantic_configuration:
+      type: [string]
+      description: "Semantic configuration name (for semantic search)."
+      optional: true
+
+  outputs:
+    output:
+      type: [list]
+      description: |
+        List of dicts. Each item:
+          text      – selected content field
+          metadata  – all other fields
+          score     – @search.score
