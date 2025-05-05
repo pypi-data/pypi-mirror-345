@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-source-ast-analyzer-devlibx"
+version = "0.1.0"
+description = "A tool for analyzing Python source code using AST to generate call graphs"
+readme = "README.md"
+authors = [{ name = "DevLibX", email = "info@devlibx.com" }]
+license = { text = "MIT" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Quality Assurance",
+]
+keywords = ["ast", "static analysis", "call graph", "python"]
+dependencies = ["networkx>=2.6.0", "flask>=2.0.0", "requests>=2.25.0"]
+requires-python = ">=3.8"
+
+[project.urls]
+"Homepage" = "https://github.com/devlibx/python-source-ast-analyzer"
+"Bug Tracker" = "https://github.com/devlibx/python-source-ast-analyzer/issues"
+
+[project.scripts]
+ast-analyzer = "python_source_ast_analyzer_devlibx.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
