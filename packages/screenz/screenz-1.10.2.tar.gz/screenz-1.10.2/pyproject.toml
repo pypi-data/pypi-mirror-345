@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "screenz"
+version = "1.10.2"
+description = "ScreenZ"
+license = "MIT"
+authors = ["deadmaster <deadmaster@noreply.codeberg.org>"]
+readme = "README.md"
+repository = "https://codeberg.org/deadmaster/screenz"
+classifiers = ["Topic :: Multimedia :: Video"]
+packages = [{ include = "scrz" }]
+exclude = ["scrz/font/generate.sh"]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+Pillow = "^11.2.1"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.15.0"
+ruff = "^0.11.8"
+types-Pillow = "^10.2.0"
+
+[tool.poetry.scripts]
+screenz = "scrz.__main__:main"
+
+[tool.ruff]
+include = ["scrz/**/*.py"]
+target-version = "py313"
+line-length = 100
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["F", "I", "UP", "G"]
+ignore = ["UP006", "UP007", "UP015", "UP032", "UP038", "UP040"]
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "tab"
+skip-magic-trailing-comma = true
+
+[tool.mypy]
+python_version = "3.13"
+show_error_codes = true
+show_absolute_path = true
+files = ["scrz"]
+strict = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
