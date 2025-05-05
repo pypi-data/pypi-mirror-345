@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: git-picker
+Version: 0.4.1
+Summary: git picker
+Home-page: https://github.com/JiauZhang/git-picker
+Author: JiauZhang
+Author-email: jiauzhang@163.com
+License: MIT
+Keywords: GitHub
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: httpx
+Requires-Dist: lxml
+Requires-Dist: conippets ==0.1.8
+
+### Install
+```shell
+pip install git-picker
+```
+
+### Usage
+```python
+import gitpicker.github as git
+
+user = 'JiauZhang'
+repo = 'git-picker'
+branch = 'main'
+files = {
+    'dir': [
+        'examples',
+        'gitpicker',
+    ],
+    'file': [
+        'LICENSE',
+        'setup.py',
+    ],
+}
+
+picker = git.GitHub(user, repo, branch)
+picker.pick(files)
+```
+
+### Sponsor
+<table align="center">
+    <thead>
+        <tr>
+            <th colspan="2">公众号</th>
+        </tr>
+    </thead>
+    <tbody align="center" valign="center">
+        <tr>
+            <td colspan="2"><img src="https://jiauzhang.github.io/ghstatic/images/ofa_m.png" style="height: 196px" alt="AliPay.png"></td>
+        </tr>
+    </tbody>
+    <thead>
+        <tr>
+            <th>AliPay</th>
+            <th>WeChatPay</th>
+        </tr>
+    </thead>
+    <tbody align="center" valign="center">
+        <tr>
+            <td><img src="https://jiauzhang.github.io/AliPay.png" style="width: 196px; height: 196px" alt="AliPay.png"></td>
+            <td><img src="https://jiauzhang.github.io/WeChatPay.png" style="width: 196px; height: 196px" alt="WeChatPay.png"></td>
+        </tr>
+    </tbody>
+</table>
