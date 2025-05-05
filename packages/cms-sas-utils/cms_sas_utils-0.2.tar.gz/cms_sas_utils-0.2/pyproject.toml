@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=67", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cms_sas_utils"
+version = "0.2"
+description = "Some tools for SaS derivation from HDNA files reader to plotting"
+readme = "README.md"
+requires-python = ">=3.8"
+
+authors = [
+    { name="Fabrice Couderc", email="fabrice.couderc@cea.fr" },
+    { name="Paul Gaigne", email="paul.gaigne@cern.ch" },
+    { name="Ozgur Sahin" }
+]
+
+dependencies = [
+    "tensorflow==2.7.0",
+    "tensorflow-probability~=0.12.2",
+    "protobuf==3.20.1",
+    "numpy==1.26.4",
+    "uproot",
+    "pyyaml",
+    "pyarrow",
+    "tqdm",
+    "pandas",
+    "correctionlib",
+    "fast_histogram",
+    "cms-fstyle-PG[fitter]",
+    "ijazz"
+]
+
+[tool.setuptools]
+packages = ["cms"]
+
+[project.urls]
+Homepage = "https://gitlab.cern.ch/pgaigne/sas_utils"
+
+[project.scripts]
+sas_reader_higgsdna = "cms.reader_higgsDNA:main"
+sas_reader_ecalelf = "cms.reader_EcalElf:main"
+sas_corrlib_combine = "cms.combine_corrlib:main"
+sas_dyll_valid_plot = "cms.validation_dyll:ijazz_valid_plot_cmd"
+sas_dyll_kin_plot = "cms.validation_dyll:ijazz_kin_plot_cmd"
+sas_dyll_steps_plot = "cms.validation_dyll:ijazz_mll_steps_plot"
+sas_file_corrector = "cms.common:ijazz_file_corrector"
+sas_time_equalisation_step0 = "cms.time_equalisation:step0"
+sas_time_equalisation_step1 = "cms.time_equalisation:step1"
+sas_time_equalisation_step2 = "cms.time_equalisation:step2"
