@@ -1,0 +1,75 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+      - id: debug-statements
+        language_version: python3
+
+  - repo: https://github.com/rstcheck/rstcheck
+    rev: v6.2.4
+    hooks:
+      - id: rstcheck
+        additional_dependencies:
+            - "Sphinx"
+            - "click"
+        args:
+          - "--ignore-messages"
+          - "Duplicate implicit target name"
+          - "--ignore-messages"
+          - "Unknown directive type "
+          - "--report-level"
+          - "WARNING"
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.11.8'
+    hooks:
+      - id: ruff-format
+      - id: ruff
+        args:
+            - "--fix"
+            - "--exit-non-zero-on-fix"
+            - "--show-fixes"
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.7.2
+    hooks:
+      - id: uv-lock
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+      - id: mypy
+        exclude: "docs/"
+        additional_dependencies:
+        - "types-requests"
+
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.13.1-beta
+    hooks:
+      - id: hadolint
+
+  - repo: https://github.com/getcodelimit/codelimit
+    rev: v0.18.1
+    hooks:
+      - id: codelimit
+        additional_dependencies:
+            - "click"
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+    -   id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package.lock.json
+
+  - repo: https://codeberg.org/marvin8/dependency-checker
+    rev: 0.5.1
+    hooks:
+    -   id: dependency-checker

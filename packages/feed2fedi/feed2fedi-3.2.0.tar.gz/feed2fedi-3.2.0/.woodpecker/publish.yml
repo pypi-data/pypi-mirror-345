@@ -1,0 +1,17 @@
+when:
+  event: release
+
+steps:
+  build_on_release:
+    image: ghcr.io/astral-sh/uv:debian
+    pull: true
+    environment:
+      UV_PUBLISH_TOKEN:
+        from_secret: UV_PUBLISH_TOKEN
+    commands:
+      - uv --version
+      - uv build
+      - uv publish
+
+depends_on:
+  - checks

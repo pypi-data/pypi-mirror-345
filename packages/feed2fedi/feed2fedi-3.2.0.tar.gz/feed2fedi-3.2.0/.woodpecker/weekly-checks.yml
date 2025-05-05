@@ -1,0 +1,11 @@
+when:
+  event: cron
+  cron: "Weekly"
+
+steps:
+  checks:
+    image: ghcr.io/astral-sh/uv:debian
+    pull: true
+    commands:
+      - uvx nox --version
+      - uvx nox -s pip_audit dependency_versions

@@ -1,0 +1,12 @@
+when:
+  event: [release, pull_request]
+
+steps:
+  checks:
+    image: ghcr.io/astral-sh/uv:debian
+    pull: true
+    commands:
+      - uv --version
+      - uvx nox --version
+      - uvx nox
+      - uv build
