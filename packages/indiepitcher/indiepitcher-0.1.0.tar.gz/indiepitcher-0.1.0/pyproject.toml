@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "indiepitcher"
+version = "0.1.0"
+description = "Python SDK for IndiePitcher"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "IndiePitcher", email = "petr@indiepitcher.com" },
+]
+keywords = ["email", "marketing", "newsletter", "emails", "api", "sdk"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications :: Email",
+    "Topic :: Software Development :: Libraries",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "httpx >=0.28.1",
+    "pydantic >=2.11.2"
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.4.2",
+    "pytest-cov>=4.1.0",
+    "mypy>=1.5.1",
+    "ruff>=0.0.292",
+    "pytest-asyncio>=0.26.0",
+    "python-dotenv>=1.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/IndiePitcher/indiepitcher-python"
+Documentation = "https://docs.indiepitcher.com"
+Issues = "https://github.com/IndiePitcher/indiepitcher-python/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["indiepitcher"]
+include = ["indiepitcher/py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
