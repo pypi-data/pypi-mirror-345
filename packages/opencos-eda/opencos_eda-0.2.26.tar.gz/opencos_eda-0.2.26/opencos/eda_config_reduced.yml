@@ -1,0 +1,66 @@
+
+
+defines: { }
+
+dep_command_enables:
+  # Values overriden to false:
+  shell:            false
+  var_subst_args:   false
+  var_subst_os_env: false
+
+# Values overriden to false:
+deps_legacy_supported: false
+deps_subprocess_shell: false
+
+
+tools:
+  verilator:
+    compile-waivers:
+      - CASEINCOMPLETE
+      - REALCVT  # Implicit conversion of real to integer
+      - SELRANGE
+      - TIMESCALEMOD # If one file has `timescale, then they all must
+      - UNSIGNED
+      - WIDTH
+      - fatal
+
+auto_tools_order:
+  -
+    slang:
+      exe: slang
+      requires_cmd:
+        - slang --version
+      handlers:
+        elab: CommandElabSlang
+
+    verilator:
+      exe: verilator
+      handlers:
+        elab: CommandElabVerilator
+        sim: CommandSimVerilator
+
+    gtkwave:
+      exe: gtkwave
+      handlers: { }
+
+    slang_yosys:
+      exe: yosys
+      requires_cmd:
+        - yosys -m slang
+      handlers:
+        elab:  CommandElabSlangYosys
+        synth: CommandSynthSlangYosys
+
+    modelsim_ase:
+      exe: vsim
+      requires_cmd:
+        - vsim -version
+      handlers:
+        elab: CommandElabModelsimAse
+        sim: CommandSimModelsimAse
+
+    iverilog:
+      exe: iverilog
+      handlers:
+        elab: CommandElabIverilog
+        sim: CommandSimIverilog
