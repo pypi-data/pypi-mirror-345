@@ -1,0 +1,164 @@
+Metadata-Version: 2.4
+Name: engibench
+Version: 0.0.1a3
+Summary: A suite of benchmarks for automated engineering design.
+Author-email: Florian Felten <ffelten@mavt.ethz.ch>
+License: GPL-3.0
+Project-URL: Homepage, https://ideal.ethz.ch/
+Project-URL: Repository, https://github.com/IDEALLab/EngiBench
+Project-URL: Documentation, https://engibench.ethz.ch
+Project-URL: Bug Report, https://github.com/IDEALLab/EngiBench/issues
+Keywords: Mechanical Engineering,Machine Learning,AI,Optimization
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy<=2.0
+Requires-Dist: gymnasium>=1.0.0
+Requires-Dist: datasets[vision]>=3.1.0
+Requires-Dist: pandas>=2.2.3
+Requires-Dist: matplotlib>=3.9.3
+Requires-Dist: pyarrow<20.0.0,>=15.0.0
+Provides-Extra: airfoil
+Requires-Dist: sqlitedict>=1.6; extra == "airfoil"
+Provides-Extra: electronics
+Requires-Dist: networkx>=3.2.1; extra == "electronics"
+Provides-Extra: beams2d
+Requires-Dist: cvxopt>=1.3.2; extra == "beams2d"
+Requires-Dist: seaborn; extra == "beams2d"
+Provides-Extra: thermoelastic2d
+Requires-Dist: cvxopt>=1.3.2; extra == "thermoelastic2d"
+Requires-Dist: mmapy>=0.3.0; extra == "thermoelastic2d"
+Provides-Extra: photonics2d
+Requires-Dist: ceviche>=0.1.3; extra == "photonics2d"
+Provides-Extra: all
+Requires-Dist: engibench[airfoil,beams2d,electronics,photonics2d,thermoelastic2d]; extra == "all"
+Provides-Extra: doc
+Requires-Dist: sphinx; extra == "doc"
+Requires-Dist: sphinx-autobuild; extra == "doc"
+Requires-Dist: myst-parser; extra == "doc"
+Requires-Dist: sphinx-gallery==0.14.0; extra == "doc"
+Requires-Dist: sphinx-book-theme; extra == "doc"
+Requires-Dist: sphinx_github_changelog; extra == "doc"
+Requires-Dist: tabulate; extra == "doc"
+Provides-Extra: testing
+Requires-Dist: pytest>=8.3.2; extra == "testing"
+Provides-Extra: dev
+Requires-Dist: engibench[all,doc,testing]; extra == "dev"
+Dynamic: license-file
+
+
+<p align="center">
+<img src="docs/\_static/img/logo_text_large2.png" align="center" width="90%"/>
+</p>
+
+[![Python](https://img.shields.io/pypi/pyversions/engibench.svg)](https://badge.fury.io/py/engibench)
+![tests](https://github.com/IDEALLab/engibench/workflows/Python%20tests/badge.svg)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
+[![code style: Ruff](
+    https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](
+    https://github.com/astral-sh/ruff)
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ideallab/engibench/blob/main/tutorial.ipynb)
+
+
+<!-- start elevator-pitch -->
+EngiBench offers a collection of engineering design problems, datasets, and benchmarks to facilitate the development and evaluation of optimization and machine learning algorithms for engineering design. Our goal is to provide a standard API to enable researchers to easily compare and evaluate their algorithms on a wide range of engineering design problems.
+<!-- end elevator-pitch -->
+
+## Installation
+⚠️ Some problems run under Docker or Singularity. Others require native installation of dependencies, please consult the documentation of the specific problem.
+
+<!-- start install -->
+```bash
+pip install engibench
+```
+
+You can also specify additional dependencies for specific problems:
+
+```bash
+pip install "engibench[beams2d]"
+```
+
+Or you can install all dependencies for all problems:
+
+```bash
+pip install "engibench[all]"
+```
+<!-- end install -->
+
+## API
+
+<!-- start api -->
+```python
+from engibench.problems.beams2d.v0 import Beams2D
+
+# Create a problem
+problem = Beams2D()
+
+# Inspect problem
+problem.design_space  # Box(0.0, 1.0, (50, 100), float64)
+problem.objectives  # (("compliance", "MINIMIZE"),)
+problem.conditions  # (("volfrac", 0.35), ("forcedist", 0.0),...)
+problem.dataset # A HuggingFace Dataset object
+
+# Train your models, e.g., inverse design
+# inverse_model = train_inverse(problem.dataset)
+desired_conds = {"volfrac": 0.7, "forcedist": 0.3}
+# generated_design = inverse_model.predict(desired_conds)
+
+random_design, _ = problem.random_design()
+# check constraints on the design, config pair
+violated_constraints = problem.check_constraints(design=random_design, config=desired_conds)
+
+if not violated_constraints:
+   # Only simulate to get objective values
+   objs = problem.simulate(design=random_design, config=desired_conds)
+   # Or run a gradient-based optimizer to polish the design
+   opt_design, history = problem.optimize(starting_point=random_design, config=desired_conds)
+```
+
+You can also play with the API here: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ideallab/engibench/blob/main/tutorial.ipynb)
+
+<!-- end api -->
+
+## Development
+
+Both EngiBench and EngiOpt are open source projects and we welcome contributions! If you want to add a new problem, please reach out to us first to see if it is a good fit for EngiBench.
+
+### Installation
+<!-- start dev-install -->
+To install EngiBench for development, clone the repo, install the pre-commit hooks, and install all dev dependencies:
+
+```bash
+git clone git@github.com:IDEALLab/EngiBench.git
+cd EngiBench
+pre-commit install
+pip install -e ".[dev]"
+```
+Also worth installing [`ruff`](https://docs.astral.sh/ruff/) and [`mypy`](https://www.mypy-lang.org/) in your editor as we are checking the code style and type safety on our CI.
+<!-- end dev-install -->
+
+### Adding a new problem
+See [docs/tutorials/new_problem.md](docs/tutorials/new_problem.md).
+
+## License
+
+The code of EngiBench and EngiOpt is licensed under the GPLv3 license. See the [LICENSE](LICENSE) file for details.
+All the associated datasets are licensed under the CC-BY-NC-SA 4.0 license.
+
+## Citing
+
+<!-- start citing -->
+If you use EngiBench in your research, please cite the following paper:
+
+```bibtex
+TODO
+```
+<!-- end citing -->
