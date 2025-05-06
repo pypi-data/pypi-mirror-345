@@ -1,0 +1,43 @@
+---
+name: Test Release
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Build]
+    branches: main
+    types: [completed]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Check if there is a parent commit
+        id: check-parent-commit
+        run: |
+          echo "sha=$(git rev-parse --verify --quiet HEAD^)" >> $GITHUB_OUTPUT
+      - name: Detect and tag new version
+        id: check-version
+        if: steps.check-parent-commit.outputs.sha
+        uses: salsify/action-detect-and-tag-new-version@v2.0.3
+        with:
+          version-command: |
+            cat __about__.py | grep '^__version__ = ' | cut -d '"' -f 2
+      - name: Build package
+        run: |
+          uv build
+      - name: Publish package on TestPyPI
+        run: uv publish --index testpypi --username __token__ --password ${{secrets.TEST_PYPI_TOKEN}}
+          dist/*
+      - name: Publish the release notes
+        uses: release-drafter/release-drafter@v6
+        with:
+          publish: false
+          prerelease: true
+          tag: ${{ steps.check-version.outputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
