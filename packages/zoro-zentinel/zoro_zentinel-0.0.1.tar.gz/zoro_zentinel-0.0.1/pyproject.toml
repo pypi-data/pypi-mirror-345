@@ -1,0 +1,133 @@
+[build-system]
+# These are the assumed default build requirements from pip:
+# https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
+
+# # Currently specified in .pre-commit-config.yaml, but
+# # hopefully can be set here in the future
+# # after https://github.com/PyCQA/autoflake/issues/193 is fixed
+# [tool.autoflake]
+# ignore-pass-after-docstring = true
+# in-place = true
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.black]
+line-length = 88
+
+[tool.coverage.html]
+show_contexts = true
+
+[tool.coverage.paths]
+build = ["zentinel"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "raise NotImplementedError",
+  "def __repr__",
+  "if .debug:",
+  "if __name__ == .__main__.:",
+]
+
+[tool.coverage.run]
+parallel = true
+source = ["build", "tests"]
+
+# # Currently not used, as it's more strict than desired
+# [tool.flake8]
+# exclude = [".git", "__pycache__", "docs/conf.py", "build", "dist"]
+# max-line-length = 88
+# max-complexity = 10
+
+[tool.isort]
+known_first_party = ["build"]
+line_length = 88
+lines_after_imports = 2
+lines_between_types = 1
+skip = ["docs/conf.py"]       # "build" is included in the default skip list
+profile = "black"
+
+[tool.mypy]
+# Removed "ignore-without-code" from enable_error_code
+# to avoid errors with ignore[import] when followed 3rd party imports
+# don't specify the code type
+enable_error_code = ["truthy-bool", "redundant-expr"]
+files = "zentinel"
+ignore_missing_imports = true
+show_error_codes = true
+strict = false
+exclude = "\\.pyi$"
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers"
+markers = [
+  "integration",
+]
+
+[tool.hatch]
+
+[project]
+name = "zoro-zentinel"
+dynamic = ["version"]
+description = "Auth utilities for Zoro applications."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13"
+]
+dependencies = [
+    "aiohttp>=3.0,<4",
+    "google-auth>=2.0,<3",
+    "google-cloud-secret-manager>=2.0,<3",
+    "sqlalchemy[asyncio]>=2.0,<3"
+]
+
+[project.optional-dependencies]
+coverage = [
+    "coverage[toml]>=6.3.1",
+    "diff_cover>=3"
+]
+docs = [
+    "sphinx~=7.4",
+    "sphinx-argparse-cli>=1.17.0",
+    "sphinx-autodoc-typehints>=2.3.0",
+    "sphinxcontrib-apidoc~=0.5.0",
+    "sphinxcontrib-confluencebuilder~=2.12.0"
+]
+test = [
+    "hatch",
+    "pip-tools",
+    "pytest>=6.2.4,<8",
+    "pytest-asyncio",
+    "pytest-cov>=2.12",
+    "pytest-mock>=3",
+    "pytest-socket",
+    "psycopg[binary]>=3.1.19,<4",
+    "PyJWT>=2.10.1,<3",
+    "tox"
+]
+
+[tool.hatch.build]
+include = [
+  "zentinel/**",
+  "README.md",
+  "pyproject.toml"
+]
+
+[tool.hatch.version]
+path = "zentinel/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["zentinel"]
+
+[tool.hatch.build.targets.wheel.force-include]
+# The package seemed to pick up and install this file without the explicit
+# force-include, but keeping this setting "just in case".
+"zentinel/py.typed" = "zentinel/py.typed"
