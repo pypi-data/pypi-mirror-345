@@ -1,0 +1,110 @@
+Metadata-Version: 2.4
+Name: easylink
+Version: 0.1.15
+Summary: Research repository for the EasyLink ER ecosystem project.
+Home-page: https://github.com/ihmeuw/easylink
+Author: The EasyLink developers
+Author-email: vivarium.dev@gmail.com
+License: BSD-3-Clause
+Description-Content-Type: text/x-rst
+Requires-Dist: click
+Requires-Dist: docker
+Requires-Dist: graphviz
+Requires-Dist: loguru
+Requires-Dist: layered_config_tree>=3.0.0
+Requires-Dist: networkx
+Requires-Dist: pandas
+Requires-Dist: pyyaml
+Requires-Dist: pyarrow
+Requires-Dist: snakemake>=8.0.0
+Requires-Dist: snakemake-interface-executor-plugins<9.0.0
+Requires-Dist: snakemake-executor-plugin-slurm
+Requires-Dist: pandas-stubs
+Requires-Dist: pyarrow-stubs
+Provides-Extra: docs
+Requires-Dist: sphinx<8.2.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints; extra == "docs"
+Requires-Dist: sphinx-click; extra == "docs"
+Requires-Dist: sphinx-autobuild; extra == "docs"
+Requires-Dist: typing_extensions; extra == "docs"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-mock; extra == "test"
+Provides-Extra: dev
+Requires-Dist: sphinx<8.2.0; extra == "dev"
+Requires-Dist: sphinx-rtd-theme; extra == "dev"
+Requires-Dist: sphinx-autodoc-typehints; extra == "dev"
+Requires-Dist: sphinx-click; extra == "dev"
+Requires-Dist: sphinx-autobuild; extra == "dev"
+Requires-Dist: typing_extensions; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-mock; extra == "dev"
+Requires-Dist: black==22.3.0; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: summary
+
+========
+EasyLink
+========
+
+EasyLink is a framework that allows users to build and run highly configurable
+entity resolution (ER) pipelines.
+
+.. _python_support:
+
+**Supported Python versions: 3.11, 3.12**
+
+.. _end_python_support:
+
+Installation
+============
+
+.. _installation:
+
+There are a few things to install in order to use this package:
+
+- Install singularity. 
+
+  You may need to request it from your system admin. 
+  Refer to https://docs.sylabs.io/guides/4.1/admin-guide/installation.html. 
+  You can check if you already have singularity installed by running the command ``singularity --version``. For an
+  existing installation, your singularity version number is printed.
+
+- Install conda. 
+  
+  We recommend `miniforge <https://github.com/conda-forge/miniforge>`_. You can check if you already
+  have conda installed by running the command ``conda --version``. For an existing installation, a version 
+  will be displayed.
+
+- Install easylink, python and graphviz in a conda environment.
+
+  Option 1 - Install from PyPI with pip::
+
+    $ conda create --name easylink -c conda-forge python=3.12 graphviz 'gcc<14' -y
+    $ conda activate easylink
+    $ pip install easylink
+
+  Option 2 - Build from source with pip::
+    
+    $ conda create --name easylink -c conda-forge python=3.12 graphviz 'gcc<14' -y
+    $ conda activate easylink
+    $ pip install git+https://github.com/ihmeuw/easylink.git
+
+.. _end_installation:
+
+Documentation
+=============
+
+You can view documentation at https://easylink.readthedocs.io/en/latest/
