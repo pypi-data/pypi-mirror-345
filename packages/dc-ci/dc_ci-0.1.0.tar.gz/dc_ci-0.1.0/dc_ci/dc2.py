@@ -1,0 +1,36 @@
+
+text = '''import Pyro5.api
+
+def main():
+    uri = input("Enter the server URI (e.g., PYRO:obj_xxxxxx@localhost:9090): ")
+    string_service = Pyro5.api.Proxy(uri)
+
+    str1 = input("Enter first string: ")
+    str2 = input("Enter second string: ")
+
+    result = string_service.concatenate(str1, str2)
+    print("Concatenated result:", result)
+
+if __name__ == "__main__":
+    main()
+
+Server.py
+import Pyro5.api
+
+@Pyro5.api.expose
+class StringConcatenator:
+    def concatenate(self, str1, str2):
+        return str1 + str2
+
+def main():
+    daemon = Pyro5.api.Daemon()
+    uri = daemon.register(StringConcatenator)
+    print("Ready. Object uri =", uri)
+    daemon.requestLoop()
+
+if __name__ == "__main__":
+    main()
+ '''
+
+print(text)
+
