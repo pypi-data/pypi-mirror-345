@@ -1,0 +1,160 @@
+Metadata-Version: 2.4
+Name: molgeom
+Version: 0.8.0
+Summary: A simple molecular geometry manipulation library.
+Project-URL: Homepage, https://github.com/sio-salt/molgeom
+Project-URL: Repository, https://github.com/sio-salt/molgeom
+Project-URL: Documentation, https://github.com/sio-salt/molgeom-examples
+Author-email: sio-salt <saltinthedesertyou@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 sio-salt
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Keywords: CIF,GAMESS,VASP,analysis,chemistry,computation,crystal,gaussian,geometry,molecular,qchem,quantum,science,structure,xyz
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Scientific/Engineering :: Quantum Computing
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: cachetools>=5.2.0
+Requires-Dist: click>=8.1.7
+Requires-Dist: networkx>=2.6.3
+Description-Content-Type: text/markdown
+
+# molgeom
+A Simple Python library for molecular geometry manipulation.
+
+> **Note**: `molgeom` is under active development. The implemented features and method names may change in future updates. Please check the repository regularly for the latest information.
+
+![molgeom_view_mols_example_1](https://github.com/user-attachments/assets/c6e7775c-6e07-4c99-8760-e4f7b7cc2679)
+
+
+## ✨ Key Features
+- Read and write molecular geometries:
+  - Formats supported: XYZ, Gaussian input, GAMESS input, MOL, SDF, CIF, VASP POSCAR.
+- Calculate molecular properties:
+  - Nuclear repulsion energy.
+  - Center of mass.
+  - Bond lengths.
+- Perform geometry manipulations:
+  - Translation and rotation (including matrix and Rodrigues' rotation formula).
+  - Cell replication using lattice vectors and symmetry operations (e.g., `-y, x + 1/2, -z + 1/2`).
+  - Merge molecule geometries.
+- Visualize molecular geometries:
+  - Display molecules in your Jupyter Notebook or browser using 3Dmol.js.
+- Command-line interface:
+  - `molgeom` command is available after installation.
+  - See Command Line Usage section below for details
+- Additional utilities:
+  - Filter atoms by element.
+  - Cluster fragments.
+  - Identify bond cycles.
+
+
+## 🚀 Getting Started
+
+You can try out example of `molgeom` in Jupyter Notebook:  
+👉 [**Try Example Code in Jupyter Notebook**](https://mybinder.org/v2/gh/sio-salt/molgeom-examples/main?urlpath=lab/tree/notebooks/tutorial1.ipynb)
+
+For a version with NumPy, see the [**numpyfy branch**](https://github.com/sio-salt/molgeom/tree/numpyfy).
+
+---
+
+
+## 🔽 Installation
+Install `molgeom` using pip:
+```bash
+pip install molgeom
+```
+Alternatively, clone the repository for development:
+
+```bash
+git clone https://github.com/sio-salt/molgeom.git
+cd molgeom
+pip install -e .
+```
+The minimum Python version required is 3.10 for the main branch.
+
+
+## 📟 Command Line Usage
+After installation, the `molgeom` command becomes available. Enable shell completion by copying and pasting the following command into your terminal:
+
+Bash:
+```bash
+echo 'eval "$(_MOLGEOM_COMPLETE=bash_source molgeom)"' >> ~/.bashrc && source ~/.bashrc
+```
+
+Zsh:
+```zsh
+echo 'eval "$(_MOLGEOM_COMPLETE=zsh_source molgeom)"' >> ~/.zshrc && source ~/.zshrc
+```
+
+Fish:
+```fish
+_MOLGEOM_COMPLETE=fish_source molgeom | source
+```
+
+Available commands:
+```bash
+# Single file commands
+molgeom modify <file> [-op <op>]   # Transform structure (translate/reflect/rotate)
+molgeom split <file>               # Split into molecular clusters
+molgeom poscar2xyz <file> <ranges> # Convert POSCAR with cell replication
+                                   # ( e.g., molgeom poscar2xyz POSCAR_H2O -1 2 -1 0 1 2 )
+
+# Multiple file commands (space-separated)
+molgeom center <file1> <file2> ...         # Print center of mass for multiple files
+molgeom nuclrep <file1> <file2> ...        # Calculate nuclear repulsion energy for multiple files
+molgeom bonds <file1> <file2> ... [--tol]  # List bonds for multiple files
+molgeom view <file1> <file2> ...           # View multiple structures in browser
+
+# Get help for any command
+molgeom --help
+molgeom <command> --help
+```
+
+
+## 🛠️ Future Plans
+- Support Z-matrix format.
+- Add more symmetry utilities.
+- Handle multi-molecule systems.
+- Additional features and improvements.
+
+
+## 🔗 Links
+- [main branch](https://github.com/sio-salt/molgeom/tree/main)
+- [numpyfy branch](https://github.com/sio-salt/molgeom/tree/numpyfy)
+- [PyPI](https://pypi.org/project/molgeom/)
+- [molgeom examples repo](https://github.com/sio-salt/molgeom-examples/tree/main)
+- [molgeom examples Binder](https://mybinder.org/v2/gh/sio-salt/molgeom-examples/main?urlpath=lab/tree/notebooks/tutorial1.ipynb)

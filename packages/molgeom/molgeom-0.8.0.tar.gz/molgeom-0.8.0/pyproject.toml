@@ -1,0 +1,81 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "molgeom"
+description = "A simple molecular geometry manipulation library."
+version = "0.8.0"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "sio-salt", email = "saltinthedesertyou@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = [
+    "cachetools>=5.2.0",
+    "click>=8.1.7",
+    "networkx>=2.6.3",
+]
+keywords = [
+    "molecular",
+    "geometry",
+    "chemistry",
+    "quantum",
+    "computation",
+    "VASP",
+    "CIF",
+    "gaussian",
+    "GAMESS",
+    "xyz",
+    "analysis",
+    "crystal",
+    "qchem",
+    "science",
+    "structure",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Quantum Computing",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+
+[project.urls]
+Homepage = "https://github.com/sio-salt/molgeom"
+Repository = "https://github.com/sio-salt/molgeom"
+Documentation = "https://github.com/sio-salt/molgeom-examples"
+
+[project.scripts]
+molgeom = "molgeom.cli.cli_main:cli"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["molgeom*"]
+
+[tool.setuptools.package-data]
+"molgeom" = ["data/*.json", "data/*.yaml", "templates/*.html"]
+
+[tool.uv]
+dev-dependencies = ["pre-commit>=4.0.1", "pytest>=8.3.4", "ruff>=0.9.1"]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+ignore = ["F841"]
