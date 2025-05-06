@@ -1,0 +1,81 @@
+[project]
+name = "dta-observability"
+version = "0.0.2"
+description = "Lightweight wrapper around OpenTelemetry core APIs"
+authors = [
+    {name = "dta-observability-utils",email = "info@totvs.ai"}
+]
+requires-python = ">=3.12"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "dta-observability"
+version = "0.0.2"
+description = "Library wrapper around OpenTelemetry core APIs"
+authors = ["dta-observability-utils <info@totvs.ai>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+opentelemetry-api = "^1.32.1"
+opentelemetry-sdk = "^1.32.1"
+opentelemetry-exporter-otlp = "^1.32.1"
+opentelemetry-instrumentation = "^0.53b1"
+opentelemetry-instrumentation-logging = "^0.53b1"
+opentelemetry-instrumentation-flask = "^0.53b1"
+opentelemetry-instrumentation-fastapi = "^0.53b1"
+opentelemetry-instrumentation-requests = "^0.53b1"
+opentelemetry-propagator-gcp = "^1.9.0"
+opentelemetry-exporter-gcp-trace = "^1.9.0"
+opentelemetry-instrumentation-wsgi = "^0.53b1"
+opentelemetry-instrumentation-django = "^0.53b1"
+opentelemetry-instrumentation-sqlalchemy = "^0.53b1"
+opentelemetry-instrumentation-psycopg2 = "^0.53b1"
+opentelemetry-instrumentation-pymongo = "^0.53b1"
+opentelemetry-instrumentation-boto = "^0.53b1"
+opentelemetry-instrumentation-celery = "^0.53b1"
+opentelemetry-instrumentation-system-metrics = "^0.53b1"
+opentelemetry-instrumentation-asyncio = "^0.53b1"
+opentelemetry-instrumentation-httpx = "^0.53b1"
+opentelemetry-exporter-gcp-monitoring = "^1.9.0a0"
+opentelemetry-exporter-gcp-logging = "^1.9.0a0"
+opentelemetry-resourcedetector-gcp = "^1.9.0a0"
+python-json-logger = "^3.3.0"
+setuptools = "^80.0.0"
+types-requests = "^2.32.0.20250328"
+
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+black = "^25.1.0"
+isort = "6.0.1"
+ruff = "^0.11.7"
+mypy = "^1.8.0"
+pytest-cov = "^6.1.1"
+flask = "^3.1.0"
+fastapi = "^0.115.12"
+uvicorn = "^0.34.2"
+requests = "^2.31.0"
+celery = "^5.5.2"
+redis = "^5.2.1"
+asyncio = "^3.4.3"
+httpx = "^0.28.1"
+build = "^1.2.2"
+twine = "^6.1.0"
+
+[tool.poetry.scripts]
+example = "examples.flask_app:main"
+example-celery = "examples.celery_worker:main"
+example-fastapi = "examples.fastapi_app:main"
+
+[tool.black]
+line-length = 120
+target-version = ["py312"]
+
+[tool.isort]
+profile = "black"
+line_length =120
