@@ -1,0 +1,102 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-pilecore"
+version = "1.1.1"
+description = "Public python SDK for the CEMS PileCore web-API."
+requires-python = ">=3.11"
+dependencies = [
+  "anywidget>=0.9.18,<0.10",
+  "cems-nuclei[client]>=3.0.0,<4",
+  "dash>=3.0.2,<4",
+  "ipywidgets>=8.1.5,<9",
+  "matplotlib>=3.10.1,<4",
+  "natsort>=8.4.0,<9",
+  "numpy>=2.2.4,<3",
+  "pandas>=2.2.3,<3",
+  "plotly-geo>=1.0.0,<2",
+  "plotly>=6.0.1,<7",
+  "pygef>=0.11.0,<0.12",
+  "scipy>=1.15.2,<2",
+  "shapely>=2.1.0,<3",
+  "tqdm[notebook]>=4.67.1,<5",
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+keywords = ["API", "PileCore", "CEMS", "CRUX"]
+
+[project.urls]
+repository = "https://github.com/cemsbv/py-pilecore"
+
+[project.optional-dependencies]
+test = ["coveralls", "pytest", "openapi-core"]
+docs = [
+  "Sphinx==8.2.3",
+  "asteroid-sphinx-theme==0.0.3",
+  "ipython==9.1.0",
+  "sphinx-autodoc-typehints==3.1.0",
+  "sphinx_rtd_theme==3.0.2",
+]
+# lint dependencies from github super-linter
+# See https://github.com/super-linter/super-linter/tree/main/dependencies/python
+# Get a file with the latest requirements by running bash: `./get-super-linter-requirements.sh`
+# ignoring because redundant: snakemake, snakefmt, pylint
+lint = [
+  "ansible-lint==25.1.3",
+  "black==25.1.0",
+  "cfn-lint==1.33.2",
+  "cpplint==2.0.0",
+  "flake8==7.1.2",
+  "isort==6.0.0",
+  "mypy==1.15.0",
+  "sqlfluff==3.3.1",
+  "yamllint==1.35.1",
+  "yq==3.4.3",
+]
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88
+
+[tool.mypy]
+files = ["src/pypilecore"]
+mypy_path = 'src'
+namespace_packages = true
+show_error_codes = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unused_configs = true
+disallow_subclassing_any = true
+no_implicit_optional = true
+disallow_untyped_defs = true
+disallow_any_generics = false
+disallow_untyped_calls = true
+warn_return_any = false
+no_implicit_reexport = true
+strict_equality = true
+install_types = true
+
+[[tool.mypy.overrides]]
+module = [
+  "matplotlib.*",
+  "requests.*",
+  "nuclei.*",
+  "pygef.*",
+  "natsort.*",
+  "shapely.*",
+  "pytest.*",
+  "scipy.*",
+  "numpy.*",
+  "pandas.*",
+  "IPython.*",
+  "plotly.*",
+  "ipywidgets.*",
+]
+ignore_missing_imports = true
