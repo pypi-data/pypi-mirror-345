@@ -1,0 +1,37 @@
+[project]
+name = "thinking-hats-ai"
+version = "1.2.1"
+description = "thinking-hats-ai is a Python package that facilitates idea generation by following Edward de Bono's Six Thinking Hats methodology from his Book. It enables you to generate ideas by selecting one of the six hats and lets you choose one of the implemented prompting technique to follow while generating the idea."
+readme = "README.md"
+authors = [
+    { name = "Three Thinking Hats" }
+]
+requires-python = ">=3.9"
+dependencies = [
+    "langchain>=0.3.20",
+    "langchain-openai",
+    "langchain-community",
+    "urllib3<2.0.0",
+    "autogen>=0.8.5",
+    "ag2[openai]>=0.8.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 79
+indent-width = 4 
+target-version = "py39" 
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+exclude = ["venv", "migrations", "tests"]
+ignore = ["E203", "E501"]
+flake8-implicit-str-concat.allow-multiline = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space" 
+line-ending = "lf"
