@@ -1,0 +1,42 @@
+uid: Dummy Run with AgentObjectiveTerminationCondition and Environment Stop
+experiment_uid: "Dummy Runs"
+seed: 20250403
+version: "3.5"
+schedule:
+  - Training:
+      environments:
+        - environment:
+            name: palaestrai.environment.dummy_environment:DummyEnvironment
+            uid: myenv
+            params:
+              discrete: true
+              max_iter: 5
+      agents:
+        - name: Top Performer
+          brain:
+            name: palaestrai.agent:DummyBrain
+            params: { }
+          muscle:
+            name: palaestrai.agent:DummyMuscle
+            params: { }
+          objective:
+            name: palaestrai.agent:DummyObjective
+            params: {"params": 1}
+          sensors: [myenv.0, myenv.1, myenv.2, myenv.3, myenv.4]
+          actuators: [myenv.0, myenv.1, myenv.2, myenv.3, myenv.4]
+      simulation:
+        name: palaestrai.simulation:Vanilla
+        conditions:
+          - name: palaestrai.experiment:AgentObjectiveTerminationCondition
+            params:
+              Top Performer:
+                brain_avg5: 10
+      phase_config:  # Additional config for this phase
+        mode: train
+        worker: 1
+run_config:
+  condition:
+    name: palaestrai.experiment:AgentObjectiveTerminationCondition
+    params:
+      Top Performer:
+        phase_avg10: 5

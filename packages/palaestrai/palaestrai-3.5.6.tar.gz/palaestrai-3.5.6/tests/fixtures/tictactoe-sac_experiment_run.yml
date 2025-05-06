@@ -1,0 +1,51 @@
+uid: Tic-Tac-Toe Experiment with SAC
+seed: 190386
+version: "3.5"
+schedule:  # The schedule for this run; it is a list
+  - phase_0:  # Name of the current phase. Can be any user-chosen name
+      environments:  # Definition of the environments for this phase
+        - environment:
+            name: palaestrai_environments.tictactoe:TicTacToeEnvironment
+            uid: tttenv
+            params:
+              randomness: 0.6
+              invalid_turn_limit: 5
+      agents:  # Definiton of agents for this phase
+        - name: ttt_agent
+          brain:
+            name: harl:SACBrain
+            params:
+              update_after: 10
+              update_every: 10
+          muscle:
+            name: harl:SACMuscle
+            params:
+              start_steps: 10
+          objective:
+            name: palaestrai.agent.dummy_objective:DummyObjective
+            params: {}
+          sensors:
+            - tttenv.Tile 1-1
+            - tttenv.Tile 1-2
+            - tttenv.Tile 1-3
+            - tttenv.Tile 2-1
+            - tttenv.Tile 2-2
+            - tttenv.Tile 2-3
+            - tttenv.Tile 3-1
+            - tttenv.Tile 3-2
+            - tttenv.Tile 3-3
+          actuators:
+            - tttenv.Field selector
+      simulation:  # Definition of the simulation controller for this phase
+        name: palaestrai.simulation:TakingTurns
+        conditions:
+          - name: palaestrai.simulation:VanillaSimControllerTerminationCondition
+            params: {}
+      phase_config:
+        mode: train
+        worker: 2
+        episodes: 2
+run_config:  # Not a runTIME config
+  condition:
+    name: palaestrai.experiment:VanillaRunGovernorTerminationCondition
+    params: {}

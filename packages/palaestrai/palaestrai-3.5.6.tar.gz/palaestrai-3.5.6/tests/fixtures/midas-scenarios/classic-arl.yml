@@ -1,0 +1,98 @@
+#######################################################################
+# Classic ARL base scenario with constant load and generation
+#######################################################################
+carl_cigre_base:
+  parent:
+  modules: [store, powergrid]
+  step_size: 1
+  start_date: 2020-04-13 12:00:00+0100
+  end: 1*10
+  with_arl: true
+  powergrid_params:
+    midasmv:
+      gridfile: midasmv
+      grid_params:
+        actuator_multiplier: 2.0
+        constant_load_p_mw: 0.7 # 0.5
+        constant_load_q_mvar: 0.23 # 0.17
+        constant_sgen_p_mw: 0.4 # 0.3
+        constant_sgen_q_mvar: -0.13 # -0.1
+        include_slack_bus: false
+      constraints:
+        - [bus, 0.1]
+        - [load, 0.02]
+        - [sgen, 0.05]
+        - [line, 100]
+  store_params:
+    filename: carl_cigre_base.hdf5
+
+#######################################################################
+# Classic ARL with load timeseries and pysimmods generation
+#######################################################################
+carl_cigre_ts:
+  parent: carl_cigre_base
+  modules: [sndata, comdata, weather, der]
+  start_date: 2020-04-13 12:00:00+0100
+  step_size: 5*60
+  end: 365*24*60*60
+  with_arl: true
+  powergrid_params:
+    midasmv:
+      grid_params: 
+        constant_load_p_mw: 0
+        constant_load_q_mvar: 0
+        constant_sgen_p_mw: 0
+        constant_sgen_q_mvar: 0
+  sndata_params:
+    midasmv:
+      randomize_data: true
+      randomize_cos_phi: true
+      active_mapping:
+        1: [[Land_0, 1.0], [Land_2, 1.0], [Land_3, 2.0], [Land_6, 2.0], [Land_7, 1.0]]
+        3: [[Land_2, 1.0], [Land_3, 1.0], [Land_6, 1.0], [Land_7, 1.0]]
+        4: [[Land_0, 2.0], [Land_3, 2.0], [Land_7, 1.0]]
+        5: [[Land_3, 2.0], [Land_7, 1.0]]
+        6: [[Land_0, 2.0], [Land_3, 1.0]]
+        7: [[Land_0, 2.0], [Land_2, 1.0], [Land_3, 2.0], [Land_7, 1.0]]
+        8: [[Land_0, 1.0], [Land_3, 1.0], [Land_6, 1.0]]
+        9: [[Land_2, 1.0], [Land_3, 1.0], [Land_6, 2.0], [Land_7, 1.0]]
+        10: [[Land_0, 2.0], [Land_2, 1.0], [Land_3, 1.0], [Land_6, 2.0], [Land_7, 1.0]]
+        11: [[Land_0, 1.0], [Land_2, 1.0], [Land_3, 1.0], [Land_6, 2.0], [Land_7, 1.0]]
+  comdata_params:
+    midasmv:
+      interpolate: true
+      randomize_data: true
+      randomize_cos_phi: true
+      active_mapping:
+        13: [[SuperMarket, 3.0]]
+        14: [[SmallHotel, 2.0]]
+
+  weather_params:
+    bremen:
+      weather_mapping:
+        WeatherCurrent:
+          - interpolate: true
+            randomize: true
+  der_params:
+    midasmv:
+      grid_name: midasmv
+      mapping:
+        3: [[PV, 1], [HVAC, 1.279], [HVAC, 0.343]]
+        4: [[CHP, 0.4], [HVAC, 0.343]]
+        7: [[DIESEL, 1], [Wind, 0.008]]
+        8: [[CHP, 0.4], [PV, 1]]
+        9: [[HVAC, 0.23], [BAT, 0.08]]
+        11: [[Biogas, 2.05], [BAT, 0.555], [PV, 2]]
+        13: [[HVAC, 0.23], [Wind, 0.015], [Wind, 0.015]]
+        14: [[Wind, 0.015], [HVAC, 1.279], [Wind, 0.015]]
+      weather_provider_mapping:
+        PV: [bremen, 0]
+        HVAC: [bremen, 0]
+        BAT: [bremen, 0]
+        CHP: [bremen, 0]
+        Biogas: [bremen, 0]
+        DIESEL: [bremen, 0]
+        Wind: [bremen, 0]
+  store_params:
+    filename: carl_cigre_ts.hdf5
+    buffer_size: 1000
