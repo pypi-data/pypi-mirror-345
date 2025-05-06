@@ -1,0 +1,45 @@
+# MacOS system files
+.DS_Store
+
+# IDE settings
+.idea/
+.vscode/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.egg-info/
+build/
+dist/
+*.log
+*.tmp
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# 通常忽略所有 .c 和 .so 文件
+*.c
+*.cpp
+*.so
+*.dylib
+*.o
+*.a
+
+# 但是我们保留 Cython 编译生成的 .c 文件（用于 CI 构建）
+!sequenzo/dissimilarity_measures/utils/*.c
+!sequenzo/clustering/utils/*.c
+
+# 如果你有 cpp 源码用于 Pybind11
+!sequenzo/dissimilarity_measures/src/*.cpp
+
+
+
+# Python wheels
+*.whl
+
+# Rust build outputs
+**/target/
+sequenzo/rust_fast_cluster/target/
