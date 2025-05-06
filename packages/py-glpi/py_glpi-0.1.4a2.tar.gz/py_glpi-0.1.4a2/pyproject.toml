@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=75.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py_glpi"
+version = "0.1.4a2"
+description = "A Python SDK for GLPI REST Api."
+readme = "README.md"
+requires-python = ">= 3.10"
+license = { file = "LICENSE" }
+dynamic = ["dependencies"]
+
+
+authors = [
+  { name = "Ricardo Marín", email = "sidesrev@gmail.com" },
+]
+
+classifiers = [
+  "Environment :: Web Environment",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10", 
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov"
+]
+
+[tool.setuptools]
+packages = ["py_glpi", "py_glpi.resources"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
