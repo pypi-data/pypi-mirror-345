@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spacebridge-mcp"
+version = "0.3.0" # Match version in server.py
+authors = [
+  { name="Spacecode AI Inc", email="hello@spacecode.ai" },
+]
+description = "SpaceBridge MCP Server for issue tracker automation."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Communications",
+]
+dependencies = [
+    # Install mcp-sdk directly from GitHub as it might not be on PyPI
+    # Install mcp directly from GitHub as it might not be on PyPI, and its package name is 'mcp'
+    "mcp[cli]>=1.6.0",
+    "requests>=2.20.0",
+    "openai>=1.0.0",
+    "python-dotenv>=0.19.0", # For loading .env files
+    "packaging>=21.0",       # For version comparison
+    # Add other dependencies here if needed
+]
+
+[project.urls]
+"Homepage" = "https://github.com/spacecode-ai/SpaceBridge-MCP"
+"Bug Tracker" = "https://github.com/spacecode-ai/SpaceBridge-MCP/issues"
+"Documentation" = "https://spacebridge.io/docs"
+
+[project.scripts]
+spacebridge-mcp-server = "spacebridge_mcp.server:main_sync" # Define the entry point
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.20.0", # For testing async functions
+    "respx>=0.20.0",          # For mocking HTTP requests (requests library)
+    "httpx>=0.23.0",          # Required by respx and openai
+    "pre-commit>=4.2.0",
+    "ruff>=0.11.3",
+]
