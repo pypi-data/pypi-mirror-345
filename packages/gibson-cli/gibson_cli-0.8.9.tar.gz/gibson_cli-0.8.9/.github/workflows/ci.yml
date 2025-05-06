@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HOME: src/gibson/cli
+  PYTHONIOENCODING: UTF-8
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ${{ env.HOME }}
+
+      - name: Lint with Ruff
+        uses: astral-sh/ruff-action@v3
+
+  install:
+    name: Install
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ${{ env.HOME }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        run: |
+          uv python install ${{ matrix.python-version }}
+          uv python pin ${{ matrix.python-version }}
+
+      - name: Install CLI as uv tool
+        run: uv tool install ${{ env.HOME }} -e
+
+      - name: Run CLI
+        run: gibson --version
+
+      - name: Uninstall CLI
+        run: uv tool uninstall gibson-cli
+
+      - name: Create venv
+        run: uv venv --python ${{ matrix.python-version }}
+        working-directory: ${{ env.HOME }}
+
+      - name: Activate venv (POSIX)
+        if: matrix.runner != 'windows-latest'
+        run: source .venv/bin/activate
+        working-directory: ${{ env.HOME }}
+
+      - name: Activate venv (Windows)
+        if: matrix.runner == 'windows-latest'
+        run: .venv\Scripts\activate
+        working-directory: ${{ env.HOME }}
+
+      - name: Install CLI via pip
+        run: uv pip install -e .
+        working-directory: ${{ env.HOME }}
