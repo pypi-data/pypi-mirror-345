@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openapi-ai"
+version = "0.2.0"
+description = "Python library to convert OpenAPI endpoints into callable tools for LLM AI agents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Aria Dhanang", email = "ariadng@gmail.com" }
+]
+dependencies = [
+  "requests>=2.32.3",
+  "pydantic>=2.11.4",
+  "openai-agents>=0.0.14",
+]
+keywords = ["openapi", "llm", "ai", "agent"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+urls = { "Homepage" = "https://github.com/ariadng/openapi-agent-tools" }
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["openapi_ai*"]
