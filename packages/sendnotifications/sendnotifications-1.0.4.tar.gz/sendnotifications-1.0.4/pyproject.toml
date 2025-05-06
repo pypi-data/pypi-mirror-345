@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+#requires = ["setuptools>=42", "wheel"]
+#build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools]
+py-modules = ["channels","sendonemail","sendonteams"]
+
+[tool.hatch.version]
+path = "sendnotifications/__init__.py"
+
+[tool.black]
+line_length = 100
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[project]
+name = "sendnotifications"
+version = "1.0.4"
+dependencies = [
+  "urllib3"
+]
+
+requires-python = ">=3.10"
+authors = [
+  {name = "Vara Thelu", email = "vthelu@costar.com"}
+]
+maintainers = [
+  {name = "Vara Thelu", email = "vthelu@costar.com"}
+]
+description = "Send Notifications to MSTeams or Email via sns!"
+readme = "README.md"
+license = "MIT"
+keywords = ["sendnotifications", "NotifyMSTeams", "NotifyEmail"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
+[project.urls]
+Homepage = "https://github.com/vthelu/sendnotifications"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/vthelu/sendnotifications.git"
+"Bug Tracker" = "https://github.com/vthelu/sendnotifications/issues"
+Changelog = "https://github.com/vthelu/sendnotifications/CHANGELOG.md"

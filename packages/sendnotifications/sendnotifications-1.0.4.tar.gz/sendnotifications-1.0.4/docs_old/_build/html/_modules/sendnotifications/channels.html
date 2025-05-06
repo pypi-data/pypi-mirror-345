@@ -1,0 +1,186 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sendnotifications.channels &mdash; sendnotiifications 1.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sendnotiifications
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">sendnotifications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sendnotiifications</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">sendnotifications.channels</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for sendnotifications.channels</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="NotifyChannels">
+<a class="viewcode-back" href="../../sendnotifications.html#sendnotifications.channels.NotifyChannels">[docs]</a>
+<span></span><span class="k">class</span><span class="w"> </span><span class="nc">NotifyChannels</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Core NotifyMSTeam Class.</span>
+<span class="sd">    Usage:</span>
+<span class="sd">    from NotifyChannels import webhook</span>
+<span class="sd">    Send Messages to webhook url&quot;&quot;&quot;</span>
+
+    <span class="n">webhook</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;dba-test-notifications&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-157.westus.logic.azure.com:443/workflows/599550925b284cbbaef293a1b230f83e/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=kW5rtNSU5k0QjUarG8U3p3DGTe_0tfil9x4BMJyRjU4&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-177.westus.logic.azure.com:443/workflows/7da4b651258a4b4fb23ab21f9b05f172/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=Eka0XTjDPjV0bMBHaVhZFkXKp5gK9_kdShSNpCBi4UQ&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-only&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-49.westus.logic.azure.com:443/workflows/eb0ab4c596fe489d9979ff50757ec328/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=fuVWJIofNne_cL5xc0PBxRium70F1KyjQ98bRHGJsKY&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;costar-dba-team-general&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-51.westus.logic.azure.com:443/workflows/1e389306783e4aea9eee10a0b4e750de/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=grrNrULQP7WpPeq4WSK-3ZezN7iQQFf4RATNWCZs-vw&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;costar-dba-arch-grp&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-27.westus.logic.azure.com:443/workflows/2acaf56611ad4b36a0ca65c61d3dfc93/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=LVccpRroSXn7lO_9BhsLu4iRykdOlo2AbR39cdW_GCY&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-ec2-automation-alert&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-32.westus.logic.azure.com:443/workflows/094704310e8b42108d7d1d3b052e1d1f/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=O5n5VbGzaVvuYrqUneJFPcz1x_fXHp72biZiMJm74Jc&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-general&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-181.westus.logic.azure.com:443/workflows/592f1b1b1de74b2e9eeb753a87a9a5b7/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=tXhDjRuuxM9bPuut9ii3gYTGllWB9WLUsZXbbzOXwOA&quot;</span>
+        <span class="p">},</span>
+        <span class="c1"># &quot;dba-general-alert&quot;: {</span>
+        <span class="c1">#     &quot;uri&quot;: &quot;https://prod-175.westus.logic.azure.com:443/workflows/66f913e7977f4b3cbc833a8f5d3b3bb8/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=%2Ftriggers%2Fmanual%2Frun&amp;sv=1.0&amp;sig=GZY5lkL_787Fba78BiSA_3szRrwc5een1LeDV6-F0oM&quot;</span>
+        <span class="c1">#     # &quot;https://costarsoftware.webhook.office.com/webhookb2/b923c9ac-b5ca-4ed7-840b-a6d5e164b5c9@9a64e7ca-363f-441c-9aa7-4f85977c09f1/IncomingWebhook/dbf0ed632c2b49c983ac4b65f0dac1f1/81daef56-1264-4126-99c5-f4b2b77a813c/0001xoJjXHzAjhKo3Nt4rBU-jN5EWLzzoORsknkgX4BSqnc1&quot;</span>
+        <span class="c1"># },</span>
+        <span class="s2">&quot;aws-sbx-cleanup-alerts-stacklet&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-121.westus.logic.azure.com:443/workflows/b15e81b35d9d49f391d195d7ce5053fd/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=vycH3XKhAy2axmsAM6X7moyNkisHzjN-nwsgjI4Jxvk&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;aws-sbx-cleanup-alerts-report&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-01.westus.logic.azure.com:443/workflows/3558daa208964f0188298ef052634210/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=mOdThie9NzcUbr5x9MNx1BTD6V8VuY0mMXVvzXU__Ws&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-atlas-prd-alerts&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-142.westus.logic.azure.com:443/workflows/5c43c85648b34c0186d9ae846e82fdc8/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=p1XlEckbiaxpolwxH0MpQ3SyGO1vSv-YZXDG4My3MTo&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-cluster-failovers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-126.westus.logic.azure.com:443/workflows/bb9a040b42ff4821a42ab9f1e2a3dae1/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=EHKaXH5eEkV4u9sYSvDW5Lda8qH2CcfcK00BGcYRh1o&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-ec2-cattle-alerts&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-191.westus.logic.azure.com:443/workflows/c2ce5b1ec8994fb7bdea06ce58f6788e/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=9QLXip00jtllllt8PBDWIHTofSoUDDMUdwhXnxDUans&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-mapinfo-dev-alert&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-136.westus.logic.azure.com:443/workflows/bb5f4b19dad947f2b9f09269102ab4d8/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=hKUAa2mb5YF3HIWdvXKLeJi1UUydfkP8vHZrUYdYdh0&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-mapinfo-prd-alert&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-19.westus.logic.azure.com:443/workflows/d38bff2bd5554cf2a954473daafb375b/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=H3RXO-i07QxLaX7iEXj9obFCzZnqpxKnIWq1pcR8QVk&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-mapinfo-tst-alert&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-135.westus.logic.azure.com:443/workflows/1d30e9f07e9d4b589d6a4b038ac44639/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=em_awrqPm2FsgvmixM3KGPU5yHYsmGxQMS8rgtnpNig&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-rds-dev-alerts&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-113.westus.logic.azure.com:443/workflows/ab87c2d4ecfd4f2bb12a4793dc0617f9/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=omHPPSAehDLcLk2oHQ-1Ba3rMTRM8UNQAeN602Oo2rQ&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-rds-tst-alerts&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-191.westus.logic.azure.com:443/workflows/8dc98b4d12eb49b180bdf658e5d1dbd6/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=8sdR32nUAcutebhxCiFkiup0h7N_hYcGQkMc7oE0yK4&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-rds-prd-alerts&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-89.westus.logic.azure.com:443/workflows/9b5f6462844f4dc6926adcb4c8cc9a63/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=oH--NPdT1iHck0fhl6XYwhdlTBi5HAVHQEf654k-aOI&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-research-prd-alerts&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-117.westus.logic.azure.com:443/workflows/b2be6d3cfbfc48928c67837e11ee2fc4/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=-V5NzL8TjlEJbKkueJmRY0UBYMKbQdLHZ_btSS0sFq8&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-snowflake-notifications&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-156.westus.logic.azure.com:443/workflows/17fe8444f27b41a1a37a361fa0e54078/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=aYGnULglw5SJkKozwznuWZstp5N1ZtBs6tadsJ0oYtE&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dba-snowflake-notifications-dev-tst&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-89.westus.logic.azure.com:443/workflows/5e2281e9a4e748f18fd5557512b6afdf/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=3MFx03ne7-ky4ivb4Hhx39RNJW7XIrV4lzRv_fZalm0&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;homes-analytics-alerts&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://prod-141.westus.logic.azure.com:443/workflows/8321305344d14d32bf41d15d0d57c827/triggers/manual/paths/invoke?api-version=2016-06-01&amp;sp=</span><span class="si">%2F</span><span class="s2">triggers</span><span class="si">%2F</span><span class="s2">manual</span><span class="si">%2F</span><span class="s2">run&amp;sv=1.0&amp;sig=MAn0QQhwloouGqJRa_Kr0qE9WAYGGRkEnuPJ9y6oaYI&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">webhook</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">webhook</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">][</span><span class="s2">&quot;uri&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">webhook</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Vara Thelu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
