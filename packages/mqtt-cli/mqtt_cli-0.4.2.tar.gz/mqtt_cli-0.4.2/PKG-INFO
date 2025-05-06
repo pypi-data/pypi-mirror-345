@@ -1,0 +1,96 @@
+Metadata-Version: 2.4
+Name: mqtt-cli
+Version: 0.4.2
+Summary: CLI for Paho MQTT
+Home-page: https://github.com/MO-RISE/mqtt-cli
+Author: Fredrik Olsson
+Author-email: fredrik.x.olsson@ri.se
+Maintainer: Fredrik Olsson
+Maintainer-email: fredrik.x.olsson@ri.se
+License: Apache License 2.0
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: paho-mqtt>=2
+Requires-Dist: parse
+Requires-Dist: persist-queue
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: maintainer
+Dynamic: maintainer-email
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# mqtt-cli
+A command-line tool for publishing and subscribing to mqtt. 
+
+Use cases:
+* Trials
+* As part of a bash pipeline
+
+## Installation
+`pip install mqtt-cli`
+
+## Usage
+```
+$ mqtt --help
+
+usage: mqtt [-h] [--host HOST] [--port PORT] [--transport {tcp,websockets}] [--clientid CLIENTID] [--user USER] [--password PASSWORD] [--protocol {3,4,5}] [--path PATH] [--tls] [--clean-start] [--log-level LOG_LEVEL]
+            {publish,subscribe} ...
+
+MQTT command-line client application
+
+positional arguments:
+  {publish,subscribe}
+
+options:
+  -h, --help            show this help message and exit
+  --host HOST
+  --port PORT
+  --transport {tcp,websockets}
+  --clientid CLIENTID
+  --user USER
+  --password PASSWORD
+  --protocol {3,4,5}
+  --path PATH
+  --tls
+  --clean-start
+  --log-level LOG_LEVEL
+```
+
+```
+$ mqtt publish --help
+
+usage: mqtt publish [-h] [--qos {0,1,2}] [-t TOPIC] [-m MESSAGE] [--line LINE] [--retain] [--queue QUEUE]
+
+options:
+  -h, --help            show this help message and exit
+  --qos {0,1,2}
+  -t TOPIC, --topic TOPIC
+  -m MESSAGE, --message MESSAGE
+  --line LINE
+  --retain
+  --queue QUEUE
+```
+
+```
+$ mqtt subscribe --help
+
+usage: mqtt subscribe [-h] [--qos {0,1,2}] -t TOPIC [--line LINE] [--json]
+
+options:
+  -h, --help            show this help message and exit
+  --qos {0,1,2}
+  -t TOPIC, --topic TOPIC
+  --line LINE
+  --json
+```
+
+
+TBC
