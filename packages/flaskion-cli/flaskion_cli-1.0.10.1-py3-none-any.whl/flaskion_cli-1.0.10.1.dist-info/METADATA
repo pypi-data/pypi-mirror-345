@@ -1,0 +1,152 @@
+Metadata-Version: 2.1
+Name: flaskion-cli
+Version: 1.0.10.1
+Summary: A CLI tool for Flaskion — a lightweight MVC micro-framework built on Flask
+Home-page: https://github.com/GrahamMorbyDev/flaskion
+Author: Graham Patrick
+Author-email: graham@skyaisoftware.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: click>=8.0
+Requires-Dist: jinja2>=3.0
+
+# Flaskion
+
+Flaskion is a lightweight **MVC micro-framework** for Flask, providing developers with a **structured foundation** for scalable, maintainable applications. Inspired by Laravel, Flaskion introduces clean architecture, modular scaffolding, and a developer-first CLI to streamline your Flask workflow.
+
+---
+
+## 🚀 Features
+
+✅ **MVC Architecture** – Clean separation of `controllers`, `models`, and `templates`  
+✅ **Built-in CLI** – Scaffold full resources, controllers, models, and authentication with ease  
+✅ **Web & API Routing** – Clean route structure split between HTML and JSON endpoints  
+✅ **DB Choice at Setup** – Use SQLite, MySQL, or Postgres with built-in `.env` generation  
+✅ **Flask-Migrate Ready** – Migrations are set up and ready to run on first build  
+✅ **Authentication Scaffolding** – Generate full auth (login/register/logout/dashboard) with one command  
+
+---
+
+## 📁 Project Structure
+
+```
+flaskion/
+├── app/
+│   ├── __init__.py           # Application factory
+│   ├── routes/               # Web + API routes
+│   │   ├── web_routes.py
+│   │   └── api_routes.py
+│   ├── controllers/          # View logic
+│   ├── models/               # SQLAlchemy models
+│   ├── schemas/              # Marshmallow schemas
+│   ├── templates/            # Jinja2 templates
+│   ├── static/               # CSS, JS, images
+│   └── config.py             # App configuration
+├── migrations/               # Auto-generated with Flask-Migrate
+├── run.py                    # Entry point
+├── requirements.txt          # Dependencies
+├── .env.example              # Example environment file
+└── README.md                 # This doc
+```
+
+---
+
+## 🧪 Installation & Setup
+
+### 1. Install the CLI
+```bash
+pipx install flaskion-cli
+# or
+pip install flaskion-cli
+```
+
+### 2. Create a New Project
+```bash
+flaskion make:new myproject --db=sqlite     # Or --db=mysql / --db=postgres
+```
+
+### 3. Enter the project & activate venv
+```bash
+cd myproject
+source venv/bin/activate
+```
+
+---
+
+## ⚙️ CLI Commands
+
+| Command                    | Description |
+|----------------------------|-------------|
+| `flaskion make:new <name>` | Create a new project scaffold |
+| `flaskion make:model`      | Create a SQLAlchemy model |
+| `flaskion make:schema`     | Create a Marshmallow schema |
+| `flaskion make:controller` | Create a controller with CRUD methods |
+| `flaskion make:resource`   | Generate model + controller + schema + routes |
+| `flaskion make:auth`       | Generate full login/register/logout system |
+
+> Add `--api` to `make:resource` for API route generation instead of web views.
+
+---
+
+## 🛣️ Managing Routes
+
+Flaskion separates routes for HTML views and API endpoints:
+
+- **Web Routes**: `app/routes/web_routes.py`  
+- **API Routes**: `app/routes/api_routes.py`
+
+Both are registered in `app/__init__.py`:
+
+```python
+from app.routes.api_routes import api_routes
+from app.routes.web_routes import web_routes
+
+def register_routes(app):
+    app.register_blueprint(api_routes)
+    app.register_blueprint(web_routes)
+```
+
+---
+
+## 🧬 Database Migrations
+
+Flaskion uses [Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/) out of the box:
+
+```bash
+flask db init
+flask db migrate -m "Initial"
+flask db upgrade
+```
+
+---
+
+## 🔐 Authentication
+
+Generate full login/register/logout and dashboard flow:
+
+```bash
+flaskion make:auth
+```
+
+- HTML templates auto-created under `templates/auth/`
+- Session-based login using Flask sessions
+- Routes for `/login`, `/register`, `/dashboard`, and `/logout`
+
+---
+
+## ▶️ Running the App
+
+```bash
+flask run
+```
+
+Then visit: [http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+---
+
+## 📚 Documentation
+
+Coming soon at: [https://flaskion.dev](https://flaskion.dev) *(in progress)*
