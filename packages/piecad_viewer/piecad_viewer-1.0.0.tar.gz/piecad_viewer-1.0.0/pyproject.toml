@@ -1,0 +1,27 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "piecad_viewer"
+description = '"Viewer for Easy as Pie" CAD (Piecad)'
+version = "1.0.0"
+authors = [{name = "Brian Sturgill", email = "codersnext@gmail.com"}]
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: MIT License"]
+dependencies = [
+    "pyglet == 1.5.31",
+    "trimesh >= 1.26.4",
+		"glooey >= 0.3.6",
+		"scipy >= 1.15.2"
+]
+
+[project.scripts]
+piecad-viewer = "piecad_viewer:main"
+
+[project.urls]
+Home = "https://github.com/briansturgill/Piecad-Viewer"
+
+[tool.flit.sdist]
+include = []
+exclude = []
