@@ -1,0 +1,211 @@
+Metadata-Version: 2.1
+Name: cyto-dl
+Version: 0.6.1
+Summary: Collection of representation learning models, techniques, callbacks, utils, used to create latent variable models of cell shape, morphology and intracellular organization.
+Author-email: Benji Morris <benjamin.morris@alleninstitute.org>,Guilherme Pires <guilherme.pires@alleninstitute.org>,Ritvik Vasan <ritvik.vasan@alleninstitute.org>
+Requires-Python: >=3.9,<3.12
+Requires-Dist: PyYAML>=6.0
+Requires-Dist: anndata>=0.8
+Requires-Dist: astropy>=5.2
+Requires-Dist: bioio-base!=1.0.5,!=1.0.6
+Requires-Dist: bioio-czi
+Requires-Dist: bioio-ome-tiff
+Requires-Dist: bioio-tifffile
+Requires-Dist: bioio>=1.0.1
+Requires-Dist: boto3
+Requires-Dist: edt>=3.0.0
+Requires-Dist: einops>=0.6.1
+Requires-Dist: fire>=0.5
+Requires-Dist: hydra-colorlog>=1.2
+Requires-Dist: hydra-core~=1.3.0
+Requires-Dist: hydra-optuna-sweeper>=1.2
+Requires-Dist: lightning>=2.0
+Requires-Dist: matplotlib>=3.7
+Requires-Dist: mlflow>=2.1
+Requires-Dist: monai>=1.4
+Requires-Dist: numpy>=1.23
+Requires-Dist: ome-zarr>=0.6
+Requires-Dist: omegaconf>=2.3
+Requires-Dist: online-stats>=2023
+Requires-Dist: opencv-python>=4.10.0
+Requires-Dist: pandas>=1.5
+Requires-Dist: positional-encodings>=6.0.3
+Requires-Dist: pyarrow>=10.0
+Requires-Dist: pyrootutils>=1.0
+Requires-Dist: rich
+Requires-Dist: scikit-learn>=1.2
+Requires-Dist: tifffile<2025.2.18,>=2024.0.0
+Requires-Dist: timm>=0.9.7
+Requires-Dist: torch~=2.0.0
+Requires-Dist: tqdm>=4.64
+Requires-Dist: universal-pathlib>=0.0
+Provides-Extra: all
+Requires-Dist: cyto-dl[equiv,pcloud,s3,spharm,torchserve]; extra == "all"
+Provides-Extra: docs
+Requires-Dist: cyto-dl; extra == "docs"
+Requires-Dist: furo<=2023.3.23; extra == "docs"
+Requires-Dist: m2r2<=0.3.3.post2; extra == "docs"
+Requires-Dist: sphinx<=6.1.3; extra == "docs"
+Provides-Extra: equiv
+Requires-Dist: lie_learn==0.0.1.post1; extra == "equiv"
+Requires-Dist: escnn~=1.0.7; extra == "equiv"
+Requires-Dist: py3nj>=0.2.1; extra == "equiv"
+Requires-Dist: e3nn~=0.5.1; extra == "equiv"
+Provides-Extra: pcloud
+Requires-Dist: pyntcloud>=0.3.1; extra == "pcloud"
+Requires-Dist: aicsshparam>=0.1.7; extra == "pcloud"
+Requires-Dist: torch-geometric>=2.3.1; extra == "pcloud"
+Requires-Dist: point-cloud-utils>=0.29.6; extra == "pcloud"
+Requires-Dist: geomloss>=0.2.6; extra == "pcloud"
+Requires-Dist: Ninja>=1.11.1; extra == "pcloud"
+Requires-Dist: torchio>=0.19.1; extra == "pcloud"
+Provides-Extra: s3
+Requires-Dist: boto3<1.24.5,>=1.23.5; extra == "s3"
+Requires-Dist: s3fs~=2023.1; extra == "s3"
+Provides-Extra: spharm
+Requires-Dist: vtk~=9.2; extra == "spharm"
+Requires-Dist: aicscytoparam~=0.1; extra == "spharm"
+Requires-Dist: pyshtools==4.10.3; extra == "spharm"
+Provides-Extra: test
+Requires-Dist: cyto-dl; extra == "test"
+Requires-Dist: pytest~=7.2; extra == "test"
+Requires-Dist: pytest-cov[toml]~=4.0; extra == "test"
+Provides-Extra: torchserve
+Requires-Dist: torchserve>=0.8.0; extra == "torchserve"
+Requires-Dist: gorilla>=0.4.0; extra == "torchserve"
+Project-URL: Homepage, https://github.com/AllenCellModeling/cyto-dl
+Description-Content-Type: text/markdown
+
+<div align="center">
+
+<!-- <picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/AllenCellModeling/cyto-dl/blob/b73e6f357727e3b42adea8540c86f2475ea60379/docs/CytoDL-logo-1C-onDark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/AllenCellModeling/cyto-dl/blob/b73e6f357727e3b42adea8540c86f2475ea60379/docs/CytoDL-logo-1C-onLight.png">
+  <img src="https://github.com/AllenCellModeling/cyto-dl/blob/b73e6f357727e3b42adea8540c86f2475ea60379/docs/CytoDL-logo-1C-onLight.png">
+</picture> -->
+
+<h1>CytoDL</h1>
+
+<a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
+<a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning-792ee5?logo=pytorchlightning&logoColor=white"></a>
+<a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/Config-Hydra-89b8cd"></a>
+<a href="https://github.com/ashleve/lightning-hydra-template"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray"></a><br>
+
+</div>
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/AllenCellModeling/cyto-dl/blob/acf7dad69f492c417b0e486f8f08c19f25575927/docs/CytoDL-overview_dark_1.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://github.com/AllenCellModeling/cyto-dl/blob/acf7dad69f492c417b0e486f8f08c19f25575927/docs/CytoDL-overview_light_1.png">
+    <img src="https://github.com/AllenCellModeling/cyto-dl/blob/acf7dad69f492c417b0e486f8f08c19f25575927/docs/CytoDL-overview_light_1.png">
+  </picture>
+</p>
+
+## Description
+
+As part of the [Allen Institute for Cell Science's](https://allencell.org) mission to understand the principles by which human induced pluripotent stem cells establish and maintain robust dynamic localization of cellular structure, `CytoDL` aims to unify deep learning approaches for understanding 2D and 3D biological data as images, point clouds, and tabular data.
+
+The bulk of `CytoDL`'s underlying structure bases the [lightning-hydra-template](https://github.com/ashleve/lightning-hydra-template) organization - we highly recommend that you familiarize yourself with their (short) docs for detailed instructions on running training, overrides, etc.
+
+Our currently available code is roughly split into two domains: image-to-image transformations and representation learning. The image-to-image code (denoted im2im) contains configuration files detailing how to train and predict using models for resolution enhancement using conditional GANs (e.g. predicting 100x images from 20x images), semantic and instance segmentation, and label-free prediction. We also provide configs for Masked Autoencoder (MAE) and Joint Embedding Prediction Architecture ([JEPA](https://github.com/facebookresearch/jepa)) pretraining on 2D and 3D images using a Vision Transformer (ViT) backbone and for training segmentation decoders from these pretrained features. Representation learning code includes a wide variety of Variational Auto Encoder (VAE) architectures and contrastive learning methods such as [VICReg](https://github.com/facebookresearch/vicreg). Due to dependency issues, equivariant autoencoders are not currently supported on Windows.
+
+As we rely on recent versions of pytorch, users wishing to train and run models on GPU hardware will need up-to-date NVIDIA drivers. Users with older GPUs should not expect code to work out of the box. Similarly, we do not currently support training/predicting on Mac GPUs. In most cases, cpu-based training should work when GPU training fails.
+
+For im2im models, we provide a handful of example 3D images for training the basic image-to-image tranformation-type models and default model configuration files for users to become comfortable with the framework and prepare them for training and applying these models on their own data. Note that these default models are very small and train on heavily downsampled data in order to make tests run efficiently - for best performance, the model size should be increased and downsampling removed from the data configuration.
+
+## How to run
+
+Install dependencies.
+
+```bash
+# clone project
+git clone https://github.com/AllenCellModeling/cyto-dl
+cd cyto-dl
+
+# [OPTIONAL] create conda environment
+conda install -c conda-forge -n myenv python=3.10 fortran-compiler blas-devel
+conda activate myenv
+
+# If you have a recent version of pip (e.g., 25.0.1), the --no-deps may be unnecessary
+pip install --no-deps -r requirements/requirements.txt
+
+# [OPTIONAL] install extra dependencies - equivariance related
+pip install --no-deps -r requirements/equiv-requirements.txt
+
+pip install -e .
+
+
+#[OPTIONAL] if you want to use default experiments on example data
+python scripts/download_test_data.py
+```
+
+### API
+
+```python
+from cyto_dl.api import CytoDLModel
+
+model = CytoDLModel()
+model.download_example_data()
+model.load_default_experiment("segmentation", output_dir="./output", overrides=["trainer=cpu"])
+model.print_config()
+model.train()
+
+# [OPTIONAL] async training
+await model.train(run_async=True)
+```
+
+Most models work by passing data paths in the data config. For training or predicting on datasets that are already in memory, you can pass the data directly to the model. Note that this use case is primarily for programmatic use (e.g. in a workflow or a jupyter notebook), not through the normal CLI. An experiment showing a possible config setup for this use case is demonstrated with the [im2im/segmentation_array](configs/experiment/im2im/segmentation_array.yaml) experiment. For training, data must be passed as a dictionary with keys "train" and "val" containing lists of dictionaries with keys corresponding to the data config.
+
+```python
+from cyto_dl.api import CytoDLModel
+import numpy as np
+
+model = CytoDLModel()
+model.load_default_experiment("segmentation_array", output_dir="./output")
+model.print_config()
+
+# create CZYX dummy data
+data = {
+    "train": [{"raw": np.random.randn(1, 40, 256, 256), "seg": np.ones((1, 40, 256, 256))}],
+    "val": [{"raw": np.random.randn(1, 40, 256, 256), "seg": np.ones((1, 40, 256, 256))}],
+}
+model.train(data=data)
+```
+
+For predicting, data must be passed as a list of numpy arrays. The resulting predictions will be processed in a dictionary with one key for each task head in the model config and corresponding values in BC(Z)YX order.
+
+```python
+from cyto_dl.api import CytoDLModel
+import numpy as np
+from cyto_dl.utils import extract_array_predictions
+
+model = CytoDLModel()
+model.load_default_experiment(
+    "segmentation_array", output_dir="./output", overrides=["data=im2im/numpy_dataloader_predict"]
+)
+model.print_config()
+
+# create CZYX dummy data
+data = [np.random.rand(1, 32, 64, 64), np.random.rand(1, 32, 64, 64)]
+
+_, _, output = model.predict(data=data)
+preds = extract_array_predictions(output)
+```
+
+Train model with chosen experiment configuration from [configs/experiment/](configs/experiment/)
+
+```bash
+#gpu
+python cyto_dl/train.py experiment=im2im/experiment_name.yaml trainer=gpu
+
+#cpu
+python cyto_dl/train.py experiment=im2im/experiment_name.yaml trainer=cpu
+
+```
+
+You can override any parameter from command line like this
+
+```bash
+python cyto_dl/train.py trainer.max_epochs=20 datamodule.batch_size=64
+```
+
