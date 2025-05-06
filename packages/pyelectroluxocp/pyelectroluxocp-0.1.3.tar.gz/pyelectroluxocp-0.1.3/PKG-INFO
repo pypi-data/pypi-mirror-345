@@ -1,0 +1,74 @@
+Metadata-Version: 2.3
+Name: pyelectroluxocp
+Version: 0.1.3
+Summary: Electrolux OneApp OCP API
+License: MIT
+Keywords: home,automation,electrolux,aeg,ocp,oneapp,api
+Author: Woyken
+Maintainer: Woyken
+Requires-Python: >=3.10,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Home Automation
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: aiohttp (>=3.9.3,<4.0.0)
+Requires-Dist: aiohttp-retry (>=2.8.3,<3.0.0)
+Project-URL: Bug Tracker, https://github.com/Woyken/py-electrolux-ocp/issues
+Project-URL: Changelog, https://github.com/Woyken/py-electrolux-ocp/releases/
+Project-URL: Documentation, https://github.com/Woyken/py-electrolux-ocp/blob/main/README.md
+Project-URL: Homepage, https://github.com/Woyken/py-electrolux-ocp/
+Project-URL: Repository, https://github.com/Woyken/py-electrolux-ocp.git
+Description-Content-Type: text/markdown
+
+# py-electrolux-ocp
+
+## New details on API
+
+Looks like electrolux finally opened their api, will be rewriting this wrapper to reference their api directly (remove reverse engineered api)
+<https://developer.electrolux.one/documentation/reference>
+
+## What is this
+
+Python package wrapper around Electrolux OneApp (OCP) api
+
+Early version, this package APIs might change
+
+## Prerequisites
+
+```
+pip install pyelectroluxocp
+```
+
+## Usage examples
+
+Example to connect via websockets and listen for appliance state changes
+```py
+import asyncio
+import json
+from pyelectroluxocp import OneAppApi
+
+async def main():
+    async with OneAppApi("__username__", "__password__", "fr") as client:
+        appliances = await client.get_appliances_list()
+
+        print("appliances found: ", json.dumps([x.get("applianceData").get("applianceName")+" "+x.get("applianceId") for x in appliances]))
+
+        def state_update_callback(a):
+            print("appliance state updated", json.dumps((a)))
+        await client.watch_for_appliance_state_updates([appliances[0].get("applianceId")], state_update_callback)
+
+asyncio.run(main())
+```
+
+## TODOs
+
+- Better error messages on known scenarios (login failed)
+
+
