@@ -1,0 +1,59 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "EZannot"
+description = "Annotate images with ease."
+authors = [
+    { name = "Yujia Hu", email = "yujiahu415@gmail.com" },
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "opencv-python",
+    "opencv-contrib-python",
+    "pillow",
+    "wxPython",
+    "packaging",
+    "requests",
+    "screeninfo",
+    "openpyxl",
+    "pandas",
+    "torch>=2.5.1",
+    "torchvision>=0.20.1",
+    "torchaudio",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+keywords = [
+    "Image annotation",
+    "AI-assisted annotation",
+    "Image augmentation",
+]
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+]
+dynamic = []
+version = "0.4.0"
+
+[project.license]
+text = "GPL-3.0"
+
+[project.urls]
+Homepage = "https://github.com/yujiahu415/EZannot"
+
+[project.scripts]
+EZannot = "EZannot.__main__:main"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.version]
+source = "file"
+path = "EZannot/__init__.py"
