@@ -1,0 +1,39 @@
+diff --git a/mcio_remote/envs/env_util.py b/mcio_remote/envs/env_util.py
+index 3cdd3ad..a8893ef 100644
+--- a/mcio_remote/envs/env_util.py
++++ b/mcio_remote/envs/env_util.py
+@@ -22,9 +22,9 @@ class DegreesToPixels:
+     DEGREES_PER_PIXEL = 0.15
+     PIXELS_PER_DEGREE = 1 / DEGREES_PER_PIXEL
+ 
+-    def __init__(self) -> None:
+-        self.x: int = 0
+-        self.y: int = 0
++    def __init__(self, x: int = 0, y: int = 0) -> None:
++        self.x: int = x
++        self.y: int = y
+ 
+     def update(self, *, yaw_delta: float, pitch_delta: float) -> tuple[int, int]:
+         """Delta arguments are in degrees. Returns the new cursor position in pixels."""
+diff --git a/mcio_remote/envs/minerl_env.py b/mcio_remote/envs/minerl_env.py
+index 39950a7..0082ff4 100644
+--- a/mcio_remote/envs/minerl_env.py
++++ b/mcio_remote/envs/minerl_env.py
+@@ -78,7 +78,7 @@ class MinerlEnv(MCioBaseEnv[MinerlObservation, MinerlAction]):
+ 
+         # Env helpers
+         self.input_mgr = env_util.InputStateManager()
+-        self.cursor_map = env_util.DegreesToPixels()
++        self.cursor_map: env_util.DegreesToPixels | None = None
+ 
+     def _process_step(
+         self, action: MinerlAction, observation: MinerlObservation
+@@ -90,6 +90,8 @@ class MinerlEnv(MCioBaseEnv[MinerlObservation, MinerlAction]):
+         self, packet: mcio.network.ObservationPacket
+     ) -> MinerlObservation:
+         """Convert an ObservationPacket to the environment observation_space"""
++        if self.cursor_map is None:
++            self.cursor_map = env_util.DegreesToPixels(*self.last_cursor_pos)
+         obs: MinerlObservation = {
+             "pov": packet.get_frame_with_cursor(),
+         }
