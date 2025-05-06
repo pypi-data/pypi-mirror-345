@@ -1,0 +1,50 @@
+[project]
+name = "metaboatrace.models"
+version = "2.3.7"
+description = "Models of Japanese boatrace"
+authors = [
+    { name = "k0kishima", email = "okishimaxyz@gmail.com" }
+]
+dependencies = [
+    "pydantic>=2.0.3",
+]
+readme = "README.md"
+requires-python = ">= 3.11"
+license = "MIT"
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.10.1",
+    "black>=23.7.0",
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "codecov>=2.1.13"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = true
+ignore_missing_imports = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_optional = true
+disallow_any_generics = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.pytest.ini_options]
+testpaths = ["tests",]
