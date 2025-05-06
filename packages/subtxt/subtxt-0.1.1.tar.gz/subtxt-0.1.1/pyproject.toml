@@ -1,0 +1,48 @@
+[project]
+name = "subtxt"
+version = "0.1.1"
+description = "Generate and auto‑refresh llms.txt for any website using sitemaps."
+authors = [{ name = "Ananya Garg" }]
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.25",
+    "beautifulsoup4>=4.12",
+    "lxml>=4.9",
+    "pathspec>=0.11",
+    "ultimate-sitemap-parser>=1.4",
+    "tqdm>=4.60",
+    "fastapi>=0.100",
+    "uvicorn[standard]>=0.20",
+    "pydantic>=2.0",
+    "sse-starlette>=1.8.0",
+]
+license = { text = "MIT" }
+
+[project.scripts]
+subtxt = "sdk.__main__:cli"
+subtxt-server = "api.main:start_server"
+
+[tool.subtxt]
+output_file = "llms.txt"
+concurrency = 10
+interval = 21600
+include_paths = []
+exclude_paths = [
+    "/blog/*",
+    "/news/*",
+    "/jobs/*",
+    "/legal/*",
+    "/privacy/*",
+    "/terms/*",
+    "/[a-z]{2}/*",
+    "/[a-z]{2}-[A-Z]{2}/*"
+]
+replace_title = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sdk*", "api*"]
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
