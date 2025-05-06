@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: 2025 The Rockstor Project <support@rockstor.com>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[tool.poetry]
+name = "zypper-changelog-lib"
+# https://packaging.python.org/en/latest/specifications/version-specifiers/#version-specifiers
+version = "0.7.5"
+description = "Changelogs for installable pending updates, or available/uninstalled packages"
+authors = ["The Rockstor Project <support@rockstor.com>", "Zoltán Balogh <zbalogh@suse.com>"]
+maintainers = ["Philip Paul Guyton <support@rockstor.com>"]
+license = "LGPL-2.1-only AND GPL-3.0-or-later"
+# license-files = ["LICENSES/*"]  # incompatible with `Poetry build sdist`
+readme = "README.md"
+# requires-python = ">=3.11"
+keywords = ["linux", "zypper", "changelog", "openSUSE"]
+# https://pypi.org/classifiers/
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
+    # We have an auto-invoked on build "Classifier: License :: Other/Proprietary License" orgin unknow.
+]
+include = [
+    { path = "README.md", format = "sdist" },
+    # { path = "CHANGELOG.md", format = "sdist" },
+    # { path = "CONTRIBUTING.md", format = "sdist" },
+    { path = "REUSE.toml", format = "sdist" },
+    { path = "LICENSES", format = "sdist" },
+    { path = "reuse.spdx", format = "sdist" },  # Software Bill Of Materials (SBOM).
+]
+packages = [
+    { include = "zypper-changelog-lib", from = "src" }
+]
+
+homepage = "https://codeberg.org/Rockstor/zypper-changelog-lib"
+repository = "https://codeberg.org/Rockstor/zypper-changelog-lib"
+
+[tool.poetry.build]
+generate-setup-file = false
+
+[tool.poetry.dependencies]
+# https://python-poetry.org/docs/dependency-specification
+python = "^3.11"
+requests = "*"
+rpm = "*"
+keyring-pass = "*"
+
+[tool.poetry.scripts]
+# https://python-poetry.org/docs/pyproject#scripts
+# script-name = package.module.function
+zypper-changelog-lib = 'zypper-changelog-lib.zypper-changelog-lib:main'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
