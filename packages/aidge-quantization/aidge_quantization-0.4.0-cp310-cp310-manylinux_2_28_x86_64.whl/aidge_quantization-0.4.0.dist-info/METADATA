@@ -1,0 +1,101 @@
+Metadata-Version: 2.4
+Name: aidge_quantization
+Version: 0.4.0
+Summary: Quantization algorithms to compress aidge networks.
+Project-URL: Homepage, https://www.deepgreen.ai/en/platform
+Project-URL: Documentation, https://eclipse-aidge.readthedocs.io/en/latest/
+Project-URL: Repository, https://gitlab.eclipse.org/eclipse/aidge/aidge_quantization
+Project-URL: Issues, https://gitlab.eclipse.org/eclipse/aidge/aidge_quantization/-/issues/
+Project-URL: Changelog, https://gitlab.eclipse.org/eclipse/aidge/aidge_quantization/-/releases
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Eclipse Public License 2.0 (EPL-2.0)
+Classifier: Programming Language :: C++
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.21.6
+
+# Aidge Quantization Module
+You can find in this folder the library that implements the quantization algorithms.
+For the moment only Post Training Quantization (PTQ) is available. 
+Its implementation does support multiple branch architectures.
+
+[TOC]
+## Installation
+### Dependencies
+- `GCC`
+- `Make`/`Ninja`
+- `CMake`
+- `Python` (optional, if you have no intend to use this library in python with pybind)
+
+#### Aidge dependencies
+ - `aidge_core`
+The requirements for installing the library are the followings:
+
+    - GCC, Make and CMake for the compilation pipeline
+    - The AIDGE modules aidge_core, aidge_onnx and aidge_backend_cpu
+    - Python (> 3.7) if you intend to use the pybind wrapper
+
+### Pip installation
+``` bash
+pip install . -v
+```
+> **TIPS :** Use environment variables to change compilation options :
+> - `AIDGE_INSTALL` : to set the installation folder. Defaults to /usr/local/lib. :warning: This path must be identical to aidge_core install path.
+> - `AIDGE_PYTHON_BUILD_TYPE` : to set the compilation mode to **Debug** or **Release** 
+> - `AIDGE_BUILD_GEN` : to set the build backend with 
+
+## User guide
+
+In order to perform a quantization, you will need an AIDGE model (that can be loaded from an ONNX). Then, you will have to provide a calibration dataset consisting of AIDGE tensors (that can be loaded from some numpy arrays). And finally, you will have to specify the quantization number of bits. 
+
+Performing the PTQ on your model will then be a one liner:
+
+``` python
+aidge_quantization.quantize_network(aidge_model, nb_of_bits, calibration_set)
+```
+
+## Technical insights
+
+The PTQ algorithm consists of 3 main steps:
+
+    - Normalization of the parameters, so that each node set of weights fits in the [-1:1] range.
+    - Normalization of the activations, so that each node output value fits in the [-1:1] range.
+    - Quantization of the scaling nodes previously inserted
+
+To achieve those steps, one must propagate the scaling factors inside the network.
+One should also balance the different branches when they are merging.
+A particular care is needed for the biases rescaling at each step.
+
+## Doing quantization step by step
+
+It is possible to perform the PTQ step by step, thanks to the exposed functions of the API.
+In that case, here is the standard pipeline:
+
+    - Prepare the network for the PTQ (remove the flatten nodes, fuse the BatchNorms ...)
+    - Insert the scaling nodes that will allow the model calibration
+    - Perform the Cross Layer Equalization if possible
+    - Perform the parameter normalization
+    - Compute the node output ranges over an input calibration dataset
+    - Adjust the output ranges using a specified error metric (MSE, KL, ...)
+    - Perform the activation normalization
+    - Quantize the normalized network
+    - Convert the scaling factors to bit-shifting operations if needed
+
+## Further work
+
+* add Quantization Aware Training (QAT)
