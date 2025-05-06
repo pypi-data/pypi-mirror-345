@@ -1,0 +1,48 @@
+[project]
+name = "cfsign"
+version = "0.0.2"
+description = "A simple library for creating CloudFront signatures"
+readme = "README.md"
+requires-python = ">=3.8,<4.0"
+dependencies = [
+    "cryptography>=44.0.2",
+]
+
+
+[tool.ruff]
+line-length = 120
+exclude = ['cdk.out', 'examples']
+target-version = "py312"
+
+[tool.poe.tasks]
+typecheck = "mypy cfsign"
+lint = "ruff check cfsign"
+test = "pytest"
+format = "ruff format cfsign"
+precommit = "tox run"
+
+[tool.mypy]
+strict = true
+
+[tool.ruff.lint]
+ignore = ["E501", "E402", "RUF012", "G004"]
+select = ["I", "E", "F", "A", "B", "N", "Q", "RUF", "C", "DTZ", "ASYNC", "LOG", "G", "T20", "SIM", "NPY", "PERF"]
+
+[tool.ruff.lint.flake8-builtins]
+builtins-ignorelist = ["filter"]
+
+[dependency-groups]
+dev = [
+    "botocore>=1.37.33",
+    "mypy>=1.0.0",
+    "poethepoet>=0.30.0",
+    "pytest>=8.3.5",
+]
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61", "wheel"]
+
+[tool.setuptools.packages.find]
+where   = ["."]
+include = ["cfsign*"]
