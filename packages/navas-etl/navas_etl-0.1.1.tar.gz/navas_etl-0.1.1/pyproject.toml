@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "navas-etl"
+version = "0.1.1"
+description = "A flexible ELT pipeline implementation in Python"
+authors = [
+    {name = "Navas_Herbert", email = "navasmuller01@gmail.com"},
+]
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pandas>=1.0",
+    "requests>=2.0",
+    "sqlalchemy>=1.4",
+]
+
+[tool.setuptools]
+packages = ["navas_etl", "navas_etl.extractors", "navas_etl.transformers", "navas_etl.loaders"]
+include-package-data = true
+
+[project.urls]
+Homepage = "https://github.com/Navashub/navas_pipeline"
