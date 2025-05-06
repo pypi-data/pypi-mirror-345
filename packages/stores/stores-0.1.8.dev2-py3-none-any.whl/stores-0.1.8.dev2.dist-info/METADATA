@@ -1,0 +1,85 @@
+Metadata-Version: 2.4
+Name: stores
+Version: 0.1.8.dev2
+Summary: Repository of Python functions and tools for LLMs
+License-File: LICENSE
+Requires-Python: >=3.10
+Requires-Dist: dirtyjson>=1.0.8
+Requires-Dist: dotenv>=0.9.9
+Requires-Dist: fuzzywuzzy>=0.18.0
+Requires-Dist: gitpython>=3.1.44
+Requires-Dist: makefun>=1.15.6
+Requires-Dist: python-levenshtein>=0.27.1
+Requires-Dist: requests>=2.32.3
+Requires-Dist: tomli>=1.1.0; python_version < '3.11'
+Provides-Extra: anthropic
+Requires-Dist: anthropic>=0.49.0; extra == 'anthropic'
+Provides-Extra: google
+Requires-Dist: google-genai>=1.7.0; extra == 'google'
+Provides-Extra: langchain
+Requires-Dist: langchain-google-genai>=2.1.0; extra == 'langchain'
+Provides-Extra: langgraph
+Requires-Dist: langchain-core>=0.3.45; extra == 'langgraph'
+Requires-Dist: langchain-google-genai>=2.1.0; extra == 'langgraph'
+Requires-Dist: langgraph>=0.3.16; extra == 'langgraph'
+Provides-Extra: litellm
+Requires-Dist: litellm>=1.63.11; extra == 'litellm'
+Provides-Extra: llamaindex
+Requires-Dist: llama-index-llms-google-genai>=0.1.4; extra == 'llamaindex'
+Requires-Dist: llama-index>=0.12.25; extra == 'llamaindex'
+Provides-Extra: openai
+Requires-Dist: openai>=1.66.5; extra == 'openai'
+Provides-Extra: openai-agent
+Requires-Dist: openai-agents>=0.0.7; extra == 'openai-agent'
+Description-Content-Type: text/markdown
+
+# stores
+
+Repository of Python functions and tools for LLMs
+
+## Why we built Stores
+
+Just as tool use is often cited as a key development in human civilization, we believe that tool use represents a major transition in AI development.
+
+**The aim of Stores is to make it super simple to build LLM Agents that use tools.**
+
+There are two main elements:
+1. A public repository of [tools](https://stores-tools.vercel.app) that anyone can contribute to
+2. This Python library that handles tool installation and formatting
+
+For more details, check out the [documentation](https://stores-tools.vercel.app/docs).
+
+## Design principles
+
+- **Open-source**: Each set of tools in the Stores collection is a public git repository. In the event the Stores database is no longer operational, the library and tools will still work as long as the git repositories exist.
+- **Isolation**: Tools are isolated in their own virtual environments. This makes it trivial to manage tools with conflicting dependencies and reduces unnecessary access to sensitive environment variables.
+- **Framework compatibility**: In order to pass information about tools, LLM providers often require different formats that can make it cumbersome to switch between providers. Stores makes it easy to output the required formats across providers.
+
+## Usage
+
+```sh
+pip install stores
+```
+
+Or if you are using `uv`:
+
+```sh
+uv add stores
+```
+
+Then load one of the available indexes and use it with your favorite LLM package.
+
+```python {6, 11}
+import anthropic
+import stores
+
+client = anthropic.Anthropic()
+
+index = stores.Index(["silanthro/hackernews"])
+
+response = client.messages.create(
+    model=model,
+    messages=messages,
+    tools=index.format_tools("anthropic"),
+)
+```
