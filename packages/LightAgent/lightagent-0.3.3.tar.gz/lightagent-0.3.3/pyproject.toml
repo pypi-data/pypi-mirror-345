@@ -1,0 +1,67 @@
+[tool.poetry]
+name = "LightAgent"
+version = "0.3.3"
+description = "**LightAgent** is an extremely lightweight active Agentic Framework with memory (`mem0`), tools (`Tools`), and a Tree of Thought (`ToT`). It supports swarm-like multi-agent collaboration, automated tool generation, and agent assessment, with underlying model support for OpenAI, Zhipu ChatGLM, Baichuan Large Model, DeepSeek R1, Qwen series large models, and more. At the same time, LightAgent supports OpenAI streaming format API service output, seamlessly integrating with major mainstream chat frameworks. 🌟"
+authors = ["caiweige <caiweige@qq.com>"]
+license = "Apache 2.0"
+readme = [
+    "README.md",        # English
+    "README.zh-CN.md",  # 简体中文
+    "README.es.md",     # Español
+    "README.fr.md",     # Français
+    "README.de.md",     # Deutsch
+    "README.ja.md",     # 日本語
+    "README.ko.md",     # 한국어
+    "README.pt.md",     # Português
+    "README.ru.md",     # Русский
+]
+repository = "https://github.com/wxai-space/LightAgent"
+packages = [
+    { include = "LightAgent" },
+]
+
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13,!=3.9.7"
+loguru = "0.7.3"
+requests = "2.32.3"
+openai = ">=1.60.0"
+colorama = "0.4.6"
+httpx = "0.28.1"
+httpx-sse = "0.4.0"
+mcp = "1.5.0"
+mem0ai = ">=0.1.70"
+pydantic-settings = "2.8.1"
+langfuse = ">=2.60.0"
+
+
+[tool.ruff]
+extend-include = ["*.ipynb"]
+extend-exclude = [
+    "docs/docs/expression_language/why.ipynb"  # TODO: look into why linter errors
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/{cookbook,docs}/*" = [
+    "E402",  # allow imports to appear anywhere in docs
+    "F401",  # allow "imported but unused" example code
+    "F811",  # allow re-importing the same module, so that cells can stay independent
+    "F841",  # allow assignments to variables that are never read -- it's example code
+]
+
+# These files were failing the listed rules at the time ruff was adopted for notebooks.
+# Don't require them to change at once, though we should look into them eventually.
+"cookbook/gymnasium_agent_simulation.ipynb" = ["F821"]
+"docs/docs/integrations/document_loaders/tensorflow_datasets.ipynb" = ["F821"]
+
+[tool.poetry.plugins.dotenv]
+ignore = "false"
+dotenv = "dotenv:plugin"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority="primary"
+
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
