@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robotu-molkit"
+description = "Quantum-ready molecular toolkit. An open-source Python library that pulls PubChem records, structures them into Molecule objects with rich property sets, and enriches each with IBM Granite summaries and embeddings—ready for quantum simulations, AI pipelines, and scientific research."
+readme = "README.md"
+requires-python = ">=3.11"
+version = "0.1.1"
+
+authors = [
+  { name = "Robotu", email = "tech@robotu.ai" }
+]
+
+maintainers = [
+  { name = "Carlos Murillo", email = "tech@robotu.ai" }
+]
+
+license = { text = "Apache-2.0" }
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Chemistry"
+]
+
+dependencies = [
+  "aiohttp==3.11.18",
+  "aiolimiter==1.2.1",
+  "faiss-cpu==1.11.0",
+  "ibm_watsonx_ai==1.3.13",
+  "numpy==2.2.5",
+  "pubchempy==1.0.4",
+  "pydantic==2.11.4",
+  "rdkit==2024.9.6",
+  "requests==2.32.3",
+  "typer==0.15.3"
+]
+
+[project.optional-dependencies]
+dev = [
+  "bump2version==0.5.11",
+  "cmake==4.0.0",
+  "coverage==4.5.4",
+  "pytest==6.2.4",
+  "readme_renderer==43.0",
+  "ruff==0.3.5",
+  "Sphinx==7.2.6",
+  "tox==3.14.0",
+  "twine==5.0.0",
+  "virtualenv==20.30.0",
+  "watchdog==0.9.0"
+]
+
+[project.urls]
+Homepage = "https://robotu.ai"
+Issues = "https://github.com/carlosamurillo/robotu_molkit/issues"
+Changelog = "https://github.com/carlosamurillo/robotu_molkit/blob/main/HISTORY.rst"
+
+[project.scripts]
+molkit = "robotu_molkit.cli:app"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.package-data]
+"*" = ["*.*"]
+
+[tool.mypy]
+files = "."
+strict = true
+warn_unreachable = true
+warn_no_return = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+allow_untyped_defs = true
+disable_error_code = "attr-defined"
+
