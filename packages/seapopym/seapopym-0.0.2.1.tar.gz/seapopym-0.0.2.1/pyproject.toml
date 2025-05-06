@@ -1,0 +1,48 @@
+[project]
+name = "seapopym"
+description = "Seapodym is a Python package that provides models to simulate the dynamics of low and mid trophic level marine ecosystems."
+dynamic = ["version"]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Jules Lehodey", email = "lehodey.jules+seapopym@gmail.com" },
+]
+keywords = ["oceanography", "marine ecosystems", "marine biology"]
+classifiers = ["Topic :: Scientific/Engineering :: Oceanography"]
+dependencies = [
+    "xarray",
+    "dask",
+    "cf-xarray",
+    "pint",
+    "pint-xarray",
+    "numba",
+    "attrs",
+    "distributed",
+]
+
+[project.urls]
+repository = "https://github.com/Ash12H/Seapopym"
+documentation = "https://seapopym.readthedocs.io/en/latest/"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+ruff = "*"
+ipykernel = "*"
+
+[tool.poetry.group.doc]
+optional = true
+
+[tool.poetry.group.doc.dependencies]
+sphinx = "*"
+sphinx-rtd-theme = "*"
+nbsphinx = "*"
+
+[tool.poetry]
+version = "0.0.2.1"
+
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = "^1.9.0"
