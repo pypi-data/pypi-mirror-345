@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: sendnotifications
+Version: 1.0.4
+Summary: Send Notifications to MSTeams or Email via sns!
+Project-URL: Homepage, https://github.com/vthelu/sendnotifications
+Project-URL: Documentation, https://readthedocs.org
+Project-URL: Repository, https://github.com/vthelu/sendnotifications.git
+Project-URL: Bug Tracker, https://github.com/vthelu/sendnotifications/issues
+Project-URL: Changelog, https://github.com/vthelu/sendnotifications/CHANGELOG.md
+Author-email: Vara Thelu <vthelu@costar.com>
+Maintainer-email: Vara Thelu <vthelu@costar.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: NotifyEmail,NotifyMSTeams,sendnotifications
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Requires-Python: >=3.10
+Requires-Dist: urllib3
+Description-Content-Type: text/markdown
+
+# sendnotifications
+
+sendnotifications is a simple package that enables users to send notification to MSTeams or Email. The package is built using `urllib3` for distribution.
+
+## Features
+
+- Send notification on channel w/ adaptive card using NotifyMsTeams.
+- Send notification on email using prefix of team name on attributes using NotifyEmail.
+
+
+## Installation
+
+This package will be made available as lambda layer
+for email grant sns:publish, sns:createtopic on IAM Role
+
+## Usage
+
+
+### Example: Training and Making Predictions
+
+```python
+from sendnotifications import NotifyMsTeams, NotifyEmail
+
+# Initialize the predictor
+
+def testemail:
+    messages = []
+    messages.append("Test")
+    messages.append("Test1")
+    notifye = NotifyEmail("Title - Testing card",messages,"vthelu")
+    notifyt = NotifyMsTeams("homes-analytics-alerts",messages,"Test Title",1,"warn")
+    print ("notifyt response:{}, notifye response{}".format(notifyt, notifye))
+
+```
