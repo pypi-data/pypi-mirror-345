@@ -1,0 +1,143 @@
+Metadata-Version: 2.4
+Name: data-platfrom-deployer
+Version: 1.1.2
+Summary: CLI tool for automatic data platform deployment
+Author: Khamidullin Ilsaf
+License: MIT License
+        
+        Copyright (c) 2024 Khamidullin Ilsaf
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Repository, https://github.com/Ilsaffff/data-platform-deployer
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: absl-py==2.2.2
+Requires-Dist: attrs==25.1.0
+Requires-Dist: backports.tarfile==1.2.0
+Requires-Dist: build==1.2.2.post1
+Requires-Dist: certifi==2025.1.31
+Requires-Dist: charset-normalizer==3.4.1
+Requires-Dist: click==8.1.8
+Requires-Dist: decorator==5.2.1
+Requires-Dist: directory_tree==1.0.0
+Requires-Dist: docutils==0.21.2
+Requires-Dist: etils==1.12.2
+Requires-Dist: fsspec==2025.3.2
+Requires-Dist: id==1.5.0
+Requires-Dist: idna==3.10
+Requires-Dist: importlib_metadata==8.6.1
+Requires-Dist: importlib_resources==6.5.2
+Requires-Dist: jaraco.classes==3.4.0
+Requires-Dist: jaraco.context==6.0.1
+Requires-Dist: jaraco.functools==4.1.0
+Requires-Dist: jsonpath-rw==1.4.0
+Requires-Dist: jsonschema==4.23.0
+Requires-Dist: jsonschema-specifications==2024.10.1
+Requires-Dist: kagglehub==0.3.11
+Requires-Dist: keyring==25.6.0
+Requires-Dist: markdown-it-py==3.0.0
+Requires-Dist: mdurl==0.1.2
+Requires-Dist: more-itertools==10.6.0
+Requires-Dist: directory-tree==1.0.0
+Requires-Dist: networkx==3.4.2
+Requires-Dist: nh3==0.2.21
+Requires-Dist: packaging==24.2
+Requires-Dist: ply==3.11
+Requires-Dist: psycopg2-binary==2.9.10
+Requires-Dist: Pygments==2.19.1
+Requires-Dist: pyparsing==3.2.3
+Requires-Dist: pyproject_hooks==1.2.0
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: pytz==2025.2
+Requires-Dist: PyYAML==6.0.2
+Requires-Dist: rdflib==7.1.4
+Requires-Dist: readme_renderer==44.0
+Requires-Dist: referencing==0.36.2
+Requires-Dist: requests==2.32.3
+Requires-Dist: requests-toolbelt==1.0.0
+Requires-Dist: rfc3986==2.0.0
+Requires-Dist: rich==13.9.4
+Requires-Dist: rpds-py==0.23.1
+Requires-Dist: scipy==1.15.2
+Requires-Dist: six==1.17.0
+Requires-Dist: SQLAlchemy==2.0.40
+Requires-Dist: tqdm==4.67.1
+Requires-Dist: twine==6.1.0
+Requires-Dist: types-pytz==2025.2.0.20250326
+Requires-Dist: typing_extensions==4.12.2
+Requires-Dist: tzdata==2025.2
+Requires-Dist: urllib3==2.3.0
+Requires-Dist: zipp==3.21.0
+Dynamic: license-file
+
+# Data Platform Deployer (dpd) 🚀
+
+**Data Platform Deployer (`dpd`)** is a CLI tool for automatically generating configurations and deploying a data platform based on a declarative description.
+
+## 🔥 Features
+- 📜 **Configuration generation** for Kafka, ClickHouse, PostgreSQL, S3, and more.
+- 🚀 **Automated deployment** of the data platform.
+- 🛠 **Flexible configuration** via JSON.
+- 🏗 **Supports Docker Compose** and (future) Kubernetes.
+
+## 🚀 Installation
+Install from **PyPI**:
+```sh
+pip install data-platfrom-deployer
+```
+## 📝 Usage
+Once installed, you can run dpd from the command line:
+```sh 
+dpd --help
+```
+Generate configuration files
+```sh 
+dpd generate --config config.yaml
+```
+
+Example config:
+```yaml
+project:
+  name: data-platform
+  version: 1.0.0
+  description: This is a test project
+sources:
+  - type: postgres
+    name: postgres_1
+  - type: postgres
+    name: postgres_2
+  - type: s3
+    name: s3_1
+streaming:
+  kafka:
+    num_brokers: 3
+  connect:
+    name: connect-1
+storage:
+  clickhouse:
+    name: clickhouse-1 
+bi:
+  superset:
+    name: superset-1 
+
+
+```
+
