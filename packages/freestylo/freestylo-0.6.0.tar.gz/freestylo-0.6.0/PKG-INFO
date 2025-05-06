@@ -1,0 +1,67 @@
+Metadata-Version: 2.4
+Name: freestylo
+Version: 0.6.0
+Summary: A tool for stylistic device detection."
+Home-page: https://github.com/cvjena/freestylo
+Author: Felix Schneider
+Author-email: felix.schneider@uni-jena.de
+License: GNU General Public License v3.0
+Project-URL: Source, https://github.com/cvjena/freestylo
+Project-URL: Tracker, https://github.com/cvjena/freestylo/issues
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: setuptools>=75.0
+Requires-Dist: torch
+Requires-Dist: spacy==3.8.2
+Requires-Dist: numpy
+Requires-Dist: pytest
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+Requires-Dist: cltk<1.0
+Requires-Dist: wget
+Requires-Dist: fasttext
+Provides-Extra: testing
+Requires-Dist: setuptools>=75.0; extra == "testing"
+Requires-Dist: pytest; extra == "testing"
+Requires-Dist: pytest-cov; extra == "testing"
+Dynamic: license-file
+
+# FreeStylo - an easy-to-use stylistic device detection tool for stylometry
+
+An easy-to-use package for detecting stylistic devices in text. This package is designed to be used in stylometry, the study of linguistic style.
+
+For those proficient in python, this package provides a collection of approaches to detect stylistic devices in text. For those less proficient in python, this package provides a simple interface to detect stylistic devices in text with simple commands and user-friendly configuration.
+
+# Usage example
+
+If after installation, run the following command in the root of the repository:
+
+```bash
+freestylo --input test/documents/chiasmustext.txt --output ./output.json --config example_config.json
+```
+
+This creates the file `output.json` in the root of the repository, which contains the detected stylistic devices in the text file `test/documents/chiasmustext.txt`.
+Afterewards, run the following command to get an overview over the results:
+
+```bash
+freestylo --mode report --data output.json --device chiasmustext
+```
+
+# Installation
+
+The minimum python requirement for this package is python 3.12.
+The package is available on PyPi and can be installed using pip.
+
+```
+pip install freestylo
+```
+
+# Participation
+The package is free and open-source software and contributions are very welcome.
+It is designed to be a living project that is constantly improved and extended.
+If you have implemented your own stylistic device detector, please consider contributing it to the package.
+Also, if you have any suggestions for improvements or if you find any bugs, please open an issue on the GitHub page.
