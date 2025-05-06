@@ -1,0 +1,46 @@
+[project]
+name = "junos-exporter"
+version = "0.0.9"
+description = "Prometheus Exporter for Junos using PyEZ Tables and Views"
+authors = [
+  {name = "minefuto", email = "minefuto@gmail.com"}
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "asyncssh>=2.20.0",
+    "fastapi>=0.115.8",
+    "junos-eznc>=2.7.4",
+    "ntc-templates>=7.7.0",
+    "pyyaml>=6.0.2",
+    "scrapli-netconf>=2025.1.30",
+    "uvicorn>=0.34.0",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.urls]
+Repository = "https://github.com/minefuto/junos-exporter.git"
+
+[project.scripts]
+junos-exporter = "junos_exporter.__main__:cli"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "ruff>=0.9.7",
+    "types-pyyaml>=6.0.12.20241230",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
