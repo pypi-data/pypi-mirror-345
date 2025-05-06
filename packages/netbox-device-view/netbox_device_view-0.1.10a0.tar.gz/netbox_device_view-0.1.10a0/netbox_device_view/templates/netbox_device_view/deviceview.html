@@ -1,0 +1,94 @@
+{% extends 'dcim/device/base.html' %}
+{% load render_table from django_tables2 %}
+{% load buttons %}
+{% load static %}
+{% load helpers %}
+{% load plugins %}
+{% block head %}
+<link
+	rel="stylesheet"
+	href="{% static 'netbox_device_view/css/device_view.css' %}"
+/>
+<style>
+	{% autoescape off %}
+	{% for id, ddv in dv.items %}
+	{{ ddv }}
+	{% endfor %}
+	{% endautoescape %}
+	{% if height %}
+	
+	.deviceview {
+		height:{{ height }}px;
+	}
+	{% endif %}
+</style>
+{% endblock %}
+{% block content %}
+<div class="card">
+	<div class="card-body htmx-container">
+		{% spaceless %} {% for device, interfaces in ports_chassis.items %} Device
+		{{device}}
+		<div
+			class="deviceview area d{{device}}{% for sw, modules in modules.items %}{% if sw == device %}{% for module in modules %} module{{module.module_type.model}}{% endfor %}{% endif %}{% endfor %}"
+		>
+			{% for int in interfaces %}
+			<a
+				href="{{int.get_absolute_url}}trace/"
+				class="device-view-port 
+				{% if cable_colors == "on" and int.cable.color == "" or cable_colors == "on" and int.cable == None %}
+				nocolor
+				{% elif cable_colors == "on" %}
+				{% elif int.enabled and int.connected_endpoints|length > 0 or int.is_port and int.link_peers|length > 0 %}
+				bg-success
+				{% elif int.enabled %}
+				bg-secondary
+				{% else %}
+				bg-danger
+				{% endif %}"
+				title="{{ int.name }}
+				{% if int.connected_endpoints|length > 0 %}<hr>
+					{% for ce in int.connected_endpoints %}
+					{{ ce.device }} | {{ ce.name }}
+					{% endfor %}
+				{% elif int.link_peers|length > 0 %}<hr>
+					{% for lp in int.link_peers %}
+					{% if lp.device %}
+					{{ lp.device }} | {{ lp.name }}
+					{% elif lp.circuit %}
+					{{ lp }}
+					{% endif %}
+					{% endfor %}
+				{% endif %}
+				"
+				style="grid-area: {{ int.stylename }}{% if cable_colors == 'on' and int.cable.color != '' %}; background-color: #{{ int.cable.color }}{% endif %}"
+				data-bs-toggle="tooltip"
+				data-bs-html="true"
+				data-bs-custom-class="device-view-tooltip"
+			>
+				{% if int.enabled and int.connected_endpoints|length > 0  or int.is_port and int.link_peers|length > 0 %}
+				<span class="text-white"><i class="mdi mdi-check-bold"></i></span>
+				{% elif int.enabled %}
+				<span class="text-white"><i class="mdi mdi-check-bold"></i></span>
+				{% else %}
+				<span class="text-white"><i class="mdi mdi-close-thick"></i></span>
+				{% endif %}
+			</a>
+			{% endfor %}
+		</div>
+		{% endfor %} {% endspaceless %}
+	</div>
+</div>
+<div class="card">
+	<div class="card-header">
+		<h4>Options</h4>
+	</div>
+	<div class="card-body">
+		<form>
+			<div class="form-check">
+				<input onChange="this.form.submit()" type="checkbox" name="cable_colors" class="form-check-input" {% if cable_colors == "on" %}checked{% endif %} />
+				<label for="cable_colors" class="form-check-label">Cable Colors</label>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}
