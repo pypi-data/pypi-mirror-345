@@ -1,0 +1,48 @@
+[project]
+name = "llm-git"
+version = "0.2.2"
+description = "AI-powered Git commands for the LLM CLI tool"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "Apache-2.0"}
+dependencies = [
+    "llm",
+    "click",
+    "deepmerge",
+    "pyyaml",
+    "rich",
+    "pygments"
+]
+
+[project.urls]
+Homepage = "https://github.com/OttoAllmendinger/llm-git"
+Repository = "https://github.com/OttoAllmendinger/llm-git"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+dev = [
+    "ruff",
+]
+
+[project.entry-points.llm]
+git = "llm_git.llm_git"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["llm_git"]
+
+[tool.setuptools.package-data]
+"llm_git" = ["*.yaml", "config.yaml"]
+
+# Minimal Ruff configuration
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
