@@ -1,0 +1,16 @@
+version: "0.5"
+# This file may change during the development process. 
+# Use process-compose.override.yml for your settings.
+# Full syntax reference https://f1bonacc1.github.io/process-compose/
+processes:
+  notification:
+    command: "python main.py"
+    working_dir: "$DEVBOX_PROJECT_ROOT/toolkits/notification"
+    environment:
+      - "PLUGIN_LABEL=default"
+      - "SMTP_PORT=587"
+      - "SMTP_SERVER=smtp.office365.com"
+      - "SMTP_USER="
+      - "SMTP_PASSWORD="
+    availability:
+      restart: "always"
