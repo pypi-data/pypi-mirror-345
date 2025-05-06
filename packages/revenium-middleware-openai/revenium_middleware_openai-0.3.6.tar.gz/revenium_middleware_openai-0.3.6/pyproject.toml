@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "revenium-middleware-openai"
+version = "0.3.6"
+description = "A Python library that meters OpenAI usage to Revenium."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "Apache License 2.0" }
+authors = [
+    { name = "Revenium", email = "info@revenium.io" }
+]
+dependencies = [
+    "wrapt",
+    "openai>=1.0.0",
+    "revenium_middleware>=0.2.7"
+]
+keywords = ["openai", "middleware", "logging", "token-usage", "metering", "revenium"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/revenium/revenium-middleware-openai-python"
+"Bug Tracker" = "https://github.com/revenium/revenium-middleware-openai-python/issues"
+"Documentation" = "https://github.com/revenium/revenium-middleware-openai-python/blob/main/README.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov",
+    "flake8",
+    "black",
+    "mypy",
+    "openai-responses>=0.12.0",
+    "freezegun"
+]
