@@ -1,0 +1,12 @@
+{% if file.comparison_errors %}
+{% for group in file.comparison_errors.groups if group.type != 'node' %}
+
+{% if group.total_warnings or group.total_errors %}
+
+<h4>{{ group.name }}</h4>
+{% include 'compare_13_section_numbers_table.html' with context %}
+
+{% endif %}
+
+{% endfor %}
+{% endif %}
