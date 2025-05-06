@@ -1,0 +1,33 @@
+[project]
+name = "pyarinc424"
+dynamic = ["version"]
+description = "Python library for parsing ARINC 424 data"
+requires-python = ">=3.11"
+dependencies = [
+    "psycopg2-binary>=2.9.10",
+    "rich>=14.0.0",
+]
+
+[project.scripts]
+pyarinc424 = "pyarinc424.main:main"
+
+[dependency-groups]
+dev = [
+        "pytest>=7.0.0",
+        "pytest-cov>=4.0.0",
+        "genbadge[coverage]>=1.1.2",
+    ]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src/pyarinc424",
+]
+
+[build-system]
+requires = [
+    "setuptools>=61.0",
+    "setuptools-scm>=8"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
