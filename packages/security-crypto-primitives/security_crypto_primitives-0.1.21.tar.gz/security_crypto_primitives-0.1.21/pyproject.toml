@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "security-crypto-primitives"
+version = "0.1.21"
+description = "Обёртки и утилиты для шифрования, подписей и хеширования"
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [{ name = "Ruslan"}]
+dependencies = [
+  "cryptography>=41.0.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["crypto_utils*"]
+exclude = ["tests*"]
