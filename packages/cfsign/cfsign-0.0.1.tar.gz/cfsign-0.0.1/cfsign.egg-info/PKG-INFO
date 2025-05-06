@@ -1,0 +1,117 @@
+Metadata-Version: 2.4
+Name: cfsign
+Version: 0.0.1
+Summary: A simple library for creating CloudFront signatures
+Requires-Python: <4.0,>=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: cryptography>=44.0.2
+
+# CFSign
+
+A Python library for generating AWS CloudFront signed URLs and cookies. This library provides a simple interface for creating signed URLs and cookies for CloudFront private content.
+
+## Installation
+
+Using pip:
+
+```bash
+pip install git+https://github.com/telemetryfm/cfsign.git
+```
+
+Using Poetry:
+
+```bash
+poetry add git+https://github.com/telemetryfm/cfsign.git
+```
+
+## Usage
+
+### Basic Configuration
+
+```python
+import cfsign
+
+# Configure with your CloudFront key pair
+cfsign.configure(
+    key_pair_id="YOUR_KEY_PAIR_ID",
+    private_key="YOUR_PRIVATE_KEY"
+)
+```
+
+### Creating Signed URLs/Cookies
+
+```python
+from cfsign.signature.cloudfront_signature import CloudfrontSignature
+
+# Create a signature for a specific resource
+signature = CloudfrontSignature("https://example.cloudfront.net/private/content.mp4")
+
+# Get signed cookies
+cookies = signature.cookie_dict
+print(cookies)
+"""
+Gets you something like:
+{
+    "CloudFront-Policy": {...},
+    "CloudFront-Signature": {...},
+    "CloudFront-Key-Pair-Id": {...},
+}
+"""
+
+
+# Get query string parameters for signed URLs
+query_string = signature.query_string
+print(query_string)
+# prints - Policy&={...}&Signature={...}&Key-Pair-Id={...}
+```
+
+### Example: Using with Requests
+
+```python
+import requests
+
+# Using signed cookies
+response = requests.get(url, cookies=signature.cookie_dict)
+
+# Using signed URL
+signed_url = f"{url}?{signature.query_string}"
+
+# You could also use the built-in signed url if you're not using a wildcard for the resource:
+signed_url = signature.signed_url
+
+response = requests.get(signed_url)
+```
+
+## Features
+
+- Generate CloudFront signed URLs
+- Generate CloudFront signed cookies
+- Support for custom policies
+- RSA signing with PKCS1v15 padding and SHA1 hashing (AWS CloudFront standard)
+- Base64 policy encoding/decoding
+
+## Development
+
+### Setting up Development Environment
+
+1. Clone the repository
+2. Install development dependencies:
+
+```bash
+uv sync
+```
+
+### Running Tests
+
+```bash
+# Set PYTHONPATH to project root
+pytest
+```
+
+### VSCode Configuration
+
+To run tests in VSCode, create a `.env` file in your project root:
+
+```txt
+PYTHONPATH=.
+```
