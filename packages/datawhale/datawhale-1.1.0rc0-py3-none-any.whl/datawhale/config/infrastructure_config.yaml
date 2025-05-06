@@ -1,0 +1,51 @@
+infrastructure:
+  logging: !include infrastructure/logging.yaml
+  storage: !include infrastructure/storage.yaml
+  # 任务处理相关配置
+  process:
+    # 最大工作线程数，用于控制并发任务的数量
+    max_workers: 5
+    # 任务执行超时时间，单位为秒，超过此时间的任务将被终止
+    task_timeout: 30
+    # 任务执行间隔时间，单位为秒，用于控制任务的执行频率
+    task_interval: 1.0
+
+  # 重试机制相关配置
+  retry:
+    # 最大重试次数，当任务失败时最多重试的次数
+    max_retries: 3
+    # 重试间隔时间，单位为秒，两次重试之间的等待时间
+    retry_interval: 2.0
+    # 重试间隔递增因子，每次重试后等待时间会乘以这个因子
+    # 例如：初始等待时间为2秒，因子为2.0，则第一次重试等待2秒，第二次等待4秒，第三次等待8秒
+    backoff_factor: 2.0
+
+  task:
+    failed_tasks_dir: runtime/failed_tasks
+    recovery_tasks_dir: runtime/recovery_tasks
+
+  datasource:
+    programmable_plugin_dir: plugins
+    configurable_plugin_dir: plugins_pro.configs
+    
+    daily_kline:
+      type: tushare
+    stock_list:
+      type: baostock
+    trade_calendar:
+      type: tushare
+    stock_industry:
+      type: tushare
+    listing_date:
+      type: baostock
+    trade_status:
+      type: tushare
+    adjust_factor:
+      type: tushare
+    meta:
+      tushare:
+        token: c0aad5326126877ce0c03c2652085eb54dfab5bfdd0be7b83c6138dc
+      baostock: {}
+      jqdata:
+        username: '13853199997'
+        password: zfbzyywd123
