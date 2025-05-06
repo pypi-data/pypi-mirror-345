@@ -1,0 +1,136 @@
+{
+  "id": "ba9df292-1ee9-4b7c-af08-690441990d87",
+  "revision": 0,
+  "last_node_id": 34,
+  "last_link_id": 47,
+  "nodes": [
+    {
+      "id": 31,
+      "type": "PixverseTemplateNode",
+      "pos": [-94.46973419189453, 2572.951416015625],
+      "size": [270, 58],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "pixverse_template",
+          "type": "PIXVERSE_TEMPLATE",
+          "links": [47]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixverseTemplateNode"
+      },
+      "widgets_values": ["Suit Swagger"]
+    },
+    {
+      "id": 32,
+      "type": "SaveVideo",
+      "pos": [606.9308471679688, 2667.131103515625],
+      "size": [443.230712890625, 688.9743041992188],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 45
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": ["video/ComfyUI", "auto", "auto"]
+    },
+    {
+      "id": 34,
+      "type": "LoadImage",
+      "pos": [-176.61581420898438, 2679.671875],
+      "size": [404.8377685546875, 444.0351867675781],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [46]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "tantandf_surreal_crustacean_party_--chaos_5_--ar_23_--sref_3999_41481e53-3e9e-41b2-ae9f-69c2afd5a1bd (1).png",
+        "image"
+      ]
+    },
+    {
+      "id": 33,
+      "type": "PixverseImageToVideoNode",
+      "pos": [274.2159729003906, 2678.71533203125],
+      "size": [268.5158386230469, 264.6156005859375],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 46
+        },
+        {
+          "name": "negative_prompt",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "pixverse_template",
+          "shape": 7,
+          "type": "PIXVERSE_TEMPLATE",
+          "link": 47
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [45]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixverseImageToVideoNode"
+      },
+      "widgets_values": [
+        "put on suite",
+        "540p",
+        5,
+        "fast",
+        241331803,
+        "randomize"
+      ]
+    }
+  ],
+  "links": [
+    [45, 33, 0, 32, 0, "VIDEO"],
+    [46, 34, 0, 33, 0, "IMAGE"],
+    [47, 31, 0, 33, 2, "PIXVERSE_TEMPLATE"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "frontendVersion": "1.18.5"
+  },
+  "version": 0.4
+}
