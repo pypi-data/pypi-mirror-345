@@ -1,0 +1,21 @@
+version: "0.5"
+# This file may change during the development process. 
+# Use process-compose.override.yml for your settings.
+# Full syntax reference https://f1bonacc1.github.io/process-compose/
+processes:
+  mcp:
+    command: "python main.py $MCP_ARGS"
+    working_dir: "$DEVBOX_PROJECT_ROOT/toolkits/mcp"
+    environment:
+      - "PLUGIN_LABEL=default"
+      - "MCP_ARGS=$MCP_ARGS"
+      - "FILE_PATHS=$FILE_PATHS"
+      - "DEFAULT_PATH=$DEVBOX_PROJECT_ROOT"
+      - "TIMEOUT=$TIMEOUT"
+      - "ALLOWED_DIR=$ALLOWED_DIR"
+      - "ALLOWED_COMMANDS=$ALLOWED_COMMANDS"
+      - "ALLOWED_FLAGS=$ALLOWED_FLAGS"
+      - "MAX_COMMAND_LENGTH=$MAX_COMMAND_LENGTH"
+      - "COMMAND_TIMEOUT=$COMMAND_TIMEOUT"
+    availability:
+      restart: "always"

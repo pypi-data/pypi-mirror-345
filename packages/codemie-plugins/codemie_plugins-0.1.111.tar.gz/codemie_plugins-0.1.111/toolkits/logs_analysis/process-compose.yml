@@ -1,0 +1,12 @@
+version: "0.5"
+# This file may change during the development process. 
+# Use process-compose.override.yml for your settings.
+# Full syntax reference https://f1bonacc1.github.io/process-compose/
+processes:
+  logs_analysis:
+    command: "python main.py"
+    working_dir: "$DEVBOX_PROJECT_ROOT/toolkits/logs_analysis"
+    environment:
+      - "PLUGIN_LABEL=default"
+    availability:
+      restart: "always"
