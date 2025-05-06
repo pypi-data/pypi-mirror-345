@@ -1,0 +1,21 @@
+[package]
+name = "fsloader"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+default = ["cli"]  # 默认编译命令行版
+cli = []           # 命令行模式
+gui = []     # 窗口模式（依赖GUI库）
+
+[[bin]]
+name = "fsloader-cli"
+path = "src/main-cli.rs"
+required-features = ["cli"]
+
+[[bin]]
+name = "fsloader-gui"
+path = "src/main-gui.rs"
+required-features = ["gui"]
+
+[dependencies]
