@@ -1,0 +1,150 @@
+# 🧾 django-annotate
+
+Annotate Django model files with schema information (fields, indexes, and foreign keys), inspired by the [annotaterb](https://github.com/drwl/annotaterb) project for Rails.
+
+
+## ✨ Features
+
+- Adds `# == Schema Information` blocks above each model class
+- Supports:
+  - Field types
+  - Indexes (including unique constraints)
+  - Foreign key relationships
+- Works on monolithic or multi-file model setups
+- CLI support via Django's `manage.py`
+
+## 🗄️ Database Support
+
+Currently, `django-annotate` only supports PostgreSQL databases. This is because it uses PostgreSQL-specific system tables (`pg_*`) to introspect the database schema. Support for other databases (MySQL, SQLite) is planned for future releases.
+
+### Requirements
+- PostgreSQL database
+- Django project configured to use PostgreSQL as the database backend
+- Appropriate database permissions to query system tables
+
+If you're using a different database backend, you'll need to either:
+1. Switch to PostgreSQL
+2. Wait for support for your database to be added
+3. Contribute support for your database backend
+
+
+## 📦 Installation
+
+```bash
+pip install django-annotate
+# or if using Poetry:
+poetry add django-annotate
+```
+
+## ⚙️ Setup
+
+No configuration required — just install and run. If you want to run it via Django's CLI, ensure `django_annotate` is on your Python path (you don't need to add it to `INSTALLED_APPS` unless you want auto-discovery inside Django).
+
+Then run:
+
+```bash
+python manage.py annotate_models
+```
+
+To annotate a specific app:
+
+```bash
+python manage.py annotate_models --app=myapp
+```
+
+## 🧪 Example Output
+
+```python
+# == Schema Information
+#
+# Table name: organizations
+#
+#  id         :bigint           not null, primary key
+#  name       :varchar(255)     not null
+#  created_at :timestamp        not null
+#
+# Indexes
+#
+#  organizations_pkey  (id)
+#
+# Foreign Keys
+#
+#  (none)
+
+class Organization(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :bigint           not null, primary key
+#  email           :varchar(254)     not null
+#  full_name       :varchar(255)     not null
+#  organization_id :bigint           not null
+#  created_at      :timestamp        not null
+#
+# Indexes
+#
+#  users_email_key            (email) UNIQUE
+#  users_organization_id_idx  (organization_id)
+#
+# Foreign Keys
+#
+#  organization_id => organizations.id
+
+class User(models.Model):
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    email = models.EmailField(unique=True)
+    full_name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+# == Schema Information
+#
+# Table name: profiles
+#
+#  id      :bigint           not null, primary key
+#  user_id :bigint           not null
+#  bio     :text
+#
+# Indexes
+#
+#  profiles_user_id_key  (user_id) UNIQUE
+#
+# Foreign Keys
+#
+#  user_id => users.id
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
+
+
+# == Schema Information
+#
+# Table name: projects
+#
+#  id         :bigint           not null, primary key
+#  name       :varchar(255)     not null
+#  created_at :timestamp        not null
+#
+# Indexes
+#
+#  projects_pkey  (id)
+#
+# Foreign Keys
+#
+#  (none)
+
+class Project(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    members = models.ManyToManyField(User, related_name="projects")
+```
+
+## 📜 License
+
+MIT © 2025 Chris Davis
