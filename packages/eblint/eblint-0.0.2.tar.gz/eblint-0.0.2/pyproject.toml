@@ -1,0 +1,55 @@
+[project]
+name = "eblint"
+version = "0.0.2"
+authors = [{ name = "Leon Boschman", email = "leon.boschman@chalmers.se" }]
+description = "A linter for easybuild config files"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+]
+dependencies = ['importlib-metadata; python_version<"3.10"']
+license = "GPL-2.0-or-later"
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/lboschman/eblint"
+Issues = "https://github.com/lboschman/eblint/issues"
+
+[project.scripts]
+eblint = "eblint.linter:main"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["eblint*"]
+exclude = ["tests*"]
+namespaces = true
+
+[dependency-groups]
+test = [
+  "pytest>=8.0",
+  "pytest-cov>=5.0",
+  "pytest-mock",
+  "flake8>=7.0",
+  "flake8-pytest-style>=2.0",
+  "Flake8-pyproject",
+]
+
+[tool.uv]
+default-groups = ["test"]
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib", "--cov=src"]
+
+[tool.flake8]
+max-line-length = 88
+per-file-ignores = ["__init__.py:F401"]
+exclude = ".venv"
+count = true
+statistics = true
+pytest-parametrize-names-type = "csv"
