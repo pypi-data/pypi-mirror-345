@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/
+         http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>{% now "c" %}</responseDate>
+    <request verb="ListRecords"
+             {% if from %}
+             from="{{ from }}"
+             {% endif %}
+             {% if until %}
+             until="{{ until }}"
+             {% endif %}
+             {% if spec_collection %}
+             set="{{ spec_collection.oai_setspec }}"
+             {% endif %}
+             metadataPrefix="oai_dc">
+        {{ base_url }}oai/project/{{ project.pk }}/
+    </request>
+    <ListRecords>
+        {% for collection in page %}
+            <record>
+                <header>
+                    <identifier>{{ collection.pk }}</identifier>
+                    <datestamp>{{ collection.created_at | date:"Y-m-d" }}</datestamp>
+                    {% if collection.parent %}
+                    <setSpec>{{ collection.parent.oai_setspec }}</setSpec>
+                    {% endif %}
+                </header>
+                <metadata>
+                    <oai_dc:dc
+                            xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+                            xmlns:dc="http://purl.org/dc/elements/1.1/"
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/
+         http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+                        {% for meta in collection.dublin_core_metas %}
+                            <dc:{{ meta.metadata.title }}>{{ meta.value }}</dc:{{ meta.metadata.title }}>
+                        {% endfor %}
+                    {% if collection.ark %}
+                        <dc:identifer>https://arks.org/ark:{{ collection.ark }}</dc:identifer>
+                    {% endif %}
+                    </oai_dc:dc>
+                </metadata>
+            </record>
+        {% endfor %}
+    {% if total_pages > 1 %}
+        {% if page.has_next %}
+        <resumptionToken expirationDate="2222-01-01T00:00:00Z"
+          completeListSize="{{ total_count }}"
+          cursor="{{ nb_of_already_delivered_identifiers }}">{{ page.next_page_number }}</resumptionToken>
+        {% else %}
+        <resumptionToken completeListSize="{{ total_count }}" cursor="{{ nb_of_already_delivered_identifiers }}"/>
+        {% endif %}
+    {% endif %}
+    </ListRecords>
+</OAI-PMH>
