@@ -1,0 +1,255 @@
+Metadata-Version: 2.4
+Name: stax_ta_automation_sdk
+Version: 0.2.0
+Summary: Stax.ai Module SDK
+Home-page: https://bitbucket.org/staxai/stax-module-sdk-py
+Author: Stax.ai, Inc. <https://stax.ai>
+Author-email: naru@stax.ai
+License: CC-BY-NC 4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: retry_requests
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Stax.ai Module SDK
+
+This project is created and maintained by [Stax.ai, Inc.](https://stax.ai), and is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/legalcode).
+
+## About
+
+...coming soon...
+
+## Installation
+
+```sh
+pip install stax_module_sdk
+```
+
+## Usage
+
+### Create a Stax.ai module
+
+With appropriate developer API credentials, `POST` the following data to `https://api.stax.ai/module/create` to create a module:
+```json
+{
+    "name": "Module name",
+    "description": "Explain what the module does...",
+    "rate": 0.05,
+    "config": []
+}
+```
+
+The `rate` property is the number of US dollars charged per unit recorded by the module. The unit can be a single document, number of pages processed, number of data points extracted, etc.
+
+The `config` property is a list of module configuration objects. A config element has the format:
+```json
+{
+    "label": "User-readable configuration label",
+    "dataType": "string",
+    "required": true,
+    "default": "Hello world",
+    "hint": "Tell the user what this field means",
+    "options": [],
+}
+```
+
+The `dataType` can be one of :
+- `string` (plain text field),
+- `list` to have the user pick an option from a provided list,
+- `stack` to have the user pick a stack from their team, and
+- `file` to let the user upload a configuration file.
+
+The `required` property defines whether a user needs to input this configuration parameter.
+
+The `default` value is prepopulated in the field.
+
+The `hint` is a helper that displayes below the field assisting the user in getting the information needed.
+
+The `options` property is a list of strings used as dropdown menu options if the `dataType` is `list`.
+
+Upon creating a module, you will receive the module ID and a key, which you must use to authenticate any calls from the module function.
+
+You can also update the module by `POST`ing any changes to `https://api.stax.ai/module/update`:
+```json
+{
+    "moduleId": "UNIQUE_MODULE_ID",
+    "moduleDiff": {
+        "name": "New module name"
+    }
+}
+```
+
+### Write your module application
+
+```py
+import os
+from stax_module_sdk import def_module, Stax
+
+# Load module ID and key (which you got when creating the module) from environment variables or hardcode those here
+MODULE_ID = os.getenv('MODULE_ID')
+MODULE_KEY = os.getenv('MODULE_KEY')
+
+@def_module(MODULE_ID, MODULE_KEY)
+def main(stax:Stax, document:str, stack:str, team:str, config:list[dict]):
+    '''
+    Module document processing function. Is provided the following arguments:
+    - stax [stax_module_sdk.Stax]: Stax.ai API object instantiated with team and module auth
+    - document [str]: Document ID string
+    - stack [str]: Stack ID string
+    - team [str]: Team ID string
+    - config [List(stax_module_sdk.Config)]: Pipeline configuration for module/step
+
+    Return the number of units to charge for (pages? items extracted? documents?)
+    '''
+
+    # Load document
+    doc = stax.getDocument()
+
+    # Put your module functionality here
+    # ...
+
+    # Update document with difference/changes
+    stax.updateDocument(diff={})
+
+    # Raise an exception to stop the pipeline and flag the document
+    raise Exception("Oops, something went wrong!")
+
+    return 1
+
+
+# Call your module function as the main function
+if __name__ == "__main__":
+    main()
+    # You don't need to pass any arguments in. The @def_module decorator
+    #  takes care of loading everything from your module credentials and
+    #  the request.json file used to load the module
+
+    # You can call the main function with the test kwarg set to True
+    #  during development to prevent Stax.ai API call attempts.
+    main(test=True)
+```
+
+### Deploy your module
+
+### Publish your module
+
+## "Stax" Class Reference
+
+### Constructor
+```py
+stax = Stax(MODULE_ID, MODULE_KEY, TEAM_ID, document=DOCUMENT_ID)
+```
+
+### Get Document
+```py
+doc = stax.getDocument(document=DOCUMENT_ID)
+```
+
+If you don't pass in the **document** keyword argument and are calling this within a module definition, the document that the module is currently processing will be loaded.
+
+### Download Document PDF
+```py
+stax.downloadDocument(document=DOCUMENT_ID, path='/path/to/file.pdf')
+```
+
+### Document Document Page
+```py
+stax.downloadPage(document=DOCUMENT_ID, path='/path/to/page.pdf', key=PAGE_KEY)
+```
+
+### Update Document
+```py
+doc = stax.updateDocument(document=DOCUMENT_ID, diff={ ... })
+```
+
+### Download configured file
+```py
+stax.downloadConfigFile(config, CONFIG_LABEL)
+```
+
+### GET from Stax.ai API
+You can also make any Stax.ai API call using the module-authenticated Stax object. See the [Stax.ai Developer API reference](https://stax.readme.io/reference/overview) for more information.
+
+```py
+res = stax.get('/document/get?docId=' + DOCUMENT_ID)
+```
+
+### POST to Stax.ai API
+```py
+res = stax.post('/document/update', {
+    "docId": DOCUMENT_ID,
+    "docDiff": {}
+})
+```
+
+## Helper functions
+
+The submodule `stax_module_sdk.helpers` includes a few helper functions which are used quite often in Stax.ai modules.
+
+### Get config value by label
+```py
+from stax_module_sdk.helpers import getConfigByLabel
+
+value = getConfigByLabel(config, label)
+```
+
+### Get document field by key
+```py
+from stax_module_sdk.helpers import getFieldByKey
+
+field = getFieldbyKey(doc["metadata"], key)
+```
+
+### Get document fields (multiple) by key
+```py
+from stax_module_sdk.helpers import getFieldsByKey
+
+fields = getFieldsbyKey(doc["metadata"], key)
+```
+
+### Find document field index by key and value
+```py
+from stax_module_sdk.helpers import getFieldIndex
+
+fieldIdx = getFieldIndex(doc["metadata"], key, value)
+```
+
+## PyText Parser
+
+Stax.ai accepts the **PyText** format (it's custom) in various modules where the config dataType is set to "pytext". In this format, users can run custom python commands within { ... } in their text. This can be used to provide easy configuration of messages, etc. Anything within the { ... } characters are evaluated with the following properties available:
+- the 'doc' variable containers the document resource,
+- the 'field' function which gets the value of a field provided a key,
+- the 'link' variable is a link to the document.
+
+In order to use the built-in PyText parser, follow the example below:
+
+```py
+from stax_module_sdk.helpers import getConfigByLabel
+from stax_module_sdk.pytext import renderPyText
+
+pt = getConfigByLabel(config, "Message Body")
+text = renderPyText(doc, pt)
+```
+
+## For SDK Developers
+
+Once updates are made, increment the version number in `setup.py` and push to pypi.
+
+```sh
+python setup.py sdist bdist_wheel
+twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+twine upload dist/*
+```
+
+NOTE: PyPi username is: `__token__`
