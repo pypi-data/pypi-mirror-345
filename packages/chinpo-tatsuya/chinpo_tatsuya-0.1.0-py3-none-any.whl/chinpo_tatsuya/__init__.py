@@ -1,0 +1,1 @@
+from .tatsuya import Chinpo
