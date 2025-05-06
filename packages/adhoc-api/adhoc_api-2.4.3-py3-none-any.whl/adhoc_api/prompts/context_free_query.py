@@ -1,0 +1,3 @@
+CONTEXT_FREE_QUERY_PROMPT = """\
+Based on any relevant context from the prior conversation (particularly the user's messages), please convert the user's following query to one that is context free (i.e. it can be understood by itself without needing to reference the rest of the conversation). If no extra context is present in the prior conversation, then repeat the query verbatim. Do your best to phrase the context-free query the same way the user might have phrased it. Output only the original query verbatim or an updated context-free query, with no other comments or questions. The query is: "{query}"
+"""
