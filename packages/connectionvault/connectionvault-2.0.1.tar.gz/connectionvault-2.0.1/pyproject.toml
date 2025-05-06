@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "connectionvault"
+version = "2.0.1"
+description = "help with connection details"
+authors = ["ankit <ankit48365@gmail.com>","Akansha K <akanshakaushik0995@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+packages = [ { include = "src", from = "app/" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+PyYAML = "^6.0.2"
+SQLAlchemy = "^2.0.36"
+psycopg2 = "^2.9.10"
+pandas = "^2.2.3"
+pyodbc = "^5.2.0"
+pylint = "^3.3.1"
+mysql-connector-python = "^9.3.0"
+poetry = "^1.8.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts] 
+connectionvault = "src.cli:main"
