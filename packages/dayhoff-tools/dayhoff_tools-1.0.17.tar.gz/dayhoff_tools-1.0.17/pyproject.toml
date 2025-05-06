@@ -1,0 +1,63 @@
+[build-system]
+requires = ["poetry-core>=2.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "dayhoff-tools"
+version = "1.0.17"
+description = "Common tools for all the repos at Dayhoff Labs"
+authors = [
+    {name = "Daniel Martin-Alarcon", email = "dma@dayhofflabs.com"}
+]
+readme = "README.md"
+# Just enough deps to use the job_runner
+dependencies = [
+    "firebase-admin>=6.5.0",
+    "pyyaml>=6.0",
+    "requests>=2.31.0",
+    "typer>=0.9.0",
+]
+requires-python = ">=3.10,<4.0"
+
+[project.optional-dependencies]
+# Deps we expect to need to bring to new repos
+full = [
+    "biopython>=1.84",
+    "boto3>=1.36.8",
+    "docker>=7.1.0",
+    "fair-esm>=2.0.0",
+    "h5py>=3.11.0",
+    "pandas>=2.2.3",
+    "questionary>=2.0.1",
+    "rdkit-pypi>=2022.9.5",
+    "sqlalchemy (>=2.0.40,<3.0.0)",
+    "transformers==4.36.2",
+    "torch>=2.1.0",
+    "torchvision>=0.16.0",
+]
+
+[dependency-groups]
+common = [
+    "black>=25.1.0,<26",
+    "boto3>=1.36.8",
+    "colorlog>=6.8.2,<7",
+    "docker>=7.1.0",
+    "dvc>=3.48.2,<4",
+    "dvc-gs>=3.0.1,<4",
+    "flake8>=7.0.0,<8",
+    "google-cloud-storage>=2.14.0",
+    "ipykernel>=6.29.5,<7",
+    "ipywidgets>=8.1.3,<9",
+    "isort>=5.13.2,<6",
+    "nbformat>=5.10.4",
+    "numpy<2.0.0",
+    "pandas (>=2.2.3,<3.0.0)",
+    "pylance>=0.10.2,<1",
+    "pylint>=3.1.0,<4",
+    "pytest>=8.0.2,<9",
+    "pytest-cov>=4.1.0,<5",
+    "pytest-mock>=3.12.0,<4",
+]
+
+[project.scripts]
+dh = "dayhoff_tools.cli.main:app"
