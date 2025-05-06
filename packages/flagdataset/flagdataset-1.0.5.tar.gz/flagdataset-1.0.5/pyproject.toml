@@ -1,0 +1,28 @@
+[project]
+name = "flagdataset"
+version = "1.0.5"
+description = ""
+authors = [
+    {name = "shihongguang",email = "hgshi@baai.ac.cn"}
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "requests (>=2.32.3,<3.0.0)",
+    "loguru (>=0.7.3,<0.8.0)",
+    "sqlalchemy (>=2.0.40,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "douban"
+url = "https://pypi.doubanio.com/simple/"
+priority = "supplemental"
+
+[tool.poetry.scripts]
+flagdataset = "flagdataset.cmd:runcmd_option"
