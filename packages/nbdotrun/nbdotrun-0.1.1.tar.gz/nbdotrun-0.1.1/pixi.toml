@@ -1,0 +1,27 @@
+[project]
+authors = ["Nodar Gogoberidze <gnodar01@gmail.com>"]
+channels = ["conda-forge", "nodefaults"]
+name = "nbdotrun"
+platforms = ["osx-64"]
+version = "0.1.0"
+
+[tasks]
+list_exts = { cmd = ["eza", "--long", "--all", "--git", "--header", "--icons=auto", "--classify=auto", "$CONDA_PREFIX/share/jupyter/labextensions", "&&", "jupyter", "labextension", "list"] }
+dev_exts = { cmd = ["jupyter", "labextension", "develop", "--overwrite", "./"] }
+jlpm = { cmd = ["jlpm", "run"] }
+jlpm_add = { cmd = ["jlpm", "add"] }
+jlpm_init = { cmd = ["jlpm", "install", "&&", "jlpm", "build"] }
+launch_jl = { cmd = ["jupyter", "lab"] }
+build = { cmd = ["python", "-m", "build"] }
+publish = { cmd = ["python", "-m", "twine", "upload", "dist/*"] }
+
+[dependencies]
+python = "3.10.*"
+jupyterlab = "4.*"
+nodejs = "18.*"
+
+[pypi-dependencies]
+nbdotrun = { path = ".", editable = true }
+jldracula = ">=0.2.0, <0.3"
+build = ">=1.2.2.post1, <2"
+twine = ">=6.1.0, <7"
