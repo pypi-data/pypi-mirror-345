@@ -1,0 +1,238 @@
+from neutrino.pipeline.agent import DataExtractionAgent
+from neutrino.utils.tools import extract_code_blocks_with_type
+
+data = """{
+	"schema": {
+		"type": "struct",
+		"fields": [
+			{
+				"type": "string",
+				"optional": false,
+				"name": "io.debezium.data.Json",
+				"version": 1,
+				"field": "before"
+			},
+			{
+				"type": "string",
+				"optional": true,
+				"name": "io.debezium.data.Json",
+				"version": 1,
+				"field": "after"
+			},
+			{
+				"type": "struct",
+				"fields": [
+					{
+						"type": "array",
+						"items": {
+							"type": "string",
+							"optional": false
+						},
+						"optional": true,
+						"field": "removedFields"
+					},
+					{
+						"type": "string",
+						"optional": true,
+						"name": "io.debezium.data.Json",
+						"version": 1,
+						"field": "updatedFields"
+					},
+					{
+						"type": "array",
+						"items": {
+							"type": "struct",
+							"fields": [
+								{
+									"type": "string",
+									"optional": false,
+									"field": "field"
+								},
+								{
+									"type": "int32",
+									"optional": false,
+									"field": "size"
+								}
+							],
+							"optional": false,
+							"name": "io.debezium.connector.mongodb.changestream.truncatedarray",
+							"version": 1
+						},
+						"optional": true,
+						"field": "truncatedArrays"
+					}
+				],
+				"optional": true,
+				"name": "io.debezium.connector.mongodb.changestream.updatedescription",
+				"version": 1,
+				"field": "updateDescription"
+			},
+			{
+				"type": "struct",
+				"fields": [
+					{
+						"type": "string",
+						"optional": false,
+						"field": "version"
+					},
+					{
+						"type": "string",
+						"optional": false,
+						"field": "connector"
+					},
+					{
+						"type": "string",
+						"optional": false,
+						"field": "name"
+					},
+					{
+						"type": "int64",
+						"optional": false,
+						"field": "ts_ms"
+					},
+					{
+						"type": "string",
+						"optional": true,
+						"name": "io.debezium.data.Enum",
+						"version": 1,
+						"parameters": {
+							"allowed": "true,first,first_in_data_collection,last_in_data_collection,last,false,incremental"
+						},
+						"default": "false",
+						"field": "snapshot"
+					},
+					{
+						"type": "string",
+						"optional": false,
+						"field": "db"
+					},
+					{
+						"type": "string",
+						"optional": true,
+						"field": "sequence"
+					},
+					{
+						"type": "int64",
+						"optional": true,
+						"field": "ts_us"
+					},
+					{
+						"type": "int64",
+						"optional": true,
+						"field": "ts_ns"
+					},
+					{
+						"type": "string",
+						"optional": false,
+						"field": "collection"
+					},
+					{
+						"type": "int32",
+						"optional": false,
+						"field": "ord"
+					},
+					{
+						"type": "string",
+						"optional": true,
+						"field": "lsid"
+					},
+					{
+						"type": "int64",
+						"optional": true,
+						"field": "txnNumber"
+					},
+					{
+						"type": "int64",
+						"optional": true,
+						"field": "wallTime"
+					}
+				],
+				"optional": false,
+				"name": "io.debezium.connector.mongo.Source",
+				"field": "source"
+			},
+			{
+				"type": "string",
+				"optional": true,
+				"field": "op"
+			},
+			{
+				"type": "int64",
+				"optional": true,
+				"field": "ts_ms"
+			},
+			{
+				"type": "struct",
+				"fields": [
+					{
+						"type": "string",
+						"optional": false,
+						"field": "id"
+					},
+					{
+						"type": "int64",
+						"optional": false,
+						"field": "total_order"
+					},
+					{
+						"type": "int64",
+						"optional": false,
+						"field": "data_collection_order"
+					}
+				],
+				"optional": true,
+				"name": "event.block",
+				"version": 1,
+				"field": "transaction"
+			}
+		],
+		"optional": false,
+		"name": "mongodb.lumi_data.unstructured_data.Envelope"
+	},
+	"payload": {
+		"before": null,
+		"after": "{\"_id\": {\"$oid\": \"67b918d21585c8c281a60f0e\"},\"customer_id\": 10,\"raw_data\": {\"transaction_history\": [{\"date\": {\"$date\": 1740009600000},\"amount\": 734.57},{\"date\": {\"$date\": 1739836800000},\"amount\": 631.99},{\"date\": {\"$date\": 1735862400000},\"amount\": 384.18},{\"date\": {\"$date\": 1739404800000},\"amount\": 921.92}],\"social_media_activity\": {\"platform\": \"LinkedIn\",\"activity_score\": 63},\"miscellaneous\": {\"notes\": \"Cell week per all power administration.\",\"risk_flags\": \"Low\"}}}",
+		"updateDescription": null,
+		"source": {
+			"version": "3.0.6.Final",
+			"connector": "mongodb",
+			"name": "mongodb",
+			"ts_ms": 1740183762000,
+			"snapshot": "false",
+			"db": "lumi_data",
+			"sequence": null,
+			"ts_us": 1740183762000000,
+			"ts_ns": 1740183762000000000,
+			"collection": "unstructured_data",
+			"ord": 10,
+			"lsid": null,
+			"txnNumber": null,
+			"wallTime": 1740183762308
+		},
+		"op": "c",
+		"ts_ms": 1740183762403,
+		"transaction": null
+	}
+}"""
+
+source_stream_name = "kafka_cdc_mongo_unstructure"
+target_stream_name = "mongo_unstructure"
+
+agent = DataExtractionAgent()
+
+settings = {
+	"type" :'s3',
+    "access_key_id" : 'minioadmin',
+    "secret_access_key" : 'minioadmin',
+    "region" : 'us-east-1',
+    "bucket" : 'timeplus',
+    "data_format" : 'JSONEachRow',
+    "endpoint" : 'http://minio:9000',
+    "write_to" : 'lumi/data.json',
+    "use_environment_credentials" : False
+}
+
+agent1_output, agent2_output = agent.generic_pipeline(data, source_stream_name, target_stream_name, settings)
+
+print(f"target stream : {agent1_output}")
+print(f"extraction mv : {agent2_output}")
