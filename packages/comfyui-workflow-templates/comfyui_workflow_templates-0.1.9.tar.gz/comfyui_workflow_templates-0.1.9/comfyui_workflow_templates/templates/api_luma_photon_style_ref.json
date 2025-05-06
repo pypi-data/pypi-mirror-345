@@ -1,0 +1,298 @@
+{
+  "id": "56bd4347-9347-49da-a167-3db05d3bcc28",
+  "revision": 0,
+  "last_node_id": 34,
+  "last_link_id": 30,
+  "nodes": [
+    {
+      "id": 26,
+      "type": "LoadImage",
+      "pos": [
+        460,
+        -250
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            25
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "pollytra_depict_a_man_of_Asiatic_appearance_traveling_in_space__07daa2a4-4261-473c-a5f2-5b573e569561 (1).png",
+        "image"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "PrimitiveNode",
+      "pos": [
+        460,
+        470
+      ],
+      "size": [
+        271.0697937011719,
+        141.235107421875
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Run widget replace on values": false
+      },
+      "widgets_values": [
+        "a man with a ice crown on top of his head in the style of liquid chrome style "
+      ]
+    },
+    {
+      "id": 31,
+      "type": "LoadImage",
+      "pos": [
+        460,
+        110
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            29
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "sytleref",
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "crntnsr_a_unknown_alien_liquid_with_shining_silver_flashy_green_3825ad86-8c56-4a3a-8825-7df3e095ddd2 (1).png",
+        "image"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "LumaReferenceNode",
+      "pos": [
+        761.5745239257812,
+        -135.20225524902344
+      ],
+      "size": [
+        270,
+        78
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 25
+        },
+        {
+          "name": "luma_ref",
+          "shape": 7,
+          "type": "LUMA_REF",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "luma_ref",
+          "type": "LUMA_REF",
+          "links": [
+            24
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LumaReferenceNode"
+      },
+      "widgets_values": [
+        0.5000000000000001
+      ]
+    },
+    {
+      "id": 32,
+      "type": "SaveImage",
+      "pos": [
+        1527.1424560546875,
+        0.13450250029563904
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 30
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 24,
+      "type": "LumaImageNode",
+      "pos": [
+        1091.5015869140625,
+        -8.44175910949707
+      ],
+      "size": [
+        400,
+        248
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_luma_ref",
+          "shape": 7,
+          "type": "LUMA_REF",
+          "link": 24
+        },
+        {
+          "name": "style_image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 29
+        },
+        {
+          "name": "character_image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            30
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LumaImageNode"
+      },
+      "widgets_values": [
+        "a man with a ice crown on top of his head in the style of liquid chrome style ",
+        "photon-1",
+        "3:4",
+        797784790034618,
+        "randomize",
+        1
+      ]
+    }
+  ],
+  "links": [
+    [
+      17,
+      25,
+      0,
+      24,
+      3,
+      "STRING"
+    ],
+    [
+      24,
+      30,
+      0,
+      24,
+      0,
+      "LUMA_REF"
+    ],
+    [
+      25,
+      26,
+      0,
+      30,
+      0,
+      "IMAGE"
+    ],
+    [
+      29,
+      31,
+      0,
+      24,
+      1,
+      "IMAGE"
+    ],
+    [
+      30,
+      24,
+      0,
+      32,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "frontendVersion": "1.18.4"
+  },
+  "version": 0.4
+}
