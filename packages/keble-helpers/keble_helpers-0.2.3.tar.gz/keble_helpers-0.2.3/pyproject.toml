@@ -1,0 +1,31 @@
+# poetry tutorial see: https://www.digitalocean.com/community/tutorials/how-to-publish-python-packages-to-pypi-using-poetry-on-ubuntu-22-04
+# also see: https://www.freecodecamp.org/news/how-to-build-and-publish-python-packages-with-poetry/
+
+[tool.poetry]
+name = "keble-helpers"
+version = "0.2.3"
+description = ""
+authors = ["zhenhao-ma <bob0103779@gmail.com>"]
+readme = "README.md"
+packages = [{include = "keble_helpers"}]
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2"
+aliyun-python-sdk-core-v3 = "^2"
+aliyun-python-sdk-sts = "^3"
+oss2 = "^2"
+boto3 = "^1"
+langchain = "^0"
+langchain-community = "^0"
+redis = "^5"
+keble-exceptions = "^0,>=0.0.3"
+
+[tool.poetry.group.test.dependencies]
+pydantic-settings = "^2.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
