@@ -1,0 +1,78 @@
+name: Release and Publish
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - src/**/*.py
+      - tests/**/*.py
+      - tools/**/*.py
+      - pyproject.toml
+  workflow_dispatch:
+
+permissions:
+  contents: write # For pushing tag, commit, and creating release
+  checks: write # For trunk check to post annotations
+  id-token: write # For trusted publishing to PyPI
+
+jobs:
+  preflight-check:
+    uses: ./.github/workflows/ci.yaml
+
+  release:
+    needs: preflight-check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for bumpver
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Bump version
+        id: bumpver
+        run: |
+          uv run --frozen bumpver update --commit --tag-commit
+          NEW_VERSION=$(grep -m1 'current_version = ' pyproject.toml | cut -d'"' -f2)
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Push new version
+        run: |
+          git push
+          git push origin ${{ steps.bumpver.outputs.version }}
+
+      # Check out the newly created tag
+      - name: Checkout release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.bumpver.outputs.version }}
+
+      - name: Build package
+        run: uv build --no-sources
+
+      - name: Create GitHub release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create
+          "${{ steps.bumpver.outputs.version }}"
+          --repo "$GITHUB_REPOSITORY"
+          --title "${{ steps.bumpver.outputs.version }}"
+          --generate-notes
+          dist/*
+
+      - name: Publish to PyPI
+        run: uv publish

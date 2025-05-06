@@ -1,0 +1,31 @@
+name: Lint and Test
+
+on:
+  push:
+    branches: master
+  pull_request:
+    branches: master
+  workflow_call:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    # trunk-ignore(checkov/CKV2_GHA_1)
+    permissions:
+      checks: write # For trunk to post annotations
+      contents: read # For repo checkout
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Trunk Code Quality
+        uses: trunk-io/trunk-action@v1
+
+  test:
+    uses: ./.github/workflows/test.yaml
