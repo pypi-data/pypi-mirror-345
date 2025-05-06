@@ -1,0 +1,34 @@
+[project]
+name = "django_json_model_field"
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "django_json_model_field"
+version = "1.3.0-pre.2"
+description = "Use a model class to provide a strict data structure for JSON fields"
+authors = ["Daniel Schaffer <dschaffer@instawork.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.14"
+Django = ">=3.2,<6"
+
+[tool.poetry.dev-dependencies]
+black = "~=22.1.0"
+boltons = "~=21.0.0"
+django-mysql = "~=4.8.0"
+expects = "~=0.9.0"
+isort = "~=5.5.1"
+mypy = "~=1.7.0"
+mysqlclient = "^2.0.3"
+pytest = "^7.0.1"
+pytest-django = "^4.5.2"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.test_settings"
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = "venv|migrations|^scripts"
