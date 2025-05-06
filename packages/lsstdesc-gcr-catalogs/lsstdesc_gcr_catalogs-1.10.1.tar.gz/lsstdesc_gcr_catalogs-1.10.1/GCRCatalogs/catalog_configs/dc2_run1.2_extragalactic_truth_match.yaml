@@ -1,0 +1,18 @@
+#  Use ^/ to indicate file path relative to GCR root dir
+
+subclass_name: composite.CompositeReader
+description: matched catalog between extragalactic and truth for Run 1.2 (protoDC2 3.0.0)
+catalogs:
+  - catalog_name: extragalactic
+    matching_method: galaxy_id
+    subclass_name: alphaq.AlphaQGalaxyCatalog
+    filename: ^/xgal/protoDC2/ANL_AlphaQ_v3.0.hdf5
+    version: 3.0.0
+  - catalog_name: truth
+    matching_method: object_id
+    subclass_name: dc2_truth.DC2TruthCatalogReader
+    filename: ^/DC2-prod/Run1.2/truth/run_1.2_trial_static.db
+    base_filters:
+        - sprinkled == 0
+        - star == 0
+        - agn == 0
