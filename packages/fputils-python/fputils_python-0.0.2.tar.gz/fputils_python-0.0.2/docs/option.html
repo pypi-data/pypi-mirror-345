@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>fputils.option API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>fputils.option</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="fputils.option.Empty"><code class="flex name class">
+<span>class <span class="ident">Empty</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generic Option type to represent a value that may or may not be present.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Empty(Option):
+    def get(self) -&gt; None:
+        raise ValueError(&#34;Empty Option&#34;)
+
+    def is_defined(self) -&gt; bool:
+        return False
+
+    def is_empty(self) -&gt; bool:
+        return True
+
+    def __iter__(self):
+        yield from ()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="fputils.option.Option" href="#fputils.option.Option">Option</a></li>
+<li>typing.Generic</li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="fputils.option.Option" href="#fputils.option.Option">Option</a></b></code>:
+<ul class="hlist">
+<li><code><a title="fputils.option.Option.contains" href="#fputils.option.Option.contains">contains</a></code></li>
+<li><code><a title="fputils.option.Option.exists" href="#fputils.option.Option.exists">exists</a></code></li>
+<li><code><a title="fputils.option.Option.filter" href="#fputils.option.Option.filter">filter</a></code></li>
+<li><code><a title="fputils.option.Option.filter_not" href="#fputils.option.Option.filter_not">filter_not</a></code></li>
+<li><code><a title="fputils.option.Option.flatmap" href="#fputils.option.Option.flatmap">flatmap</a></code></li>
+<li><code><a title="fputils.option.Option.flatten" href="#fputils.option.Option.flatten">flatten</a></code></li>
+<li><code><a title="fputils.option.Option.fold" href="#fputils.option.Option.fold">fold</a></code></li>
+<li><code><a title="fputils.option.Option.forall" href="#fputils.option.Option.forall">forall</a></code></li>
+<li><code><a title="fputils.option.Option.foreach" href="#fputils.option.Option.foreach">foreach</a></code></li>
+<li><code><a title="fputils.option.Option.get" href="#fputils.option.Option.get">get</a></code></li>
+<li><code><a title="fputils.option.Option.get_or_else" href="#fputils.option.Option.get_or_else">get_or_else</a></code></li>
+<li><code><a title="fputils.option.Option.is_defined" href="#fputils.option.Option.is_defined">is_defined</a></code></li>
+<li><code><a title="fputils.option.Option.is_empty" href="#fputils.option.Option.is_empty">is_empty</a></code></li>
+<li><code><a title="fputils.option.Option.map" href="#fputils.option.Option.map">map</a></code></li>
+<li><code><a title="fputils.option.Option.or_else" href="#fputils.option.Option.or_else">or_else</a></code></li>
+<li><code><a title="fputils.option.Option.or_none" href="#fputils.option.Option.or_none">or_none</a></code></li>
+<li><code><a title="fputils.option.Option.to_left" href="#fputils.option.Option.to_left">to_left</a></code></li>
+<li><code><a title="fputils.option.Option.to_right" href="#fputils.option.Option.to_right">to_right</a></code></li>
+<li><code><a title="fputils.option.Option.unzip" href="#fputils.option.Option.unzip">unzip</a></code></li>
+<li><code><a title="fputils.option.Option.zip" href="#fputils.option.Option.zip">zip</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="fputils.option.Option"><code class="flex name class">
+<span>class <span class="ident">Option</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generic Option type to represent a value that may or may not be present.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Option[A](metaclass=ABCMeta):
+    &#34;&#34;&#34;Generic Option type to represent a value that may or may not be present.&#34;&#34;&#34;
+
+    def _get_value(self) -&gt; A:
+        return self.__value
+
+    def _set_value(self, value: A):
+        self.__value = value
+
+    _value = property(_get_value, _set_value)
+
+    @abstractmethod
+    def __iter__(self):
+        &#34;&#34;&#34;
+        Returns:
+            An iterator over this Option&#39;s value if this is Some,
+            otherwise an empty iterator.
+        &#34;&#34;&#34;
+        return NotImplemented
+
+    @abstractmethod
+    def get(self) -&gt; A:
+        &#34;&#34;&#34;
+        Returns:
+            The option&#39;s value.
+
+        raises:
+            ValueError: If the option is Empty.
+        &#34;&#34;&#34;
+        return NotImplemented
+
+    @abstractmethod
+    def is_defined(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Returns:
+            True if this is Some, False otherwise.
+        &#34;&#34;&#34;
+        return NotImplemented
+
+    @abstractmethod
+    def is_empty(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Returns:
+            True if this is Empty, False otherwise.
+        &#34;&#34;&#34;
+        return NotImplemented
+
+    def __eq__(self, other: object) -&gt; bool:
+        if not isinstance(other, Option):
+            return False
+        if self.is_empty() and other.is_empty():
+            return True
+        if self.is_empty() != other.is_empty():
+            return False
+        return self.get() == other.get()
+
+    def contains(self, value: A) -&gt; bool:
+        &#34;&#34;&#34;
+        Returns:
+            True if this is Some and its value is equal to the given value, False otherwise.
+        &#34;&#34;&#34;
+        return self.get() == value if self.is_defined() else False
+
+    def exists(self, predicate: Callable[[A], bool]) -&gt; bool:
+        &#34;&#34;&#34;
+        Returns:
+            False if this is Empty or returns the result of the given predicate against the Some value.
+        &#34;&#34;&#34;
+        return False if self.is_empty() else predicate(self.get())
+
+    def filter(self, predicate: Callable[[A], bool]) -&gt; Option[A]:
+        &#34;&#34;&#34;
+        Returns:
+            this Option if this is Some and the given predicate does hold for the Some value,
+            otherwise Empty
+        &#34;&#34;&#34;
+        return self if self.is_defined() and predicate(self.get()) else Empty()
+
+    def filter_not(self, predicate: Callable[[A], bool]) -&gt; Option[A]:
+        &#34;&#34;&#34;
+        Returns:
+            this Option if this is Some and the given predicate does not hold for the Some value,
+            otherwise Empty
+        &#34;&#34;&#34;
+        return self if self.is_defined() and not predicate(self.get()) else Empty()
+
+    def flatmap[B](self, f: Callable[[A], Option[B]]) -&gt; Option[B]:
+        &#34;&#34;&#34;
+        Returns:
+            the result of applying f to this Option&#39;s value if this Option is non-empty,
+            otherwise Empty.
+        &#34;&#34;&#34;
+        return Empty() if self.is_empty() else f(self.get())
+
+    def map[B](self, f: Callable[[A], B]) -&gt; Option[B]:
+        &#34;&#34;&#34;
+        Returns:
+            the result of applying f to this Option&#39;s value if this Option is non-empty,
+            otherwise Empty.
+        &#34;&#34;&#34;
+        return Empty() if self.is_empty() else Some(f(self.get()))
+
+    def flatten[B](self) -&gt; Option[B]:
+        &#34;&#34;&#34;
+        Returns:
+            the nested Option&#39;s value if this is a Some,
+            otherwise Empty.
+
+        raises: AssertionError: If this is a Some and the nested value is not an Option.
+        &#34;&#34;&#34;
+        if self.is_empty():
+            return Empty()
+
+        assert isinstance(self._value, Option)
+        return self._value
+
+    def fold[B](self, f: Callable[[A], B], if_empty: B) -&gt; B:
+        &#34;&#34;&#34;
+        Returns:
+            if_empty if this is Empty,
+            f(self.get()) if this is Some.
+        &#34;&#34;&#34;
+        return if_empty if self.is_empty() else f(self.get())
+
+    def forall(self, predicate: Callable[[A], bool]) -&gt; bool:
+        &#34;&#34;&#34;
+        Returns:
+            True if this is Empty,
+            True if this is Some and the given predicate holds for the Some value,
+            False otherwise.
+        &#34;&#34;&#34;
+        return True if self.is_empty() else predicate(self.get())
+
+    def foreach(self, f: Callable[[A], None]) -&gt; None:
+        &#34;&#34;&#34;
+        Applies the given function to this Option&#39;s value if this Option is non-empty.
+        &#34;&#34;&#34;
+        if self.is_defined():
+            f(self.get())
+
+    def get_or_else(self, other: A) -&gt; A:
+        &#34;&#34;&#34;
+        Returns:
+            this Option&#39;s value if this is Some,
+            other otherwise.
+        &#34;&#34;&#34;
+        return self.get() if self.is_defined() else other
+
+    def or_else(self, other: Option[A]) -&gt; Option[A]:
+        &#34;&#34;&#34;
+        Returns:
+            this Option if this is Some,
+            other otherwise.
+        &#34;&#34;&#34;
+        return self if self.is_defined() else other
+
+    def or_none(self) -&gt; A | None:
+        &#34;&#34;&#34;
+        Returns:
+            this Option&#39;s value if this is Some,
+            None otherwise.
+        &#34;&#34;&#34;
+        return self.get() if self.is_defined() else None
+
+    def to_left[B](self, right: B) -&gt; Either[A, B]:
+        &#34;&#34;&#34;
+        Returns:
+            this Option&#39;s value as a Left if this is Some,
+            otherwise a Right with the given value.
+        &#34;&#34;&#34;
+        return Left(self.get()) if self.is_defined() else Right(right)
+
+    def to_right[B](self, left: B) -&gt; Either[B, A]:
+        &#34;&#34;&#34;
+        Returns:
+            this Option&#39;s value as a Right if this is Some,
+            otherwise a Left with the given value.
+        &#34;&#34;&#34;
+        return Right(self.get()) if self.is_defined() else Left(left)
+
+    def unzip[B](self) -&gt; tuple[Option[A], Option[B]]:
+        &#34;&#34;&#34;
+        Returns:
+            A pair of Options, containing non-empty values if this option is a pair and empty Options otherwise
+        &#34;&#34;&#34;
+        return (
+            (Some(self._value[0]), Some(self._value[1]))
+            if self.is_defined() and isinstance(self.get(), tuple)
+            else (Empty(), Empty())
+        )
+
+    def zip[B](self, other: Option[B]) -&gt; Option[tuple[A, B]]:
+        &#34;&#34;&#34;
+        Returns:
+            A new option containing a tuple of the values of this option and the given option if both are non-empty,
+            otherwise Empty.
+        &#34;&#34;&#34;
+        return (
+            Some((self.get(), other.get()))
+            if self.is_defined() and other.is_defined()
+            else Empty()
+        )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>typing.Generic</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="fputils.option.Empty" href="#fputils.option.Empty">Empty</a></li>
+<li><a title="fputils.option.Some" href="#fputils.option.Some">Some</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="fputils.option.Option.contains"><code class="name flex">
+<span>def <span class="ident">contains</span></span>(<span>self, value: A)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>True if this is Some and its value is equal to the given value, False otherwise.</p></div>
+</dd>
+<dt id="fputils.option.Option.exists"><code class="name flex">
+<span>def <span class="ident">exists</span></span>(<span>self, predicate: Callable[[A], bool])</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>False if this is Empty or returns the result of the given predicate against the Some value.</p></div>
+</dd>
+<dt id="fputils.option.Option.filter"><code class="name flex">
+<span>def <span class="ident">filter</span></span>(<span>self, predicate: Callable[[A], bool])</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>this Option if this is Some and the given predicate does hold for the Some value,
+otherwise Empty</p></div>
+</dd>
+<dt id="fputils.option.Option.filter_not"><code class="name flex">
+<span>def <span class="ident">filter_not</span></span>(<span>self, predicate: Callable[[A], bool])</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>this Option if this is Some and the given predicate does not hold for the Some value,
+otherwise Empty</p></div>
+</dd>
+<dt id="fputils.option.Option.flatmap"><code class="name flex">
+<span>def <span class="ident">flatmap</span></span>(<span>self, f: Callable[[A], <a title="fputils.option.Option" href="#fputils.option.Option">Option</a>[B]])</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>the result of applying f to this Option's value if this Option is non-empty,
+otherwise Empty.</p></div>
+</dd>
+<dt id="fputils.option.Option.flatten"><code class="name flex">
+<span>def <span class="ident">flatten</span></span>(<span>self) ‑> <a title="fputils.option.Option" href="#fputils.option.Option">Option</a>[B]</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>the nested Option's value if this is a Some,
+otherwise Empty.
+raises: AssertionError: If this is a Some and the nested value is not an Option.</p></div>
+</dd>
+<dt id="fputils.option.Option.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, f: Callable[[A], B], if_empty: B)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>if_empty if this is Empty,
+f(self.get()) if this is Some.</p></div>
+</dd>
+<dt id="fputils.option.Option.forall"><code class="name flex">
+<span>def <span class="ident">forall</span></span>(<span>self, predicate: Callable[[A], bool])</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>True if this is Empty,
+True if this is Some and the given predicate holds for the Some value,
+False otherwise.</p></div>
+</dd>
+<dt id="fputils.option.Option.foreach"><code class="name flex">
+<span>def <span class="ident">foreach</span></span>(<span>self, f: Callable[[A], None])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Applies the given function to this Option's value if this Option is non-empty.</p></div>
+</dd>
+<dt id="fputils.option.Option.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>The option's value.
+raises:
+ValueError: If the option is Empty.</p></div>
+</dd>
+<dt id="fputils.option.Option.get_or_else"><code class="name flex">
+<span>def <span class="ident">get_or_else</span></span>(<span>self, other: A)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>this Option's value if this is Some,
+other otherwise.</p></div>
+</dd>
+<dt id="fputils.option.Option.is_defined"><code class="name flex">
+<span>def <span class="ident">is_defined</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>True if this is Some, False otherwise.</p></div>
+</dd>
+<dt id="fputils.option.Option.is_empty"><code class="name flex">
+<span>def <span class="ident">is_empty</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>True if this is Empty, False otherwise.</p></div>
+</dd>
+<dt id="fputils.option.Option.map"><code class="name flex">
+<span>def <span class="ident">map</span></span>(<span>self, f: Callable[[A], B])</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>the result of applying f to this Option's value if this Option is non-empty,
+otherwise Empty.</p></div>
+</dd>
+<dt id="fputils.option.Option.or_else"><code class="name flex">
+<span>def <span class="ident">or_else</span></span>(<span>self, other: <a title="fputils.option.Option" href="#fputils.option.Option">Option</a>[A])</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>this Option if this is Some,
+other otherwise.</p></div>
+</dd>
+<dt id="fputils.option.Option.or_none"><code class="name flex">
+<span>def <span class="ident">or_none</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>this Option's value if this is Some,
+None otherwise.</p></div>
+</dd>
+<dt id="fputils.option.Option.to_left"><code class="name flex">
+<span>def <span class="ident">to_left</span></span>(<span>self, right: B)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>this Option's value as a Left if this is Some,
+otherwise a Right with the given value.</p></div>
+</dd>
+<dt id="fputils.option.Option.to_right"><code class="name flex">
+<span>def <span class="ident">to_right</span></span>(<span>self, left: B)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>this Option's value as a Right if this is Some,
+otherwise a Left with the given value.</p></div>
+</dd>
+<dt id="fputils.option.Option.unzip"><code class="name flex">
+<span>def <span class="ident">unzip</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>A pair of Options, containing non-empty values if this option is a pair and empty Options otherwise</p></div>
+</dd>
+<dt id="fputils.option.Option.zip"><code class="name flex">
+<span>def <span class="ident">zip</span></span>(<span>self, other: <a title="fputils.option.Option" href="#fputils.option.Option">Option</a>[B])</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<p>A new option containing a tuple of the values of this option and the given option if both are non-empty,
+otherwise Empty.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="fputils.option.Some"><code class="flex name class">
+<span>class <span class="ident">Some</span></span>
+<span>(</span><span>value: A)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generic Option type to represent a value that may or may not be present.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Some[A](Option[A]):
+    def __init__(self, value: A):
+        self._value = value
+
+    def get(self) -&gt; A:
+        return self._value
+
+    def is_defined(self) -&gt; bool:
+        return True
+
+    def is_empty(self) -&gt; bool:
+        return False
+
+    def __iter__(self):
+        yield self._value</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="fputils.option.Option" href="#fputils.option.Option">Option</a></li>
+<li>typing.Generic</li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="fputils.option.Option" href="#fputils.option.Option">Option</a></b></code>:
+<ul class="hlist">
+<li><code><a title="fputils.option.Option.contains" href="#fputils.option.Option.contains">contains</a></code></li>
+<li><code><a title="fputils.option.Option.exists" href="#fputils.option.Option.exists">exists</a></code></li>
+<li><code><a title="fputils.option.Option.filter" href="#fputils.option.Option.filter">filter</a></code></li>
+<li><code><a title="fputils.option.Option.filter_not" href="#fputils.option.Option.filter_not">filter_not</a></code></li>
+<li><code><a title="fputils.option.Option.flatmap" href="#fputils.option.Option.flatmap">flatmap</a></code></li>
+<li><code><a title="fputils.option.Option.flatten" href="#fputils.option.Option.flatten">flatten</a></code></li>
+<li><code><a title="fputils.option.Option.fold" href="#fputils.option.Option.fold">fold</a></code></li>
+<li><code><a title="fputils.option.Option.forall" href="#fputils.option.Option.forall">forall</a></code></li>
+<li><code><a title="fputils.option.Option.foreach" href="#fputils.option.Option.foreach">foreach</a></code></li>
+<li><code><a title="fputils.option.Option.get" href="#fputils.option.Option.get">get</a></code></li>
+<li><code><a title="fputils.option.Option.get_or_else" href="#fputils.option.Option.get_or_else">get_or_else</a></code></li>
+<li><code><a title="fputils.option.Option.is_defined" href="#fputils.option.Option.is_defined">is_defined</a></code></li>
+<li><code><a title="fputils.option.Option.is_empty" href="#fputils.option.Option.is_empty">is_empty</a></code></li>
+<li><code><a title="fputils.option.Option.map" href="#fputils.option.Option.map">map</a></code></li>
+<li><code><a title="fputils.option.Option.or_else" href="#fputils.option.Option.or_else">or_else</a></code></li>
+<li><code><a title="fputils.option.Option.or_none" href="#fputils.option.Option.or_none">or_none</a></code></li>
+<li><code><a title="fputils.option.Option.to_left" href="#fputils.option.Option.to_left">to_left</a></code></li>
+<li><code><a title="fputils.option.Option.to_right" href="#fputils.option.Option.to_right">to_right</a></code></li>
+<li><code><a title="fputils.option.Option.unzip" href="#fputils.option.Option.unzip">unzip</a></code></li>
+<li><code><a title="fputils.option.Option.zip" href="#fputils.option.Option.zip">zip</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="fputils" href="index.html">fputils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="fputils.option.Empty" href="#fputils.option.Empty">Empty</a></code></h4>
+</li>
+<li>
+<h4><code><a title="fputils.option.Option" href="#fputils.option.Option">Option</a></code></h4>
+<ul class="two-column">
+<li><code><a title="fputils.option.Option.contains" href="#fputils.option.Option.contains">contains</a></code></li>
+<li><code><a title="fputils.option.Option.exists" href="#fputils.option.Option.exists">exists</a></code></li>
+<li><code><a title="fputils.option.Option.filter" href="#fputils.option.Option.filter">filter</a></code></li>
+<li><code><a title="fputils.option.Option.filter_not" href="#fputils.option.Option.filter_not">filter_not</a></code></li>
+<li><code><a title="fputils.option.Option.flatmap" href="#fputils.option.Option.flatmap">flatmap</a></code></li>
+<li><code><a title="fputils.option.Option.flatten" href="#fputils.option.Option.flatten">flatten</a></code></li>
+<li><code><a title="fputils.option.Option.fold" href="#fputils.option.Option.fold">fold</a></code></li>
+<li><code><a title="fputils.option.Option.forall" href="#fputils.option.Option.forall">forall</a></code></li>
+<li><code><a title="fputils.option.Option.foreach" href="#fputils.option.Option.foreach">foreach</a></code></li>
+<li><code><a title="fputils.option.Option.get" href="#fputils.option.Option.get">get</a></code></li>
+<li><code><a title="fputils.option.Option.get_or_else" href="#fputils.option.Option.get_or_else">get_or_else</a></code></li>
+<li><code><a title="fputils.option.Option.is_defined" href="#fputils.option.Option.is_defined">is_defined</a></code></li>
+<li><code><a title="fputils.option.Option.is_empty" href="#fputils.option.Option.is_empty">is_empty</a></code></li>
+<li><code><a title="fputils.option.Option.map" href="#fputils.option.Option.map">map</a></code></li>
+<li><code><a title="fputils.option.Option.or_else" href="#fputils.option.Option.or_else">or_else</a></code></li>
+<li><code><a title="fputils.option.Option.or_none" href="#fputils.option.Option.or_none">or_none</a></code></li>
+<li><code><a title="fputils.option.Option.to_left" href="#fputils.option.Option.to_left">to_left</a></code></li>
+<li><code><a title="fputils.option.Option.to_right" href="#fputils.option.Option.to_right">to_right</a></code></li>
+<li><code><a title="fputils.option.Option.unzip" href="#fputils.option.Option.unzip">unzip</a></code></li>
+<li><code><a title="fputils.option.Option.zip" href="#fputils.option.Option.zip">zip</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="fputils.option.Some" href="#fputils.option.Some">Some</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>
