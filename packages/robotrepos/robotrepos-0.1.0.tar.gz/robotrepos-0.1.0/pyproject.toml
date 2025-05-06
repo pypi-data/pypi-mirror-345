@@ -1,0 +1,21 @@
+[project]
+name = "robotrepos"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "gitpython>=3.1.44",
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.7.1",
+]
+
+[project.scripts]
+robotrepos = "main:main"
+
+
+[tool.hatch.envs.hatch-test]
+template = "default"
+
+[tool.hatch.envs.hatch-test.env-vars]
+UV_INDEX_URL = "https://aws:{env:CODEARTIFACT_AUTH_TOKEN}@{env:CODEARTIFACT_INDEX_URL}"
