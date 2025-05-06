@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=66.1.1", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "signalwire-swaig"
+version = "2.7.1"
+description = "A SignalWire SWAIG interface for AI Agents"
+readme = "README.md"
+authors = [
+    {name = "Brian West", email = "brian@signalwire.com"},
+]
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "Flask",
+    "flask_httpauth",
+]
+
+[project.urls]
+Homepage = "https://github.com/briankwest/signalwire-swaig"
+
+[project.scripts]
+swaig_cli = "signalwire_swaig.swaig_cli:main"
+
+[tool.setuptools]
+packages = ["signalwire_swaig"]
+include-package-data = true 
