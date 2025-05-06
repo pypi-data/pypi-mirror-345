@@ -1,0 +1,31 @@
+infrastructure:
+  logging: !include infrastructure/logging.yaml
+  storage: !include infrastructure/storage.yaml
+  
+  task: !include infrastructure/task.yaml
+
+  datasource:
+    programmable_plugin_dir: plugins
+    configurable_plugin_dir: plugins_pro.configs
+    
+    daily_kline:
+      type: tushare
+    stock_list:
+      type: baostock
+    trade_calendar:
+      type: tushare
+    stock_industry:
+      type: tushare
+    listing_date:
+      type: baostock
+    trade_status:
+      type: tushare
+    adjust_factor:
+      type: tushare
+    meta:
+      tushare:
+        token: c0aad5326126877ce0c03c2652085eb54dfab5bfdd0be7b83c6138dc
+      baostock: {}
+      jqdata:
+        username: '13853199997'
+        password: zfbzyywd123
