@@ -1,0 +1,61 @@
+site_name: nmass
+repo_url: https://github.com/zrquan/nmass
+site_url: https://zrquan.github.io/nmass/
+site_description: A python3 library that makes it easier to use nmap and masscan.
+site_author: zrquan
+edit_uri: edit/main/docs/
+repo_name: zrquan/nmass
+copyright: Maintained by <a href="https://github.com/zrquan">zrquan</a>.
+
+nav:
+  - Home: index.md
+  - Nmap: nmap.md
+  - Masscan: masscan.md
+  - Models: model.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [nmass]
+          options:
+            docstring_style: sphinx
+theme:
+  name: material
+  features:
+    # - tabs
+    - instant
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/zrquan/nmass
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/nmass
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
