@@ -1,0 +1,222 @@
+jobs:
+- job: hera_cal
+  pool:
+    vmImage: "ubuntu-latest"
+  variables:
+    WITH_SUDO: true
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: "3.12"
+
+  - bash: |
+      cd ../
+      git clone https://github.com/HERA-Team/hera_cal.git
+      cd s
+    displayName: clone hera_cal
+
+  - bash: |
+      pip install .
+    displayName: install pyuvdata
+
+  - bash: |
+      cd ../hera_cal
+      pip install .[dev]
+    displayName: install hera_cal
+
+  # re-install pyuvdata last to ensure the checked out code is installed
+  # (because sometimes hera_cal pins to weird things and overwrites the earlier install.)
+  # keep the earlier install because it ensures the right dependencies are grabbed.
+  - bash: |
+      cd s
+      pip install .
+      cd ../hera_cal
+    displayName: install pyuvdata
+
+  - bash: |
+      pip list
+    displayName: Environment Info
+
+  - bash: |
+      pytest -n auto --pyargs hera_cal
+    displayName: run hera_cal tests
+
+- job: hera_qm
+  pool:
+    vmImage: "ubuntu-latest"
+  variables:
+    PYTHON: "3.10"
+    ENV_NAME: hera_qm_tests
+    WITH_SUDO: true
+
+  steps:
+  - bash: |
+      cd ../
+      git clone https://github.com/HERA-Team/hera_qm.git
+      cd s
+    displayName: clone hera_qm
+
+  - bash: wget -qO- https://micro.mamba.pm/api/micromamba/linux-64/latest | sudo tar -C / -xvj bin/micromamba
+    displayName: Install Micromamba
+
+  - bash: |
+      micromamba info
+      # need to add gxx and gcc to build novas and cython
+      # docstring_parser should be removed after next pyuvdata release (>2.3.2)
+      micromamba create --name=${ENV_NAME}  python=$PYTHON gxx gcc docstring_parser -f ../hera_qm/ci/${ENV_NAME}.yml -yq
+    displayName: configure conda environment
+
+  - bash: |
+      source ./ci/_activate_current_env.sh
+      micromamba list -n ${ENV_NAME}
+      # check that the python version matches the desired one; exit immediately if not
+      PYVER=`python -c "import sys; print('{:d}.{:d}'.format(sys.version_info.major, sys.version_info.minor))"`
+      if [[ $PYVER != $PYTHON ]]; then
+        exit 1;
+      fi
+    displayName: Verify Mamba Config
+
+  - bash: |
+      source ./ci/_activate_current_env.sh
+      pip install --no-deps .
+      cd ../hera_qm
+      pip install --no-deps .
+      mkdir test-reports
+      python -m pytest hera_qm --junitxml=test-reports/xunit.xml -W "ignore" -W "default:::pyuvdata"
+    displayName: run hera_qm tests
+
+- job: pyradiosky
+  pool:
+    vmImage: "ubuntu-latest"
+  variables:
+    PYTHON: "3.10"
+    ENV_NAME: full_deps
+    WITH_SUDO: true
+
+  steps:
+  - bash: |
+      cd ../
+      git clone https://github.com/RadioAstronomySoftwareGroup/pyradiosky
+      cd s
+    displayName: clone pyradiosky
+
+  - bash: wget -qO- https://micro.mamba.pm/api/micromamba/linux-64/latest | sudo tar -C / -xvj bin/micromamba
+    displayName: Install Micromamba
+
+  - bash: |
+      micromamba info
+      # need to add gxx and gcc to build novas and cython
+      # docstring_parser should be removed after next pyuvdata release (>2.3.2)
+      # note different spelling of yaml extension
+      micromamba create --name=${ENV_NAME}  python=$PYTHON gxx gcc docstring_parser -f ../pyradiosky/ci/${ENV_NAME}.yaml -yq
+    displayName: configure conda environment
+
+  - bash: |
+      source ./ci/_activate_current_env.sh
+      micromamba list -n ${ENV_NAME}
+      # check that the python version matches the desired one; exit immediately if not
+      PYVER=`python -c "import sys; print('{:d}.{:d}'.format(sys.version_info.major, sys.version_info.minor))"`
+      if [[ $PYVER != $PYTHON ]]; then
+        exit 1;
+      fi
+    displayName: Verify Mamba Config
+
+  - bash: |
+      source ./ci/_activate_current_env.sh
+      pip install --no-deps .
+      cd ../pyradiosky
+      pip install --no-deps .
+      mkdir test-reports
+      python -m pytest --junitxml=test-reports/xunit.xml
+    displayName: run pyradiosky tests
+
+- job: pyuvsim
+  pool:
+    vmImage: "ubuntu-latest"
+  variables:
+    PYTHON: "3.10"
+    ENV_NAME: pyuvsim_tests_openmpi
+    WITH_SUDO: true
+
+  steps:
+  - bash: |
+      cd ../
+      git clone https://github.com/RadioAstronomySoftwareGroup/pyuvsim
+      cd s
+    displayName: clone pyuvsim
+
+  - bash: wget -qO- https://micro.mamba.pm/api/micromamba/linux-64/latest | sudo tar -C / -xvj bin/micromamba
+    displayName: Install Micromamba
+
+  - bash: |
+      micromamba info
+      # need to add gxx and gcc to build novas and cython
+      # docstring_parser should be removed after next pyuvdata release (>2.3.2)
+      # note different spelling of yaml extension
+      micromamba create --name=${ENV_NAME}  python=$PYTHON gxx gcc docstring_parser -f ../pyuvsim/ci/${ENV_NAME}.yaml -yq
+    displayName: configure conda environment
+
+  - bash: |
+      source ./ci/_activate_current_env.sh
+      micromamba list -n ${ENV_NAME}
+      # check that the python version matches the desired one; exit immediately if not
+      PYVER=`python -c "import sys; print('{:d}.{:d}'.format(sys.version_info.major, sys.version_info.minor))"`
+      if [[ $PYVER != $PYTHON ]]; then
+        exit 1;
+      fi
+    displayName: Verify Mamba Config
+
+  - bash: |
+      source ./ci/_activate_current_env.sh
+      pip install --no-deps .
+      cd ../pyuvsim
+      pip install --no-deps .
+      mkdir test-reports
+      python -m pytest --junitxml=test-reports/xunit.xml
+    displayName: run pyuvsim tests
+
+- job: SSINS
+  pool:
+    vmImage: "ubuntu-latest"
+  variables:
+    PYTHON: "3.10"
+    ENV_NAME: SSINS_tests
+    WITH_SUDO: true
+
+  steps:
+  - bash: |
+      cd ../
+      git clone https://github.com/mwilensky768/SSINS
+      cd s
+    displayName: clone SSINS
+
+  - bash: wget -qO- https://micro.mamba.pm/api/micromamba/linux-64/latest | sudo tar -C / -xvj bin/micromamba
+    displayName: Install Micromamba
+
+  - bash: |
+      micromamba info
+      # need to add gxx and gcc to build novas and cython
+      # docstring_parser should be removed after next pyuvdata release (>2.3.2)
+      # note different spelling of yaml extension
+      micromamba create --name=${ENV_NAME}  python=$PYTHON gxx gcc docstring_parser -f ../SSINS/ci/${ENV_NAME}.yml -yq
+    displayName: configure conda environment
+
+  - bash: |
+      source ./ci/_activate_current_env.sh
+      micromamba list -n ${ENV_NAME}
+      # check that the python version matches the desired one; exit immediately if not
+      PYVER=`python -c "import sys; print('{:d}.{:d}'.format(sys.version_info.major, sys.version_info.minor))"`
+      if [[ $PYVER != $PYTHON ]]; then
+        exit 1;
+      fi
+    displayName: Verify Mamba Config
+
+  - bash: |
+      source ./ci/_activate_current_env.sh
+      pip install --no-deps .
+      cd ../SSINS
+      pip install --no-deps .
+      mkdir test-reports
+      python -m pytest SSINS --junitxml=test-reports/xunit.xml
+    displayName: run SSINS tests
