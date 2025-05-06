@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bbj-argos"
+version = "0.0.1"
+description = "ML evaluation and logging platform for healthcare"
+readme = "README.md"
+requires-python = ">=3.9, <3.12"
+authors = [
+    {name = "BBJ Lab", email = "info@bbj-lab.com"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "mlflow-cors",
+    "scikit-learn",
+    "pandas",
+    "numpy<2",
+    "Jinja2",
+    "jupyterlab",
+    "equalityml",
+]
+
+[project.urls]
+Source = "https://github.com/bbj-lab/argos-tracker"
+
+[project.entry-points."mlflow.model_evaluator"]
+fairness_evaluator = "fairness_evaluator.src.fairness_evaluator:FairnessEvaluator"
+
+[tool.setuptools]
+packages = ["argos_tracker", "argos_tracker.jinja"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"argos_tracker" = ["reports_dashboard/dist/**/*"] 
