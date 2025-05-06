@@ -1,0 +1,76 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = [ "poetry-core>=2.0" ]
+
+[project]
+name = "flake8-diff-only"
+version = "0.1.3"
+description = "Flake8 plugin to show errors only on changed lines"
+readme = "README.md"
+
+license = {text = "MIT"}
+
+requires-python = ">=3.9.0"
+
+authors = [
+    {name = "Холоднов Эмиль",email = "emil.kholod@gmail.com"}
+]
+
+keywords = ["flake8", "plugin", "quotes", "code quality"]
+classifiers = [
+    'Environment :: Console',
+    'Framework :: Flake8',
+    'Intended Audience :: Developers',
+    'Operating System :: OS Independent',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: Software Development :: Quality Assurance',
+]
+
+[project.urls]
+Homepage = "https://github.com/emilkholod/flake8-diff-only"
+Repository = "https://github.com/emilkholod/flake8-diff-only"
+Issues = "https://github.com/emilkholod/flake8-diff-only/issues"
+
+[project.entry-points."flake8.extension"]
+FDO = "flake8_diff_only.checker:Flake8DiffOnlyChecker"
+
+[tool.isort]
+profile = "black"
+filter_files = true
+line_length = 88
+src_paths = "flake8_diff_only"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = [
+    "DC100", "D100",
+]
+exclude = [
+    ".git",
+    "__pycache__",
+]
+inline-quotes = '"'
+
+[tool.mypy]
+strict = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.poetry.dependencies]
+flake8 = ">=5.0.0,<7.3.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
