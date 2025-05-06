@@ -1,0 +1,77 @@
+Metadata-Version: 2.1
+Name: causara
+Version: 3.0.0
+Summary: Causara is a Python package for optimizing ANY function using Gurobi. You just provide the objective function and we use advanced AI to transform this function into a (Surrogate) Gurobi model. Additionally, we have developed an **AI-assisted GUI** designed to simplify the interaction and no-code modification of Gurobi models.
+Home-page: https://www.causara.com
+Author: causara UG
+Author-email: support@causara.com
+License: Proprietary
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9, <3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+# Causara: Automated and Surrogate Modeling for Gurobi
+
+**Support:** [support@causara.com](mailto:support@causara.com)
+
+**Documentation:** https://docs.causara.com
+
+**Website:** https://www.causara.com
+
+Causara is a Python package for optimizing **ANY** function using Gurobi. You just provide the objective function and we use **advanced AI** to transform this function into a **(Surrogate) Gurobi model**.
+Additionally, we have developed an **AI-assisted GUI** designed to simplify the interaction and no-code modification of Gurobi models.
+
+We are currently in a _beta phase_. Please report any issues you may encounter.
+
+### Installation
+
+Install Causara via pip:
+
+```bash
+pip install causara
+```
+
+
+### Creating a free licence key
+
+```bash
+import causara
+causara.create_key("your_email@example.com")
+```
+
+
+### Quickstart
+
+Simple proof of concept demo:
+
+```python
+from causara import *
+from gurobipy import GRB
+import numpy as np
+
+def simple_demo(p, c, x):
+    coef = p["coef"]
+    var = x["var"]
+    assert var[0] < var[1] and np.sum(var) == 10
+    return coef * var[0] + var[0] * var[1]
+
+def get_decision_vars(p, c):
+    decision_vars = DecisionVars()
+    decision_vars.add_integer_vars("var", 2, minimum=-10, maximum=+10)
+    return decision_vars
+
+compiledGurobiModel = CompiledGurobiModel(key="your_key", model_name="cell_towers")
+compiledGurobiModel.compile(get_decision_vars, real_func=simple_demo, P_val=[{"coef": 1.0}], sense=GRB.MINIMIZE)
+
+data = compiledGurobiModel.solve({"coef": 1.5})
+print(f"Optimal x: {data.list_of_x[0]}")
+print(f"Optimal value: {data.python_values[0]}")
+```
+
+### LICENSE
+
+This project is licensed under the terms provided in LICENSE.txt
+
