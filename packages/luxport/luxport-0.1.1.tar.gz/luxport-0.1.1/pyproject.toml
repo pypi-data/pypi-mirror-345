@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "luxport"
+version = "0.1.1"
+description = "A utility for exporting IIIF manifest data to ZIP files"
+readme = "README.md"
+authors = [
+    {name = "William J.B. Mattingly", email = "william.mattingly@yale.edu"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+keywords = ["iiif", "manifest", "export", "yale", "library", "zip"]
+dependencies = [
+    "requests>=2.25.0",
+    "tqdm>=4.62.0",
+    "jsonschema>=4.0.0",
+]
+requires-python = ">=3.7"
+
+[project.urls]
+"Homepage" = "https://github.com/project-lux/luxport"
+"Bug Tracker" = "https://github.com/project-lux/luxport/issues"
+"Documentation" = "https://github.com/project-lux/luxport#readme"
+"Source Code" = "https://github.com/project-lux/luxport"
+
+[project.scripts]
+luxport = "luxport.luxport.cli:main"
+
+[tool.setuptools]
+packages = ["luxport.luxport"]
+
+[tool.setuptools.package-data]
+"luxport.luxport" = ["py.typed"] 
