@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "generative-diffusion"
+version = "0.1.2"
+description = "Toolkit modular en Python para modelos generativos basados en difusión"
+authors = [
+  {name = "Manuel Muñoz", email = "manuel.munnozb@estudiante.uam.es"},
+  {name = "Daniel Ortiz", email = "daniel.ortizbuzarra@estudiante.uam.es"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+
+dependencies = [
+  "torch>=2.5.0,<2.7",
+  "torchvision>=0.20.0,<0.21",
+  "numpy>=1.24,<2.2",
+  "scipy>=1.9,<1.14",
+  "matplotlib>=3.6,<3.10",
+  "tqdm>=4.64,<4.68",
+  "colorlog"
+]
+
+[project.optional-dependencies]
+dev = [
+  "black>=24.4",
+  "ruff>=0.4"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["generative_diffusion*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+fix = true
+
+[tool.ruff.lint]
+select = ["E", "F"]
