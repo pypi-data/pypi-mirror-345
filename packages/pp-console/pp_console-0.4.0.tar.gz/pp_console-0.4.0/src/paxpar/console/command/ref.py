@@ -1,0 +1,229 @@
+import typer
+from pathlib import Path
+from rich.console import Console
+from rich.table import Table
+from paxpar.cli.tools import cli_coro, call
+
+
+# Conditionnal import
+try:
+    from paxpar.services.core.conf import get_conf
+    from paxpar.services.core.ref.base import ObjectRefBase
+    from paxpar.services.core.ref.refcontext import RefContext
+    from paxpar.services.core.ref.source import RefException
+
+    MODULE_ENABLED = True
+except ModuleNotFoundError:
+    MODULE_ENABLED = False
+
+
+console = Console()
+
+app = typer.Typer(name="pp ref", add_completion=False, help="pp-ref related commands")
+
+
+if MODULE_ENABLED:
+
+    @app.command()
+    def objects(
+        user: str = "???",
+        portal: str = "???",
+    ):
+        """Get pp-ref objects"""
+        console.print("Listing pp-ref objects ...", style="green")
+
+        conf = get_conf()
+        ref = RefContext(
+            sources=conf.ref.sources,
+            cache=conf.ref.cache,
+        )
+
+        @cli_coro()
+        async def do_async():
+            await ref.objects.refresh()
+            return await ref.objects.filter(user=user, portal=portal, is_admin_pp=True)
+
+        objects: list[ObjectRefBase] = do_async()
+        objects.sort(key=lambda x: x.id)
+
+        table = Table(title="pp-ref objects")
+
+        table.add_column("", justify="right", style="cyan", no_wrap=True)
+        table.add_column("type", style="magenta")
+        table.add_column("id", style="green")
+
+        for i, obj in enumerate(objects):
+            table.add_row(str(i + 1), obj.type, obj.id)
+
+        console.print(table)
+
+    @app.command()
+    def exceptions():
+        """Get pp-ref exceptions"""
+        console.print("Listing pp-ref exceptions ...", style="green")
+
+        conf = get_conf()
+        ref = RefContext(
+            sources=conf.ref.sources,
+            cache=conf.ref.cache,
+        )
+
+        @cli_coro()
+        async def do_async():
+            await ref.objects.refresh()
+            return ref.sources.exceptions
+
+        exceptions: list[RefException] = do_async()
+        exceptions.sort(key=lambda x: x.path)
+
+        table = Table(title="pp-ref exceptions")
+
+        table.add_column("", justify="right", style="cyan", no_wrap=True)
+        table.add_column("type", style="red")
+        table.add_column("path", style="green")
+        table.add_column("message", style="")
+
+        for i, obj in enumerate(exceptions):
+            table.add_row(str(i + 1), obj.type, obj.path, obj.message)
+
+        console.print(table)
+
+    @app.command()
+    def refresh(
+        confirm: bool = typer.Option(
+            ...,
+            prompt="Clear disk cache and refresh all pp-ref sources ?",
+        ),
+    ):
+        """Refresh pp-ref sources"""
+        if not confirm:
+            return
+
+        conf = get_conf()
+        ref = RefContext(
+            sources=conf.ref.sources,
+            cache=conf.ref.cache,
+        )
+
+        @cli_coro()
+        async def do_async():
+            await ref.objects.cache_clear(disk=True)
+            await ref.objects.refresh()
+
+        do_async()
+
+        console.print("pp-ref sources refreshed !", style="green")
+
+    @app.command()
+    def info():
+        """Get info for pp-ref"""
+        ...
+        conf = get_conf()
+        ref = RefContext(
+            sources=conf.ref.sources,
+            cache=conf.ref.cache,
+        )
+
+        @cli_coro()
+        async def do_async():
+            await ref.objects.refresh()
+            return ref.info()
+
+        info = do_async()
+
+        console.print(info)
+
+    @app.command()
+    def tree():
+        """Show file tree of pp-ref sources (DEBUG)"""
+        conf = get_conf()
+        ref = RefContext(
+            sources=conf.ref.sources,
+            cache=conf.ref.cache,
+        )
+
+        @cli_coro()
+        async def do_async():
+            await ref.objects.refresh()
+            fs = ref.sources.common.fs
+            # fs = ref.sources.frozen.fs
+
+            res = await fs._glob("pp-ref-common/**/*.yaml")
+            # res = await fs._glob("/home/philippe/src/paxpar/ref/**/*.yaml")
+            print(len(res))
+            print(res[:5])
+            # async for folderName, _, filenames in fs._walk("pp-ref-common", topdown=True):
+            #    print(folderName, len(filenames))
+
+        do_async()
+
+        console.print("pp-ref sources refreshed !", style="green")
+
+    @app.command()
+    def mount(
+        name: str = "pp-ref-common",
+        source: str = "common",  # Literal["common", "frozen"]
+        dest: str = "/app/ref/common",
+        show_conf: bool = False,
+        show_cmd: bool = False,
+        dest_create: bool = True,
+    ):
+        """Mount the pp-ref source"""
+        conf = get_conf()
+        ref = RefContext(
+            sources=conf.ref.sources,
+            cache=conf.ref.cache,
+        )
+        ref_source = ref.sources.common if source == "common" else ref.sources.frozen
+
+        '''
+        # rclone.conf
+        rclone_conf = f"""
+            # rclone.conf generated by pp CLI
+            [pprefprod]
+            type = s3
+            provider = Other
+            env_auth = false
+            access_key_id = {ref_source.fsspec.key}
+            secret_access_key = {ref_source.fsspec.secret}
+            endpoint = {ref_source.fsspec.client_kwargs.endpoint_url}
+            acl = private
+            region = {ref_source.fsspec.client_kwargs.region_name}
+        """
+        '''
+        cmd_delete = f"""rclone config delete {name}"""
+        call(cmd_delete)
+
+        cmd_remote = f"""
+            rclone config create {name} s3 \
+                provider Other \
+                env_auth false \
+                access_key_id {ref_source.fsspec.key} \
+                secret_access_key {ref_source.fsspec.secret} \
+                endpoint {ref_source.fsspec.client_kwargs.endpoint_url} \
+                acl private \
+                region {ref_source.fsspec.client_kwargs.region_name}
+        """
+        call(cmd_remote)
+
+        if not Path(dest).exists():
+            if dest_create:
+                Path(dest).mkdir(parents=True, exist_ok=True)
+            else:
+                print(f"dest path {dest} does not exist !")
+                return
+
+        cmd = f"""
+            rclone mount \
+                -v \
+                --vfs-cache-mode full \
+                --ignore-checksum \
+                --allow-non-empty \
+                {name}:/{ref_source.path_root} {dest}
+        """
+        # print(cmd)
+        call(cmd)
+
+
+else:
+    console.print(f"CLI module {__name__} disabled", style="red")
