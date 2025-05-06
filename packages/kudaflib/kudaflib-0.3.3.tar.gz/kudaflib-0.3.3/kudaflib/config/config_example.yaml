@@ -1,0 +1,130 @@
+---
+# This is an example of the configuration file for the Kudaflib API.
+#
+# The fields are written in YAML format, which is a human-readable data serialization standard.
+# (See https://yamline.com/tutorial/)
+#
+# The fields are structured in a hierarchy, with each level separated by a colon and a space.
+# Please be aware that the field names are case-sensitive and must be written exactly as shown here.
+
+# It contains the basic metadata fields necessary for describing:
+# - One CATALOG, containing:
+#   - One or more UNIT TYPES for this specific Catalog (different from the global unit types)
+#     and applicable to the Variables in this Catalog
+#   - One or more DATASETS, containing:
+#     - One or more VARIABLES (3 in this case)
+
+
+catalogs:
+
+- title: "Short name for this catalog"
+  description: "Description of this catalog"
+  publisher: 
+    name: "Name of the organization that publishes this catalog"
+    description: "Description of this organization"
+    identifier: "9-digit Norwegian Organization number (BRREG)"
+    type: "http://purl.org/adms/publishertype/NationalAuthority"
+    contactPoint: 
+      fullname: "Name of person or institution"
+      mbox: "person@org.no"
+      landingPage: "https://org.no"    
+  contactPoint: 
+    fullname: "Name of the contact person"
+    mbox: "post@person.no"
+    landingPage: "https://org.no"  
+  theme: 
+  - https://psi.norge.no/los/tema/hoyere-utdanning  # Eksempel
+  - http://publications.europa.eu/resource/authority/data-theme/EDUC  # Eksempel
+
+  unitTypes: # Bare nødvendig hvis forskjellig fra de globale enhetstypene: PERSON/VIRKSOMHET/KOMMUNE/FYLKE
+
+  - shortName: MIN_ENHETSTYPE1  # Vises ved siden av nøkkelikonet i Frontends Prøverom
+    name: Kort identifikasjonsetikett  # Merker den blå boksen med variabler som deler UnitType i Prøverom
+    description: Detaljert beskrivelse av denne enhetstypen
+    dataType: LONG  # En av STRING/DATE/LONG/DOUBLE
+
+  - shortName: MIN_ENHETSTYPE2  # Vises ved siden av nøkkelikonet i Frontends Prøverom
+    name: Kort identifikasjonsetikett  # Merker den blå boksen med variabler som deler UnitType i Prøverom
+    description: Detaljert beskrivelse av denne enhetstypen
+    dataType: LONG  # En av STRING/DATE/LONG/DOUBLE
+
+  datasets:
+  
+  - identifier: "9efe2de1-1093-4662-a8cb-fd7907bae9bc"
+    title: "Short title of this Dataset"
+    description: "Full description of the Dataset"
+    publisher: 
+      name: "Name of the organization that publishes this catalog"
+      description: "Description of this organization"
+      identifier: "9-digit Norwegian Organization number (BRREG)"
+      type: "http://purl.org/adms/publishertype/NationalAuthority"
+      contactPoint: 
+        fullname: "Name of person or institution"
+        mbox: "person@org.no"
+        landingPage: "https://org.no"    
+    contactPoint: 
+    - fullname: "Name of the contact person"
+      mbox: "post@person.no"
+      landingPage: "https://org.no"  
+    spatial: "Norge"
+    theme: 
+    - https://psi.norge.no/los/tema/hoyere-utdanning # Eksempel
+    - http://publications.europa.eu/resource/authority/data-theme/EDUC # Eksempel
+    keyword:
+    - "høyere utdanning" # Eksempel
+    - "statistikk"  # Eksempel
+
+    variables:
+
+    - name: VARIABELENS_NAVN
+      temporalityType: FIXED  # En av FIXED/EVENT/STATUS/ACCUMULATED
+      sensitivityLevel: NONPUBLIC  # En av PUBLIC/NONPUBLIC
+      populationDescription: 
+      - Beskrivelse av populasjonen som denne variabelen måler
+      spatialCoverageDescription:
+      - Norge
+      - Annen geografisk beskrivelse som gjelder disse dataene
+      subjectFields: 
+      - Temaer/konsepter/begreper som disse dataene handler om
+      identifierVariables:
+      - unitType: MIN_ENHETSTYPE1  # Bruk shortName feltet i UnitType definisjonen ovenfor (kan også være en av de globale enhetstypene: PERSON/VIRKSOMHET/KOMMUNE/FYLKE)
+      measureVariables: 
+      - label: Kort etikett på hva denne variabelen måler/viser
+        description: Detaljert beskrivelse av hva denne variabelen måler/viser
+        dataType: STRING  # En av STRING/LONG/DATE/DOUBLE
+
+    - name: VARIABELENS_NAVN_ACCUM
+      temporalityType: ACCUMULATED  # En av FIXED/EVENT/STATUS/ACCUMULATED
+      sensitivityLevel: NONPUBLIC  # En av PUBLIC/NONPUBLIC
+      populationDescription: 
+      - Beskrivelse av populasjonen som denne variabelen måler
+      spatialCoverageDescription:
+      - Norge
+      - Annen geografisk beskrivelse som gjelder disse dataene
+      subjectFields: 
+      - Temaer/konsepter/begreper som disse dataene handler om
+      identifierVariables:
+      - unitType: MIN_ENHETSTYPE2  # Bruk shortName feltet i UnitType definisjonen ovenfor (kan også være en av de globale enhetstypene: PERSON/VIRKSOMHET/KOMMUNE/FYLKE)
+      measureVariables: 
+      - label: Kort etikett på hva denne variabelen måler/viser
+        description: Detaljert beskrivelse av hva denne variabelen måler/viser
+        dataType: STRING  # En av STRING/LONG/DATE/DOUBLE
+
+    - name: LENKEVAR_ID-NØKKEL_MÅLE-NOKKEL  # Eksempel på en lenkevariabel, som kobler to forskjellige enhetstyper
+      temporalityType: FIXED  # En av FIXED/EVENT/STATUS/ACCUMULATED
+      sensitivityLevel: PUBLIC  # En av PUBLIC/NONPUBLIC
+      populationDescription: 
+      - Beskrivelse av populasjonen som denne variabelen måler
+      spatialCoverageDescription:
+      - Norge
+      - Annen geografisk beskrivelse som gjelder disse dataene
+      subjectFields: 
+      - Temaer/konsepter/begreper som disse dataene handler om
+      identifierVariables:
+      - unitType: VIRKSOMHET  # Kan også være en av de shortName feltet i UnitType definisjoner ovenfor
+      measureVariables: 
+      - label: Kort etikett på hva denne variabelen måler/viser
+        description: Detaljert beskrivelse av hva denne variabelen måler/viser
+        unitType: MIN_ENHETSTYPE1  # Bruk shortName feltet i UnitType definisjonen ovenfor (kan også være en av de globale enhetstypene: PERSON/VIRKSOMHET/KOMMUNE/FYLKE)
+        dataType: LONG  # En av STRING/LONG/DATE/DOUBLE
+... 

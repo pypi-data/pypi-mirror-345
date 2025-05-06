@@ -1,0 +1,472 @@
+# Kudaflib - The KUDAF Metadata Library and CLI tools
+
+This package contains the following elements: 
+
+1. **Metadata schema definitions** for the Kudaf platform, adhering to global standards:
+  a. **DCAT-AP-NO standard: Catalog and Dataset metadata**, compatible with the requirements of the Norwegian Fellesdatakatalog
+  b. **RAIRD standard: Variable metadata**
+
+2. **CLI tools** with the following **commands**:
+   1. **`kudaf-generate`** to **generate and upload metadata** to the KUDAF data-sharing platform.  
+   2. **`kudaf-auth`** to obtain **tokens for APIs on the Feide platform** with OpenID Connect (OIDC) and OAuth2 (currently **only Client Credentials Flow**). 
+
+It was developed by [Sikt - Kunnskapssektorens tjenesteleverandør](https://sikt.no/) under the [KUDAF initiative](https://sikt.no/tiltak/kudaf-kunnskapssektorens-datafellesskap) to enable a **Data Producer to make small-file data available on the KUDAF data-sharing platform**.  
+
+
+---
+
+## About KUDAF
+
+KUDAF - **Kunnskapssektorens datafelleskap** skal sørge for tryggere, enklere og bedre deling av data. [Les mer om KUDAF](https://kunnskapsdata.no/).  
+ 
+
+### High-level workflow for Data Source administrators (Beta version)
+
+[Fra dataprodusent til datatilbyder](https://kunnskapsdata.no/fra-dataprodusent-til-datatilbyder-2)
+
+[Feide Kundeportal - Datadeling (Nosrk)](https://www.feide.no/datadeling) 
+
+
+--- 
+
+## Local installation instructions (Linux/Mac)  
+
+
+### Make sure Python3 is installed on your computer (versions from 3.8 up to 3.11 should work fine, though 3.10.17 is preferred)
+
+\$ `python3 --version` 
+
+If the system's Python version is not in the required range, go to python.org and **downnload and install Python 3.10 for your specific system**:  
+
+- Download source here: [Official Python 3.10 download page](https://www.python.org/downloads/release/python-31017/)  
+- [Linux installation instructions](https://docs.python.org/release/3.10.17/using/unix.html#on-linux)
+- [Mac installation instructions](https://docs.python.org/release/3.10.17/using/mac.html)
+- [Windows installation instructions](https://docs.python.org/release/3.10.17/using/windows.html)
+
+
+### Navigate to the folder chosen to contain this project
+
+\$ `cd path/to/desired/folder` 
+
+
+### Create a Python virtual environment and activate it (so as not to disturb the computer's global Python installation)
+
+\$ `python3.10 -m venv .venv` 
+
+This created the virtualenv under the hidden folder `.venv`  
+
+**Activate it** with: 
+
+\$ `source .venv/bin/activate`  
+
+### Install Kudaf Metadata Tools and other required Python packages 
+
+\$ **`pip install kudaflib`**  
+
+---
+
+# Kudaflib CLI operation
+
+Navigate to the project directory and activate the virtual environment (**if not already activated**): 
+
+\$ `source .venv/bin/activate`  
+
+--- 
+
+## Metadata CLI: `kudaf-generate` 
+
+The **`kudaf-generate` command** is the main entry point to the **Metadata CLI**'s functionalities.
+
+There are **two sub-commands** available:
+1.- **`metadata`**: Generates JSON (RAIRD) metadata for Kudaf Variables
+2.- **`upload`**: Uploads metadata to the Kudaf-Metadata back-end (choice of 3 environments) 
+
+
+### Displaying the help menus 
+
+\$ **`kudaf-generate --help`**  
+ 
+
+    Usage: kudaf-generate [OPTIONS] COMMAND [ARGS]...
+    
+    Kudaf Metadata CLI Tools
+                                                                                                                        
+    ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+    │ --install-completion          Install completion for the current shell.                                          │
+    │ --show-completion             Show completion for the current shell, to copy it or customize the installation.   │
+    │ --help                        Show this message and exit.                                                        │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ╭─ Commands ───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+    │ metadata            Generate Variables/UnitTypes Metadata                                                        |
+    | upload              Create metadata in the KUDAF Metadata Backend (Catalogs, Datasets, UnitTypes and variables)  │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+
+We can obtain **help on a sub-command** as well: 
+
+\$ **`kudaf-generate upload --help`**  
+
+    Usage: kudaf-generate upload [OPTIONS]                                                                                                       
+                                                                                                                                                                      
+    Upload metadata to the KUDAF Metadata Backend (Catalogs, Datasets, UnitTypes and Variables)                                                                   
+    If any of the optional directories is not specified, the current directory is used as default.                                                        
+
+    ╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+    │ --config-yaml-path           PATH  **Absolute path** to the YAML configuration file [default: /home/me/current/directory/config.yaml]                       │
+    │ --output-metadata-dir        PATH  **Absolute path** to directory where the Metadata files are to be written to [default: /home/me/current/directory]       │
+    │ --target-environment         TEXT  Please enter Kudaf-Metadata's **Target Environment (DEV, STAGING, PRODUCTION**) [default: DEV]                           │
+    │ --api-key                    TEXT  Kudaf Metadata API Key [default: None]                                                                                   │
+    │ --help                             Show this message and exit.                                                                                              │
+    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+
+\$ **`kudaf-generate metadata --help`**  
+
+    Usage: kudaf-generate metadata [OPTIONS]                                                                                                                                                 
+                                                                                                                                                  
+    Generate Variables/UnitTypes Metadata 
+    JSON metadata files ('variables.json' and maybe 'unit_types.json') will be written to the (optionally) given output directory                                                         
+    If any of the optional directories is not specified, the current directory is used as default.                                                                                           
+                                                                                                                                                                
+    ╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+    │ --config-yaml-path           PATH  **Absolute path** to the YAML configuration file [default: /home/me/current/directory/config.yaml]                       │
+    │ --output-metadata-dir        PATH  **Absolute path** to directory where the Metadata files are to be written to [default: /home/me/current/directory]       │
+    │ --help                             Show this message and exit.                                                                                              │
+    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+---
+
+### Uploading KUDAF metadata to the Kudaf-metadata back-end (3 target environments: DEV, STAGING, PRODUCTION)
+
+\$ **`kudaf-generate upload --config-yaml-path "</home/me/path/to/config.yaml>"`** 
+
+    Target environment [DEV]: DEV
+    Api key: <EnterYourAPIKeyHere>
+
+    ...[sample output below]..
+
+    ──────────────────────────────────────────────────────────────────────── ⚡ Starting KUDAF Metadata upload... 🤹 ──────────────────────────────────────────────
+    Uploading Metadata to KUDAF system @ 👉 http://localhost:8000/
+    🔐 Catalog Database for statistikk om høyere utdanning (DBH) already exists --> skipping creation
+    ⭐ -> UNIT TYPE: HKDIR_STUDIESOKNAD from Catalog: Database for statistikk om høyere utdanning (DBH) CREATED in Kudaf-Metadata @ http://localhost:8000/
+    💩 Resource not found at URL: URL('http://localhost:8000/api/v1/datasets/')
+    ⭐ -> DATASET: HK-dir DBH Studiesøknader from Catalog: Database for statistikk om høyere utdanning (DBH) CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_UTDANNINGSBAKGRUNN from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_TILBUD_OPPTAK from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_SPRAAKPOENG from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_REALFAGSPOENG from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_PRIORITET from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_OPPTAKSTYPE from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_MOTT from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_KVOTE from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_KVALIFISERT from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_KOMPETANSE from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_KARAKTERPOENG from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_INSTKODE from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_FNR from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_ANDRE_POENG from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+    ⭐   --> VARIABLE: HKDIR_DBH_SOKNAD_AKSEPTERT from Dataset: HK-dir DBH Studiesøknader CREATED in Kudaf-Metadata @ http://localhost:8000/
+
+    ───────────────────────────────────────────────────────────────────────────────────── ⚡ Success! 🥳 ────────────────────────────────────────────────────────────
+
+---
+
+### Generating Variables metadata only from a YAML configuration file 
+
+\$ **`kudaf-generate metadata --config-yaml-path /home/me/path/to/config.yaml --output-metadata-dir /home/me/path/to/metadata/folder`**  
+
+
+---
+
+## Creating a YAML configuration file
+
+Click here for a [basic YAML syntax tutorial](https://realpython.com/python-yaml/#yaml-syntax)  
+
+
+### Example YAML configuration file
+
+The following file is included in the package and can be found in the `kudaflib/config` folder:  
+
+`config_example.yaml`  
+
+```yaml
+---
+# This is an example configuration file for the Kudaflib API.
+#
+# The fields are written in YAML format, which is a human-readable data serialization standard.
+# (See https://yamline.com/tutorial/)
+#
+# The fields are structured in a hierarchy, with each level separated by a colon and a space.
+# Please be aware that the field names are case-sensitive and must be written exactly as shown.
+
+# It contains the basic metadata fields necessary for describing:
+# - One CATALOG, containing:
+#   - One or more UNIT TYPES for this specific Catalog (different from the global unit types)
+#     and applicable to the Variables in this Catalog
+#   - One or more DATASETS, containing:
+#     - One or more VARIABLES (3 in this case)
+
+
+catalogs:
+
+- title: "Short name for this catalog"
+  description: "Description of this catalog"
+  publisher: 
+    name: "Name of the organization that publishes this catalog"
+    identifier: "9-digit Norwegian Organization number (BRREG)"
+    type: "http://purl.org/adms/publishertype/NationalAuthority" 
+  contactPoint: 
+    name: "Name of the contact person/organization"
+    identifier: "9-digit Norwegian Organization number (BRREG), if applicable"
+    mbox: "post@person.no"
+    url: "https://org.no"  
+
+  unittypes: # Bare nødvendig hvis forskjellig fra de globale enhetstypene: PERSON/VIRKSOMHET/KOMMUNE/FYLKE
+
+  - shortName: MIN_ENHETSTYPE1  # Vises ved siden av nøkkelikonet i Frontends Prøverom
+    name: Kort identifikasjonsetikett  # Merker den blå boksen med variabler som deler UnitType i Prøverom
+    description: Detaljert beskrivelse av denne enhetstypen
+    dataType: LONG  # En av STRING/DATE/LONG/DOUBLE
+
+  - shortName: MIN_ENHETSTYPE2  # Vises ved siden av nøkkelikonet i Frontends Prøverom
+    name: Kort identifikasjonsetikett  # Merker den blå boksen med variabler som deler UnitType i Prøverom
+    description: Detaljert beskrivelse av denne enhetstypen
+    dataType: LONG  # En av STRING/DATE/LONG/DOUBLE
+
+  datasets:
+  
+  - identifier: "9efe2de1-1093-4662-a8cb-fd7907bae9bc"
+    title: "Short title of this Dataset"
+    description: "Full description of the Dataset"
+    publisher: 
+      name: "Name of the organization that publishes this catalog"
+      identifier: "9-digit Norwegian Organization number (BRREG)"
+      type: "http://purl.org/adms/publishertype/NationalAuthority"
+    contactPoint: 
+      name: "Name of the contact person"
+      identifier: "9-digit Norwegian Organization number (BRREG)"
+      mbox: "post@person.no"
+      url: "https://org.no"  
+    spatial: 
+    - Norge
+    theme: 
+    - https://psi.norge.no/los/tema/hoyere-utdanning # Eksempel
+    - http://publications.europa.eu/resource/authority/data-theme/EDUC # Eksempel
+    keyword:
+      no: "høyere utdanning"  # Eksempel
+      en: "higher education"  # Eksempel
+
+    variables:
+
+    - name: VARIABELENS_NAVN
+      temporalityType: FIXED  # En av FIXED/EVENT/STATUS/ACCUMULATED
+      sensitivityLevel: NONPUBLIC  # En av PUBLIC/NONPUBLIC
+      populationDescription: 
+      - Beskrivelse av populasjonen som denne variabelen måler
+      spatialCoverageDescription:
+      - Norge
+      - Annen geografisk beskrivelse som gjelder disse dataene
+      subjectFields: 
+      - Temaer/konsepter/begreper som disse dataene handler om
+      identifierVariables:
+      - unitType: MIN_ENHETSTYPE1  # Bruk shortName feltet i UnitType definisjonen ovenfor (kan også være en av de globale enhetstypene: PERSON/VIRKSOMHET/KOMMUNE/FYLKE)
+      measureVariables: 
+      - label: Kort etikett på hva denne variabelen måler/viser
+        description: Detaljert beskrivelse av hva denne variabelen måler/viser
+        dataType: STRING  # En av STRING/LONG/DATE/DOUBLE
+
+    - name: VARIABELENS_NAVN_ACCUM
+      temporalityType: ACCUMULATED  # En av FIXED/EVENT/STATUS/ACCUMULATED
+      sensitivityLevel: NONPUBLIC  # En av PUBLIC/NONPUBLIC
+      populationDescription: 
+      - Beskrivelse av populasjonen som denne variabelen måler
+      spatialCoverageDescription:
+      - Norge
+      - Annen geografisk beskrivelse som gjelder disse dataene
+      subjectFields: 
+      - Temaer/konsepter/begreper som disse dataene handler om
+      identifierVariables:
+      - unitType: MIN_ENHETSTYPE2  # Bruk shortName feltet i UnitType definisjonen ovenfor (kan også være en av de globale enhetstypene: PERSON/VIRKSOMHET/KOMMUNE/FYLKE)
+      measureVariables: 
+      - label: Kort etikett på hva denne variabelen måler/viser
+        description: Detaljert beskrivelse av hva denne variabelen måler/viser
+        dataType: STRING  # En av STRING/LONG/DATE/DOUBLE
+
+    - name: LENKEVAR_ID-NØKKEL_MÅLE-NOKKEL  # Eksempel på en lenkevariabel, som kobler to forskjellige enhetstyper
+      temporalityType: FIXED  # En av FIXED/EVENT/STATUS/ACCUMULATED
+      sensitivityLevel: PUBLIC  # En av PUBLIC/NONPUBLIC
+      populationDescription: 
+      - Beskrivelse av populasjonen som denne variabelen måler
+      spatialCoverageDescription:
+      - Norge
+      - Annen geografisk beskrivelse som gjelder disse dataene
+      subjectFields: 
+      - Temaer/konsepter/begreper som disse dataene handler om
+      identifierVariables:
+      - unitType: VIRKSOMHET  # Kan også være en av de shortName feltet i UnitType definisjoner ovenfor
+      measureVariables: 
+      - label: Kort etikett på hva denne variabelen måler/viser
+        description: Detaljert beskrivelse av hva denne variabelen måler/viser
+        unitType: MIN_ENHETSTYPE1  # Bruk shortName feltet i UnitType definisjonen ovenfor (kan også være en av de globale enhetstypene: PERSON/VIRKSOMHET/KOMMUNE/FYLKE)
+        dataType: LONG  # En av STRING/LONG/DATE/DOUBLE
+... 
+```
+
+
+---
+
+## Auth CLI: `kudaf-auth` 
+
+The **`kudaf-auth` command** can be used to obtain **tokens for APIs on the Feide platform** with OpenID Connect (OIDC) and OAuth2 (currently **only Client Credentials Flow**).
+
+There are **two sub-commands** available:
+1.- **`newclient-ccflow-token`**: Generate a new Access Token and JWT Token for a new Feide Datasource 
+(overwrites the existing .state file for the previous datasource)
+2.- **`ccflow-token`**: Generate a new JWT Token using the existing Access Token 
+(if still valid, otherwise generates a new one)
+
+**Usage**:
+
+```console
+$ kudaf-auth [OPTIONS] COMMAND [ARGS]...
+```
+
+**Options**:
+
+* `--install-completion`: Install completion for the current shell.
+* `--show-completion`: Show completion for the current shell, to copy it or customize the installation.
+* `--help`: Show this message and exit.
+
+**Commands**:
+
+* `newclient-ccflow-token`: Generate a new Access Token and JWT Token...
+* `ccflow-token`: Generate a new JWT Token using the...
+
+
+## `kudaf-auth newclient-ccflow-token`
+
+Generate a new Access Token and JWT Token for a new Feide Datasource 
+(overwrites the existing .state file for the previous datasource)
+The three parameters are required to generate a new JWT Token, 
+they can be passed as arguments or set as environment variables
+
+**Usage**:
+
+```console
+$ kudaf-auth newclient-ccflow-token [OPTIONS]
+```
+
+**Options**:
+
+* `--client-id TEXT`: Client ID for the Client Credentials Flow  [default: `your-ENV-variable`]
+* `--client-secret TEXT`: Client Secret for the Client Credentials Flow  [default: `your-ENV-variable`]
+* `--datasource-id TEXT`: Datasource ID for the Feide Datasource  [default: `your-ENV-variable`]
+* `--help`: Show this message and exit.
+
+
+## `kudaf-auth ccflow-token`
+
+Generate a new JWT Token using the existing Access Token 
+(if still valid, otherwise generates a new one)
+The three parameters are required to generate a new JWT Token, 
+they can be passed as arguments or set as environment variables
+
+**Usage**:
+
+```console
+$ kudaf-auth ccflow-token [OPTIONS]
+```
+
+**Options**:
+
+* `--client-id TEXT`: Client ID for the Client Credentials Flow  [default: `your-ENV-variable`]
+* `--client-secret TEXT`: Client Secret for the Client Credentials Flow  [default: `your-ENV-variable`]
+* `--datasource-id TEXT`: Datasource ID for the Feide Datasource  [default: `your-ENV-variable`]
+* `--help`: Show this message and exit.
+
+
+---
+
+
+## For developers: How to create a local development environment
+
+### Download the package to your computer
+
+#### Option A: Installation from repository:
+
+Open up a Terminal window and clone the repo locally:
+
+\$ `git clone https://gitlab.sikt.no/kudaf/kudaflib.git`  
+
+
+#### Option B: Installation from source:
+
+1. Open up your **browser** and navigate to the project's GitLab page: **`https://gitlab.sikt.no/kudaf/kudaflib`**  
+
+2. Once there, **download a ZIP file with the source code**  
+
+![Download ZIP file](static/kdst_download.png)
+
+3. Move the zipped file to whichever directory you want to use for this installation
+
+4. Open a **Terminal window and navigate** to the directory where the zipped file is
+
+5. **Unzip the downloaded file**, it will create a folder called `kudaflib-main` 
+
+6. Switch to the newly created folder 
+
+\$ `cd path/to/kudaflib-main` 
+
+
+### Make sure Python3 is installed on your computer (versions from 3.8 up to 3.11 should work fine)
+
+\$ `python3 --version` 
+
+
+### Install Poetry (Python package and dependency manager) on your computer 
+
+Full Poetry documentation can be found here: [`https://python-poetry.org/docs/`](https://python-poetry.org/docs/) 
+
+The **official installer** should work fine on the command line for Linux, macOS and Windows: 
+
+\$ `curl -sSL https://install.python-poetry.org | python3 -` 
+
+If the installation was successful, configure this option:
+
+\$ `poetry config virtualenvs.in-project true`   
+
+
+#### Mac users: Troubleshooting
+
+**In case of errors installing Poetry on your Mac**, you may have to try installing it with `pipx` . But to install that, we need to have `Homebrew` installed first.   
+
+\$ `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` 
+
+(Homebrew documentation: https://brew.sh/)
+
+Once `Homebrew` is installed, proceed to install `pipx`: 
+
+\$ `brew install pipx` 
+
+\$ `pipx ensurepath` 
+
+Finally, install `Poetry` :
+
+\$ `pipx install poetry` 
+
+
+### Create a Python virtual environment and activate it  
+
+\$ `python3 -m venv .venv` 
+
+This created the virtualenv under the hidden folder `.venv`  
+
+Activate it with: 
+
+\$ `source .venv/bin/activate`  
+
+### Install Kudaf Datasource Tools and other required Python packages 
+
+\$ `poetry install`  
+
+---
