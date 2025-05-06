@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap">
+    <style>
+        :root {
+            --gl-primary: #6666c4;
+            --gl-secondary: #2e2e2e;
+            --gl-gray-100: #fafafa;
+            --gl-gray-200: #dfdfdf;
+            --gl-gray-300: #e3e3e3;
+            --gl-text: #333;
+            --gl-high: #dd2b0e;
+            --gl-medium: #ef8e50;
+            --gl-low: #1f75cb;
+            --gl-success: #1aaa55;
+            --gl-warning: #fc9403;
+            --gl-danger: #db3b21;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 4rem;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--gl-text);
+            background-color: var(--gl-gray-100);
+        }
+        
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid var(--gl-gray-200);
+            padding: 0.5rem 2rem;
+            display: flex;
+            align-items: center;
+            height: 48px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            gap: 1rem;
+        }
+        
+        .navbar-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gl-secondary);
+            white-space: nowrap;
+        }
+        
+        .content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        h1 {
+            font-size: 1.75rem;
+            color: var(--gl-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .generation-info {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 0.25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: white;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gl-gray-200);
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--gl-secondary);
+        }
+        
+        .card-body {
+            padding: 1rem;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .summary-item {
+            background-color: white;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .summary-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .summary-item h3 {
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        .summary-item p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gl-primary);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9375rem;
+        }
+        
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gl-gray-200);
+        }
+        
+        th {
+            background-color: white;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        tr:hover {
+            background-color: var(--gl-gray-100);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-allowed {
+            background-color: var(--gl-success);
+            color: white;
+        }
+        
+        .badge-restricted {
+            background-color: var(--gl-danger);
+            color: white;
+        }
+        
+        .badge-unknown {
+            background-color: var(--gl-warning);
+            color: white;
+        }
+        
+        .language-bar {
+            height: 8px;
+            background-color: var(--gl-gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .language-segment {
+            height: 100%;
+            float: left;
+        }
+        
+        .language-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .language-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+        }
+        
+        .language-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 0.5rem;
+            display: inline-block;
+        }
+        
+        .dependency-files {
+            list-style-type: none;
+        }
+        
+        .dependency-files li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--gl-gray-200);
+            font-size: 0.9375rem;
+        }
+        
+        .dependency-files li:last-child {
+            border-bottom: none;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #666;
+            font-size: 0.875rem;
+            border-top: 1px solid var(--gl-gray-200);
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <span class="navbar-title">Dependency Scanner</span>
+    </div>
+    
+    <div class="content">
+        <h1>{{ title }}</h1>
+        <p class="generation-info">Report generated for dependency analysis</p>
+        
+        <div class="summary-grid">
+            <div class="summary-item">
+                <h3>Dependencies</h3>
+                <p>{{ dependency_count }}</p>
+            </div>
+            <div class="summary-item">
+                <h3>Package Managers</h3>
+                <p>{{ package_managers|length }}</p>
+            </div>
+            <div class="summary-item">
+                <h3>Languages</h3>
+                <p>{{ languages|length }}</p>
+            </div>
+            <div class="summary-item">
+                <h3>Errors</h3>
+                <p>{{ error_count }}</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">Languages</div>
+            <div class="card-body">
+                <div class="language-bar">
+                    {% set colors = ['#6666c4', '#1f75cb', '#1aaa55', '#fc9403', '#dd2b0e', '#8c4b9a', '#4b9a8c', '#9a8c4b'] %}
+                    {% for lang, percentage in languages.items() %}
+                        <div class="language-segment" style="width: {{ percentage }}%; background-color: {{ colors[loop.index0 % colors|length] }};" title="{{ lang }}: {{ percentage }}%"></div>
+                    {% endfor %}
+                </div>
+                
+                <div class="language-legend">
+                    {% for lang, percentage in languages.items() %}
+                        <div class="language-item">
+                            <span class="language-color" style="background-color: {{ colors[loop.index0 % colors|length] }};"></span>
+                            <span>{{ lang }} ({{ percentage }}%)</span>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <table style="margin-top: 1.5rem;">
+                    <thead>
+                        <tr>
+                            <th>Language</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lang, percentage in languages.items() %}
+                        <tr>
+                            <td>{{ lang }}</td>
+                            <td>{{ percentage }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">Package Managers</div>
+            <div class="card-body">
+                {% if package_managers %}
+                <ul class="dependency-files">
+                    {% for pm in package_managers %}
+                    <li>{{ pm }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No package managers detected.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">Dependency Files</div>
+            <div class="card-body">
+                {% if data.dependency_files %}
+                <ul class="dependency-files">
+                    {% for file in data.dependency_files %}
+                    <li>{{ file }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No dependency files found.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">Dependencies</div>
+            <div class="card-body">
+                {% if data.dependencies %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Version</th>
+                            <th>Source</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dep in data.dependencies %}
+                        <tr>
+                            <td>{{ dep.name }}</td>
+                            <td>{{ dep.version or 'N/A' }}</td>
+                            <td>{{ dep.source_file or 'N/A' }}</td>
+                            <td>
+                                <span class="badge badge-{{ dep.type }}">{{ dep.type }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No dependencies found.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if data.errors %}
+        <div class="card">
+            <div class="card-header">Errors</div>
+            <div class="card-body">
+                <ul class="dependency-files">
+                    {% for error in data.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+        
+        <footer>
+            <p>Generated by Dependency Scanner Tool | <a href="https://github.com/rajvermacas/dep-scanner" target="_blank">GitHub Repository</a></p>
+        </footer>
+    </div>
+</body>
+</html>
