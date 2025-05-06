@@ -1,0 +1,53 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "honeypoke-extractor"
+version = "0.4.2"
+description = "Library for extracting and enriching data from HoneyPoke ElasticSearch instances."
+dependencies = [
+    "requests==2.31.0",
+    "elasticsearch==8.11.1",
+    "suricataparser==1.0.0",
+    "regex==2024.5.15",
+    "importlib-metadata; python_version<\"3.8\"",
+    "dpkt>=1.9.8",
+]
+authors = [
+    { name = "Jacob Hartman", email = "jacob@j2h2.com" },
+]
+maintainers = [
+    { name = "Jacob Hartman", email = "jacob@j2h2.com" },
+]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.8"
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://github.com/bocajspear1/honeypoke-extractor"
+Repository = "https://github.com/bocajspear1/honeypoke-extractor"
+Issues = "https://github.com/bocajspear1/honeypoke-extractor/issues"
+
+[tool.pdm]
+distribution = true
+
+[dependency-groups]
+test = [
+    "pytest>=8.3.4",
+]
