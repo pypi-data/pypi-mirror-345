@@ -1,0 +1,51 @@
+# 应用层配置
+application:
+  # 存储结构配置
+  storage:
+    daily_kline: "market_data/daily_kline"
+    adjust_factor: "market_data/adjust_factor"
+    trade_calendar: "base_info/trade_calendar"
+    listing_date: "base_info/listing_date"
+    stock_list: "base_info/stock_list"
+
+  # 日K线应用服务配置
+  daily_kline:
+    # 下载参数配置
+    storage_mode: "multi_file"
+    update_mode: "append"
+    download:
+      max_retries: 2
+      task_retry_interval: 1
+      max_workers: 5
+      task_interval: 1.0 # 每次操作完成后的休眠时间（秒）
+      task_timeout: 60.0  # 单个任务的超时时间（秒）
+      backoff_factor: 2.0  # 重试间隔的退避因子
+    read:
+      params:
+        - "code"
+  # 股票列表应用服务配置
+  stock_list:
+    storage_mode: "single_file"
+    update_mode: "overwrite"
+    download:
+      max_retries: 2
+      task_retry_interval: 5.0
+      max_workers: 1
+      task_interval: 2.0 # 每次操作完成后的休眠时间（秒）
+      task_timeout: 60.0  # 单个任务的超时时间（秒）
+      backoff_factor: 2.0  # 重试间隔的退避因子
+  # 日K线应用服务配置
+  adjust_factor:
+    # 下载参数配置
+    storage_mode: "multi_file"
+    update_mode: "append"
+    download:
+      max_retries: 2
+      task_retry_interval: 0
+      max_workers: 5
+      task_interval: 1.0 # 每次操作完成后的休眠时间（秒）
+      task_timeout: 60.0  # 单个任务的超时时间（秒）
+      backoff_factor: 2.0  # 重试间隔的退避因子
+    read:
+      params:
+        - "code"
