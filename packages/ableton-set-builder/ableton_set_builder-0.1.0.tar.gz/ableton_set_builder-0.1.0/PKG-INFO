@@ -1,0 +1,43 @@
+Metadata-Version: 2.4
+Name: ableton_set_builder
+Version: 0.1.0
+Summary: A package to build Ableton Live sets programmatically.
+Home-page: https://github.com/PCO-Ableton/ableton_set_builder
+Author: Lars & Manuel
+Author-email: me@manuelmol.nl
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENCE
+Requires-Dist: xmltodict
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# AbletonSetBuilder - Build Ableton sets using Python
+This package helps building Ableton Live sets.
+
+To start with this package, initialize the class with an existing Ableton Live set, to be used as a template:
+```python
+from ableton_set_builder import AbletonSetBuilder, ColorsDir
+
+builder = AbletonSetBuilder('path/to/template.als') # parses both compressed and uncompressed .als sets
+```
+
+The following functions are available:
+```python
+builder.create_audio_track("Track Name", "salmon")
+builder.add_scene("101", "scene 101")
+
+xml = builder.to_xml() # compile set to XML
+builder.build_als('path/to/output') # compile set to compressed ALS
+```
