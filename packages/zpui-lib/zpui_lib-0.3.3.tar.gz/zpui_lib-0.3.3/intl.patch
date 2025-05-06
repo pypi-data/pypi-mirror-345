@@ -1,0 +1,19 @@
+diff --git a/helpers/process.py b/helpers/process.py
+index 21f1028..e052dab 100644
+--- a/helpers/process.py
++++ b/helpers/process.py
+@@ -16,12 +16,13 @@ class ProHelper(object):
+ 
+     process = None
+ 
+-    def __init__(self, command, shell = False, use_terminal = True, output_callback = None, cwd = None, popen_kwargs = None):
++    def __init__(self, command, shell = False, use_terminal = True, output_callback = None, cwd = None, popen_kwargs = None, intl_locale = True):
+         self.command = command
+         self.shell = shell
+         self.cwd = cwd
+         self.use_terminal = use_terminal
+         self.output_callback = output_callback
++        self.intl_locale = intl_locale
+         self.popen_kwargs = popen_kwargs if popen_kwargs else {}
+         if self.output_callback == 'print':
+             self.output_callback = self.print_output
