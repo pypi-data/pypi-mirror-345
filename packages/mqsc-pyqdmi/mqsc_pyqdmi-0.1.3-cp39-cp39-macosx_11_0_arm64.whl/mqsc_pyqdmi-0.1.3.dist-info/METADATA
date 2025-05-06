@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: mqsc-pyqdmi
+Version: 0.1.3
+Summary: MQSC PyQDMI Library
+Author-Email: Lukas Burgholzer <lukas@munichquantum.software>
+License-Expression: LicenseRef-Proprietary
+License-File: LICENSE.txt
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: C++
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)
+Classifier: Typing :: Typed
+Project-URL: PyPI, https://pypi.org/project/mqsc-pyqdmi/
+Requires-Python: >=3.9
+Provides-Extra: qiskit
+Requires-Dist: qiskit>=1.0; extra == "qiskit"
+Description-Content-Type: text/markdown
+
+[![PyPI](https://img.shields.io/pypi/v/mqsc.pyqdmi?logo=pypi&style=flat-square)](https://pypi.org/project/mqsc.pyqdmi/)
+![OS](https://img.shields.io/badge/os-linux%20%7C%20macos-blue?style=flat-square)
+
+<p align="center">
+  <a href="https://munichquantum.software">
+   <picture>
+     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/munich-quantum-toolkit/.github/refs/heads/main/docs/_static/logo-mqsc-dark.svg" width="70%">
+     <img src="https://raw.githubusercontent.com/munich-quantum-toolkit/.github/refs/heads/main/docs/_static/logo-mqsc-light.svg" width="70%" alt="MQSC Logo">
+   </picture>
+  </a>
+</p>
+
+# MQSC PyQDMI
+
+MQSC PyQDMI is a C++17 and Python 3.9+ library built on top of the [QDMI](https://github.com/Munich-Quantum-Software-Stack/QDMI) interface.
+It provides
+
+- a fully fledged QDMI Driver implementation
+- a dedicated FoMaC (_Figures of Merit and Constraints_) library that abstracts the QDMI C interface and provides a high-level C++ interface for the user.
+- Python bindings for the FoMaC interface via [nanobind](https://nanobind.readthedocs.io/en/latest/) which forms the `mqsc.pyqdmi` Python package.
+- basic functionality for turning QDMI devices into Qiskit backends via the `mqsc.pyqdmi_qiskit` module.
+
+PyQDMI is compatible with QDMI version 1.1 and Qiskit version 1.0+.
