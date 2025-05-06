@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: istsa
+Version: 1.0.1
+Summary: ISTerre Time Series Analysis (ITSA) is a tool developed by Lou Marill.  This tool, developed in Python, produces a trajectory model for GNSS time series.
+Author: Lou Marill
+Author-email: Anne SOCQUET <anne.socquet@univ-grenoble-alpes.fr>
+Maintainer-email: Gaël JANEX <gael.janex@univ-grenoble-alpes.fr>, Oliver HENRIOT <Oliver.Henriot@univ-grenoble-alpes.fr>, Aubin TSAPONG TSAGUE <tsaponga@univ-grenoble-alpes.fr>
+Project-URL: Documentation, https://gricad-gitlab.univ-grenoble-alpes.fr/isterre-cycle/itsa/-/wikis/home
+Project-URL: Repository, https://gricad-gitlab.univ-grenoble-alpes.fr/isterre-cycle/itsa
+Project-URL: Issues, https://gricad-gitlab.univ-grenoble-alpes.fr/isterre-cycle/itsa/-/issues
+Keywords: gnss,gps,Time Series,Analysis,trajectory model
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: matplotlib==3.8.2
+Requires-Dist: scipy==1.12.0
+Requires-Dist: pandas==2.2.0
+Requires-Dist: pyarrow==16.1.0
+Requires-Dist: numpy==1.26.4
+Dynamic: license-file
+
+## ITSA = ISTerre Time Series Analysis
+
+ITSA was developped by Lou Marill during her PhD, as a member of the ISTerre Cycle team.
+This tool developped in python produces a trajectory model for GNSS time series. 
+
+Inputs:
+- the time series in PBO pos format
+- the dates and types of discontinuities (antenna, earthquakes, slow-slip events, swarms)
+- station coordinates (used to get earthquakes-station distance)
+- optionally, a list of position outliers
+
+ITSA calculates:
+- the 3 dimensional offset for each equipment discontinuity
+- post-seismic relaxation, currently without inversion (tau is an input parameter)
+- linear, seasonal, and acceleration on the full time series
+
+Outputs:
+- Final time series
+- Intermediate time series
+- All modelled and applied corrections
+
+ITSA is distributed under the licence CC-BY-NC: https://creativecommons.org/licenses/by-nc/4.0/
+
+Documentation is available on the gitlab wiki: https://gricad-gitlab.univ-grenoble-alpes.fr/isterre-cycle/itsa/-/wikis/home
+
