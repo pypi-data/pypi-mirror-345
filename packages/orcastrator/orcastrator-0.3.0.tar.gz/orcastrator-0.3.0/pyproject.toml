@@ -1,0 +1,23 @@
+[project]
+name = "orcastrator"
+version = "0.3.0"
+description = "ORCA high-throughput pipeline orchestrator"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+ "morca>=0.3.6",
+ "pydantic>=2.11.4",
+]
+
+[project.scripts]
+orcastrator = "orcastrator.cli:cli"
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
