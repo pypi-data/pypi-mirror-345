@@ -1,0 +1,48 @@
+[project]
+name = "cfun"
+version = "0.3.4"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "zoushucai", email = "zoushucai@users.noreply.github.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "cfundata>=0.2.1",
+    "char-similar-z>=0.1.0",
+    "ddddocr>=1.5.6",
+    "pandas>=2.2.3",
+    "pyarrow>=20.0.0",
+    "pycorrector>=1.1.2",
+    "requests>=2.32.3",
+    "scikit-learn>=1.6.1",
+    "ultralytics>=8.3.126",
+]
+
+[dependency-groups]
+dev = [
+    "mkdocs>=1.6.1",
+    "mkdocs-autorefs>=1.4.1",
+    "mkdocs-material>=9.6.12",
+    "mkdocstrings[python]>=0.29.1",
+    "pytest>=8.3.5",
+    "ruff>=0.11.8",
+]
+
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+
+
+[tool.ruff.lint]
+extend-select = ["B"]  
+
+[project.scripts]
+testing-demo = "cfun:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
