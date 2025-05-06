@@ -1,0 +1,124 @@
+Metadata-Version: 2.3
+Name: fw-gear
+Version: 0.3.0
+Summary: Flywheel Gear Tools
+License: MIT
+Author: Flywheel
+Author-email: support@flywheel.io
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Provides-Extra: all
+Provides-Extra: dicom
+Provides-Extra: fw-file
+Provides-Extra: nipype
+Provides-Extra: numpy
+Provides-Extra: sdk
+Requires-Dist: dotty-dict (>=1.3.1,<2.0.0)
+Requires-Dist: flywheel-sdk (>=14.2.0) ; extra == "all" or extra == "sdk"
+Requires-Dist: fw-meta (>=4.2.2,<5.0.0)
+Requires-Dist: jinja2 (==3.1.5)
+Requires-Dist: jsonschema (>=4.0.0,<5.0.0)
+Requires-Dist: nipype (>=1.9.2,<2.0.0) ; extra == "all" or extra == "nipype"
+Requires-Dist: numpy (>=1,<2) ; extra == "all" or extra == "numpy"
+Requires-Dist: psutil (>=7.0.0,<8.0.0)
+Description-Content-Type: text/markdown
+
+# FW Gear
+
+**fw-gear** is a python package maintained by
+[Flywheel](https://flywheel.io) It provides a set of modules for facilitating Flywheel
+gears development.
+
+## Installation
+
+```bash
+pip install fw-gear
+```
+
+## Documentation
+
+The documentation for the **fw-gear** can be found
+[here](https://flywheel-io.gitlab.io/scientific-solutions/lib/fw-gear/).
+
+## Contributing
+
+### Building
+
+The dependency and virtual environment manager for the gear toolkit is [poetry](https://python-poetry.org/).
+
+```bash
+poetry install
+```
+
+or
+
+```bash
+poetry install -E all
+```
+
+to install with extras.
+
+### Testing, Linting, Building doc
+
+Linting, Testing and Documentation building are all done using `pre-commit`.
+
+After installing poetry, the `pre-commit` command will be installed.
+Make sure pre-commit hooks are installed by running
+either `poetry run pre-commit install` or from within
+the poetry shell `pre-commit install`.
+After hooks are installed, they will
+automatically be run on each `git commit`, they can all be skipped by
+running `git commit --no-verify` or
+specific hooks can be skipped by setting
+the environmental variable, ex. `SKIP=test:pre-commit:pytest git commit`.
+
+Individual hooks can also be run independently.
+For example, to build sphinx-doc, you can
+run `pre-commit run publish:doc:test`,
+or to run black on all
+files: `pre-commit run test:flywheel-lint -a`.
+For a list of all hooks, view the [pre-commit-config](./.pre-commit-config.yaml).
+
+### Managing dependencies
+
+To add new dependencies to this repo, please use [poetry](https://python-poetry.org/)
+and to follow the below steps:
+
+```bash
+# Install my-package:
+poetry add my-package
+# or install my-package as part of the required packages for development (e.g. pytest):
+poetry add my-package --dev
+# Sync poetry.lock
+poetry lock
+```
+
+### Building and releasing
+
+#### Local building
+
+To build the project locally and verify if the build was successful, you can run
+
+```bash
+poetry build --format wheel
+twine check dist/*.whl
+```
+
+#### Versioning and project information
+
+The `pyproject.toml` file has replaced the usual `setup.py` in this
+repository and contains information on contributers, maintainers,
+project description, project URLs, and project version.
+In order to change any information on the project,
+it must be changed in the `pyproject.toml`, file.
+Documentation for this file can be
+found [here](https://python-poetry.org/docs/pyproject/),
+and information on dependency version specification
+syntax can be found [here](https://python-poetry.org/docs/dependency-specification/)
+
