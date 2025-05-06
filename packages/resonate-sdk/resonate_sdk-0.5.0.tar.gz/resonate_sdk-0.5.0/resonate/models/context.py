@@ -1,0 +1,23 @@
+from __future__ import annotations
+
+from typing import Protocol
+
+
+class Context(Protocol):
+    @property
+    def id(self) -> str: ...
+    @property
+    def info(self) -> Info: ...
+
+
+class Info(Protocol):
+    @property
+    def attempt(self) -> int: ...
+    @property
+    def idempotency_key(self) -> str | None: ...
+    @property
+    def tags(self) -> dict[str, str] | None: ...
+    @property
+    def timeout(self) -> int: ...
+    @property
+    def version(self) -> int: ...
