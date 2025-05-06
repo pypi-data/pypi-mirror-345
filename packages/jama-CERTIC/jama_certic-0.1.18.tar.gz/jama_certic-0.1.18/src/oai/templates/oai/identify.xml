@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/
+         http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>{% now "c" %}</responseDate>
+    <request verb="Identify">{{ base_url }}oai/project/{{ project.pk }}/</request>
+    <Identify>
+        <repositoryName>{{ project.label | capfirst }} OAI Repository</repositoryName>
+        <baseURL>{{ base_url }}oai/project/{{ project.pk }}/</baseURL>
+        <protocolVersion>2.0</protocolVersion>
+        <adminEmail>{{ project.admin_mail }}</adminEmail>
+        <earliestDatestamp>{{ earliest_record.created_at|date:"Y-m-d" }}</earliestDatestamp>
+        <deletedRecord>no</deletedRecord>
+        <granularity>YYYY-MM-DD</granularity>
+    </Identify>
+</OAI-PMH>
