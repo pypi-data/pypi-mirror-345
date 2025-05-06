@@ -1,0 +1,93 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  manylinux_2_28:
+    name: Linux packages (manylinux_2_28)
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Build Python packages
+      run: |
+        docker run -v $(pwd):/work -w /work quay.io/pypa/manylinux_2_28_x86_64 ./build/build_manylinux.sh
+
+    - name: Upload Python wheels
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        body: "Python wheels"
+        files: dist/*.whl
+
+  macos:
+    name: MacOS packages
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+    steps:
+
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Build Python packages
+      run: ./build/build_macos.sh
+
+    - name: Upload Python wheels
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        files: dist/*.whl
+
+  windows:
+    name: Windows packages
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+    steps:
+
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Apply the changes of the windows branch
+      run: |
+        pushd subprojects/maudesmc
+        git fetch --depth=1 origin +probabilistic:probabilistic +windows:windows
+        git diff probabilistic windows | patch -p1
+        popd
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Build Python packages
+      run: pwsh build/build_windows.ps1
+      env:
+        CC:  x86_64-w64-mingw32-gcc
+        CXX: x86_64-w64-mingw32-g++
+
+    - name: Upload Python wheels
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        files: dist/*.whl
