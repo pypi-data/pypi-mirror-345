@@ -1,0 +1,185 @@
+Metadata-Version: 2.4
+Name: link-nlp
+Version: 0.4.3
+Summary: Legal Information Knowledge with Natural Language Processing
+Home-page: https://github.com/LorMolf/link
+Author: Lorenzo Molfetta
+Author-email: lorenzo.molfetta@unibo.it
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Legal Industry
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: transformers>=4.0.0
+Requires-Dist: torch>=2.0.0
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: pandas>=1.3.0
+Requires-Dist: requests>=2.25.0
+Requires-Dist: beautifulsoup4>=4.9.0
+Requires-Dist: selenium>=4.0.0
+Requires-Dist: pymilvus>=2.0.0
+Requires-Dist: vllm>=0.1.0
+Requires-Dist: spacy>=3.0.0
+Requires-Dist: tqdm>=4.62.0
+Requires-Dist: accelerate>=0.20.0
+Requires-Dist: cymem>=2.0.0
+Requires-Dist: preshed>=3.0.0
+Requires-Dist: murmurhash>=1.0.0
+Requires-Dist: thinc>=8.0.0
+Requires-Dist: ninja>=1.10.0
+Requires-Dist: packaging>=21.0
+Requires-Dist: psutil>=5.8.0
+Requires-Dist: ray>=2.0.0
+Requires-Dist: protobuf>=3.20.0
+Requires-Dist: sentencepiece>=0.1.99
+Provides-Extra: gliner
+Requires-Dist: gliner>=0.1.0; extra == "gliner"
+Provides-Extra: transformers
+Requires-Dist: transformers>=4.0.0; extra == "transformers"
+Requires-Dist: torch>=2.0.0; extra == "transformers"
+Requires-Dist: accelerate>=0.20.0; extra == "transformers"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# LINK: Legal Information Knowledge with Natural Language Processing
+
+## Overview
+
+LINK is a comprehensive system for processing, analyzing, and retrieving information from Italian legal documents, with a focus on the "Codice Appalti" (Italian Public Procurement Code) and its amendments. The system leverages advanced natural language processing, vector databases, and machine learning techniques to provide contextual document retrieval and question answering about legal texts.
+
+## Key Features
+
+- **Automated Document Acquisition**: Download and process legal documents from Normattiva.it
+- **Context-Aware Retrieval**: Generate and use contextual information to improve document retrieval
+- **Vector Database Integration**: Store and query document vectors using Milvus for semantic search
+- **Legal Reference Parsing**: Identify and extract references to legal articles and regulations
+- **Evaluation Framework**: Test and measure the accuracy of the information retrieval system
+- **Multiple Document Comparison**: Compare original legal texts with amendments
+
+## Project Structure
+
+```
+├── assets/                         # Static assets for the project
+├── data/                           # Data files (CSV, JSONL)
+│   ├── *.csv                       # CSV data files
+│   └── *.jsonl                     # JSONL data files
+├── notebooks/                      # Jupyter notebooks for exploratory analysis
+│   ├── AggiornamentoAttiNormattiva.ipynb
+│   ├── scriptNormattiva.ipynb
+│   └── scriptSentenzeAppalti.ipynb
+├── src/                            # Source code
+│   └── link_nlp/                   # Main package
+│       ├── database/               # Database integration
+│       │   ├── milvusDb.py         # Main Milvus database interface
+│       │   └── MilvusDbAlternative.py  # Alternative implementation
+│       ├── data_acquisition/       # Web scraping and data collection
+│       │   ├── BrowserSessionClass.py  # Firefox browser automation
+│       │   ├── normattiva.py       # Interface for Normattiva.it
+│       │   ├── normattivaFunctions.py  # Helper functions for normattiva
+│       │   └── DownloadReferencesFromCsv.py 
+│       ├── text_processing/        # Text processing modules
+│       │   ├── text_generation.py  # Text generation utilities
+│       │   ├── text_generation_alt.py  # Alternative text generation
+│       │   ├── generationUtils.py  # Utility functions for generation
+│       │   ├── context_generation.py   # Context generation for chunks
+│       │   └── findReferencesOptimized.py # Legal reference extraction
+│       ├── retrieval/              # Information retrieval
+│       │   ├── ContextualRetrieval.py  # Context-based retrieval
+│       │   ├── ContextualRetrievalAlternative.py
+│       │   └── NewContextRetrieval.py
+│       ├── testing/                # Testing and evaluation
+│       │   ├── TestingFunction.py  # Testing utilities
+│       │   └── CalcoloMetriche.py  # Metrics calculation
+│       ├── main/                   # Main application
+│       │   └── main.py             # Entry point
+│       └── __init__.py             # Package initialization
+└── README.md                       # Project documentation
+```
+
+![LinkArch](assets/link_Arch.png "LINK Architecture")
+
+
+## Usage
+
+### Document Acquisition
+
+To download a legal document from Normattiva.it:
+
+```python
+from src.data_acquisition.normattiva import download_normattiva_element
+
+# Download a specific legal text by query
+download_normattiva_element("decreto legislativo 36 2023")
+```
+
+### Contextual Retrieval
+
+For contextual retrieval of legal information:
+
+```python
+from src.retrieval.ContextualRetrieval import get_decreto_appalti_context, search_and_combine_articles
+
+# Get the collection
+collection = get_decreto_appalti_context()
+
+# Search for specific articles
+article_text = search_and_combine_articles(collection, [36], "chunk")
+```
+
+### Testing and Evaluation
+
+To evaluate the system's performance:
+
+```python
+from src.retrieval.ContextualRetrieval import test_question_answer_codice_appalti
+
+# Test on a dataset of questions
+test_question_answer_codice_appalti("data/codice_appalti_qa.jsonl")
+```
+
+## Components
+
+### Database (Milvus)
+
+The project uses Milvus, a vector database, to store and retrieve document embeddings for semantic search:
+
+- **BaseCollection**: Abstract base class for collections
+- **ContextCollection**: Stores documents with contextual information
+- **ArticoliCollection**: Stores legal articles
+- **CorrettivoCollection**: Stores amendments to the legal code
+
+### Document Processing
+
+The system processes legal documents through several steps:
+
+1. Download from Normattiva.it
+2. Extract and structure text content
+3. Split into chunks
+4. Generate contextual information for each chunk
+5. Create vector embeddings
+6. Store in the database
+
+### Contextual Retrieval
+
+The contextual retrieval system enhances document retrieval by:
+
+1. Taking a user query
+2. Finding semantically similar chunks
+3. Using the generated context to improve relevance
+4. Combining results with specific article references if provided
+
+
+### Author
+> @LorMolf: lorenzo.molfetta@unibo.it
