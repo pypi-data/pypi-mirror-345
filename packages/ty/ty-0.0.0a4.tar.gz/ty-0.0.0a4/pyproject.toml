@@ -1,0 +1,38 @@
+[project]
+name = "ty"
+version = "0.0.0a4"
+description = "An extremely fast Python type checker, written in Rust."
+readme = "README.md"
+authors = [{ name = "Astral Software Inc.", email = "hey@astral.sh" }]
+requires-python = ">=3.8"
+dependencies = []
+
+[tool.uv]
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "dist-workspace.toml" },
+    { file = "ruff/Cargo.toml" },
+    { file = "ruff/Cargo.lock" },
+    { file = "**/*.rs" }
+]
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[tool.maturin]
+bindings = "bin"
+manifest-path = "ruff/crates/ty/Cargo.toml"
+module-name = "ty"
+python-source = "python"
+strip = true
+include = [
+    { path = "ruff/rust-toolchain.toml", format = [
+        "sdist",
+        "wheel",
+    ] },
+    { path = "dist-workspace.toml", format = [
+        "sdist"
+    ] },
+    { path = "LICENSE", format = "sdist" },
+]
