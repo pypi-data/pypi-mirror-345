@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preprocess Text &mdash; Orange3 Text Mining  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ad6d0c38" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bag of Words" href="bagofwords-widget.html" />
+    <link rel="prev" title="Wikipedia" href="wikipedia-widget.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Orange3 Text Mining
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="annotator.html">Annotated Corpus Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus-widget.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="importdocuments.html">Import Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="createcorpus.html">Create Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guardian-widget.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nytimes.html">NY Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubmed.html">Pubmed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twitter-widget.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wikipedia-widget.html">Wikipedia</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Preprocess Text</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#useful-regular-expressions">Useful Regular Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bagofwords-widget.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentembedding.html">Document Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="similarityhashing.html">Similarity Hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sentimentanalysis.html">Sentiment Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tweetprofiler.html">Tweet Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topicmodelling-widget.html">Topic Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LDAvis.html">LDAvis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpusviewer.html">Corpus Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordcloud.html">Word Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concordance.html">Concordance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docmap.html">Document Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordenrichment.html">Word Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="duplicatedetection.html">Duplicate Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpustonetwork.html">Corpus to Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Extract Keywords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="score-documents.html">Score Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semanticviewer.html">Semantic Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collocations.html">Collocations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordlist.html">Word List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ontology.html">Ontology</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/corpus.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/preprocess.html">Preprocessor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/twitter.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/nyt.html">New York Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/guardian.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/wikipedia.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/bagofwords.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/topicmodeling.html">Topic Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/tag.html">Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/async.html">Async Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Orange3 Text Mining</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Preprocess Text</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/widgets/preprocesstext.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="preprocess-text">
+<h1>Preprocess Text<a class="headerlink" href="#preprocess-text" title="Link to this heading"></a></h1>
+<p>Preprocesses corpus with selected methods.</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>Corpus: A collection of documents.</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Corpus: Preprocessed corpus.</p></li>
+</ul>
+<p><strong>Preprocess Text</strong> splits your text into smaller units (tokens), filters them, runs <a class="reference external" href="https://en.wikipedia.org/wiki/Stemming">normalization</a> (stemming, lemmatization), creates <a class="reference external" href="https://en.wikipedia.org/wiki/N-gram">n-grams</a> and tags tokens with <a class="reference external" href="https://en.wikipedia.org/wiki/Part_of_speech">part-of-speech</a> labels. Steps in the analysis are applied sequentially and can be reordered. Click and drag the preprocessor to change the order.</p>
+<p><img alt="../_images/PreprocessText.png" src="../_images/PreprocessText.png" /></p>
+<ol class="simple">
+<li><p>Available preprocessors.</p></li>
+<li><p><strong>Transformation</strong> transforms input data. It applies lowercase transformation by default.</p>
+<ul class="simple">
+<li><p><em>Lowercase</em> will turn all text to lowercase.</p></li>
+<li><p><em>Remove accents</em> will remove all diacritics/accents in text.
+naïve → naive</p></li>
+<li><p><em>Parse html</em> will detect html tags and parse out text only.
+&lt;a href…&gt;Some text&lt;/a&gt; → Some text</p></li>
+<li><p><em>Remove urls</em> will remove urls from text.
+This is a http://orange.biolab.si/ url. → This is a url.</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Tokenization_(lexical_analysis)">Tokenization </a> is the method of breaking the text into smaller components (words, sentences, bigrams).</p>
+<ul class="simple">
+<li><p><em>Word &amp; Punctuation</em> will split the text by words and keep punctuation symbols.
+This example. → (This), (example), (.)</p></li>
+<li><p><em>Whitespace</em> will split the text by whitespace only.
+This example. → (This), (example.)</p></li>
+<li><p><em>Sentence</em> will split the text by full stop, retaining only full sentences.
+This example. Another example. → (This example.), (Another example.)</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Regular_expression">Regexp</a> will split the text by provided regex. It splits by words only by default (omits punctuation).</p></li>
+<li><p><em>Tweet</em> will split the text by pre-trained Twitter model, which keeps hashtags, emoticons and other special symbols.
+This example. :-) #simple → (This), (example), (.), (:-)), (#simple)</p></li>
+</ul>
+</li>
+<li><p><strong>Normalization</strong> applies stemming and lemmatization to words. (I’ve always loved cats. → I have alway love cat.) For languages other than English use Snowball Stemmer (offers languages available in its NLTK implementation) or UDPipe.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://tartarus.org/martin/PorterStemmer/">Porter Stemmer</a> applies the original Porter stemmer.</p></li>
+<li><p><a class="reference external" href="http://snowballstem.org/">Snowball Stemmer</a> applies an improved version of Porter stemmer (Porter2). Set the language for normalization, default is English.</p></li>
+<li><p><a class="reference external" href="http://wordnet.princeton.edu/">WordNet Lemmatizer</a> applies a networks of cognitive synonyms to tokens based on a large lexical database of English.</p></li>
+<li><p><a class="reference external" href="http://ufal.mff.cuni.cz/udpipe/1">UDPipe</a> applies a <a class="reference external" href="https://lindat.mff.cuni.cz/repository/xmlui/handle/11234/1-2998?show=full">pre-trained model</a> for normalizing data.</p></li>
+<li><p><a class="reference external" href="https://github.com/vpodpecan/lemmagen3">Lemmagen</a> applies a pre-trained model for normalizing data.</p></li>
+</ul>
+</li>
+<li><p><strong>Filtering</strong> removes or keeps a selection of words.</p>
+<ul class="simple">
+<li><p><em>Stopwords</em> removes stopwords from text (e.g. removes ‘and’, ‘or’, ‘in’…). Select the language to filter by, English is set as default. You can also load your own list of stopwords provided in a simple *.txt file with one stopword per line.
+<img alt="../_images/stopwords.png" src="../_images/stopwords.png" />
+Click ‘browse’ icon to select the file containing stopwords. If the file was properly loaded, its name will be displayed next to pre-loaded stopwords. Change ‘English’ to ‘None’ if you wish to filter out only the provided stopwords. Click ‘reload’ icon to reload the list of stopwords.</p></li>
+<li><p><em>Lexicon</em> keeps only words provided in the file. Load a *.txt file with one word per line to use as lexicon. Click ‘reload’ icon to reload the lexicon.</p></li>
+<li><p><em>Regexp</em> removes words that match the regular expression. Default is set to remove punctuation.</p></li>
+<li><p><em>Document frequency</em> keeps tokens that appear in not less than and not more than the specified number / percentage of documents. Absolute keeps only tokens that appear in the specified number of documents. E.g. DF = (3, 5) keeps only tokens that appear in 3 or more and 5 or less documents. Relative keeps only tokens that appear in the specified percentage of documents. E.g. DF = (0.3, 0.5) keeps only tokens that appear in 30% to 50% of documents.</p></li>
+<li><p><em>Most frequent tokens</em> keeps only the specified number of most frequent tokens. Default is a 100 most frequent tokens.</p></li>
+</ul>
+</li>
+<li><p><strong>N-grams Range</strong> creates n-grams from tokens. Numbers specify the range of n-grams. Default returns one-grams and two-grams.</p></li>
+<li><p><strong>POS Tagger</strong> runs part-of-speech tagging on tokens.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://spacy.io/blog/part-of-speech-pos-tagger-in-python">Averaged Perceptron Tagger</a> runs POS tagging with Matthew Honnibal’s averaged perceptron tagger.</p></li>
+<li><p><a class="reference external" href="http://web.mit.edu/6.863/www/fall2012/projects/writeups/max-entropy-nltk.pdf">Treebank POS Tagger (MaxEnt)</a> runs POS tagging with a trained Penn Treebank model.</p></li>
+</ul>
+</li>
+<li><p>Preview of preprocessed data.</p></li>
+<li><p>If <em>Commit Automatically</em> is on, changes are communicated automatically. Alternatively press <em>Commit</em>.</p></li>
+</ol>
+<p><strong>Note</strong>! Preprocess Text applies preprocessing steps in the order they are listed. A good order is to first transform the text, then apply tokenization, POS tags, normalization, filtering and finally constructs n-grams based on given tokens. This is especially important for WordNet Lemmatizer since it requires POS tags for proper normalization.</p>
+<section id="useful-regular-expressions">
+<h2>Useful Regular Expressions<a class="headerlink" href="#useful-regular-expressions" title="Link to this heading"></a></h2>
+<p>Here are some useful regular expressions for quick filtering:</p>
+<p><code class="docutils literal notranslate"><span class="pre">\bword\b</span></code>: matches exact word
+<code class="docutils literal notranslate"><span class="pre">\w+</span></code>: matches only words, no punctuation
+<code class="docutils literal notranslate"><span class="pre">\b(B|b)\w+\b</span></code>: matches words beginning with the letter b
+<code class="docutils literal notranslate"><span class="pre">\w{4,}</span></code>: matches words that are longer than 4 characters<br /><code class="docutils literal notranslate"><span class="pre">\b\w+(Y|y)\b</span></code>: matches words ending with the letter y</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>In the first example we will observe the effects of preprocessing on our text. We are working with <em>book-excerpts.tab</em> that we’ve loaded with <a class="reference internal" href="corpus-widget.html"><span class="doc">Corpus</span></a> widget. We have connected <strong>Preprocess Text</strong> to <strong>Corpus</strong> and retained default preprocessing methods (lowercase, per-word tokenization and stopword removal). The only additional parameter we’ve added as outputting only the first 100 most frequent tokens. Then we connected <strong>Preprocess Text</strong> with <a class="reference internal" href="wordcloud.html"><span class="doc">Word Cloud</span></a> to observe words that are the most frequent in our text. Play around with different parameters, to see how they transform the output.</p>
+<p><img alt="../_images/Preprocess-Text-Example1.png" src="../_images/Preprocess-Text-Example1.png" /></p>
+<p>The second example is slightly more complex. We first acquired our data with <a class="reference internal" href="twitter-widget.html"><span class="doc">Twitter</span></a> widget. We quired the internet for tweets from users &#64;HillaryClinton and &#64;realDonaldTrump and got their tweets from the past two weeks, 242 in total.</p>
+<p><img alt="../_images/Preprocess-Text-Example2.png" src="../_images/Preprocess-Text-Example2.png" /></p>
+<p>In <strong>Preprocess Text</strong> there’s <em>Tweet</em> tokenization available, which retains hashtags, emojis, mentions and so on. However, this tokenizer doesn’t get rid of punctuation, thus we expanded the Regexp filtering with symbols that we wanted to get rid of. We ended up with word-only tokens, which we displayed in <a class="reference internal" href="wordcloud.html"><span class="doc">Word Cloud</span></a>. Then we created a schema for predicting author based on tweet content, which is explained in more details in the documentation for <a class="reference internal" href="twitter-widget.html"><span class="doc">Twitter</span></a> widget.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="wikipedia-widget.html" class="btn btn-neutral float-left" title="Wikipedia" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bagofwords-widget.html" class="btn btn-neutral float-right" title="Bag of Words" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Laboratory of Bioinformatics, Faculty of Computer Science, University of Ljubljana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

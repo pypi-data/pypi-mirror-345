@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corpus &mdash; Orange3 Text Mining  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ad6d0c38" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Preprocessor" href="preprocess.html" />
+    <link rel="prev" title="Ontology" href="../widgets/ontology.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Orange3 Text Mining
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/annotator.html">Annotated Corpus Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/corpus-widget.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/importdocuments.html">Import Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/createcorpus.html">Create Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/guardian-widget.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/nytimes.html">NY Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/pubmed.html">Pubmed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/twitter-widget.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/wikipedia-widget.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/preprocesstext.html">Preprocess Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/bagofwords-widget.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/documentembedding.html">Document Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/similarityhashing.html">Similarity Hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/sentimentanalysis.html">Sentiment Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/tweetprofiler.html">Tweet Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/topicmodelling-widget.html">Topic Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/LDAvis.html">LDAvis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/corpusviewer.html">Corpus Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/wordcloud.html">Word Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/concordance.html">Concordance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/docmap.html">Document Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/wordenrichment.html">Word Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/duplicatedetection.html">Duplicate Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/corpustonetwork.html">Corpus to Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/keywords.html">Extract Keywords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/score-documents.html">Score Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/semanticviewer.html">Semantic Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/collocations.html">Collocations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/wordlist.html">Word List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/ontology.html">Ontology</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Corpus</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus"><code class="docutils literal notranslate"><span class="pre">Corpus</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.copy"><code class="docutils literal notranslate"><span class="pre">Corpus.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.count_tokens"><code class="docutils literal notranslate"><span class="pre">Corpus.count_tokens()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.count_unique_tokens"><code class="docutils literal notranslate"><span class="pre">Corpus.count_unique_tokens()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.documents"><code class="docutils literal notranslate"><span class="pre">Corpus.documents</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.documents_from_features"><code class="docutils literal notranslate"><span class="pre">Corpus.documents_from_features()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.extend_attributes"><code class="docutils literal notranslate"><span class="pre">Corpus.extend_attributes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.from_documents"><code class="docutils literal notranslate"><span class="pre">Corpus.from_documents()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.from_file"><code class="docutils literal notranslate"><span class="pre">Corpus.from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.from_numpy"><code class="docutils literal notranslate"><span class="pre">Corpus.from_numpy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.from_table"><code class="docutils literal notranslate"><span class="pre">Corpus.from_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.from_table_rows"><code class="docutils literal notranslate"><span class="pre">Corpus.from_table_rows()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.has_tokens"><code class="docutils literal notranslate"><span class="pre">Corpus.has_tokens()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.ngrams"><code class="docutils literal notranslate"><span class="pre">Corpus.ngrams</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.pos_tags"><code class="docutils literal notranslate"><span class="pre">Corpus.pos_tags</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.pp_documents"><code class="docutils literal notranslate"><span class="pre">Corpus.pp_documents</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.retain_preprocessing"><code class="docutils literal notranslate"><span class="pre">Corpus.retain_preprocessing()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.set_text_features"><code class="docutils literal notranslate"><span class="pre">Corpus.set_text_features()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.set_title_variable"><code class="docutils literal notranslate"><span class="pre">Corpus.set_title_variable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.store_tokens"><code class="docutils literal notranslate"><span class="pre">Corpus.store_tokens()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.titles"><code class="docutils literal notranslate"><span class="pre">Corpus.titles</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orangecontrib.text.corpus.Corpus.tokens"><code class="docutils literal notranslate"><span class="pre">Corpus.tokens</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html">Preprocessor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twitter.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nyt.html">New York Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guardian.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wikipedia.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bagofwords.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topicmodeling.html">Topic Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tag.html">Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="async.html">Async Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Orange3 Text Mining</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Corpus</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/scripting/corpus.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="corpus">
+<span id="id1"></span><h1>Corpus<a class="headerlink" href="#corpus" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">orangecontrib.text.corpus.</span></span><span class="sig-name descname"><span class="pre">Corpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus" title="Link to this definition"></a></dt>
+<dd><p>Internal class for storing a corpus.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.copy" title="Link to this definition"></a></dt>
+<dd><p>Return a copy of the table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.count_tokens">
+<span class="sig-name descname"><span class="pre">count_tokens</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.count_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.count_tokens" title="Link to this definition"></a></dt>
+<dd><p>Count number of all (non-unique) tokens in the corpus</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.count_unique_tokens">
+<span class="sig-name descname"><span class="pre">count_unique_tokens</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.count_unique_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.count_unique_tokens" title="Link to this definition"></a></dt>
+<dd><p>Count number of all (unique) tokens in the corpus</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.documents">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">documents</span></span><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.documents" title="Link to this definition"></a></dt>
+<dd><p>Returns a list of strings representing documents — created
+by joining selected text features.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.documents_from_features">
+<span class="sig-name descname"><span class="pre">documents_from_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feats</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.documents_from_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.documents_from_features" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>feats</strong> (<em>list</em>) – A list fo features to join.</p>
+</dd>
+</dl>
+<p>Returns: a list of strings constructed by joining feats.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.extend_attributes">
+<span class="sig-name descname"><span class="pre">extend_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_attrs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rename_existing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.extend_attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.extend_attributes" title="Link to this definition"></a></dt>
+<dd><p>Append features to corpus. If <cite>feature_values</cite> argument is present,
+features will be Discrete else Continuous.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em><em> or </em><em>scipy.sparse.csr_matrix</em>) – Features values to append</p></li>
+<li><p><strong>feature_names</strong> (<em>list</em>) – List of string containing feature names</p></li>
+<li><p><strong>feature_values</strong> (<em>list</em>) – A list of possible values for Discrete features.</p></li>
+<li><p><strong>compute_values</strong> (<em>list</em>) – Compute values for corresponding features.</p></li>
+<li><p><strong>var_attrs</strong> (<em>dict</em>) – Additional attributes appended to variable.attributes.</p></li>
+<li><p><strong>sparse</strong> (<em>bool</em>) – Whether the features should be marked as sparse.</p></li>
+<li><p><strong>rename_existing</strong> (<em>bool</em>) – When true and names are not unique rename
+exiting features; if false rename new features</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.from_documents">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_documents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">documents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_vars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.from_documents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.from_documents" title="Link to this definition"></a></dt>
+<dd><p>Create corpus from documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>documents</strong> (<em>list</em>) – List of documents.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Name of the corpus</p></li>
+<li><p><strong>attributes</strong> (<em>list</em>) – List of tuples (Variable, getter) for attributes.</p></li>
+<li><p><strong>class_vars</strong> (<em>list</em>) – List of tuples (Variable, getter) for class vars.</p></li>
+<li><p><strong>metas</strong> (<em>list</em>) – List of tuples (Variable, getter) for metas.</p></li>
+<li><p><strong>title_indices</strong> (<em>list</em>) – List of indices into domain corresponding to features which will
+be used as titles.</p></li>
+<li><p><strong>language</strong> (<em>str</em>) – Resulting corpus’s language</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Corpus.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.from_file">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.from_file" title="Link to this definition"></a></dt>
+<dd><p>Read a data table from a file. The path can be absolute or relative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – File name</p></li>
+<li><p><strong>sheet</strong> (<em>str</em>) – Sheet in a file (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new data table</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Orange.data.Table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.from_numpy">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.from_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.from_numpy" title="Link to this definition"></a></dt>
+<dd><p>Construct a table from numpy arrays with the given domain. The number
+of variables in the domain must match the number of columns in the
+corresponding arrays. All arrays must have the same number of rows.
+Arrays may be of different numpy types, and may be dense or sparse.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain</strong> (<em>Orange.data.Domain</em>) – the domain for the new table</p></li>
+<li><p><strong>X</strong> (<em>np.array</em>) – array with attribute values</p></li>
+<li><p><strong>Y</strong> (<em>np.array</em>) – array with class values</p></li>
+<li><p><strong>metas</strong> (<em>np.array</em>) – array with meta attributes</p></li>
+<li><p><strong>W</strong> (<em>np.array</em>) – array with weights</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.from_table">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Ellipsis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.from_table" title="Link to this definition"></a></dt>
+<dd><p>Create a new table from selected columns and/or rows of an existing
+one. The columns are chosen using a domain. The domain may also include
+variables that do not appear in the source table; they are computed
+from source variables if possible.</p>
+<p>The resulting data may be a view or a copy of the existing data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain</strong> (<em>Orange.data.Domain</em>) – the domain for the new table</p></li>
+<li><p><strong>source</strong> (<em>Orange.data.Table</em>) – the source table</p></li>
+<li><p><strong>row_indices</strong> (<em>a slice</em><em> or </em><em>a sequence</em>) – indices of the rows to include</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new table</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Orange.data.Table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.from_table_rows">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_table_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.from_table_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.from_table_rows" title="Link to this definition"></a></dt>
+<dd><p>Construct a new table by selecting rows from the source table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<em>Orange.data.Table</em>) – an existing table</p></li>
+<li><p><strong>row_indices</strong> (<em>a slice</em><em> or </em><em>a sequence</em>) – indices of the rows to include</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new table</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Orange.data.Table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.has_tokens">
+<span class="sig-name descname"><span class="pre">has_tokens</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.has_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.has_tokens" title="Link to this definition"></a></dt>
+<dd><p>Return whether corpus is preprocessed or not.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.ngrams">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ngrams</span></span><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.ngrams" title="Link to this definition"></a></dt>
+<dd><p>Ngram representations of documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>generator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.pos_tags">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pos_tags</span></span><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.pos_tags" title="Link to this definition"></a></dt>
+<dd><p>A list of lists containing POS tags. If there are no
+POS tags available, return None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.pp_documents">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pp_documents</span></span><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.pp_documents" title="Link to this definition"></a></dt>
+<dd><p>Preprocessed documents (transformed).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.retain_preprocessing">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">retain_preprocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Ellipsis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.retain_preprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.retain_preprocessing" title="Link to this definition"></a></dt>
+<dd><p>Set preprocessing of ‘new’ object to match the ‘orig’ object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.set_text_features">
+<span class="sig-name descname"><span class="pre">set_text_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Variable</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.set_text_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.set_text_features" title="Link to this definition"></a></dt>
+<dd><p>Select which meta-attributes to include when mining text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>feats</strong> – List of text features to include. If None infer them.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.set_title_variable">
+<span class="sig-name descname"><span class="pre">set_title_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title_variable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StringVariable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.set_title_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.set_title_variable" title="Link to this definition"></a></dt>
+<dd><p>Set the title attribute. Only one column can be a title attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>title_variable</strong> – Variable that need to be set as a title variable. If it is None,
+do not set a variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.store_tokens">
+<span class="sig-name descname"><span class="pre">store_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/orangecontrib/text/corpus.html#Corpus.store_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.store_tokens" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tokens</strong> – List of lists containing tokens.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.titles">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">titles</span></span><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.titles" title="Link to this definition"></a></dt>
+<dd><p>Returns a list of titles.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="orangecontrib.text.corpus.Corpus.tokens">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tokens</span></span><a class="headerlink" href="#orangecontrib.text.corpus.Corpus.tokens" title="Link to this definition"></a></dt>
+<dd><p>A list of lists containing tokens. If tokens are not yet
+present, run default preprocessor and return tokens.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../widgets/ontology.html" class="btn btn-neutral float-left" title="Ontology" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="preprocess.html" class="btn btn-neutral float-right" title="Preprocessor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Laboratory of Bioinformatics, Faculty of Computer Science, University of Ljubljana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

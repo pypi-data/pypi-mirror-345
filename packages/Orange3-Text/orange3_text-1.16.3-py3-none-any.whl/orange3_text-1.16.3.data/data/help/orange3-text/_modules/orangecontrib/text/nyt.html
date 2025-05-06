@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>orangecontrib.text.nyt &mdash; Orange3 Text Mining  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=ad6d0c38" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Orange3 Text Mining
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/annotator.html">Annotated Corpus Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/corpus-widget.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/importdocuments.html">Import Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/createcorpus.html">Create Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/guardian-widget.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/nytimes.html">NY Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/pubmed.html">Pubmed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/twitter-widget.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/wikipedia-widget.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/preprocesstext.html">Preprocess Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/bagofwords-widget.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/documentembedding.html">Document Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/similarityhashing.html">Similarity Hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/sentimentanalysis.html">Sentiment Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/tweetprofiler.html">Tweet Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/topicmodelling-widget.html">Topic Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/LDAvis.html">LDAvis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/corpusviewer.html">Corpus Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/wordcloud.html">Word Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/concordance.html">Concordance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/docmap.html">Document Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/wordenrichment.html">Word Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/duplicatedetection.html">Duplicate Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/corpustonetwork.html">Corpus to Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/keywords.html">Extract Keywords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/score-documents.html">Score Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/semanticviewer.html">Semantic Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/collocations.html">Collocations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/wordlist.html">Word List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/ontology.html">Ontology</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/corpus.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/preprocess.html">Preprocessor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/twitter.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/nyt.html">New York Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/guardian.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/wikipedia.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/bagofwords.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/topicmodeling.html">Topic Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/tag.html">Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/async.html">Async Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Orange3 Text Mining</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">orangecontrib.text.nyt</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for orangecontrib.text.nyt</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shelve</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">http.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span><span class="p">,</span> <span class="n">request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.error</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPError</span><span class="p">,</span> <span class="n">URLError</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil.parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">isoparse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Orange.data</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ContinuousVariable</span><span class="p">,</span>
+    <span class="n">DiscreteVariable</span><span class="p">,</span>
+    <span class="n">StringVariable</span><span class="p">,</span>
+    <span class="n">TimeVariable</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Orange.misc</span><span class="w"> </span><span class="kn">import</span> <span class="n">environ</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">orangecontrib.text.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">Corpus</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orangecontrib.text.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_corpus</span>
+
+<span class="n">SLEEP</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">MAX_DOCS</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">MIN_DATE</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="mi">1851</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;http://api.nytimes.com/svc/search/v2/articlesearch.json&#39;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">keywords</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">kws</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;keywords&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">kw</span> <span class="ow">in</span> <span class="n">kws</span> <span class="k">if</span> <span class="n">kw</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_date</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pub_date&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">isoparse</span><span class="p">(</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span> <span class="k">if</span> <span class="n">date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+
+<div class="viewcode-block" id="NYT">
+<a class="viewcode-back" href="../../../scripting/nyt.html#orangecontrib.text.nyt.NYT">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NYT</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Class for fetching records from the NYT API. &quot;&quot;&quot;</span>
+
+    <span class="n">class_vars</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">DiscreteVariable</span><span class="p">,</span> <span class="s2">&quot;Section&quot;</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;section_name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="n">metas</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">StringVariable</span><span class="p">,</span> <span class="s2">&quot;Headline&quot;</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;headline&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">StringVariable</span><span class="p">,</span> <span class="s2">&quot;Abstract&quot;</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;abstract&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">StringVariable</span><span class="p">,</span> <span class="s2">&quot;Snippet&quot;</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snippet&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">StringVariable</span><span class="p">,</span> <span class="s2">&quot;Lead Paragraph&quot;</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lead_paragraph&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">StringVariable</span><span class="p">,</span> <span class="s2">&quot;Subject Keywords&quot;</span><span class="p">),</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">keywords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;subject&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">StringVariable</span><span class="p">,</span> <span class="s2">&quot;URL&quot;</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;web_url&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">StringVariable</span><span class="p">,</span> <span class="s2">&quot;Locations&quot;</span><span class="p">),</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">keywords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;glocations&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">StringVariable</span><span class="p">,</span> <span class="s2">&quot;Persons&quot;</span><span class="p">),</span> <span class="n">partial</span><span class="p">(</span><span class="n">keywords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;persons&quot;</span><span class="p">)),</span>
+        <span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">StringVariable</span><span class="p">,</span> <span class="s2">&quot;Organizations&quot;</span><span class="p">),</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">keywords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;organizations&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">StringVariable</span><span class="p">,</span> <span class="s2">&quot;Creative Works&quot;</span><span class="p">),</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">keywords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;creative_works&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">TimeVariable</span><span class="p">,</span> <span class="s2">&quot;Publication Date&quot;</span><span class="p">,</span> <span class="n">have_time</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">have_date</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">parse_date</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">DiscreteVariable</span><span class="p">,</span> <span class="s2">&quot;Article Type&quot;</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type_of_material&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">ContinuousVariable</span><span class="p">,</span> <span class="s2">&quot;Word Count&quot;</span><span class="p">,</span> <span class="n">number_of_decimals</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;word_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="n">text_features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Headline&quot;</span><span class="p">,</span> <span class="s2">&quot;Abstract&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="NYT.__init__">
+<a class="viewcode-back" href="../../../scripting/nyt.html#orangecontrib.text.nyt.NYT.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            api_key (str): NY Time API key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">api_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_error</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_rate_limit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_no_connection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache_init</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="NYT.api_key_valid">
+<a class="viewcode-back" href="../../../scripting/nyt.html#orangecontrib.text.nyt.NYT.api_key_valid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">api_key_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Checks whether api key given at initialization is valid. &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encode_url</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">connection</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">connection</span><span class="o">.</span><span class="n">getcode</span><span class="p">()</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">HTTPError</span><span class="p">,</span> <span class="n">URLError</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="NYT.search">
+<a class="viewcode-back" href="../../../scripting/nyt.html#orangecontrib.text.nyt.NYT.search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_docs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">on_progress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">should_break</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            query (str): Search query.</span>
+<span class="sd">            date_from (date): Start date limit.</span>
+<span class="sd">            date_to (date): End date limit.</span>
+<span class="sd">            max_docs (int): Maximal number of documents returned.</span>
+<span class="sd">            on_progress (callback): Called after every iteration of downloading.</span>
+<span class="sd">            should_break (callback): Callback for breaking the computation before the end.</span>
+<span class="sd">                If it evaluates to True, downloading is stopped and document downloaded till now</span>
+<span class="sd">                are returned in a Corpus.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Corpus: Search results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">max_docs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">max_docs</span> <span class="o">&gt;</span> <span class="n">MAX_DOCS</span><span class="p">:</span>
+            <span class="n">max_docs</span> <span class="o">=</span> <span class="n">MAX_DOCS</span>
+
+        <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">go_sleep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_page</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">date_from</span><span class="p">,</span> <span class="n">date_to</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">records</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">][</span><span class="s1">&#39;docs&#39;</span><span class="p">])</span>
+        <span class="n">max_docs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">][</span><span class="s1">&#39;meta&#39;</span><span class="p">][</span><span class="s1">&#39;hits&#39;</span><span class="p">],</span> <span class="n">max_docs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">on_progress</span><span class="p">):</span>
+            <span class="n">on_progress</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">),</span> <span class="n">max_docs</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">max_docs</span><span class="o">/</span><span class="n">BATCH_SIZE</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">should_break</span><span class="p">)</span> <span class="ow">and</span> <span class="n">should_break</span><span class="p">():</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">go_sleep</span><span class="p">:</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="n">SLEEP</span><span class="p">)</span>
+
+            <span class="n">data</span><span class="p">,</span> <span class="n">go_sleep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_page</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">date_from</span><span class="p">,</span> <span class="n">date_to</span><span class="p">,</span> <span class="n">page</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">records</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">][</span><span class="s1">&#39;docs&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">on_progress</span><span class="p">):</span>
+                <span class="n">on_progress</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">),</span> <span class="n">max_docs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_docs</span><span class="p">:</span>
+            <span class="n">records</span> <span class="o">=</span> <span class="n">records</span><span class="p">[:</span><span class="n">max_docs</span><span class="p">]</span>
+
+        <span class="n">corpus</span> <span class="o">=</span> <span class="n">create_corpus</span><span class="p">(</span>
+            <span class="n">documents</span><span class="o">=</span><span class="n">records</span><span class="p">,</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">class_vars</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_vars</span><span class="p">,</span>
+            <span class="n">metas</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metas</span><span class="p">,</span>
+            <span class="n">title_indices</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">text_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">text_features</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;NY Times&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">corpus</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;en&quot;</span>  <span class="c1"># NYT publishes only in English</span>
+        <span class="k">return</span> <span class="n">corpus</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_cache_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Initialize cache in Orange environment buffer dir. &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">environ</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">(),</span> <span class="s2">&quot;nytcache&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;query_cache&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Could not initialize NYT cache: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)),</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_cache_fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Fetch URL from cache if present. &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">shelve</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">cache</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">cache</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">cache</span><span class="p">[</span><span class="n">url</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_cache_store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Store data for URL in cache. &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">shelve</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">cache</span><span class="p">:</span>
+            <span class="n">cache</span><span class="p">[</span><span class="n">url</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fetch_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">date_from</span><span class="p">,</span> <span class="n">date_to</span><span class="p">,</span> <span class="n">page</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Fetch one page either from cache or web. &quot;&quot;&quot;</span>
+        <span class="n">cache_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encode_url</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">date_from</span><span class="p">,</span> <span class="n">date_to</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">for_caching</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_fetch</span><span class="p">(</span><span class="n">cache_url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encode_url</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">date_from</span><span class="p">,</span> <span class="n">date_to</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">for_caching</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">HTTPError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">403</span> <span class="ow">and</span> <span class="n">page</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># occasionally some pages return error 403 (Forbidden)</span>
+                    <span class="c1"># while all other page numbers seem to work just fine.</span>
+                    <span class="c1"># Skip such pages and don&#39;t break loading!</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;NYT api returned HTTPError with code 403 &#39;</span>
+                                  <span class="s1">&#39;(Forbidden)! Skipping this page ...&#39;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;docs&#39;</span><span class="p">:</span> <span class="p">[]}},</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">429</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_rate_limit</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">on_rate_limit</span><span class="p">()</span>
+                <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_error</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span>
+            <span class="k">except</span> <span class="n">URLError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_no_connection</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">on_no_connection</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span>
+                <span class="k">raise</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span><span class="p">(</span><span class="n">cache_url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="kc">True</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_encode_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">for_caching</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Encode url for given query, date restrictions and page number.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query (str): Search query.</span>
+<span class="sd">            date_from (date): Date restriction.</span>
+<span class="sd">            date_to (date): Date restriction.</span>
+<span class="sd">            page (int): Page number.</span>
+<span class="sd">            for_caching (bool): Whether URL would be used for caching. If set, exclude BASE_URL</span>
+<span class="sd">                and API key.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: An encoded URL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>   <span class="c1"># list required to preserve order - important for caching</span>
+            <span class="p">(</span><span class="s1">&#39;fq&#39;</span><span class="p">,</span> <span class="s1">&#39;The New York Times&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;api-key&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">,</span> <span class="n">page</span><span class="p">),</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;begin_date&#39;</span><span class="p">,</span> <span class="n">date_from</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;end_date&#39;</span><span class="p">,</span> <span class="n">date_to</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">for_caching</span><span class="p">:</span>     <span class="c1"># remove api key, return only params</span>
+            <span class="k">del</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">parse</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">?</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">BASE_URL</span><span class="p">,</span> <span class="n">parse</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">params</span><span class="p">))</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Laboratory of Bioinformatics, Faculty of Computer Science, University of Ljubljana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document Embedding &mdash; Orange3 Text Mining  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ad6d0c38" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Similarity Hashing" href="similarityhashing.html" />
+    <link rel="prev" title="Bag of Words" href="bagofwords-widget.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Orange3 Text Mining
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="annotator.html">Annotated Corpus Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus-widget.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="importdocuments.html">Import Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="createcorpus.html">Create Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guardian-widget.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nytimes.html">NY Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubmed.html">Pubmed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twitter-widget.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wikipedia-widget.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocesstext.html">Preprocess Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bagofwords-widget.html">Bag of Words</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Document Embedding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#embedding-retrieval">Embedding retrieval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="similarityhashing.html">Similarity Hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sentimentanalysis.html">Sentiment Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tweetprofiler.html">Tweet Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topicmodelling-widget.html">Topic Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LDAvis.html">LDAvis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpusviewer.html">Corpus Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordcloud.html">Word Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concordance.html">Concordance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docmap.html">Document Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordenrichment.html">Word Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="duplicatedetection.html">Duplicate Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpustonetwork.html">Corpus to Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Extract Keywords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="score-documents.html">Score Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semanticviewer.html">Semantic Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collocations.html">Collocations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordlist.html">Word List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ontology.html">Ontology</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/corpus.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/preprocess.html">Preprocessor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/twitter.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/nyt.html">New York Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/guardian.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/wikipedia.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/bagofwords.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/topicmodeling.html">Topic Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/tag.html">Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/async.html">Async Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Orange3 Text Mining</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Document Embedding</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/widgets/documentembedding.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="document-embedding">
+<h1>Document Embedding<a class="headerlink" href="#document-embedding" title="Link to this heading"></a></h1>
+<p>Embeds documents from input corpus into vector space by using pre-trained
+<a class="reference external" href="https://fasttext.cc/docs/en/crawl-vectors.html">fastText</a> models described in E. Grave et al. (2018).</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>Corpus: A collection of documents.</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Corpus: Corpus with new features appended.</p></li>
+</ul>
+<p><strong>Document Embedding</strong> parses n-grams of each document in corpus, obtains embedding
+for each n-gram using pre-trained model for chosen language and obtains one vector for each document by aggregating n-gram embeddings using one of offered aggregators. Note that method will work on any n-grams but it will give best results if corpus is preprocessed such that n-grams are words (because model was trained to embed words).</p>
+<p><img alt="../_images/Document-Embedding-stamped.png" src="../_images/Document-Embedding-stamped.png" /></p>
+<ol class="simple">
+<li><p>Widget parameters:</p>
+<ul class="simple">
+<li><p>Language: widget will use a model trained on documents in chosen language.</p></li>
+<li><p>Aggregator: operation to perform on n-gram embeddings to aggregate them into a single document vector.</p></li>
+</ul>
+</li>
+<li><p>Cancel current execution.</p></li>
+<li><p>If <em>Apply automatically</em> is checked, changes in parameters are sent automatically. Alternatively press <em>Apply</em>.</p></li>
+</ol>
+<section id="embedding-retrieval">
+<h2>Embedding retrieval<a class="headerlink" href="#embedding-retrieval" title="Link to this heading"></a></h2>
+<p><strong>Document Embedding</strong> takes n-grams (tokens), usually produced by the <a class="reference internal" href="preprocesstext.html"><span class="doc">Preprocess Text</span></a> widget. One can see tokens in the <a class="reference internal" href="corpusviewer.html"><span class="doc">Corpus Viewer</span></a> widget by selection <em>Show tokens and tags</em> or in <a class="reference internal" href="wordcloud.html"><span class="doc">Word Cloud</span></a>. Tokens are sent to the server where each token is <a class="reference external" href="https://fasttext.cc/docs/en/python-module.html#model-object">vectorized</a> separately and then the aggregation function is used to compute the document embedding. The server returns the vector for each document. Currently, the server runs <code class="docutils literal notranslate"><span class="pre">fasttext==0.9.1</span></code>. For out-of-vocabulary (OOV) words, fastText obtain vectors by summing up vectors for its component character n-grams.</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>In first example, we will inspect how the widget works. Load <em>book-excerpts.tab</em> using <a class="reference internal" href="corpus-widget.html"><span class="doc">Corpus</span></a> widget and connect it to <strong>Document Embedding</strong>. Check the output data by connecting <strong>Document Embedding</strong> to <strong>Data Table</strong>. We see additional 300 features that we widget has appended.</p>
+<p><img alt="../_images/Document-Embedding-Example1.png" src="../_images/Document-Embedding-Example1.png" /></p>
+<p>In the second example we will try to predict document category. We will keep working on <em>book-excerpts.tab</em> loaded with <a class="reference internal" href="corpus-widget.html"><span class="doc">Corpus</span></a> widget and sent through <a class="reference internal" href="preprocesstext.html"><span class="doc">Preprocess Text</span></a> with default parameters. Connect <strong>Preprocess Text</strong> to <strong>Document Embedding</strong> to obtain features for predictive modelling. Here we set aggregator to Sum.</p>
+<p>Connect <strong>Document Embedding</strong> to <strong>Test and Score</strong> and also connect learner of choice to the left side of <strong>Test and Score</strong>. We chose SVM and changed kernel to Linear. <strong>Test and Score</strong> will now compute performance of each learner on the input. We can see that we achieved great results.</p>
+<p>Let’s now inspect confusion matrix. Connect <strong>Test and Score</strong> to <strong>Confusion Matrix</strong>.
+Clicking on <em>Select Misclassified</em> will output documents that were misclassified. We can further inspect them by connecting <a class="reference internal" href="corpusviewer.html"><span class="doc">Corpus Viewer</span></a> to <strong>Confusion Matrix</strong>.</p>
+<p><img alt="../_images/Document-Embedding-Example2.png" src="../_images/Document-Embedding-Example2.png" /></p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<p>E. Grave, P. Bojanowski, P. Gupta, A. Joulin, T. Mikolov. “Learning Word Vectors for 157 Languages.” <em>Proceedings of the International Conference on Language Resources and Evaluation</em>, 2018.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bagofwords-widget.html" class="btn btn-neutral float-left" title="Bag of Words" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="similarityhashing.html" class="btn btn-neutral float-right" title="Similarity Hashing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Laboratory of Bioinformatics, Faculty of Computer Science, University of Ljubljana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

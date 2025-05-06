@@ -1,0 +1,182 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Duplicate Detection &mdash; Orange3 Text Mining  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ad6d0c38" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Statistics" href="statistics.html" />
+    <link rel="prev" title="Word Enrichment" href="wordenrichment.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Orange3 Text Mining
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="annotator.html">Annotated Corpus Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus-widget.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="importdocuments.html">Import Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="createcorpus.html">Create Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guardian-widget.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nytimes.html">NY Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubmed.html">Pubmed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twitter-widget.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wikipedia-widget.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocesstext.html">Preprocess Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bagofwords-widget.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentembedding.html">Document Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="similarityhashing.html">Similarity Hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sentimentanalysis.html">Sentiment Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tweetprofiler.html">Tweet Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topicmodelling-widget.html">Topic Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LDAvis.html">LDAvis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpusviewer.html">Corpus Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordcloud.html">Word Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concordance.html">Concordance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docmap.html">Document Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordenrichment.html">Word Enrichment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Duplicate Detection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpustonetwork.html">Corpus to Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Extract Keywords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="score-documents.html">Score Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semanticviewer.html">Semantic Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collocations.html">Collocations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordlist.html">Word List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ontology.html">Ontology</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/corpus.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/preprocess.html">Preprocessor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/twitter.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/nyt.html">New York Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/guardian.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/wikipedia.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/bagofwords.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/topicmodeling.html">Topic Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/tag.html">Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/async.html">Async Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Orange3 Text Mining</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Duplicate Detection</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/widgets/duplicatedetection.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="duplicate-detection">
+<h1>Duplicate Detection<a class="headerlink" href="#duplicate-detection" title="Link to this heading"></a></h1>
+<p>Detect &amp; remove duplicates from a corpus.</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>Distances: A distance matrix.</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Corpus Without Duplicated: Corpus with duplicates removed.</p></li>
+<li><p>Duplicates Cluster: Documents belonging to selected cluster.</p></li>
+<li><p>Corpus: Corpus with appended cluster labels.</p></li>
+</ul>
+<p><strong>Duplicate Detection</strong> uses clustering to find duplicates in the corpus. It is great with the <a class="reference internal" href="twitter-widget.html"><span class="doc">Twitter</span></a> widget for removing retweets and other similar documents.</p>
+<p>To set the level of similarity, drag the line vertical line left or right in the visualization. The further left the line, the more similar the documents have to be in order to be considered duplicates. You can also set the threshold manually in the control area.</p>
+<p><img alt="../_images/Duplicate-Detection-stamped.png" src="../_images/Duplicate-Detection-stamped.png" /></p>
+<ol class="simple">
+<li><p>Information on unique and duplicate documents.</p></li>
+<li><p>Linkage used for clustering (Single, Average, Complete, Weighted and Ward).</p></li>
+<li><p>Distance threshold sets the similarity cutoff. The lower the value, the more similar the data instances have to be to belong to the same cluster. You can also set the cutoff by dragging the vertical line in the plot.</p></li>
+<li><p>Cluster labels can be appended as attributes, class or metas.</p></li>
+<li><p>List of clusters at the selected threshold. They are sorted by size by default. Click on the cluster to observe its content on the output.</p></li>
+</ol>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<p>This simple example uses <em>iris</em> data to find identical data instances. Load <em>iris</em> with the <strong>File</strong> widget and pass it to <strong>Distances</strong>. In <strong>Distances</strong>, use Euclidean distance for computing the distance matrix. Pass distances to <strong>Duplicate Detection</strong>.</p>
+<p>It looks like cluster C147 contain three duplicate entries. Let us select it in the widget and observe it in a <strong>Data Table</strong>. Remember to set the output to <em>Duplicates Cluster</em>. IThe three data instances are identical. To use the data set without duplicates, use the first output, <em>Corpus Without Duplicates</em>.</p>
+<p>The same procedure can be used also for corpora. Remember to use the <a class="reference internal" href="bagofwords-widget.html"><span class="doc">Bag of Words</span></a> between <a class="reference internal" href="corpus-widget.html"><span class="doc">Corpus</span></a> and <strong>Distances</strong>.</p>
+<p><img alt="../_images/Duplicate-Detection-Example.png" src="../_images/Duplicate-Detection-Example.png" /></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="wordenrichment.html" class="btn btn-neutral float-left" title="Word Enrichment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="statistics.html" class="btn btn-neutral float-right" title="Statistics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Laboratory of Bioinformatics, Faculty of Computer Science, University of Ljubljana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

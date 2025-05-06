@@ -1,0 +1,865 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>orangecontrib.text.corpus &mdash; Orange3 Text Mining  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=ad6d0c38" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Orange3 Text Mining
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/annotator.html">Annotated Corpus Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/corpus-widget.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/importdocuments.html">Import Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/createcorpus.html">Create Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/guardian-widget.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/nytimes.html">NY Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/pubmed.html">Pubmed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/twitter-widget.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/wikipedia-widget.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/preprocesstext.html">Preprocess Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/bagofwords-widget.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/documentembedding.html">Document Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/similarityhashing.html">Similarity Hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/sentimentanalysis.html">Sentiment Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/tweetprofiler.html">Tweet Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/topicmodelling-widget.html">Topic Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/LDAvis.html">LDAvis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/corpusviewer.html">Corpus Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/wordcloud.html">Word Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/concordance.html">Concordance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/docmap.html">Document Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/wordenrichment.html">Word Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/duplicatedetection.html">Duplicate Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/corpustonetwork.html">Corpus to Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/keywords.html">Extract Keywords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/score-documents.html">Score Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/semanticviewer.html">Semantic Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/collocations.html">Collocations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/wordlist.html">Word List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/ontology.html">Ontology</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/corpus.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/preprocess.html">Preprocessor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/twitter.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/nyt.html">New York Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/guardian.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/wikipedia.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/bagofwords.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/topicmodeling.html">Topic Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/tag.html">Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/async.html">Async Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Orange3 Text Mining</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">orangecontrib.text.corpus</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for orangecontrib.text.corpus</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">nltk</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Orange.data</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Variable</span><span class="p">,</span>
+    <span class="n">ContinuousVariable</span><span class="p">,</span>
+    <span class="n">DiscreteVariable</span><span class="p">,</span>
+    <span class="n">Domain</span><span class="p">,</span>
+    <span class="n">RowInstance</span><span class="p">,</span>
+    <span class="n">Table</span><span class="p">,</span>
+    <span class="n">StringVariable</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Orange.preprocess.transformation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Identity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Orange.data.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_unique_names</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orangewidget.utils.signals</span><span class="w"> </span><span class="kn">import</span> <span class="n">summarize</span><span class="p">,</span> <span class="n">PartialSummary</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">orangecontrib.text.language</span><span class="w"> </span><span class="kn">import</span> <span class="n">ISO2LANG</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_sample_corpora_dir</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;datasets&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_arrays</span><span class="p">(</span><span class="o">*</span><span class="n">arrays</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">or</span> <span class="n">sp</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">a</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Argument </span><span class="si">{}</span><span class="s1"> should be of type np.array, sparse or None.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+
+    <span class="n">lengths</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrays</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Leading dimension mismatch&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lengths</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lengths</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+
+
+<div class="viewcode-block" id="Corpus">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Corpus</span><span class="p">(</span><span class="n">Table</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal class for storing a corpus.&quot;&quot;&quot;</span>
+    <span class="n">NGRAMS_SEPARATOR</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Domain</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;domain&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;Signature of Corpus constructor when called with numpy &quot;</span>
+                <span class="s2">&quot;arrays will change in the future to be equal to Corpus.from_numpy. &quot;</span>
+                <span class="s2">&quot;To avoid issues use Corpus.from_numpy instead.&quot;</span><span class="p">,</span>
+                <span class="ne">FutureWarning</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="c1"># __init__ had a different signature than from_numpy</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;metas&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">,</span> <span class="s2">&quot;text_features&quot;</span><span class="p">,</span> <span class="s2">&quot;ids&quot;</span><span class="p">]</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">param</span><span class="p">:</span> <span class="n">arg</span> <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">args</span><span class="p">)})</span>
+
+            <span class="c1"># in old signature it can happen that X is missing</span>
+            <span class="n">n_doc</span> <span class="o">=</span> <span class="n">_check_arrays</span><span class="p">(</span>
+                <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metas&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;X&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_doc</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_corpus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Variable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text_features</span>
+<span class="sd">            meta attributes that are used for text mining. Infer them if None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_features</span> <span class="o">=</span> <span class="p">[]</span>    <span class="c1"># list of text features for mining</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngram_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pos_tags</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">orangecontrib.text.preprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">PreprocessorList</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__used_preprocessor</span> <span class="o">=</span> <span class="n">PreprocessorList</span><span class="p">([])</span>   <span class="c1"># required for compute values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pp_documents</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># preprocessed documents</span>
+
+        <span class="k">if</span> <span class="n">text_features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_infer_text_features</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_text_features</span><span class="p">(</span><span class="n">text_features</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_unique_titles</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;language&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">used_preprocessor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__used_preprocessor</span>
+
+    <span class="nd">@used_preprocessor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">used_preprocessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pp</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">orangecontrib.text.preprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">PreprocessorList</span><span class="p">,</span> <span class="n">Preprocessor</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">PreprocessorList</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__used_preprocessor</span> <span class="o">=</span> <span class="n">PreprocessorList</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pp</span><span class="o">.</span><span class="n">preprocessors</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">Preprocessor</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__used_preprocessor</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_identical_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="n">Variable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Variable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find a renamed feature in the domain which is identical to a feature.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        feature</span>
+<span class="sd">            A variable to find an identical variable in the domain.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Variable which is identical to a feature (have different name but has</span>
+<span class="sd">        Identity(feature) in compute value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">metas</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">var</span> <span class="o">==</span> <span class="n">feature</span>
+                <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">compute_value</span><span class="p">,</span> <span class="n">Identity</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">var</span><span class="o">.</span><span class="n">compute_value</span><span class="o">.</span><span class="n">variable</span> <span class="o">==</span> <span class="n">feature</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="n">var</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Corpus.set_text_features">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.set_text_features">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_text_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Variable</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select which meta-attributes to include when mining text.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        feats</span>
+<span class="sd">            List of text features to include. If None infer them.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">feats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">feats</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>  <span class="c1"># copy to not edit passed array inplace</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">feats</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">f</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">metas</span><span class="p">):</span>
+                    <span class="c1"># if not exact feature in the domain, it may be renamed</span>
+                    <span class="c1"># find identity - renamed feature</span>
+                    <span class="n">id_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_identical_feature</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">id_feat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">feats</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_feat</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Feature &quot;</span><span class="si">{}</span><span class="s1">&quot; not found.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">feats</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">feats</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Text features must be unique.&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">feats</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_features</span><span class="p">:</span>
+                <span class="c1"># when new features are same than before it is not required</span>
+                <span class="c1"># to invalidate tokens</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">text_features</span> <span class="o">=</span> <span class="n">feats</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># invalidate tokens</span>
+            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">metas</span><span class="p">:</span>
+                <span class="c1"># update all include attributes</span>
+                <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">feats</span><span class="p">:</span>
+                    <span class="n">attr</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">attr</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;include&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_infer_text_features</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Corpus.set_title_variable">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.set_title_variable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_title_variable</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">title_variable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">StringVariable</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the title attribute. Only one column can be a title attribute.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        title_variable</span>
+<span class="sd">            Variable that need to be set as a title variable. If it is None,</span>
+<span class="sd">            do not set a variable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">variables</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">metas</span><span class="p">:</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">title_variable</span> <span class="ow">and</span> <span class="n">title_variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="n">title_variable</span><span class="p">]</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_unique_titles</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_unique_titles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define self._titles variable as a list of titles (a title for each</span>
+<span class="sd">        document). It is used to have an unique title for each document. In</span>
+<span class="sd">        case when the document have the same title as the other document we</span>
+<span class="sd">        put a number beside.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span>
+                 <span class="n">chain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">metas</span><span class="p">)</span>
+                 <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unique_titles</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">documents_from_features</span><span class="p">(</span><span class="n">attrs</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="s1">&#39;Document </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))])</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_unique_titles</span><span class="p">(</span><span class="n">titles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function adds numbers to the non-unique values fo the title.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        titles</span>
+<span class="sd">            List of titles - not necessary unique</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        List with unique titles.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">titles</span><span class="p">)</span>
+        <span class="n">cur_appearances</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">new_titles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">titles</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">counts</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">cur_appearances</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">t</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="n">cur_appearances</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="n">new_titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_titles</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_infer_text_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Infer which text features to use. If nothing was provided</span>
+<span class="sd">        in the file header, use the first text feature.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">include_feats</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">metas</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">is_string</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">first</span> <span class="o">=</span> <span class="n">attr</span>
+                <span class="n">incl</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;include&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="c1"># variable attributes can be boolean from Orange 3.29</span>
+                <span class="c1"># they are string in older versions</span>
+                <span class="c1"># incl == True, since without == string &quot;False&quot; would be True</span>
+                <span class="k">if</span> <span class="n">incl</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span> <span class="ow">or</span> <span class="n">incl</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">include_feats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">include_feats</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">first</span><span class="p">:</span>
+            <span class="n">include_feats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_text_features</span><span class="p">(</span><span class="n">include_feats</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Corpus.extend_attributes">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.extend_attributes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extend_attributes</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">feature_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compute_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">var_attrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rename_existing</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append features to corpus. If `feature_values` argument is present,</span>
+<span class="sd">        features will be Discrete else Continuous.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (numpy.ndarray or scipy.sparse.csr_matrix): Features values to append</span>
+<span class="sd">            feature_names (list): List of string containing feature names</span>
+<span class="sd">            feature_values (list): A list of possible values for Discrete features.</span>
+<span class="sd">            compute_values (list): Compute values for corresponding features.</span>
+<span class="sd">            var_attrs (dict): Additional attributes appended to variable.attributes.</span>
+<span class="sd">            sparse (bool): Whether the features should be marked as sparse.</span>
+<span class="sd">            rename_existing (bool): When true and names are not unique rename</span>
+<span class="sd">                exiting features; if false rename new features</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_rename_features</span><span class="p">(</span><span class="n">additional_names</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+            <span class="n">cur_attr</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
+            <span class="n">cur_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span>
+            <span class="n">cur_meta</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">metas</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rename_existing</span><span class="p">:</span>
+                <span class="n">current_vars</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">cur_attr</span> <span class="o">+</span> <span class="p">(</span>
+                    <span class="p">[</span><span class="n">cur_class</span><span class="p">]</span> <span class="k">if</span> <span class="n">cur_class</span> <span class="k">else</span> <span class="p">[])</span> <span class="o">+</span> <span class="n">cur_meta</span>
+                <span class="p">)</span>
+                <span class="n">current_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">current_vars</span><span class="p">]</span>
+                <span class="n">new_names</span> <span class="o">=</span> <span class="n">get_unique_names</span><span class="p">(</span>
+                    <span class="n">additional_names</span><span class="p">,</span> <span class="n">current_names</span><span class="p">,</span> <span class="n">equal_numbers</span><span class="o">=</span><span class="kc">False</span>
+                <span class="p">)</span>
+                <span class="n">renamed_vars</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">var</span><span class="o">.</span><span class="n">renamed</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">current_vars</span><span class="p">,</span> <span class="n">new_names</span><span class="p">)</span>
+                <span class="p">]</span>
+                <span class="n">cur_attr</span> <span class="o">=</span> <span class="n">renamed_vars</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">cur_attr</span><span class="p">)]</span>
+                <span class="n">cur_class</span> <span class="o">=</span> <span class="n">renamed_vars</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">cur_attr</span><span class="p">)]</span> <span class="k">if</span> <span class="n">cur_class</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">cur_meta</span> <span class="o">=</span> <span class="n">renamed_vars</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">cur_meta</span><span class="p">):]</span>
+            <span class="k">return</span> <span class="n">cur_attr</span><span class="p">,</span> <span class="n">cur_class</span><span class="p">,</span> <span class="n">cur_meta</span>
+
+        <span class="k">if</span> <span class="n">sp</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span> <span class="ow">or</span> <span class="n">sp</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">compute_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">compute_values</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">feature_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">feature_values</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># rename existing variables if required</span>
+        <span class="n">curr_attributes</span><span class="p">,</span> <span class="n">curr_class_var</span><span class="p">,</span> <span class="n">curr_metas</span> <span class="o">=</span> <span class="n">_rename_features</span><span class="p">(</span><span class="n">feature_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rename_existing</span><span class="p">:</span>
+            <span class="c1"># rename new feature names if required</span>
+            <span class="n">feature_names</span> <span class="o">=</span> <span class="n">get_unique_names</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">equal_numbers</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+
+        <span class="n">additional_attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">cv</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">feature_names</span><span class="p">,</span> <span class="n">feature_values</span><span class="p">,</span> <span class="n">compute_values</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">var</span> <span class="o">=</span> <span class="n">DiscreteVariable</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">,</span> <span class="n">compute_value</span><span class="o">=</span><span class="n">cv</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">var</span> <span class="o">=</span> <span class="n">ContinuousVariable</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">compute_value</span><span class="o">=</span><span class="n">cv</span><span class="p">)</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">sparse</span> <span class="o">=</span> <span class="n">sparse</span>     <span class="c1"># don&#39;t pass this to constructor so this works with Orange &lt; 3.8.0</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">var_attrs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">var_attrs</span><span class="p">)</span>
+            <span class="n">additional_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+
+        <span class="n">new_domain</span> <span class="o">=</span> <span class="n">Domain</span><span class="p">(</span>
+                <span class="n">attributes</span><span class="o">=</span><span class="n">curr_attributes</span> <span class="o">+</span> <span class="n">additional_attributes</span><span class="p">,</span>
+                <span class="n">class_vars</span><span class="o">=</span><span class="n">curr_class_var</span><span class="p">,</span>
+                <span class="n">metas</span><span class="o">=</span><span class="n">curr_metas</span>
+        <span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">Corpus</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
+            <span class="n">new_domain</span><span class="p">,</span>
+            <span class="n">X</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metas</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="n">text_features</span><span class="o">=</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_features</span><span class="p">),</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># keep corpus&#39;s name</span>
+        <span class="n">Corpus</span><span class="o">.</span><span class="n">retain_preprocessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">c</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">documents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns a list of strings representing documents — created</span>
+<span class="sd">        by joining selected text features. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">documents_from_features</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_features</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pp_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Preprocessed documents (transformed). &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pp_documents</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">documents</span>
+
+    <span class="nd">@pp_documents</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pp_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">documents</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pp_documents</span> <span class="o">=</span> <span class="n">documents</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">titles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns a list of titles. &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">language</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__setstate__</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;language&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Corpus.documents_from_features">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.documents_from_features">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">documents_from_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feats</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            feats (list): A list fo features to join.</span>
+
+<span class="sd">        Returns: a list of strings constructed by joining feats.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create a Table where feats are in metas</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_table</span><span class="p">(</span><span class="n">Domain</span><span class="p">([],</span> <span class="p">[],</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">feats</span><span class="p">],</span>
+                                       <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># When we use only features coming from sparse X data.metas is sparse.</span>
+        <span class="c1"># Transform it to dense.</span>
+        <span class="k">if</span> <span class="n">sp</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">metas</span><span class="p">):</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">metas</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metas</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">str_val</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">metas</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">metas</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Corpus.store_tokens">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.store_tokens">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">store_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">:</span> <span class="n">List</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tokens</span>
+<span class="sd">            List of lists containing tokens.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        np.ndarray: A list of lists containing tokens. If tokens are not yet</span>
+<span class="sd">        present, run default preprocessor and return tokens.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_tokens</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span>
+
+<div class="viewcode-block" id="Corpus.has_tokens">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.has_tokens">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Return whether corpus is preprocessed or not. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_base_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">orangecontrib.text.preprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">BASE_TRANSFORMER</span><span class="p">,</span> \
+            <span class="n">BASE_TOKENIZER</span><span class="p">,</span> <span class="n">PreprocessorList</span>
+
+        <span class="c1"># don&#39;t use anything that requires NLTK data to assure async download</span>
+        <span class="n">base_preprocessors</span> <span class="o">=</span> <span class="n">PreprocessorList</span><span class="p">([</span><span class="n">BASE_TRANSFORMER</span><span class="p">,</span> <span class="n">BASE_TOKENIZER</span><span class="p">])</span>
+        <span class="n">corpus</span> <span class="o">=</span> <span class="n">base_preprocessors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">corpus</span><span class="o">.</span><span class="n">tokens</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pos_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            np.ndarray: A list of lists containing POS tags. If there are no</span>
+<span class="sd">            POS tags available, return None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pos_tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pos_tags</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+    <span class="nd">@pos_tags</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pos_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos_tags</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pos_tags</span> <span class="o">=</span> <span class="n">pos_tags</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">ngrams_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">join_with</span><span class="o">=</span><span class="n">NGRAMS_SEPARATOR</span><span class="p">,</span> <span class="n">include_postags</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">include_postags</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">include_postags</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_tags</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span>
+
+        <span class="k">if</span> <span class="n">join_with</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">processor</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">nltk</span><span class="o">.</span><span class="n">ngrams</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">include_postags</span><span class="p">:</span>
+            <span class="n">processor</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="p">(</span><span class="n">join_with</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">token</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">tag</span> <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">ngram</span><span class="p">)</span>
+                                        <span class="k">for</span> <span class="n">ngram</span> <span class="ow">in</span> <span class="n">nltk</span><span class="o">.</span><span class="n">ngrams</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">doc</span><span class="p">),</span> <span class="n">n</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">processor</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="p">(</span><span class="n">join_with</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ngram</span><span class="p">)</span> <span class="k">for</span> <span class="n">ngram</span> <span class="ow">in</span> <span class="n">nltk</span><span class="o">.</span><span class="n">ngrams</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">processor</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngram_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngram_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">))))</span>
+                <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Corpus.count_tokens">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.count_tokens">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">count_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Count number of all (non-unique) tokens in the corpus&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Corpus.count_unique_tokens">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.count_unique_tokens">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">count_unique_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Count number of all (unique) tokens in the corpus&quot;&quot;&quot;</span>
+        <span class="c1"># it seems to be fast enough even datasets very large dataset, so I</span>
+        <span class="c1"># would avoid caching to prevetnt potential problems connected to that</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">({</span><span class="n">tk</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="k">for</span> <span class="n">tk</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">})</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ngrams</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;generator: Ngram representations of documents.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngrams_iterator</span><span class="p">(</span><span class="n">join_with</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NGRAMS_SEPARATOR</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Corpus.copy">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.copy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a copy of the table.&quot;&quot;&quot;</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">_setup_corpus</span><span class="p">(</span><span class="n">text_features</span><span class="o">=</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_features</span><span class="p">))</span>
+        <span class="c1"># since tokens are considered immutable copies are not needed</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">ngram_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngram_range</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">pos_tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_tags</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">used_preprocessor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">used_preprocessor</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">_titles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">_pp_documents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pp_documents</span>
+        <span class="k">return</span> <span class="n">c</span></div>
+
+
+<div class="viewcode-block" id="Corpus.from_documents">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.from_documents">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_documents</span><span class="p">(</span><span class="n">documents</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_vars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metas</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">title_indices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create corpus from documents.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            documents (list): List of documents.</span>
+<span class="sd">            name (str): Name of the corpus</span>
+<span class="sd">            attributes (list): List of tuples (Variable, getter) for attributes.</span>
+<span class="sd">            class_vars (list): List of tuples (Variable, getter) for class vars.</span>
+<span class="sd">            metas (list): List of tuples (Variable, getter) for metas.</span>
+<span class="sd">            title_indices (list): List of indices into domain corresponding to features which will</span>
+<span class="sd">                be used as titles.</span>
+<span class="sd">            language (str): Resulting corpus&#39;s language</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Corpus.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">attributes</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">class_vars</span> <span class="o">=</span> <span class="n">class_vars</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">metas</span> <span class="o">=</span> <span class="n">metas</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">title_indices</span> <span class="o">=</span> <span class="n">title_indices</span> <span class="ow">or</span> <span class="p">[]</span>
+
+        <span class="n">domain</span> <span class="o">=</span> <span class="n">Domain</span><span class="p">(</span><span class="n">attributes</span><span class="o">=</span><span class="p">[</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">],</span>
+                        <span class="n">class_vars</span><span class="o">=</span><span class="p">[</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">class_vars</span><span class="p">],</span>
+                        <span class="n">metas</span><span class="o">=</span><span class="p">[</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">metas</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">title_indices</span><span class="p">:</span>
+            <span class="n">domain</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">to_val</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">DiscreteVariable</span><span class="p">):</span>
+                <span class="n">attr</span><span class="o">.</span><span class="n">val_from_str_add</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">to_val</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">documents</span><span class="p">:</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">to_val</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span> <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">]</span>
+                          <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">to_val</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span> <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">class_vars</span><span class="p">]</span>
+                          <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="n">metas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">to_val</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span> <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">metas</span><span class="p">]</span>
+                              <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>   <span class="c1"># assure shapes match the number of columns</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributes</span><span class="p">)))</span>
+            <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">class_vars</span><span class="p">)))</span>
+            <span class="n">metas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">metas</span><span class="p">)))</span>
+
+        <span class="n">corpus</span> <span class="o">=</span> <span class="n">Corpus</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
+            <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">metas</span><span class="o">=</span><span class="n">metas</span><span class="p">,</span> <span class="n">text_features</span><span class="o">=</span><span class="p">[]</span>
+        <span class="p">)</span>
+        <span class="n">corpus</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">corpus</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language</span>
+        <span class="k">return</span> <span class="n">corpus</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="n">Corpus</span><span class="p">,</span> <span class="n">RowInstance</span><span class="p">)):</span>
+            <span class="n">Corpus</span><span class="o">.</span><span class="n">retain_preprocessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">c</span>
+
+<div class="viewcode-block" id="Corpus.from_table">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.from_table">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_table</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">row_indices</span><span class="o">=...</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_table</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">row_indices</span><span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">_setup_corpus</span><span class="p">()</span>
+        <span class="n">Corpus</span><span class="o">.</span><span class="n">retain_preprocessing</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">row_indices</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">c</span></div>
+
+
+<div class="viewcode-block" id="Corpus.from_numpy">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.from_numpy">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_numpy</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">domain</span><span class="p">,</span>
+        <span class="n">X</span><span class="p">,</span>
+        <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">metas</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">W</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">text_features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">language</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
+            <span class="n">domain</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">metas</span><span class="o">=</span><span class="n">metas</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="n">W</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">ids</span>
+        <span class="p">)</span>
+        <span class="c1"># t is corpus but corpus specific attributes were not set yet</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">_setup_corpus</span><span class="p">(</span><span class="n">text_features</span><span class="o">=</span><span class="n">text_features</span><span class="p">)</span>
+        <span class="c1"># language can be already set in attributes if they provided</span>
+        <span class="k">if</span> <span class="n">language</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s2">&quot;language&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language</span>
+        <span class="k">return</span> <span class="n">t</span></div>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+        <span class="c1"># t is corpus but corpus specific attributes were not set yet</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">_setup_corpus</span><span class="p">()</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language</span>
+        <span class="k">return</span> <span class="n">t</span>
+
+<div class="viewcode-block" id="Corpus.from_table_rows">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.from_table_rows">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_table_rows</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">row_indices</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_table_rows</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">row_indices</span><span class="p">)</span>
+        <span class="c1"># t is corpus but corpus specific attributes were not set yet</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">_setup_corpus</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="s2">&quot;_titles&quot;</span><span class="p">):</span>
+            <span class="c1"># covering case when from_table_rows called by from_table</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">_titles</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">_titles</span><span class="p">[</span><span class="n">row_indices</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">c</span></div>
+
+
+<div class="viewcode-block" id="Corpus.from_file">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.from_file">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">sheet</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>  <span class="c1"># check the default location</span>
+            <span class="n">abs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_sample_corpora_dir</span><span class="p">(),</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">abs_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.tab&#39;</span><span class="p">):</span>
+                <span class="n">abs_path</span> <span class="o">+=</span> <span class="s1">&#39;.tab&#39;</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">abs_path</span><span class="p">):</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">abs_path</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sheet</span><span class="o">=</span><span class="n">sheet</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">Corpus</span><span class="p">):</span>
+            <span class="c1"># when loading regular file result of super().from_file is Table - need</span>
+            <span class="c1"># to be transformed to Corpus, when loading pickle it is Corpus already</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">metas</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="n">table</span></div>
+
+
+<div class="viewcode-block" id="Corpus.retain_preprocessing">
+<a class="viewcode-back" href="../../../scripting/corpus.html#orangecontrib.text.corpus.Corpus.retain_preprocessing">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">retain_preprocessing</span><span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Set preprocessing of &#39;new&#39; object to match the &#39;orig&#39; object. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">Corpus</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>  <span class="c1"># get row selection</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">orig</span><span class="o">.</span><span class="n">_tokens</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># retain preprocessing</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+                    <span class="n">new</span><span class="o">.</span><span class="n">_tokens</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">orig</span><span class="o">.</span><span class="n">_tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]])</span>
+                    <span class="n">new</span><span class="o">.</span><span class="n">pos_tags</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">orig</span><span class="o">.</span><span class="n">pos_tags</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">orig</span><span class="o">.</span><span class="n">pos_tags</span><span class="p">[</span><span class="n">key</span><span class="p">]])</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> \
+                        <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">range</span><span class="p">):</span>
+                    <span class="n">new</span><span class="o">.</span><span class="n">_tokens</span> <span class="o">=</span> <span class="n">orig</span><span class="o">.</span><span class="n">_tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                    <span class="n">new</span><span class="o">.</span><span class="n">pos_tags</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">orig</span><span class="o">.</span><span class="n">pos_tags</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">orig</span><span class="o">.</span><span class="n">pos_tags</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">key</span> <span class="ow">is</span> <span class="bp">Ellipsis</span><span class="p">:</span>
+                    <span class="n">new</span><span class="o">.</span><span class="n">_tokens</span> <span class="o">=</span> <span class="n">orig</span><span class="o">.</span><span class="n">_tokens</span>
+                    <span class="n">new</span><span class="o">.</span><span class="n">pos_tags</span> <span class="o">=</span> <span class="n">orig</span><span class="o">.</span><span class="n">pos_tags</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Indexing by type </span><span class="si">{}</span><span class="s1"> not supported.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)))</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">Corpus</span><span class="p">):</span>
+                <span class="c1"># _find_identical_feature returns non when feature not found</span>
+                <span class="c1"># filter this Nones from list</span>
+                <span class="n">new</span><span class="o">.</span><span class="n">text_features</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span>
+                    <span class="n">new</span><span class="o">.</span><span class="n">_find_identical_feature</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">tf</span> <span class="ow">in</span> <span class="n">orig</span><span class="o">.</span><span class="n">text_features</span>
+                <span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new</span><span class="o">.</span><span class="n">text_features</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">tf</span>
+                    <span class="k">for</span> <span class="n">tf</span> <span class="ow">in</span> <span class="n">orig</span><span class="o">.</span><span class="n">text_features</span>
+                    <span class="k">if</span> <span class="n">tf</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">metas</span><span class="p">)</span>
+                <span class="p">]</span>
+
+            <span class="n">new</span><span class="o">.</span><span class="n">_titles</span> <span class="o">=</span> <span class="n">orig</span><span class="o">.</span><span class="n">_titles</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">new</span><span class="o">.</span><span class="n">ngram_range</span> <span class="o">=</span> <span class="n">orig</span><span class="o">.</span><span class="n">ngram_range</span>
+            <span class="n">new</span><span class="o">.</span><span class="n">used_preprocessor</span> <span class="o">=</span> <span class="n">orig</span><span class="o">.</span><span class="n">used_preprocessor</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># orig is not Corpus</span>
+            <span class="n">new</span><span class="o">.</span><span class="n">_set_unique_titles</span><span class="p">()</span>
+            <span class="n">new</span><span class="o">.</span><span class="n">_infer_text_features</span><span class="p">()</span></div>
+</div>
+
+
+
+<span class="nd">@summarize</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Corpus</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">summarize_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">:</span> <span class="n">Corpus</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PartialSummary</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides automated input and output summaries for Corpus</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">table_summary</span> <span class="o">=</span> <span class="n">summarize</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">Table</span><span class="p">)(</span><span class="n">corpus</span><span class="p">)</span>
+    <span class="n">extras</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&lt;br/&gt;&lt;nobr&gt;Tokens: </span><span class="si">{</span><span class="n">corpus</span><span class="o">.</span><span class="n">count_tokens</span><span class="p">()</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Types: </span><span class="si">{</span><span class="n">corpus</span><span class="o">.</span><span class="n">count_unique_tokens</span><span class="p">()</span><span class="si">}</span><span class="s2">&lt;/nobr&gt;&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">corpus</span><span class="o">.</span><span class="n">has_tokens</span><span class="p">()</span>
+        <span class="k">else</span> <span class="s2">&quot;&lt;br/&gt;&lt;nobr&gt;Corpus is not preprocessed&lt;/nobr&gt;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">language</span> <span class="o">=</span> <span class="n">ISO2LANG</span><span class="p">[</span><span class="n">corpus</span><span class="o">.</span><span class="n">language</span><span class="p">]</span> <span class="k">if</span> <span class="n">corpus</span><span class="o">.</span><span class="n">language</span> <span class="k">else</span> <span class="s2">&quot;not set&quot;</span>
+    <span class="n">extras</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&lt;br/&gt;&lt;nobr&gt;Language: </span><span class="si">{</span><span class="n">language</span><span class="si">}</span><span class="s2">&lt;/nobr&gt;&quot;</span>
+    <span class="k">return</span> <span class="n">PartialSummary</span><span class="p">(</span><span class="n">table_summary</span><span class="o">.</span><span class="n">summary</span><span class="p">,</span> <span class="n">table_summary</span><span class="o">.</span><span class="n">details</span> <span class="o">+</span> <span class="n">extras</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Laboratory of Bioinformatics, Faculty of Computer Science, University of Ljubljana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

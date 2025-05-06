@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Score Documents &mdash; Orange3 Text Mining  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ad6d0c38" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Semantic Viewer" href="semanticviewer.html" />
+    <link rel="prev" title="Extract Keywords" href="keywords.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Orange3 Text Mining
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="annotator.html">Annotated Corpus Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus-widget.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="importdocuments.html">Import Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="createcorpus.html">Create Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guardian-widget.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nytimes.html">NY Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubmed.html">Pubmed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twitter-widget.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wikipedia-widget.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocesstext.html">Preprocess Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bagofwords-widget.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentembedding.html">Document Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="similarityhashing.html">Similarity Hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sentimentanalysis.html">Sentiment Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tweetprofiler.html">Tweet Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topicmodelling-widget.html">Topic Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LDAvis.html">LDAvis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpusviewer.html">Corpus Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordcloud.html">Word Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concordance.html">Concordance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docmap.html">Document Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordenrichment.html">Word Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="duplicatedetection.html">Duplicate Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpustonetwork.html">Corpus to Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Extract Keywords</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Score Documents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="semanticviewer.html">Semantic Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collocations.html">Collocations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordlist.html">Word List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ontology.html">Ontology</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/corpus.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/preprocess.html">Preprocessor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/twitter.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/nyt.html">New York Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/guardian.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/wikipedia.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/bagofwords.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/topicmodeling.html">Topic Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/tag.html">Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/async.html">Async Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Orange3 Text Mining</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Score Documents</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/widgets/score-documents.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="score-documents">
+<h1>Score Documents<a class="headerlink" href="#score-documents" title="Link to this heading"></a></h1>
+<p>Scores documents based on word appearance.</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>Corpus: A collection of documents</p></li>
+<li><p>Words: A table with at least one column with words</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Corpus: A collection of documents with scores</p></li>
+</ul>
+<p><strong>Score Document</strong> assigns scores to each document based on words at the input. The score with the selected scoring method is calculated for each word and aggregated together with the selected aggregation function on the document level.</p>
+<p><img alt="../_images/Score-Documents.png" src="../_images/Score-Documents.png" /></p>
+<ol class="simple">
+<li><p>Select one or more scoring methods for words:</p>
+<ul class="simple">
+<li><p><strong>Word frequency</strong>: The count of the frequency of a word in the text.</p></li>
+<li><p><strong>Word ratio</strong>: Indicate the appearance of the word in the document.</p></li>
+<li><p><strong>Similarity</strong>: The cosine similarity between document embedding and word embedding.</p></li>
+</ul>
+</li>
+<li><p>Select aggregation function to aggregate word scores to document scores (mean, median, min or max).</p></li>
+<li><p>Select documents:</p>
+<ul class="simple">
+<li><p>None: no documents are on the output</p></li>
+<li><p>All: the entire corpus is on the output</p></li>
+<li><p>Manual: manually select the documents from the table</p></li>
+<li><p>Top documents: n top-scored documents are sent to the output</p></li>
+</ul>
+</li>
+<li><p>If <em>Send Automatically</em>, changes are communicated automatically. Alternatively press <em>Send</em>.</p></li>
+<li><p>Filter documents based on the document title in the first column. Below is the table with the document titles in the first column and scores in other columns.</p></li>
+</ol>
+<p><strong>Note</strong>: Score Documents will apply preprocessing from the input Corpus to words before scoring.</p>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<p>Score Documents is used to find documents that are semantically similar to the input word list. In the example below, we are using the <em>book-excerpts</em> corpus from the <a class="reference internal" href="corpus-widget.html"><span class="doc">Corpus</span></a> widget.</p>
+<p>We pass the corpus to <a class="reference internal" href="preprocesstext.html"><span class="doc">Preprocess Text</span></a>, where we lowercase the text, split it into words with tokenization, use Lemmagen lemmatizer to cover tokens to their base form and finally remove stopwords.</p>
+<p>Next, we find characteristic words with <a class="reference internal" href="keywords.html"><span class="doc">Extract Keywords</span></a> widget and send these words to <a class="reference internal" href="wordlist.html"><span class="doc">Word List</span></a>. There, we add some of our own words, such as princess, prince, king and queen.</p>
+<p>Finally, we pass the preprocess corpus from Preprocess Text to Score Documents and the word list from Word List widget. Score Documents scores each document based on how frequently the input words appear in it.</p>
+<p><img alt="../_images/Score-Documents-Example.png" src="../_images/Score-Documents-Example.png" /></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="keywords.html" class="btn btn-neutral float-left" title="Extract Keywords" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="semanticviewer.html" class="btn btn-neutral float-right" title="Semantic Viewer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Laboratory of Bioinformatics, Faculty of Computer Science, University of Ljubljana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

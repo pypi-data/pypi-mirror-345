@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sentiment Analysis &mdash; Orange3 Text Mining  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ad6d0c38" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tweet Profiler" href="tweetprofiler.html" />
+    <link rel="prev" title="Similarity Hashing" href="similarityhashing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Orange3 Text Mining
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="annotator.html">Annotated Corpus Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus-widget.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="importdocuments.html">Import Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="createcorpus.html">Create Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guardian-widget.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nytimes.html">NY Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubmed.html">Pubmed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twitter-widget.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wikipedia-widget.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocesstext.html">Preprocess Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bagofwords-widget.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentembedding.html">Document Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="similarityhashing.html">Similarity Hashing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sentiment Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multilingual-sentiment-languages">Multilingual Sentiment Languages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tweetprofiler.html">Tweet Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topicmodelling-widget.html">Topic Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LDAvis.html">LDAvis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpusviewer.html">Corpus Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordcloud.html">Word Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concordance.html">Concordance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docmap.html">Document Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordenrichment.html">Word Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="duplicatedetection.html">Duplicate Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpustonetwork.html">Corpus to Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Extract Keywords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="score-documents.html">Score Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semanticviewer.html">Semantic Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collocations.html">Collocations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wordlist.html">Word List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ontology.html">Ontology</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/corpus.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/preprocess.html">Preprocessor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/twitter.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/nyt.html">New York Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/guardian.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/wikipedia.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/bagofwords.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/topicmodeling.html">Topic Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/tag.html">Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/async.html">Async Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Orange3 Text Mining</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Sentiment Analysis</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/widgets/sentimentanalysis.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sentiment-analysis">
+<h1>Sentiment Analysis<a class="headerlink" href="#sentiment-analysis" title="Link to this heading"></a></h1>
+<p>Predict sentiment from text.</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>Corpus: A collection of documents.</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Corpus: A corpus with information on the sentiment of each document.</p></li>
+</ul>
+<p><strong>Sentiment Analysis</strong> predicts sentiment for each document in a corpus. It uses Liu &amp; Hu and Vader sentiment modules from <a class="reference external" href="http://www.nltk.org/api/nltk.sentiment.html">NLTK</a>, <a class="reference external" href="https://aclanthology.org/P14-2063.pdf">multilingual sentiment lexicons</a> from Chen and Skiena, <a class="reference external" href="https://www.frontiersin.org/articles/10.3389/frobt.2019.00053/full">SentiArt</a> from Arthur Jacobs, and <a class="reference external" href="http://hdl.handle.net/11356/1318">LiLaH sentiment</a> from Walter Daelemans et al. All of them are lexicon-based. For Liu &amp; Hu, you can choose English or Slovenian version. Vader works only on English. Multilingual sentiment supports several languages, which are listed at the bottom of this page. SentiArt works on English and German. LiLaH sentiment supports Slovenian, Croatian, and Dutch. Custom dictionary enables one to upload custom positive and negative sentiment dictionaries. Custom files should be plain text files (.txt) with each word in its own line.</p>
+<p><img alt="../_images/SentimentAnalysis-stamped.png" src="../_images/SentimentAnalysis-stamped.png" /></p>
+<ol class="simple">
+<li><p><em>Liu Hu</em>: lexicon-based sentiment analysis (supports English and Slovenian). The final score is the difference between the sum of positive and sum of negative words, normalized by the length of the document and multiplied by a 100. The final score reflects the percentage of sentiment difference in the document.</p></li>
+<li><p><em>Vader</em>: lexicon- and rule-based sentiment analysis</p></li>
+<li><p><em>Multilingual sentiment</em>: lexicon-based sentiment analysis for several languages</p></li>
+<li><p><em>SentiArt</em>: sentiment analysis based on vector space models returning text valence</p></li>
+<li><p><em>LiLaH sentiment</em>: manual translations of the NRC Emotion Lexicon</p></li>
+<li><p><em>Custom dictionary</em>: add you own positive and negative sentiment dictionaries. Accepted source type is .txt file with each word in its own line. The final score is computed in the same way as Liu Hu.</p></li>
+<li><p>If <em>Auto commit is on</em>, sentiment-tagged corpus is communicated automatically. Alternatively press <em>Commit</em>.</p></li>
+</ol>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<p><em>Sentiment Analysis</em> can be used for constructing additional features with sentiment prediction from corpus. First, we load <em>Election-2016-tweets.tab</em> in <a class="reference internal" href="corpus-widget.html"><span class="doc">Corpus</span></a>. Then we connect <strong>Corpus</strong> to <strong>Sentiment Analysis</strong>. The widget will append 4 new features for Vader method: positive score, negative score, neutral score and compound (combined score).</p>
+<p>We can observe new features in a <strong>Data Table</strong>, where we sorted the <em>compound</em> by score. Compound represents the total sentiment of a tweet, where -1 is the most negative and 1 the most positive.</p>
+<p><img alt="../_images/Sentiment-DataTable.png" src="../_images/Sentiment-DataTable.png" /></p>
+<p>Now let us visualize the data. We have some features we are currently not interested in, so we will remove them with <strong>Select Columns</strong>.</p>
+<p><img alt="../_images/Sentiment-SelectColumns.png" src="../_images/Sentiment-SelectColumns.png" /></p>
+<p>Then we will make our corpus a little smaller, so it will be easier to visualize. Pass the data to <strong>Data Sampler</strong> and retain a random 10% of the tweets.</p>
+<p><img alt="../_images/Sentiment-DataSampler.png" src="../_images/Sentiment-DataSampler.png" /></p>
+<p>Now pass the filtered corpus to <strong>Heat Map</strong>. Use <em>Merge by k-means</em> to merge tweets with the same polarity into one line. Then use <em>Cluster</em> by <em>rows</em> to create a clustered visualization where similar tweets are grouped together. Click on a cluster to select a group of tweets - we selected the negative cluster.</p>
+<p><img alt="../_images/Sentiment-HeatMap.png" src="../_images/Sentiment-HeatMap.png" /></p>
+<p>To observe the selected subset, pass the tweets to <a class="reference internal" href="corpusviewer.html"><span class="doc">Corpus Viewer</span></a>.</p>
+<p><img alt="../_images/Sentiment-CorpusViewer.png" src="../_images/Sentiment-CorpusViewer.png" /></p>
+<p><img alt="../_images/Sentiment-workflow.png" src="../_images/Sentiment-workflow.png" /></p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<p>Hutto, C.J. and E. E. Gilbert (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.</p>
+<p>Hu, Minqing and Bing Liu (2004). Mining opinion features in customer reviews. In Proceedings of AAAI Conference on Artificial Intelligence, vol. 4, pp. 755–760. <a class="reference external" href="http://www.aaai.org/Papers/AAAI/2004/AAAI04-119.pdf">Available online.</a></p>
+<p>Jacobs, Arthur M. (2019). Sentiment Analysis for Words and Fiction Characters From the Perspective of Computational (Neuro-)Poetics. Frontiers in Robotics and AI 6. https://doi.org/10.3389/frobt.2019.00053</p>
+<p>Kadunc, Klemen and Marko Robnik-Šikonja (2016). Analiza mnenj s pomočjo strojnega učenja in slovenskega leksikona sentimenta. Conference on Language Technologies &amp; Digital Humanities, Ljubljana (in Slovene). <a class="reference external" href="http://www.sdjt.si/wp/wp-content/uploads/2016/09/JTDH-2016_Kadunc-et-al_Analiza-mnenj-s-pomocjo-strojnega-ucenja.pdf">Available online.</a></p>
+<p>Ljubešić, Nikola, Ilia Markov, Darja Fišer and Walter Daelemans (2020). The LiLaH Emotion Lexicon of Croatian, Dutch and Slovene. In Third Workshop on Computational Modeling of People’s Opinions, Personality, and Emotion’s in Social Media (PEOPLES 2020), pp. 153–157. <a class="reference external" href="https://aclanthology.org/2020.peoples-1.15">Available online.</a></p>
+</section>
+<section id="multilingual-sentiment-languages">
+<h2>Multilingual Sentiment Languages<a class="headerlink" href="#multilingual-sentiment-languages" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Afrikaans</p></li>
+<li><p>Arabic</p></li>
+<li><p>Azerbaijani</p></li>
+<li><p>Belarusian</p></li>
+<li><p>Bosnian</p></li>
+<li><p>Bulgarian</p></li>
+<li><p>Catalan</p></li>
+<li><p>Chinese</p></li>
+<li><p>Chinese Characters</p></li>
+<li><p>Croatian</p></li>
+<li><p>Czech</p></li>
+<li><p>Danish</p></li>
+<li><p>Dutch</p></li>
+<li><p>English</p></li>
+<li><p>Estonian</p></li>
+<li><p>Farsi</p></li>
+<li><p>Finnish</p></li>
+<li><p>French</p></li>
+<li><p>Gaelic</p></li>
+<li><p>German</p></li>
+<li><p>Greek</p></li>
+<li><p>Hebrew</p></li>
+<li><p>Hindi</p></li>
+<li><p>Hungarian</p></li>
+<li><p>Indonesian</p></li>
+<li><p>Italian</p></li>
+<li><p>Japanese</p></li>
+<li><p>Korean</p></li>
+<li><p>Latin</p></li>
+<li><p>Latvian</p></li>
+<li><p>Lithuanian</p></li>
+<li><p>Macedonian</p></li>
+<li><p>Norwegian</p></li>
+<li><p>Norwegian Nynorsk</p></li>
+<li><p>Polish</p></li>
+<li><p>Portuguese</p></li>
+<li><p>Romanian</p></li>
+<li><p>Russian</p></li>
+<li><p>Serbian</p></li>
+<li><p>Slovak</p></li>
+<li><p>Slovene</p></li>
+<li><p>Spanish</p></li>
+<li><p>Swedish</p></li>
+<li><p>Turkish</p></li>
+<li><p>Ukrainian</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="similarityhashing.html" class="btn btn-neutral float-left" title="Similarity Hashing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tweetprofiler.html" class="btn btn-neutral float-right" title="Tweet Profiler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Laboratory of Bioinformatics, Faculty of Computer Science, University of Ljubljana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

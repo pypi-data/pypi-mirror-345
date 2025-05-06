@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>orangecontrib.text.vectorization.bagofwords &mdash; Orange3 Text Mining  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=ad6d0c38" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Orange3 Text Mining
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/annotator.html">Annotated Corpus Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/corpus-widget.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/importdocuments.html">Import Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/createcorpus.html">Create Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/guardian-widget.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/nytimes.html">NY Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/pubmed.html">Pubmed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/twitter-widget.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/wikipedia-widget.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/preprocesstext.html">Preprocess Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/bagofwords-widget.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/documentembedding.html">Document Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/similarityhashing.html">Similarity Hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/sentimentanalysis.html">Sentiment Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/tweetprofiler.html">Tweet Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/topicmodelling-widget.html">Topic Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/LDAvis.html">LDAvis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/corpusviewer.html">Corpus Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/wordcloud.html">Word Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/concordance.html">Concordance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/docmap.html">Document Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/wordenrichment.html">Word Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/duplicatedetection.html">Duplicate Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/corpustonetwork.html">Corpus to Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/keywords.html">Extract Keywords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/score-documents.html">Score Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/semanticviewer.html">Semantic Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/collocations.html">Collocations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/wordlist.html">Word List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/ontology.html">Ontology</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripting/corpus.html">Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripting/preprocess.html">Preprocessor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripting/twitter.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripting/nyt.html">New York Times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripting/guardian.html">The Guardian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripting/wikipedia.html">Wikipedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripting/bagofwords.html">Bag of Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripting/topicmodeling.html">Topic Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripting/tag.html">Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripting/async.html">Async Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Orange3 Text Mining</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">orangecontrib.text.vectorization.bagofwords</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for orangecontrib.text.vectorization.bagofwords</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; This module constructs a new corpus with tokens as features.</span>
+
+<span class="sd">First create a corpus::</span>
+
+<span class="sd">    &gt;&gt;&gt; from orangecontrib.text import Corpus</span>
+<span class="sd">    &gt;&gt;&gt; corpus = Corpus.from_file(&#39;deerwester&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; corpus.domain</span>
+<span class="sd">    [ | Category] {Text}</span>
+
+<span class="sd">Then create :class:`BowVectorizer` object and call transform:</span>
+
+<span class="sd">    &gt;&gt;&gt; from orangecontrib.text.vectorization.bagofwords import BowVectorizer</span>
+<span class="sd">    &gt;&gt;&gt; bow = BowVectorizer()</span>
+<span class="sd">    &gt;&gt;&gt; new_corpus = bow.transform(corpus)</span>
+<span class="sd">    &gt;&gt;&gt; new_corpus.domain</span>
+<span class="sd">    [a, abc, and, applications, binary, computer, engineering, eps, error, for,</span>
+<span class="sd">    generation, graph, human, in, interface, intersection, iv, lab, machine,</span>
+<span class="sd">    management, measurement, minors, of, opinion, ordering, paths, perceived,</span>
+<span class="sd">    quasi, random, relation, response, survey, system, testing, the, time, to,</span>
+<span class="sd">    trees, unordered, user, well, widths | Category] {Text}</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Orange.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">dummy_callback</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gensim</span><span class="w"> </span><span class="kn">import</span> <span class="n">corpora</span><span class="p">,</span> <span class="n">models</span><span class="p">,</span> <span class="n">matutils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">orangecontrib.text.vectorization.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseVectorizer</span><span class="p">,</span>\
+    <span class="n">SharedTransform</span><span class="p">,</span> <span class="n">VectorizationComputeValue</span>
+
+
+<div class="viewcode-block" id="BowVectorizer">
+<a class="viewcode-back" href="../../../../scripting/bagofwords.html#orangecontrib.text.vectorization.bagofwords.BowVectorizer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BowVectorizer</span><span class="p">(</span><span class="n">BaseVectorizer</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;BoW Vectorizer&#39;</span>
+
+    <span class="n">COUNT</span> <span class="o">=</span> <span class="s1">&#39;Count&#39;</span>
+    <span class="n">BINARY</span> <span class="o">=</span> <span class="s1">&#39;Binary&#39;</span>
+    <span class="n">SUBLINEAR</span> <span class="o">=</span> <span class="s1">&#39;Sublinear&#39;</span>
+    <span class="n">NONE</span> <span class="o">=</span> <span class="s1">&#39;(None)&#39;</span>
+    <span class="n">IDF</span> <span class="o">=</span> <span class="s1">&#39;IDF&#39;</span>
+    <span class="n">SMOOTH</span> <span class="o">=</span> <span class="s1">&#39;Smooth IDF&#39;</span>
+    <span class="n">L1</span> <span class="o">=</span> <span class="s1">&#39;L1 (Sum of elements)&#39;</span>
+    <span class="n">L2</span> <span class="o">=</span> <span class="s1">&#39;L2 (Euclidean)&#39;</span>
+
+    <span class="n">wlocals</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">((</span>
+        <span class="p">(</span><span class="n">COUNT</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">tf</span><span class="p">:</span> <span class="n">tf</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">BINARY</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">tf</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="k">if</span> <span class="n">tf</span><span class="o">.</span><span class="n">size</span>
+                            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)),</span>
+        <span class="p">(</span><span class="n">SUBLINEAR</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">tf</span><span class="p">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tf</span><span class="p">)),</span>
+    <span class="p">))</span>
+
+    <span class="n">wglobals</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">((</span>
+        <span class="p">(</span><span class="n">NONE</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">df</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">IDF</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">df</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="n">df</span><span class="p">)),</span>
+        <span class="p">(</span><span class="n">SMOOTH</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">df</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">N</span><span class="o">/</span><span class="n">df</span><span class="p">)),</span>
+    <span class="p">))</span>
+
+    <span class="n">norms</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">((</span>
+        <span class="p">(</span><span class="n">NONE</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">L1</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">normalize</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="n">L2</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">normalize</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">)),</span>
+    <span class="p">))</span>
+
+<div class="viewcode-block" id="BowVectorizer.__init__">
+<a class="viewcode-back" href="../../../../scripting/bagofwords.html#orangecontrib.text.vectorization.bagofwords.BowVectorizer.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">NONE</span><span class="p">,</span> <span class="n">wlocal</span><span class="o">=</span><span class="n">COUNT</span><span class="p">,</span> <span class="n">wglobal</span><span class="o">=</span><span class="n">NONE</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm</span> <span class="o">=</span> <span class="n">norm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wlocal</span> <span class="o">=</span> <span class="n">wlocal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wglobal</span> <span class="o">=</span> <span class="n">wglobal</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus</span><span class="p">,</span> <span class="n">source_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">dummy_callback</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">corpus</span>
+        <span class="n">temp_corpus</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">corpus</span><span class="o">.</span><span class="n">ngrams_iterator</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">include_postags</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">source_dict</span><span class="p">:</span>
+            <span class="n">corpus</span><span class="o">.</span><span class="n">store_tokens</span><span class="p">(</span><span class="n">temp_corpus</span><span class="p">)</span>
+            <span class="n">dic</span> <span class="o">=</span> <span class="n">corpora</span><span class="o">.</span><span class="n">Dictionary</span><span class="p">(</span><span class="n">temp_corpus</span><span class="p">,</span> <span class="n">prune_at</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dic</span> <span class="o">=</span> <span class="n">source_dict</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">corpus</span>
+        <span class="n">callback</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="n">temp_corpus</span> <span class="o">=</span> <span class="p">[</span><span class="n">dic</span><span class="o">.</span><span class="n">doc2bow</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">temp_corpus</span><span class="p">]</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TfidfModel</span><span class="p">(</span><span class="n">dictionary</span><span class="o">=</span><span class="n">dic</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                  <span class="n">wlocal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wlocals</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">wlocal</span><span class="p">],</span>
+                                  <span class="n">wglobal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wglobals</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">wglobal</span><span class="p">])</span>
+        <span class="n">callback</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="n">matutils</span><span class="o">.</span><span class="n">corpus2csc</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="n">temp_corpus</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">num_terms</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norms</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">callback</span><span class="p">(</span><span class="mf">0.9</span><span class="p">)</span>
+
+        <span class="c1"># set compute values</span>
+        <span class="n">shared_cv</span> <span class="o">=</span> <span class="n">SharedTransform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus</span><span class="o">.</span><span class="n">used_preprocessor</span><span class="p">,</span> <span class="n">source_dict</span><span class="o">=</span><span class="n">dic</span><span class="p">)</span>
+        <span class="n">cv</span> <span class="o">=</span> <span class="p">[</span><span class="n">VectorizationComputeValue</span><span class="p">(</span><span class="n">shared_cv</span><span class="p">,</span> <span class="n">dic</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">))]</span>
+
+        <span class="n">corpus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_features</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">dic</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">var_attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;bow-feature&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+        <span class="n">callback</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">corpus</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Laboratory of Bioinformatics, Faculty of Computer Science, University of Ljubljana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
