@@ -1,0 +1,173 @@
+[build-system]
+requires = [
+    "scikit-build-core>=0.5.0",
+    "pybind11>=2.10.0",
+    "numpy>=1.20.0",
+    "setuptools>=61.0.0",  # Required by setuptools_scm>=8.0.0
+    "wheel>=0.36.0",
+    "setuptools_scm>=8.0.0",
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "py-dem-bones"
+dynamic = ["version"]
+description = "Python bindings for the Dem Bones library"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "BSD-3-Clause"}
+authors = [
+    {name = "Long Hao", email = "hal.long@outlook.com"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: C++",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Multimedia :: Graphics :: 3D Modeling",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "numpy>=1.20.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "nox>=2023.4.22",
+]
+test = [
+    "pytest>=6.0.0",
+    "pytest-cov>=2.12.0",
+]
+docs = [
+    "sphinx>=7.0.0",
+    "pydata-sphinx-theme>=0.14.1",
+    "sphinx-autobuild>=2021.3.14",
+    "pybind11-stubgen>=0.16.0",
+    "myst-parser>=2.0.0",
+    "sphinx-gallery>=0.13.0",
+    "pillow>=9.0.0",
+    "matplotlib>=3.5.0",
+    "myst-sphinx-gallery>=0.3.0",
+    "myst-nb>=1.0.0",
+    "tomli>=2.0.0",
+]
+docs-linux = [
+    "cairosvg>=2.7.0",
+]
+lint = [
+    "black<25.1.1",
+    "ruff<0.0.270",
+    "isort<6.0.2",
+    "autoflake>=2.0.0",
+]
+build = [
+    "build>=0.10.0",
+    "twine>=4.0.2",
+    "cibuildwheel>=2.16.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/loonghao/py-dem-bones"
+Documentation = "https://loonghao.github.io/py-dem-bones"
+Issues = "https://github.com/loonghao/py-dem-bones/issues"
+Changelog = "https://github.com/loonghao/py-dem-bones/blob/main/CHANGELOG.md"
+
+[tool.scikit-build]
+# Basic configuration
+wheel.packages = ["src/py_dem_bones"]
+wheel.exclude = ["tests/*"]
+wheel.expand-macos-universal-tags = false
+sdist.include = ["src/py_dem_bones/*", "src/binding/*", "CMakeLists.txt", "LICENSE.md", "README.md", "extern/dem-bones/*", "extern/eigen/*"]
+sdist.exclude = ["tests/data/*"]
+# Enable experimental features
+experimental = true
+
+[tool.scikit-build.metadata.version]
+provider = "scikit_build_core.metadata.setuptools_scm"
+
+[tool.setuptools_scm]
+# Format: 1.2.3 (without 'v' prefix)
+tag_regex = "^(?P<version>[0-9]+\\.[0-9]+\\.[0-9]+)(?P<dev>-[a-zA-Z0-9]+)?$"
+local_scheme = "no-local-version"
+# Don't use dev0 suffix for non-tagged versions to avoid metadata mismatches
+version_scheme = "release-branch-semver"
+# No longer writing version to file, managed by commitizen instead
+
+[tool.scikit-build.cmake]
+version = ">=3.15"
+build-type = "Release"
+
+[tool.scikit-build.cmake.define]
+PYTHON_LIMITED_API = "OFF"
+CMAKE_POSITION_INDEPENDENT_CODE = "ON"
+# Ensure symbols are properly exported on Windows
+CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS = "ON"
+# Disable ABI3 mode
+SKBUILD_SOABI = "OFF"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.12.4"  # Current version, will be updated by commitizen
+version_provider = "commitizen"
+tag-format = "$version"  # Format: 1.2.3 (without 'v' prefix)
+update_changelog_on_bump = true
+change_type_order = ["BREAKING CHANGE", "feat", "fix", "refactor", "perf", "ci", "build", "docs", "test", "chore"]
+version_files = [
+    "src/py_dem_bones/__version__.py:__version__ = version = ",
+    "docs/conf.py:version = ",
+    "docs/conf.py:release = ",
+    ".github/CITATION.cff:version: "
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+
+# cibuildwheel configuration moved to .cibuildwheel.toml
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"
+# Ignore extern directory and generated stub files
+exclude = ["extern", "**/*.pyi"]
+src = ["src", "nox_actions", "noxfile.py"]
+select = ["E", "F", "W", "I"]
+ignore = ["W293", "I001"]  # Ignore whitespace warnings in blank lines and import sorting
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+"noxfile.py" = ["E402"]
+"docs/conf.py" = ["E402", "F401"]
+
+[tool.isort]
+profile = "black"
+line_length = 120
+skip = ["extern"]
+skip_glob = ["*.pyi"]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+combine_as_imports = true
+src_paths = ["src", "nox_actions", "noxfile.py"]
+known_first_party = ["py_dem_bones"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+# Add explicit section titles to match code comments
+import_heading_stdlib = "Import standard library modules"
+import_heading_thirdparty = "Import third-party modules"
+import_heading_firstparty = "Import local modules"
