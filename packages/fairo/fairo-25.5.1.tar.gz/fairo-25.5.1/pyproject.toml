@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fairo"
+dynamic = ["version"]
+authors = [
+    {name = "Fairo Systems, Inc.", email = "support@fairo.ai"}
+]
+description = "SDK for interfacing with Fairo SaaS platform."
+readme = "README.md"
+license = {text = "Apache-2.0"}
+keywords = ["fairo", "AI", "agents", "governance", "fairness", "metrics", "security", "compliance", "risk"]
+urls = {homepage = "https://www.fairo.ai"}
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "mlflow==2.21.2",
+    "langchain==0.3.21",
+    "langchain-aws==0.2.18",
+    "langchain-community==0.3.20",
+    "langchain-core==0.3.49",
+    "langchain-text-splitters==0.3.7",
+    "psycopg2-binary==2.9.10",
+    "langchain-postgres==0.0.3"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["fairo*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "fairo.__version__"}
