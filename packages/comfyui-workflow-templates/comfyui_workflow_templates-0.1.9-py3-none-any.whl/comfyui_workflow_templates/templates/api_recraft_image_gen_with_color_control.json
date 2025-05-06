@@ -1,0 +1,347 @@
+{
+  "id": "ba9df292-1ee9-4b7c-af08-690441990d87",
+  "revision": 0,
+  "last_node_id": 12,
+  "last_link_id": 23,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "SaveImage",
+      "pos": [
+        635.0529174804688,
+        924.9351196289062
+      ],
+      "size": [
+        270,
+        270
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "RecraftStyleV3DigitalIllustration",
+      "pos": [
+        -118.91142272949219,
+        927.7273559570312
+      ],
+      "size": [
+        302.3999938964844,
+        58
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "recraft_style",
+          "type": "RECRAFT_V3_STYLE",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RecraftStyleV3DigitalIllustration"
+      },
+      "widgets_values": [
+        "2d_art_poster"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "RecraftControls",
+      "pos": [
+        -126.36389923095703,
+        1040.67236328125
+      ],
+      "size": [
+        287.4034118652344,
+        55.30767059326172
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "colors",
+          "shape": 7,
+          "type": "RECRAFT_COLOR",
+          "link": 22
+        },
+        {
+          "name": "background_color",
+          "shape": 7,
+          "type": "RECRAFT_COLOR",
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "recraft_controls",
+          "type": "RECRAFT_CONTROLS",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RecraftControls"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 8,
+      "type": "RecraftColorRGB",
+      "pos": [
+        -435.8851623535156,
+        1021.6673583984375
+      ],
+      "size": [
+        276.515380859375,
+        106
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "recraft_color",
+          "shape": 7,
+          "type": "RECRAFT_COLOR",
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "recraft_color",
+          "type": "RECRAFT_COLOR",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RecraftColorRGB"
+      },
+      "widgets_values": [
+        241,
+        44,
+        208
+      ]
+    },
+    {
+      "id": 12,
+      "type": "RecraftColorRGB",
+      "pos": [
+        -435.36004638671875,
+        864.5531005859375
+      ],
+      "size": [
+        276.515380859375,
+        106
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "recraft_color",
+          "shape": 7,
+          "type": "RECRAFT_COLOR",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "recraft_color",
+          "type": "RECRAFT_COLOR",
+          "links": [
+            21,
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RecraftColorRGB"
+      },
+      "widgets_values": [
+        24,
+        44,
+        196
+      ]
+    },
+    {
+      "id": 9,
+      "type": "RecraftColorRGB",
+      "pos": [
+        -431.1662292480469,
+        1174.144287109375
+      ],
+      "size": [
+        276.515380859375,
+        106
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "recraft_color",
+          "shape": 7,
+          "type": "RECRAFT_COLOR",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "recraft_color",
+          "type": "RECRAFT_COLOR",
+          "links": [
+            22
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RecraftColorRGB"
+      },
+      "widgets_values": [
+        241,
+        255,
+        65
+      ]
+    },
+    {
+      "id": 3,
+      "type": "RecraftTextToImageNode",
+      "pos": [
+        206.0524139404297,
+        927.2428588867188
+      ],
+      "size": [
+        394.75518798828125,
+        249.34962463378906
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "recraft_style",
+          "shape": 7,
+          "type": "RECRAFT_V3_STYLE",
+          "link": 2
+        },
+        {
+          "name": "negative_prompt",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "recraft_controls",
+          "shape": 7,
+          "type": "RECRAFT_CONTROLS",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RecraftTextToImageNode"
+      },
+      "widgets_values": [
+        "A young boy performing a dynamic skateboard trick in a sunlit skate park. He's wearing a white t-shirt and green shorts, captured mid-air with his blonde hair blowing in the wind. The skateboard is in motion as he rides a blue, curved ramp, creating a sense of energy and movement. The scene is painted in a bold, expressive oil painting style, with thick brushstrokes that enhance the vibrant and lively atmosphere. The background features a bright blue ramp, adding to the feeling of freedom and adventure.",
+        "1536x1024",
+        1,
+        902327490082012,
+        "randomize"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      3,
+      0,
+      1,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      4,
+      0,
+      3,
+      0,
+      "RECRAFT_V3_STYLE"
+    ],
+    [
+      16,
+      10,
+      0,
+      3,
+      2,
+      "RECRAFT_CONTROLS"
+    ],
+    [
+      17,
+      8,
+      0,
+      9,
+      0,
+      "RECRAFT_COLOR"
+    ],
+    [
+      21,
+      12,
+      0,
+      8,
+      0,
+      "RECRAFT_COLOR"
+    ],
+    [
+      22,
+      9,
+      0,
+      10,
+      0,
+      "RECRAFT_COLOR"
+    ],
+    [
+      23,
+      12,
+      0,
+      10,
+      1,
+      "RECRAFT_COLOR"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "frontendVersion": "1.18.4"
+  },
+  "version": 0.4
+}
