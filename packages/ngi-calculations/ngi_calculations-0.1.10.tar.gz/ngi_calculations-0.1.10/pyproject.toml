@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "ngi-calculations"
+version = "0.1.10"
+description = "CPT correlations including commonly used empirical correlations"
+authors = [
+    "Julien Hericher <Julien.Hericher@ngi.no>", 
+    "Ole-Jakob Olsen <Ole.Jakob.Olsen@ngi.no>"
+]
+readme = "README.md"
+packages = [
+    { include = "ngi_calculations", from = "src"},
+    { include = "tests" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.2"
+param = "^2.1.0"
+scipy = "^1.13.1"
+numpy = "^2.0.0"
+pydantic = "^2.7.4"
+structlog = "^24.2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+pytest-watcher = "^0.4.2"
+ruff = "^0.4.10"
+mypy = "^1.10.0"
+pandas-stubs = "^2.2.2.240603"
+openpyxl = "^3.1.4"
+
+[tool.ruff]
+line-length = 120
+unfixable = [ "F841"]
+extend-select = ["I001"]
+src = ["src", "tests"]
+
+[tool.ruff.isort]
+known-first-party = ["ngi_cpt_correlations"]
+
+[tool.pytest.ini_options]
+addopts = "-s --log-cli-level=INFO"
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+
+[tool.pytest-watcher]
+now = true
+clear = true
+delay = 0.2
+runner = "pytest"
+runner_args = ["-x"]
+patterns = ["*.py"]
+ignore_patterns = []
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
