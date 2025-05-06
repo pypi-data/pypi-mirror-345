@@ -1,0 +1,40 @@
+[project]
+name = "jasmit_firestarter"
+version = "0.1.6"
+description = "Artifacts often used when starting a new project"
+readme = "README.md"
+authors = [
+    { name = "jasmit", email = "js8335@swbell.net" }
+]
+requires-python = ">=3.12,<3.13"
+dependencies = []
+license = { text = "MIT" }
+
+[project.scripts]
+jasmit_firestarter = "firestarter:__main__"
+
+[dependency-groups]
+devl = [
+    "pytest>=8.3.5",
+]
+test = [
+    "pytest>=8.3.5",
+]
+
+[tool.uv]
+package = true
+
+[tool.uv.sources.jasmit_firestarter]
+path = "src/firestarter"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
