@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gpp-prediction"
+version = "0.1.5"
+description = "A package for the GPP related Assignment 3"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Nicolas F. Bader", email = "nicolas.bader@tuwien.ac.at"},
+]
+keywords = ["gpp", "ecology", "environmental science"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "numpy>=1.26.0",
+    "pandas>=2.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/gpp-prediction"
+"Bug Tracker" = "https://github.com/yourusername/gpp-prediction/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gpp_prediction"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/gpp_prediction",
+    "LICENSE",
+    "README.md",
+    "tests",
+]
