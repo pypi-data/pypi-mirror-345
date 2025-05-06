@@ -1,0 +1,285 @@
+# 🧾 django-annotate
+
+Annotate Django model files with schema information (fields, indexes, and foreign keys), inspired by the [annotaterb](https://github.com/drwl/annotaterb) project for Rails.
+
+
+## ✨ Features
+
+- Adds `# == Schema Information` blocks above each model class
+- Supports:
+  - Field types
+  - Indexes (including unique constraints)
+  - Foreign key relationships
+- Works on monolithic or multi-file model setups
+- CLI support via Django's `manage.py`
+
+## 🗄️ Database Support
+
+Currently, `django-annotate` only supports PostgreSQL databases. This is because it uses PostgreSQL-specific system tables (`pg_*`) to introspect the database schema. Support for other databases (MySQL, SQLite) is planned for future releases.
+
+### Requirements
+- PostgreSQL database
+- Django project configured to use PostgreSQL as the database backend
+- Appropriate database permissions to query system tables
+- Standard Django ORM models (inheriting from `django.db.models.Model`)
+  - Note: Django Pydantic models are now supported! See the Pydantic section below for details.
+
+If you're using a different database backend, you'll need to either:
+1. Switch to PostgreSQL
+2. Wait for support for your database to be added
+3. Contribute support for your database backend
+
+
+## 📦 Installation
+
+```bash
+pip install django-annotate
+# or if using Poetry:
+poetry add django-annotate
+```
+
+## ⚙️ Setup
+
+No configuration required — just install and run. If you want to run it via Django's CLI, ensure `django_annotate` is on your Python path (you don't need to add it to `INSTALLED_APPS` unless you want auto-discovery inside Django).
+
+Then run:
+
+```bash
+python manage.py annotate_models
+```
+
+To annotate a specific app:
+
+```bash
+python manage.py annotate_models --app=myapp
+```
+
+## 🐍 Pydantic Model Support
+
+`django-annotate` now supports Pydantic models! This is particularly useful for projects that use Pydantic for data validation and serialization alongside Django.
+
+### Pydantic Model Example
+
+```python
+from pydantic import BaseModel, Field
+
+class User(BaseModel):
+    id: int = Field(primary_key=True)
+    name: str
+    email: str
+    created_at: str = Field(default="2024-01-01")
+
+    class Config:
+        table_name = "users"
+```
+
+The schema annotation will look like:
+
+```python
+# == Schema Information
+#
+# Table name: users
+#
+#  id         :int            not null, primary key
+#  name       :str            not null
+#  email      :str            not null
+#  created_at :str
+#
+# Indexes
+#
+#  (none)
+#
+# Foreign Keys
+#
+#  (none)
+
+class User(BaseModel):
+    id: int = Field(primary_key=True)
+    name: str
+    email: str
+    created_at: str = Field(default="2024-01-01")
+
+    class Config:
+        table_name = "users"
+```
+
+### Pydantic Configuration
+
+You can configure how Pydantic models are annotated in your `.django_annotate.yml` file:
+
+```yaml
+# Pydantic-specific settings
+pydantic:
+  show_field_types: true    # Show Pydantic field types
+  show_validators: false    # Show field validators
+  show_defaults: true       # Show default values
+```
+
+## 🔄 Auto-Annotation After Migrations
+
+By default, model annotation runs automatically after every migration in development environments. This helps keep your model files up-to-date with your database schema.
+
+Auto-annotation is disabled by default in production environments when `DEBUG = False` (typical in production).
+
+To control auto-annotation behavior, you can configure the following settings in your `.django_annotate.yml` file:
+
+```yaml
+# Auto-annotation settings
+skip_on_migrate: false     # Set to true to disable auto-annotation after migrations
+force: false               # Set to true to force annotation even if the file hasn't changed
+frozen: false              # Set to true to prevent any automatic annotation
+```
+
+## 🧪 Example Output
+
+```python
+# == Schema Information
+#
+# Table name: organizations
+#
+#  id         :bigint           not null, primary key
+#  name       :varchar(255)     not null
+#  created_at :timestamp        not null
+#
+# Indexes
+#
+#  organizations_pkey  (id)
+#
+# Foreign Keys
+#
+#  (none)
+
+class Organization(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :bigint           not null, primary key
+#  email           :varchar(254)     not null
+#  full_name       :varchar(255)     not null
+#  organization_id :bigint           not null
+#  created_at      :timestamp        not null
+#
+# Indexes
+#
+#  users_email_key            (email) UNIQUE
+#  users_organization_id_idx  (organization_id)
+#
+# Foreign Keys
+#
+#  organization_id => organizations.id
+
+class User(models.Model):
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    email = models.EmailField(unique=True)
+    full_name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+# == Schema Information
+#
+# Table name: profiles
+#
+#  id      :bigint           not null, primary key
+#  user_id :bigint           not null
+#  bio     :text
+#
+# Indexes
+#
+#  profiles_user_id_key  (user_id) UNIQUE
+#
+# Foreign Keys
+#
+#  user_id => users.id
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
+
+
+# == Schema Information
+#
+# Table name: projects
+#
+#  id         :bigint           not null, primary key
+#  name       :varchar(255)     not null
+#  created_at :timestamp        not null
+#
+# Indexes
+#
+#  projects_pkey  (id)
+#
+# Foreign Keys
+#
+#  (none)
+
+class Project(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    members = models.ManyToManyField(User, related_name="projects")
+```
+
+## 📜 License
+
+MIT © 2025 Chris Davis
+
+## ⚙️ Configuration
+
+You can configure `django-annotate` by creating a `.django_annotate.yml` file in your project root. Here's a comprehensive list of all available configuration options:
+
+```yaml
+# Position settings
+position: before  # before or after the model class
+
+# Schema information settings
+show_indexes: true
+show_foreign_keys: true
+with_column_comments: true
+include_version: false
+timestamp: false
+
+# Exclusion settings
+ignore_models: []  # list of model names to ignore
+ignore_apps: []    # list of app labels to ignore
+ignore_columns: []
+
+# Auto-annotation settings
+skip_on_migrate: false
+force: false
+frozen: false
+```
+
+### Quick Start
+
+For most projects, you can start with a minimal configuration file. For example, to control auto-annotation behavior:
+
+```yaml
+# Auto-annotation settings
+skip_on_migrate: false  # Set to true to disable auto-annotation after migrations
+force: false  # Set to true to force annotation even if the file hasn't changed
+frozen: false  # Set to true to prevent any automatic annotation
+```
+
+All other settings will use sensible defaults. You can add more settings as needed.
+
+### Production Safety
+
+By default, `django-annotate` will not run in production environments. This is enforced by:
+
+1. Not running when `DEBUG = False` (typical in production)
+2. Respecting the `frozen` setting in your configuration
+
+To ensure safety in production, add this to your `.django_annotate.yml`:
+```yaml
+# Auto-annotation settings
+frozen: true  # Prevents any automatic annotation
+```
+
+The recommended workflow is:
+1. Run migrations and annotations locally
+2. Commit the annotated files to version control
+3. Deploy the committed files to production
