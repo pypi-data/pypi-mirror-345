@@ -1,0 +1,21 @@
+---
+name: Primeiro fluxo de trabalho
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  first_workflow:
+    runs-on: ubuntu-latest
+    environment: Aprendizagem
+    steps:
+      - name: Usando variáveis
+        run: |
+          echo "Olá, $NOME_VAR!"
+          echo "repository variable: ${{ vars.REPOSITORY_VAR }}"
+          echo "Test secrets: $SUPER_SECRETO"
+        env:
+          NOME_VAR: ${{ vars.NOME }}
+          SUPER_SECRETO: ${{ secrets.TOKEN }}

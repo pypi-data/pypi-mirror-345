@@ -1,0 +1,28 @@
+---
+name: "Pipeline"
+# on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 'dev'
+  pull_request:
+    branches:
+      - 'dev'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: Test
+    steps:
+      - name: Copia os arquivos do repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar o python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar o hatch
+        run: pipx install hatch
+
+      - name: Executar testes
+        run: hatch test
