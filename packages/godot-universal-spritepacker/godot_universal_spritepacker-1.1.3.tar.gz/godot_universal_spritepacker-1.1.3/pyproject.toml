@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "godot-universal-spritepacker"
+version = "1.1.3"
+description = "A smart, folder-aware sprite packer for Godot and PixiJS. Split, pack, and convert multi-res tilesets and SVG layers into spritesheets and native Godot sprites."
+authors = [
+    { name = "Donitz" }
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "Pillow",
+    "rectpack"
+]
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Topic :: Multimedia :: Graphics"
+]
+
+[project.urls]
+Homepage = "https://github.com/Donitzo/godot-universal-spritepacker"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["godot_universal_spritepacker"]
+
+[project.scripts]
+godot_universal_spritepacker = "godot_universal_spritepacker.godot_universal_spritepacker:main"
