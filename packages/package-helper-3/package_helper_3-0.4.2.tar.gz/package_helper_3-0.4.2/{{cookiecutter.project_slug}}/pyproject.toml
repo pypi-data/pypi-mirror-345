@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "{{ cookiecutter.project_slug }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.project_description }}"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    {name = "{{ cookiecutter.full_name }}", email = "{{ cookiecutter.email }}"}
+]
+maintainers = [
+    {name = "{{ cookiecutter.full_name }}", email = "{{ cookiecutter.email }}"}
+]
+license = "MIT"
+dependencies = [
+{% if cookiecutter.command_line_interface == 'Click' -%}
+    "click>=8.1.8",
+{% endif %}
+]
+
+[project.urls]
+Repository = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}"
+Documentation = "https://{{ cookiecutter.github_username }}.github.io/{{ cookiecutter.project_slug }}"
+
+[dependency-groups]
+dev = [
+    "ipython>=8.35.0",
+    "myst-parser[linkify]>=4.0.1",
+    "nbsphinx>=0.9.7",
+    "pydata-sphinx-theme>=0.16.1",
+    "pytest-cov>=6.1.1",
+    "ruff>=0.11.8",
+    "sphinx-copybutton>=0.5.2"
+]
+
+{% if cookiecutter.command_line_interface == 'Click' -%}
+[project.scripts]
+{{ cookiecutter.package_name }} = '{{ cookiecutter.package_name }}.cli:main'
+{% endif %}
+
+[tool.coverage.report]
+skip_empty = true
+
+[tool.coverage.run]
+branch = true
+source = ["{{ cookiecutter.package_name }}"]
+
+[tool.coverage.html]
+directory = "cov"
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules --cov --cov-config=pyproject.toml --cov-report xml --cov-report html --showlocals --capture=no --exitfirst --failed-first"
