@@ -1,0 +1,40 @@
+[project]
+name = "pysynthbio"
+version = "0.1.0"
+description = "A package to retrieve data and models from Synthesize Bio's API"
+authors = [
+    { name = "Alex David" },
+    { name = "Candace Savonen" },
+]
+readme = "README.md"
+license = "MIT"
+dependencies = [
+    "numpy>=2.2.5",
+    "pandas>=2.2.3",
+    "requests",
+]
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+Homepage = "https://github.com/synthesizebio/pysynthbio"
+Issues = "https://github.com/synthesizebio/pysynthbio/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "mypy",
+    "black",
+    "build",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["pysynthbio"]
+
+[[tool.mypy.overrides]]
+module = ["setuptools", "pandas-stubs", "requests"]
+ignore_missing_imports = true
