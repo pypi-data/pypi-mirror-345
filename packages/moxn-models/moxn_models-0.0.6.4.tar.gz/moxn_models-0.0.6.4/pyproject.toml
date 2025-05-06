@@ -1,0 +1,22 @@
+[project]
+name            = "moxn-models"
+version         = "0.0.6.4"
+description     = "Shared DTOs for the Moxn SDK and API"
+authors         = [{name = "Mark Weiss", email = "mark@moxn.dev"}]
+readme          = "README.md"
+requires-python = ">=3.10"
+dependencies    = ["pydantic>=2.9"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.setuptools.package-data]
+"moxn_models" = ["py.typed"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["moxn_models"]
+
+[tool.hatch.build.targets.sdist]
+include = ["moxn_models", "/README.md", "/LICENSE"]
+
