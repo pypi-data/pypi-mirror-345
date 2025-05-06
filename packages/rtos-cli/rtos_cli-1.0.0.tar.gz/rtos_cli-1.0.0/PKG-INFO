@@ -1,0 +1,149 @@
+Metadata-Version: 2.1
+Name: rtos_cli
+Version: 1.0.0
+Summary: CLI para automatizar proyectos PlatformIO con FreeRTOS
+Home-page: UNKNOWN
+Author: Efrain Reyes Araujo
+Author-email: dev@reyes-araujo.com
+License: MIT
+Description: # RTOS CLI - Ayuda de Comandos
+        
+        Este documento describe el uso de cada comando disponible en `rtos_cli.py`, la herramienta CLI para automatizar proyectos PlatformIO + FreeRTOS personalizados para el ESP32.
+        
+        ---
+        
+        ## Comandos Disponibles
+        
+        ### `create_project <project_name>`
+        
+        Crea una estructura completa de proyecto PlatformIO + FreeRTOS para ESP32.
+        
+        * Utiliza la placa `esp32-eddie-w.json`.
+        * Estructura carpetas, `platformio.ini`, `README.md`, y archivos base.
+        
+        **Ejemplo:**
+        
+        ```bash
+        python rtos_cli.py create_project MiProyecto
+        ```
+        
+        ---
+        
+        ### `create_task <task_name>`
+        
+        Crea una tarea de FreeRTOS con archivos `.cpp` y `.h`, y la integra al proyecto.
+        
+        **Ejemplo:**
+        
+        ```bash
+        python rtos_cli.py create_task sensor_reader
+        ```
+        
+        ---
+        
+        ### `create_global_var <var_name> <var_type> <sync_type>`
+        
+        Declara una variable global sincronizada con mutex o semáforo.
+        
+        * `sync_type` puede ser: `mutex` o `semaphore`.
+        
+        **Ejemplo:**
+        
+        ```bash
+        python rtos_cli.py create_global_var contador int mutex
+        ```
+        
+        ---
+        
+        ### `create_queue <queue_name> <item_type> <length>`
+        
+        Declara una cola global y la integra al archivo `project_config.h`.
+        
+        **Ejemplo:**
+        
+        ```bash
+        python rtos_cli.py create_queue cola_mensajes int 20
+        ```
+        
+        ---
+        
+        ### `create_timer <timer_name> <period_ms> <mode>`
+        
+        Crea un temporizador de FreeRTOS (único o periódico).
+        
+        * `mode` puede ser: `oneshot` o `periodic`.
+        
+        **Ejemplo:**
+        
+        ```bash
+        python rtos_cli.py create_timer timer_led 1000 periodic
+        ```
+        
+        ---
+        
+        ### `create_event_group <group_name>`
+        
+        Crea un grupo de eventos FreeRTOS y lo registra globalmente.
+        
+        **Ejemplo:**
+        
+        ```bash
+        python rtos_cli.py create_event_group grupo_eventos
+        ```
+        
+        ---
+        
+        ### `create_mutex <mutex_name>`
+        
+        Crea un mutex global de FreeRTOS.
+        
+        **Ejemplo:**
+        
+        ```bash
+        python rtos_cli.py create_mutex mtx_sensor
+        ```
+        
+        ---
+        
+        ### `create_semaphore <semaphore_name>`
+        
+        Crea un semáforo binario global de FreeRTOS.
+        
+        **Ejemplo:**
+        
+        ```bash
+        python rtos_cli.py create_semaphore sem_ready
+        ```
+        
+        ---
+        
+        ### `create_module <module_name>`
+        
+        Crea un módulo genérico C++ con archivo `.cpp` y `.h` más integración de cabecera y actualización del README.
+        
+        **Ejemplo:**
+        
+        ```bash
+        python rtos_cli.py create_module comunicacion_lora
+        ```
+        
+        ---
+        
+        ## Notas Generales
+        
+        * Todos los cambios se integran automáticamente al proyecto existente.
+        * Se actualiza `README.md`, `platformio.ini` y `project_config.h` si aplica.
+        * Todas las funciones incluyen documentación tipo Doxygen.
+        
+        ---
+        
+        Para obtener ayuda directamente desde CLI:
+        
+        ```bash
+        python rtos_cli.py --help
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Description-Content-Type: text/markdown
