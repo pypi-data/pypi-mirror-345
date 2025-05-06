@@ -1,0 +1,116 @@
+name: Handle Release
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  Build-Release-Binaries:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            label: linux.x86_64
+            simd: true
+            ext: ""
+          - os: macos-13
+            label: darwin.x86_64
+            simd: true
+            ext: ""
+          - os: macos-14
+            label: darwin.aarch64
+            simd: false
+            ext: ""
+          - os: windows-2022
+            label: windows.x86_64
+            simd: true
+            ext: ".exe"
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        submodules: recursive
+
+    - name: Set reusable paths
+      id: strings
+      shell: bash
+      run: |
+        echo "build-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "bin-dir=${{ github.workspace }}/bin" >> "$GITHUB_OUTPUT"
+        echo "release-dir=${{ github.workspace }}/bin/release" >> "$GITHUB_OUTPUT"
+
+    - name: Create release directory
+      run: mkdir -p ${{ steps.strings.outputs.release-dir }}
+
+    - name: Configure CMake (SIMD)
+      if: matrix.simd == true
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-dir }}
+        -DQUICKED_NONATIVE=ON
+        ${{ matrix.os == 'macos-14' && '-DCMAKE_APPLE_SILICON_PROCESSOR=arm64' || '' }}
+        -S ${{ github.workspace }}
+
+    - name: Build (SIMD)
+      if: matrix.simd == true
+      run: cmake --build ${{ steps.strings.outputs.build-dir }} --config Release --parallel 4
+
+    - name: Move artifacts (SIMD)
+      if: matrix.simd == true
+      shell: bash
+      run: |
+        mv "${{ steps.strings.outputs.bin-dir }}/align_benchmark${{ matrix.ext }}" \
+           "${{ steps.strings.outputs.release-dir }}/align_benchmark-${{ matrix.label }}-SIMD${{ matrix.ext }}"
+        mv "${{ steps.strings.outputs.bin-dir }}/generate_dataset${{ matrix.ext }}" \
+           "${{ steps.strings.outputs.release-dir }}/generate_dataset-${{ matrix.label }}-SIMD${{ matrix.ext }}"
+
+    - name: Clean
+      if: matrix.simd == true
+      run: cmake --build ${{ steps.strings.outputs.build-dir }} --target clean
+
+    - name: Configure CMake (Scalar)
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-dir }}
+        -DQUICKED_NONATIVE=ON
+        -DQUICKED_FORCESCALAR=ON
+        ${{ matrix.os == 'macos-14' && '-DCMAKE_APPLE_SILICON_PROCESSOR=arm64' || '' }}
+        -S ${{ github.workspace }}
+
+    - name: Build (Scalar)
+      run: cmake --build ${{ steps.strings.outputs.build-dir }} --config Release --parallel 4
+
+    - name: Move artifacts (Scalar)
+      shell: bash
+      run: |
+        mv "${{ steps.strings.outputs.bin-dir }}/align_benchmark${{ matrix.ext }}" \
+           "${{ steps.strings.outputs.release-dir }}/align_benchmark-${{ matrix.label }}${{ matrix.ext }}"
+        mv "${{ steps.strings.outputs.bin-dir }}/generate_dataset${{ matrix.ext }}" \
+           "${{ steps.strings.outputs.release-dir }}/generate_dataset-${{ matrix.label }}${{ matrix.ext }}"
+
+    - name: Upload per-platform artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-${{ matrix.label }}
+        path: ${{ steps.strings.outputs.release-dir }}/*
+
+  Upload-Release-Binaries:
+    runs-on: ubuntu-latest
+    needs: Build-Release-Binaries
+
+    steps:
+    - name: Download all release artifacts
+      uses: actions/download-artifact@v4
+      with:
+        pattern: release-*
+        merge-multiple: true
+        path: ./all_binaries
+
+    - name: Upload the artifacts to the release
+      uses: skx/github-action-publish-binaries@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: './all_binaries/*'

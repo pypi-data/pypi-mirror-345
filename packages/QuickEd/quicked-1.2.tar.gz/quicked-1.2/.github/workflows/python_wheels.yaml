@@ -1,0 +1,59 @@
+name: Build Python Wheels
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, macos-13, macos-14, windows-2022] # Macos 13 (Intel) / Macos 14 (Apple Silicon)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.23.2
+        env:
+          # Pass Apple Silicon architecture to CMake when on macos-14
+          CIBW_ENVIRONMENT: CMAKE_ARGS="-DQUICKED_NONATIVE=ON ${{ matrix.os == 'macos-14' && '-DCMAKE_APPLE_SILICON_PROCESSOR=arm64' || '' }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
+
+  make_sdist:
+    name: Make SDist
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Build SDist
+      run: pipx run build --sdist
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: cibw-sdist
+        path: dist/*.tar.gz
+
+  upload_all:
+    needs: [build_wheels, make_sdist]
+    environment: PyPI
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: cibw-*
+        path: dist
+        merge-multiple: true
+
+    - uses: pypa/gh-action-pypi-publish@release/v1

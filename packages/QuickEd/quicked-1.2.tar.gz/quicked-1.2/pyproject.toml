@@ -1,0 +1,46 @@
+[build-system]
+requires = ["scikit-build-core==0.11.1", "packaging>=24.2"]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+cmake.version = "==3.22.1" # Pinning CMake version to avoid conflicts with pinned dependencies
+logging.level = "INFO"
+build.targets = ["pyquicked"]
+install.components = ["pyquicked"]
+
+[tool.cibuildwheel]
+environment = { CMAKE_ARGS = "-DQUICKED_NONATIVE=ON" }
+archs = ["auto64"]
+skip = ["pp*", "*musllinux*"] # Skip PyPy and musllinux builds to cut down on CI time
+
+[project]
+name = "QuickEd"
+description = "Python bindings for QuickEd"
+readme = { file = "bindings/python/README.md", content-type = "text/markdown" }
+authors = [
+    {name = "Max Doblas", email = "max.doblas@bsc.es"},
+    {name = "Oscar Lostes-Cazorla", email = "oscar.lostes@bsc.es"},
+    {name = "Cristian Iniguez", email = "cristian.iniguez@bsc.es"},
+    {name = "Santiago Marco-Sola", email = "santiagomsola@gmail.com"},
+]
+maintainers = [
+  { name = "Oscar Lostes-Cazorla", email = "oscar.lostes@bsc.es" },
+]
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["edit", "distance", "levenshtein", "align", "sequence", "bioinformatics"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+version = "1.2"
+requires-python = ">= 3.8"
+dependencies = [
+    "py-cpuinfo>=9.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/maxdoblas/QuickEd"
