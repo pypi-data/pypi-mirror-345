@@ -1,0 +1,59 @@
+Metadata-Version: 2.4
+Name: lazy-signals
+Version: 0.1.0
+Summary: running effects on value updates with dependency discovery - conceptually inspired by Signal in JavaScript
+Author-email: Adrian Gallus <mail@agallus.de>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/adrian-gallus/lazy-signals-python
+Project-URL: Issues, https://github.com/adrian-gallus/lazy-signals-python/issues
+Keywords: reactive,signals,effects,lazy,dependencies
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENCE.md
+Dynamic: license-file
+
+
+# Lazy Signals 🪢
+
+`lazysignals` is a python library to run effects on state changes. It employs dependency discovery and is lazy. It is conceptually inspired by Signal in JavaScript.
+
+## Example
+
+The framework runs relevant effects whenever some state changes:
+
+define a new signal `s`, holding the initial value `1`
+
+    s = Signal(1)
+
+derive a signal that checks the parity of `s`
+
+    p = derived(lambda: s.value % 2 == 0)
+
+log the parity of `s` to the console
+
+    effect(lambda: print(f"parity:", "even" if p.value else "odd"))
+
+perform some updates to `s`
+
+    s.value = 1  # no change, no output
+    s.value = 2  # output: "parity: even"
+    s.value = 3  # output: "parity: odd"
+    s.value = 5  # no change, no output
+    s.value = 6  # output: "parity: even"
+
+Have a look at `example.py` for more; run with `pipenv install` (to locally install this library) and `pipenv run example`.
