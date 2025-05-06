@@ -1,0 +1,95 @@
+# File: .github/workflows/main.yml
+name: CI and Publish
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test_and_lint:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.11", "3.12"]
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies (including test extras)
+      run: |
+        python -m pip install --upgrade pip
+        pip install .[test]
+
+    - name: Lint and Format Check with Ruff
+      run: |
+        ruff format --check .
+        ruff check .
+
+    - name: Analyse code with Mypy
+      run: |
+        mypy commitai tests
+
+    - name: Run tests via Coverage
+      run: |
+        coverage run --rcfile=pyproject.toml -m pytest tests/
+
+    - name: Generate Coverage Report (XML)
+      run: |
+        coverage xml -o coverage.xml
+
+    - name: Check Coverage Threshold
+      run: |
+        # Extract the real fail_under value (ignore comments) and enforce it
+        FAIL_UNDER=$(grep -E '^\s*fail_under\s*=' pyproject.toml \
+                     | sed 's/.*= *//')
+        coverage report --rcfile=pyproject.toml --fail-under=$FAIL_UNDER
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: lguibr/commitai
+        files: ./coverage.xml
+        fail_ci_if_error: true
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test_and_lint
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Set up Python for publishing
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+
+    - name: Build package
+      run: python -m build
+
+    - name: Publish package to PyPI
+      # Twine will automatically use the OIDC token provided by the runner environment
+      # when run in a job with 'id-token: write' permissions.
+      # Ensure you have configured Trusted Publishing on PyPI for this repo/workflow.
+      run: twine upload dist/*

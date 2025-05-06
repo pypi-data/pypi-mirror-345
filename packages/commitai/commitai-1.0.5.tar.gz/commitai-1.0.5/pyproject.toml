@@ -1,0 +1,126 @@
+# File: pyproject.toml
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "commitai"
+# Make sure to update version in commitai/__init__.py as well
+
+version = "1.0.5"
+
+description = "Commitai helps you generate git commit messages using AI"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Luis Guilherme", email = "lgpelin92@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "click>=8.0,<9.0",
+    "langchain>=0.1.0,<=0.3.25",
+    "langchain-core>=0.1.0,<=0.3.58",
+    "langchain-community>=0.0.20,<=0.3.23",
+    "langchain-anthropic>=0.1.0,<=0.3.12",
+    "langchain-openai>=0.1.0,<=0.3.16",
+    "langchain-google-genai~=2.1.4",
+    "langchain-ollama~=0.3.2",
+    "pydantic>=2.0,<3.0",
+]
+
+[project.urls]
+"Bug Tracker" = "https://github.com/lguibr/commitai/issues"
+"Documentation" = "https://github.com/lguibr/commitai/blob/main/README.md"
+"Source Code" = "https://github.com/lguibr/commitai"
+
+[project.scripts]
+commitai = "commitai.cli:commitai_alias"
+commitai-create-template = "commitai.cli:commitai_create_template_alias"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=3.0", # Still needed for coverage run command
+    "mypy>=1.9.0",
+    "types-setuptools",
+    # Pin ruff version to match pre-commit hook
+    "ruff==0.4.4",
+    "langchain-google-genai~=2.1.4", # Keep google genai here for mypy in pre-commit
+]
+
+[tool.hatch.version]
+path = "commitai/__init__.py"
+
+[tool.ruff]
+# Base settings applied to both linter and formatter
+line-length = 88
+target-version = "py39" # Set base target version
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "C90",# mccabe complexity
+    "B904",# raise from exception
+    "C4", # flake8-comprehensions C4xx
+]
+# Let the formatter handle line length (E501)
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.mypy]
+python_version = "3.9" # Consistent with requires-python
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+# Scan source and the new top-level tests directory
+files = ["commitai", "tests"]
+disable_error_code = ["arg-type", "call-arg"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+# Keep addopts minimal; coverage flags are now explicit in the CI command
+addopts = "-ra -q"
+# Point to the new top-level tests directory
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.run]
+# Explicitly tell coverage where the source code is
+source = ["commitai"]
+# Enable branch coverage
+branch = true
+# Omit test files from coverage measurement itself
+omit = ["tests/*"]
+# Specify the config file for coverage run command
+# rcfile = pyproject.toml # Not needed here, specified in command line
+
+[tool.coverage.report]
+# This fail_under is used for local runs if not overridden by command line
+fail_under = 85
+show_missing = true
