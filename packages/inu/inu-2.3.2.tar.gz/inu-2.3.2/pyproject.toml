@@ -1,0 +1,86 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "inu"
+version = "2.3.2"
+description = "Inertial Navigation Utilities"
+readme = "README.md"
+authors = [
+    { name = "David Woodburn", email = "david.woodburn@icloud.com" },
+]
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.6"
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "r3f",
+]
+
+[project.urls]
+Homepage = "https://gitlab.com/davidwoodburn/inu"
+"Bug Tracker" = "https://gitlab.com/davidwoodburn/inu/-/issues"
+
+[tool.setuptools]
+package-dir = {"" = "inu"}
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
+
+[tool.ruff]
+line-length = 80
+indent-width = 4
+extend-exclude = [
+  ".pytest_cache",
+  ".ruff_cache",
+  "analysis/",
+  "build/",
+  "dist/",
+  "examples/",
+  "figures/",
+  "paper/",
+  "test/",
+  "inu/__init__.py",
+]
+
+[tool.ruff.lint]
+select = ["ALL"] # Enabled Rules
+ignore = [ # Disabled Rules
+    "A004",
+    "C901",
+    "COM812",
+    "D104",
+    "D202",
+    "D205",
+    "D210",
+    "D400",
+    "E702",
+    "EM101",
+    "EM102",
+    "F403",
+    "FBT001",
+    "FBT002",
+    "I001",
+    "N801",
+    "N803",
+    "N806",
+    "N816",
+    "NPY002",
+    "PLR0912",
+    "PLR0913",
+    "PLR0915",
+    "PLR2004",
+    "RET505",
+    "T201",
+    "TRY003",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"

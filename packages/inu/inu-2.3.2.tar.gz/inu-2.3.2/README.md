@@ -1,0 +1,279 @@
+# Inertial Navigation Utilities
+
+## Key Design Concepts
+
+### Functions
+
+This library provides forward mechanization of inertial measurement unit sensor
+values (accelerometer and gyroscope readings) to get position, velocity, and
+attitude as well as inverse mechanization to get sensor values from position,
+velocity, and attitude. It also includes tools to calculate velocity from
+geodetic position over time, to estimate attitude from velocity, to estimate
+wind velocity from ground-track velocity and yaw angle, and to generate
+navigation paths from waypoints.
+
+### Accuracy
+
+The mechanization algorithms in this library make no simplifying assumptions.
+The Earth is defined as an ellipsoid. Any deviations of the truth from this
+simple shape can be captured by more complex gravity models. The algorithms use
+a single frequency update structure which is much simpler than the common
+two-frequency update structure and just as, if not more, accurate.
+
+### Duality
+
+The forward and inverse mechanization functions are perfect duals of each other.
+This means that if you started with a profile of position, velocity, and
+attitude and passed these into the inverse mechanization algorithm to get sensor
+values and then passed those sensor values into the forward mechanization
+algorithm, you would get back the original position, velocity, and attitude
+profiles. The only error would be due to finite-precision rounding.
+
+### Vectorization
+
+When possible, the functions are vectorized in order to handle processing
+batches of values. A set of scalars is a 1D array. A set of vectors is a 2D
+array, with each vector in a column. So, a (3, 7) array is a set of seven
+vectors, each with 3 elements. If an input matrix does not have 3 rows, it will
+be assumed that the rows of the matrix are vectors.
+
+An example of the vectorization in this library is the `mech_inv` (inverse
+mechanization) algorithm. There is no `for` loop to iterate through time; rather
+the entire algorithm has been vectorized. This results in an over 100x speed
+increase.
+
+### Extended Kalman Filter
+
+An extended Kalman filter can be implemented using this library. The `mech_step`
+function applies the mechanization equations to a single time step. It returns
+the time derivatives of the states. The `jacobian` function calculates the
+continuous-domain Jacobian of the dynamics function. While this does mean that
+the user must then manually integrate the derivatives and discretize the
+Jacobian, this gives the user greater flexibility to decide how to discretize
+them.
+
+The example code below is meant to run within a `for` loop stepping through
+time, where `k` is the time index:
+
+```python
+# Inputs
+fbbi = fbbi_t[:, k] # specific forces (m/s^2)
+wbbi = wbbi_t[:, k] # rotation rates (rad/s)
+z = z_t[:, k] # GPS position (rad, rad, m)
+
+# Update
+S = H @ Ph @ H.T + R # innovation covariance (3, 3)
+Si = np.linalg.inv(S) # inverse (3, 3)
+Kg = Ph @ H.T @ Si # Kalman gain (9, 3)
+Ph -= Kg @ H @ Ph # update to state covariance (9, 9)
+r = z - llh # innovation (3,)
+dx = Kg @ r # changes to states (9,)
+llh += dx[:3] # add change in position
+vne += dx[3:6] # add change in velocity
+# matrix exponential of skew-symmetric matrix
+Psi = r3f.rodrigues(dx[6:])
+Cnb = Psi.T @ Cnb
+
+# Save results.
+tllh_t[:, k] = llh.copy()
+tvne_t[:, k] = vne.copy()
+trpy_t[:, k] = r3f.dcm_to_rpy(Cnb.T)
+
+# Get the Jacobian and propagate the state covariance.
+F = inu.jacobian(fbbi, llh, vne, Cnb)
+Phi = I + (F*T)@(I + (F*T/2)) # 2nd-order expm(F T)
+Ph = Phi @ Ph @ Phi.T + Qd
+
+# Get the state derivatives.
+Dllh, Dvne, wbbn = inu.mech_step(fbbi, wbbi, llh, vne, Cnb)
+
+# Integrate (forward Euler).
+llh += Dllh * T # change applies linearly
+vne += Dvne * T # change applies linearly
+Cnb[:, :] = Cnb @ r3f.rodrigues(wbbn * T)
+Cnb[:, :] = r3f.mgs(Cnb)
+```
+
+In the example above, `H` should be a (3, 9) matrix with ones along the
+diagonal. The `Qd` should be the (9, 9) discretized dynamics noise covariance
+matrix. The `R` should be the (3, 3) measurement noise covariance matrix. Note
+that forward Euler integration has been performed on the state derivatives and a
+second-order approximation to the matrix exponential has been implemented to
+discretize the continuous-time Jacobian.
+
+## Functions
+
+### Mechanization: `mech` and `mech_step`
+
+```python
+llh_t, vne_t, rpy_t = inu.mech(
+    fbbi_t: np.ndarray,
+    wbbi_t: np.ndarray,
+    llh0: np.ndarray,
+    vne0: np.ndarray,
+    rpy0: np.ndarray,
+    T: float,
+    hae_t: np.ndarray | None = None,
+    baro_name: str | None = None,
+    grav_model: Callable[[np.ndarray], np.ndarray] = somigliana)
+Dllh, Dvne, wbbn = inu.mech_step(
+    fbbi: np.ndarray,
+    wbbi: np.ndarray,
+    llh: np.ndarray,
+    vne: np.ndarray,
+    Cnb: np.ndarray,
+    hb: float | None = None,
+    baro: Baro | None = None,
+    grav_model: Callable[[np.ndarray], np.ndarray] = somigliana)
+```
+
+The `mech` function performs forward mechanization of accelerometer and
+gyroscope sensor values, given the initial conditions for position, velocity,
+and attitude. This function processes an entire time-history profile of sensor
+values and returns the path solution for the corresponding span of time. If you
+would prefer to mechanize only one step at a time, you can call the `mech_step`
+function instead. Actually, the `mech` function does call the `mech_step`
+function within a `for` loop.
+
+The `mech` function can override the height solution with whatever is provided
+for `hae_t`. If a barometric altimeter is named (one of eight names), `hae_t`
+will be treated as the barometric altitude. Similarly, the `mech_step` function
+can take a barometric model, generated by the `Baro` class.
+
+### Inverse Mechanization: `mech_inv`
+
+```python
+fbbi_t, wbbi_t = inu.mech_inv(
+    llh_t: np.ndarray,
+    rpy_t: np.ndarray,
+    T: float,
+    grav_model: Callable[[np.ndarray], np.ndarray] = somigliana)
+```
+
+The `mech_inv` function performs inverse mechanization, meaning it takes path
+information in the form of position and attitude over time and estimates the
+corresponding sensor values for an accelerometer and gyroscope. This function is
+fully vectorized, so there is no `for` loop internally. Note that the velocity
+is internally calculated from position over time.
+
+### Path Generation
+
+```python
+way = inu.waypoints(
+    points: np.ndarray,
+    seg_len: float = 1.0,
+    radius_min: float = 0.0,
+    plot: bool = True,
+    ax: axes= None,
+    color: str = "tab:blue",
+    warncolor: str = "tab:orange")
+```
+
+The class `waypoints` will take a (2, Np) array of North and East waypoints,
+`points`, and create an interactive plot connecting the waypoints with quadratic
+Bezier curves. These curves can be manipulated by moving, creating, and deleting
+the waypoints. The modified waypoints are accesible with `way.points`. The field
+`way.path` will contain the North, East, Down coordinates of the navigation
+path.
+
+```python
+pc_t = inu.path_box(
+    seg_len: float,
+    width: float = 2000.0,
+    height: float = 2000.0,
+    radius: float = 300.0,
+    cycles: int = 3)
+pc_t = inu.path_circle(
+    seg_len: float,
+    radius: float = 1000.0,
+    cycles: int = 5)
+pc_t = inu.path_clover(
+    seg_len: float,
+    radius: float = 10000.0,
+    cycles: int = 3)
+pc_t = inu.path_grid(
+    seg_len: float,
+    spacing: float = 300.0,
+    length: float = 1600.0,
+    rows: int = 6)
+pc_t = inu.path_pretzel(
+    K: int,
+    radius: float = 1000.0,
+    height: float = 100.0,
+    cycles: float = 1.0,
+    twists: int = 1)
+pc_t = inu.path_spiral(
+    seg_len: float,
+    spacing: float = 300.0,
+    cycles: int = 3)
+```
+
+Several, pre-defined navigation paths are also provided. These will return the
+North, East, Down coordinates of the navigation path. The user can then convert
+these to geodetic coordinates with either the `r3f.curvilinear_to_geodetic` or
+`r3f.tangent_to_geodetic` function.
+
+```python
+t, vne_t, rpy_t = inu.llh_to_tva(llh_t, T)
+vne_t = inu.llh_to_vne(llh_t, T)
+rpy_t = inu.vne_to_rpy(vne_t, grav_t, T, alpha=0.06, wind=None)
+```
+
+With a navigation path, `llh_t`, the velocity and attitude can be estimated
+assuming coordinated turns.
+
+### Jacobian: `jacobian`
+
+```python
+F = inu.jacobian(fbbi, llh, vne, Cnb, baro=None)
+```
+
+The Jacobian of the dynamics is calculated using the `jacobian` function. This
+is a square matrix whose elements are the derivatives with respect to state of
+the continuous-domain, time-derivatives of states. For example, the time
+derivative of latitude is
+
+![](https://gitlab.com/davidwoodburn/inu/-/raw/main/figures/fig_lat_rate.svg)
+
+So, the derivative of this with respect to height above ellipsoid is
+
+![](https://gitlab.com/davidwoodburn/inu/-/raw/main/figures/fig_partial.svg)
+
+The order of the states is position (latitude, longitude, height), velocity
+(North, East, down), and attitude. So, the above partial derivative would be
+found in element (1,3) (base-1 indexing) of the Jacobian matrix.
+
+The representation of attitude is complicated. This library uses 3x3 direction
+cosine matrices (DCMs) to process attitude. The rate of change in attitude is
+represented by a tilt error vector. So, the last three states in the Jacobian
+are the *x*, *y*, and *z* tilt errors. This makes a grand total of 9 states, so
+the Jacobian is a 9x9 matrix.
+
+The above code example (and the `ekf_gps.py` script in the `examples` folder)
+shows how to use the Jacobian.
+
+### Discretization: `vanloan`
+
+```python
+Phi, Bd, Qd = inu.vanloan(F, B=None, Q=None, T=None)
+```
+
+The extended Kalman filter (EKF) example above shows a reduced-order
+approximation to the matrix exponential of the Jacobian. The ***Q*** dynamics
+noise covariance matrix also needs to be discretized. This was done with a
+first-order approximation by just multiplying it by the sampling period *T*.
+This is reasonably accurate and computationally fast. However, it is an
+approximation. The mathematically accurate way to discretize the Jacobian and
+***Q*** is to use the van Loan method. This is implemented with the `vanloan`
+function.
+
+### Orientation: `ned_enu`
+
+```python
+vec = inu.ned_enu(vec)
+```
+
+This library assumes all local-level coordinates are in the North, East, down
+orientation. If your coordinates are in the East, North, up orientation or you
+wish for the final results to be converted to that orientation, use the
+`ned_enu` function.
