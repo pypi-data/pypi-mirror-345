@@ -1,0 +1,69 @@
+[project]
+name = "scllm"
+version = "0.2.1"
+description = "scllm is a Python package for single-cell analysis using LLMs."
+readme = "README.md"
+authors = [
+    { name = "Harald Vohringer", email = "harald.voeh@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "scanpy>=1.11.0",
+    "langchain-core>=0.3.15",
+    "langchain-openai>=0.2.5",
+    "langsmith>=0.1.139",
+    "langchain-community>=0.3.5",
+    "langchain>=0.3.7",
+    "docarray>=0.40.0",
+    "fastapi>=0.115.8",
+    "uvicorn>=0.34.0",
+    "google-search-results>=2.4.2",
+    "joypy>=0.2.6",
+]
+license = { text = "MIT" }
+keywords = ["single-cell", "llm", "bioinformatics"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+[project.urls]
+Homepage = "https://github.com/sagar87/scllm"
+Documentation = "https://haraldvohringer.com/scllm/"
+Repository = "https://github.com/sagar87/scllm"
+"Bug Tracker" = "https://github.com/sagar87/scllm/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/scllm"]
+
+[tool.flake8]
+ignore = ["E501"]
+max-line-length = 88  # Match black's default line length
+
+[dependency-groups]
+dev = [
+    "bandit>=1.8.3",
+    "black>=25.1.0",
+    "flake8>=7.1.2",
+    "ipykernel>=6.29.5",
+    "isort>=6.0.1",
+    "jupyter>=1.1.1",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+    "safety>=3.3.1",
+    "sphinx<7.0.0",
+    "sphinx-book-theme>=1.1.4",
+    "nbsphinx>=0.9.3",
+]
+docs = [
+    "igraph>=0.11.8",
+    "leidenalg>=0.10.2",
+]
