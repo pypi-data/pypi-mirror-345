@@ -1,0 +1,161 @@
+Metadata-Version: 2.4
+Name: markdown-checker
+Version: 0.2.5
+Summary: A markdown link validation reporting tool.
+Author-email: John Aziz <johnaziz269@gmail.com>
+Maintainer-email: John Aziz <johnaziz269@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2023 John Aziz
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/john0isaac/markdown-checker
+Project-URL: Documentation, https://markdown-checker.readthedocs.io/en/latest/
+Project-URL: Issues, https://github.com/john0isaac/markdown-checker/issues
+Project-URL: Contributing, https://github.com/john0isaac/markdown-checker/pulls
+Project-URL: Releases, https://github.com/john0isaac/markdown-checker/releases
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Quality Assurance
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: requests
+Provides-Extra: dev
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: types-requests; extra == "dev"
+Provides-Extra: lint
+Requires-Dist: ruff; extra == "lint"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Provides-Extra: docs
+Requires-Dist: mkdocs; extra == "docs"
+Requires-Dist: mkdocs-material; extra == "docs"
+Requires-Dist: mkdocstrings[python]; extra == "docs"
+Requires-Dist: pymdown-extensions; extra == "docs"
+Dynamic: license-file
+
+[![PyPi](https://img.shields.io/pypi/v/markdown-checker)](https://pypi.org/project/markdown-checker/)
+[![Documentation Status](https://readthedocs.org/projects/markdown-checker/badge/?version=latest)](https://markdown-checker.readthedocs.io/en/latest/?badge=latest)
+[![Downloads](https://img.shields.io/pypi/dm/markdown-checker)](https://pypi.org/project/markdown-checker/)
+
+[![GitHub issues](https://img.shields.io/badge/issue_tracking-github-blue.svg)](https://github.com/john0isaac/markdown-checker/issues)
+[![Contributing](https://img.shields.io/badge/PR-Welcome-%23FF8300.svg?)](https://github.com/john0isaac/markdown-checker/pulls)
+
+markdown-checker is a markdown link validation reporting tool. It provides a couple of functions to validate relative paths and web URLs.
+
+## Installation
+
+Install the package:
+
+```bash
+pip install markdown-checker
+```
+
+### Documentation
+
+- [Full documentation](https://markdown-checker.readthedocs.io/en/latest/).
+
+## 1, 2, 3 - How To
+
+1. Run `pip install markdown-checker`.
+2. Run `markdown-checker -d {src} -f {func} -gu {url}`. Replace `{src}` with the directory you want to analyze, `{func}` with the available functions like `check_broken_paths`, `{gu}` with your contribution guidance full URL.
+3. The output will be displayed in the terminal and in a `comment.md` file.
+
+For more customizations read the docs.
+
+## Using `markdown-checker` in GitHub Actions
+
+You can run this tool within a GitHub workflow using the [action-check-markdown](https://github.com/marketplace/actions/check-markdown) GitHub action.
+
+The action will automatically post the output of the tool to your GitHub pull request as a comment.
+
+# Usage
+
+The library provides the following functions:
+
+- [Usage](#usage)
+  - [`check_broken_paths`](#check_broken_paths)
+  - [`check_broken_urls`](#check_broken_urls)
+  - [`check_urls_locale`](#check_urls_locale)
+  - [`check_paths_tracking`](#check_paths_tracking)
+  - [`check_urls_tracking`](#check_urls_tracking)
+
+## `check_broken_paths`
+
+This function ensures that any relative path in your files are working.
+
+Example:
+
+```bash
+markdown-checker -d . -f check_broken_paths -gu https://github.com/john0isaac/markdown-checker/blob/main/CONTRIBUTING.md
+```
+
+## `check_broken_urls`
+
+This function ensures that any web URL in your files is working and returning 200 status code.
+
+Example:
+
+```bash
+markdown-checker -d . -f check_broken_urls -gu https://github.com/john0isaac/markdown-checker/blob/main/CONTRIBUTING.md
+```
+
+## `check_urls_locale`
+
+This function checks if country specific locale is present in URLs.
+
+Example:
+
+```bash
+markdown-checker -d . -f check_urls_locale -gu https://github.com/john0isaac/markdown-checker/blob/main/CONTRIBUTING.md
+```
+
+## `check_paths_tracking`
+
+This function ensures that any relative path has tracking in it.
+
+Example:
+
+```bash
+markdown-checker -d . -f check_paths_tracking -gu https://github.com/john0isaac/markdown-checker/blob/main/CONTRIBUTING.md
+```
+
+## `check_urls_tracking`
+
+This function ensures that any URL has tracking in it.
+
+Example:
+
+```bash
+markdown-checker -d . -f check_urls_tracking -gu https://github.com/john0isaac/markdown-checker/blob/main/CONTRIBUTING.md
+```
