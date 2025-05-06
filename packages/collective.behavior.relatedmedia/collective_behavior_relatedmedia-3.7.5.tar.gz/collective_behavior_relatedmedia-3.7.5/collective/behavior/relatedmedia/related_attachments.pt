@@ -1,0 +1,31 @@
+<div tal:define="
+       attachments view/get_attachments;
+       icons nocall:context/@@iconresolver;
+     "
+     tal:condition="python:attachments"
+     i18n:domain="collective.behavior.relatedmedia"
+>
+  <h2 i18n:translate="title_attachments">Attachments</h2>
+  <ul class="list-unstyled"
+      id="related-attachments"
+  >
+
+    <li class="attachment-item"
+        tal:repeat="att attachments"
+    >
+      <a href="${att/url}"
+         target="${att/target}"
+         >
+        <img tal:replace="structure python:icons.tag('mimetype-' + att['mimetype'])" />
+        <span>${att/title}</span> (<span>${att/size}</span>)
+      </a>
+    </li>
+
+    <li class="discreet"
+        tal:condition="not:attachments"
+        i18n:translate=""
+    >
+            No attachments uploaded yet
+    </li>
+  </ul>
+</div>
