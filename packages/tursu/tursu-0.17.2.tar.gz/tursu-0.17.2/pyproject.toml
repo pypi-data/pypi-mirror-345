@@ -1,0 +1,155 @@
+[project]
+authors = [
+    { name = "Guillaume Gauvrit", email = "guillaume@gauvr.it" },
+]
+description = "🎬 A pytest plugin that transpiles Gherkin feature files to Python using AST, enforcing typing for ease of use and debugging."
+name = "tursu"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Framework :: Pytest",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Utilities",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+version = "0.17.2"
+requires-python = ">=3.10"
+dependencies = [
+    "gherkin-official>=32.0.0",
+    "pydantic>=2.10.6",
+    "pytest>=8.3.5",
+    "venusian>=3.1.1,<4",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://mardiros.github.io/tursu"
+Documentation = "https://mardiros.github.io/tursu"
+Repository = "https://github.com/mardiros/tursu.git"
+Issues = "https://github.com/mardiros/tursu/issues"
+Changelog = "https://mardiros.github.io/tursu/user/changelog.html"
+
+[project.scripts]
+tursu = "tursu.entrypoints.cli:main"
+
+[project.entry-points.pytest11]
+tursu = "tursu.entrypoints.plugin"
+
+[project.optional-dependencies]
+docs = [
+    "furo >=2024.5.6",
+    "linkify-it-py >=2.0.3,<3",
+    "myst-parser >=3.0.0,<4; python_version < '3.10'",
+    "myst-parser >=4.0.0,<5; python_version >= '3.10'",
+    "sphinx >=7.0.1,<8",
+    "sphinx-autodoc2 >=0.5.0,<1",
+]
+
+[dependency-groups]
+dev = [
+    "factory-boy >=3.3.3",
+    "mypy >=1.4.0,<2",
+    "pytest >=8,<9",
+    "pytest-asyncio >=0.26.0",
+    "pytest-cov >=6.0.0,<7",
+    "starlette >=0.46.2",
+    "uvicorn >=0.34.1",
+]
+docs = [
+    "sphinx >=7.0.0",
+    "sphinx-autodoc2 >=0.5.0,<1",
+    "furo >=2024.8.6",
+    "linkify-it-py >=2.0.3,<3",
+    "myst-parser >=3.0.0,<4; python_version < '3.10'",
+    "myst-parser >=4.0.0,<5; python_version >= '3.10'",
+]
+playwright = [
+    "playwright ==1.50.0",
+    "pytest-playwright >=0.7.0",
+]
+
+[tool.uv]
+default-groups = []
+
+[tool.pdm.build]
+includes = [
+    "src",
+    "CHANGELOG.md",
+]
+excludes = [
+    "tests",
+]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "B",
+    "I",
+    "F",
+    "UP",
+    "RUF",
+]
+ignore = [
+    "RUF022",
+]
+
+[tool.pyright]
+ignore = [
+    "examples",
+]
+include = [
+    "src",
+    "tests",
+]
+reportPrivateUsage = false
+reportUnknownMemberType = false
+reportUnknownParameterType = false
+reportUnknownVariableType = false
+reportShadowedImports = false
+reportUnknownLambdaType = false
+reportUnknownArgumentType = false
+useLibraryCodeForTypes = true
+reportMissingTypeStubs = false
+typeCheckingMode = "strict"
+venvPath = ".venv"
+
+[tool.mypy]
+overrides = [
+    { disallow_any_generics = true, disallow_untyped_defs = true, module = "tursu.*" },
+    { ignore_missing_imports = true, module = "venusian" },
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "wip: work in progress.",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if TYPE_CHECKING:",
+    "# coverage: ignore",
+]
+omit = [
+    "tests/*",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
