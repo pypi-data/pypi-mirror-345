@@ -1,0 +1,92 @@
+Metadata-Version: 2.4
+Name: dbt-iomete
+Version: 1.7.7
+Summary: The Apache Spark (IOMETE) adapter plugin for dbt
+Home-page: https://github.com/iomete/dbt-iomete
+Author: iomete
+Author-email: support@iomete.com
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: protobuf==4.25.5
+Requires-Dist: dbt-core~=1.7.0
+Requires-Dist: sqlparams>=3.0.0
+Requires-Dist: py-hive-iomete>=2.1.3
+Requires-Dist: sentry-sdk==2.20.0
+Requires-Dist: iomete-sdk==3.0.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+<p align="center">
+  <img src="docs/iomete-logo.png" alt="iomete logo" width="300" /> <img src="https://raw.githubusercontent.com/dbt-labs/dbt/ec7dee39f793aa4f7dd3dae37282cc87664813e4/etc/dbt-logo-full.svg" alt="dbt logo" width="250"/>
+</p>
+<p align="center">
+  <a href="https://github.com/iomete/dbt-iomete/actions/workflows/main.yml">
+    <img src="https://github.com/iomete/dbt-iomete/actions/workflows/main.yml/badge.svg?event=push" alt="Unit Tests Badge"/>
+  </a>
+  <a href="https://github.com/iomete/dbt-iomete/actions/workflows/release.yml">
+    <img src="https://github.com/iomete/dbt-iomete/actions/workflows/release.yml/badge.svg?event=push" alt="Release Badge"/>
+  </a>
+</p>
+
+**[dbt](https://www.getdbt.com/)** enables data analysts and engineers to transform their data using the same practices that software engineers use to build applications.
+
+dbt is the T in ELT. Organize, cleanse, denormalize, filter, rename, and pre-aggregate the raw data in your warehouse so that it's ready for analysis.
+
+## dbt-iomete
+
+The `dbt-iomete` package contains all the code enabling dbt to work with iomete.
+
+This adapter is forked from the [dbt-spark](https://github.com/dbt-labs/dbt-spark)
+
+## Getting started
+
+### Installation
+
+```shell
+pip install dbt-iomete
+```
+
+Alternatively, you can install the package from GitHub with:
+
+```shell
+pip install git+https://github.com/iomete/dbt-iomete.git
+```
+
+### Profile Setup
+
+```yaml
+iomete:
+  target: dev
+  outputs:
+    dev:
+      type: iomete
+      host: <host>
+      port: 443
+      https: true # or http
+      dataplane: <iomete_dataplane>
+      domain: <iomete_domain>
+      lakehouse: <serverless_lakehouse_name>
+      catalog: <catalog_name>
+      schema: <database_name>
+      user: "{{ env_var('DBT_IOMETE_USER_NAME') }}"
+      token: "{{ env_var('DBT_IOMETE_TOKEN') }}"
+```
+
+For more information, consult [the docs](https://iomete.com/docs/guides/dbt/getting-started-with-iomete-dbt).
