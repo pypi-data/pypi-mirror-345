@@ -1,0 +1,235 @@
+[
+    {
+        "qualifiedName": "octagon",
+        "displayName": "Octagon MCP Server (Mock)",
+        "remote": false,
+        "githubUrl": "https://github.com/example/octagon-mcp",
+        "description": "通用MCP服务器，提供基础的模型调用功能",
+        "icon": "DEFAULT_MCP_ICON",
+        "connections": [
+            {
+                "type": "stdio",
+                "stdioFunction": [
+                    "npx"
+                ],
+                "published": true,
+                "configSchema": {
+                    "args": [
+                        "-y",
+                        "octagon-mcp@latest"
+                    ],
+                    "env": {
+                        "OCTAGON_API_KEY": {
+                            "type": "string",
+                            "description": "OCTAGON_API_KEY",
+                            "required": true
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "qualifiedName": "@zereight/mcp-gitlab",
+        "displayName": "@zereight/mcp-gitlab",
+        "remote": false,
+        "githubUrl": "https://github.com/zereight/mcp-gitlab",
+        "description": "用于GitLab操作的MCP服务器，支持仓库管理和代码操作",
+        "icon": "DEFAULT_MCP_ICON",
+        "connections": [
+            {
+                "type": "stdio",
+                "stdioFunction": [
+                    "npx"
+                ],
+                "published": true,
+                "configSchema": {
+                    "args": [
+                        "-y",
+                        "@zereight/mcp-gitlab"
+                    ],
+                    "env": {
+                        "GITLAB_PERSONAL_ACCESS_TOKEN": {
+                            "type": "string",
+                            "description": "GITLAB_PERSONAL_ACCESS_TOKEN",
+                            "required": true
+                        },
+                        "GITLAB_API_URL": {
+                            "type": "string",
+                            "description": "GITLAB_API_URL",
+                            "default": "GITLAB_API_URL",
+                            "required": true
+                        },
+                        "GITLAB_READ_ONLY_MODE": {
+                            "type": "string",
+                            "description": "GITLAB_READ_ONLY_MODE"
+                        }
+                    }
+                }
+            },
+            {
+                "type": "ws",
+                "deploymentUrl": "wss://example.com",
+                "published": true
+            }
+        ]
+    },
+    {
+        "qualifiedName": "mcp-twikit",
+        "displayName": "mcp-twikit (Mock)",
+        "remote": false,
+        "githubUrl": "https://github.com/adhikasp/mcp-twikit",
+        "description": "Twitter集成服务器，支持发推文和管理Twitter账户",
+        "icon": "DEFAULT_MCP_ICON",
+        "connections": [
+            {
+                "type": "stdio",
+                "stdioFunction": [
+                    "uvx"
+                ],
+                "published": true,
+                "configSchema": {
+                    "args": [
+                        "--from",
+                        "git+https://github.com/adhikasp/mcp-twikit",
+                        "mcp-twikit",
+                        {
+                            "name": "custom_arg",
+                            "type": "string",
+                            "description": "用户自定义参数",
+                            "required": true
+                        }
+                    ],
+                    "env": {
+                        "TWITTER_USERNAME": {
+                            "type": "string",
+                            "description": "TWITTER_USERNAME",
+                            "default": "@example",
+                            "required": true
+                        },
+                        "TWITTER_EMAIL": {
+                            "type": "string",
+                            "description": "TWITTER_EMAIL",
+                            "default": "me@example.com",
+                            "required": true
+                        },
+                        "TWITTER_PASSWORD": {
+                            "type": "string",
+                            "description": "TWITTER_PASSWORD",
+                            "default": "secret",
+                            "required": true
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "qualifiedName": "@suekou/mcp-notion-server",
+        "displayName": "mcp-notion (Mock)",
+        "remote": false,
+        "githubUrl": "https://github.com/suekou/mcp-notion-server",
+        "description": "Notion集成服务器，提供Notion文档管理和操作功能",
+        "icon": "DEFAULT_MCP_ICON",
+        "connections": [
+            {
+                "type": "stdio",
+                "stdioFunction": [
+                    "npx"
+                ],
+                "published": true,
+                "configSchema": {
+                    "args": [
+                        "-y",
+                        "@suekou/mcp-notion-server"
+                    ],
+                    "env": {
+                        "NOTION_API_TOKEN": {
+                            "type": "string",
+                            "description": "NOTION_API_TOKEN",
+                            "default": "your-integration-token",
+                            "required": true
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "qualifiedName": "@test/install-notion",
+        "displayName": "@test/install-notion",
+        "remote": false,
+        "githubUrl": "https://github.com/suekou/mcp-notion-server-test",
+        "description": "Notion集成测试服务器，用于测试安装和配置",
+        "icon": "DEFAULT_MCP_ICON",
+        "connections": [
+            {
+                "type": "stdio",
+                "stdioFunction": [
+                    "npx"
+                ],
+                "published": true,
+                "configSchema": {
+                    "args": [
+                        "-y",
+                        "@suekou/mcp-notion-server",
+                        "--from",
+                        "py-mcpdock-cli==1.0.12",
+                        "--index-url",
+                        "https://test.pypi.org/simple/",
+                        "--extra-index-url",
+                        "https://pypi.org/simple/",
+                        "mcpy",
+                        "run",
+                        {
+                            "name": "custom_arg",
+                            "type": "string",
+                            "description": "用户自定义参数",
+                            "required": true
+                        }
+                    ],
+                    "env": {
+                        "NOTION_API_TOKEN": {
+                            "type": "string",
+                            "description": "NOTION_API_TOKEN",
+                            "default": "your-integration-token",
+                            "required": true
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "qualifiedName": "rijksmuseum-server",
+        "displayName": "rijksmuseum-server",
+        "remote": false,
+        "githubUrl": "https://github.com/r-huijts/rijksmuseum-mcp",
+        "description": "A Model Context Protocol (MCP) server that provides access to the Rijksmuseum's collection through natural language interactions. This server enables AI models to explore, analyze, and interact with artworks and collections from the Rijksmuseum.",
+        "icon": "DEFAULT_MCP_ICON",
+        "connections": [
+            {
+                "type": "stdio",
+                "stdioFunction": [
+                    "npx"
+                ],
+                "published": true,
+                "configSchema": {
+                    "args": [
+                        "-y",
+                        "mcpy",
+                        "run"
+                    ],
+                    "env": {
+                        "RIJKSMUSEUM_API_KEY": {
+                            "type": "string",
+                            "description": "RIJKSMUSEUM_API_KEY",
+                            "default": "",
+                            "required": true
+                        }
+                    }
+                }
+            }
+        ]
+    }
+]
