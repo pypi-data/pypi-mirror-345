@@ -1,0 +1,74 @@
+digraph memory_graph {
+	node [shape=plaintext]
+	node137445759745216 [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="5" CELLPADDING="0" BGCOLOR="dodgerblue1" PORT="table">
+    <TR><TD BORDER="1" STYLE="ROUNDED"> image </TD><TD BORDER="1"> 3 </TD></TR>
+</TABLE>
+> xlabel=dict]
+	node137445774283328 [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="5" CELLPADDING="0" BGCOLOR="lightcoral" PORT="table">
+    <TR><TD BORDER="0"><font color="#505050">0</font></TD><TD BORDER="1"> a </TD></TR>
+    <TR><TD BORDER="0"><font color="#505050">1</font></TD><TD BORDER="1"> b </TD></TR>
+    <TR><TD BORDER="0"><font color="#505050">2</font></TD><TD BORDER="1"> c </TD></TR>
+</TABLE>
+> xlabel=list]
+	node137445774281536 [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="0" BGCOLOR="lightcoral" PORT="table">
+    <TR><TD BORDER="0"> </TD></TR>
+</TABLE>
+> xlabel=list]
+	node137445761539456 [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="5" CELLPADDING="0" BGCOLOR="dodgerblue1" PORT="table">
+    <TR><TD BORDER="1" STYLE="ROUNDED"> data </TD><TD BORDER="1" STYLE="ROUNDED"> subsets </TD></TR>
+    <TR><TD BORDER="1" PORT="ref0"> </TD><TD BORDER="1" PORT="ref1"> </TD></TR>
+</TABLE>
+> xlabel=dict]
+	node137445761539456:ref0 -> node137445774283328:table [style=solid]
+	node137445761539456:ref1 -> node137445774281536:table [style=solid]
+	node137445764135936 [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="5" CELLPADDING="0" BGCOLOR="lightcoral" PORT="table">
+    <TR><TD BORDER="0"><font color="#505050">0</font></TD><TD BORDER="1"> a </TD></TR>
+    <TR><TD BORDER="0"><font color="#505050">1</font></TD><TD BORDER="1"> b </TD></TR>
+</TABLE>
+> xlabel=list]
+	node137445761540800 [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="5" CELLPADDING="0" BGCOLOR="dodgerblue1" PORT="table">
+    <TR><TD BORDER="1" STYLE="ROUNDED"> subsets </TD><TD BORDER="1" STYLE="ROUNDED"> data </TD><TD BORDER="1" STYLE="ROUNDED"> i </TD><TD BORDER="1" STYLE="ROUNDED"> subset </TD></TR>
+    <TR><TD BORDER="1" PORT="ref0"> </TD><TD BORDER="1" PORT="ref1"> </TD><TD BORDER="1"> 0 </TD><TD BORDER="1" PORT="ref2"> </TD></TR>
+</TABLE>
+> xlabel=dict]
+	node137445761540800:ref0 -> node137445774281536:table [style=solid]
+	node137445761540800:ref1 -> node137445774283328:table [style=solid]
+	node137445761540800:ref2 -> node137445764135936:table [style=solid]
+	node137445761539776 [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="5" CELLPADDING="0" BGCOLOR="dodgerblue1" PORT="table">
+    <TR><TD BORDER="1" STYLE="ROUNDED"> subsets </TD><TD BORDER="1" STYLE="ROUNDED"> data </TD><TD BORDER="1" STYLE="ROUNDED"> i </TD><TD BORDER="1" STYLE="ROUNDED"> subset </TD></TR>
+    <TR><TD BORDER="1" PORT="ref0"> </TD><TD BORDER="1" PORT="ref1"> </TD><TD BORDER="1"> 1 </TD><TD BORDER="1" PORT="ref2"> </TD></TR>
+</TABLE>
+> xlabel=dict]
+	node137445761539776:ref0 -> node137445774281536:table [style=solid]
+	node137445761539776:ref1 -> node137445774283328:table [style=solid]
+	node137445761539776:ref2 -> node137445764135936:table [style=solid]
+	node137445761540032 [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="5" CELLPADDING="0" BGCOLOR="dodgerblue1" PORT="table">
+    <TR><TD BORDER="1" STYLE="ROUNDED"> subsets </TD><TD BORDER="1" STYLE="ROUNDED"> data </TD><TD BORDER="1" STYLE="ROUNDED"> i </TD><TD BORDER="1" STYLE="ROUNDED"> subset </TD></TR>
+    <TR><TD BORDER="1" PORT="ref0"> </TD><TD BORDER="1" PORT="ref1"> </TD><TD BORDER="1"> 2 </TD><TD BORDER="1" PORT="ref2"> </TD></TR>
+</TABLE>
+> xlabel=dict]
+	node137445761540032:ref0 -> node137445774281536:table [style=solid]
+	node137445761540032:ref1 -> node137445774283328:table [style=solid]
+	node137445761540032:ref2 -> node137445764135936:table [style=solid]
+	node137445761478048 [label=<
+<TABLE BORDER="3" CELLBORDER="1" CELLSPACING="5" CELLPADDING="0" BGCOLOR="khaki" PORT="table">
+    <TR><TD BORDER="1" STYLE="ROUNDED"> 0: &lt;module&gt; </TD><TD BORDER="1" STYLE="ROUNDED"> 1: power_set </TD><TD BORDER="1" STYLE="ROUNDED"> 2: get_subsets </TD><TD BORDER="1" STYLE="ROUNDED"> 3: get_subsets </TD><TD BORDER="1" STYLE="ROUNDED"> 4: get_subsets </TD></TR>
+    <TR><TD BORDER="1" PORT="ref0"> </TD><TD BORDER="1" PORT="ref1"> </TD><TD BORDER="1" PORT="ref2"> </TD><TD BORDER="1" PORT="ref3"> </TD><TD BORDER="1" PORT="ref4"> </TD></TR>
+</TABLE>
+> xlabel=call_stack]
+	node137445761478048:ref0 -> node137445759745216:table [style=solid]
+	node137445761478048:ref1 -> node137445761539456:table [style=solid]
+	node137445761478048:ref2 -> node137445761540800:table [style=solid]
+	node137445761478048:ref3 -> node137445761539776:table [style=solid]
+	node137445761478048:ref4 -> node137445761540032:table [style=solid]
+subgraph { rank=same; node137445759745216 -> node137445761539456 -> node137445761540800 -> node137445761539776 -> node137445761540032[weight=10, style=invis]; }
+subgraph { rank=same; node137445774283328 -> node137445774281536 -> node137445764135936[weight=10, style=invis]; }
+}
