@@ -1,0 +1,84 @@
+Metadata-Version: 2.2
+Name: databloom
+Version: 2.1.23
+Summary: A Python SDK for data integration with Nessie and Iceberg
+Home-page: https://code.vng.vn/techcoe/rnd/databloom/data-bloom-sdk-client.git
+Author: Nam Vu
+Author-email: namvq@vng.com.vn
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11.8
+Description-Content-Type: text/markdown
+Requires-Dist: pandas==2.2.3
+Requires-Dist: psycopg2-binary==2.9.10
+Requires-Dist: sqlalchemy==2.0.38
+Requires-Dist: trino==0.333.0
+Requires-Dist: requests==2.31.0
+Requires-Dist: duckdb==0.10.0
+Requires-Dist: python-dotenv==1.1.0
+Requires-Dist: pymysql==1.1.0
+Requires-Dist: pymongo==4.6.0
+Requires-Dist: gspread==6.2.0
+Requires-Dist: google-auth==2.27.0
+Requires-Dist: google-auth-oauthlib==1.2.0
+Requires-Dist: pyspark==3.5.2
+Requires-Dist: pyyaml==6.0.1
+Requires-Dist: pymssql==2.3.4
+Provides-Extra: dev
+Requires-Dist: pytest==8.0.0; extra == "dev"
+Requires-Dist: pytest-cov==4.1.0; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# DataBloom SDK Client
+
+A Python SDK client for data integration with PostgreSQL, MySQL, Nessie, and S3.
+
+## Quick Start
+
+```bash
+# Setup environment
+conda create -n data_bloom python=3.11
+conda activate data_bloom
+
+# Install
+pip install -e ".[dev]"
+```
+
+## Configuration
+
+Create `.env` file with your credentials:
+
+## Testing
+
+```bash
+# Run all tests
+make test
+```
+
+## Development
+
+```bash
+make format          # Format code
+make lint           # Run linter
+make doc            # Build docs
+```
+
+## License
+
+VNG License
+
+
+python3 -m twine upload --verbose --repository-url https://repo.ird.vng.vn/repository/pypi-all/simple -u admin -p "nmz2whg5BQM3hjh@pya" dist/databloom-2.1.19*
