@@ -1,0 +1,89 @@
+[project]
+name = "logot"
+version = "1.4.0"
+description = "Test whether your code is logging correctly 🪵"
+authors = [{ name = "Dave Hall", email = "dave@etianen.com" }]
+license = "MIT"
+readme = "README.md"
+keywords = ["test", "unittest", "pytest", "logging"]
+dynamic = ["classifiers", "dependencies", "requires-python"]
+
+[project.entry-points.pytest11]
+logot = "logot._pytest"
+
+[project.optional-dependencies]
+loguru = ["loguru"]
+pytest = ["pytest"]
+structlog = ["structlog"]
+trio = ["trio"]
+
+[project.urls]
+homepage = "https://logot.readthedocs.io"
+repository = "https://github.com/etianen/logot"
+documentation = "https://logot.readthedocs.io"
+changelog = "https://github.com/etianen/logot/releases"
+tracker = "https://github.com/etianen/logot/issues"
+
+[tool.poetry]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: AsyncIO",
+    "Framework :: Pytest",
+    "Framework :: Trio",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Testing :: Unit",
+    "Topic :: System :: Logging",
+    "Typing :: Typed",
+]
+packages = [{ include = "logot" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+loguru = { version = ">=0.6,<0.8", optional = true }
+pytest = { version = ">=7,<9", optional = true }
+structlog = { version = ">=23.3,<26", optional = true }
+trio = { version = ">=0.22,<0.31", optional = true }
+typing-extensions = { version = ">=4.9", python = "<3.10" }
+
+[tool.poetry.group.dev.dependencies]
+coverage = "^7.4.1"
+furo = { version = "*", python = "^3.12" }
+hypothesis = "^6.96.1"
+mypy = "^1.8.0"
+ruff = ">=0.5.1,<0.12"
+sphinx = { version = "8.2.3", python = "^3.12" }
+sphinx-autobuild = { version = "*", python = "^3.12" }
+trio-typing = "^0.10.0"
+
+[tool.coverage.run]
+source = ["logot", "tests"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 100
+exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
+
+[tool.mypy]
+files = ["logot/**/*.py", "tests/**/*.py"]
+allow_redefinition = true
+explicit_package_bases = true
+show_column_numbers = true
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+console_output_style = "classic"
+addopts = "--tb=native --import-mode=importlib"
+
+[tool.ruff]
+include = ["docs/**/*.py", "logot/**/*.py", "tests/**/*.py"]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
