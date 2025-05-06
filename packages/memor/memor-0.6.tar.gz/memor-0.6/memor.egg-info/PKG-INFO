@@ -1,0 +1,326 @@
+Metadata-Version: 2.4
+Name: memor
+Version: 0.6
+Summary: Memor: A Python Library for Managing and Transferring Conversational Memory Across LLMs
+Home-page: https://github.com/openscilab/memor
+Download-URL: https://github.com/openscilab/memor/tarball/v0.6
+Author: Memor Development Team
+Author-email: memor@openscilab.com
+License: MIT
+Project-URL: Source, https://github.com/openscilab/memor
+Keywords: llm memory management conversational history ai agent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Manufacturing
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Education
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS.md
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: download-url
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-python
+Dynamic: summary
+
+
+<div align="center">
+    <h1>Memor: A Python Library for Managing and Transferring Conversational Memory Across LLMs</h1>
+    <br/>
+    <a href="https://codecov.io/gh/openscilab/memor"><img src="https://codecov.io/gh/openscilab/memor/branch/dev/graph/badge.svg?token=TS5IAEXX7O"></a>
+    <a href="https://badge.fury.io/py/memor"><img src="https://badge.fury.io/py/memor.svg" alt="PyPI version"></a>
+    <a href="https://www.python.org/"><img src="https://img.shields.io/badge/built%20with-Python3-green.svg" alt="built with Python3"></a>
+    <a href="https://github.com/openscilab/memor"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/openscilab/memor"></a>
+    <a href="https://discord.gg/cZxGwZ6utB"><img src="https://img.shields.io/discord/1064533716615049236.svg" alt="Discord Channel"></a>
+</div>
+
+----------
+
+
+## Overview
+<p align="justify">
+Memor is a library designed to help users manage the memory of their interactions with Large Language Models (LLMs).
+It enables users to seamlessly access and utilize the history of their conversations when prompting LLMs.
+That would create a more personalized and context-aware experience.
+Memor stands out by allowing users to transfer conversational history across different LLMs, eliminating cold starts where models don't have information about user and their preferences.
+Users can select specific parts of past interactions with one LLM and share them with another.
+By bridging the gap between isolated LLM instances, Memor revolutionizes the way users interact with AI by making transitions between models smoother.
+
+</p>
+<table>
+    <tr>
+        <td align="center">PyPI Counter</td>
+        <td align="center">
+            <a href="https://pepy.tech/projects/memor">
+                <img src="https://static.pepy.tech/badge/memor">
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">Github Stars</td>
+        <td align="center">
+            <a href="https://github.com/openscilab/memor">
+                <img src="https://img.shields.io/github/stars/openscilab/memor.svg?style=social&label=Stars">
+            </a>
+        </td>
+    </tr>
+</table>
+<table>
+    <tr> 
+        <td align="center">Branch</td>
+        <td align="center">main</td>
+        <td align="center">dev</td>
+    </tr>
+    <tr>
+        <td align="center">CI</td>
+        <td align="center">
+            <img src="https://github.com/openscilab/memor/actions/workflows/test.yml/badge.svg?branch=main">
+        </td>
+        <td align="center">
+            <img src="https://github.com/openscilab/memor/actions/workflows/test.yml/badge.svg?branch=dev">
+            </td>
+    </tr>
+</table>
+<table>
+    <tr> 
+        <td align="center">Code Quality</td>
+        <td align="center"><a href="https://www.codefactor.io/repository/github/openscilab/memor"><img src="https://www.codefactor.io/repository/github/openscilab/memor/badge" alt="CodeFactor"></a></td>
+        <td align="center"><a href="https://app.codacy.com/gh/openscilab/memor/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/3758f5116c4347ce957997bb7f679cfa"/></a></td>
+    </tr>
+</table>
+
+
+## Installation
+
+### PyPI
+- Check [Python Packaging User Guide](https://packaging.python.org/installing/)
+- Run `pip install memor==0.6`
+### Source code
+- Download [Version 0.6](https://github.com/openscilab/memor/archive/v0.6.zip) or [Latest Source](https://github.com/openscilab/memor/archive/dev.zip)
+- Run `pip install .`
+
+## Usage
+Define your prompt and the response(s) to that; Memor will wrap it into a object with a templated representation.
+You can create a session by combining multiple prompts and responses, gradually building it up:
+
+```pycon
+>>> from memor import Session, Prompt, Response, Role
+>>> from memor import PresetPromptTemplate, RenderFormat, LLMModel
+>>> response = Response(message="I am fine.", model=LLMModel.GPT_4, role=Role.ASSISTANT, temperature=0.9, score=0.9)
+>>> prompt = Prompt(message="Hello, how are you?",
+                    responses=[response],
+                    role=Role.USER,
+                    template=PresetPromptTemplate.INSTRUCTION1.PROMPT_RESPONSE_STANDARD)
+>>> system_prompt = Prompt(message="You are a friendly and informative AI assistant designed to answer questions on a wide range of topics.",
+                    role=Role.SYSTEM)
+>>> session = Session(messages=[system_prompt, prompt])
+>>> session.render(RenderFormat.OPENAI)
+```
+
+The rendered output will be a list of messages formatted for compatibility with the OpenAI API.
+
+```json
+[{"content": "You are a friendly and informative AI assistant designed to answer questions on a wide range of topics.", "role": "system"},
+ {"content": "I'm providing you with a history of a previous conversation. Please consider this context when responding to my new question.\n"
+             "Prompt: Hello, how are you?\n"
+             "Response: I am fine.",
+  "role": "user"}]
+```
+
+### Prompt Templates
+
+#### Preset Templates
+
+Memor provides a variety of pre-defined prompt templates to control how prompts and responses are rendered. Each template is prefixed by an optional instruction string and includes variations for different formatting styles. Following are different variants of parameters:
+
+| **Instruction Name** | **Description** |
+|---------------|----------|
+| `INSTRUCTION1` | "I'm providing you with a history of a previous conversation. Please consider this context when responding to my new question." |
+| `INSTRUCTION2` | "Here is the context from a prior conversation. Please learn from this information and use it to provide a thoughtful and context-aware response to my next questions." |
+| `INSTRUCTION3` | "I am sharing a record of a previous discussion. Use this information to provide a consistent and relevant answer to my next query." |
+
+| **Template Title** | **Description** |
+|--------------|----------|
+| `PROMPT` | Only includes the prompt message. |
+| `RESPONSE` | Only includes the response message. |
+| `RESPONSE0` to `RESPONSE3` | Include specific responses from a list of multiple responses. |
+| `PROMPT_WITH_LABEL` | Prompt with a "Prompt: " prefix. |
+| `RESPONSE_WITH_LABEL` | Response with a "Response: " prefix. |
+| `RESPONSE0_WITH_LABEL` to `RESPONSE3_WITH_LABEL` | Labeled response for the i-th response. |
+| `PROMPT_RESPONSE_STANDARD` | Includes both labeled prompt and response on a single line. |
+| `PROMPT_RESPONSE_FULL` | A detailed multi-line representation including role, date, model, etc. |
+
+You can access them like this:
+
+```pycon
+>>> from memor import PresetPromptTemplate
+>>> template = PresetPromptTemplate.INSTRUCTION1.PROMPT_RESPONSE_STANDARD
+```
+
+#### Custom Templates
+
+You can define custom templates for your prompts using the `PromptTemplate` class. This class provides two key parameters that control its functionality:
+
++ `content`: A string that defines the template structure, following Python string formatting conventions. You can include dynamic fields using placeholders like `{field_name}`, which will be automatically populated using attributes from the prompt object. Some common examples of auto-filled fields are shown below:
+
+| **Prompt Object Attribute**           | **Placeholder Syntax**             | **Description**                              |
+|--------------------------------------|------------------------------------|----------------------------------------------|
+| `prompt.message`                     | `{prompt[message]}`                | The main prompt message                       |
+| `prompt.selected_response`           | `{prompt[response]}`               | The selected response for the prompt          |
+| `prompt.date_modified`               | `{prompt[date_modified]}`          | Timestamp of the last modification            |
+| `prompt.responses[2].message`        | `{responses[2][message]}`          | Message from the response at index 2          |
+| `prompt.responses[0].inference_time` | `{responses[0][inference_time]}`   | Inference time for the response at index 0    |
+
+
++ `custom_map`: In addition to the attributes listed above, you can define and insert custom placeholders (e.g., `{field_name}`) and provide their values through a dictionary. When rendering the template, each placeholder will be replaced with its corresponding value from `custom_map`.
+
+
+Suppose you want to prepend an instruction to every prompt message. You can define and use a template as follows:
+
+```pycon
+>>> template = PromptTemplate(content="{instruction}, {prompt[message]}", custom_map={"instruction": "Hi"})
+>>> prompt = Prompt(message="How are you?", template=template)
+>>> prompt.render()
+Hi, How are you?
+```
+
+By using this dynamic structure, you can create flexible and sophisticated prompt templates with Memor. You can design specific schemas for your conversational or instructional formats when interacting with LLM.
+
+## Issues & bug reports
+
+Just fill an issue and describe it. We'll check it ASAP! or send an email to [memor@openscilab.com](mailto:memor@openscilab.com "memor@openscilab.com"). 
+
+- Please complete the issue template
+ 
+You can also join our discord server
+
+<a href="https://discord.gg/cZxGwZ6utB">
+  <img src="https://img.shields.io/discord/1064533716615049236.svg?style=for-the-badge" alt="Discord Channel">
+</a>
+
+## Show your support
+
+
+### Star this repo
+
+Give a ⭐️ if this project helped you!
+
+### Donate to our project
+If you do like our project and we hope that you do, can you please support us? Our project is not and is never going to be working for profit. We need the money just so we can continue doing what we do ;-) .			
+
+<a href="https://openscilab.com/#donation" target="_blank"><img src="https://github.com/openscilab/memor/raw/main/otherfiles/donation.png" height="90px" width="270px" alt="Memor Donation"></a>
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+## [0.6] - 2025-05-05
+### Added
+- `Response` class `id` property
+- `Prompt` class `id` property
+- `Response` class `regenerate_id` method
+- `Prompt` class `regenerate_id` method
+- `Session` class `render_counter` method
+- `Session` class `remove_message_by_index` and `remove_message_by_id` methods
+- `Session` class `get_message_by_index`, `get_message_by_id` and `get_message` methods
+- `LLMModel` enum
+- `AI_STUDIO` render format
+### Changed
+- Test system modified
+- Modification handling centralized via `_mark_modified` method
+- `Session` class `remove_message` method modified
+## [0.5] - 2025-04-16
+### Added
+- `Session` class `check_render` method
+- `Session` class `clear_messages` method
+- `Prompt` class `check_render` method
+- `Session` class `estimate_tokens` method
+- `Prompt` class `estimate_tokens` method
+- `Response` class `estimate_tokens` method
+- `universal_tokens_estimator` function
+- `openai_tokens_estimator_gpt_3_5` function
+- `openai_tokens_estimator_gpt_4` function
+### Changed
+- `init_check` parameter added to `Prompt` class
+- `init_check` parameter added to `Session` class
+- Test system modified
+- `Python 3.6` support dropped
+- `README.md` updated
+## [0.4] - 2025-03-17
+### Added
+- `Session` class `__contains__` method
+- `Session` class `__getitem__` method
+- `Session` class `mask_message` method
+- `Session` class `unmask_message` method
+- `Session` class `masks` attribute
+- `Response` class `__len__` method
+- `Prompt` class `__len__` method
+### Changed
+- `inference_time` parameter added to `Response` class
+- `README.md` updated
+- Test system modified
+- Python typing features added to all modules
+- `Prompt` class default values updated
+- `Response` class default values updated
+## [0.3] - 2025-03-08
+### Added
+- `Session` class `__len__` method
+- `Session` class `__iter__` method
+- `Session` class `__add__` and `__radd__` methods
+### Changed
+- `tokens` parameter added to `Prompt` class
+- `tokens` parameter added to `Response` class
+- `tokens` parameter added to preset templates
+- `Prompt` class modified
+- `Response` class modified
+- `PromptTemplate` class modified
+## [0.2] - 2025-03-01
+### Added
+- `Session` class
+### Changed
+- `Prompt` class modified
+- `Response` class modified
+- `PromptTemplate` class modified
+- `README.md` updated
+- Test system modified
+## [0.1] - 2025-02-12
+### Added
+- `Prompt` class
+- `Response` class
+- `PromptTemplate` class
+- `PresetPromptTemplate` class
+
+
+[Unreleased]: https://github.com/openscilab/memor/compare/v0.6...dev
+[0.6]: https://github.com/openscilab/memor/compare/v0.5...v0.6
+[0.5]: https://github.com/openscilab/memor/compare/v0.4...v0.5
+[0.4]: https://github.com/openscilab/memor/compare/v0.3...v0.4
+[0.3]: https://github.com/openscilab/memor/compare/v0.2...v0.3
+[0.2]: https://github.com/openscilab/memor/compare/v0.1...v0.2
+[0.1]: https://github.com/openscilab/memor/compare/6594313...v0.1
