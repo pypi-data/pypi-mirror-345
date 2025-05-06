@@ -1,0 +1,65 @@
+Metadata-Version: 2.4
+Name: pylegendtestdata
+Version: 0.6.0
+Summary: Python package for accessing LEGEND test data
+Home-page: https://github.com/legend-exp/pylegendtestdata
+Author: The LEGEND collaboration
+Maintainer: The LEGEND collaboration
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Software Development
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: GitPython
+Provides-Extra: all
+Requires-Dist: pylegendtestdata[test]; extra == "all"
+Provides-Extra: test
+Requires-Dist: pre-commit; extra == "test"
+Requires-Dist: pytest>=6.0; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Dynamic: license-file
+
+# pylegendtestdata
+
+[![PyPI](https://img.shields.io/pypi/v/pylegendtestdata?logo=pypi)](https://pypi.org/project/pylegendtestdata/)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/legend-exp/pylegendtestdata?logo=git)
+[![GitHub Workflow Status](https://img.shields.io/github/checks-status/legend-exp/pylegendtestdata/main?label=main%20branch&logo=github)](https://github.com/legend-exp/pylegendtestdata/actions)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![GitHub issues](https://img.shields.io/github/issues/legend-exp/pylegendtestdata?logo=github)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/legend-exp/pylegendtestdata?logo=github)
+![License](https://img.shields.io/github/license/legend-exp/pylegendtestdata)
+
+Tiny Python package to access [LEGEND test data](https://github.com/legend-exp/legend-testdata).
+
+Install (with pip):
+```console
+$ python -m pip install pylegendtestdata
+```
+
+Usage:
+
+```pycon
+>>> from legendtestdata import LegendTestData
+>>> ldata = LegendTestData()  # clone legend-exp/legend-testdata below /tmp
+>>> ldata.checkout("968c9ba")  # optionally checkout a specific version
+>>> ldata.get_path("orca/fc/L200-comm-20220519-phy-geds.orca")  # get absolute path to test file
+'/tmp/legend-testdata-gipert/data/orca/fc/L200-comm-20220519-phy-geds.orca'
+>>> ldata.reset()  # checkout default branch (main)
+```
+
+<sub>*This Python package layout is based on [pyproject-template](https://github.com/gipert/pyproject-template).*</sub>
