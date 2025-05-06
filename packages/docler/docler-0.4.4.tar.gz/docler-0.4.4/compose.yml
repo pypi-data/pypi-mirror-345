@@ -1,0 +1,33 @@
+services:
+  docler-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        EXTRAS: "server,light"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+    environment:
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    env_file:
+      - .env
+  # Full version with all OCR libraries
+  docler-api-full:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        EXTRAS: "all"
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./src:/app/src
+    environment:
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    profiles: ["full"]
+    env_file:
+      - .env
