@@ -1,0 +1,77 @@
+{
+    "$schema": "http://schema-registry/schema#",
+    "type": "object",
+    "properties": {
+        "project": {
+            "type": "object",
+            "properties": {
+                "name": { "type": "string" },
+                "version": { "type": "string" },
+                "description": { "type": "string" }
+            },
+            "required": ["name", "version", "description"]
+        },
+        "sources": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "type": { "type": "string", "enum": ["postgres", "s3"] },
+                    "port": { "type": "integer" },
+                    "username": { "type": "string" },
+                    "password": { "type": "string" },
+                    "access_key": { "type": "string" },
+                    "secret_key": { "type": "string" },
+                    "region": { "type": "string" },
+                    "bucket": { "type": "string" }
+                },
+                "required": ["name", "type"]
+            }
+        },
+        "streaming": {
+            "type": "object",
+            "properties": {
+                "kafka": {
+                    "type": "object",
+                    "properties": {"num_brokers": {"type": "integer"}},
+                    "required": ["num_brokers"]
+                },
+                "connect": {
+                    "type": "object",
+                    "properties": {
+                        "name": { "type": "string" }
+                    },
+                    "required": ["name"]
+                }
+            }
+        },
+        "storage": {
+            "type": "object",
+            "properties": {
+                "clickhouse": {
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string"}
+                    },
+                    "required": ["name"]
+                }
+            }
+        },
+        "bi": {
+            "type": "object",
+            "properties": {
+                "superset": {
+                    "type": "object",
+                    "properties": {
+                        "name": { "type": "string" },
+                        "username": { "type": "string" },
+                        "password": { "type": "string" }
+                    },
+                    "required": ["name"]
+                }
+            }
+        }
+    },
+    "required": ["project", "sources", "streaming", "storage", "bi"]
+}
