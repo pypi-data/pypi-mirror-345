@@ -1,0 +1,5 @@
+export class ArraySetItemHandler extends AbstractHandler {
+    requiredParametersCount: number;
+    process(command: any): number;
+}
+import { AbstractHandler } from './AbstractHandler.js';
