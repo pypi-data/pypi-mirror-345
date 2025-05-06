@@ -1,0 +1,26 @@
+[project]
+name = "lockss-warcread"
+version = "0.4.0-dev1"
+description = "Python tool for WARC file reporting"
+authors = [
+    { name = "Thib Guicherd-Callin",  email = "thib@cs.stanford.edu" }
+]
+license = { text = "BSD-3-Clause" }
+readme = "README.rst"
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "legacy-cgi (>=2.6.3,<3.0.0)",
+    "lockss-pybasic (>=0.1.0.dev9,<0.2.0)",
+    "pydantic (>=2.11.3,<3.0.0)",
+    "pydantic-argparse (>=0.10.0,<0.11.0)",
+    "warcio (>=1.7.5,<2.0.0)"
+]
+
+[tool.poetry]
+packages = [
+    { include = "lockss", from = "src" }
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
