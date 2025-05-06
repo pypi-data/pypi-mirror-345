@@ -1,0 +1,57 @@
+Metadata-Version: 2.3
+Name: django-presigned-url
+Version: 0.1.1
+Summary: Generate presigned urls for django
+License: GPL-3.0-or-later
+Author: Adfinis
+Author-email: info@adfinis.com
+Requires-Python: >=3.10,<4
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: django (>=4.2)
+Project-URL: Documentation, https://github.com/projectcaluma/django-presigned-url/README.md
+Project-URL: Homepage, https://github.com/projectcaluma/django-presigned-url
+Project-URL: Repository, https://github.com/projectcaluma/django-presigned-url
+Description-Content-Type: text/markdown
+
+# django-presigned-url
+
+Generate presigned urls for django.
+
+## Getting started
+
+### Installation
+
+**Requirements**
+- poetry
+
+### Usage
+Install `django-presigned-urls` in your django project and import the relevant functions.
+
+```sh
+poetry add django_presigned_urls
+```
+
+```python
+from django_presigned_url.presign_urls import (
+    make_presigned_url,
+    verify_presigned_request,
+)
+
+make_presigned_url(reverse("file-download"), request)
+verify_presigned_request(reverse("file-download"), request)
+```
+
+
+### Configuration
+You can configure `django-presigned-urls` with your django settings.
+
+- `PRESIGNED_URL_LIFETIME`: how long the url is valid in seconds (default: 3600)
+
+
