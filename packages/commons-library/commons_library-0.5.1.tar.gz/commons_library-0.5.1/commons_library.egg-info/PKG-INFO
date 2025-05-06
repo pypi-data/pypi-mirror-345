@@ -1,0 +1,273 @@
+Metadata-Version: 2.4
+Name: commons-library
+Version: 0.5.1
+Summary: Common dependencies for Python 3 software development and data management.
+Author-email: Artemis Resende <artemis@aresende.com>
+License: # 🏳️‍🌈 Opinionated Queer License v1.1
+        
+        © Copyright [Andrea Vos](https://avris.it), [Kolektyw „Rada Języka Neutralnego”](https://zaimki.pl/kolektyw-rjn)
+        
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr class="text-center">
+                    <th>You can</th>
+                    <th>You cannot</th>
+                    <th>You must</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <ul>
+                            <li>Use privately</li>
+                            <li>Use commercially</li>
+                            <li>Modify</li>
+                            <li>Adapt</li>
+                            <li>Distribute</li>
+                            <li>Sublicense</li>
+                            <li>Use a patent</li>
+                            <li>Add a warranty</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Hold the Licensor liable</li>
+                            <li>Be a big corporation</li>
+                            <li>Be law enforcement or military</li>
+                            <li>Use for bigoted purposes</li>
+                            <li>Use for violent purposes</li>
+                            <li>Just blatantly resell it<br/><small>(even if laundered through machine learning)</small></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Give credit</li>
+                            <li>Indicate changes made</li>
+                            <li>Include license or a link</li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table >
+        </div>
+        
+        ## Permissions
+        
+        The creators of this Work (“The Licensor”) grant permission
+        to any person, group or legal entity that doesn't violate the prohibitions below (“The User”),
+        to do everything with this Work that would otherwise infringe their copyright or any patent claims,
+        subject to the following conditions:
+        
+        ## Obligations
+        
+        The User must give appropriate credit to the Licensor,
+        provide a copy of this license or a (clickable, if the medium allows) link to
+        [oql.avris.it/license/v1.1](https://oql.avris.it/license/v1.1),
+        and indicate whether and what kind of changes were made.
+        The User may do so in any reasonable manner,
+        but not in any way that suggests the Licensor endorses the User or their use.
+        
+        ## Prohibitions
+        
+        No one may use this Work for prejudiced or bigoted purposes, including but not limited to:
+        racism, xenophobia, queerphobia, queer exclusionism, homophobia, transphobia, enbyphobia, misogyny.
+        
+        No one may use this Work to inflict or facilitate violence or abuse of human rights as defined in the
+        [Universal Declaration of Human Rights](https://www.un.org/en/about-us/universal-declaration-of-human-rights).
+        
+        No law enforcement, carceral institutions, immigration enforcement entities, military entities or military contractors
+        may use the Work for any reason. This also applies to any individuals employed by those entities.
+        
+        No business entity where the ratio of pay (salaried, freelance, stocks, or other benefits)
+        between the highest and lowest individual in the entity is greater than 50 : 1
+        may use the Work for any reason.
+        
+        No private business run for profit with more than a thousand employees
+        may use the Work for any reason.
+        
+        Unless the User has made substantial changes to the Work,
+        or uses it only as a part of a new work (eg. as a library, as a part of an anthology, etc.),
+        they are prohibited from selling the Work.
+        That prohibition includes processing the Work with machine learning models.
+        
+        ## Sanctions
+        
+        If the Licensor notifies the User that they have not complied with the rules of the license,
+        they can keep their license by complying within 30 days after the notice.
+        If they do not do so, their license ends immediately.
+        
+        ## Warranty
+        
+        This Work is provided “as is”, without warranty of any kind, express or implied.
+        The Licensor will not be liable to anyone for any damages related to the Work or this license,
+        under any kind of legal claim as far as the law allows.
+        
+Keywords: webserver,fastapi,quickstart
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: sqlmodel>=0.0.22
+Requires-Dist: email-validator>=2.2.0
+Requires-Dist: command-runner>=1.7.0
+Requires-Dist: img2pdf>=0.6.0
+Requires-Dist: pillow>=11.1.0
+Requires-Dist: pycountry>=24.6.1
+Requires-Dist: qrcode>=8.0
+Requires-Dist: babel>=2.17.0
+Dynamic: license-file
+
+from commons.database import DatabaseAdapter
+
+# commons-lib
+
+This is a common library for dependencies that might be useful on Python Development.
+
+It offers:
+- A thread-safe Database Adapter + File-Based Data Migration executor powered by [SQLModel ORM (sqlalchemy)](https://sqlmodel.tiangolo.com/) and [Pydantic](https://pydantic.dev/);
+- Local Key-Value Cache database, powered by SQLite;
+- Better logging configuration via `commons.logging`;
+- Dynamic runtime import (`commons.runtime`);
+- Local/HTTP Remote Resource representation powered by [httpx](https://www.python-httpx.org/);
+- Currency support (`commons.currencies`):
+  - Currencies in ISO-4217 format powered by [pycountry](https://github.com/pycountry/pycountry/);
+  - Brazilian Pix support;
+  - Bitcoin (BTC) and Monero (XMR) support;
+  - Live currencies quotation from [Wise](https://wise.com/) and [cryptocompare.com](https://cryptocompare.com/);
+  - Payment QRCode generation for cryptocurrencies and Pix;
+- Support for i18n via [Babel](https://babel.pocoo.org/) (`commons.locale`):
+  - Wraps common features and format methods from Babel;
+  - Automatically compile `.po` files;
+  - [ ] Extracts translatable strings from source-code;
+- [ ] Notification System (powered by [apprise](https://github.com/caronc/apprise)):
+  - [x] SMTP tool for sending messages (to be replaced);
+- [ ] Media support:
+  - [x] Media/MIME Types (`commons.media.mimetypes`);
+  - [ ] Document Processor;
+  - [x] Image Processor (`commons.media.images`);
+  - [ ] Audio Processor;
+  - [ ] Video Processor;
+  - [ ] Subtitle Processor;
+
+> ⚠️ This is under active development and might not be ready for production environments.
+
+## Testing
+
+```shell
+coverage run -m unittest && coverage html -d tests/coverage/html
+```
+
+## Build
+```shell
+uv build && twine upload dist/*
+```
+
+## Usage
+
+This section describe how to use this library.
+
+### Database
+
+#### Database Adapters
+
+To make the life easier when handling with multiple databases, there is a Database Adapter class available at `commons.database.DatabaseAdapter`.
+
+> This class is a Pydantic Model that wraps the logic behind `sqlalchemy` to allow async connection handling to several database drivers. By default, it creates an adapter for a SQLite In-Memory Database.
+
+To allow asynchronous operations, the adapter is thread-safe.
+
+##### Creating an Adapter
+
+```python
+from commons.database import DatabaseAdapter
+
+DatabaseAdapter()
+# 'sqlite:///:memory:?cache=shared'
+DatabaseAdapter(scheme="sqlite", database="sqlite.db")
+# 'sqlite:///sqlite.db'
+DatabaseAdapter(scheme="postgresql", username="postgres", password="1234", host="db.domain.tld", port=5432, database="mydb")
+# 'postgresql://postgres:1234@db.domain.tld:5432/mydb'
+DatabaseAdapter(scheme="redis", username="username", password="pwd", host="db.domain.tld", port=6379, database="0")
+# 'redis://username:pwd@db.domain.tld:6379/0'
+```
+
+##### Connecting to a database
+
+```python
+from commons.database import DatabaseAdapter
+with DatabaseAdapter().session() as session:
+    # your code
+    session.close()
+```
+
+#### Generic Repository Class
+
+To implement a database repository, you can follow the generic approach described below:
+
+```python
+from commons.database import DatabaseAdapter
+from typing import Optional
+from sqlalchemy import Session
+
+class GenericDatabaseRepository:
+    database: DatabaseAdapter
+    session: Optional[Session] = None
+
+    def __init__(self, database: DatabaseAdapter = DatabaseAdapter()):
+        self.database = database
+
+    def __enter__(self):
+        self.session = self.database.session()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.session.close()
+        self.session = None
+        
+    # your repository methods
+
+# Usage
+with GenericDatabaseRepository() as db:
+    # your code  
+    ...
+
+```
+
+This allows easy handling of the database sessions and data persistence. An example of this approach is the `commons.database.Cache` class, described on the next section.
+
+
+#### Cache Databases
+
+To make a smart use of the SQL power, a Cache class is available at `commons.database.Cache`, allowing quick storage of binary data in key-value scheme.
+
+> By default, the class uses a default database adapter that makes use of an In-Memory SQLite database, but a  `commons.database.DatabaseAdapter` can be specified in the constructor. Be aware that, now, the class is implemented using SQL, so, NoSQL databases are not supported.
+
+Below, an example on how to use it:
+
+```python
+from commons.database import Cache, CacheEntry
+
+with Cache() as cache:
+    # set an entry
+    entry: CacheEntry = cache.set("key", b"value", max_age=3600)
+
+    # Get entry data
+    data: bytes = entry.data
+    
+    # Check if entry is expired
+    if entry.expired:
+      print("Cache is expired.")
+    else:
+      print("Cache is not expired.")
+    
+    # Invalidate an entry
+    cache.invalidate("key")
+
+    # Get an entry from a key
+    stored_entry: CacheEntry | None = cache.get("key")
+```
+
