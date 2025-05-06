@@ -1,0 +1,205 @@
+[tool.poetry]
+name = "poetry-plugin-dotenv"
+version = "2.9.1"
+description = "poetry-plugin-dotenv - is the plugin that automatically loads environment variables from a dotenv file into the environment before poetry commands are run."
+license = "MIT"
+authors = ["Volodymyr Pivoshenko <volodymyr.pivoshenko@gmail.com>"]
+maintainers = ["Volodymyr Pivoshenko <volodymyr.pivoshenko@gmail.com>"]
+keywords = [
+  "config",
+  "configuration",
+  "configuration-management",
+  "cross-platform",
+  "dotenv",
+  "env",
+  "hacktoberfest",
+  "plugin",
+  "plugins",
+  "poetry",
+  "poetry-plugin",
+  "poetry-plugins",
+  "pypi",
+  "python"
+]
+homepage = "https://github.com/pivoshenko/poetry-plugin-dotenv"
+documentation = "https://github.com/pivoshenko/poetry-plugin-dotenv"
+repository = "https://github.com/pivoshenko/poetry-plugin-dotenv"
+readme = "README.md"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Environment :: Other Environment",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Topic :: Software Development",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Scientific/Engineering",
+  "Natural Language :: English"
+]
+packages = [{ include = "poetry_plugin_dotenv", from = "src" }]
+
+[tool.poetry.urls]
+"Issues" = "https://github.com/pivoshenko/poetry-plugin-dotenv/issues"
+"Releases" = "https://github.com/pivoshenko/poetry-plugin-dotenv/releases"
+
+[tool.poetry.dependencies]
+poetry = ">=1.5.0,<3.0.0"
+python = ">=3.9,<4.0"
+
+[tool.poetry.group.ci.dependencies]
+python-semantic-release = "9.21.0"
+
+[tool.poetry.group.dev.dependencies]
+ipdb = "^0.13.13"
+ipython = "^8.12.3"
+poethepoet = "^0.34.0"
+
+[tool.poetry.group.formatters.dependencies]
+pyupgrade = "^3.19.1"
+ruff = "^0.11.8"
+
+[tool.poetry.group.linters.dependencies]
+codespell = "^2.4.1"
+commitizen = "^4.6.1"
+deptry = "^0.23.0"
+mypy = "^1.15.0"
+ruff = "^0.11.8"
+
+[tool.poetry.group.lsp.dependencies]
+pylsp-mypy = "^0.7.0"
+pylsp-rope = "^0.1.17"
+python-lsp-server = { extras = ["all"], version = "^1.12.2" }
+
+[tool.poetry.group.tests.dependencies]
+coverage = { version = "^7.8.0", extras = ["toml"] }
+pytest = "7.4.4"
+pytest-codeblocks = "^0.17.0"
+pytest-cov = "^6.1.1"
+pytest-lazy-fixture = "^0.6.3"
+pytest-mock = "^3.14.0"
+pytest-sugar = "^1.0.0"
+sh = "^2.2.2"
+xdoctest = "^1.2.0"
+
+[tool.poetry.plugins."poetry.application.plugin"]
+poetry-plugin-dotenv = "poetry_plugin_dotenv.plugin:DotenvPlugin"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+
+[tool.codespell]
+ignore-words-list = ["redunant", "resovle", "socio-economic"]
+skip = ["poetry.lock"]
+
+[tool.commitizen]
+allowed_prefixes = ["0", "1", "2", "3", "Initial", "Merge", "build", "tests"]
+
+[tool.coverage.run]
+omit = ["*/__init__.py"]
+
+[tool.deptry.per_rule_ignores]
+DEP003 = ["cleo", "poetry_plugin_dotenv", "tomlkit"]
+
+[tool.mypy]
+namespace_packages = true
+python_version = "3.13"
+show_error_codes = true
+strict = true
+warn_unused_configs = true
+
+[tool.pyright]
+reportPossiblyUnboundVariable = false
+
+[tool.pytest.ini_options]
+addopts = [
+  "--basetemp=tests/fixtures",
+  "--color=yes",
+  "--cov-report=term-missing",
+  "--cov-report=xml",
+  "--cov=src",
+  "-l",
+  "-rx",
+  "-vv",
+  "--xdoc"
+]
+testpaths = ["tests"]
+
+[tool.ruff]
+fix = true
+line-length = 100
+target-version = "py313"
+unsafe-fixes = true
+
+[tool.ruff.lint]
+ignore = ["ANN002", "ANN003", "ARG002", "D202", "D203", "D213", "PTH"]
+select = ["ALL"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+from-first = false
+length-sort-straight = true
+lines-after-imports = 2
+lines-between-types = 1
+required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.per-file-ignores]
+"docs/examples/main.py" = ["INP001", "T201"]
+"src/poetry_plugin_dotenv/__init__.py" = ["E501"]
+"src/poetry_plugin_dotenv/dotenv/core.py" = ["PTH"]
+"tests/*.*" = ["D103", "INP001", "S101"]
+
+[tool.ruff.format]
+docstring-code-format = true
+quote-style = "double"
+
+[tool.semantic_release]
+changelog_file = "CHANGELOG.md"
+commit_author = "github-actions <github-actions@github.com>"
+exclude_commit_patterns = ["Merge pull request"]
+logging_use_named_masks = true
+version_toml = ["pyproject.toml:tool.poetry.version"]
+version_variables = ["src/poetry_plugin_dotenv/__init__.py:__version__"]
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = ['''Merged? .*''', '''Initial Commit.*''', '''^\d+\.\d+\.\d+''']
+
+[tool.semantic_release.commit_parser_options]
+major_tags = ["feat"]
+minor_tags = ["fix", "perf", "refactor"]
+patch_tags = ["docs", "style"]
+
+[tool.poe]
+poetry_command = ""
+
+[tool.poe.tasks.format]
+help = "Run formatters"
+sequence = [
+  { shell = "find src -type f -name '*.py' | xargs pyupgrade --py313-plus", help = "Run annotations formatter" },
+  { shell = "find tests -type f -name '*.py' | xargs pyupgrade --py313-plus", help = "Run annotations formatter" },
+  { shell = "ruff format .", help = "Run code formatter" }
+]
+
+[tool.poe.tasks.lint]
+help = "Run linters"
+sequence = [
+  { shell = "deptry .", help = "Run dependencies linter" },
+  { shell = "mypy .", help = "Run types linter" },
+  { shell = "ruff check .", help = "Run code linter" },
+  { shell = "codespell .", help = "Run spell linter" },
+  { shell = "cz check --rev-range .", help = "Run commits linter" }
+]
+
+[tool.poe.tasks.tests]
+help = "Run tests"
+shell = "pytest ."
