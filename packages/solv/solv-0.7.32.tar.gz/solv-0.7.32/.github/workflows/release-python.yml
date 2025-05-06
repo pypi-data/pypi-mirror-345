@@ -1,0 +1,89 @@
+---
+name: Release to PyPI
+
+on: workflow_dispatch
+
+jobs:
+  build_sdist:
+    name: Build source package
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install/Upgrade dependencies
+      run: |
+        sudo apt install -y make cmake zlib1g-dev lbzip2 libxml2-dev lzma-dev swig
+        sudo apt install -y python3 python3-pip git
+        python3 -m pip install --upgrade pip scikit-build
+        python3 -m pip install --upgrade pip scikit-build
+
+    - name: Build and install Python source package
+      run: |
+        python3 setup.py sdist
+        python3 -m pip install dist/*.tar.gz
+
+    # - name: Run tests
+    #   run: |
+    #     pip install pytest
+    #     pytest --verbose --color=yes test/
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: source
+        path: dist/*.tar.gz
+
+
+  build_bdist:
+    name: Build binary wheels
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: x86_64
+          - os: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # setup Python for cibuildwheel
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Build wheels for CPython
+      uses: pypa/cibuildwheel@v2.23.3
+      env:
+        CIBW_ARCHS: auto64
+        CIBW_SKIP: "pp* *-musllinux_* cp36* cp37* cp38*"  # no PyPy or musl builds, no older Python versions
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28  # alma 8
+        CIBW_MANYLINUX_AARCH64_IMAGE: manylinux_2_28
+        CIBW_BEFORE_ALL: dnf install -y make cmake zlib-devel bzip2-devel libxml2-devel xz-devel swig
+        CIBW_BEFORE_BUILD: python -m pip install scikit-build
+        # CIBW_TEST_REQUIRES: pytest
+        # CIBW_TEST_COMMAND: pytest --verbose --color=yes {project}/test/
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.arch }}
+        path: ./wheelhouse/*.whl
+
+
+  upload_pypi:
+    name: Publish packages to PyPI
+    # only publish packages once everything is successful
+    needs: [build_bdist, build_sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - uses: pypa/gh-action-pypi-publish@v1.12.4
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          # To test: repository_url: https://test.pypi.org/legacy/

@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: solv
+Version: 0.7.32
+Summary: A free package dependency solver using a satisfiability algorithm.
+Home-page: 
+Author: 
+Author-email: 
+License: BSD
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: C
+Classifier: Topic :: System :: Software Distribution
+Classifier: Topic :: System :: Systems Administration
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE.BSD
+
+Libsolv
+=======
+
+This is libsolv, a free package dependency solver using a satisfiability
+algorithm.
+
+The code is based on two major, but independent, blocks:
+
+ 1. Using a dictionary approach to store and retrieve package and
+    dependency information in a fast and space efficient manner.
+
+ 2. Using satisfiability, a well known and researched topic, for
+    resolving package dependencies.
+
+The sat-solver code has been written to aim for the newest packages,
+record the decision tree to provide introspection, and also provides
+the user with suggestions on how to deal with unsolvable
+problems. It also takes advantage of repository storage to
+minimize memory usage.
+
+Supported package formats:
+
+  - rpm/rpm5
+  - deb
+  - arch linux
+  - haiku
+  - apk 
+
+Supported repository formats:
+
+  - rpmmd (primary, filelists, comps, deltainfo/presto, updateinfo)
+  - susetags, suse product formats
+  - mandriva/mageia (synthesis, info, files)
+  - arch linux
+  - red carpet helix format
+  - haiku
+  - apk 
+
+Build instructions
+==================
+
+Requires: cmake 3.5 or later
+
+    mkdir build
+    cd build
+    cmake ..
+    make
+
+////
+vim: syntax=asciidoc
+////
