@@ -1,0 +1,66 @@
+[project]
+name = "agent_flowpilot"
+version = "0.1.2"
+description = "FlowPilot: AI-powered task automation SDK with intent recognition, tool selection, orchestration, and execution."
+readme = "README.md"
+authors = [
+    { name = "DeepIssue", email = "36625090@qq.com" },
+]
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"  # 明确指定 Python 3.12+
+keywords = ["AI", "agent", "automation", "LLM", "task-orchestration"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+dependencies = [
+  "typing-extensions>=4.8.0; python_version<'3.12'",
+  "anyio>=4.0.0",
+  "aiohttp>=3.9.0",
+]
+# 项目链接
+[project.urls]
+Homepage = "https://github.com/deepissue/flowpilot"
+Repository = "https://github.com/deepissue/flowpilot"
+Changelog = "https://github.com/deepissue/flowpilot/releases"
+
+# 可选依赖组
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",            # 支持 3.12
+    "mypy>=1.8.0",              # 类型检查
+    "pytest-asyncio>=0.23.0",   # 异步测试
+    "build>=1.2.0",            # 构建工具
+]
+
+benchmark = [
+    "pytest-benchmark>=4.0.0",  # 性能测试（3.12 性能调优）
+]
+
+# 入口点
+[project.scripts]
+flowpilot = "flowpilot.cli:main"
+
+# 构建配置
+[build-system]
+requires = ["setuptools>=68.0.0", "wheel>=0.41.0"]  # 3.12 推荐版本
+build-backend = "setuptools.build_meta"
+
+# 工具配置（适配 3.12 新特性）
+[tool.pytest.ini_options]
+asyncio_mode = "auto"  # 利用 3.12 改进的 asyncio
+python_files = "test_*.py"
+addopts = "--strict-markers"
+
+[tool.black]
+target-version = ["py312"]      # 明确目标版本
+line-length = 88
+preview = true                 # 启用 Black 的新特性
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+enable_error_code = ["ignore-without-code", "redundant-expr"]
