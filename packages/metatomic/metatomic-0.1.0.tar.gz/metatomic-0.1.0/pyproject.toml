@@ -1,0 +1,87 @@
+[project]
+name = "metatomic"
+version = "0.1.0"
+dynamic = ["authors", "optional-dependencies"]
+
+readme = "README.md"
+license = "BSD-3-Clause"
+description = "Atomistic machine learning models you can use everywhere for everything"
+
+keywords = ["machine learning", "molecular modeling"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+homepage = "https://docs.metatensor.org/metatomic/"
+documentation = "https://docs.metatensor.org/metatomic/"
+repository = "https://github.com/metatensor/metatomic"
+# changelog = "TODO"
+
+### ======================================================================== ###
+
+[build-system]
+requires = [
+    "setuptools >=77",
+    "packaging >=23",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+zip-safe = true
+packages = []
+
+### ======================================================================== ###
+
+[tool.coverage.paths]
+# path remapping for coverage. `coverage` will map path matching the second
+# string to the first string.
+torch = ["python/metatensor_torch/", ".tox/*/lib/python*/site-packages/"]
+
+[tool.coverage.report]
+show_missing = true
+omit = ["documentation.py"]
+
+### ======================================================================== ###
+
+[tool.pytest.ini_options]
+# ignore" a bunch of internal warnings with Python 3.12 and PyTorch
+filterwarnings = [
+    "error",
+    "ignore:ast.Str is deprecated and will be removed in Python 3.14:DeprecationWarning",
+    "ignore:Attribute s is deprecated and will be removed in Python 3.14:DeprecationWarning",
+    "ignore:ast.NameConstant is deprecated and will be removed in Python 3.14:DeprecationWarning",
+]
+
+### ======================================================================== ###
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I"]
+ignore = ["B018", "B904"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+known-first-party = ["metatomic"]
+known-third-party = ["torch"]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+### ======================================================================== ###
+
+[tool.uv.pip]
+reinstall-package = [
+    "metatomic-torch",
+]
