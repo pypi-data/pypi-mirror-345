@@ -1,0 +1,205 @@
+Metadata-Version: 2.4
+Name: sl-pirt
+Version: 3.0.0
+Summary: Modified pirt library distribution used in the Sun lab's sl-suite2p multi-day registration pipeline.
+Project-URL: Homepage, https://github.com/almarklein/pirt
+Project-URL: Documentation, https://pirt.readthedocs.io/
+Project-URL: Repository, https://github.com/Sun-Lab-NBB/pirt
+Author: Almar Klein, Kushaan Gupta, Ivan Kondratyev
+Maintainer-email: Ivan Kondratyev <ik278@cornell.edu>
+License: Pirt licensing terms
+        --------------------
+        
+        Stentseg is licensed under the terms of the (new) BSD license:
+        
+        Copyright (c) 2014, Almar Klein
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        * Redistributions of source code must retain the above copyright
+          notice, this list of conditions and the following disclaimer.
+        * Redistributions in binary form must reproduce the above copyright
+          notice, this list of conditions and the following disclaimer in the
+          documentation and/or other materials provided with the distribution.
+        * Neither the name of the Stentseg Development Team nor the names of its
+          contributors may be used to endorse or promote products
+          derived from this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+        IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+        TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+        PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+        OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+        EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+        PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+        PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+        LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+        NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+        SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+License-File: LICENSE
+Keywords: pirt,sl-suite2p,sunlab
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Requires-Python: >=3.11
+Requires-Dist: numba<1,>=0.57
+Requires-Dist: numpy<3,>=2
+Requires-Dist: scipy<2,>=1.9
+Requires-Dist: visvis<2,>=1
+Provides-Extra: conda
+Requires-Dist: coverage[toml]<8,>=7; extra == 'conda'
+Requires-Dist: grayskull<3,>=2; extra == 'conda'
+Requires-Dist: hatchling<2,>=1; extra == 'conda'
+Requires-Dist: junitparser<4,>=3; extra == 'conda'
+Requires-Dist: mypy<2,>=1; extra == 'conda'
+Requires-Dist: pytest-cov<7,>=6; extra == 'conda'
+Requires-Dist: pytest-xdist<4,>=3; extra == 'conda'
+Requires-Dist: pytest<9,>=8; extra == 'conda'
+Requires-Dist: ruff<1,>=0; extra == 'conda'
+Requires-Dist: scipy-stubs<2,>=1; extra == 'conda'
+Requires-Dist: twine<7,>=6; extra == 'conda'
+Provides-Extra: condarun
+Requires-Dist: numba<1,>=0.57; extra == 'condarun'
+Requires-Dist: numpy<3,>=2; extra == 'condarun'
+Provides-Extra: dev
+Requires-Dist: ataraxis-automation<5,>=4; extra == 'dev'
+Requires-Dist: build<2,>=1; extra == 'dev'
+Requires-Dist: coverage[toml]<8,>=7; extra == 'dev'
+Requires-Dist: grayskull<3,>=2; extra == 'dev'
+Requires-Dist: hatchling<2,>=1; extra == 'dev'
+Requires-Dist: junitparser<4,>=3; extra == 'dev'
+Requires-Dist: mypy<2,>=1; extra == 'dev'
+Requires-Dist: pytest-cov<7,>=6; extra == 'dev'
+Requires-Dist: pytest-xdist<4,>=3; extra == 'dev'
+Requires-Dist: pytest<9,>=8; extra == 'dev'
+Requires-Dist: ruff<1,>=0; extra == 'dev'
+Requires-Dist: scipy-stubs<2,>=1; extra == 'dev'
+Requires-Dist: tox-uv<2,>=1; extra == 'dev'
+Requires-Dist: tox<5,>=4; extra == 'dev'
+Requires-Dist: twine<7,>=6; extra == 'dev'
+Requires-Dist: uv<1,>=0; extra == 'dev'
+Provides-Extra: noconda
+Requires-Dist: ataraxis-automation<5,>=4; extra == 'noconda'
+Requires-Dist: build<2,>=1; extra == 'noconda'
+Requires-Dist: tox-uv<2,>=1; extra == 'noconda'
+Requires-Dist: tox<5,>=4; extra == 'noconda'
+Requires-Dist: uv<1,>=0; extra == 'noconda'
+Description-Content-Type: text/markdown
+
+# SL-PIRT - Sun lab Python Image Registration Toolkit.
+
+A modified [pirt](https://github.com/almarklein/pirt) library distribution used in the Sun lab’s
+[sl-suite2p](https://github.com/Sun-Lab-NBB/suite2p) library multi-day registration pipeline.
+
+![PyPI - Version](https://img.shields.io/pypi/v/sl-pirt)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/sl-pirt)
+[![uv](https://tinyurl.com/uvbadge)](https://github.com/astral-sh/uv)
+[![Ruff](https://tinyurl.com/ruffbadge)](https://github.com/astral-sh/ruff)
+![type-checked: mypy](https://img.shields.io/badge/type--checked-mypy-blue?style=flat-square&logo=python)
+![PyPI - License](https://img.shields.io/pypi/l/sl-pirt)
+![PyPI - Status](https://img.shields.io/pypi/status/sl-pirt)
+![PyPI - Wheel](https://img.shields.io/pypi/wheel/sl-pirt)
+___
+
+## Detailed Description
+
+This library is used as part of the suite2p multi-day registration pipeline maintained by the Sun lab. It has been 
+minorly refactored from the original and now unmaintained version (2.0.0) to work with modern Python versions (3.11+)
+and dependency libraries. See the [change log](#change-log) section for the list of specific source code changes as 
+part of our refactoring effort.
+
+***Note!*** The refactoring and repackaging efforts were specifically aimed at getting the package to work with the 
+suite2p multi-day pipeline. They might have broken some components of the library, and they were not aimed at fixing 
+existing bugs or restoring other functions of this library or its dependencies. Overall, it is highly advised NOT to 
+use this library in any other project.
+
+***Warning!*** This library is a temporary implementation used until the Sun lab finalizes implementing a registration
+algorithm for the maintained sl-suite2p package. Once that work is complete, we will no longer maintain this package.
+---
+
+## Change Log
+The following changes have been made to this library version (3.0.0) relative to the base pirt version it was made 
+against (2.1.1):
+
+1. The source code has been reformatted with Ruff to match the standard Sun lab code style.
+2. The source code has been modified where necessary to make it compatible with NumPy 2.0.0+ and SciPy 1.9.0+, making it
+   compatible with the dependency versions used by sl-suite2p library.
+3. Default parameters for some types of registration have been adjusted to prevent failing available test cases and 
+   produce expected results in suite2p pipeline testing.
+4. The library has been repackaged using Sun lab automation and packaging tools, which also matches the modern Python 
+   packaging standards.
+5. All library dependencies have been appropriately pinned to the necessary major and, where appropriate, minor 
+   versions. The Python versions have been limited to 3.11+, consistent with other Sun-lab-managed libraries.
+
+***Note!*** The library retains existing documentation, overall structure, and license.
+
+---
+
+## Introduction
+
+Pirt is the "Python image registration toolkit." It is a library for (elastic, i.e., non-rigid) image registration of 
+2D and 3D images with support for groupwise registration. It has support to constrain the deformations to be 
+"diffeomorphic," i.e., without folding or shearing, and thus invertible.
+
+Pirt is written in pure Python and uses Numba for speed. It depends on Numpy, Scipy, Numba. It has an optional 
+dependency on Visvis for visualization, and on pyelastix for the Elastix registration algorithm.
+
+Pirt implements its own interpolation functions, which, incidentally, are faster than the corresponding functions in 
+scipy and scikit-image (after Numba’s JIT warmup).
+
+Pirt is hosted on [Github](https://github.com/almarklein/pirt) and has [docs on rtd](http://pirt.readthedocs.io/).
+
+---
+
+## Overview
+
+Image registration itself requires several image processing techniques and data types, which are also included in this 
+package:
+
+1. [gaussfun](/src/pirt/gaussfun.py) module, which contains the function for Gaussian smoothing and derivatives and 
+   image pyramid class.
+2. [interp](/src/pirt/interp) package, which contains the tools for interpolating 1D, 2D, and 3D data (nearest, linear,
+   and various spline interpolants).
+3. [splinegrid](/src/pirt/splinegrid) package, which defines a B-spline grid class (for data up to three dimensions) and
+   a class to describe a deformation grid (consisting of a B-spline grid for each dimension).
+4. [deform](/src/pirt/deform) package, which defines classes to represent and compose deformations.
+5. [reg](/src/pirt/reg) package, which stores the actual registration algorithms.
+
+---
+
+## Dependencies
+
+For users, all library dependencies are installed automatically for all supported installation methods 
+(see [Installation](#installation) section). For developers, this library additionally requires PySide6 and Imageio.
+___
+
+## Installation
+
+### Source
+
+1. Download this repository to your local machine using your preferred method, such as git-cloning. Optionally, use one
+   of the stable releases that include precompiled binary wheels in addition to source code.
+2. ```cd``` to the root directory of the project using your command line interface of choice.
+3. Run ```python -m pip install .``` to install the project. Alternatively, if using a distribution with precompiled 
+   binaries, use ```python -m pip install WHEEL_PATH```, replacing 'WHEEL_PATH' with the path to the wheel file.
+
+### PIP
+
+Use the following command to install the library using PIP: ```pip install sl-pirt```\
+
+---
+
+## Status and licensing
+
+Pirt package is currently unmaintained by the original author. The Sun lab package is only maintained for the extent of
+working with the sl-suite2p package.
+
+Pirt is BSD licensed, see [LICENSE](LICENSE) for more information.
