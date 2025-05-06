@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "swift-parser-py"
+version = "0.2.0"
+description = "Python-based metadata-driven parser for SWIFT/ISO 15022 messages"
+readme = "README.md"
+authors = [
+    {name = "Solchos", email = "solchos@gmail.com"}
+]
+license = "MIT"
+license-files = ["LICENSE"]
+dynamic = ["dependencies"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["swift", "iso15022", "finance", "banking", "parser"]
+requires-python = ">=3.8"
+
+[project.urls]
+"Homepage" = "https://github.com/solchos/swift-parser"
+"Bug Tracker" = "https://github.com/solchos/swift-parser/issues"
+
+[tool.setuptools]
+packages = [
+    "swift_parser_py",
+    "swift_parser_py.parsers",
+    "swift_parser_py.utils",
+    "swift_parser_py.docs",
+    "swift_parser_py.metadata"
+]
+
+[tool.setuptools.package-data]
+"swift_parser_py" = ["metadata/*.json"]
+"swift_parser_py.utils" = ["field_parser_fix.py"]
