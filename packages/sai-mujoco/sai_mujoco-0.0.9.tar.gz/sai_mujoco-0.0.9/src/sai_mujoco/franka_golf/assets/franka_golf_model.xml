@@ -1,0 +1,49 @@
+<mujoco model="franka_golf">
+    <statistic center="0.3 0 0.35" extent="0.8" meansize="0.05"/>
+    <compiler angle="radian" autolimits="true"/>
+    <option integrator="implicitfast"/>
+
+
+
+
+
+
+    <include file="basic_scene.xml"/>
+    <include file="./franka_assets/actuators.xml"/>
+    <include file="./franka_assets/assets.xml"/>
+    <include file="./golf_assets/golf_course_assets.xml"/>
+
+    <visual>
+        <global offwidth="2560" offheight="1920" />
+        <quality shadowsize="4096" offsamples="8" />
+        <map force="0.1" fogend="5" />
+    </visual>
+
+    <worldbody>
+
+        <!-- Robot -->
+        <body pos='0.9 -0.5 0.025' euler='0 0 1.57'>
+            <include file="./franka_assets/panda.xml"/>
+        </body>
+
+        <!-- Golf Course -->
+        <body name='golf_course' pos='0 0 0.025'>
+            <include file="./golf_assets/golf_course.xml"/>
+
+        </body>
+
+        <!-- Golf Ball -->
+        <body name='golf_ball' pos='0.5 0 0.038'>
+            <joint name="ball:joint" type="free"></joint>
+            <geom name='golf_ball' type='sphere' size='0.015' material='mat_ball' mass="0.001"/>
+        </body>
+
+        <!-- Golf Club -->
+        <body name='golf_club' pos='0.7 0 0.025' euler='0 0 1.5707'>
+            <joint name="club:joint" type="free" damping="0.01"></joint>
+            <include file="./golf_assets/golf_club.xml"/>
+
+        </body>
+
+    </worldbody>
+</mujoco>
