@@ -1,0 +1,67 @@
+Metadata-Version: 2.3
+Name: dayhoff-tools
+Version: 1.1.1
+Summary: Common tools for all the repos at Dayhoff Labs
+Author: Daniel Martin-Alarcon
+Author-email: dma@dayhofflabs.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Provides-Extra: lite
+Requires-Dist: biopython (>=1.84)
+Requires-Dist: boto3 (>=1.36.8)
+Requires-Dist: docker (>=7.1.0)
+Requires-Dist: fair-esm (>=2.0.0)
+Requires-Dist: firebase-admin (>=6.5.0)
+Requires-Dist: firebase-admin (>=6.5.0) ; extra == "lite"
+Requires-Dist: h5py (>=3.11.0)
+Requires-Dist: pandas (>=2.2.3)
+Requires-Dist: pyyaml (>=6.0)
+Requires-Dist: pyyaml (>=6.0) ; extra == "lite"
+Requires-Dist: questionary (>=2.0.1)
+Requires-Dist: rdkit-pypi (>=2022.9.5)
+Requires-Dist: requests (>=2.31.0)
+Requires-Dist: requests (>=2.31.0) ; extra == "lite"
+Requires-Dist: sqlalchemy (>=2.0.40,<3.0.0)
+Requires-Dist: toml (>=0.10)
+Requires-Dist: transformers (==4.36.2)
+Requires-Dist: typer (>=0.9.0)
+Requires-Dist: typer (>=0.9.0) ; extra == "lite"
+Description-Content-Type: text/markdown
+
+# dayhoff-tools
+
+A set of small, sharp tools for everyone at Dayhoff. Hosted on PyPi, so you can Poetry or pip install like everything else.
+
+## Installation
+
+The base package includes minimal dependencies required for core CLI functionality (like job running):
+
+```bash
+pip install dayhoff-tools
+# or
+poetry add dayhoff-tools
+```
+
+### Optional Dependencies
+
+You can install extra sets of dependencies using brackets. Available groups are:
+
+* `core`: Includes common data science and bioinformatics tools (`biopython`, `boto3`, `docker`, `fair-esm`, `h5py`, `questionary`).
+* `dev`: Includes development and testing tools (`black`, `pytest`, `pandas`, `numpy`, `torch`, etc.).
+* `all`: Includes all dependencies from both `core` and `dev`.
+
+**Examples:**
+
+```bash
+# Install with core dependencies
+pip install 'dayhoff-tools[core]'
+poetry add 'dayhoff-tools[core]'
+
+# Install with all dependencies
+pip install 'dayhoff-tools[all]'
+poetry add 'dayhoff-tools[all]'
+```
