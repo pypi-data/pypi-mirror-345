@@ -1,0 +1,70 @@
+[build-system]
+requires = [
+  "setuptools",
+  "build",
+  "wheel",
+  "requests",
+  "typeguard",
+  "packaging",
+  "alive-progress",
+  "panflute",
+  "oss2",
+  "bs4",
+  "oauth2client"
+]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "pandoc-filter"
+authors = [
+    {name = "Pu Zhao", email = "zhaopudark@outlook.com"},
+]
+description = "A customized pandoc filters set that can be used to generate a useful pandoc python filter."
+keywords = ["pandoc", "pandoc-filter", "python", "pandoc-python-filter","markdown","html"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: GNU General Public License (GPL)"
+]
+readme = "README.md"
+license = {text = "GNU General Public License (GPL)"}
+dynamic = ["version"]
+requires-python = ">= 3.12"
+dependencies = [
+    "requests",
+    "typeguard",
+    "packaging",
+    "alive-progress",
+    "panflute",
+    "oss2",
+    "bs4",
+    "oauth2client"
+]
+[project.scripts]
+md2md-convert-github-style-alert-to-hexo-style-alert-filter = "pandoc_filter.filters.md2md.convert_github_style_alert_to_hexo_style_alert:run_filter"
+md2md-enhance-equation-filter = "pandoc_filter.filters.md2md.enhance_equation:run_filter"
+md2md-norm-footnote-filter = "pandoc_filter.filters.md2md.norm_footnote:run_filter"
+md2md-norm-internal-link-filter = "pandoc_filter.filters.md2md.norm_internal_link:run_filter"
+md2html-centralize-figure-filter = "pandoc_filter.filters.md2html.centralize_figure:run_filter"
+md2html-enhance-footnote-filter = "pandoc_filter.filters.md2html.enhance_footnote:run_filter"
+md2html-enhance-link-like-filter = "pandoc_filter.filters.md2html.enhance_link_like:run_filter"
+md2html-hash-anchor-and-internal-link-filter = "pandoc_filter.filters.md2html.hash_anchor_and_internal_link:run_filter"
+md2html-increase-header-level-filter = "pandoc_filter.filters.md2html.increase_header_level:run_filter"
+# OR
+[tool.setuptools.packages.find]
+# # All the following settings are optional:
+where = ["src"]  # ["."] by default
+include = ["pandoc_filter*"]  # ["*"] by default 都是相对于where的路径的pattern
+exclude = ["__pycache__"]  # empty by default 都是相对于where的路径的pattern
+namespaces = false  # true by default  禁用命名空间包会阻止识别到不带有__init__.py的包
+[project.urls]
+Homepage = "https://github.com/Zhaopudark/pandoc-filter"
+Documentation = "https://github.com/Zhaopudark/pandoc-filter/blob/main/README.md"
+Repository = "https://github.com/Zhaopudark/pandoc-filter.git"
+Issues = "https://github.com/Zhaopudark/pandoc-filter/issues"
+Changelog = "https://github.com/Zhaopudark/pandoc-filter/blob/main/RELEASE.md"
+
+[tool.setuptools.dynamic]
+version = {attr = "pandoc_filter.__version__"}
