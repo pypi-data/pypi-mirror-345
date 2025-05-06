@@ -1,0 +1,27 @@
+[project]
+name = "paxpar-cli"
+version = "4.4.48"
+description = "paxpar CLI"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [ "httpx>=0.28.1", "packaging>=24.2", "pp-schema", "pp-shared", "pydantic>=2.11.0", "python-dotenv>=1.1.0", "pyyaml>=6.0.2", "toml>=0.10.2", "typer>=0.15.2",]
+[[project.authors]]
+name = "Philippe ENTZMANN"
+email = "philippe.entzmann@gmail.com"
+
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[project.scripts]
+paxpar-cli = "paxpar.cli.pp:app"
+pp = "paxpar.cli.pp:app"
+
+[tool.uv.sources.pp-shared]
+workspace = true
+
+[tool.uv.sources.pp-schema]
+workspace = true
+
+[tool.hatch.build.targets.wheel]
+packages = [ "src/paxpar",]
