@@ -1,0 +1,122 @@
+Metadata-Version: 2.4
+Name: sage-book-server
+Version: 0.1.1
+Summary: Sage Book Server Package
+Author-email: AlpineX Labs <team@multiplyr.xyz>
+Project-URL: Homepage, https://alpinex.ai
+Project-URL: Bug Tracker, https://github.com/AlpineX-Labs/
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: mcp[cli]
+Requires-Dist: python-dotenv
+Requires-Dist: anthropic
+Requires-Dist: requests
+Requires-Dist: jupyterlab
+Requires-Dist: jupyter-collaboration
+Requires-Dist: ipykernel
+Requires-Dist: nbformat
+Requires-Dist: nbclient
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: seaborn
+Requires-Dist: scipy
+Requires-Dist: scikit-learn
+Requires-Dist: plotly
+Requires-Dist: yfinance
+Requires-Dist: fuzzywuzzy
+Requires-Dist: python-Levenshtein
+Requires-Dist: statsmodels
+Requires-Dist: sqlalchemy
+Requires-Dist: psycopg2-binary
+
+# Jupyter MCP Server
+
+A basic description of your Jupyter MCP Server package.
+
+## Installation
+
+```bash
+pip install sage-book-server
+```
+
+Or using uv:
+
+```bash
+uv pip install sage-book-server
+```
+
+## Running the Server
+
+1. Start Jupyter Lab:
+```bash
+jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN --ip 0.0.0.0
+```
+
+2. In a separate terminal, start the MCP server:
+```bash
+sage-book-server
+```
+
+3. Add the following variables to your environment
+```
+# Claude Configuration
+CLAUDE_API_KEY=""
+CLAUDE_MODEL_ID="claude-3-7-sonnet-20250219"
+CLAUDE_MODEL_URL="https://sage.alpinex.ai:8760" # use passthrough
+
+# Gemini Configuration
+GEMINI_API_KEY=""
+GEMINI_MODEL_ID="gemini-2.5-pro-preview-03-25"
+GEMINI_MODEL_URL="https://generativelanguage.googleapis.com"
+
+# Server Configuration
+MCP_SERVER_URL="http://localhost:8888"
+MCP_SERVER_PORT="7888"
+
+# override by docker
+JUPYTER_SECRET_KEY="MY_TOKEN"
+DATABASE_URL=""
+NOTEBOOK_DIR="./"
+```
+
+
+## Notes
+- Replace `MY_TOKEN` with your desired authentication token
+- The server will be accessible at `http://localhost:8888`
+- Make sure to keep all three processes running (Jupyter Lab and both MCP server/client instances)
+
+## MCP Server Setup with `uv`
+
+1. **Install `uv` (if not already installed)**  
+   ```bash
+   curl -Ls https://astral.sh/uv/install.sh | bash
+   ```
+
+2. **Navigate to your directory**  
+   ```bash
+   cd /path/to/your/project
+   ```
+
+3. **Create a `uv`-managed virtual environment (Python 3.10)**  
+   ```bash
+   uv venv --python=3.10 .venv
+   ```
+
+4. **Activate the environment**  
+   ```bash
+   source .venv/bin/activate
+   ```
+
+5. **Install all required packages**  
+   ```bash
+   uv pip install -r requirements.txt
+   ```
+
+6. **Run the MCP server**  
+   ```bash
+   uv run sage-book-server
+   ```
