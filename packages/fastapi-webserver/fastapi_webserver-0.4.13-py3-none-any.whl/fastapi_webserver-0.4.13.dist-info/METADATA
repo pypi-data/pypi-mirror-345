@@ -1,0 +1,206 @@
+Metadata-Version: 2.4
+Name: fastapi-webserver
+Version: 0.4.13
+Summary: A simple FastAPI webserver with a bunch of useful resources.
+Author-email: Artemis Resende <artemis@aresende.com>
+License: # 🏳️‍🌈 Opinionated Queer License v1.1
+        
+        © Copyright [Andrea Vos](https://avris.it), [Kolektyw „Rada Języka Neutralnego”](https://zaimki.pl/kolektyw-rjn)
+        
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr class="text-center">
+                    <th>You can</th>
+                    <th>You cannot</th>
+                    <th>You must</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <ul>
+                            <li>Use privately</li>
+                            <li>Use commercially</li>
+                            <li>Modify</li>
+                            <li>Adapt</li>
+                            <li>Distribute</li>
+                            <li>Sublicense</li>
+                            <li>Use a patent</li>
+                            <li>Add a warranty</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Hold the Licensor liable</li>
+                            <li>Be a big corporation</li>
+                            <li>Be law enforcement or military</li>
+                            <li>Use for bigoted purposes</li>
+                            <li>Use for violent purposes</li>
+                            <li>Just blatantly resell it<br/><small>(even if laundered through machine learning)</small></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Give credit</li>
+                            <li>Indicate changes made</li>
+                            <li>Include license or a link</li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table >
+        </div>
+        
+        ## Permissions
+        
+        The creators of this Work (“The Licensor”) grant permission
+        to any person, group or legal entity that doesn't violate the prohibitions below (“The User”),
+        to do everything with this Work that would otherwise infringe their copyright or any patent claims,
+        subject to the following conditions:
+        
+        ## Obligations
+        
+        The User must give appropriate credit to the Licensor,
+        provide a copy of this license or a (clickable, if the medium allows) link to
+        [oql.avris.it/license/v1.1](https://oql.avris.it/license/v1.1),
+        and indicate whether and what kind of changes were made.
+        The User may do so in any reasonable manner,
+        but not in any way that suggests the Licensor endorses the User or their use.
+        
+        ## Prohibitions
+        
+        No one may use this Work for prejudiced or bigoted purposes, including but not limited to:
+        racism, xenophobia, queerphobia, queer exclusionism, homophobia, transphobia, enbyphobia, misogyny.
+        
+        No one may use this Work to inflict or facilitate violence or abuse of human rights as defined in the
+        [Universal Declaration of Human Rights](https://www.un.org/en/about-us/universal-declaration-of-human-rights).
+        
+        No law enforcement, carceral institutions, immigration enforcement entities, military entities or military contractors
+        may use the Work for any reason. This also applies to any individuals employed by those entities.
+        
+        No business entity where the ratio of pay (salaried, freelance, stocks, or other benefits)
+        between the highest and lowest individual in the entity is greater than 50 : 1
+        may use the Work for any reason.
+        
+        No private business run for profit with more than a thousand employees
+        may use the Work for any reason.
+        
+        Unless the User has made substantial changes to the Work,
+        or uses it only as a part of a new work (eg. as a library, as a part of an anthology, etc.),
+        they are prohibited from selling the Work.
+        That prohibition includes processing the Work with machine learning models.
+        
+        ## Sanctions
+        
+        If the Licensor notifies the User that they have not complied with the rules of the license,
+        they can keep their license by complying within 30 days after the notice.
+        If they do not do so, their license ends immediately.
+        
+        ## Warranty
+        
+        This Work is provided “as is”, without warranty of any kind, express or implied.
+        The Licensor will not be liable to anyone for any damages related to the Work or this license,
+        under any kind of legal claim as far as the law allows.
+        
+Project-URL: Homepage, https://gitlab.com/aresende/fastapi-webserver
+Keywords: webserver,fastapi,quickstart
+Classifier: Development Status :: 3 - Alpha
+Classifier: Framework :: FastAPI
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: fastapi[standard]>=0.115.8
+Requires-Dist: fastapi-mail>=1.4.2
+Requires-Dist: email-validator>=2.2.0
+Requires-Dist: pydantic-settings>=2.7.1
+Requires-Dist: jinja2>=3.1.5
+Requires-Dist: sqlmodel>=0.0.22
+Requires-Dist: starlette>=0.45.3
+Requires-Dist: command-runner>=1.7.0
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: commons-library>=0.5.1
+Dynamic: license-file
+
+# FastAPI WebServer
+
+This is a wrapper of a FAST API application with some additional features that might be useful for quick web development.
+
+It features:
+- Powerful environment and settings handling with dynamic module import like Django;
+- Local Key-Value Cache database, powered by SQLite;
+- Better logging configuration via `commons.logging`;
+- Powerful database tools:
+  - A Database Adapter to connect to any database on-the-fly;
+  - A Data Migration Tool, to run `.sql` files, or migrate `json` data that runs automagically on server startup;
+  - A FastAPI Dependency for the database (`webserver.core.ServerDatabase`)
+  - A SQLite Cache Database + FastAPI dependency (`webserver.core.ServerCache`)
+- An SMTP service, implemented on top of [fastapi-mail](https://pypi.org/project/fastapi-mail/);
+- Internationalization (i18n) on top of [Babel](https://babel.pocoo.org/):
+  - A FastAPI Dependency that discovers the locale based on HTTP Header `Accept-Language` (`webserver.core.AvailableLocale`)
+- Front-end tools:
+  - [SASS](https://sass-lang.com/) Compiler (`webserver.frontend.css`);
+  - Server-Side Rendering via `Jinja2Template`;
+- Static Files provider;
+- CORS Support;
+- TLS Support + [mkcert](https://github.com/FiloSottile/mkcert) certificates (local/development only)
+- Content Proxies (`webserver.extras.proxies`):
+  - Gravatar
+  - GIPHY
+
+## Roadmap
+
+The following features are expected to be implemented in the future. Contribution is welcome.
+
+- [ ] OCI-Compliant Image for Docker/Podman
+- [ ] Logging and Tracing API (via OpenTelemetry)
+- [ ] Authentication and Authorization
+  - [ ] OAuth2 support
+  - [ ] OpenID Connect support
+  - [ ] Passkey support (via [Bitwarden passwordless](https://docs.passwordless.dev/guide/))
+- [ ] Traffic Analyzer
+  - [ ] (AI) Bot detector
+  - [ ] VPN detector
+  - [ ] Rate limiter
+  - [ ] IP-based Access-Control List (ACL)
+- [ ] Content Providers (HTTP client and proxy)
+  - [ ] Google Fonts API> ⚠️ This is under active development and might not be ready for production environments.
+
+## Testing
+
+```shell
+coverage run -m unittest && coverage html -d tests/coverage/html
+```
+
+## Build
+```shell
+uv build && twine upload dist/*
+```
+
+## Getting Started
+
+Optionally, set up the environment variables. All environment variables can be found on `.env` file in the root of this repository.
+
+```python
+import webserver
+from fastapi import APIRouter, FastAPI
+
+router: APIRouter = APIRouter()
+app: FastAPI = webserver.app
+
+
+@router.get("/")
+def index():
+  return {"Hello World": f"from {webserver.settings.APP_NAME}"}
+
+
+app.include_router(router)
+
+if __name__ == "__main__":
+  webserver.start()
+```
+
+This enables both local execution through `main` method as well as `fastapi (dev|run)` commands.
