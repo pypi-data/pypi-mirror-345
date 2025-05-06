@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sphinx-revealjs-copycode"
+description = "Sphinx extension to setup Reveal.js CopyCode plugin with sphinx-revealjs"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT License" }
+authors = [{ name = "nikkie", email = "takuyafjp+develop@gmail.com" }]
+keywords = ["Sphinx", "Reveal.js", "copy"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Sphinx",
+    "Framework :: Sphinx :: Extension",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Documentation :: Sphinx",
+    "Topic :: Multimedia :: Graphics :: Presentation",
+    "Topic :: Text Processing :: Markup :: HTML",
+]
+dynamic = ["version"]
+dependencies = ["Sphinx>=7.3", "sphinx-revealjs>=2,<4"]
+
+[project.urls]
+Repository = "https://github.com/ftnext/sphinx-revealjs-copycode"
+
+[project.optional-dependencies]
+dev = ["taskipy", "autoflake", "pyupgrade", "black", "isort", "flake8", "mypy"]
+
+[tool.hatch.version]
+path = "src/sphinx_revealjs_copycode/__init__.py"
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = ["beautifulsoup4"]
+
+[tool.taskipy.tasks]
+pre_test = "task format"
+test = "hatch env remove hatch-test && hatch test -- -s -vv"
+post_test = "task check"
+format = "task format_autoflake && task format_pyupgrade && task format_black && task format_isort"
+format_autoflake = "autoflake --in-place --remove-all-unused-imports $(find src tests -name '*.py') setup.py"
+format_pyupgrade = "pyupgrade $(find src tests -name '*.py') setup.py"
+format_black = "black -l 79 src tests setup.py"
+format_isort = "isort --profile black -l 79 src tests setup.py"
+check = "task check_flake8 && task check_mypy"
+check_flake8 = "flake8 src tests"
+check_mypy = "mypy src tests --ignore-missing-imports --exclude '/conf\\.py$'"
