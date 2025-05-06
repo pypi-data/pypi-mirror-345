@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=77.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dccQuantities"
+version = "2.0.0.dev2"
+description = "Python classes for working with DDC calibration data"
+readme = "README.md"
+requires-python = ">=3.9"
+
+# SPDX license expression + point at your LICENSE file
+license = "LGPL-2.1-or-later"
+license-files = ["LICENSE"]
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Operating System :: OS Independent",
+]
+
+authors = [
+  { name = "Benedikt Seeger", email = "benedikt.seeger@ptb.de" },
+  { name = "Vanessa Stehr" },
+  { name = "Thomas Bruns" },
+]
+urls = { "Homepage" = "https://gitlab1.ptb.de/digitaldynamicmeasurement/dccQuantities" }
+
+dependencies = [
+  "numpy",
+  "scipy",
+  "uncertainties",
+  "requests",
+  "pylatexenc",
+  "odfpy",
+  "openpyxl",
+  "pandas",
+  "dsiUnits>=2.5.2",
+  "dccXMLJSONConv==3.0.0.dev7",
+  "metas_unclib",
+  "pythonnet",
+  "pycountry",
+]
+
+[project.optional-dependencies]
+dccQuantitiesPlot = ["bokeh"]
+testing = [
+  "pytest==7.4.1",
+  "pytest-cov==4.1.0",
+]
