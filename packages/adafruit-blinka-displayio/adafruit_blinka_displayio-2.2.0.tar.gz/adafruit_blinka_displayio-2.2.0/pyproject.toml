@@ -1,0 +1,49 @@
+# SPDX-FileCopyrightText: 2022 Alec Delaney for Adafruit Industries
+#
+# SPDX-License-Identifier: MIT
+
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+    "setuptools-scm",
+]
+
+[project]
+name = "adafruit-blinka-displayio"
+description = "displayio for Blinka"
+version = "2.2.0"
+readme = "README.rst"
+authors = [
+    {name = "Adafruit Industries", email = "circuitpython@adafruit.com"}
+]
+urls = {Homepage = "https://github.com/adafruit/Adafruit_Blinka_Displayio.git"}
+keywords = [
+    "adafruit",
+    "blinka",
+    "circuitpython",
+    "micropython",
+    "displayio",
+    "lcd",
+    "tft",
+    "display",
+    "pitft",
+]
+license = {text = "MIT"}
+classifiers = [
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Embedded Systems",
+    "Topic :: System :: Hardware",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools]
+py-modules = ["fontio", "terminalio"]
+packages = ["displayio", "vectorio", "paralleldisplaybus", "i2cdisplaybus", "fourwire", "busdisplay", "epaperdisplay",
+    "bitmaptools"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
