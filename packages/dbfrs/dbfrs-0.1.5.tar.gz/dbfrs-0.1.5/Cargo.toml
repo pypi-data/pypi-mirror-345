@@ -1,0 +1,17 @@
+[package]
+name = "dbfrs"
+version = "0.1.5"
+edition = "2021"
+authors = ["Roland von Ohlen <crates@rvo.name>"]
+
+[lib]
+name = "dbfrs"
+# "cdylib" is necessary to produce a shared library for Python to import from.
+crate-type = ["cdylib"]
+
+[dependencies]
+dbase = { version = "0.5.0", features = ["yore"] }
+
+[dependencies.pyo3]
+version = "0.21.1"
+features = ["abi3-py310"]
