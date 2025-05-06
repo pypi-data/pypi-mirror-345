@@ -1,0 +1,73 @@
+[project]
+name = "satif-sdk"
+version = "0.1.1"
+description = "Data SDK for AI Agents"
+authors = [
+    {name = "Bryan Djafer", email = "bryan.djafer@syncpulse.fr"}
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.9,<4.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+satif-core = ">=0.2.0,<1.0.0"
+sdif-db = "0.2.5a0"
+python-dotenv = ">=1.0.0,<2.0.0"
+pandas = ">=2.0.3,<3.0.0"
+nest-asyncio = ">=1.6.0,<2.0.0"
+charset-normalizer = ">=3.4.1,<4.0.0"
+httpx = "^0.28.1"
+
+[tool.poetry.extras]
+ai = ["satif-ai"]
+
+[project.scripts]
+satif = "satif.cli:main"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+tabulate = "^0.9.0"
+ipykernel = "^6.29.5"
+plotly = "^6.0.1"
+satif-core = {path = "../core", develop = true}
+sdif-db = {path = "../sdif", develop = true}
+
+[tool.ruff]
+lint.select = [
+    "E",    # pycodestyle
+    "F",    # pyflakes
+    "I",    # isort
+    "D",    # pydocstyle
+    "D401", # First line should be in imperative mood
+    "T201",
+    "UP",
+]
+lint.ignore = [
+    "UP006",
+    "UP007",
+    # We actually do want to import from typing_extensions
+    "UP035",
+    # Relax the convention by _not_ requiring documentation for every function parameter.
+    "D417",
+    "E501",
+    "D100",
+    "D103",
+    "D102",
+    "D101",
+    "D104",
+    "D106",
+    "D107",
+    "D205",
+    "D212",
+    "D401",
+    "T201",
+]
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "UP"]
+[tool.ruff.lint.pydocstyle]
+convention = "google"
