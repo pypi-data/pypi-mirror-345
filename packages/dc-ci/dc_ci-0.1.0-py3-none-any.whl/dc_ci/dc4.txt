@@ -1,0 +1,52 @@
+import random
+import time
+
+servers = ["Server1", "Server2", "Server3"]
+connections = {s: 0 for s in servers}
+response_times = {s: 0 for s in servers}
+weights = {"Server1": 5, "Server2": 1, "Server3": 1}
+weighted_list = [s for s, w in weights.items() for _ in range(w)]
+
+# Round Robin
+def round_robin(requests):
+    print("\n--- Round Robin ---")
+    for i in range(len(requests)):
+        server = servers[i % len(servers)]
+        print(f"Request {i+1} -> {server}")
+
+# Weighted Round Robin
+def weighted_round_robin(requests):
+    print("\n--- Weighted Round Robin ---")
+    for i in range(len(requests)):
+        server = weighted_list[i % len(weighted_list)]
+        print(f"Request {i+1} -> {server}")
+
+
+
+# Least Connections
+def least_connections(requests):
+    print("\n--- Least Connections ---")
+    for i in range(len(requests)):
+        server = min(connections, key=connections.get)
+        connections[server] += 1
+        print(f"Request {i+1} -> {server}")
+    # Simulate completing connections
+    for server in servers:
+        connections[server] = max(0, connections[server] - 1)
+
+# Least Response Time
+def least_response_time(requests):
+    print("\n--- Least Response Time ---")
+    for i in range(len(requests)):
+        for s in servers:
+            response_times[s] = random.uniform(0.1, 1.0)
+        server = min(response_times, key=response_times.get)
+        print(f"Request {i+1} -> {server} (Response Time: {response_times[server]:.2f}s)")
+
+# Simulate 10 client requests
+requests = list(range(10))
+
+round_robin(requests)
+weighted_round_robin(requests)
+least_connections(requests)
+least_response_time(requests)
