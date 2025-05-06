@@ -1,0 +1,81 @@
+Metadata-Version: 2.4
+Name: acedb
+Version: 0.1.4
+Summary: Wrapper for ACE ETH Postgres database
+Author-email: Carlo Teufel <carlo.teufel@analytics-club.org>
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: polars==1.27.1
+Requires-Dist: psycopg2-binary==2.9.10
+Requires-Dist: databento==0.52.0
+Requires-Dist: click==8.1.8
+Requires-Dist: build==1.2.2.post1
+Requires-Dist: setuptools==65.5.0
+Dynamic: license-file
+
+# ACEDB - Analytics Club ETH Database
+
+## Overview
+ACEDB is a wrapper for a PostgreSQL database that fetches and retrieves financial data from the Databento API. It efficiently stores this data in a structured database format, enabling easy access and analysis of market information. This was originally for the Analytics Club at ETH (ACE)
+
+## Features
+- Seamless integration with Databento API
+- Automated data fetching and storage
+- PostgreSQL database management
+- Historical data storage and retrieval
+
+## Installation
+```bash
+# Clone the repository
+git clone https://github.com/cteufel13/acedb.git
+
+# Use pip
+pip install acedb
+```
+
+## Configuration
+
+```bash
+# Enter Postgre Database Information:
+acedb login
+
+# Enter Databento API Token:
+acedb dbn_login
+
+# Help
+acedb --help
+```
+
+## Usage
+```python
+from acedb import AceDB
+
+dba = AceDB()
+
+# Retrieve Data
+data = dba.Get(dataset = "XNAS.ITCH",
+        schemas=  ["ohlcv-1m","ohlcv-1s"],
+        symbols= ['AAPL','GOOGL'] ,
+        start="2024-01-02",
+        end="2025-01-02",
+        download = True
+        filetype = "csv")
+
+# Upload Downloaded Data (pd/pl DataFrame)
+
+dba.insert(dataset = "XNAS.ITCH",schema = "ohlcv-1m", data = your_data)
+
+# get current overview of what schemas and the symbols in it exist
+
+dba.get_ranges()
+```
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contact
+Project Link: [https://github.com/yourusername/acedb](https://github.com/cteufel13/acedb)
