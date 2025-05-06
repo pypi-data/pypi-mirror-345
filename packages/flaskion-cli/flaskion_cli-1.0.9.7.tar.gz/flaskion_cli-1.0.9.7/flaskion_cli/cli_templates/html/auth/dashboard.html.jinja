@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Flaskion</title>
+    <style>
+        body {
+            background-color: #253659;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .dashboard-container {
+            background-color: #2f416d;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #04BF9D;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        a.logout-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #BF665E;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        a.logout-link:hover {
+            background-color: #9a4d47;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Welcome to your dashboard!</h2>
+        {% raw %}
+        <p>You are logged in as User ID: {{ session['user_id'] }}</p>
+        {% endraw %}
+
+        {% raw %}
+        <a href="{{ url_for('web_routes.logout') }}" class="logout-link">Logout</a>
+        {% endraw %}
+    </div>
+</body>
+</html>
