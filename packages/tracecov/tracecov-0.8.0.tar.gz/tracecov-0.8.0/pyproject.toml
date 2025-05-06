@@ -1,0 +1,21 @@
+[project]
+name = "tracecov"
+version = "0.8.0"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+community = [
+    "tracecov-community",
+]
+
+[tool.hatch.build.targets.sdist]
+only-include = [
+  "src",
+]
+
+[tool.hatch.build.targets.wheel]
+only-packages = true
+
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
