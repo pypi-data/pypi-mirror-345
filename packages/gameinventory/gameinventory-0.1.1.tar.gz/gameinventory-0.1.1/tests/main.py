@@ -1,0 +1,11 @@
+from src.gameinventory.Inventory import Inventory
+inventory = Inventory()
+inventory.add_item("Water")
+inventory.add_item("Water")
+inventory.add_item("Food")
+inventory.add_item("Food")
+print(inventory.get_inventory())
+print(inventory.get_item_amount("Water"))
+inventory.remove_item("Water")
+inventory.remove_item("Water")
+print(inventory.get_inventory())
