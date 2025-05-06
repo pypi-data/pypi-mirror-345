@@ -1,0 +1,79 @@
+# laser-turtle
+
+Module inspiré de Turtle générant un dessin vectoriel natif en SVG pour gravure et découpe Laser.
+
+La fonction `circle` de Turtle, qui approxime un cercle par un polygone régulier, a été remplacée par la fonction `turn` qui génère un chemin de type arc en SVG. Les fonctions `forward` et `backward` génèrent des chemins de type ligne en SVG.
+
+Des fonctions ont été ajoutés pour contrôler le mode gravure ou découpe.
+
+Le fichier SVG généré peut être directement utilisé pour commander une machine à découpe et gravure laser.
+Le fichier comporte deux frames : une en trait noir pour la gravure, une en trait rouge pour la découpe.
+
+## Installation et ouverture
+
+Installer le package : `pip install laser-turtle` 
+
+Le package contient une classe de même nom :
+
+```python
+from laser_turtle import laser_turtle
+```
+
+## Méthodes disponibles
+
+- Création d'une instance : `laser_turtle(width, height)`
+- `move_to(self, x, y)`: Déplace le curseur à une position absolue (x,y), sans dessiner
+- `get_position(self)`: Renvoie la position courante du curseur sous forme d'un couple (x,y)
+- `get_x(self)`: Renvoie la position horizontale courante du curseur
+- `get_y(self)`: Renvoie la position verticale courante du curseur
+- `set_heading(self, angle)` : Oriente le curseur à un angle absolu (0 pour Nord) dans le sens horaire
+- `get_heading(self, angle)` : Renvoie l'orientation courante du curseur
+- `rotate(self, angle)` : Pivote le curseur d'un angle relatif (positif dans le sens horaire)
+- `left(self, angle=90)` : Pivote le curseur à gauche d'un angle donné (90 par défaut)
+- `right(self, angle=90)` : Pivote le curseur à droite d'un angle donné (90 par défaut)
+- `forward(self, d)` : Avance le curseur d'une distance d, en générant un chemin de type ligne
+- `backward(self,d)` : Recule le curseur d'une distance d, en générant un chemin de type ligne
+- `turn(self, r, a)` : Fait parcourir au curseur un arc de cercle de rayon r et d'angle a (positif dans le sens horaire)
+- `draw_on(self)` : Positionne le curseur en position de dessin
+- `draw_off(self)` : Remonte le curseur
+- `cut_on(self)` : Positionne le curseur en position de découpe
+- `cut_off(self)` : Remonte le curseur
+- `to_svg(self)` : Renvoie le dessin vectoriel en svg
+- `export_svg(self, nom)` : Enregistre le dessin vectoriel en svg dans le fichier nom.svg
+
+## Exemples d'utilisation
+
+### Avec Python
+
+Le programme suivant : 
+
+```python
+from laser_turtle import laser_turtle
+t = laser_turtle(100,100)
+t.move_to(30, 20)
+for i in range(4):
+    t.forward(40)
+    t.turn(10,90)
+t.export_svg("test")
+```
+génère une image vectorielle dans le fichier `test.svg`
+
+### Avec Ipython ou notebook
+
+Les objets de type `laser_turtle` peuvent directement être affichés dans un notebook. Il suffit d'évaluer l'objet dans une cellule pour obtenir son affichage en svg.
+
+```python
+from laser_turtle import laser_turtle
+t = laser_turtle(100,100)
+t.move_to(30, 20)
+for i in range(4):
+    t.forward(40)
+    t.turn(10,90)
+t
+```
+
+## Licence et crédits
+
+Diffusé sous licence MIT.
+
+Auteur : Christophe Declercq, Université de La Réunion : christophe.declercq@univ-reunion.fr
