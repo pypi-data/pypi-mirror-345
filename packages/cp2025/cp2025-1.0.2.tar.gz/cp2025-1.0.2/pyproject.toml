@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=65.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cp2025"
+version = "v1.0.2"
+authors = [
+    {name = "Shompolov Maxim"},
+]
+description = "Depersonalization algorithms for course project 2025"
+readme = "readme.md"
+requires-python = ">=3.10"
+dependencies = [
+    "ECPy==1.2.5",
+    "importlib_metadata==7.0.1",
+    "numpy==1.26.4",
+    "pandas==2.2.2",
+    "scikit_learn==1.4.2",
+    "scipy==1.13.1",
+]
+
+[tool.setuptools.packages]
+find = {}
+
+[project.scripts]
+depersonalize = "cp2025.depersonalize:main"
