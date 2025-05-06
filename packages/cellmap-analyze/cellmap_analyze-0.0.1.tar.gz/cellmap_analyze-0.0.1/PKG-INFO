@@ -1,0 +1,59 @@
+Metadata-Version: 2.4
+Name: cellmap-analyze
+Version: 0.0.1
+Summary: Code to perform analysis on segmentations like those produced by CellMap
+Author-email: David Ackerman <ackermand@janelia.hhmi.org>
+Maintainer-email: David Ackerman <ackermand@janelia.hhmi.org>
+Requires-Python: <3.13,>=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: bokeh>=3.1.0
+Requires-Dist: fastremap
+Requires-Dist: funlib.geometry
+Requires-Dist: funlib.persistence==0.3.0
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: connected-components-3d
+Requires-Dist: dask[distributed]
+Requires-Dist: dask-jobqueue
+Requires-Dist: fastmorph
+Requires-Dist: scipy
+Requires-Dist: scikit-image
+Requires-Dist: tensorstore
+Requires-Dist: tqdm
+Requires-Dist: zarr==2.18.5
+Requires-Dist: numcodecs==0.13.0
+Requires-Dist: mwatershed
+Requires-Dist: pyarrow
+Requires-Dist: neuroglancer
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: coverage; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Dynamic: license-file
+
+![CI](https://github.com/janelia-cellmap/cellmap-analyze/actions/workflows/tests.yml/badge.svg)
+[![codecov](https://codecov.io/gh/janelia-cellmap/cellmap-analyze/branch/refactor_for_release/graph/badge.svg)](https://codecov.io/gh/janelia-cellmap/cellmap-analyze)
+
+# Tools For Analyzing Large 3D Datasets
+
+This repository is a set of tools for processing and analyzing terabyte size 3D segmentation datasets using Dask. Processing tools involve reading in dataset(s) and outputting another - processed - dataset. These processing tools include the calculation of:
+
+1. `Connected Components`: includes thresholding and masking
+2. `Clean Connected Components`: tools for cleaning up an existing segmentation
+3. `Contact Sites`: includes setting a distance for contact sites
+4. `Filling holes`: fills holes in segmentations
+5. `Filtering ids`: filters segmented ids to remove unwanted ones.
+
+In addition, there are also tools for analysis of the 3D datasets including:
+
+1. `Measurement`: measures a variety of properties of the segmented ids (volume, surface area, etc.) as well as properties of contact sites (volume, surface area, contacting objects, etc.).
+2. `Fitting lines to segmentations`: useful for cylindrical-type objects.
+3. `Assigning to cells`: Assigns objects to the cells they are in based on the center of mass lcoations of the cells.
+
+TODO: Include a detailed description of installation and running the code
+</div>
+
+### Acknowledgements
+Code for finding centers was taken from [funlib.evaluate](https://github.com/funkelab/funlib.evaluate).
