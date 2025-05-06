@@ -1,0 +1,111 @@
+Metadata-Version: 2.1
+Name: pccontext
+Version: 0.3.1
+Summary: Chain Contexts for PyCardano library
+Home-page: https://github.com/Python-Cardano/pycardano
+License: MIT
+Keywords: python,cardano,blockchain,crypto
+Author: Hareem Adderley
+Author-email: haddderley@kingpinapps.com
+Requires-Python: >=3.8.1,<4.0.0
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: cachetools (>=5.5.2,<6.0.0)
+Requires-Dist: koios-python (>=2.0.0,<3.0.0)
+Requires-Dist: ogmios (>=1.3.0,<2.0.0)
+Requires-Dist: pycardano (>=0.13.2,<0.14.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Requires-Dist: yaci-client (>=1.0,<2.0)
+Project-URL: Documentation, https://pycardano.readthedocs.io/en/latest/
+Project-URL: Repository, https://github.com/KINGH242/pccontext.git
+Description-Content-Type: text/markdown
+
+## PyCardano Chain Contexts
+
+This library contains the various Chain Contexts to use with the PyCardano library.
+
+### Basic Usage
+
+#### Blockfrost
+
+```python
+from pccontext import BlockFrostChainContext
+from blockfrost import ApiUrls
+
+chain_context = BlockFrostChainContext(
+    project_id="your_project_id",
+    base_url=ApiUrls.mainnet.value
+)
+
+```
+
+#### Cardano-CLI
+
+```python
+from pccontext import CardanoCliChainContext, CardanoCliNetwork
+from pathlib import Path
+
+chain_context = CardanoCliChainContext(
+            binary=Path("cardano-cli"),
+            socket=Path("node.socket"),
+            config_file=Path("config.json"),
+            network=CardanoCliNetwork.MAINNET,
+)
+
+```
+
+#### Koios
+
+```python
+from pccontext import KoiosChainContext
+
+chain_context = KoiosChainContext(api_key="api_key")
+
+```
+
+#### Ogmios
+
+```python
+from pccontext import OgmiosChainContext
+
+chain_context = OgmiosChainContext(host="localhost", port=1337)
+
+```
+
+#### Kupo
+
+```python
+from pccontext import OgmiosChainContext, KupoChainContextExtension
+
+ogmios_chain_context = OgmiosChainContext(host="localhost", port=1337)
+chain_context = KupoChainContextExtension(wrapped_backend=ogmios_chain_context)
+
+```
+
+#### Offline Transfer File
+
+```python
+from pathlib import Path
+from pccontext import OfflineTransferFileContext
+
+chain_context = OfflineTransferFileContext(offline_transfer_file=Path("offline-transfer.json"))
+
+```
+
+#### Yaci Devkit
+
+```python
+from pccontext import YaciDevkitChainContext
+
+chain_context = YaciDevkitChainContext(api_url="http://localhost:8080")
+
+```
+
