@@ -1,0 +1,155 @@
+Metadata-Version: 2.1
+Name: ApiModkey
+Version: 0.2.5
+Summary: Библиотека для использования апи от Modkey.space
+Home-page: https://modkey.space/
+Author: MAKCNMOB
+Author-email: support@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests (==2.32.3)
+
+![Лого](https://i.ibb.co/zhP8MptB/IMG-20250301-153001-834.jpg)
+# ModKey API Документация
+
+## Обзор
+Класс `ModKey` предоставляет Python-интерфейс для работы с API ModKey. Эта документация охватывает все доступные методы с примерами использования и ожидаемыми результатами.
+
+## Инициализация
+Для использования API необходимо создать экземпляр класса `ModKey` с вашим API-ключом.
+
+```python
+from modkey import ModKey
+
+api = ModKey(api_key="ваш_api_ключ_здесь")
+```
+
+## Методы
+
+### 1. `create_key(days: int, devices: int, key_type: str)`
+Создает новый лицензионный ключ с указанными параметрами.
+
+**Параметры:**
+- `days` - Срок действия ключа в днях
+- `devices` - Максимальное количество устройств для этого ключа
+- `key_type` - Тип ключа (например, "APK", "INJECTOR")
+
+**Пример:**
+```python
+response = api.create_key(days=30, devices=5, key_type="APK") #два типа APK или INJECTOR
+print(response)
+```
+
+**Возможный вывод:**
+```json
+{'status': True, 'data': {'message': 'The key has been successfully created!', 'key': 'CATPON-30D-Wm6CH5nuva'}, 'code': 200}
+```
+
+### 2. `edit_key_max_devices(key: str, new_max_devices: int)`
+Изменяет максимальное количество устройств для существующего ключа.
+
+**Параметры:**
+- `key` - Лицензионный ключ для изменения
+- `new_max_devices` - Новое максимальное количество устройств
+
+**Пример:**
+```python
+response = api.edit_key_max_devices(key="ABCDE-12345-FGHIJ-67890", new_max_devices=10)
+print(response)
+```
+
+**Возможный вывод:**
+```json
+{'status': True, 'data': {'message': 'The key max devices has been successfully editing!', 'key': 'SOFTNANE-30D-EM61QGcbD0', 'old_max_devices': '5', 'new_max_devices': '10', 'info': 'the free version'}, 'code': 200}
+```
+
+### 3. `edit_user_key(key: str, new_key: str)`
+Изменяет значение лицензионного ключа на новое.
+
+**Параметры:**
+- `key` - Текущий лицензионный ключ
+- `new_key` - Новое значение ключа
+
+**Пример:**
+```python
+response = api.edit_user_key(key="ABCDE-12345-FGHIJ-67890", new_key="NEWKEY-54321-67890")
+print(response)
+```
+
+**Возможный вывод:**
+```json
+{'status': True, 'data': {'message': 'The user key has been successfully editing!', 'key': 'KINDER-30D-EM61QGcbD0', 'old_user_key': 'SOFTNAME-30D-EM61QGcbD0', 'new_user_key': '1234'}, 'code': 200}
+```
+
+### 4. `info_key(key: str)`
+Получает информацию о конкретном лицензионном ключе.
+
+**Параметры:**
+- `key` - Лицензионный ключ для запроса
+
+**Пример:**
+```python
+response = api.info_key(key="1234")
+print(response)
+```
+
+**Возможный вывод:**
+```json
+{'status': True, 'data': {'message': 'None', 'key': '1234', 'expired_date': None, 'max_devices': '10', 'devices': None, 'status': '1', 'active': '1', 'registrator': 'KINDER', 'registrator_id': '155', 'soft': '105', 'key_type': 'APK', 'alpha': None}, 'code': 200}
+```
+
+### 5. `edit_key_status(key: str, new_status: str)`
+Изменяет статус лицензионного ключа.
+
+**Параметры:**
+- `key` - Лицензионный ключ
+- `new_status` - Новый статус (например, "active", "block")
+
+**Пример:**
+```python
+response = api.edit_key_status(key="ABCDE-12345-FGHIJ-67890", new_status="block")
+print(response)
+```
+
+**Возможный вывод:**
+```json
+{'status': True, 'data': {'message': 'The key status has been successfully editing!', 'key': '1234', 'old_status': '1', 'new_status': '0', 'info': 'the free version'}, 'code': 200}
+```
+
+### 6. `info_api()`
+Получает информацию о вашем API-аккаунте.
+
+**Пример:**
+```python
+response = api.info_api()
+print(response)
+```
+
+**Возможный вывод:**
+```json
+{'status': True, 'data': {'id': '155', 'username': 'KINDER', 'balance': '49976952', 'VIP': '0', 'status': '1', 'level': '4', 'telegram_id': '1742648077', 'soft': {'id': '105', 'name': 'KINDER', 'VIP': '1', 'status': '1', 'soft_status': '1', 'price': '{"1": "30", "3": "55", "7": "150", "14": "280", "20": "300", "30": "550", "60": "799", "25000": "999"}'}}, 'code': 200}
+```
+
+## Обработка ошибок
+При возникновении ошибок API возвращает JSON-объект с полем "status": false и описанием ошибки:
+
+```json
+{
+    "status": false,
+    "error": "Описание ошибки"
+}
+```
+
+## Установка через PyPI
+Чтобы установить пакет, выполните:
+
+```bash
+pip install apimodkey
+```
+
