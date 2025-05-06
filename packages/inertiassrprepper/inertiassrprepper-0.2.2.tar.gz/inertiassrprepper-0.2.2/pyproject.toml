@@ -1,0 +1,27 @@
+[project]
+name = "inertiassrprepper"
+version = "0.2.2"
+description = "CLI tool to identify SSR compatibility issues in Laravel Inertia Vue applications"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+dependencies = [
+    "typer>=0.9.0",
+    "rich>=13.7.0",
+    "anthropic>=0.18.1", 
+    "tqdm>=4.66.1",
+    "pathspec>=0.12.1",
+    "jinja2>=3.0.0"
+]
+
+[project.scripts]
+inertiassr = "inertiassrprepper.main:app"
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+select = ["E", "F", "B", "I"]
