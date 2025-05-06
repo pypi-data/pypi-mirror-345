@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spectomate"
+version = "0.1.58"
+description = "Modularny konwerter formatów pakietów Python"
+readme = "README.md"
+authors = [
+    {name = "Tom Sapletta", email = "info@spectomate.com"}
+]
+license = {file = "LICENSE"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+]
+keywords = ["conda", "pip", "poetry", "pipenv", "pdm", "package", "converter"]
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.0.0",
+    "pyyaml>=6.0",
+    "toml>=0.10.2",
+    "packaging>=21.0",
+    "tomli>=2.0.0",
+    "tomli-w>=1.0.0",
+]
+
+[project.optional-dependencies]
+external = [
+    "dephell>=0.8.3",
+    "req2toml>=0.1.0",
+    "poetry2conda>=0.3.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "isort>=5.10.0",
+    "mypy>=0.950",
+    "flake8>=4.0.0",
+    "types-toml>=0.10.0",
+    "types-PyYAML>=6.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/spectomate/python"
+"Bug Tracker" = "https://github.com/spectomate/python/issues"
+"Documentation" = "https://spectomate.readthedocs.io"
+
+[project.scripts]
+spectomate = "spectomate.cli:main"
+
+[tool.setuptools]
+packages = ["spectomate", "spectomate.core", "spectomate.converters", "spectomate.schemas"]
+package-dir = {"" = "."}
+exclude-package-data = {"*" = ["update/*"]}
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "0.1.58"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["spectomate/tests"]
+python_files = "test_*.py"
