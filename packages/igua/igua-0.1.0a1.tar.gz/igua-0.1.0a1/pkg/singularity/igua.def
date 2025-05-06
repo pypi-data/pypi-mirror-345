@@ -1,0 +1,36 @@
+Bootstrap: docker
+From: alpine:3.21.3
+
+%setup
+    sh ./misc/download-mmseqs.sh build/mmseqs
+
+%files
+    . /usr/src/igua
+    build/mmseqs/mmseqs_sse2  /usr/local/bin/mmseqs_sse2
+    build/mmseqs/mmseqs_sse41 /usr/local/bin/mmseqs_sse41
+    build/mmseqs/mmseqs_avx2  /usr/local/bin/mmseqs_avx2
+    build/mmseqs/mmseqs       /usr/local/bin/mmseqs
+
+%post
+    apk add --no-cache --force-non-repository -t build-dependencies musl-dev git rust cargo
+    apk add --no-cache --force-non-repository -t run-dependencies python3 py3-pip py3-wheel py3-numpy py3-scipy py3-h5py py3-pandas py3-biopython
+    python3 -m pip install --break-system-packages --no-cache-dir --no-deps -vv gb-io -vv
+    python3 -m pip install --break-system-packages --no-cache-dir --only-binary :all: -vv /usr/src/igua
+    apk del build-dependencies build-dependencies
+    chmod 777 /usr/local/bin/mmseqs /usr/local/bin/mmseqs*
+
+%runscript
+    exec igua $@
+
+%test
+    echo -n "MMseqs2 version: "
+    mmseqs version
+    echo -n "IGUA version: "
+    igua --version
+
+%labels
+    Author martin.larralde@embl.de
+    Version v0.1.0
+
+%help
+    This is a basic container wrapping IGUA and MMseqs2 for convenience.
