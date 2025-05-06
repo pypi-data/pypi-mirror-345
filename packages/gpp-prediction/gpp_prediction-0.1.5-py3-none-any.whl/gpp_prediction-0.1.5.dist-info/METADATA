@@ -1,0 +1,103 @@
+Metadata-Version: 2.4
+Name: gpp-prediction
+Version: 0.1.5
+Summary: A package for the GPP related Assignment 3
+Project-URL: Homepage, https://github.com/yourusername/gpp-prediction
+Project-URL: Bug Tracker, https://github.com/yourusername/gpp-prediction/issues
+Author-email: "Nicolas F. Bader" <nicolas.bader@tuwien.ac.at>
+License: MIT License
+        
+        Copyright (c) 2025 Nicolas Bader
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Keywords: ecology,environmental science,gpp
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.9
+Requires-Dist: numpy>=1.26.0
+Requires-Dist: pandas>=2.0.0
+Description-Content-Type: text/markdown
+
+# GPP Prediction
+
+A Python package for predicting gross primary production (GPP) in ecological systems.
+
+## Installation
+
+```bash
+pip install gpp-prediction
+```
+
+## Features
+
+- Convert solar radiation to photosynthetically active radiation (PAR)
+- Calculate GPP using environmental parameters
+- Handle various input formats (single values, arrays, pandas Series)
+
+## Usage
+
+```python
+import pandas as pd
+import numpy as np
+from gpp_prediction import swrad2par, calc_gpp
+
+# Convert solar radiation to PAR
+swrad = 0.5  # kW m^-2
+par = swrad2par(swrad)  # kJ m^-2 day^-1
+
+# Sample data
+data = {
+    'swrad': [0.4, 0.5, 0.6],
+    'fapar': [0.6, 0.7, 0.8],
+    'tmin': [5, 8, 10],
+    'vpd': [0.5, 1.0, 1.5]
+}
+df = pd.DataFrame(data)
+
+# Calculate PAR from solar radiation
+df['par'] = swrad2par(df['swrad'])
+
+# Model parameters
+params = {
+    'eps_max': 2.5,
+    'tmin_min': 0,
+    'tmin_max': 12,
+    'vpd_min': 0.2,
+    'vpd_max': 2.0
+}
+
+# Calculate GPP
+df['gpp'] = calc_gpp(
+    df['par'],
+    df['fapar'],
+    df['tmin'],
+    df['vpd'],
+    **params
+)
+
+print(df)
+```
+
+## License
+
+This project is licensed under the MIT License
