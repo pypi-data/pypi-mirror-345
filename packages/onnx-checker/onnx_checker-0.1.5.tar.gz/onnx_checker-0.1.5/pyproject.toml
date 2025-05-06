@@ -1,0 +1,26 @@
+[project]
+name = "onnx-checker"
+version = "0.1.5"
+description = "CLI utility to verify operator support before converting ONNX models to Kneron NEF format"
+authors = [
+    {name = "Mason Huang",email = "masonhuang0320@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "onnx (>=1.17.0,<2.0.0)"
+]
+[project.url]
+homepage = "https://github.com/HuangMason320/onnx-checker"
+repository = "https://github.com/HuangMason320/onnx-checker"
+
+[tool.poetry]
+packages = [{include = "onnx_checker", from = "src"}]
+license = "MIT"
+
+[project.scripts]
+onnxcheck = "onnx_checker.cli:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
