@@ -1,0 +1,85 @@
+[project]
+name = "pycui-utils"
+version = "0.1.0"
+description = "Python library for managing Controlled Unclassified Information (CUI) categories and their metadata."
+keywords = ["cui", "controlled unclassified information", "security", "classification", "government", "compliance", "information security", "Executive Order 13526", "NARA"]
+readme = "README.md"
+requires-python = ">=3.9"
+license = 'MIT'
+dependencies = []
+
+[project.scripts]
+pycui-utils = "pycui_utils:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "coverage>=7.8.0",
+    "mypy>=1.15.0",
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
+    "ruff>=0.11.8",
+]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W", # default Flake8
+    "I", # isort
+    "ISC", # flake8-implicit-str-concat
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+    "ARG001", # unused arguments in functions
+]
+exclude = [
+    "scripts",
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+ignore = [
+    "E501", # line too long, handled by black
+    "B008", # do not perform function calls in argument defaults
+    "W191", # indentation contains tabs
+    "B904", # Allow raising exceptions without from e, for HTTPException
+]
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+[tool.pytest]
+testpaths = ["src/pycui/tests"]
+python_files = "test_*.py"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*"]
+
+[tool.coverage.report]
+omit = [
+    "*/tests/*"
+]
