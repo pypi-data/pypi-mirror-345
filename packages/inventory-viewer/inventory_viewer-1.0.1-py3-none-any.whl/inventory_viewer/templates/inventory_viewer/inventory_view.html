@@ -1,0 +1,22 @@
+<!-- 
+project: IBT24/25, xkubec03
+author: Viktor Kubec
+file: cable_create.html
+
+brief:
+Template for inventory view - shows tables for each module_type
+-->
+
+{% extends 'base/layout.html' %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+<h1>Seznam FPGA karet</h1>
+
+{% for typ_obj, tabulka in tabulky.items %}
+<h2>{{ typ_obj.manufacturer }} {{ typ_obj.model }}</h2>
+<p>{{ typ_obj.description }}</p>
+{% render_table tabulka %}
+{% endfor %}
+
+{% endblock %}
