@@ -1,0 +1,257 @@
+Metadata-Version: 2.1
+Name: debugg-ai-sdk
+Version: 0.1.2
+Summary: Debugg AI's official Python sdk for connecting your personal AI QA engineer
+Home-page: https://debugg.ai
+Author: Debugg AI Team
+Author-email: support@debugg.ai
+License: MIT
+Project-URL: Documentation, https://docs.debugg.ai/platforms/python
+Project-URL: Source, https://github.com/debugg-ai/debugg-ai-python
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: urllib3>=1.26.11
+Requires-Dist: certifi
+Provides-Extra: aiohttp
+Requires-Dist: aiohttp>=3.5; extra == "aiohttp"
+Provides-Extra: anthropic
+Requires-Dist: anthropic>=0.16; extra == "anthropic"
+Provides-Extra: arq
+Requires-Dist: arq>=0.23; extra == "arq"
+Provides-Extra: asyncpg
+Requires-Dist: asyncpg>=0.23; extra == "asyncpg"
+Provides-Extra: beam
+Requires-Dist: apache-beam>=2.12; extra == "beam"
+Provides-Extra: bottle
+Requires-Dist: bottle>=0.12.13; extra == "bottle"
+Provides-Extra: celery
+Requires-Dist: celery>=3; extra == "celery"
+Provides-Extra: celery-redbeat
+Requires-Dist: celery-redbeat>=2; extra == "celery-redbeat"
+Provides-Extra: chalice
+Requires-Dist: chalice>=1.16.0; extra == "chalice"
+Provides-Extra: clickhouse-driver
+Requires-Dist: clickhouse-driver>=0.2.0; extra == "clickhouse-driver"
+Provides-Extra: django
+Requires-Dist: django>=1.8; extra == "django"
+Provides-Extra: falcon
+Requires-Dist: falcon>=1.4; extra == "falcon"
+Provides-Extra: fastapi
+Requires-Dist: fastapi>=0.79.0; extra == "fastapi"
+Provides-Extra: flask
+Requires-Dist: flask>=0.11; extra == "flask"
+Requires-Dist: blinker>=1.1; extra == "flask"
+Requires-Dist: markupsafe; extra == "flask"
+Provides-Extra: grpcio
+Requires-Dist: grpcio>=1.21.1; extra == "grpcio"
+Requires-Dist: protobuf>=3.8.0; extra == "grpcio"
+Provides-Extra: http2
+Requires-Dist: httpcore[http2]==1.*; extra == "http2"
+Provides-Extra: httpx
+Requires-Dist: httpx>=0.16.0; extra == "httpx"
+Provides-Extra: huey
+Requires-Dist: huey>=2; extra == "huey"
+Provides-Extra: huggingface_hub
+Requires-Dist: huggingface-hub>=0.22; extra == "huggingface-hub"
+Provides-Extra: langchain
+Requires-Dist: langchain>=0.0.210; extra == "langchain"
+Provides-Extra: launchdarkly
+Requires-Dist: launchdarkly-server-sdk>=9.8.0; extra == "launchdarkly"
+Provides-Extra: litestar
+Requires-Dist: litestar>=2.0.0; extra == "litestar"
+Provides-Extra: loguru
+Requires-Dist: loguru>=0.5; extra == "loguru"
+Provides-Extra: openai
+Requires-Dist: openai>=1.0.0; extra == "openai"
+Requires-Dist: tiktoken>=0.3.0; extra == "openai"
+Provides-Extra: openfeature
+Requires-Dist: openfeature-sdk>=0.7.1; extra == "openfeature"
+Provides-Extra: opentelemetry
+Requires-Dist: opentelemetry-distro>=0.35b0; extra == "opentelemetry"
+Provides-Extra: opentelemetry-experimental
+Requires-Dist: opentelemetry-distro; extra == "opentelemetry-experimental"
+Provides-Extra: pure-eval
+Requires-Dist: pure-eval; extra == "pure-eval"
+Requires-Dist: executing; extra == "pure-eval"
+Requires-Dist: asttokens; extra == "pure-eval"
+Provides-Extra: pymongo
+Requires-Dist: pymongo>=3.1; extra == "pymongo"
+Provides-Extra: pyspark
+Requires-Dist: pyspark>=2.4.4; extra == "pyspark"
+Provides-Extra: quart
+Requires-Dist: quart>=0.16.1; extra == "quart"
+Requires-Dist: blinker>=1.1; extra == "quart"
+Provides-Extra: rq
+Requires-Dist: rq>=0.6; extra == "rq"
+Provides-Extra: sanic
+Requires-Dist: sanic>=0.8; extra == "sanic"
+Provides-Extra: sqlalchemy
+Requires-Dist: sqlalchemy>=1.2; extra == "sqlalchemy"
+Provides-Extra: starlette
+Requires-Dist: starlette>=0.19.1; extra == "starlette"
+Provides-Extra: starlite
+Requires-Dist: starlite>=1.48; extra == "starlite"
+Provides-Extra: statsig
+Requires-Dist: statsig>=0.55.3; extra == "statsig"
+Provides-Extra: tornado
+Requires-Dist: tornado>=6; extra == "tornado"
+Provides-Extra: unleash
+Requires-Dist: UnleashClient>=6.0.1; extra == "unleash"
+
+<!-- Replace with your own logo -->
+![DebuggAI logo](media/header-comm.jpg)
+
+</div>
+
+<h1 align="center">DebuggAI (debugg-ai-python)</h1>
+
+Debugg AI's Python sdk for enabling your personal AI QA engineer
+
+
+<div align="center">
+
+DebuggAI super‑charges engineers with an AI‑powered application‑monitoring platform that _finds_ and _fixes_ bugs while your app runs locally, in production, or in CI. Get deep contextual insights about how your app is performing, how it's being used, and where the problems are. 
+
+</div>
+
+<div align="center">
+
+<a href="https://docs.debugg.ai" target="_blank">
+  <img src="https://img.shields.io/badge/docs-debuggai-%235D0E41" height="22" />
+</a>
+[![PyPi page link -- version](https://img.shields.io/pypi/v/sentry-sdk.svg)](https://pypi.python.org/pypi/sentry-sdk)
+
+<a href="https://discord.gg/vapESyrFmJ" target="_blank">
+  <img src="https://img.shields.io/badge/discord-join-debuggai.svg?labelColor=191937&color=6F6FF7&logo=discord" height="22" />
+</a>
+
+</div>
+
+---
+
+## ✨ Why DebuggAI?
+
+Most AI coding tools focus on **writing** code.  
+DebuggAI focuses on the other 50 % of an engineer’s life: **getting it to run.**
+
+* **1‑line monitoring SDK** — drop‑in client (Node, Python, Go) that captures rich runtime context remotely similar to Sentry or Datadog  
+* **AI Debug Chat** — ask “Why is this `KeyError` happening?” and get a pinpointed answer with links to the offending lines  
+* **Instant Fix Suggestions** — one‑click patches and PRs generated from stack‑trace + context  
+* **Source‑map de‑minification** — readable traces even for bundled / minified front‑end code  
+* **Branch‑aware log search** — slice errors by branch, release, or feature flag to zero in fast  
+* **Works anywhere you code** — VS Code, JetBrains IDEs, or CLI
+
+---
+
+## 📺 Demo - Get Instant Insight Into Runtime Issues
+
+### 🔍 Typical workflows:
+
+1. You use your favorite AI agent to write code
+2. You run your app and it crashes (ah whyyyyy!)
+3. DebuggAI sees the error, grabs the full stack trace + context, and uses it to generate a solution & show you EXACTLY where to look
+4. You review the solution, edit it locally if needed, and apply it
+
+### 🔍 How it works
+
+![DebuggAI Demo](https://debuggai.s3.us-east-2.amazonaws.com/trimmed-screen%20%281%29.gif)
+
+---
+
+## 🖥️ Core IDE Features
+
+| Feature | Description | Demo |
+|---------|-------------|------|
+| **AI Debug Chat** | Conversational agent with full stack context | ![chat](docs/static/img/chat.gif) |
+| **Inline Fix Suggestions** | Autocomplete patches directly in diff‑view | ![autocomplete](docs/static/img/autocomplete.gif) |
+| **Code Edit Commands** | Select > “Improve error handling” to refactor | ![edit](docs/static/img/edit.gif) |
+| **Debug Actions** | One‑click shortcuts: *Explain Trace*, *Add Test*, *Generate Fix PR* | ![actions](docs/static/img/actions.gif) |
+
+---
+
+## 🚀 Getting Started
+
+1. **Install the extension**  
+   - [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=debugg-ai.debuggai)  
+   - Jetbrains coming soon
+
+2. **Create a project**  
+    - [Sign up & create a project in the DebuggAI app](https://app.debugg.ai)
+
+        ![Create a project](https://debuggai.s3.us-east-2.amazonaws.com/issues-page.png)
+
+3. **Add the Python Logging SDK** (using `pip`)  
+
+   # Python
+   pip install debugg-ai-sdk
+
+4. **Initialize** (one line):
+
+   * Get the initialization code from the DebuggAI app
+
+     ![Get the initialization code](https://static-debugg-ai.s3.us-east-2.amazonaws.com/debugg-ai-init-code.png)
+
+   * Initialize the SDK
+
+     ```python
+     # app.py
+     from debugg_ai_sdk import DebuggAiLogger
+
+     logger = DebuggAiLogger(project_key="<YOUR_KEY>")
+     ```
+
+5. **Trigger an error** – head back to the IDE and watch DebuggAI suggest a fix ⚡
+
+Full walkthrough ▶ [docs.debugg.ai/getting-started](https://docs.debugg.ai)
+
+---
+
+## 🛠️ Configuration
+
+You can log in to your DebuggAI account directly in the extension, and then it will automatically connect to your project.
+
+---
+
+## 🤝  Interested in Contributing?
+
+We're looking to expand the DebuggAI team!
+
+If you're interested in joining the team or contributing to the project, please reach out to us at [hello@debugg.ai](mailto:hello@debugg.ai).
+
+---
+
+## 📜 License & Credits
+
+* **Code:** [Apache 2.0](LICENSE) © 2025 Debugg, Inc.
+* **Foundation:** proudly built on open-source technology.
+
+---
+
+## Attribution
+
+We at Debugg AI want to thank the open-source community for their contributions. Particularly Sentry for the work on this SDK. DebuggAI is building the first fully AI QA Engineer that can automatically generate test suites and highlight issues in your app, but Sentry continues to be a great option for Application Monitoring. Use both for 
+best results!
+
+---
+
+<div align="center">
+  <sub>Made with ❤️ and too many stack traces in San Francisco.</sub>
+</div>
+```
