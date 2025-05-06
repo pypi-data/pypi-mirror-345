@@ -1,0 +1,16 @@
+[package]
+name = "mbinary_python"
+version = "1.0.0"
+edition = "2021"
+
+[lib]
+name = "mbinary_python"
+crate-type = ["cdylib"]
+
+[dependencies]
+mbinary = {path = "../rust" , features =["python"]}
+pyo3 = { workspace = true }
+
+
+[build-dependencies]
+pyo3-build-config = { workspace = true }
