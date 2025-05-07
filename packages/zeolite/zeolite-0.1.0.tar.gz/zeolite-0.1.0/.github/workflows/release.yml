@@ -1,0 +1,99 @@
+name: Release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version-file: "pyproject.toml"
+
+    - name: Get version
+      id: get_version
+      run: |
+        VERSION=$(uvx --from=toml-cli toml get project.version --toml-path=pyproject.toml)
+        if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "Error: Version in pyproject.toml must be in format X.Y.Z"
+          exit 1
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Install the project
+      run: uv sync --all-extras --dev
+
+    - name: Run tests
+      run: uv run pytest
+
+    - name: Build package
+      run: uv build
+
+    - name: Extract changelog
+      id: extract_changelog
+      run: |
+        # Install required tool
+        uv pip install -q python-changelog-generator
+        
+        # Extract changelog for current version
+        if [ -f CHANGELOG.md ]; then
+          CHANGELOG=$(python -m changelog_generator extract --file CHANGELOG.md --version ${{ steps.get_version.outputs.version }})
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        else
+          echo "changelog=No CHANGELOG.md found" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Generate release notes
+      id: release_notes
+      run: |
+        # Read the template
+        TEMPLATE=$(cat .github/release-template.md)
+        
+        # Replace variables
+        NOTES="${TEMPLATE//\$VERSION/${{ steps.get_version.outputs.version }}}"
+        NOTES="${NOTES//\$CHANGELOG/${{ steps.extract_changelog.outputs.changelog }}}"
+        
+        # Output the release notes
+        echo "notes<<EOF" >> $GITHUB_OUTPUT
+        echo "$NOTES" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Create Git Tag
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git tag -a v${{ steps.get_version.outputs.version }} -m "Release v${{ steps.get_version.outputs.version }}"
+        git push origin v${{ steps.get_version.outputs.version }}
+
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.get_version.outputs.version }}
+        name: Release v${{ steps.get_version.outputs.version }}
+        body: ${{ steps.release_notes.outputs.notes }}
+        draft: false
+        prerelease: false
+        files: |
+          dist/*.whl
+          dist/*.tar.gz
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 

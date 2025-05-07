@@ -1,0 +1,61 @@
+name: Pre-Release
+
+on:
+  push:
+    branches: [ 'release/**' ]
+
+jobs:
+  prerelease:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version-file: "pyproject.toml"
+
+    - name: Get version from branch
+      id: get_version
+      run: |
+        BRANCH_NAME=${GITHUB_REF#refs/heads/}
+        VERSION=${BRANCH_NAME#release/}
+        if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "Error: Branch name must be in format release/X.Y.Z"
+          exit 1
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Install the project
+      run: uv sync --all-extras --dev
+
+    - name: Run tests
+      run: uv run pytest
+
+    - name: Build package
+      run: uv build
+
+    - name: Create Pre-Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.get_version.outputs.version }}-rc
+        name: Release Candidate v${{ steps.get_version.outputs.version }}
+        draft: true
+        prerelease: true
+        files: |
+          dist/*.whl
+          dist/*.tar.gz
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 

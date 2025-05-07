@@ -1,0 +1,103 @@
+---
+description: Working with Python package management, using UV as the package manager, and running Python, pip, or UV-related CLI commands
+globs: 
+alwaysApply: false
+---
+# UV Command Rules
+
+## General Rules
+- Always use `uv` commands instead of `uv pip` commands
+- Use `uv sync` instead of `uv pip install`
+- Use `uv run` instead of direct command execution
+- Use `uv add` instead of `uv pip install` for adding dependencies
+
+## Common Commands
+
+### Project Setup
+```bash
+# Initialize a new project
+uv init
+
+# Install all dependencies
+uv sync
+
+# Install with dev dependencies
+uv sync --dev
+
+# Install with specific extras
+uv sync --extras dev,test
+```
+
+### Dependency Management
+```bash
+# Add a new dependency
+uv add polars
+
+# Add a development dependency
+uv add --dev pytest
+
+# Add a dependency with version constraint
+uv add "polars>=1.24.0"
+
+# Remove a dependency
+uv remove polars
+
+# Update dependencies
+uv sync
+```
+
+### Running Commands
+```bash
+# Run tests
+uv run pytest
+
+# Run with specific Python version
+uv run --python 3.11 pytest
+
+# Run with all extras
+uv run --all-extras pytest
+```
+
+### Building and Publishing
+```bash
+# Build the package
+uv build
+
+# Publish to PyPI
+uv publish
+```
+
+### Environment Management
+```bash
+# Create a virtual environment
+uv venv
+
+# List installed packages
+uv tree
+
+# Export requirements
+uv export requirements.txt
+```
+
+### Cache Management
+```bash
+# Clean the cache
+uv cache clean
+
+# Prune the cache
+uv cache prune
+```
+
+## Best Practices
+1. Always use `uv sync` for installing dependencies
+2. Use `uv run` for running commands to ensure correct environment
+3. Use `uv add` for adding new dependencies
+4. Use `uv tree` to inspect dependencies
+5. Use `uv cache prune` periodically to manage cache size
+
+## Common Replacements
+- `pip install` → `uv add`
+- `pip install -e .` → `uv sync`
+- `pip install -r requirements.txt` → `uv sync`
+- `python -m pytest` → `uv run pytest`
+- `pip freeze` → `uv export requirements.txt`
