@@ -1,0 +1,176 @@
+# tradebest-ctp-python
+
+tradebest-ctp-python 是一个功能完善、使用便捷的中国金融期货交易平台(CTP)的Python接口封装。
+
+## 特点
+
+- **功能完善**：完整支持CTP交易和行情接口的所有功能
+- **使用便捷**：提供简洁直观的API，降低学习和使用门槛
+- **易于迭代**：模块化设计，当CTP接口变更时可以轻松适配
+- **跨平台支持**：支持Windows、Linux和MacOS系统
+- **多版本兼容**：支持多个CTP API版本
+- **类型提示**：完整的类型注解，提升开发体验
+- **异常处理**：健壮的错误处理机制
+- **详细文档**：简洁易懂的使用文档和示例
+
+## 安装
+
+```bash
+pip install tradebest-ctp-python
+```
+
+## 快速开始
+
+### 行情接口示例
+
+```python
+from tradebest_ctp import mdapi
+
+class CMdImpl(mdapi.CThostFtdcMdSpi):
+    def __init__(self, md_front):
+        mdapi.CThostFtdcMdSpi.__init__(self)
+        self.md_front = md_front
+        self.api = None
+
+    def Run(self):
+        self.api = mdapi.CThostFtdcMdApi.CreateFtdcMdApi()
+        self.api.RegisterFront(self.md_front)
+        self.api.RegisterSpi(self)
+        self.api.Init()
+
+    def OnFrontConnected(self):
+        print("OnFrontConnected")
+        
+        # 登录
+        req = mdapi.CThostFtdcReqUserLoginField()
+        self.api.ReqUserLogin(req, 0)
+
+    def OnRspUserLogin(self, pRspUserLogin, pRspInfo, nRequestID, bIsLast):
+        if pRspInfo is not None and pRspInfo.ErrorID != 0:
+            print(f"Login failed. {pRspInfo.ErrorMsg}")
+            return
+        print(f"Login succeed.{pRspUserLogin.TradingDay}")
+        
+        # 订阅行情
+        self.api.SubscribeMarketData(["au2406".encode('utf-8')], 1)
+
+    def OnRtnDepthMarketData(self, pDepthMarketData):
+        print(f"{pDepthMarketData.InstrumentID} - {pDepthMarketData.LastPrice} - {pDepthMarketData.Volume}")
+
+if __name__ == '__main__':
+    md = CMdImpl("tcp://180.168.146.187:10131")
+    md.Run()
+    
+    input("Press enter key to exit.")
+```
+
+### 交易接口示例
+
+```python
+from tradebest_ctp import tdapi
+
+class TdImpl(tdapi.CThostFtdcTraderSpi):
+    def __init__(self, host, broker, user, password, appid, authcode):
+        super().__init__()
+        
+        self.broker = broker
+        self.user = user
+        self.password = password
+        self.appid = appid
+        self.authcode = authcode
+        
+        self.api = tdapi.CThostFtdcTraderApi.CreateFtdcTraderApi()
+        self.api.RegisterSpi(self)
+        self.api.RegisterFront(host)
+        self.api.SubscribePrivateTopic(tdapi.THOST_TERT_QUICK)
+        self.api.SubscribePublicTopic(tdapi.THOST_TERT_QUICK)
+    
+    def Run(self):
+        self.api.Init()
+    
+    def OnFrontConnected(self):
+        print("OnFrontConnected")
+        
+        # 认证
+        req = tdapi.CThostFtdcReqAuthenticateField()
+        req.BrokerID = self.broker
+        req.UserID = self.user
+        req.AppID = self.appid
+        req.AuthCode = self.authcode
+        self.api.ReqAuthenticate(req, 0)
+    
+    def OnRspAuthenticate(self, pRspAuthenticateField, pRspInfo, nRequestID, bIsLast):
+        if pRspInfo and pRspInfo.ErrorID != 0:
+            print("认证失败：{}".format(pRspInfo.ErrorMsg))
+            return
+        print("Authenticate succeed.")
+        
+        # 登录
+        req = tdapi.CThostFtdcReqUserLoginField()
+        req.BrokerID = self.broker
+        req.UserID = self.user
+        req.Password = self.password
+        self.api.ReqUserLogin(req, 0)
+    
+    def OnRspUserLogin(self, pRspUserLogin, pRspInfo, nRequestID, bIsLast):
+        if pRspInfo is not None and pRspInfo.ErrorID != 0:
+            print(f"Login failed. {pRspInfo.ErrorMsg}")
+            return
+        print(f"Login succeed. TradingDay: {pRspUserLogin.TradingDay}")
+        
+        # 查询账户资金
+        self.QryAccount()
+    
+    def QryAccount(self):
+        req = tdapi.CThostFtdcQryTradingAccountField()
+        req.BrokerID = self.broker
+        req.InvestorID = self.user
+        self.api.ReqQryTradingAccount(req, 0)
+    
+    def OnRspQryTradingAccount(self, pTradingAccount, pRspInfo, nRequestID, bIsLast):
+        if pRspInfo is not None and pRspInfo.ErrorID != 0:
+            print(f"查询账户资金失败: {pRspInfo.ErrorMsg}")
+            return
+        
+        if pTradingAccount is not None:
+            print(f"账户资金: 可用资金={pTradingAccount.Available}, "
+                  f"当前保证金={pTradingAccount.CurrMargin}, "
+                  f"平仓盈亏={pTradingAccount.CloseProfit}, "
+                  f"持仓盈亏={pTradingAccount.PositionProfit}")
+
+if __name__ == '__main__':
+    td = TdImpl(
+        "tcp://180.168.146.187:10101",  # 交易前置地址
+        "9999",                         # 经纪公司代码
+        "123456",                       # 投资者代码
+        "password",                     # 密码
+        "simnow_client_test",           # AppID
+        "0000000000000000"              # 授权码
+    )
+    td.Run()
+    
+    input("Press enter key to exit.")
+```
+
+## 支持的CTP版本
+
+tradebest-ctp-python当前版本支持以下CTP API版本:
+
+- 6.7.7 (当前版本)
+
+未来将只支持最新的CTP API版本，不会支持旧版本。
+
+## 支持的Python版本
+
+tradebest-ctp-python支持以下Python版本:
+
+- Python 3.7
+- Python 3.8
+- Python 3.9
+- Python 3.10
+- Python 3.11
+- Python 3.12
+
+## 许可证
+
+BSD 3-Clause License
