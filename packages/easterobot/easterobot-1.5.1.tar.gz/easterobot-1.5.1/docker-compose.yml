@@ -1,0 +1,11 @@
+services:
+  bot:
+    container_name: bot
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: ".env"
+    volumes:
+      - ./data:/data:rw
