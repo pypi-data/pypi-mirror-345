@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opm_unshear"
+version = "0.0.1"
+description = "opm_unshear for Python"
+authors = [
+    { name = "jlab.berlin" },
+    { name = "Maximilian Hoffmann" },
+    { name = "Benjamin Judkewitz" },
+]
+license = {text = "MIT"}
+readme = "README.md"
+keywords = ["opm_unshear", "python"]
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "tqdm", 
+    "cupy", 
+    "h5py",
+    "hdf5plugin",
+    "tifffile",
+    "scipy",
+    "numba",
+]
+
+[project.urls]
+Homepage = "https://github.com/danionella/opm_unshear"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["opm_unshear*"]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+
+[tool.black]
+line-length = 120
+skip_magic_trailing_comma = true
