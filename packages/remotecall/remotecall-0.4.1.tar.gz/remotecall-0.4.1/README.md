@@ -1,0 +1,319 @@
+# Remotecall
+
+The module provides functionality to expose Python functions to be called remotely over ethernet.
+
+The implementation uses Python's 
+[http.server.HTTPServer](https://docs.python.org/3/library/http.server.html) to implement a server
+side functionality and [Request](https://pypi.org/project/requests/) for client implementation.
+
+## Getting started
+
+Exposing a function to be called remotely.
+
+### Server
+
+Create a server and expose a function.
+
+```python
+    from remotecall import Server
+
+    def hello() -> str:
+        return "Hello World"
+
+    with Server(("localhost", 8000)) as server:
+        server.expose(hello)
+        server.serve_forever()
+```
+
+### Client
+
+Subclass a client from BaseClient to call exposed functions.
+
+```python
+    from remotecall import Server
+
+    class Client(BaseClient):
+        def hello(self) -> str:
+            return self.call("hello")
+    
+    client = Client(("localhost", 8000))
+    client.hello()
+```
+
+### Code generation
+
+Use the module to generate client code instead of writing the client code. 
+
+```sh
+  python -m remotecall generate_client http://localhost:8000
+```
+
+
+# Usage
+
+## Basic example
+
+Server side implementation to expose hello() function:
+
+```python
+    from remotecall import Server
+
+    def hello() -> str:
+        return "Hello World"
+
+    with Server(server_address=("localhost", 8000)) as server:
+        server.register(hello)
+        server.serve_forever()
+```
+
+Client side implementation is based on BaseClient class which is a thin wrapper around Requests 
+module.  
+
+```python
+    from remotecall import BaseClient
+
+    client = BaseClient(server_address=("localhost", 8000))
+    client.call("hello")
+```
+
+Subclassing BaseClient makes accessing the available functions more convenient - for example, by 
+enabling IDE autocompletion and providing the type information.
+
+```python
+    from remotecall import BaseClient
+
+    class Client(BaseClient):
+        def hello(self) -> str:
+            return self.call("hello")
+
+    client = Client(server_address=("localhost", 8000))
+    client.hello()
+```
+
+Usage of `python -m remotecall generate_client` automates the client code generation.
+
+For more example, see examples directory.
+
+
+## Passing arguments
+
+Module uses Python type annotations to determine type of parameter and return 
+values. 
+
+The type information is used to generate API definition. The API definition is provided in JSON 
+format and can be used to generate client code. 
+
+The type information is also used to encode and decode data - like parameter and return values - 
+send between client and server. 
+
+The implementation support basic Python data types including `bytes`, `int`, `float`, `bool`, `str`,
+`list`, `tuple` and `dict`. It is possible to add support for addition types. See examples 
+directory for an implementation for _PIL Images_ and _NumPy_ arrays. 
+
+#### Server
+
+Exposing a function with parameters and return value.
+
+```python
+    def echo(message: str) -> str:
+        return message
+```
+
+#### Client
+
+Calling the function from the client side.
+
+```python
+    class Client(BaseClient):
+        def echo(self, message: str) -> str:
+            return self.call("echo", message=message)
+```
+
+
+## HTTPS and SSL
+
+By default, the server uses HTTP for the communication. HTTPS communication can be enabled by 
+providing SSL certificate. The certificate is used to create a SSLContext to wrap 
+the underlying socket instance.
+
+See _examples_ folder for an example and instructions to generate a self-signed certificate.
+
+#### Server
+
+```python
+    server = Server(...)
+    server.use_ssl(cert_file="server.crt", key_file="server.key")
+```
+
+#### Client
+
+```python
+    client = BaseClient(...)
+    client.use_ssl(cert_file="server.pem")
+```
+
+
+## Authentication
+
+By default, the server does not require authentication. 
+
+Server provides an implementation for HTTP basic authenticator that can be set in use as 
+demonstrated below. However, it's also possible to subclass
+`remotecall.authentication.Authenticator` and implement other type of authenticators.
+
+Client implementation wraps _Requests_ library and makes it possible to use the 
+authentication methods available for that library. More documentation can be found from the 
+library documentation https://requests.readthedocs.io/en/latest/user/authentication/.
+
+#### Server
+
+```python
+    server = Server(...)
+    server.set_authenticator(BasicAuthenticator("user", "pass"))
+```
+
+#### Client
+
+```python
+    from requests.auth import HTTPBasicAuth
+    
+    client = BaseClient(...)
+    client.set_authentication(HTTPBasicAuth("user", "pass"))
+```
+
+### Implementing authenticator
+
+Implementing a custom authenticator begins with subclassing `remotecall.authentication.
+Authenticator`.
+
+Authenticator is expected to implement `authenticate` method to carry out the authentication. It 
+is called right after the HTTP server's `do_*` method gets called. 
+
+`authenticate` method receives an instance of 
+[`BaseHTTPRequestHandler`](https://docs.python.org/3/library/http.server.html#http.server.BaseHTTPRequestHandler)
+that represents the HTTP request received by the HTTP server and to handle it.
+
+`Authenticator` is expected to handle the actions required to carry out the authentication. 
+
+It may raise `AuthenticationError` if the server should not continue processing the request. 
+Server expects the authenticator to resolves the request by sending the corresponding headers and 
+related data.
+
+```python
+class Authenticator(ABC):
+    @abstractmethod
+    def authenticate(self, request: BaseHTTPRequestHandler):
+        """Do the authentication."""
+```
+
+
+## Code generation
+
+The module provides an easy way to generate a Python client for a service provided by a server.
+
+The API definition can be fetched from the server with the following command line command. The 
+command returns an API definition in JSON format.
+
+```sh
+    $ python -m remotecall fetch_api http://localhost:8000
+```
+
+For example, in case of _echo_ example the output would be:
+
+```json
+{
+    "endpoints": [
+        {
+            "name": "echo",
+            "documentation": "",
+            "parameters": [
+                {
+                    "name": "message",
+                    "type": "str"
+                }
+            ],
+            "return_type": "str"
+        }
+    ],
+    "ssl_enabled": false,
+    "address": {
+        "hostname": "localhost",
+        "port": 8000
+    }
+}
+```
+
+The API definition can be written in a file with `output` option.
+
+```sh
+    $ python -m remotecall fetch_api http://localhost:8000 --output api.json
+```
+
+Client code can be generated based on the definition:
+
+```sh
+    $ python -m remotecall generate_client api.json --output client.py
+```
+
+Where, `output` defines the output file. 
+
+By default, the client class is named as `Client`. This can be changed by using `name` 
+option. For example, `--name EchoClient`.
+
+The above steps can be combined if the intermediate results are not needed.
+
+```sh
+    $ python -m remotecall generate_client http://localhost:8000 --output client.py
+```
+
+
+## Extending supported data type
+
+See _examples/image_ and _examples/numpy_ for image and numpy codec examples.
+
+
+# Development
+
+## Set up virtual environment
+
+Create virtual environment:
+
+```sh
+python3 -m venv venv
+```
+
+Activate virtual environment:
+
+```sh
+source venv/bin/activate
+```
+
+## Running from source
+
+```sh
+pip install -e .
+```
+### Installing from source
+
+```sh
+pip install .
+python -m remotecall
+```
+
+# Running tests
+
+```sh
+pip install ".[test]"
+pytest
+
+py.test -s
+```
+
+# Building
+
+## Creating a wheel
+
+```sh
+$ pip install wheel
+$ python setup.py bdist_wheel
+```
