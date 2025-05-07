@@ -1,0 +1,53 @@
+Metadata-Version: 2.3
+Name: flake8-diff-only
+Version: 0.1.6
+Summary: Flake8 plugin to show errors only on changed lines
+License: MIT
+Keywords: flake8,plugin,quotes,code quality
+Author: Холоднов Эмиль
+Author-email: emil.kholod@gmail.com
+Requires-Python: >=3.9.0
+Classifier: Environment :: Console
+Classifier: Framework :: Flake8
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Quality Assurance
+Requires-Dist: flake8 (>=5.0.0,<7.3.0)
+Project-URL: Homepage, https://github.com/emilkholod/flake8-diff-only
+Project-URL: Issues, https://github.com/emilkholod/flake8-diff-only/issues
+Project-URL: Repository, https://github.com/emilkholod/flake8-diff-only
+Description-Content-Type: text/markdown
+
+# Project: flake8-diff-only
+
+## Description
+
+This project provides a plugin for **Flake8** that checks only the modified lines of files for style violations.
+
+> ⚠️ **Please note:**
+>
+> * The [current implementation of `--diff` is fundamentally flawed by design](https://github.com/pycqa/flake8/issues/1389).
+> * The [`--diff` option was deprecated in Flake8 5.0.0](https://flake8.pycqa.org/en/latest/release-notes/5.0.0.html#deprecations).
+> * The [`--diff` option was removed entirely in Flake8 6.0.0](https://flake8.pycqa.org/en/latest/release-notes/6.0.0.html#backwards-incompatible-changes).
+
+This project replicates that deprecated functionality but as a plugin, and naturally inherits the same limitations.
+However, it has distinct advantages — particularly in **legacy codebases**, where running full Flake8 checks may produce excessive noise.
+That's why I decided to recreate this feature in the form of a plugin.
+
+## Usage
+
+To install the plugin, run:
+
+```bash
+pip install flake8-diff-only
+```
+
