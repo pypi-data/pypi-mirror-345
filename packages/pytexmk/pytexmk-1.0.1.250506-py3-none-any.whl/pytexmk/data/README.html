@@ -1,0 +1,466 @@
+<!--
+ *  =======================================================================
+ *  ····Y88b···d88P················888b·····d888·d8b·······················
+ *  ·····Y88b·d88P·················8888b···d8888·Y8P·······················
+ *  ······Y88o88P··················88888b·d88888···························
+ *  ·······Y888P··8888b···88888b···888Y88888P888·888·88888b·····d88b·······
+ *  ········888······"88b·888·"88b·888·Y888P·888·888·888·"88b·d88P"88b·····
+ *  ········888···d888888·888··888·888··Y8P··888·888·888··888·888··888·····
+ *  ········888··888··888·888··888·888···"···888·888·888··888·Y88b·888·····
+ *  ········888··"Y888888·888··888·888·······888·888·888··888··"Y88888·····
+ *  ·······························································888·····
+ *  ··························································Y8b·d88P·····
+ *  ···························································"Y88P"······
+ *  =======================================================================
+ * 
+ *  -----------------------------------------------------------------------
+ * Author       : 焱铭
+ * Date         : 2024-02-29 10:23:19 +0800
+ * LastEditTime : 2025-01-12 21:45:27 +0800
+ * Github       : https://github.com/YanMing-lxb/
+ * FilePath     : /PyTeXMK/README.md
+ * Description  : 
+ *  -----------------------------------------------------------------------
+ -->
+<h1 id="pytexmk">PyTeXMK</h1>
+<p><a href="https://github.com/YanMing-lxb/PyTeXMK"><img
+src="https://img.shields.io/badge/Github-PyTeXMK-000000.svg"
+alt="GitHub" /></a> <a href="https://www.latex-project.org/lppl/"><img
+src="https://img.shields.io/badge/license-GPLv3-aff"
+alt="License" /></a> <img
+src="https://img.shields.io/badge/OS-Linux%2C%20Win%2C%20Mac-pink.svg"
+alt="OS" /> <a
+href="https://github.com/YanMing-lxb/PyTeXMK/releases/latest"><img
+src="https://img.shields.io/github/release/YanMing-lxb/PyTeXMK.svg?color=blueviolet&amp;label=version&amp;style=popout"
+alt="GitHub release" /></a> <a
+href="https://github.com/YanMing-lxb/PyTeXMK/zipball/master"><img
+src="https://img.shields.io/github/last-commit/YanMing-lxb/PyTeXMK"
+alt="Last Commit" /></a> <a
+href="https://github.com/YanMing-lxb/PyTeXMK/issues"><img
+src="https://img.shields.io/github/issues/YanMing-lxb/PyTeXMK"
+alt="Issues" /></a> <a href="https://pypi.python.org/pypi/pytexmk/"><img
+src="https://img.shields.io/pypi/v/pytexmk.svg"
+alt="PyPI version" /></a> <a
+href="https://pypi.org/project/pytexmk/"><img
+src="https://img.shields.io/pypi/dm/pytexmk.svg?label=PyPI%20downloads"
+alt="PyPI Downloads" /></a> <img
+src="https://img.shields.io/github/repo-size/YanMing-lxb/PyTeXMK"
+alt="GitHub repo size" /></p>
+<p><a
+href="https://github.com/YanMing-lxb/PyTeXMK/blob/main/README.md">简体中文</a>
+| <a
+href="https://github.com/YanMing-lxb/PyTeXMK/blob/main/README.en.md">English</a></p>
+<p>LaTeX 辅助编译命令行程序</p>
+<hr />
+<div data-align="center">
+<pre><code>&lt;img src=&quot;https://github.com/YanMing-lxb/PyTeXMK/raw/main/imgs/show1.png&quot; alt=&quot;示例部分1&quot; width=&quot;45%&quot; style=&quot;max-width: 700px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.19); margin-right: 2.5px;&quot;&gt;
+&lt;img src=&quot;https://github.com/YanMing-lxb/PyTeXMK/raw/main/imgs/show2.png&quot; alt=&quot;示例部分2&quot; width=&quot;45%&quot; style=&quot;max-width: 700px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.19); margin-left: 2.5px;&quot;&gt;</code></pre>
+</div>
+<h2 id="安装">安装</h2>
+<p>官方版本 PyTeXMK 发布在 <a
+href="https://pypi.org/project/pytexmk/">PyPI</a> 上，并且可以通过 pip
+包管理器从 PyPI 镜像轻松安装。</p>
+<p>请注意，您必须使用 Python 3 版本 pip：</p>
+<pre><code>pip3 install pytexmk</code></pre>
+<h2 id="升级">升级</h2>
+<pre><code>pip3 install --upgrade pytexmk</code></pre>
+<h2 id="使用入门">使用入门</h2>
+<p>基础使用参见：<a
+href="https://github.com/YanMing-lxb/PyTeXMK/issues/1#issuecomment-2383474600">Issues
+#1</a></p>
+<p>请仔细阅读：<a
+href="#待编译主文件及编译类型选定逻辑">待编译主文件及编译类型选定逻辑</a></p>
+<blockquote>
+<p>PyTeXMK，仅支持 utf-8 编码的 TeX 文件。</p>
+</blockquote>
+<h3 id="默认配置">默认配置</h3>
+<p>Pytexmk 默认配置如下：</p>
+<ol type="1">
+<li>编译程序：<code>XeLaTeX</code></li>
+<li>待编译主文件名：<code>main.tex</code></li>
+<li>编译结果存放在 LaTeX 项目的 <code>Build</code> 文件夹下 (VSCode
+用户则需要在 <code>settings.json</code> 中注意设置
+<code>"latex-workshop.latex.outDir": "./Build",</code> 使得
+LaTeX-Workshop 能够找到 pdf )</li>
+<li>辅助文件存放在 LaTeX 项目的 <code>Auxiliary</code> 文件夹下</li>
+<li>编译模式：batch 模式（编译过程信息不显，如需显示编译过程信息请使用
+<code>-uq</code> 参数）</li>
+</ol>
+<blockquote>
+<p>注意：以上参数均可在配置文件中修改，具体请参考：<a
+href="#配置文件说明">配置文件说明</a></p>
+</blockquote>
+<h3 id="编译命令">编译命令</h3>
+<p>PyTeXMK 支持：</p>
+<ul>
+<li>编译程序：<code>XeLaTeX</code> <code>PdfLaTeX</code>
+<code>LuaLaTeX</code></li>
+<li>参考文献：<code>bibtex</code> <code>biblatex</code>
+<code>thebibliography</code></li>
+<li>符号索引：<code>glossaries</code> <code>nomencl</code>
+<code>mkeidx</code></li>
+</ul>
+<p>位置参数:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>document</td>
+<td>要被编译的文件名</td>
+</tr>
+</tbody>
+</table>
+<p>选项:</p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 82%" />
+</colgroup>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-h, –help</td>
+<td>显示帮助信息</td>
+</tr>
+<tr>
+<td>-v, –version</td>
+<td>显示程序版本号</td>
+</tr>
+<tr>
+<td>-p, –PdfLaTeX</td>
+<td>PdfLaTeX 进行编译</td>
+</tr>
+<tr>
+<td>-x, –XeLaTeX</td>
+<td>XeLaTeX 进行编译</td>
+</tr>
+<tr>
+<td>-l, –LuaLaTeX</td>
+<td>LuaLaTeX 进行编译</td>
+</tr>
+<tr>
+<td>-d, –LaTeXDiff</td>
+<td>使用 LaTeXDiff 进行编译，生成改动对比文件</td>
+</tr>
+<tr>
+<td>-dc, –LaTexDiff-compile</td>
+<td>使用 LaTeXDiff 进行编译，生成改动对比文件并编译新文件</td>
+</tr>
+<tr>
+<td>-dr, –draft</td>
+<td>启用草稿模式进行编译，提高编译速度 (无图显示)</td>
+</tr>
+<tr>
+<td>-c, –clean</td>
+<td>清除所有主文件的辅助文件</td>
+</tr>
+<tr>
+<td>-C, –Clean</td>
+<td>清除所有主文件的辅助文件（包含根目录）和输出文件</td>
+</tr>
+<tr>
+<td>-ca, –clean-any</td>
+<td>清除所有带辅助文件后缀的文件</td>
+</tr>
+<tr>
+<td>-Ca, –Clean-any</td>
+<td>清除所有带辅助文件后缀的文件（包含根目录）和主文件输出文件</td>
+</tr>
+<tr>
+<td>-nq, –non_quiet</td>
+<td>非安静模式运行，此模式下显示编译过程</td>
+</tr>
+<tr>
+<td>-vb, –verbose</td>
+<td>显示 PyTeXMK 运行过程中的详细信息</td>
+</tr>
+<tr>
+<td>-pr, –pdf-repair</td>
+<td>修复所有根目录以外的 pdf 文件</td>
+</tr>
+<tr>
+<td>-pv, –pdf-preview</td>
+<td>尝试编译结束后调用 Web
+浏览器或者本地PDF阅读器预览生成的PDF文件，如有填写 ‘FILE_NAME’
+则不进行编译打开指定文件</td>
+</tr>
+</tbody>
+</table>
+<p><strong>说明：</strong></p>
+<ul>
+<li><code>-pr</code> 参数的功能是 “当 LaTeX 编译过程中报类似
+<code>invalid X X R object at offset XXXXX</code>
+的警告时，可使用此参数尝试修复所有 pdf 文件”
+<code>invalid X X R object at offset XXXXX</code> 警告的出现是由于 PDF
+图片文件在创建、编辑或传输过程中发生了某种形式的损坏或非法操作导致的，可能的原因包括文件部分内容缺失、xref表损坏、或者是文件结构中的其他问题</li>
+<li><code>-d</code> 和 <code>-dc</code> 命令输入示例：
+<code>pytexmk -d old_tex_file new_tex_file</code> 和
+<code>pytexmk -dc old_tex_file new_tex_file</code>
+生成的改动对比文件名为 <code>LaTeXDiff.tex</code></li>
+<li><code>-pv</code> 参数的功能是：尝试编译结束后调用 Web
+浏览器或者本地PDF阅读器预览生成的PDF文件，仅支持输出目录下的 PDF
+文件，如需在命令行中指定待编译主文件，则 <code>-pv</code> 命令，需放置
+<code>document</code> 后面, <code>-pv</code>
+命令无需指定参数，示例：<code>pytexmk main -pv</code>；如无需在命令行中指定待编译主文件，则直接输入
+<code>-pv</code> 即可，示例：<code>pytexmk -pv</code></li>
+</ul>
+<p><code>-dc</code> 和 <code>-d</code>
+命令新增风格选择，支持在参考文献和符号索引中显示修改痕迹，编译过程中会提醒输入选项
+1 或者 2</p>
+<ul>
+<li><p>1 - 显示参考文献/符号说明的修改</p></li>
+<li><p>2 - 不显示参考文献/符号说明的修改</p></li>
+</ul>
+<h3 id="魔法注释">魔法注释</h3>
+<p>PyTeXMK
+支持使用魔法注释来定义待编译主文件、编译程序、编译结果存放位置等（仅支持检索文档前
+50 行）。</p>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 47%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr>
+<th>Magic Comment</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>% !TEX program = &lt;XeLaTeX&gt;</code></td>
+<td>指定编译类型，可选 <code>XeLaTeX</code> <code>PdfLaTeX</code>
+<code>LuaLaTeX</code></td>
+<td><code>% !TEX program = PdfLaTeX</code></td>
+</tr>
+<tr>
+<td><code>% !TEX root = &lt;待编译主文件名&gt;</code></td>
+<td>指定待编译 LaTeX 文件名，仅支持主文件在项目根目录下的情况</td>
+<td><code>% !TEX root = test_file</code></td>
+</tr>
+<tr>
+<td><code>% !TEX outdir = &lt;out_folder&gt;</code></td>
+<td>指定编译结果存放位置，仅支持文件夹名称</td>
+<td><code>% !TEX outdir = output</code></td>
+</tr>
+<tr>
+<td><code>% !TEX auxdir = &lt;aux_folder&gt;</code></td>
+<td>指定辅助文件存放位置，仅支持文件夹名称</td>
+<td><code>% !TEX auxdir = auxfiles</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>魔法注释仅支持在主文件中定义，不支持在子文件中定义。</p>
+</blockquote>
+<h3
+id="待编译主文件及编译类型选定逻辑">待编译主文件及编译类型选定逻辑</h3>
+<details>
+<summary>
+<b>待编译主文件选定逻辑</b>
+</summary>
+<ol type="1">
+<li>如果命令行参数中指定主文件，则编译该主文件。例如：
+<code>pytexmk &lt;主文件名&gt;</code>
+主文件名后可不跟随文件后缀名。</li>
+<li>如果当前根目录下存在且只有一个 <code>TEX</code>
+文件，则默认使用该文件作为待编译主文件。</li>
+<li>如果存在魔法注释
+<code>% !TEX root</code>，则根据魔法注释指定的文件作为待编译主文件。</li>
+<li>检索 <code>TEX</code> 文件中的 <code>\documentclass[]{}</code>或
+<code>\begin{document}</code> 来判断（仅支持检索文档前 200 行）</li>
+<li>如果无法根据魔法注释确定主文件，则尝试根据默认主文件名
+<code>main.tex</code> 指定待编译主文件。</li>
+<li>如果仍然无法确定主文件，则输出错误信息并退出程序。</li>
+</ol>
+</details>
+<details>
+<summary>
+<b>编译类型选定逻辑</b>
+</summary>
+<ol type="1">
+<li>PyTeXMK 优先使用终端输入命令 <code>-p</code> <code>-x</code>
+<code>-l</code> 参数指定的编译类型</li>
+<li>如果没有指定，则会使用 <code>% !TEX program = XeLaTeX</code>
+指定的编译类型</li>
+<li>如果没有指定，则会使用默认的编译类型 <code>XeLaTeX</code></li>
+</ol>
+</details>
+<p>PyTeXMK 会优先使用 <code>% !TEX outdir = PDFfile</code>
+指定的编译结果存放位置，如果没有指定，则会使用默认的编译结果存放位置
+<code>Build</code></p>
+<h3 id="配置文件说明">配置文件说明</h3>
+<p>PyTeXMK
+支持两种配置文件，分别为系统配置文件和本地配置文件。配置文件可以用于改变
+Pytexmk 默认配置以及配置一些其他功能。 系统配置文件在首次运行 PyTeXMK
+时自动生成，位于用户目录下，文件名为 <code>.pytexmkrc</code>；
+本地配置文件会在该项目首次运行 PyTeXMK
+时自动生成，位于当前工作目录下，文件名为 <code>.pytexmkrc</code>。
+自动生成的配置文件中存在详细的注释，请根据注释进行配置。</p>
+<h4 id="配置文件路径">配置文件路径</h4>
+<p>系统配置文件路径：Windows 系统为
+<code>C:\Users\用户名\.pytexmkrc</code>，Linux 系统为
+<code>~/.pytexmkrc</code> 本地配置文件路径：为当前工作目录下的
+<code>.pytexmkrc</code> 文件</p>
+<h4 id="配置文件优先级">配置文件优先级</h4>
+<p>本地配置文件优先级高于系统配置文件，如果两者对相同参数进行配置，则优先使用本地配置文件的配置。</p>
+<h2 id="构建-wheel">构建 <code>Wheel</code></h2>
+<pre><code>1. 安装 Python3
+2. pip install -r requirements-windows.txt
+3. pip install pyinstaller
+4. make</code></pre>
+<p>另外在 Windows 中 make 命令需要单独配置：详见 <a
+href="https://github.com/YanMing-lxb/PyTeXMK/blob/main/docs/Window%20%E4%B8%8B%E4%BD%BF%E7%94%A8%20make.md">Window
+下使用 make</a></p>
+<h2 id="更新记录">更新记录</h2>
+<p>更新记录详见 <a
+href="https://github.com/YanMing-lxb/PyTeXMK/blob/main/CHANGELOG.md">CHANGELOG
+文档</a></p>
+<h2 id="未来工作方向">未来工作方向</h2>
+<ul class="task-list">
+<li><p><label><input type="checkbox"
+checked="" />增加尝试修复根目录以外所有 PDF
+文件的功能（在创建、编辑或传输过程中发生了某种形式的损坏或非法操作而导致在编译过程中出现类似
+<code>invalid X X R object at offset XXXXX</code>
+的警告的问题）</label></p></li>
+<li><p><label><input type="checkbox"
+checked="" />完善主文件判断功能：</label></p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />通过检索 TeX 文件中的
+<code>\documentclass[]{}</code> 或 <code>\begin{document}</code>
+来判断</label></li>
+<li><label><input type="checkbox" />多主文件编译功能</label></li>
+</ul></li>
+<li><p><label><input type="checkbox"
+checked="" />魔法注释功能</label></p>
+<ul class="task-list">
+<li><label><input type="checkbox"
+checked="" />通过魔法注释设置主文件名</label></li>
+<li><label><input type="checkbox"
+checked="" />通过魔法注释设置编译引擎类型</label></li>
+<li><label><input type="checkbox"
+checked="" />通过魔法注释设置编译结果存放位置</label></li>
+<li><label><input type="checkbox"
+checked="" />根据魔法注释设置辅助文件存放位置</label></li>
+<li><label><input type="checkbox"
+checked="" />解决魔法注释大小写空格敏感问题</label></li>
+<li><label><input type="checkbox" />LaTeXDiff 相关魔法注释</label></li>
+<li><label><input type="checkbox" />魔法注释重复定义的处理逻辑</label>
+<ul class="task-list">
+<li><label><input
+type="checkbox" />主文件于子文件中魔法注释的冲突处理</label></li>
+<li><label><input
+type="checkbox" />解决多存在多个主文件时的主文件于子文件中魔法注释冲突问题</label></li>
+</ul></li>
+</ul></li>
+<li><p><label><input type="checkbox"
+checked="" />编译次数自动判断功能</label></p>
+<details>
+<summary>
+<p>展开查看</p>
+</summary>
+<ul class="task-list">
+<li><label><input type="checkbox"
+checked="" />完善编译过程出错后的中断处理机制</label></li>
+<li><label><input type="checkbox"
+checked="" />自动判断是否需要编译参考文献</label></li>
+<li><label><input type="checkbox"
+checked="" />自动判断是否需要编译索引文件</label></li>
+<li><label><input type="checkbox"
+checked="" />自动判断是否要重新编译</label></li>
+</ul>
+</details></li>
+<li><p><label><input type="checkbox" />增加配置文件功能</label></p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />可配置默认的编译引擎
+（目前默认编译命令是 <code>XeLaTeX</code>）</label></li>
+<li><label><input type="checkbox"
+checked="" />可配置默认生成的结果文件存放位置（目前默认存放在
+<code>Build</code> 子文件夹下）</label></li>
+<li><label><input type="checkbox"
+checked="" />可配置默认的辅助文件存放位置（目前默认存放在
+<code>Auxiliary</code> 子文件夹下）</label></li>
+<li><label><input
+type="checkbox" />可配置其他索引宏包的配置</label></li>
+<li><label><input type="checkbox" checked="" />可配置 PDF
+编译完是否默认预览</label></li>
+<li><label><input type="checkbox" />可配置 PDF 文件打开程序</label></li>
+<li><label><input type="checkbox"
+checked="" />可配置默认安静模式状态</label></li>
+<li><label><input type="checkbox"
+checked="" />可配置默认详细模式状态</label></li>
+<li><label><input type="checkbox"
+checked="" />可配置默认文件名称</label></li>
+<li><label><input type="checkbox" checked="" />可配置默认 LaTeXDiff 新
+TeX 文件名</label></li>
+<li><label><input type="checkbox" checked="" />可配置默认 LaTeXDiff 旧
+TeX 文件名</label></li>
+<li><label><input type="checkbox" checked="" />可配置默认 LaTeXDiff
+输出文件名</label></li>
+</ul></li>
+<li><p><label><input type="checkbox" />预览与日志功能</label></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />解决终端中文显示问题</label></li>
+<li><label><input type="checkbox" checked="" />PDF 预览功能</label></li>
+<li><label><input type="checkbox"
+checked="" />报错信息显示功能</label></li>
+<li><label><input
+type="checkbox" />进一步完善报错信息显示功能</label></li>
+<li><label><input type="checkbox"
+checked="" />实现日志记录功能</label></li>
+</ul></li>
+<li><p><label><input type="checkbox"
+checked="" />完善清理功能</label></p>
+<details>
+<summary>
+<p>展开查看</p>
+</summary>
+<ul class="task-list">
+<li><label><input type="checkbox"
+checked="" />完善清理辅助文件功能</label></li>
+<li><label><input type="checkbox"
+checked="" />完善清理所有文件功能</label></li>
+<li><label><input type="checkbox"
+checked="" />完善清理所有辅助文件功能</label></li>
+</ul>
+</details></li>
+<li><p><label><input
+type="checkbox" />宏包检缺失并自动安装（texlive）</label></p></li>
+<li><p><label><input type="checkbox" checked="" />添加 PyTeXMK
+更新检查功能</label></p></li>
+<li><p><label><input type="checkbox" />LaTeXDiff 相关功能</label></p>
+<ul class="task-list">
+<li><label><input type="checkbox"
+checked="" />添加编译结束后将辅助文件移动到根目录下功能</label></li>
+<li><label><input type="checkbox" checked="" />LaTeXDiff
+命令行参数的实现</label></li>
+<li><label><input type="checkbox"
+checked="" />添加单个项目的配置文件功能</label></li>
+<li><label><input type="checkbox" />LaTeXDiff 编译判断逻辑</label></li>
+</ul></li>
+<li><p><label><input type="checkbox"
+checked="" />程序国际化</label></p></li>
+<li><p><label><input type="checkbox" />README 文档完善</label></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />增加配置文件相关说明</label></li>
+</ul></li>
+</ul>
+<h2 id="star-history">Star History</h2>
+<p><a href="https://star-history.com/#YanMing-lxb/PyTeXMK&amp;Date"><img
+src="https://api.star-history.com/svg?repos=YanMing-lxb/PyTeXMK&amp;type=Date"
+alt="Star History Chart" /></a></p>
+<section id="つ-_-つ-please-share." data-align="center">
+<h2>༼ つ ◕_◕ ༽つ Please share.</h2>
+</section>
