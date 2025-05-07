@@ -1,0 +1,26 @@
+# Use the official Python image
+FROM python:3.12-bullseye
+
+# Set the working directory
+WORKDIR /app
+
+# Copy and install the local package with extras
+# COPY dist /app/dist
+# RUN pip install --no-cache-dir "$(find /app/dist -name 'pipecat_ai-*.whl' -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2)[daily,cartesia,openai,silero,deepgram,azure,elevenlabs,elevenlabs,noisereduce]"
+
+# install ffmpeg for audio
+RUN apt-get update && apt-get install -y ffmpeg
+# Copy the requirements file and install dependencies
+# COPY examples/plivo-chatbot/requirements.txt /app/
+COPY . /app/
+RUN pip install --no-cache-dir -r /app/remote-requirements.txt
+
+# Copy application files
+# COPY examples/plivo-chatbot/ /app/
+
+
+# Expose the necessary port
+EXPOSE 8765
+
+# Set the default command to run the server
+CMD ["python", "server.py"]
