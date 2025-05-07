@@ -1,0 +1,76 @@
+[project]
+name = "vuegen"
+dynamic = []
+version = "0.4.0"
+
+[tool.poetry]
+description = "VueGen automates the creation of reports from bioinformatics outputs, supporting formats like PDF, HTML, DOCX, ODT, PPTX, Reveal.js, Jupyter notebooks, and Streamlit web applications. Users simply provide a directory with output files and VueGen compiles them into a structured report."
+authors = ["MoNA group"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/Multiomics-Analytics-Group/vuegen"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.9.7 || >3.9.7,<4.0"
+streamlit = "1.39.0"
+streamlit-aggrid = "*"
+quarto-cli = "*"
+plotly = "5.15.0"
+pyvis = "^0.3.2"
+pandas = { extras = ["parquet"], version = "^2.2.3" }
+openpyxl = "^3.1.5"
+xlrd = "^2.0.1"
+nbformat = "^5.10.4"
+nbclient = "^0.10.0"
+matplotlib = "^3.9.2"
+altair = { extras = ["save"], version = "*" }
+itables = "^2.2.2"
+kaleido = "0.2.0"
+vl-convert-python = "^1.7.0"
+dataframe-image = "^0.2.6"
+strenum = { version = "^0.4.15", python = "<3.11" }
+pyyaml = "^6.0.2"
+
+# optional doc depencencies, follow approach as described here:
+# https://github.com/python-poetry/poetry/issues/2567#issuecomment-646766059
+sphinx = { version = "*", optional = true }
+sphinx-book-theme = { version = "*", optional = true }
+myst-nb = { version = "*", optional = true }
+ipywidgets = { version = "*", optional = true }
+sphinx-new-tab-link = { version = "!=0.2.2", optional = true }
+jupytext = { version = "*", optional = true }
+customtkinter = { version = "*", optional = true }
+sphinx-copybutton = { version = "*", optional = true }
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = { version = "^6.29.5", optional = true }
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+# https://stackoverflow.com/a/60990574/9684872
+[tool.poetry.extras]
+docs = [
+    "sphinx",
+    "sphinx-book-theme",
+    "myst-nb",
+    "ipywidgets",
+    "sphinx-new-tab-link",
+    "jupytext",
+    "sphinx-copybutton",
+]
+gui = ["customtkinter"]
+
+[tool.poetry.scripts]
+# https://python-poetry.org/docs/pyproject/#scripts
+vuegen = "vuegen.__main__:main"
+
+[tool.isort]
+profile = "black"
