@@ -1,0 +1,86 @@
+Metadata-Version: 2.1
+Name: c4m-pdk-ihpsg13g2
+Version: 0.1.3
+Summary: PDKMaster based PDK for open source IHP SG13G2 process
+Author: Chips4Makers contributors
+License: GPL-2.0-or-later OR AGPL-3.0-or-later OR CERN-OHL-S-2.0+
+Requires-Python: ~=3.8
+Requires-Dist: PDKMaster~=0.12.0
+Requires-Dist: pdkmaster-io-spice~=0.1.0
+Requires-Dist: pdkmaster-io-klayout~=0.1.7
+Requires-Dist: c4m-flexcell~=0.4.6
+Requires-Dist: c4m-flexio~=0.4.9
+Description-Content-Type: text/markdown
+
+This is the Chips4Makers' PDK for the SG13G2 open source PDK.
+
+# Versions
+
+* [v0.1.3](https://gitlab.com/Chips4Makers/c4m-pdk-ihpsg13g2/-/commits/v0.1.3):
+  Updates for changing API in PDKMaster and libraries.
+* [v0.1.2](https://gitlab.com/Chips4Makers/c4m-pdk-ihpsg13g2/-/commits/v0.1.2):
+  * build setup improvements
+  * technology definition fixing
+* [v0.1.1](https://gitlab.com/Chips4Makers/c4m-pdk-ihpsg13g2/-/commits/v0.1.1):
+  * use common doit support from PDKMaster and pdkmaster.io.klayout
+  * signoff related fixes
+* [v0.1.0](https://gitlab.com/Chips4Makers/c4m-pdk-ihpsg13g2/-/commits/v0.1.0):
+  * Regular code cleansing
+  * DRC fixes for improved rules from latest PDKMaster
+* [v0.0.5](https://gitlab.com/Chips4Makers/c4m-pdk-ihpsg13g2/-/commits/v0.0.5):
+  * Improved module load time though lazy library creation
+  * In exported klayout technology use layer properties from upstream
+* [v0.0.4](https://gitlab.com/Chips4Makers/c4m-pdk-ihpsg13g2/-/commits/v0.0.4):
+  * Fix for wrongly connected guard ring in sg13g2_IOPadVdd
+  * Don't try to extract modified ESD diodes as ESD diodes but extract them as regular d(p)antenna diodes
+  * Use minimum width of 0.48µm for diodes, this is new rule not yet present in design rules.
+* [v0.0.3](https://gitlab.com/Chips4Makers/c4m-pdk-ihpsg13g2/-/commits/v0.0.3):
+  * Critical fix sg13g2_IOPadVdd
+  * Improved generation of all the files for upstreaming
+* [v0.0.2](https://gitlab.com/Chips4Makers/c4m-pdk-ihpsg13g2/-/commits/v0.0.2): build infrastructure and dependencies update; no major code changes but KLayout PCell lib support added.
+* [v0.0.1](https://gitlab.com/Chips4Makers/c4m-pdk-ihpsg13g2/-/commits/v0.0.1): First public release; main achievement is that code can generate a version of the IO library ready for upstreaming to [IHP-Open-PDK](https://github.com/IHP-GmbH/IHP-Open-PDK/).  
+  It can also generate standard cells but these have not been used yet in P&R.
+
+## Alpha Version of Code
+
+This is an alpha version of the IHP SG13G2 PDK, if it breaks you need to keep the pieces. E.g. hiccups are still expected when using this code base. For further discussion you can use the [Chips4Makers matrix channel](https://matrix.to/#/#Chips4Makers_community:gitter.im). Certainly interested to be made aware about usage of this project.
+
+## Pypi release
+
+A version of this library is also released on PyPI. Currently this release is not expected to be of much use on it's own. Plan is to evolve this PyPI release onto a state the installation of it together with it's dependencies is enough to do P&R for IHP SG13G2.
+
+## Project Arrakeen subproject
+
+This project is part of Chips4Makers' [project Arrakeen](https://gitlab.com/Chips4Makers/c4m-arrakeen). It shares some common guide lines and regulations:
+
+* [Contributing.md](https://gitlab.com/Chips4Makers/c4m-arrakeen/-/blob/redtape_v1/Contributing.md)
+* [LICENSE.md](https://gitlab.com/Chips4Makers/c4m-arrakeen/-/blob/redtape_v1/LICENSE.md): license of release code
+* [LICENSE_rationale.md](https://gitlab.com/Chips4Makers/c4m-arrakeen/-/blob/redtape_v1/LICENSE_rationale.md)
+
+# Development
+
+## Dependencies
+
+Most of the dependencies are handled by [pdm](https://pdm-project.org/) and will this be taken care of when following the [pdm](https://pdm-project.org/) setup below. Only dependency that is not handled by that is [ngspice](https://ngspice.sourceforge.io/index.html) as that tool does not have a python package available yet. The current simulations performed for the docs are only tested with [ngspice](https://ngspice.sourceforge.io/index.html) version 42 with osdi models installed. Following procedure was used on local Linux development machine to get [ngspice](https://ngspice.sourceforge.io/index.html) installed:
+
+* Compiled [ngspice](https://ngspice.sourceforge.io/index.html) version 42 with default options (this includes osdi support for this latest version). Both the command as the shared library were compiled. The shared library is needed by `PySpice` and needs to be in default library search path or the `NGSPICE_LIBRARY_PATH` has to be set pointing to the [ngspice](https://ngspice.sourceforge.io/index.html) shared library.
+* Download nightly version of the [OpenVAF](https://openvaf.semimod.de/) compiler.
+* Compiled the [VA-Models](https://github.com/dwarning/VA-Models) with the downloaded [OpenVAF](https://openvaf.semimod.de/) compiler.
+* Copied the osdi models over into the [ngspice](https://ngspice.sourceforge.io/index.html) installation directory and updated the `spinit` file to automatically load these osdi models on start-up. The IHP MOS simulation models use the PSP compact models that are provided in this way. The simulation setup assumes that these models are available in [ngspice](https://ngspice.sourceforge.io/index.html).
+
+If you encounter difficulties in setting this up don't hesitate to contact the [Chips4Makers matrix channel](https://matrix.to/#/#Chips4Makers_community:gitter.im).
+
+## Git Submodules Setup
+
+This code uses [git submodules](https://git-scm.com/book/en/Git-Tools-Submodules) and these submodules need to be initialized before [pdm](https://pdm-project.org/) can be set up. This can be done by adding the `--recursive` option to the `git clone` command or using later on by using the command `git submodule update --init` when it was not done during check-out. When pulling new versions of the main branch or switching between branches also a `git submodule update` may be necessary to also switch to the proper version of the submodules.
+
+## [Pdm](https://pdm-project.org/) Setup
+
+[Pdm](https://pdm-project.org/) is used for python package dependency management and python package building. Please use the `pdm install` command to install the dependencies as was last used on the development machine. `pdm clean` can be used to do a clean-up. The actual setup for [pdm](https://pdm-project.org/) is done in the `pyproject.toml` file.
+
+## [Doit](https://pydoit.org/) targets
+
+[Doit](https://pydoit.org/) is used for build task setup and execution; the `pdm doit` command is to be used to call the `doit` command in an environment with the proper dependencies present. [Doit](https://pydoit.org/) can execute tasks in parallel by using the `-n N` option where `N` is the maximum number of parallel tasks. You do a `pdm doit list` to get a list of all the tasks defined in the `dodo.py` file. Highlight of some higher level tasks defined:
+
+* `tarball`: will run most of the tasks as dependency of that task and then generate a tarball in the `tarballs` subdirectory of the generated open PDK.
+* `patch4upstream`: will also run most tasks and then create a patch on top the dev branch in the the `upstream/IHP-Open-PDK` git submodule.
