@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+
+
+
+""" Main front-end to the tests of BloodQ.
+
+Has many options, read --help output.
+"""
+
+import os
+import sys
+
+# Unchanged, running from checkout, use the parent directory, the Bloodelf
+# package ought be there.
+sys.path.insert(
+    0,
+    os.path.normpath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "..",
+        )
+    ),
+)
+
+# isort:start
+
+from Bloodelf.tools.testing.run_Bloodelf_tests.__main__ import main
+
+main()
+
+
