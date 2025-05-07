@@ -1,0 +1,41 @@
+Metadata-Version: 2.4
+Name: pyfileloader
+Version: 0.0.10
+Summary: Load common JSON formats quickly, CSV too. Supports writing as well.
+Author: Scott Walsh
+Author-email: scott@invisiblethreat.ca
+Maintainer: Scott Walsh
+Maintainer-email: scott@invisiblethreat.ca
+Project-URL: homepage, https://github.com/invisiblethreat/pyfileloader
+Project-URL: documentation, https://github.com/invisiblethreat/pyfileloader/blob/main/README.md
+Project-URL: repository, https://github.com/invisiblethreat/pyfileloader
+Keywords: json,jsonl,ndjson,gzip,fileloader
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# fileloader
+
+`fileloader` are functions for quickly loading files into lists. Supported types
+are `txt`, `jsonl/ndjson`, and `csv`. JSON loading is there too, if needed(it returns a standard json.load(), so it's an object rather than a list of objects)
+
+### Building
+
+`pip3 install build && python3 -m build`
+
+### Installing
+
+`pip3 install pyfileloader`
+
+### Usage
+
+```
+>>> from fileloader import load_jsonl
+>>> items = load_jsonl('test-10.jsonl')
+>>> len(items)
+10
+>>> comp_items = load_jsonl('compress-10.jsonl.gz')
+>>> len(comp_items)
+10
+```
