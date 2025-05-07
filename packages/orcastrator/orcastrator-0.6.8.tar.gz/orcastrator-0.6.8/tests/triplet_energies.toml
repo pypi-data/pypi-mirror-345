@@ -1,0 +1,39 @@
+[general]
+output_dir = "scratch_triplet_energies"
+cpus = 1
+mem_per_cpu_gb = 1
+overwrite = true
+
+
+[molecule]
+xyz_dir = "assets"
+charge = 0
+mult = 1
+# [[molecules]]
+# name = "benzthiophene"
+# xyz_file = "assets/benzothiphene.xyz"
+# charge = 0
+# mult = 1
+
+# [[molecules]]
+# name = "DMDS"
+# xyz_file = "assets/dimethyl_disulfide.xyz"
+# charge = 0
+# mult = 1
+
+[[pipeline]]
+name = "singlet_opt"
+keywords = ["D4", "TPSS", "def2-SVP", "OPT"]
+
+[[pipeline]]
+name = "singlet_tddft"
+keywords = ["D4", "TPSSh", "def2-SVP"]
+blocks = ["%TDDFT NROOTS 8 TRIPLETS TRUE END"]
+
+# [[pipeline]]
+# name = "triplet_opt"
+# keywords = ["D4", "TPSS", "def2-SVP", "OPT"]
+
+# [[pipeline]]
+# name = "triplet_sp"
+# keywords = ["D4", "TPSSh", "def2-SVP"]
