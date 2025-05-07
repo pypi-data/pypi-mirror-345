@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2024 OpenSynergy Indonesia
+     Copyright 2024 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+<record id="stock_balance_type_group" model="res.groups">
+    <field name="name">Stock Balance Type</field>
+    <field name="category_id" ref="ssi_stock.inventory_configurator_module_category" />
+    <field
+            name="users"
+            eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"
+        />
+</record>
+
+<record id="product_stock_balance_group" model="res.groups">
+    <field name="name">Product Stock Balance</field>
+    <field name="category_id" ref="ssi_stock.inventory_report_module_category" />
+    <field
+            name="users"
+            eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"
+        />
+</record>
+
+<record id="stock_balance_viewer_group" model="res.groups">
+    <field name="name">Viewer</field>
+    <field name="category_id" ref="stock_balance_workflow_module_category" />
+</record>
+
+<record id="stock_balance_user_group" model="res.groups">
+    <field name="name">User</field>
+    <field name="category_id" ref="stock_balance_workflow_module_category" />
+    <field name="implied_ids" eval="[(4, ref('stock_balance_viewer_group'))]" />
+</record>
+
+<record id="stock_balance_validator_group" model="res.groups">
+    <field name="name">Validator</field>
+    <field name="category_id" ref="stock_balance_workflow_module_category" />
+    <field name="implied_ids" eval="[(4, ref('stock_balance_user_group'))]" />
+    <field
+            name="users"
+            eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"
+        />
+</record>
+
+<record id="stock_balance_company_group" model="res.groups">
+    <field name="name">Company</field>
+    <field name="category_id" ref="stock_balance_data_ownership_module_category" />
+</record>
+
+<record id="stock_balance_company_child_group" model="res.groups">
+    <field name="name">Company and All Child Companies</field>
+    <field name="category_id" ref="stock_balance_data_ownership_module_category" />
+    <field name="implied_ids" eval="[(4, ref('stock_balance_company_group'))]" />
+</record>
+
+<record id="stock_balance_all_group" model="res.groups">
+    <field name="name">All</field>
+    <field name="category_id" ref="stock_balance_data_ownership_module_category" />
+    <field name="implied_ids" eval="[(4, ref('stock_balance_company_child_group'))]" />
+    <field
+            name="users"
+            eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"
+        />
+</record>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+<record id="product_product_form_view" model="ir.ui.view">
+    <field name="name">product.product - form</field>
+    <field name="model">product.product</field>
+    <field name="inherit_id" ref="product.product_normal_form_view" />
+    <field name="arch" type="xml">
+
+        <xpath expr="//notebook" position="inside">
+            <page name="stock_balance" string="Stock Balance">
+                <group name="stock_balance_1" colspan="4" col="2">
+                    <field name="first_stock_move_date" />
+                    <field name="latest_stock_balance" />
+                </group>
+                <field name="stock_balance_ids" />
+            </page>
+        </xpath>
+    </field>
+</record>
+</odoo>
