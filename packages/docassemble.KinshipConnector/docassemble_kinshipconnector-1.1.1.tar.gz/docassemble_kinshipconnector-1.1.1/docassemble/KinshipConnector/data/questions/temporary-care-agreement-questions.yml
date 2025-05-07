@@ -1,0 +1,242 @@
+metadata:  
+  authors:
+    - name: Dane W. Henry, Esq.
+      organization: Legal Aid of West Virginia, Inc.
+  revision_date: 2023-03-01
+---
+ga id: tcaSummary
+question: |
+  <div class="banner-image" id="temporaryCareHeader">
+    [FILE temporary-care.png]
+  </div>
+  ### Overview
+  # Getting Started with Temporary Care Agreements
+subquestion: |
+  A Temporary Care Agreement is an agreement between the parent(s) and the caregivers.
+  It is like a contract and release that gives permission to the caregivers to provide for
+  and make certain decisions for the child(ren).  Usually, this is for a short time.
+
+  **What you'll need**
+
+  [FILE circle-icon-time1x.svg] Time - These questions will take 5-10 minutes to complete.
+  
+  [FILE circle-icon-id1x.svg] Information needed - You will need to know names, birthdates, and
+  contact information for yourself as well as the child(ren) and parents.
+section: overview
+continue button field: tca_summary
+---
+ga id: tcaScope1
+question: |
+  Temporary Care Agreement Scope - Care, Medical, and Education
+subquestion: |
+  The Temporary Care Agreement can be as broad or limited as is needed.
+  Choose from the options below to determine the scope of the agreement.
+fields:
+  - Provide care for the child in his or her home.: care
+    datatype: yesnowide
+    default: yes
+  - note: |
+      **Medical Decisions**
+  - no label: medical
+    datatype: radio
+    choices: 
+      - Obtain and consent to all medical treatment for the child, including emergency, non-emergency, and routine medical treatment decisions.: medical
+      - Obtain and consent to emergency medical treatment for the child, but not to elective, non-emergency procedures.: limited_medical
+      - No medical authorization: no_medical
+  - note: |
+      **Education Decisions**
+  - no label: education
+    datatype: radio
+    choices:
+      - To make decisions related to the child's education, including enrolling the child in school and changing the child’s school.: education
+      - To make decisions related to the child's education, but not to make decisions related to changing the child’s school.: limited_education
+      - No educational authorization: no_education
+section: documents
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+---
+ga id: tcaScope2
+question: |
+  Temporary Care Agreement Scope - Travel
+subquestion: |
+  Can the child(ren) travel?
+field: travel
+choices:
+  - To travel out of state with the child.: travel
+  - To travel out of state with the child for no more than 24 hours.: travel_24
+  - To travel out of state with the child for no more than 48 hours.: travel_48
+  - To travel out of state with the child for no more than 7 days.: travel_7
+  - To travel out of state with the child for no more than 14 days.: travel_14
+  - No travel with the child: no_travel
+section: documents
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+---
+ga id: tcaScope3
+question: |
+  Temporary Care Agreement Scope - Religion, Activities, Personal Care
+subquestion: |
+  Options related to religion, extra-curricular activities, and personal care.
+fields:
+  - note: |
+      **Benefits Decisions**
+  - To apply for and accept any State or Federal Benefits that may be available to the child through the Department of Health and Human Resources, Social Security Administration, or any other local, State or Federal agency.: benefits
+    datatype: yesnowide
+  - note: |
+      **Religious Decisions**
+  - To make religious decisions.: religion
+    datatype: yesnowide
+  - note: |
+      **Extracurricular Decisions**
+  - no label: extra
+    datatype: radio
+    choices: 
+      - To enroll the child in extracurricular activities and make decisions related to those activities.: extra
+      - To make decisions related to existing extracurricular activities, but not to discontinue those activities or to enroll in new activities.: limited_extra
+      - No extracurricular decision authority: no_extra
+  - note: |
+      **Personal Care Decisions**
+  - no label: personal
+    datatype: radio
+    choices:
+      - To make personal care decisions, including haircuts, piercings, and tattoos.: personal
+      - To make personal care decisions, including haircuts, but not to make decisions related to piercings, tattoos, and drastic changes to hair length or color.: limited_personal
+      - No personal care decision authority: no_personal
+section: documents
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+---
+question: |
+  Temporary Care Agreement Duration
+subquestion: |
+  The Temporary Care Agreement can automatically stop at a given time or continue on until someone ends the agreement.
+fields:
+  - How long do you want the agreement to last?: tca_duration
+    input type: radio
+    choices:
+      - No end date: indefinitely
+      - Fixed end date: fixed
+  - Please select the date: tca_end_date
+    datatype: date
+    show if:
+      variable: tca_duration
+      is: fixed
+section: documents
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+---
+ga id: tcaEndpoint
+question: Final Information
+subquestion: |
+  You can download a PDF of your **Temporary Care Agreement** below.  
+  
+  You can apply for Legal Aid of West Virginia's Services [here](https://legalaidwv.org/get-help/apply-for-help/).
+
+  ${ prog_open(tca_step_one) }
+  ${ prog_open(tca_step_two) }
+attachment code: tca_documents
+manual attachment list: True
+allow emailing: False
+section: collect
+field: generate_tca
+buttons:
+  - All done
+under: |
+  **More Resources**
+
+  [Additional Kinship Information](https://legalaidwv.org/our-programs/legal-services/kinship-care/)
+---
+code: |
+  tca_documents = [tca_instructions, tca]  
+  tca_bundle = pdf_concatenate(tca_documents, filename=interviewee.name.full() + " Temporary Care Agreement Packet.pdf")
+---
+attachment:
+  - name: Temporary Care Agreement Instructions
+    filename: Temporary Care Agreement Instructions
+    pdf template file: tca_instructions.pdf
+    editable: False
+    variable name: tca_instructions
+    fields:
+      - "library_address": ${ closest_library + "\n" + libraries[closest_library]["address"] }
+---
+attachment:
+  - name: Temporary Care Agreement
+    filename: ${ interviewee.name.full() } Temporary Care Agreement
+    pdf template file: tca.pdf
+    editable: False
+    variable name: tca
+    fields:
+      - "parent": |
+          ${ minor_list[0].parent1.name.full() if minor_list[0].no_second_parent else minor_list[0].parent1.name.full() + " and " + minor_list[0].parent2.name.full() }
+      - "p_county": ${ minor_list[0].parent1.address.county }
+      - "c1": ${ minor_list[0].name.full(middle="full") }
+      - "c1_dob": ${ minor_list[0].birthdate.format() }
+      - "c2": |
+          ${ minor_list[1].name.full(middle="full") if total_minors >= 2 else '' }
+      - "c2_dob": |
+          ${ minor_list[1].birthdate.format() if total_minors >= 2 else '' }
+      - "c3": |
+          ${ minor_list[2].name.full(middle="full") if total_minors >= 3 else '' }
+      - "c3_dob": |
+          ${ minor_list[2].birthdate.format() if total_minors >= 3 else '' }
+      - "c4": |
+          ${ minor_list[3].name.full(middle="full") if total_minors == 4 else '' }
+      - "c4_dob": |
+          ${ minor_list[3].birthdate.format() if total_minors == 4 else '' }
+      - "g1": ${ interviewee.name.full() }
+      - "g1_address1": ${ interviewee.address.line_one() }
+      - "g1_address2": ${ interviewee.address.line_two() }
+      - "g1_relationship": ${ minor_list[0].relationship }
+      - "g2": |
+          ${ cokin.name.full() if cokin_present else '' }
+      - "g2_address1": |
+          ${ cokin.address.line_one() if cokin_present else '' }
+      - "g2_address2": |
+          ${ cokin.address.line_two() if cokin_present else '' }
+      - "g2_relationship": |
+          ${ minor_list[0].relationship if cokin_present else '' }
+      - "care": ${ care }
+      - "medical": ${ medical }
+      - "education": ${ education }
+      - "benefits": ${ benefits }
+      - "religious": ${ religion }
+      - "extracurricular": ${ extra }
+      - "personal_care": ${ personal }
+      - "travel": ${ travel }
+      - "tca_duration": ${ tca_duration }
+      - "tca_end_date": |
+          ${ tca_end_date.format() if tca_duration == 'fixed' else '' }
+      - "parent_1": ${ minor_list[0].parent1.name.full() }
+      - "parent_2": |
+          ${ minor_list[0].parent2.name.full() if not minor_list[0].no_second_parent else '' }
+---
+template: tca_step_one
+subject: |
+  Step One: Download or Email
+content: |
+  * <i class="file-pdf"></i> [Instructions](${ tca_instructions.url_for(attachment=True) })
+  * <i class="file-pdf"></i> [Temporary Care Agreement](${ tca.url_for(attachment=True) })
+
+  ${ action_button_html(tca_bundle.url_for(), classname='btn btn-da btn-primary', label='Download All', icon='file-pdf') }
+  ${ action_button_html(url_action('send_tca_files'), classname='btn btn-da btn-primary', label='Email these to me', icon='envelope') }
+---
+template: tca_step_two
+subject: |
+  Step Two: Print
+content: |
+  Print two (2) copies of your document.  One copy you will keep for yourself, the other will stay with 
+  biological parent(s). Visit your local library for low-cost or free printing:
+
+  ${ closest_library}  
+  ${ libraries[closest_library]["address"]}
+---
+template: tca_step_three
+subject: |
+  Step Three: Notarize
+content: |
+  DO NOT SIGN unless you are with a Notary Public.  The agreement might not
+  be valid if it is signed without a Notary present.
+---
+event: send_tca_files
+code: |
+  send_email(to=interviewee, attachments=tca_bundle,template=email_all_files)

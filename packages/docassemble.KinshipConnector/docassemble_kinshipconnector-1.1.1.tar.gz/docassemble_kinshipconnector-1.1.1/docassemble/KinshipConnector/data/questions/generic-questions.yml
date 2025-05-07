@@ -1,0 +1,773 @@
+metadata:
+  authors:
+    - name: Dane W. Henry, Esq.
+      organization: Legal Aid of West Virginia, Inc.
+  revision_date: 2025-05-05
+---
+event: reviewguided
+section: reviewguided
+question: |
+  Review Guided Answers
+review:
+  - Edit: duration
+    button: |
+      ** Duration**:
+      % if duration == "short":
+        Short Term (Weeks)
+      % elif duration == "long":
+        Long Term (6 Months or More)
+      % elif duration == "perm":
+        Permanently
+      % elif duration == "none":
+        I have no idea
+      % endif
+  - Edit: court
+    button: |
+      ** Court Preference**:
+      % if court == True:
+        No Court - 
+        % if no_court_reason == "scared":
+          I am scared of judges and lawyers
+        % elif no_court_reason == "trouble":
+          I do not want to get someone into trouble
+        % elif no_court_reason == "time":
+          Takes too long
+        % endif
+      % elif court == False:
+        Court is OK
+      % elif duration == "none":
+        I don't know
+      % endif
+  - Edit: decision
+    button: |
+      **Decision Making**:
+      % if decision == "applicant":
+        Me
+      % elif decision == "parent":
+        Biological Parent(s)
+      % elif decision == "none":
+        I don't know
+      % endif
+  - Edit: bio_contact
+    button: |
+      **Biological Family Contact**:
+      % if bio_contact == "normal":
+        Normal
+      % elif bio_contact == "limited":
+        Limited
+      % elif bio_contact == "no_contact":
+        No Contact
+      % elif bio_contact == "none":
+        I don't know
+      % endif
+  - Edit: benefits_need
+    button: |
+      **Need for Benefits**:
+      % if benefits_need == "get_assistance":
+        Get assistance
+      % elif benefits_need == "no_assistance":
+        No assistance
+      % elif benefits_need == "none":
+        I don't know
+      % endif
+continue button field: guideme_reviewed
+progress: 90
+---
+event: reviewinfo
+section: reviewinfo
+question: |
+  Review Collected Information
+review:
+  - Edit: interviewee.name.first
+    button: |
+      ** Applicant**:  
+      ${ interviewee.name.full() }  
+      ${ interviewee.birthdate }  
+      ${ interviewee.email }  
+      ${ interviewee.address.on_one_line() }  
+      ${ interviewee.address.county } County
+      ___
+  - Edit: cokin_present
+    button: |
+      ** Co-Applicant**:  
+      % if cokin_present == True:
+        ${ cokin.name.full() }  
+        ${ cokin.birthdate }  
+        ${ cokin.email }  
+        ${ cokin.address.on_one_line() }  
+        ${ cokin.address.county } County
+      % else:
+        None
+      % endif
+      ___
+  - Edit: minor_list.revisit
+    button: |
+      % for count, y in enumerate(minor_list, start=1):
+      **Child ${ count }**:  
+      ${ y.name.full() }  
+      ${ y.address.on_one_line() }  
+      ${ y.address.county }  
+      Born: ${ y.birthdate }  
+
+      % if y.no_second_parent == True and y.parent1.deceased == True:
+      Parent 1: ${ y.parent1.relationship } *(Deceased)*|Parent 2:
+      -------------------------------------|-------------------------------------
+      ${ y.parent1.name.full() }[BR]${ y.parent1.birthdate }[BR]${ y.parent1.address.line_one() }[BR]${ y.parent1.address.line_two() }[BR]${ y.parent1.address.county }|**None**
+      % elif y.no_second_parent == True and y.parent1.deceased == False:
+      Parent 1: ${ y.parent1.relationship }|Parent 2:
+      -------------------------------------|-------------------------------------
+      ${ y.parent1.name.full() }[BR]${ y.parent1.birthdate }[BR]${ y.parent1.address.line_one() }[BR]${ y.parent1.address.line_two() }[BR]${ y.parent1.address.county }|**None**
+      % elif y.no_second_parent == False and y.parent1.deceased == True and y.parent2.deceased == True: 
+      Parent 1: ${ y.parent1.relationship } *(Deceased)*|Parent 2: ${ y.parent2.relationship } *(Deceased)*
+      -------------------------------------|-------------------------------------
+      ${ y.parent1.name.full() }[BR]${ y.parent1.birthdate }[BR]${ y.parent1.address.line_one() }[BR]${ y.parent1.address.line_two() }[BR]${ y.parent1.address.county }|${ y.parent2.name.full() }[BR]${ y.parent2.birthdate }[BR]${ y.parent2.address.line_one() }[BR]${ y.parent2.address.line_two() }[BR]${ y.parent2.address.county }
+      % elif y.no_second_parent == False and y.parent1.deceased == True and y.parent2.deceased == False: 
+      Parent 1: ${ y.parent1.relationship } *(Deceased)*|Parent 2: ${ y.parent2.relationship }
+      -------------------------------------|-------------------------------------
+      ${ y.parent1.name.full() }[BR]${ y.parent1.birthdate }[BR]${ y.parent1.address.line_one() }[BR]${ y.parent1.address.line_two() }[BR]${ y.parent1.address.county }|${ y.parent2.name.full() }[BR]${ y.parent2.birthdate }[BR]${ y.parent2.address.line_one() }[BR]${ y.parent2.address.line_two() }[BR]${ y.parent2.address.county }
+      % elif y.no_second_parent == False and y.parent1.deceased == False and y.parent2.deceased == True: 
+      Parent 1: ${ y.parent1.relationship }|Parent 2: ${ y.parent2.relationship } *(Deceased)*
+      -------------------------------------|-------------------------------------
+      ${ y.parent1.name.full() }[BR]${ y.parent1.birthdate }[BR]${ y.parent1.address.line_one() }[BR]${ y.parent1.address.line_two() }[BR]${ y.parent1.address.county }|${ y.parent2.name.full() }[BR]${ y.parent2.birthdate }[BR]${ y.parent2.address.line_one() }[BR]${ y.parent2.address.line_two() }[BR]${ y.parent2.address.county }
+      % elif y.no_second_parent == False and y.parent1.deceased == False and y.parent2.deceased == False: 
+      Parent 1: ${ y.parent1.relationship }|Parent 2: ${ y.parent2.relationship }
+      -------------------------------------|-------------------------------------
+      ${ y.parent1.name.full() }[BR]${ y.parent1.birthdate }[BR]${ y.parent1.address.line_one() }[BR]${ y.parent1.address.line_two() }[BR]${ y.parent1.address.county }|${ y.parent2.name.full() }[BR]${ y.parent2.birthdate }[BR]${ y.parent2.address.line_one() }[BR]${ y.parent2.address.line_two() }[BR]${ y.parent2.address.county }
+      % endif
+
+      *Your relationship to the child*: ${ y.relationship }
+      ___
+      % endfor
+continue button field: info_reviewed
+---
+ga id: introduction
+section: intro
+question: |
+  #### Introduction
+
+  # Welcome to the Kinship Connector
+subquestion: |
+  ## Who can use this tool?
+  <p class="flex center">[FILE icon-kinship-caregivers.png, 50px] <span>This tool is meant to be used by kinship caregivers, like grandparents or relatives caring for children in their family.</span></p>
+
+  <p class="flex center">[FILE questionnaire.png, 50px] <span>It can give kinship caregivers information and help with filling out forms for different legal options for formalizing custody of children.  Kinship caregivers can fill out these forms after they are already caring for the children or in anticipation of needing to care for them. <br><br>This tool is not meant to help when the children are involved in an abuse and neglect case in court.</span></p>
+
+  ## What to expect
+  <p class="flex center">[FILE icon-time.png, 50px]<span>Depending on the type of form this will take between 10 and 25 minutes.</span></p>
+
+  <p class="flex center">[FILE icon-cost.png, 50px]<span>This tool is free but you may need to pay to file the forms with the court.</span></p>
+
+  ## What do you need?
+  <p class="flex center">[FILE diy.png, 50px]<span>Depending on the type of form, you will need to know names, birthdates, and addresses for children and parents.  Also, knowing any court history such as dates and locations is important.</span></p>
+  
+  ***
+  ###Terms of Use:
+  ####<span style="color:black;font-weight:100;">Legal Aid of West Virginia is a non-profit law firm that provides free legal help.  This tool was developed by Legal Aid to provide information and to make it easier to fill out necessary forms.  This tool does not take the place of an attorney-client relationship. Legal Aid is not your attorney.  If you have questions about your specific situation, you should seek legal help.  The information on this tool is based on West Virginia law.  By using this tool, I agree that I have read and understand the information on this page.  If you wish to apply for Legal Aid of West Virginia’s services, you may do so here: [https://legalaidwv.org](https://legalaidwv.org/)
+  
+  <span>
+field: introduction
+buttons:
+  - I Agree: continue
+  - Exit: exit
+    color: danger
+under: |
+
+  ***
+  #### <span style="color:red">Note:</span> Legal Aid of West Virginia does not retain any of the information entered. Sessions are encrypted and only available to the user. At the conclusion of the process, all data entered is wiped to ensure user privacy.
+  ***
+---
+ga id: findPath
+sets: guided
+question: |
+  #### Introduction  
+
+  # How would you like to use this tool?
+subquestion: |
+  <div class="flex"><div class="left grid-item"><h3><img src="${url_of('questionnaire.png')}" height="50" /><br /><br />I'm not sure what type of Kinship Care I need</h3><div class="mb-5">Answer a series of guided questions to help determine what is likely to be the best document to file.</div><div class="button-container"><a href="${ url_action('set_path',path="guided") }" class="btn btn-primary">Start Guided Questions</a></div></div>
+  <div class="right grid-item"><h3><img src="${url_of('diy.png')}" height="50" /><br /><br />I already know the type of Kinship Care I need</h3><div class="mb-5">Go directly to the documents for Temporary Care Agreements, Guardianship, or Adoption</div><div class="button-container"><a href="${ url_action('set_path',path="direct") }" class="btn btn-primary">Go to Documents</a></div></div></div>
+---
+event: set_path
+code: |
+  guided = action_argument('path')
+---
+ga id: guidedIntroduction
+question: |
+  <div class="banner-image" id="guidedQuestionsHeader">
+    [FILE guided-questions.png]
+  </div>  
+  #### Guided Questions  
+
+  # Let's determine which document is best for your situation.
+subquestion: |
+  Answer a few questions to get started.  This should take about 5 minutes.
+continue button field: guided_introduction
+progress: 0
+---
+ga id: careDuration
+question: |
+  How long do you think the children will be with you?
+subquestion: |
+  The length of time will help to determine what process might be best.
+fields:
+  - no label: duration
+    input type: radio
+    choices:
+      - Short Term: short
+        help: |
+          A few weeks or months
+      - Long Term: long
+        help: |
+          Six months or more
+      - Permanently: perm
+        help: |
+          No end date or very long-term
+      - I don't know: none
+  - note: |
+      <div class="helper-wrapper" id="temporaryCareHelper"><div class="helper-body">Short duration generally means a few weeks to months.  Most often, short term means you are leaning towards a Temporary Care Agreement.</div></div>
+    show if:
+      variable: duration
+      is: short
+  - note: |
+      <div class="helper-wrapper" id="guardianshipHelper"><div class="helper-body">Long duration generally means six months or more, but not forever.  Most often, long term means Guardianship is the appropriate solution.</div></div>
+    show if:
+      variable: duration
+      is: long
+  - note: |
+      <div class="helper-wrapper" id="adoptionHelper"><div class="helper-body">Permanent duration means once it is in place it cannot be reversed.  Adoption is the only truly permanent solution.</div></div>
+    show if:
+      variable: duration
+      is: perm
+progress: 15
+---
+ga id: noCourt
+question: |
+  Are there reasons to **not** go to court?
+subquestion: |
+  Some caregivers may have concerns about going to court, 
+  either because they do not want to go before a judge or
+  because they do not want allegations made against their biological
+  family.
+fields:
+  - no label: court
+    datatype: yesnomaybe
+  - Could you describe why?: no_court_reason
+    choices:
+      - I am scared of judges and lawyers: scared
+      - I do not want to get someone in trouble: trouble
+      - Takes too long: time
+    show if:
+      variable: court
+      is: True
+  - note: |
+      <div class="helper-wrapper" id="temporaryCareHelper"><div class="helper-body">Not going to court limits the options available to kinship caregivers.  Temporary Care Agreements are the only option available in this tool that does not require going to court.</div></div>
+    show if:
+      variable: court
+      is: True
+  - note: |
+      <div class="helper-wrapper" id="guardianshipHelper"><div class="helper-body">Both Guardianships and Adoptions require going to court.  However, a Temporary Care Agreement is still an option.</div></div>
+    show if:
+      variable: court
+      is: False
+progress: 30
+---
+ga id: decisionMaking
+question: |
+  Who will make decisions for the children?
+subquestion: |
+  Caregivers are often responsible for children without being told
+  what decisions they can or cannot make.
+
+  It is important to make sure everyone is aware who is going to make
+  decisions.
+fields:
+  - no label: decision
+    datatype: radio
+    choices:
+      - I need to be able to make decisions: applicant
+      - The biological parent(s) will continue making long-term decisions: parent
+      - I don't know: none
+  - note: |
+      <div class="helper-wrapper" id="adoptionHelper"><div class="helper-body">While all three document options allow caregivers to make choices for the children, Guardianship and Adoption are the two that provide the most authority for caregivers.</div></div>
+    show if:
+      variable: decision
+      is: applicant
+  - note: |
+      <div class="helper-wrapper" id="temporaryCareHelper"><div class="helper-body">Parents keeping long term decision-making often means that they are going to want to have the children back again.  Temporary care agreements are a good way for parents to keep decision making authority while giving kinship caregivers the ability to make some day-to-day decisions for the children.</div></div>
+    show if:
+      variable: decision
+      is: parent
+progress: 45
+---
+ga id: bioContact
+question: |
+  Will the biological parent(s) remain in contact with the children?
+subquestion: |
+  Some situations allow for children to remain in contact with their
+  biological parent(s) while other situations mean that the parent(s) will
+  need to be kept away.  
+fields:
+  - no label: bio_contact
+    datatype: radio
+    choices:
+      - Normal Interactions: normal
+        help: |
+          Biological family can come and go, see the children
+          like normal.  As caregiver you are just helping out the
+          family.
+      - Limited Interactions: limited
+        help: |
+          Contact might be limited because a biological family
+          member is incarcerated or because it could be harmful
+          to the children if the family member is around, but
+          the parent could be working to improve the situation.
+      - No Interactions: no_contact
+        help: |
+          Biological family cannot have any contact with the children
+          and all interactions will be with the caregivers.
+      - I don't know: none
+  - note: |
+      <div class="helper-wrapper" id="temporaryCareHelper"><div class="helper-body">Regular contact with biological parents usually only happens when the kinship caregivers and biological parents are in agreement with the situation.  This often means a Temporary Care Agreement where everyone is working together to care for the children.  Sometimes this also happens with Guardianship</div></div>
+    show if:
+      variable: bio_contact
+      is: normal
+  - note: |
+      <div class="helper-wrapper" id="guardianshipHelper"><div class="helper-body">Limited contact means that the children can continue to know and get updates from their parents while in the care of someone else.  Usually, this is because the ultimate plan is to have the children return to their biological parents in the future, like in a Guardianship.  There is no requirement, however, that there is an exact plan or timeframe for the children to return to their biological parents.</div></div>
+    show if:
+      variable: bio_contact
+      is: limited
+  - note: |
+      <div class="helper-wrapper" id="adoptionHelper"><div class="helper-body">Because Adoption replaces the biological parents on the children's birth certificates, it is the best way to ensure that biological family has no contact with the children.  This is because the kinship caregiver, as the new parents, have complete control as though they were the birth parents.</div></div>
+    show if:
+      variable: bio_contact
+      is: no_contact
+progress: 60
+---
+ga id: needBenefits
+question: |
+  Do you need assistance caring for the children?
+subquestion: |
+  Caregivers are often eligible for benefits and assistance to care 
+  for the children.  However, eligibility and the level of assistance
+  can be based on how the children came into your care.
+fields:
+  - no label: benefits_need
+    datatype: radio
+    choices:
+      - I need to get benefits or assistance: get_assistance
+      - I do not need assistance: no_assistance
+      - I don't know: none
+  - note: |
+      <div class="helper-wrapper" id="adoptionHelper"><div class="helper-body">Eligibility for public benefits (like Medicaid, Food Stamps, or other cash assistance) for kinship care situations is complex.  It can depend on the caregiver's income or on the parent's income, and on the type of relationship that is in place.  Consider looking at the information available at the link to the right.  If these benefits or assistance are important to you and the children, you should <a href="https://legalaidwv.org/get-help/apply-for-help/">seek legal help</a>, especially before filing for adoption.  Benefits that might have been available when the children were under temporary care or Guardianship will often end or will not be an option after adoption.</div></div>
+    show if:
+      variable: benefits_need
+      is: get_assistance
+  - note: |
+      <div class="helper-wrapper" id="temporaryCareHelper"><div class="helper-body">Benefits that might have been available when the children were under temporary care or Guardianship will often end or not be an option for an Adoption.  Consider looking at the information available at the link to the right.</div></div>
+    show if:
+      variable: benefits_need
+      is: no_assistance
+right: |
+
+  ***
+  #### Additional Information
+  ***
+  [Kinship Care and Benefits](https://legalaidwv.org/legal-information/kinship-care-relationships-and-possible-benefits/)
+progress: 75
+---
+ga id: recommendationReview
+progress: 100
+sets: recommendation_review
+question: |
+  Based on your answers, you may want to consider filling out paperwork for:
+subquestion: |
+  % if recommendation == "tca":
+  <div class="result-wrapper" id="temporaryCareResult"><h4>Temporary Care Agreement</h4><div class="flex result-body"><div><p>Temporary Care Agreements are formal agreements between the parent(s) and the care givers.  Think of it as both a contract and a release that authorizes the care giver to provide for the child(ren).</p><a href="${ url_action('set_rec_doc',doccy="tca") }" class="btn btn-primary">Temporary Care Agreement</a></div><div><div class="flex center">[FILE icon-clock1x.svg] <p>Usually takes 10 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg] <p>No court appearances</p></div><div class="flex center">[FILE icon-info1x.svg] <p><a href="https://legalaidwv.org/our-programs/legal-services/kinship-care/" target="_blank">More information</a></p></div></div></div></div>
+  ###If you are not sure about that option, consider:
+  <div class="result-wrapper" id="guardianshipResult"><h4>Guardianship</h4><div class="flex result-body"><div><p>Guardianship is a formal process that sets the caregiver as the person(s) responsible for the well-being of the child(ren).  The parent(s) are no longer in charge of the child(ren) until the guardianship is removed.</p><a href="${ url_action('set_rec_doc',doccy="ig") }" class="btn btn-primary">Guardianship</a></div><div><div class="flex center">[FILE icon-clock1x.svg]<p>Usually takes 15-20 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg]<p>Requires court appearances</p></div><div class="flex center">[FILE icon-info1x.svg]<p><a href="https://legalaidwv.org/legal-information/infant-guardianship/" target="_blank">More information</a></p></div></div></div></div>
+  &nbsp;
+  <div class="result-wrapper" id="adoptionResult"><h4>Adoption</h4><div class="flex result-body"><div><p>Adoption replaces the birth parent(s) name(s) on the birth certificate with that of the new parents.  The birth parent(s) permanently relinquish all rights to the child(ren).</p><a href="${ url_action('set_rec_doc',doccy="adoption") }" class="btn btn-primary">Adoption</a></div><div><div class="flex center">[FILE icon-clock1x.svg]<p>Usually takes 15-20 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg]<p>Requires court appearances</p></div><div class="flex center">[FILE icon-info1x.svg]<p><a href="https://legalaidwv.org/legal-information/adoption/" target="_blank">More information</a></p></div></div></div></div>
+  % elif recommendation == "ig":
+  <div class="result-wrapper" id="guardianshipResult"><h4>Guardianship</h4><div class="flex result-body"><div><p>Guardianship is a formal process that sets the caregiver as the person(s) responsible for the well-being of the child(ren).  The parent(s) are no longer in charge of the child(ren) until the guardianship is removed.</p><a href="${ url_action('set_rec_doc',doccy="ig") }" class="btn btn-primary">Guardianship</a></div><div><div class="flex center">[FILE icon-clock1x.svg]<p>Usually takes 15-20 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg]<p>Requires court appearances</p></div><div class="flex center">[FILE icon-info1x.svg]<p><a href="https://legalaidwv.org/legal-information/infant-guardianship/" target="_blank">More information</a></p></div></div></div></div>
+  ###If you are not sure about that option, consider:
+  <div class="result-wrapper" id="temporaryCareResult"><h4>Temporary Care Agreement</h4><div class="flex result-body"><div><p>Temporary Care Agreements are formal agreements between the parent(s) and the care givers.  Think of it as both a contract and a release that authorizes the care giver to provide for the child(ren).</p><a href="${ url_action('set_rec_doc',doccy="tca") }" class="btn btn-primary">Temporary Care Agreement</a></div><div><div class="flex center">[FILE icon-clock1x.svg] <p>Usually takes 10 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg] <p>No court appearances</p></div><div class="flex center">[FILE icon-info1x.svg] <p><a href="https://legalaidwv.org/our-programs/legal-services/kinship-care/" target="_blank">More information</a></p></div></div></div></div>
+  &nbsp;
+  <div class="result-wrapper" id="adoptionResult"><h4>Adoption</h4><div class="flex result-body"><div><p>Adoption replaces the birth parent(s) name(s) on the birth certificate with that of the new parents.  The birth parent(s) permanently relinquish all rights to the child(ren).</p><a href="${ url_action('set_rec_doc',doccy="adoption") }" class="btn btn-primary">Adoption</a></div><div><div class="flex center">[FILE icon-clock1x.svg]<p>Usually takes 15-20 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg]<p>Requires court appearances</p></div><div class="flex center">[FILE icon-info1x.svg]<p><a href="https://legalaidwv.org/legal-information/adoption/" target="_blank">More information</a></p></div></div></div></div>
+  % elif recommendation == "adoption":
+  <div class="result-wrapper" id="adoptionResult"><h4>Adoption</h4><div class="flex result-body"><div><p>Adoption replaces the birth parent(s) name(s) on the birth certificate with that of the new parents.  The birth parent(s) permanently relinquish all rights to the child(ren).</p><a href="${ url_action('set_rec_doc',doccy="adoption") }" class="btn btn-primary">Adoption</a></div><div><div class="flex center">[FILE icon-clock1x.svg]<p>Usually takes 15-20 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg]<p>Requires court appearances</p></div><div class="flex center">[FILE icon-info1x.svg]<p><a href="https://legalaidwv.org/legal-information/adoption/" target="_blank">More information</a></p></div></div></div></div>
+  ###If you are not sure about that option, consider:
+  <div class="result-wrapper" id="temporaryCareResult"><h4>Temporary Care Agreement</h4><div class="flex result-body"><div><p>Temporary Care Agreements are formal agreements between the parent(s) and the care givers.  Think of it as both a contract and a release that authorizes the care giver to provide for the child(ren).</p><a href="${ url_action('set_rec_doc',doccy="tca") }" class="btn btn-primary">Temporary Care Agreement</a></div><div><div class="flex center">[FILE icon-clock1x.svg] <p>Usually takes 10 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg] <p>No court appearances</p></div><div class="flex center">[FILE icon-info1x.svg] <p><a href="https://legalaidwv.org/our-programs/legal-services/kinship-care/" target="_blank">More information</a></p></div></div></div></div>
+  &nbsp;
+  <div class="result-wrapper" id="guardianshipResult"><h4>Guardianship</h4><div class="flex result-body"><div><p>Guardianship is a formal process that sets the caregiver as the person(s) responsible for the well-being of the child(ren).  The parent(s) are no longer in charge of the child(ren) until the guardianship is removed.</p><a href="${ url_action('set_rec_doc',doccy="ig") }" class="btn btn-primary">Guardianship</a></div><div><div class="flex center">[FILE icon-clock1x.svg]<p>Usually takes 15-20 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg]<p>Requires court appearances</p></div><div class="flex center">[FILE icon-info1x.svg]<p><a href="https://legalaidwv.org/legal-information/infant-guardianship/" target="_blank">More information</a></p></div></div></div></div>
+  % endif
+  </br>
+---
+event: set_rec_doc
+code: |
+  recommendation_review = action_argument('doccy')
+---
+ga id: documentChoice
+sets: document
+question: |
+  Please select the document packet you want to create
+subquestion: |
+  <div class="result-wrapper" id="temporaryCareResult"><h4>Temporary Care Agreement</h4><div class="flex result-body"><div><p>Temporary Care Agreements are formal agreements between the parent(s) and the care givers.  Think of it as both a contract and a release that authorizes the care giver to provide for the child(ren).</p><a href="${ url_action('set_doc',doccy="tca") }" class="btn btn-primary">Temporary Care Agreement</a></div><div><div class="flex center">[FILE icon-clock1x.svg] <p>Usually takes 10 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg] <p>No court appearances</p></div><div class="flex center">[FILE icon-info1x.svg] <p><a href="https://legalaidwv.org/our-programs/legal-services/kinship-care/" target="_blank">More information</a></p></div></div></div></div>  
+  &nbsp;
+  <div class="result-wrapper" id="guardianshipResult"><h4>Guardianship</h4><div class="flex result-body"><div><p>Guardianship is a formal process that sets the caregiver as the person(s) responsible for the well-being of the child(ren).  The parent(s) are no longer in charge of the child(ren) until the guardianship is removed.</p><a href="${ url_action('set_doc',doccy="ig") }" class="btn btn-primary">Guardianship</a></div><div><div class="flex center">[FILE icon-clock1x.svg]<p>Usually takes 15-20 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg]<p>Requires court appearances</p></div><div class="flex center">[FILE icon-info1x.svg]<p><a href="https://legalaidwv.org/legal-information/infant-guardianship/" target="_blank">More information</a></p></div></div></div></div>  
+  &nbsp;
+  <div class="result-wrapper" id="adoptionResult"><h4>Adoption</h4><div class="flex result-body"><div><p>Adoption replaces the birth parent(s) name(s) on the birth certificate with that of the new parents.  The birth parent(s) permanently relinquish all rights to the child(ren).</p><a href="${ url_action('set_doc',doccy="adoption") }" class="btn btn-primary">Adoption</a></div><div><div class="flex center">[FILE icon-clock1x.svg]<p>Usually takes 15-20 minutes</p></div><div class="flex center">[FILE icon-bank1x.svg]<p>Requires court appearances</p></div><div class="flex center">[FILE icon-info1x.svg]<p><a href="https://legalaidwv.org/legal-information/adoption/" target="_blank">More information</a></p></div></div></div></div>  
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+---
+event: set_doc
+code: |
+  document = action_argument('doccy')
+---
+ga id: intervieweeInfo
+question: |
+  Please enter your information
+fields:
+  - First Name: interviewee.name.first
+  - Last Name: interviewee.name.last
+  - Birthdate: interviewee.birthdate
+    datatype: date
+    max: ${ today().minus(years=18) }
+  - Email Address: interviewee.email
+    datatype: email
+  - Phone Number: interviewee.phone
+  - Address: interviewee.address.address
+    address autocomplete: True
+  - Unit/Apt.: interviewee.address.unit
+    required: False
+  - City: interviewee.address.city
+  - State: interviewee.address.state
+    code: states_list()
+    default: WV
+  - Zip: interviewee.address.zip
+section: personal
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+validation code: |
+  if not phone_number_is_valid(interviewee.phone):
+    validation_error('Please enter a valid phone number.', field='interviewee.phone')
+---
+ga id: coIntervieweeInfo
+question: |
+  Co-Caregiver
+fields:
+  - Is there someone else who is going to be named as a caretaker with you?: cokin_present
+    datatype: yesnoradio
+  - First Name: cokin.name.first
+    show if: cokin_present
+  - Last Name: cokin.name.last
+    show if: cokin_present
+  - Birthdate: cokin.birthdate
+    datatype: date
+    max: ${ today().minus(years=18) }
+    show if: cokin_present
+  - Email Address: cokin.email
+    datatype: email
+    show if: cokin_present
+  - Phone Number: cokin.phone
+    show if: cokin_present
+    required: False
+  - Address: cokin.address.address
+    address autocomplete: True
+    default: ${ interviewee.address.address }
+    show if: cokin_present
+  - Unit/Apt.: cokin.address.unit
+    required: False
+    default: ${ interviewee.address.unit }
+    show if: cokin_present
+  - City: cokin.address.city
+    default: ${ interviewee.address.city }
+    show if: cokin_present
+  - State: cokin.address.state
+    code: states_list()
+    default: WV
+    show if: cokin_present
+  - Zip: cokin.address.zip
+    default: ${ interviewee.address.zip }
+    show if: cokin_present
+section: personal
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+validation code: |
+  if cokin_present:
+    if cokin.phone:
+      if not phone_number_is_valid(cokin.phone):
+        validation_error('Please enter a valid phone number.', field='cokin.phone')
+---
+ga id: minorInfo
+question: |
+  Please provide information for the ${ ordinal(i) } child.
+fields:
+  - First Name: minor_list[i].name.first
+  - Middle Name: minor_list[i].name.middle
+    required: False
+  - Last Name: minor_list[i].name.last
+  - Birthdate: minor_list[i].birthdate
+    datatype: date
+    max: ${ today() }
+    min: ${ today().minus(years=18) }
+  - Address: minor_list[i].address.address
+    address autocomplete: True
+  - Unit/Apt.: minor_list[i].address.unit
+    required: False
+  - City: minor_list[i].address.city
+  - State: minor_list[i].address.state
+    code: states_list()
+    default: WV
+  - Zip: minor_list[i].address.zip
+  - County: minor_list[i].address.county
+  - Your relationship to the child: minor_list[i].relationship
+    input type: dropdown
+    choices:
+      - Grandparent
+      - Aunt/Uncle
+      - Other family
+      - Non-relative
+  - What is the family relationship: minor_list[i].relationship
+    show if:
+      variable: minor_list[i].relationship
+      is: "Other family"
+section: children
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+---
+ga id: moreMinors
+question: |
+  So far, you have listed ${ minor_list.number_as_word() } minor children.
+  They are:
+  % for minor in minor_list:
+  ## ${'\n'} * ${ minor.name } - ${ minor.age_in_years() }
+  % endfor
+subquestion: |
+  Are there any others?
+yesno: minor_list.there_is_another
+section: children
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+---
+ga id: minorParents
+question: |
+  Do **all** of the children you listed have the same parents?
+yesno: common_parents
+section: children
+---
+ga id: parent1Info
+question: |
+  Please provide information for ${ minor_list[i].possessive('first parent')}.
+fields:
+  - First Name: minor_list[i].parent1.name.first
+  - Last Name: minor_list[i].parent1.name.last
+  - Birthdate: minor_list[i].parent1.birthdate
+    datatype: date
+    max: ${ today().minus(years=18) }
+  - Phone Number: minor_list[i].parent1.phone
+    required: False
+  - note: |
+      If current address is unknown, please fill in last known address
+  - Address: minor_list[i].parent1.address.address
+    address autocomplete: True
+  - Unit/Apt.: minor_list[i].parent1.address.unit
+    required: False
+  - City: minor_list[i].parent1.address.city
+  - State: minor_list[i].parent1.address.state
+    code: states_list()
+    default: WV
+  - Zip: minor_list[i].parent1.address.zip
+  - County: minor_list[i].parent1.address.county
+  - Relationship to child: minor_list[i].parent1.relationship
+    input type: dropdown
+    choices:
+      - Mother
+      - Father
+  - Is deceased?: minor_list[i].parent1.deceased
+    datatype: yesno
+  - Date of death: minor_list[i].parent1.dod
+    datatype: date
+    show if: minor_list[i].parent1.deceased
+  - Place of death (County and State): minor_list[i].parent1.place_of_death
+    show if: minor_list[i].parent1.deceased
+  - Rights Terminated?: minor_list[i].parent1.terminated
+    datatype: yesno
+    help: |
+      Terminating a parent's rights means that the person's rights as a parent are taken away. In West Virginia, a person's parental rights can only be terminated in a court case, like abuse and neglect, or adoption cases.
+  - Date of Termination: minor_list[i].parent1.terminated_date
+    datatype: date
+    show if: minor_list[i].parent1.terminated
+  - Place of Termination (County and State): minor_list[i].parent1.place_of_termination
+    show if: minor_list[i].parent1.terminated
+section: parents
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+validation code: |
+  if minor_list[i].parent1.phone:
+    if not phone_number_is_valid(minor_list[i].parent1.phone):
+      validation_error('Please enter a valid phone number.', field='minor_list[i].parent1.phone')
+---
+ga id: parent2Info
+question: |
+  Please provide information for ${ minor_list[i].possessive('second parent')}.
+fields:
+  - Check here if no second name on the birth certificate: minor_list[i].no_second_parent
+    datatype: yesno
+    default: False
+    disable others: True
+  - First Name: minor_list[i].parent2.name.first
+  - Last Name: minor_list[i].parent2.name.last
+  - Birthdate: minor_list[i].parent2.birthdate
+    datatype: date
+    max: ${ today().minus(years=18) }
+  - Phone Number: minor_list[i].parent2.phone
+    required: False
+  - note: |
+      If current address is unknown, please fill in last known address
+  - Address: minor_list[i].parent2.address.address
+    address autocomplete: True
+  - Unit/Apt.: minor_list[i].parent2.address.unit
+    required: False
+  - City: minor_list[i].parent2.address.city
+  - State: minor_list[i].parent2.address.state
+    code: states_list()
+    default: WV
+  - Zip: minor_list[i].parent2.address.zip
+  - County: minor_list[i].parent2.address.county
+  - Relationship to child: minor_list[i].parent2.relationship
+    input type: dropdown
+    choices:
+      - Mother
+      - Father
+  - Is deceased?: minor_list[i].parent2.deceased
+    datatype: yesno
+  - Date of death: minor_list[i].parent2.dod
+    datatype: date
+    show if: minor_list[i].parent2.deceased
+  - Place of death (County and State): minor_list[i].parent2.place_of_death
+    show if: minor_list[i].parent2.deceased
+  - Rights Terminated?: minor_list[i].parent2.terminated
+    datatype: yesno
+  - Date of Termination: minor_list[i].parent2.terminated_date
+    datatype: date
+    show if: minor_list[i].parent2.terminated
+  - Place of Termination (County and State): minor_list[i].parent2.place_of_termination
+    show if: minor_list[i].parent2.terminated
+section: parents
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+validation code: |
+  if not minor_list[i].no_second_parent:
+    if minor_list[i].parent2.phone:
+      if not phone_number_is_valid(minor_list[i].parent2.phone):
+        validation_error('Please enter a valid phone number.', field='minor_list[i].parent2.phone')
+---
+template: email_all_files
+subject: |
+  KINship Document Packet
+content: |
+  Your document(s) is/are attached.  Included in the bundle are instructions for the next steps.
+
+  Additional information can always be found at [Legal Aid of West Virginia](https://legalaidwv.org/).
+
+  *NOTE: This email address is not monitored.  Please do not reply to this message.*
+---
+field: minor_list.revisit
+question: |
+  Edit the children
+subquestion: |
+  ${ minor_list.table }
+
+  ${ minor_list.add_action() }
+---
+table: minor_list.table
+rows: minor_list
+columns:
+  - Name: |
+      row_item.name.full()
+  - Parent 1: |
+      row_item.parent1.name.full()
+  - Parent 2: |
+      row_item.parent2.name.full() if row_item.no_second_parent == False else 'None'
+edit:
+  - name.first
+  - parent1.name.first
+  - no_second_parent
+post: |
+  [Restart or exit form](${ url_action('escape_hatch')})
+---
+ga id: failureEndpoint
+question: |
+  We're Sorry.
+subquestion: |
+  Unfortunately, it appears your situation is beyond this tool's capabilities for the following reason:
+  
+  ** ${ failure_reason } **
+
+  You can contact Legal Aid of West Virginia to apply for free legal assistance or [talk to an attorney](https://wvlawyerreferral.org/) in your community.
+  
+  [Contact Legal Aid of West Virginia](https://legalaidwv.org/get-help/apply-for-help/)
+field: endpoint['ineligible']
+buttons: 
+  - Exit: exit
+---
+event: welcome_back
+question: |
+  Welcome back!
+subquestion: |
+  You are currently in the
+  **${ nav.get_section(display=True) }**
+  section.
+
+  ${ nav }
+
+  Press "Continue" to pick up
+  where you left off.
+buttons:
+  Continue: continue
+---
+ga id: escapeHatch
+event: escape_hatch
+question: |
+  Do you want to end the session?
+buttons:
+  - Start Over: restart
+  - Exit Completely: exit
+  - Take me back: continue
+---
+ga id: successExit
+event: success_exit
+question: |
+  Thank you for using the tool!
+subquestion: |
+  We hope this tool was useful.  Once you click exit below, your information will be purged
+  from our system.  Please be sure you have downloaded all documents or emailed them to yourself.
+
+  <span style="color:red">Please consider filling out a short survey so we can improve the tool:</span> [Survey](https://forms.office.com/r/YCMpznFbYr)
+buttons:
+  - Exit Completely: exit
+back button: True
+back button label: |
+  Wait, go back
+---
+ga id: intervieweeSignature
+question: |
+  How would you like the name signed?
+subquestion: |
+  **Typed** will insert '/s/ ${ interviewee.name.full()}'
+
+  **Digitally Sign** will allow you to use the mouse, trackpad,
+  or finger (device depending) to sign your name
+fields:
+  - Method: interviewee_method
+    choices:
+      - Type: type
+      - Digitally Sign: sign
+  - signature: interviewee.signature
+    show if:
+      variable: interviewee_method
+      is: sign
+  - note: |
+      ${ interviewee.name.full() }
+    show if:
+      variable: interviewee_method
+      is: sign
