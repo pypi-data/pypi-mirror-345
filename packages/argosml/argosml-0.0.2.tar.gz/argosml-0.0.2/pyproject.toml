@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "argosml"
+version = "0.0.2"
+description = "A package for tracking ML experiments"
+readme = "README.md"
+requires-python = ">=3.9, <3.13"
+license = {file = "LICENSE"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "mlflow",
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "equalityml",
+]
+
+[project.scripts]
+argosml = "argos_tracker.cli:main"
+
+[project.urls]
+Source = "https://github.com/bbj-lab/argos-tracker"
+
+[project.entry-points."mlflow.model_evaluator"]
+fairness_evaluator = "fairness_evaluator.src.fairness_evaluator:FairnessEvaluator"
+
+[tool.setuptools]
+packages = ["argos_tracker"]
+package-data = {argos_tracker = ["reports_dashboard/dist/spa/**/*"]} 
