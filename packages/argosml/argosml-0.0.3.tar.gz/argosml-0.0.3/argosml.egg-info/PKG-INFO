@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: argosml
+Version: 0.0.3
+Summary: A package for tracking and visualizing ML experiments
+Author-email: David <zdent09@gmail.com>
+License: MIT
+Project-URL: Source, https://github.com/bbj-lab/argos-tracker
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: <3.12,>=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: scikit-learn>=1.3.0
+Requires-Dist: mlflow>=2.8.0
+Requires-Dist: equalityml>=0.1.0
+Requires-Dist: jinja2>=3.1.0
+Dynamic: license-file
+
+# Argos Tracker Getting Started
+- Clone Repo
+- Make sure Anaconda is installed
+- Create conda env with ```conda env create --name argos-tracker --file=environment.yml```
+- To update previously created envs use ```conda env update --file environment.yml --prune```
+
+## Jupyter Lab
+- Activate conda env with ```conda activate argos-tracker```
+- Create project specific ipykernel if it has not been created yet:
+```
+python -m ipykernel install --user --name argos-tracker --display-name "argos-tracker"
+```
+- Start jupyter lab: ```jupyter lab```
+- Open client using link provided on start
+- Open test_notebook_mimic.ipynb and select the argos-tracker ipykernel
+
+## MLflow
+- Open a new terminal window and activate the argos-tracker env
+- Start mlflow: ```mlflow server --host 127.0.0.1 --port 8787 --app-name mlflow_cors```
+
+## Argos Dashboard
+- In a third terminal window activate the argos-tracker env
+- Go to the reports_dashboard directory ```cd reports_dashboard```
+- Run ```npm ci``` to install dependencies for Vue frontend
+- The following error may occur if using ubuntu with a version older than 24.04: 
+```
+node: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.31' not found (required by /home/user/anaconda3/envs/argos-tracker/bin/../lib/libnode.so.127)
+```
+- Start client with ```npm run dev```
