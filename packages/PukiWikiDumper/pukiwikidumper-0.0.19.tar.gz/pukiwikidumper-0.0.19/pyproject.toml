@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "PukiWikiDumper"
+version = "0.0.19"
+description = "A tool for archiving PukiWiki"
+authors = ["yzqzss <yzqzss@yandex.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+
+packages = [
+    { include = "pukiWikiDumper/**/*" },
+    { include = "pukiWikiUploader/**/*" },
+]
+
+exclude = [
+    "pukiWikiDumper/tests",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/saveweb/pukiwiki-dumper/issues"
+"repository" = "https://github.com/saveweb/pukiwiki-dumper/"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.31.0"
+beautifulsoup4 = "^4.11.2"
+internetarchive = "^3.7.0"
+rich = "^14.0.0"
+python-slugify = "^8.0.1"
+chardet = "^5.2.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.2.5"
+flake8 = "^4.0.1"
+
+[tool.poetry.scripts]
+pukiWikiDumper = "pukiWikiDumper:main"
+pukiWikiUploader = "pukiWikiUploader:main"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
