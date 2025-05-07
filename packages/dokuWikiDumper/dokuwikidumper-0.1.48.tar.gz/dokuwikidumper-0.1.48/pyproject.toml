@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "dokuWikiDumper"
+version = "0.1.48"
+description = "A tool for archiving DokuWiki"
+authors = ["yzqzss <yzqzss@yandex.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+
+packages = [
+    { include = "dokuWikiDumper/**/*" },
+    { include = "dokuWikiUploader/**/*" },
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/saveweb/dokuwiki-dumper/issues"
+"repository" = "https://github.com/saveweb/dokuwiki-dumper/"
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+requests = "^2.32.2"
+beautifulsoup4 = "^4.11.2"
+lxml = "^5.2.0"
+internetarchive = "^5.0.3"
+rich = "^13.4.2"
+python-slugify = "^8.0.1"
+typing-extensions = "^4.12.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+flake8 = "^7.0.0"
+
+[tool.poetry.scripts]
+dokuWikiDumper = "dokuWikiDumper:main"
+dokuWikiUploader = "dokuWikiUploader:main"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
