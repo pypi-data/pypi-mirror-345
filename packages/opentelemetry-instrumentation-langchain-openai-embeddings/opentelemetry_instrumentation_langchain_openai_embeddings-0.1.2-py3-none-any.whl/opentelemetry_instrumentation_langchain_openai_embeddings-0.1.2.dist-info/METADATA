@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: opentelemetry-instrumentation-langchain-openai-embeddings
+Version: 0.1.2
+Summary: OpenTelemetry langchain_openai.embeddings instrumentation
+Author-email: Di-Is <rohoxbox@gmail.com>
+License-Expression: Apache-2.0
+Requires-Python: <3.14,>=3.9
+Requires-Dist: langchain-openai>=0.3
+Requires-Dist: opentelemetry-instrumentation
+Requires-Dist: opentelemetry-sdk
+Requires-Dist: opentelemetry-semantic-conventions-ai
+Requires-Dist: wrapt
+Description-Content-Type: text/markdown
+
+# OpenTelemetry langchain_openai.embeddings Instrumentation
+
+<a href="https://pypi.org/project/opentelemetry-langchain-openai-embeddings/">
+    <img src="https://badge.fury.io/py/opentelemetry-langchain-openai-embeddings.svg">
+</a>
+
+This library allows tracing `langchain_openai.OpenAIEmbeddings` and `langchain_openai.AzureOpenAIEmbeddings`.
+
+## Installation
+
+```bash
+pip install opentelemetry-langchain-openai-embeddings
+```
+
+## Example usage
+
+```python
+from opentelemetry.instrumentation.langchain_openai_embeddings import LangchainOpenAIEmbeddingsInstrumentor
+
+LangchainOpenAIEmbeddingsInstrumentor().instrument()
+```
