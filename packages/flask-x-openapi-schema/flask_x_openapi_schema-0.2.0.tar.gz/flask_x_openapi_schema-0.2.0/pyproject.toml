@@ -1,0 +1,177 @@
+[project]
+name = "flask-x-openapi-schema"
+version = "0.2.0"
+description = "A powerful utility for automatically generating OpenAPI schemas from Flask-RESTful resources, Flask.MethodView classes, and Pydantic models."
+readme = "README.md"
+authors = [{ name = "straydragon", email = "straydragonl@foxmail.com" }]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: Flask",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+
+license = { text = "MIT" }
+
+requires-python = ">=3.11"
+
+dependencies = [
+    "flask>=2.0.0",
+    "pydantic>=2.0.0",
+    "PyYAML>=6.0",
+    "typing_extensions>=4.0.0; python_version < '3.10'",
+]
+
+[project.optional-dependencies]
+flask-restful = ["flask-restful>=0.3.9"]
+
+[dependency-groups]
+dev = [
+    "email-validator>=2.2.0",
+    "ipython>=8.18.1",
+    "locust>=2.25.0",
+    "matplotlib>=3.7.5",
+    "mike>=2.1.3",
+    "mkdocs>=1.6.1",
+    "mkdocs-llmstxt>=0.2.0",
+    "mkdocs-material>=9.6.12",
+    "mkdocs-mermaid2-plugin>=1.2.1",
+    "mkdocstrings[python]>=0.29.1",
+    "numpy>=1.24.4",
+    "pandas>=2.0.3",
+    "pdoc>=14.1.0",
+    "polyfactory>=2.21.0",
+    "pre-commit>=3.6.0",
+    "pydantic[email]>=2.10.6",
+    "pytest>=8.3.5",
+    "pytest-benchmark>=4.0.0",
+    "pytest-cov>=5.0.0",
+    "pytest-flask>=1.3.0",
+    "pytest-mock>=3.14.0",
+    "pytest-xdist>=3.5.0",
+    "rich>=14.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/StrayDragon/flask-x-openapi-schema"
+Documentation = "https://github.com/StrayDragon/flask-x-openapi-schema/tree/main/docs"
+Repository = "https://github.com/StrayDragon/flask-x-openapi-schema.git"
+Issues = "https://github.com/StrayDragon/flask-x-openapi-schema/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/flask_x_openapi_schema"]
+
+[tool.hatch.build.targets.sdist]
+only-include = ["src", "pyproject.toml", "README.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-x -v --doctest-modules --cov --cov-branch --cov=src/flask_x_openapi_schema --cov-report=term-missing --cov-report=html --cov-report=xml"
+xfail_strict = true
+filterwarnings = [
+    # "ignore::pytest.PytestCollectionWarning",
+]
+
+[tool.coverage.run]
+source = ["src/flask_x_openapi_schema"]
+omit = ["*/__init__.py", "*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py311" # use minimum version
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["COM812", "D213", "D203"]
+
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.per-file-ignores]
+"**/{src}/*" = [
+    "D401",
+    "ANN002",
+    "ANN003",
+    "ANN401",
+    "PLR0912",
+    "PLR0913",
+    "G004",
+    "BLE001",
+    "C901",
+    "FBT001",
+    "FBT002",
+    "TC001",
+    "PLR0915",
+    "SLF001",
+    "TRY004",
+    "PLR0911",
+    "E501",
+    "SIM102",
+    "PLR2004",
+]
+"**/{tests,docs,examples,benchmarks}/*" = [
+    "S101",
+    "ANN",
+    "ARG001",
+    "B018",
+    "N806",
+    "PLR2004",
+    "G004",
+    "E501",
+    "BLE001",
+    "C901",
+    "PT011",
+    "FBT003",
+    "T201",
+    "D",
+    "SLF001",
+    "RUF001",
+    "PTH",
+    "DTZ005",
+    "S311",
+    "TC001",
+    "ARG002",
+    "S105",
+    "F841",
+    "B017",
+    "SIM117",
+    "FBT001",
+    "FBT002",
+    "TRY003",
+    "EM101",
+    "S201",
+    "W293",
+    "ERA001",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
