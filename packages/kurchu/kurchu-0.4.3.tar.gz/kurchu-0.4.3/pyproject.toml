@@ -1,0 +1,57 @@
+[build-system]
+requires = ["poetry-core>=1.2.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "kurchu"
+version = "0.4.3"
+description = "Gathers Fedora/CentOS resources to create artifact collections"
+authors = ["Neal Gompa <ngompa@velocitylimitless.com>"]
+license = "GPL-2.0-or-later"
+readme = "README.md"
+repository = "https://gitlab.com/VelocityLimitless/Projects/kurchu"
+
+
+classifiers = [
+   # classifier: http://pypi.python.org/pypi?%3Aaction=list_classifiers
+   "Development Status :: 2 - Pre-Alpha",
+   "Intended Audience :: Developers",
+   "Operating System :: POSIX :: Linux",
+   "Topic :: System :: Operating System",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://gitlab.com/VelocityLimitless/Projects/kurchu/-/issues"
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.style]
+[tool.poetry.group.style.dependencies]
+ruff = "^0.4.4"
+
+[tool.poetry.group.test]
+[tool.poetry.group.test.dependencies]
+# python unit testing framework
+pytest = "^7.4"
+
+[tool.poetry.scripts]
+kurchu = "kurchu.cli:cli_main"
+
+[tool.ruff]
+# Allow lines to be as long as 120.
+line-length = 120
+
+[tool.ruff.format]
+# Use double quotes for strings.
+quote-style = "double"
+
+# Indent with tabs.
+indent-style = "tab"
+
+# Respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Force Unix line endings.
+line-ending = "lf"

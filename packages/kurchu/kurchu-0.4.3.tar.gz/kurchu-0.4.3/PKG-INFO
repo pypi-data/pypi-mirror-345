@@ -1,0 +1,114 @@
+Metadata-Version: 2.1
+Name: kurchu
+Version: 0.4.3
+Summary: Gathers Fedora/CentOS resources to create artifact collections
+Home-page: https://gitlab.com/VelocityLimitless/Projects/kurchu
+License: GPL-2.0-or-later
+Author: Neal Gompa
+Author-email: ngompa@velocitylimitless.com
+Requires-Python: >=3.12,<4.0
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: System :: Operating System
+Project-URL: Bug Tracker, https://gitlab.com/VelocityLimitless/Projects/kurchu/-/issues
+Project-URL: Repository, https://gitlab.com/VelocityLimitless/Projects/kurchu
+Description-Content-Type: text/markdown
+
+# Kurchu, the assembler (of Fedora/CentOS content)
+
+Kurchu (కూర్చు) is a tool to assemble Fedora/CentOS resources to create artifact collections.
+
+## Introduction
+
+When creating Linux distribution artifacts, a set of inputs, processing steps, and outputs need to be defined.
+This is typically defined as a set of configuration definitions as input, gathering repositories and building
+images as processing steps, and pushing it to a unified tree as an output.
+
+Kurchu is one of those tools aimed at doing this with Fedora/CentOS resources. If you're familiar with
+[Pungi](https://pagure.io/pungi), this operates in a similar space.
+
+The goal of Kurchu is to provide a straightforward and declarative way to create artifact collections
+(which are called "composes") to host and even redistribute. This is in contrast to Pungi, which uses
+a custom script configuration engine to programmatically define how to construct a compose.
+
+## Design Overview
+
+Kurchu offers three main steps (or phases in Pungi terms):
+
+* Gather
+* Compile
+* Furnish
+
+Each step is defined independently from each other, and Kurchu can run with only some of the steps defined.
+It will skip undefined steps.
+
+### Gather step
+
+The "gather" step is intended to gather inputs for the later steps. Currently, this is designed around
+capturing repository content to store for future steps.
+
+Crucially, Kurchu can gather composes produced by Pungi, Bodhi (the Fedora updates system and EPEL compose tool),
+and the [On-Demand Compose Service](https://pagure.io/odcs) (the system used to create CentOS/RHEL composes).
+
+In addition to gathering composes, it can also gather regular YUM repositories. This can be useful for
+incorporating add-on content into a complete content set.
+
+### Compile step
+
+The "compile" step is intended to produce builds of operating system images. It will support orchestrating
+image builds remotely in a build system environment (such as Koji). The only currently planned image build
+tool to support is [kiwi](https://osinside.github.io/kiwi) in Koji, but others could be added as needed.
+
+### Furnish step
+
+The "furnish" step is intended to take all the outputs from earlier steps and publish it for external
+consumption. This may include compose metadata from Kurchu itself.
+
+## Dependencies
+
+### Build and install
+
+* [Python 3.12+](https://www.python.org/)
+* [Poetry](https://python-poetry.org/)
+
+#### Additional system-wide run-time dependencies
+
+* `git`
+* `koji` (with kiwi CLI plugin)
+* `lftp`
+* `tree`
+* `s3cmd`
+
+### Development
+
+* [Pytest](https://pytest.org/)
+* [Ruff](https://docs.astral.sh/ruff/)
+
+## How to run
+
+Install Poetry and use it to install dependencies with `poetry install`, then run:
+
+```bash
+poetry run kurchu
+```
+
+## Licensing
+
+This is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, under version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+
