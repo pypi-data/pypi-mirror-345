@@ -1,0 +1,56 @@
+Metadata-Version: 2.4
+Name: wccls
+Version: 3.1.6
+Summary: Scraper for the WCCLS account page
+Project-URL: Homepage, https://github.com/rkhwaja/wccls
+Maintainer-email: Rehan Khwaja <rehan@khwaja.name>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Requires-Dist: aiohttp>=3.9
+Requires-Dist: beautifulsoup4>=4.9.3
+Requires-Dist: requests>=2.25.1
+Requires-Dist: urllib3>=1.26; python_full_version >= '3.10'
+Description-Content-Type: text/markdown
+
+# Overview
+
+This is a read-only scraper for the [WCCLS](https://wccls.bibliocommons.com) account page. It also works for the [Multnomah County Bibliocommons site](https://multcolib.bibliocommons.com)
+
+# Usage
+
+![image](https://github.com/rkhwaja/wccls/workflows/ci/badge.svg) [![codecov](https://codecov.io/gh/rkhwaja/wccls/branch/master/graph/badge.svg)](https://codecov.io/gh/rkhwaja/wccls)
+
+``` python
+from wccls import Wccls, WcclsAsync
+items = Wccls(login=card_number_or_username, password=password)
+for item in items:
+    print(item)
+
+items = await WcclsAsync(login=card_number_or_username, password=password)
+for item in items:
+    print(item)
+```
+
+# Running tests
+
+## To record new test data (also test against live website)
+Set SCRUB_EMAIL, WCCLS_CARD_NUMBER, WCCLS_PASSWORD environment variables
+
+Make a new directory tests/filesets/new_fileset
+``` python
+pytest --collect=save -k new_fileset
+```
+And check the new output.json against reality
+
+## To test existing test data
+``` python
+pytest
+```
