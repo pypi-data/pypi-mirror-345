@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ccs-govuk-frontend-jinja"
+dynamic = ["version"]
+dependencies = [
+  'jinja2>=3.0.2',
+]
+requires-python = ">=3.11,<3.14"
+authors = [
+  {name = "HM Land Registry Developers"},
+  {name = "CCS Developers"},
+]
+description = "GOV.UK Frontend Jinja Macros"
+readme = "README.md"
+license = {file = "LICENSE"}
+
+[project.urls]
+Homepage = "https://github.com/Crown-Commercial-Service/ccs-govuk-frontend-jinja"
+Repository = "https://github.com/Crown-Commercial-Service/ccs-govuk-frontend-jinja.git"
+Issues = "https://github.com/Crown-Commercial-Service/ccs-govuk-frontend-jinja/issues"
+Changelog = "https://github.com/Crown-Commercial-Service/ccs-govuk-frontend-jinja/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+  'flake8',
+  'mypy',
+  'pytest',
+  'lxml',
+  'xmldiff',
+  'flask',
+  'pre-commit',
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "govuk_frontend_jinja.__version__"}
+
+[tool.setuptools.packages.find]
+exclude = ["node_modules*"]
+
+[tool.setuptools.package-data]
+govuk_frontend_jinja = ["**/*.html"]
+
+[tool.pytest.ini_options]
+addopts = "-p no:logging"
+testpaths = "tests"
