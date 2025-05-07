@@ -1,0 +1,709 @@
+load file
+load metaInterpreter
+--- load smt
+load smt-check
+
+fmod MAUDE-SE-SYNTAX is
+  pr QID-LIST .
+  sorts Token Bubble NBubble MBubble SBubble .
+
+  op token : Qid -> Token 
+  [special(
+    id-hook Bubble (1 1)
+    op-hook qidSymbol (<Qids> : ~> Qid))] .
+
+  op bubble : QidList -> Bubble
+  [special(
+    id-hook Bubble (1 -1)
+    op-hook qidListSymbol (__ : QidList QidList ~> QidList)
+    op-hook qidSymbol (<Qids> : ~> Qid)
+    id-hook Exclude (.))] .
+
+  op nBubble : QidList -> NBubble
+  [special(
+    id-hook Bubble (1 -1)
+    op-hook qidListSymbol (__ : QidList QidList ~> QidList)
+    op-hook qidSymbol (<Qids> : ~> Qid)
+    id-hook Exclude (. , `[ `]))] .
+
+  op mBubble : QidList -> MBubble
+  [special(
+    id-hook Bubble (1 -1)
+    op-hook qidListSymbol (__ : QidList QidList ~> QidList)
+    op-hook qidSymbol (<Qids> : ~> Qid)
+    id-hook Exclude (. in :))] .
+
+  sorts Optional OptionalList Input Command .
+  subsort Optional < OptionalList .
+  subsorts Command < Input .
+
+  op select_. : Bubble -> Command .
+
+---------------------------------------
+--- SMT Search Command
+---------------------------------------
+
+  op smt-search`[_`,_`]in_:_=>*_such`that_using_.             : NBubble NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+  op smt-search`[_`,_`]in_:_=>!_such`that_using_.             : NBubble NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+  op smt-search`[_`,_`]in_:_=>+_such`that_using_.             : NBubble NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+
+  op smt-search`[_`]in_:_=>*_such`that_using_.                : NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+  op smt-search`[_`]in_:_=>!_such`that_using_.                : NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+  op smt-search`[_`]in_:_=>+_such`that_using_.                : NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+
+  op smt-search`[_`,_`]_=>*_such`that_using_.                 : NBubble NBubble Bubble Bubble Bubble Bubble -> Command .
+  op smt-search`[_`,_`]_=>!_such`that_using_.                 : NBubble NBubble Bubble Bubble Bubble Bubble -> Command .
+  op smt-search`[_`,_`]_=>+_such`that_using_.                 : NBubble NBubble Bubble Bubble Bubble Bubble -> Command .
+
+  op smt-search`[_`]_=>*_such`that_using_.                    : NBubble Bubble Bubble Bubble Bubble -> Command .
+  op smt-search`[_`]_=>!_such`that_using_.                    : NBubble Bubble Bubble Bubble Bubble -> Command .
+  op smt-search`[_`]_=>+_such`that_using_.                    : NBubble Bubble Bubble Bubble Bubble -> Command .
+
+  op `{fold`}smt-search`[_`,_`]in_:_=>*_such`that_using_.     : NBubble NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+  op `{fold`}smt-search`[_`,_`]in_:_=>!_such`that_using_.     : NBubble NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+  op `{fold`}smt-search`[_`,_`]in_:_=>+_such`that_using_.     : NBubble NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+
+  op `{fold`}smt-search`[_`]in_:_=>*_such`that_using_.        : NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+  op `{fold`}smt-search`[_`]in_:_=>!_such`that_using_.        : NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+  op `{fold`}smt-search`[_`]in_:_=>+_such`that_using_.        : NBubble MBubble Bubble Bubble Bubble Bubble -> Command .
+
+  op `{fold`}smt-search`[_`,_`]_=>*_such`that_using_.         : NBubble NBubble Bubble Bubble Bubble Bubble -> Command .
+  op `{fold`}smt-search`[_`,_`]_=>!_such`that_using_.         : NBubble NBubble Bubble Bubble Bubble Bubble -> Command .
+  op `{fold`}smt-search`[_`,_`]_=>+_such`that_using_.         : NBubble NBubble Bubble Bubble Bubble Bubble -> Command .
+
+  op `{fold`}smt-search`[_`]_=>*_such`that_using_.            : NBubble Bubble Bubble Bubble Bubble -> Command .
+  op `{fold`}smt-search`[_`]_=>!_such`that_using_.            : NBubble Bubble Bubble Bubble Bubble -> Command .
+  op `{fold`}smt-search`[_`]_=>+_such`that_using_.            : NBubble Bubble Bubble Bubble Bubble -> Command .
+
+
+---------------------------------------
+--- SMT Check Command
+---------------------------------------
+
+  op check`in_:_using_. : MBubble Bubble Bubble -> Command .
+  op check_using_. : Bubble Bubble -> Command .
+  op show`model`. : -> Command .
+
+---------------------------------------
+--- SMT search command
+---------------------------------------
+
+  op show`smt-path`concrete`. : -> Command .
+  op show`smt-path`symbolic`. : -> Command .
+endfm
+
+fmod MAUDE-SE-PRELUDE is
+  pr MAUDE-SE-SYNTAX .
+  pr META-SMT-CHECK .
+  pr META-SMT-SEARCH .
+endfm
+
+fmod MAUDE-SE-ERROR is
+  sort Error .
+endfm
+
+fmod MAUDE-SE-HISTORY is
+  sort History .
+endfm
+
+fmod MAYBE{X :: TRIV} is 
+  sort Maybe{X} .
+  subsort X$Elt < Maybe{X} .
+  op null : -> Maybe{X} .
+endfm
+
+view Oid from TRIV to CONFIGURATION is
+  sort Elt to Oid .
+endv
+
+view Module from TRIV to META-MODULE is
+  sort Elt to Module .
+endv
+
+view Term from TRIV to META-TERM is
+  sort Elt to Term .
+endv
+
+view Error from TRIV to MAUDE-SE-ERROR is
+  sort Elt to Error .
+endv
+
+view History from TRIV to MAUDE-SE-HISTORY is
+  sort Elt to History .
+endv
+
+omod MAUDE-SE-META-INTERPRETER is
+  pr META-SMT-CHECK .
+  pr META-SMT-SEARCH .
+  inc STD-STREAM .
+  inc LEXICAL .
+  inc MAYBE{Oid} * (op maybe to null) .
+  inc MAYBE{Qid} * (op maybe to null) .
+  inc MAYBE{Term} * (sort Maybe{Term} to Cmd, op null to noCmd) .
+  inc MAYBE{Module} * (op maybe to null) .
+  inc MAYBE{Error} * (op maybe to null) .
+  inc MAYBE{History} * (op maybe to null) .
+  inc META-INTERPRETER .
+
+  sort SearchBound SearchBound? .
+  subsort SearchBound < SearchBound? .
+
+  op noSearchBound : -> SearchBound? .
+  op {_,_} : Nat Nat -> SearchBound [ctor] . 
+
+  sort SearchResult SearchResult? .
+  subsort SearchResult < SearchResult? .
+
+  op noSearchResult : -> SearchResult? .
+  op {_} : SmtResult2? -> SearchResult .
+
+  op [_,_] : Qid Qid -> History [ctor] . 
+  op [_,_]::[_] : Qid Qid Term -> History [ctor] . 
+  op [_,_,_] : Qid Qid SmtCheckResult -> History [ctor] . 
+
+  
+
+  sort Eval .
+  op @_ : Term -> Eval [ctor] .
+  op <_> : Term -> Eval [ctor] .
+  op @ :  -> Eval [ctor] .
+
+  op [_,_,_,_,_,_]::___ : Bound Bound Qid Qid Bool Qid Eval Eval Eval -> History [ctor] .
+  op [_,_,_,_,_,_]::___::[_] : Bound Bound Qid Qid Bool Qid Eval Eval Eval SmtResult2? -> History [ctor] .
+  op [_,_,_,_,_,_]::___:: : Bound Bound Qid Qid Bool Qid Eval Eval Eval -> History [ctor] .
+
+  class MaudeSE | mi : Maybe{Oid}, mn : Maybe{Qid}, logic : Maybe{Qid}, error-msg : Maybe{Error},
+                  in : QidList, state : Nat, 
+                  cmd : Cmd,
+                  check-history : Maybe{History}, search-history : Maybe{History},
+                  status : Status, loaded-module : QidSet,
+                  search-info : TermList, search-fold : Bool, search-bound : SearchBound?, search-result : SearchResult? .
+
+  vars C N N' : Nat .
+  vars O O' Y MI : Oid .
+  vars MN LO QI KEY : Qid .
+  var STR STR2 : String .
+  var QIL : QidList .
+  var QS : QidSet .
+  vars PT T T' T'' : Term .
+  vars NT MT TH MM : Term .
+  vars TL TL' : TermList .
+  vars TY TY' : Type .
+  var RES : SmtCheckResult .
+  var ASSNS : SatAssignmentSet .
+  vars SUBS SUBS' : Substitution .
+  var B : Bool .
+  var NTL : NeTermList .
+  var V : Variable .
+  var CO : Constant .
+  var MO : Module .
+  var ST : Trace2 .
+  var RL : Rule .
+  vars CD CD' : Condition .
+  var TR : Trace2 .
+  var SRES : SmtResult2? .
+  var SR : SearchResult? .
+  var RL-ATTRS : AttrSet .
+  var ERR-MSG : String .
+  var BOUND : Bound .
+  vars RP1 RP2 : ResultPair .
+  var RP? : ResultPair? .
+
+---------------------------------------
+--- Colors
+---------------------------------------
+
+    ops RED GREEN BLUE YELLOW CYAN WHITE BW : -> String .
+    eq RED    = "\033[1;31m"  .
+    eq GREEN  = "\033[1;32m"  .
+    eq BLUE   = "\033[1;34m"  .
+    eq YELLOW = "\033[1;33m"  .
+    eq CYAN   = "\033[1;36m"  .
+    eq WHITE  = "\033[1;37m"  .
+    eq BW     = "\033[0m"     .
+
+---------------------------------------
+--- MaudeSE Banner
+---------------------------------------
+
+  op MAUDE-SE-VERSION : -> String .
+  eq MAUDE-SE-VERSION = "1.0.0" .
+
+  op MAUDE-SE-BUILT : -> String .
+  eq MAUDE-SE-BUILT = "Mar 25 2025" .
+  
+  op MAUDE-SE-BANNER : -> String .
+  eq MAUDE-SE-BANNER = 
+  "\n          ===================================" + 
+  "\n                        MaudeSE" +
+  "\n               (" + MAUDE-SE-VERSION + " built: " + MAUDE-SE-BUILT + ")" +
+  "\n          ===================================" + "\n\n\n" .
+
+---------------------------------------
+--- MaudeSE Status & Errors
+---------------------------------------
+
+  op {_} : String -> Error [ctor] .
+
+  op error : Nat -> Error .
+  eq error(0) = { "Parse error."                          } .
+  eq error(1) = { "Ambiguous command."                    } .
+  eq error(2) = { "No module selected."                   } .
+  eq error(3) = { "Failed to load module."                } .
+  eq error(4) = { "Should execute smt-search first."      } .
+  eq error(5) = { "Failed to parse term for smt-search."  } .
+  eq error(6) = { "Failed to parse term for check."       } .
+  --- ...
+
+  op error : String -> Error .
+  eq error(STR) = { STR } .
+
+  sort Status .
+  ops init wait parse-cmd error exit                    : -> Status [ctor] .
+  ops check-sat check-sat-load-module                   : -> Status [ctor] .
+  ops smt-search smt-search-load-module                 : -> Status [ctor] .
+  ops smt-search-path-concrete smt-search-path-symbolic : -> Status [ctor] .
+  op insert-module                                      : -> Status [ctor] .
+
+  op disambiguate : ResultPair? -> ResultPair? .
+  eq disambiguate(ambiguity({ 'smt-search`[_`,_`]in_:_=>*_such`that_using_.[TL] , 'Command },
+                            { 'smt-search`[_`,_`]_=>*_such`that_using_.[TL']  , 'Command })) 
+   = { 'smt-search`[_`,_`]in_:_=>*_such`that_using_.[TL] , 'Command } .
+  eq disambiguate(ambiguity({ 'smt-search`[_`]in_:_=>*_such`that_using_.[TL] , 'Command },
+                            { 'smt-search`[_`]_=>*_such`that_using_.[TL']  , 'Command })) 
+   = { 'smt-search`[_`]in_:_=>*_such`that_using_.[TL] , 'Command } .
+  eq disambiguate(ambiguity({ '`{fold`}smt-search`[_`,_`]in_:_=>*_such`that_using_.[TL] , 'Command },
+                            { '`{fold`}smt-search`[_`,_`]_=>*_such`that_using_.[TL']  , 'Command })) 
+   = { '`{fold`}smt-search`[_`,_`]in_:_=>*_such`that_using_.[TL] , 'Command } .
+  eq disambiguate(ambiguity({ '`{fold`}smt-search`[_`]in_:_=>*_such`that_using_.[TL] , 'Command },
+                            { '`{fold`}smt-search`[_`]_=>*_such`that_using_.[TL']  , 'Command })) 
+   = { '`{fold`}smt-search`[_`]in_:_=>*_such`that_using_.[TL] , 'Command } .
+  eq disambiguate(ambiguity({ 'check`in_:_using_.[TL] , 'Command },
+                            { 'check_using_.[TL']     , 'Command })) 
+   = { 'check`in_:_using_.[TL] , 'Command } .
+  eq disambiguate(RP?) = failure [owise] .
+
+---------------------------------------
+--- MaudeSE Interpreter
+---------------------------------------
+  
+  op o : -> Oid .
+
+  msg processInput : Oid Term -> Msg .
+
+  op maudeSE : -> Configuration .
+  eq maudeSE = <>
+    < o : MaudeSE | mi : null, mn : null, logic : null, in : nil, state : 0, cmd : noCmd,
+                    search-info : empty, search-fold : false, check-history : null, loaded-module : none, search-history : null,
+                    search-bound : noSearchBound, search-result : noSearchResult, error-msg : null, status : init > .
+
+---------------------------------------
+--- Base loading and loop
+---------------------------------------
+
+  rl < o : MaudeSE | mi : null, status : init > 
+  => < o : MaudeSE | > createInterpreter(interpreterManager, o, none) .
+
+  rl < O : MaudeSE | mi : null, status : init > createdInterpreter(O, Y, MI)
+  => < O : MaudeSE | mi : MI > insertModule(MI, O, upModule('MAUDE-SE-PRELUDE, true)) .
+
+  rl < O : MaudeSE | mi : MI, status : init > insertedModule(O, O')
+  => < O : MaudeSE | status : wait > write(stdout, o, MAUDE-SE-BANNER) .
+
+  rl < O : MaudeSE | status : wait > wrote(O, O')
+  => < O : MaudeSE | > getLine(stdin, O, "MaudeSE> ") .
+
+  rl < O : MaudeSE | mi : MI, in : QIL, status : wait > gotLine(O, O', STR)
+  => if tokenize(STR) == 'quit or tokenize(STR) == 'q then 
+        < O : MaudeSE | status : exit > write(stdout, O, GREEN + "goodbye.\n\n" + BW)
+        quit(MI, O)
+     else 
+        < O : MaudeSE | in : QIL tokenize(STR) >
+        parseTerm(MI, O, 'MAUDE-SE-PRELUDE, none, QIL tokenize(STR), 'Input) fi .
+
+  rl < O : MaudeSE | mi : MI, status : exit > wrote(O, O') bye(O, MI) => none .
+
+  rl < O : MaudeSE | mi : MI, in : QIL, status : wait > parsedTerm(O, MI, {T, TY})
+  => < O : MaudeSE | in : nil, status : parse-cmd, cmd : T > .
+
+  crl < O : MaudeSE | mi : MI, in : QIL, status : wait > parsedTerm(O, MI, ambiguity(RP1, RP2))
+   => < O : MaudeSE | in : nil, status : parse-cmd, cmd : T > 
+  if {T, TY} := disambiguate(ambiguity(RP1, RP2)) .
+
+  crl < O : MaudeSE | mi : MI, in : QIL, status : wait > parsedTerm(O, MI, ambiguity(RP1, RP2))
+   => < O : MaudeSE | in : nil, error-msg : error(1), status : error > 
+  if disambiguate(ambiguity(RP1, RP2)) == failure .
+
+  --- rl < O : MaudeSE | mi : MI, in : QIL, status : wait > parsedTerm(O, MI, ambiguity({T, TY}, {T', TY'}))
+  --- => < O : MaudeSE | mi : MI, in : nil, error-msg : error(1), status : error > .
+
+  rl < O : MaudeSE | mi : MI, in : QIL, status : wait > parsedTerm(O, MI, noParse(N))
+  => if N == size(QIL) then 
+        < O : MaudeSE | > 
+        getLine(stdin, O, "> ")
+     else 
+        < O : MaudeSE | in : nil, error-msg : error(0), status : error > fi .
+
+---------------------------------------
+--- Base error handling
+---------------------------------------
+
+  rl < O : MaudeSE | mi : MI > interpreterError(O, MI, STR)
+  => < O : MaudeSE | status : error, error-msg : error(STR) > .
+
+  rl < O : MaudeSE | error-msg : { ERR-MSG } >
+  => < O : MaudeSE | error-msg : null > write(stdout, O, RED + ERR-MSG + "\n\n" + BW) .
+  
+  rl < O : MaudeSE | status : error > wrote(O, O')
+  => < O : MaudeSE | status : wait > getLine(stdin, O, "MaudeSE> ") .
+
+---------------------------------------
+--- Select command
+---------------------------------------
+
+  crl < O : MaudeSE | mi : MI, loaded-module : QS, status : parse-cmd, cmd : 'select_.['bubble[T]] >
+   => < O : MaudeSE | mn : MN, status : wait > write(stdout, O, GREEN + "Successfully load module.\n\n" + BW)
+  if MN := downTerm(T, 'default-name) /\ MN in QS .
+
+  crl < O : MaudeSE | mi : MI, loaded-module : QS, status : parse-cmd, cmd : 'select_.['bubble[T]] >
+   => < O : MaudeSE | mn : MN, loaded-module : insert(MN, QS), status : insert-module > insertModule(MI, O, upModule(MN, true))
+  if MN := downTerm(T, 'default-name) /\ not (MN in QS) .
+
+  rl < O : MaudeSE | mi : MI, status : insert-module, cmd : 'select_.['bubble[T]] > insertedModule(O, MI)
+  => < O : MaudeSE | status : wait > write(stdout, O, GREEN + "Successfully load module.\n\n" + BW) .
+
+---------------------------------------
+--- Check command
+---------------------------------------
+
+  rl < O : MaudeSE | mn : MN, status : parse-cmd, cmd : 'check_using_.['bubble[T'], 'bubble[T'']] >
+  => < O : MaudeSE | check-history : [MN, downTerm(T'', 'default-name)]::[T'], status : check-sat > .
+
+  rl < O : MaudeSE | mn : null, status : parse-cmd, cmd : 'check_using_.['bubble[T'], 'bubble[T'']] >
+  => < O : MaudeSE | status : error, error-msg : error(2) > .
+
+  crl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'check`in_:_using_.['mBubble[T], 'bubble[T'], 'bubble[T'']] >
+   => < O : MaudeSE | check-history : [MN, LO]::[T'], status : check-sat > 
+  if MN := downTerm(T, 'default-name) /\ LO := downTerm(T'', 'default-name) .
+
+  crl < O : MaudeSE | mi : MI, check-history : [MN, LO]::[T'], loaded-module : QS, status : check-sat >
+   => < O : MaudeSE | check-history : [MN, LO] > parseTerm(MI, O, MN, none, downTerm(T', 'default-name), anyType)
+  if MN in QS .
+
+  crl < O : MaudeSE | mi : MI, check-history : [MN, LO]::[T'], loaded-module : QS, status : check-sat >
+   => < O : MaudeSE | loaded-module : insert(MN, QS), status : check-sat-load-module > insertModule(MI, O, upModule(MN, true))
+  if not (MN in QS) .
+
+  rl < O : MaudeSE | mi : MI, status : check-sat-load-module > insertedModule(O, MI)
+  => < O : MaudeSE | mi : MI, status : check-sat > .
+
+  rl < O : MaudeSE | mi : MI, check-history : [MN, LO], status : check-sat > parsedTerm(O, MI, {T, TY})
+  => < O : MaudeSE | > reduceTerm(MI, O, 'MAUDE-SE-PRELUDE, upTerm(metaSmtCheck(upModule(MN, false), T, LO, true))) . 
+
+  rl < O : MaudeSE | mi : MI, check-history : [MN, LO], status : check-sat > reducedTerm(O, MI, C, T, TY)
+  => < O : MaudeSE | check-history : [MN, LO, downTerm(T, unknown)], status : wait > 
+     write(stdout, O, toString(downTerm(T, unknown))) .
+
+--- error
+
+  rl < O : MaudeSE | mi : MI, status : check-sat > parsedTerm(O, MI, noParse(N))
+  => < O : MaudeSE | in : nil, error-msg : error(6), status : error > .
+
+  op toString : SmtCheckResult -> String .
+  eq toString(RES) = "result: " + $result2str(RES) + "\n\n" .
+
+  op $result2str : SmtCheckResult -> String .
+  eq $result2str(true) = "sat" .
+  eq $result2str(false) = "unsat" .
+  eq $result2str(unknown) = "unknown" .
+  eq $result2str({ASSNS}) = "sat" .
+
+---------------------------------------
+--- Show-model Command
+---------------------------------------
+
+  rl < O : MaudeSE | check-history : [MN, LO, RES], status : parse-cmd, cmd : 'show`model`..Command >
+  => < O : MaudeSE | status : wait > write(stdout, O, toString(upModule(MN, false), RES)) .
+
+  op toString : Module SmtCheckResult -> String .
+  eq toString(MO, unknown) = "No assignment.\n\n" .
+  eq toString(MO, true) = "The check sat result was true, but cannot show an assignment.\n\n" .
+  eq toString(MO, false) = "error occurs while generating assignment.\n\n" .
+  eq toString(MO, RES) = "\n" + 
+    "  " + "assignment:" + "\n" 
+    + $assn2str(MO, RES) + "\n" .
+
+  op $assn2str : Module SmtCheckResult -> String .
+  eq $assn2str(MO, {empty}) = "" .
+  eq $assn2str(MO, {(T |-> T'), ASSNS}) = "    " +
+    metaPrintToString(MO, none, T , mixfix, none) + " |--> "  + 
+    metaPrintToString(MO, none, T', mixfix, none) + "\n"      + $assn2str(MO, {ASSNS}) .
+  eq $assn2str(MO, {{STR |-> STR2}, ASSNS}) = "    " +
+    STR + " |--> " + STR2 + "\n" + $assn2str(MO, {ASSNS}) .
+
+---------------------------------------
+--- SMT search command
+---------------------------------------
+  
+  op mkSearchHistory : Qid Bool TermList -> History .
+  eq mkSearchHistory(QI, B, ('nBubble[NT], 'nBubble[MT], 'mBubble[MM], 'bubble[T], 'bubble[T'], 'bubble[T''], 'bubble[TH]))
+   = [getNum(NT), getNum(MT), downTerm(MM, 'default-name), QI, B, downTerm(TH, 'default-name)]:: @ T @ T' @ T'' .
+  eq mkSearchHistory(QI, B, ('nBubble[NT], 'mBubble[MM], 'bubble[T], 'bubble[T'], 'bubble[T''], 'bubble[TH]))
+   = [getNum(NT), unbounded, downTerm(MM, 'default-name), QI, B, downTerm(TH, 'default-name)]:: @ T @ T' @ T'' .
+
+  op mkSearchHistory : Qid Bool Qid TermList -> History .
+  eq mkSearchHistory(QI, B, MN, ('nBubble[NT], 'nBubble[MT], 'bubble[T], 'bubble[T'], 'bubble[T''], 'bubble[TH]))
+   = [getNum(NT), getNum(MT), MN, QI, B, downTerm(TH, 'default-name)]:: @ T @ T' @ T'' .
+  eq mkSearchHistory(QI, B, MN, ('nBubble[NT], 'bubble[T], 'bubble[T'], 'bubble[T''], 'bubble[TH]))
+   = [getNum(NT), unbounded, MN, QI, B, downTerm(TH, 'default-name)]:: @ T @ T' @ T'' .
+
+--- parse search cmd
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'smt-search`[_`,_`]in_:_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('*, false, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'smt-search`[_`,_`]in_:_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('!, false, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'smt-search`[_`,_`]in_:_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('+, false, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'smt-search`[_`]in_:_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('*, false, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'smt-search`[_`]in_:_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('!, false, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'smt-search`[_`]in_:_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('+, false, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : 'smt-search`[_`,_`]_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('*, false, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : 'smt-search`[_`,_`]_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('!, false, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : 'smt-search`[_`,_`]_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('+, false, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : 'smt-search`[_`]_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('*, false, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : 'smt-search`[_`]_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('!, false, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : 'smt-search`[_`]_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('+, false, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : 'smt-search`[_`,_`]_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : 'smt-search`[_`,_`]_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : 'smt-search`[_`,_`]_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : 'smt-search`[_`]_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : 'smt-search`[_`]_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : 'smt-search`[_`]_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+--- fold
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : '`{fold`}smt-search`[_`,_`]in_:_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('*, true, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : '`{fold`}smt-search`[_`,_`]in_:_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('!, true, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : '`{fold`}smt-search`[_`,_`]in_:_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('+, true, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : '`{fold`}smt-search`[_`]in_:_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('*, true, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : '`{fold`}smt-search`[_`]in_:_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('!, true, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : '`{fold`}smt-search`[_`]in_:_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('+, true, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : '`{fold`}smt-search`[_`,_`]_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('*, true, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : '`{fold`}smt-search`[_`,_`]_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('!, true, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : '`{fold`}smt-search`[_`,_`]_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('+, true, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : '`{fold`}smt-search`[_`]_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('*, true, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : '`{fold`}smt-search`[_`]_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('!, true, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : MN, status : parse-cmd, cmd : '`{fold`}smt-search`[_`]_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | search-history : mkSearchHistory('+, true, MN, TL), cmd : noCmd, status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : '`{fold`}smt-search`[_`,_`]_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : '`{fold`}smt-search`[_`,_`]_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : '`{fold`}smt-search`[_`,_`]_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : '`{fold`}smt-search`[_`]_=>*_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : '`{fold`}smt-search`[_`]_=>!_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+  rl < O : MaudeSE | mi : MI, mn : null, status : parse-cmd, cmd : '`{fold`}smt-search`[_`]_=>+_such`that_using_.[TL] >
+  => < O : MaudeSE | in : nil, cmd : noCmd, status : error, error-msg : error(2) > .
+
+--- execute search
+
+  crl < O : MaudeSE | mi : MI, search-history : [N, BOUND, MN, KEY, B, LO]:: @ T @ T' @ T'', loaded-module : QS, status : smt-search >
+   => < O : MaudeSE | search-history : [N, BOUND, MN, KEY, B, LO]:: @ @ T' @ T'' > parseTerm(MI, O, MN, none, downTerm(T, 'default-name), anyType)
+  if MN in QS .
+
+  crl < O : MaudeSE | mi : MI, search-history : [N, BOUND, MN, KEY, B, LO]:: @ T @ T' @ T'', loaded-module : QS, status : smt-search >
+   => < O : MaudeSE | loaded-module : insert(MN, QS), status : smt-search-load-module > insertModule(MI, O, upModule(MN, true))
+  if not (MN in QS) .
+
+  rl < O : MaudeSE | mi : MI, status : smt-search-load-module > insertedModule(O, MI)
+  => < O : MaudeSE | status : smt-search > .
+
+  rl < O : MaudeSE | mi : MI, search-history : [N, BOUND, MN, KEY, B, LO]:: @ @ T' @ T'', status : smt-search > parsedTerm(O, MI, {T, TY})
+  => < O : MaudeSE | search-history : [N, BOUND, MN, KEY, B, LO]:: < T > @ @ T'' > parseTerm(MI, O, MN, none, downTerm(T', 'default-name), anyType) .
+
+  rl < O : MaudeSE | mi : MI, search-history : [N, BOUND, MN, KEY, B, LO]:: < T > @ @ T'', status : smt-search > parsedTerm(O, MI, {T', TY})
+  => < O : MaudeSE | search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > @ > parseTerm(MI, O, MN, none, downTerm(T'', 'default-name), anyType) .
+
+  rl < O : MaudeSE | mi : MI, search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > @, status : smt-search > parsedTerm(O, MI, {T'', TY})
+  => < O : MaudeSE | search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > < T'' > > .
+
+  rl < O : MaudeSE | mi : MI, search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > < T'' >, status : smt-search > 
+  => < O : MaudeSE | search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > < T'' > :: > reduceTerm(MI, O, 'MAUDE-SE-PRELUDE, upTerm(metaSmtSearch(upModule(MN, false), T, T', T'' = 'true.Boolean, KEY, BOUND, mkSolNum(N), LO, B))) .
+
+  crl < O : MaudeSE | mi : MI, search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > < T'' > ::, status : smt-search > reducedTerm(O, MI, N', PT, TY)
+   => < O : MaudeSE | search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > < T'' > :: [SRES], status : wait > write(stdout, O, toString(upModule(MN, false), N, SRES))
+  if SRES := downTerm(PT, (failure).SmtResult2?) .
+
+--- error
+
+  rl < O : MaudeSE | mi : MI, status : smt-search > parsedTerm(O, MI, noParse(N))
+  => < O : MaudeSE | in : nil, error-msg : error(5), status : error > .
+
+  op getNum : Qid -> Bound .
+  eq getNum(''unbounded.Sort) = unbounded .
+  eq getNum(QI) = downTerm(qid("s_^" + string(downTerm(QI, QI)))['0.Zero], (0).Nat) [owise] .
+
+  op mkSolNum : Nat -> Nat .
+  eq mkSolNum(s N) = N .
+  eq mkSolNum(0) = 0 . 
+
+  op check : Nat Nat SearchResult? -> Bool .
+  eq check(C, N, {failure}) = false .
+  eq check(C, N, {SRES}) = C < N .
+
+  op toString : Module Nat SmtResult2? -> String .
+   eq toString(MO, C, failure) = "No more solutions.\n\n" .
+  ceq toString(MO, C, {T, SUBS, T', SUBS', N', N}) = "\n" +
+    "Solution " + string(C, 10) + " (state " + string(N, 10) + ")"              + "\n\n" +
+    "Symbolic state:" + "\n " + metaPrintToString(MO, none, T, mixfix, none)    + "\n\n" +
+    "Constraint:"     + "\n " + metaPrintToString(MO, none, T', mixfix, none)   + "\n\n" + 
+    "Substitution:"   + "\n " + toString(MO, SUBS)                              + "\n\n" +
+    "Assignment:"     + "\n " + toString(MO, SUBS')                             + "\n\n" +
+    "Concrete state:" + "\n " + metaPrintToString(MO, none, T'', mixfix, none)  + "\n\n" + "\n"
+  if T'' := applySubstitution(MO, T, SUBS') .
+
+  op toString : Module Substitution -> String .
+  eq toString(MO, (none).Substitution) = "" .
+  eq toString(MO, V <- T ; SUBS) 
+   =  metaPrintToString(MO, none, V, mixfix, none) + " <-- " + 
+      metaPrintToString(MO, none, T, mixfix, none) + "\n " + toString(MO, SUBS) .
+
+---------------------------------------
+--- SMT search path command
+---------------------------------------
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'show`smt-path`concrete`..Command,
+                     search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > < T'' > :: [SRES] >
+  => < O : MaudeSE | status : smt-search-path-concrete > 
+    reduceTerm(MI, O, 'MAUDE-SE-PRELUDE, upTerm(metaSmtSearchPath(upModule(MN, false), T, T', T'' = 'true.Boolean, '*, BOUND, mkSolNum(N), LO, B))) .
+
+  rl < O : MaudeSE | mi : MI, status : smt-search-path-concrete,
+                     search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > < T'' > :: [SRES] > reducedTerm(O, MI, C, PT, TY)
+  => < O : MaudeSE | status : wait > write(stdout, O, toString(upModule(MN, false), downTerm(PT, (failure).Trace2Result?), false) + "\n") .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'show`smt-path`symbolic`..Command,
+                     search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > < T'' > :: [SRES] >
+  => < O : MaudeSE | status : smt-search-path-symbolic > 
+    reduceTerm(MI, O, 'MAUDE-SE-PRELUDE, upTerm(metaSmtSearchPath(upModule(MN, false), T, T', T'' = 'true.Boolean, '*, BOUND, mkSolNum(N), LO, B))) .
+
+  rl < O : MaudeSE | mi : MI, status : smt-search-path-symbolic,
+                     search-history : [N, BOUND, MN, KEY, B, LO]:: < T > < T' > < T'' > :: [SRES] > reducedTerm(O, MI, C, PT, TY)
+  => < O : MaudeSE | status : wait > write(stdout, O, toString(upModule(MN, false), downTerm(PT, (failure).Trace2Result?), true) + "\n") .
+
+--- error
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'show`smt-path`concrete`..Command, search-history : null >
+  => < O : MaudeSE | status : error, error-msg : error(4), cmd : noCmd, in : nil > .
+
+  rl < O : MaudeSE | mi : MI, status : parse-cmd, cmd : 'show`smt-path`symbolic`..Command, search-history : null >
+  => < O : MaudeSE | status : error, error-msg : error(4), cmd : noCmd, in : nil > .
+
+  op toString : Module Trace2Result? Bool -> String .
+  eq toString(MO, failure, B) = "Failed to get path.\n\n" .
+  eq toString(MO, {TR, SUBS}, false) = toString(MO, TR, SUBS) .
+
+  op toString : Module Trace2 Substitution -> String .
+  eq toString(MO, nil, SUBS) = "" .
+  eq toString(MO, {T || T', TY}, SUBS) = metaPrintToString(MO, none, inst(T, SUBS), mixfix, none) + "\n" .
+  ceq toString(MO, {T || T', TY, RL} ST, SUBS) =
+    metaPrintToString(MO, none, T'', mixfix, none)  + "\n" +
+    "=====[" + toString(MO, RL) + "]=====>"         + "\n" + toString(MO, ST, SUBS)
+  if T'' := inst(T, SUBS) .
+
+  eq toString(MO, {TR, SUBS}, true) = toString(MO, TR) .
+
+  op toString : Module Trace2 -> String .
+  eq toString(MO, nil) = "" .
+  eq toString(MO, {T || T', TY} ST) = "Constrained Term:" + "\n" +
+  " Term: "        + metaPrintToString(MO, none, T, mixfix, none)   + "\n" +
+  " Constraint: " + metaPrintToString(MO, none, T', mixfix, none)  + "\n" .
+
+  eq toString(MO, {T || T', TY, RL} ST) = "Constrained Term:" + "\n" +
+  " Term: "        + metaPrintToString(MO, none, T, mixfix, none)   + "\n" +
+  " Constraint: " + metaPrintToString(MO, none, T', mixfix, none)  + "\n" +
+  "=====[" + toString(MO, RL) + "]=====>"                          + "\n" + toString(MO, ST) .
+
+  op toString : Module Rule -> String .
+  --- eq printRule(MO, rl T => T' [label(QI)] .) = 'rl '`[ QI '`] ': metaPrettyPrint(MO, getVars(T), T, mixfix with-parens) '=> metaPrettyPrint(MO, getVars(T'), T', mixfix with-parens) .
+  --- eq printRule(MO, crl T => T' if CD [label(QI)] .) = 'crl '`[ QI '`] ': metaPrettyPrint(MO, getVars(T), T, mixfix with-parens) '=> metaPrettyPrint(MO, getVars(T'), T', mixfix with-parens) 'if printCond(MO, CD) .
+  eq toString(MO, rl T => T' [RL-ATTRS label(QI)] .) = printTokens(QI) .
+  eq toString(MO, crl T => T' if CD [RL-ATTRS label(QI)] .) = printTokens(QI) .
+  eq toString(MO, RL) = "" [owise] .
+
+  --- op printCond : Module Condition -> QidList .
+  --- eq printCond(MO, nil) = nil .
+  --- eq printCond(MO, T = T') = metaPrettyPrint(MO, getVars(T), T, mixfix with-parens) '= metaPrettyPrint(MO, getVars(T'), T', mixfix with-parens) .
+  --- eq printCond(MO, CD /\ CD') = printCond(MO, CD) '/\ printCond(MO, CD') .
+  --- eq printCond(MO, T := T') = metaPrettyPrint(MO, getVars(T), T, mixfix with-parens) ':= metaPrettyPrint(MO, getVars(T'), T', mixfix with-parens) .
+
+endom
+
+set show command off . 
+
+erewrite maudeSE .
+
+eof
