@@ -1,0 +1,81 @@
+#!/usr/bin/python
+
+import pathlib
+from setuptools import setup
+
+# Scripts
+scripts = []
+
+name = 'glmtools'
+version = '0.3.0'
+release = '0.3.0'
+
+# The directory containing this file
+HERE = pathlib.Path(__file__).parent
+
+# The text of the README file
+README = (HERE / "README.md").read_text()
+
+setup(
+    name=name,
+
+    version=release,
+
+    description='GLMtools',
+
+    # Author details
+    author='Andrew Quinn <andrew.quinn@psych.ox.ac.uk>',
+    author_email='andrew.quinn@psych.ox.ac.uk',
+
+    long_description=README,
+    long_description_content_type="text/markdown",
+
+    # Choose your license
+    # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=[
+        'Development Status :: 4 - Beta',
+
+        # Indicate who your project is intended for
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: Bio-Informatics',
+        'Topic :: Scientific/Engineering :: Information Analysis',
+        'Topic :: Scientific/Engineering :: Mathematics',
+
+        # Pick your license as you wish (should match "license" above)
+        'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
+
+        # Specify the Python versions you support here. In particular, ensure
+        # that you indicate whether you support Python 2, Python 3 or both.
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13'
+    ],
+
+    keywords='General Linear Model Design Matrix Regression Statistics Permutations',
+
+    packages=['glmtools'],
+
+    python_requires='>3.6',
+
+    install_requires=['numpy',
+                      'scipy',
+                      'matplotlib',
+                      'numpydoc',
+                      'anamnesis',
+                      'pyyaml>=5.1',
+                      'sphinx_rtd_theme'],
+
+    extras_require={
+        'test': ['coverage'],
+        'full': ['flake8', 'setuptools', 'pytest', 'pytest-cov']
+    },
+
+    command_options={
+        'build_sphinx': {
+            'project': ('setup.py', name),
+            'version': ('setup.py', name),
+            'release': ('setup.py', name)}},
+)
