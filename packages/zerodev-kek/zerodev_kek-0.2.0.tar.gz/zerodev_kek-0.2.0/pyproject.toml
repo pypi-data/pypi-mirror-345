@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zerodev-kek"
+authors = [
+  { name="taek lee", email="leekt216@gmail.com" },
+]
+dynamic = ["version"]
+description = "KEK: Kernel Examination Kit - A CLI tool to parse, hash, and debug EIP-4337 UserOperations for Kernel."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", # Assuming MIT, change if needed
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "eth-utils >= 5.3.0",
+    "eth-abi >= 4.0.0", # Check for appropriate minimum versions
+    "eth-keys >= 0.4.0",
+    "click >= 8.0.0",
+    "ruff>=0.11.5",
+    "web3 >= 6.0.0", # Added web3 dependency
+    "click-extra >= 0.4.0", # Added click-extra dependency
+]
+
+[tool.semantic_release]
+version_variables = ["src/kek/__init__.py:__version__"]
+build_command     = "pip install build && python -m build"
+upload_to_pypi    = true
+upload_to_vcs_release = true
+changelog_file    = "CHANGELOG.md"
+commit_parser     = "conventional"
+tag_format        = "v{version}"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "ruff>=0.11.5",  # Already in main dependencies, but including here for clarity
+]
+
+[project.scripts]
+kek = "kek.cli:cli"
+
+[project.urls]
+Homepage = "https://github.com/zerodevapp/kek"
+Issues = "https://github.com/zerodevapp/kek/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]  # Look for packages in the src directory
+
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+tag_format = "v$version"
