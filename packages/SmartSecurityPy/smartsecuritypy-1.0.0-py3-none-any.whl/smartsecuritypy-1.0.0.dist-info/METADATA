@@ -1,0 +1,213 @@
+Metadata-Version: 2.4
+Name: SmartSecurityPy
+Version: 1.0.0
+Summary: 🔐 Biblioteca de utilidades para hash de senha, criptografia e JWT em Python
+Author: Roberto Lima
+Author-email: Roberto Lima <robertolima.izphera@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/robertolima-dev/SmartSecurityPy
+Project-URL: Repository, https://github.com/robertolima-dev/SmartSecurityPy
+Project-URL: Documentation, https://pypi.org/project/SmartSecurityPy/
+Keywords: seguranca,criptografia,jwt,hash,senha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: passlib[bcrypt]
+Requires-Dist: cryptography
+Requires-Dist: PyJWT
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-python
+
+# 🔐 SmartSecurityPy
+
+**SmartSecurityPy** é uma biblioteca Python leve e poderosa para tarefas de segurança como **hash de senha**, **criptografia simétrica** e **validação de JWTs**. Ideal para APIs, backends e projetos que precisam de proteção de dados sensíveis.
+
+---
+
+## ⚙️ Instalação
+
+```bash
+pip install SmartSecurityPy
+```
+
+> Requer Python 3.7 ou superior
+
+---
+
+## ✨ Funcionalidades
+
+### 🔑 Hash de Senhas com Bcrypt
+```python
+from SmartSecurityPy import hasher
+
+hashed = hasher.hash_password("minha_senha_segura")
+print(hashed)
+
+# Verificação
+autenticado = hasher.verify_password("minha_senha_segura", hashed)
+print(autenticado)  # True
+```
+
+---
+
+### 🔒 Criptografia e Descriptografia com Fernet
+```python
+from SmartSecurityPy import crypto
+
+# Gera uma chave segura
+key = crypto.generate_key()
+
+# Criptografa uma mensagem
+mensagem = "dado confidencial"
+token = crypto.encrypt_message(mensagem, key)
+
+# Descriptografa
+original = crypto.decrypt_message(token, key)
+print(original)  # "dado confidencial"
+```
+
+---
+
+### 🪙 JWT (JSON Web Tokens)
+```python
+from SmartSecurityPy import jwt_handler
+
+# Cria um token JWT
+data = {"user_id": 123, "role": "admin"}
+token = jwt_handler.create_token(data, expires_in_minutes=30)
+
+# Decodifica o token
+decoded = jwt_handler.decode_token(token)
+print(decoded)
+
+# Verifica se é válido
+print(jwt_handler.is_token_valid(token))  # True
+```
+
+---
+
+### 🔍 Validação de Força de Senha
+```python
+from SmartSecurityPy import PasswordValidator
+
+# Cria uma instância do validador
+validator = PasswordValidator()
+
+# Valida uma senha
+result = validator.validate_password("minha_senha123")
+print(f"Score: {result.score}")  # Pontuação de 0-100
+print(f"É forte? {result.is_strong}")  # True/False
+print(f"Feedback: {result.feedback}")  # Lista de sugestões de melhoria
+
+# Obter sugestões específicas para melhorar a senha
+suggestions = validator.get_password_suggestions("senha_fraca")
+print(f"Sugestões: {suggestions}")
+```
+
+#### ✨ Características da Validação de Senha
+
+- 🎯 **Sistema de Pontuação (0-100)**
+  - Comprimento mínimo (8 caracteres): +20 pontos
+  - Comprimento extra (12+ caracteres): +10 pontos
+  - Cada tipo de caractere (maiúscula, minúscula, número, especial): +15 pontos
+  - Penalidades para senhas comuns: -30 pontos
+  - Penalidades para sequências/repetições: -10 pontos cada
+
+- 🚦 **Critérios de Validação**
+  - Comprimento mínimo obrigatório
+  - Presença de letras maiúsculas e minúsculas
+  - Inclusão de números
+  - Uso de caracteres especiais
+  - Verificação contra senhas comuns
+  - Detecção de sequências (ex: "123", "abc")
+  - Identificação de repetições (ex: "aaa")
+
+- 💡 **Feedback Inteligente**
+  - Sugestões específicas para melhorar a senha
+  - Identificação de pontos fracos
+  - Recomendações de melhoria
+  - Análise detalhada da força da senha
+
+- 🛡️ **Recursos de Segurança**
+  - Base de senhas comuns para comparação
+  - Detecção de padrões inseguros
+  - Avaliação de complexidade
+  - Recomendações baseadas em boas práticas
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+SmartSecurityPy/
+├── SmartSecurityPy/
+│   ├── __init__.py
+│   ├── hasher.py          # 🔑 Hash de senha
+│   ├── crypto.py          # 🔒 Criptografia simétrica
+│   └── jwt_handler.py     # 🪙 Geração e validação de JWT
+│
+├── tests/
+│   ├── test_hasher.py
+│   ├── test_crypto.py
+│   └── test_jwt_handler.py
+│
+├── setup.py
+├── pyproject.toml
+├── README.md
+└── LICENSE
+```
+
+---
+
+## 🧪 Testes
+Execute os testes com `pytest`:
+
+```bash
+pytest tests/
+```
+
+---
+
+## 🧠 Autor
+**Roberto Lima**  
+🔗 GitHub: [robertolima-dev](https://github.com/robertolima-dev)  
+📧 Email: robertolima.izphera@gmail.com
+
+---
+
+## 💬 **Contato**
+
+- 📧 **Email**: robertolima.izphera@gmail.com
+- 💼 **LinkedIn**: [Roberto Lima](https://www.linkedin.com/in/roberto-lima-01/)
+- 💼 **Website**: [Roberto Lima](https://robertolima-developer.vercel.app/)
+- 💼 **Gravatar**: [Roberto Lima](https://gravatar.com/deliciouslyautomaticf57dc92af0)
+
+---
+
+## ⭐ **Gostou do projeto?**
+
+Deixe uma ⭐ no repositório e compartilhe com a comunidade! 🚀✨  
+
+```bash
+git clone https://github.com/robertolima-dev/SmartSecurityPy.git
+cd SmartSecurityPy
+pip install -e .
+```
+
+---
+
+## 🌟 **O que este README oferece?**
+- 🎯 **Descrição clara** do projeto e seu propósito.  
+- 🛠 **Instruções detalhadas de instalação** e **uso prático**.  
+- 🏗 **Estrutura do projeto** para facilitar a navegação.  
+- 📝 **Licença e informações do autor** para transparência.
+
+
+---
+
+## 📄 Licença
+MIT License - use livremente com reconhecimento. 🚀
