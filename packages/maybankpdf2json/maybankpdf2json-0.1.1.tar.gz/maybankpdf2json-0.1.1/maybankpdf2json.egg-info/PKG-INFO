@@ -1,0 +1,75 @@
+Metadata-Version: 2.4
+Name: maybankpdf2json
+Version: 0.1.1
+Summary: A package for extracting data from Maybank account statements in PDF format.
+Home-page: https://github.com/nordinz7/maybankpdf2json
+Author: Nordin
+Author-email: Nordin <vipnordin@gmail.com>
+Project-URL: Homepage, https://github.com/nordinz7/maybankpdf2json
+Keywords: maybank,pdf,JSON,account statements,Email delivery statement,Malayan Banking
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: pdfplumber>=0.7.4
+Requires-Dist: numpy>=1.24.3
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
+
+# Maybank PDF Account Statement to JSON
+
+This package provides functionality to extract and process data from Maybank account statement PDFs. It allows users to read PDF files and extract json data from them.
+
+## Installation
+
+To install the package, clone the repository and run the following command:
+
+```
+pip install maybankpdf2json
+```
+
+## Usage
+
+Here is a basic example of how to use the package:
+
+```python
+from maybankpdf2json import MaybankPdf2Json
+
+# Initialize the MaybankPdf2Json object
+mbb = MaybankPdf2Json(buffer, "01Jan2025")
+data = mbb.json()
+
+print(mapped_data)
+[
+  {
+    "date": "01/01/2024",
+    "desc": "Deposit from client",
+    "trans": 50.0,
+    "bal": 1050.0
+  },
+  {
+    "date": "02/01/2024",
+    "desc": "Purchase - Office Supplies",
+    "trans": -20.0,
+    "bal": 1030.0
+  }
+]
+```
+
+## Testing
+
+To run the tests, navigate to the project directory and execute:
+
+```
+pytest tests/
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue for any enhancements or bug fixes.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
