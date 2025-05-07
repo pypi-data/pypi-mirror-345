@@ -1,0 +1,76 @@
+[project]
+name = 'PEtab-GUI'
+dynamic = ["version"]
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    {name = "Paul Jonas Jost", email = "jost.pauljonas@gmail.com"},
+    {name = "Frank T. Bergmann", email = "frank.thomas.bergmann@gmail.com"}
+]
+maintainers = [
+    {name = "Paul Jonas Jost", email = "jost.pauljonas@gmail.com"},
+    {name = "Frank T. Bergmann", email = "frank.thomas.bergmann@gmail.com"}
+]
+description = "Graphical user interface for the PEtab format"
+
+[project.license]
+file = "LICENSE"
+
+
+dependencies = [
+    "wheel",
+    "pyside6",
+    "pandas",
+    "antimony",
+    "python-libsbml",
+    "matplotlib",
+    "petab",
+    "qtawesome"
+]
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "pyside6",
+    "pandas",
+    "antimony",
+    "python-libsbml",
+    "matplotlib",
+    "petab",
+    "qtawesome"
+]
+
+[project.urls]
+Repository = "https://github.com/PaulJonasJost/PEtab_GUI"
+Issues = "https://github.com/PaulJonasJost/PEtab_GUI/issues"
+
+[project.gui-scripts]
+petab_gui="petab_gui:main"
+
+[project.scripts]
+petab_gui_cli="petab_gui:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"petab_gui.assets" = ["PEtab.png"]
+
+[tool.ruff]
+line-length = 79
+lint.select = [
+    "F",  # Pyflakes
+    "I",  # isort
+    "D",  # pydocstyle (PEP 257)
+    "S",  # flake8-bandit
+    "B",  # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "T20",  # flake8-print
+    "W",  # pycodestyle Warnings
+    "E",  # pycodestyle Errors
+    "UP",  # pyupgrade
+    # "ANN",  # flakes-annotations TODO: currently produces ~1500 errors to manual fix
+]
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
