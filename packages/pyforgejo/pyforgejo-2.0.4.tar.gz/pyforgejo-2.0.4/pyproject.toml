@@ -1,0 +1,34 @@
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "pyforgejo"
+version = "2.0.4"
+description = "A Python client library for accessing the Forgejo API"
+authors = [
+    {name = "harabat"},
+]
+readme = "README.md"
+license = "MIT"
+dependencies = [
+    "httpx>=0.28.1",
+    "pydantic>=2.11.2",
+    "python-dotenv>=1.1.0",
+]
+requires-python = ">=3.10"
+
+[project.urls]
+repository = "https://codeberg.org/harabat/pyforgejo"
+
+[project.optional-dependencies]
+dev = [
+    "ipython>=8.35.0",
+    "isort>=6.0.1",
+    "pytest>=8.3.5",
+    "ruff>=0.11.4",
+]
+
+[tool.ruff]
+lint.select = ["F", "I", "UP"]
+line-length = 88
