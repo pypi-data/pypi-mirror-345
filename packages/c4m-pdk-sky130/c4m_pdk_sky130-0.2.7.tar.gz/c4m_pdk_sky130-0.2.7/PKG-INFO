@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: c4m-pdk-sky130
+Version: 0.2.7
+Summary: PDKMaster based PDK for open source GF180MCU process
+Author: Chips4Makers contributors
+License: GPL-2.0-or-later OR AGPL-3.0-or-later OR CERN-OHL-S-2.0+
+Requires-Python: ~=3.8
+Requires-Dist: PDKMaster~=0.12.0
+Requires-Dist: pdkmaster-io-spice~=0.1.0
+Requires-Dist: pdkmaster-io-klayout~=0.1.7
+Requires-Dist: c4m-flexcell~=0.4.6
+Requires-Dist: c4m-flexio~=0.4.9
+Description-Content-Type: text/markdown
+
+# PDKMaster based Sky130 PDK
+
+This is the PDK for Sky130 based on the [PDKMaster](https://gitlab.com/Chips4Makers/PDKMaster) framework. It currently is basically undocumented. Development is driven by sky130 MPW shuttle development.
+A little more information on what is possible can be found in the `.gitlab-ci.yml` file.
+
+In the [`v0.1`](https://gitlab.com/Chips4Makers/c4m-pdk-sky130/-/tree/v0.1) branch a SRAM block and some analog circuits were present. These blocks did not work anymore with updated [PDKMaster](https://gitlab.com/Chips4Makers/PDKMaster) and [c4m-flexcell](https://gitlab.com/Chips4Makers/c4m-flexcell) modules. These blocks have therefor been removed from the main branch. Furhter development is not done in the [`sram`](https://gitlab.com/Chips4Makers/c4m-pdk-sky130/-/tree/sram) and the [`analog`](https://gitlab.com/Chips4Makers/c4m-pdk-sky130/-/tree/analog) branch.
+
+## Release history
+
+* [v0.2.6](https://gitlab.com/Chips4Makers/c4m-pdk-sky130/-/commits/v0.2.7):
+  * Update for API changes in PDKMaster and c4m-flexio.
+  * Reworked dependency handling for building the package.
+* [v0.2.6](https://gitlab.com/Chips4Makers/c4m-pdk-sky130/-/commits/v0.2.6):
+  * build setup improvements
+  * update dependencies to latest release version
+* [v0.2.5](https://gitlab.com/Chips4Makers/c4m-pdk-sky130/-/commits/v0.2.5):
+  * use common doit support from PDKMaster and pdkmaster.io.klayout
+  * signoff related fixes
+* [v0.2.4](https://gitlab.com/Chips4Makers/c4m-pdk-sky130/-/commits/v0.2.4):
+  * patch generation for upstreaming to alliance-check-toolkit and update file generation to changes in that repo.
+  * provide scaled down standard cell library with dimensions not based on lambda rules
+  * add 5V standard cell library
+* [v0.2.3](https://gitlab.com/Chips4Makers/c4m-pdk-sky130/-/commits/v0.2.3):
+  * Subproject of project Arrakeen
+  * CI improvements
+  * Improved module load time though lazy library creation
+  * Spice netlist generation improvements
+* [v0.2.2](https://gitlab.com/Chips4Makers/c4m-pdk-sky130/-/commits/v0.2.2): build infrastructure and dependencies update; no major code changes but KLayout PCell lib support added.
+* v0.2.1: Switch to latest version of PDKMaster and c4m-flexcell. As these updates break the SRAM and analog circuits they have been removed from this stable branch. `v0.1` branch is available using old version of these modules and with the SRAM block and the analog circuits.
+Development of SRAM and analog blocks is done in separate branches `sram` and `analog`. Development in these branches will be merged again in upstream as they are fixed.  
+Intermediate development was done on a `v0.2.0` dev branch.
+* v0.1.5: Update bandgap model support, update analog python notebooks.
+* v0.1.4: No code changes; update dependencies for latest bug fixes
+* v0.1.3: No code change; use PDKMaster 0.9.2 to get Coriolis export compatible with namespace of
+  latest Coriolis release.
+* v0.1.2: Fix Coriolis export.
+* v0.1.1: No code change; release files now built by CI.
+* v0.1.0: Update for [release v0.9.0 of PDKMaster](https://gitlab.com/Chips4Makers/PDKMaster/-/blob/v0.9.0/ReleaseNotes/v0.9.0.md)
+* no notes for older releases
+
+## Project Arrakeen subproject
+
+This project is part of Chips4Makers' [project Arrakeen](https://gitlab.com/Chips4Makers/c4m-arrakeen). It shares some common guide lines and regulations:
+
+* [Contributing.md](https://gitlab.com/Chips4Makers/c4m-arrakeen/-/blob/redtape_v1/Contributing.md)
+* [LICENSE.md](https://gitlab.com/Chips4Makers/c4m-arrakeen/-/blob/redtape_v1/LICENSE.md): license of release code
+* [LICENSE_rationale.md](https://gitlab.com/Chips4Makers/c4m-arrakeen/-/blob/redtape_v1/LICENSE_rationale.md)
