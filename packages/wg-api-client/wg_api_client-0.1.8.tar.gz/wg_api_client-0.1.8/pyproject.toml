@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+    \.eggs
+    | \.git
+    | \.venv
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.pylint.messages_control]
+disable = [
+    "C0111", # missing-docstring
+    "C0103", # invalid-name
+    "C0330", # bad-continuation
+    "C0326", # bad-whitespace
+    "W0511", # fixme
+    "R0903", # too-few-public-methods
+]
+
+[tool.bandit]
+exclude_dirs = ["tests"]
