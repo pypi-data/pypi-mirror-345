@@ -1,0 +1,97 @@
+[project]
+name = "koherent"
+version = "0.2.0"
+description = ""
+authors = [{ name = "jhnnsrs", email = "jhnnsrs@gmail.com" }]
+requires-python = ">=3.11,<4"
+readme = "README.md"
+dependencies = [
+    "authentikate>=0.10",
+    "django-simple-history>=3.8.0",
+    "django>5",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "cryptography>=44.0.3",
+    "daphne>=4.1.2",
+    "pytest-asyncio>=0.26.0",
+    "pytest-cov>=6.1.1",
+    "pytest-django>=4.11.1",
+    "python-semantic-release>=9.21.1",
+]
+
+
+
+[tool.mypy]
+exclude = ["venv/", "tests/", "examples/"]
+plugins = ["mypy_django_plugin.main","pydantic.mypy", "strawberry.ext.mypy_plugin"]
+ignore_missing_imports = true
+strict = true
+
+[tool.hatch.build.targets.sdist]
+include = ["koherent"]
+
+[tool.hatch.build.targets.wheel]
+include = ["koherent"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.django-stubs]
+django_settings_module = "test_project.settings"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "test_project.settings"
+
+[tool.ruff]
+# Enable the pycodestyle (`E`) and Pyflakes (`F`) rules by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+extend-select = ["ANN", "D1"]
+extend-ignore = [ "ANN002", "ANN003", "D100", "ANN401"]
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "tests",
+    "examples",
+    "**/migrations",
+]
+
+# Same as Black.
+line-length = 300
+
+
+# Assume Python 3.12.
+target-version = "py312"
+
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+upload_to_pypi = true
+branch = "main"
+build_command = "uv build"
+
+
+
