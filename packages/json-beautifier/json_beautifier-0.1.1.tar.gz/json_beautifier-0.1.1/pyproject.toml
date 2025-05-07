@@ -1,0 +1,25 @@
+[project]
+name = "json-beautifier"
+version = "0.1.1"
+
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.1.8",
+    "pylint>=3.2.7",
+    "pytest>=8.3.5",
+]
+
+[tool.setuptools.packages.find]
+where = ["./"]
+include = ["json_beautifier"]
+
+[project.scripts]
+json-beautifier = "json_beautifier.cli:main"
+jb = "json_beautifier.cli:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+package = true
