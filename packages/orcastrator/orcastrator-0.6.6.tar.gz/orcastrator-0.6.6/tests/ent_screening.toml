@@ -1,0 +1,48 @@
+[general]
+output_dir = "ent_complex_screening_calculations"
+cpus = 1
+mem_per_cpu_gb = 1
+
+
+[molecule]
+xyz_dir = "assets"
+mult = 1
+
+
+[[pipeline]]
+name = "singlet_opt"
+keywords = ["D4", "TPSS", "def2-SVP", "CPCM(ACETONITRILE)", "OPT"]
+
+[[pipeline]]
+name = "singlet_freq"
+keywords = ["D4", "TPSS", "def2-SVP", "CPCM(ACETONITRILE)", "FREQ"]
+
+[[pipeline]]
+name = "singlet_sp"
+keywords = ["D4", "TPSSh", "def2-TZVP", "CPCM(ACETONITRILE)"]
+
+[[pipeline]]
+name = "singlet_soc_tddft"
+keywords = ["D4", "TPSSh", "def2-TZVP", "CPCM(ACETONITRILE)"]
+blocks = ["%TDDFT NROOTS 64 DOSOC TRUE END"]
+
+[[pipeline]]
+name = "triplet_opt"
+keywords = ["D4", "TPSS", "def2-SVP", "CPCM(ACETONITRILE)", "OPT"]
+mult = 3
+
+[[pipeline]]
+name = "triplet_freq"
+keywords = ["D4", "TPSS", "def2-SVP", "CPCM(ACETONITRILE)", "FREQ"]
+mult = 3
+
+[[pipeline]]
+name = "triplet_sp"
+keywords = ["D4", "TPSSh", "def2-TZVP", "CPCM(ACETONITRILE)"]
+mult = 3
+
+[[pipeline]]
+name = "triplet_tddft"
+keywords = ["D4", "TPSSh", "def2-TZVP", "CPCM(ACETONITRILE)"]
+blocks = ["%TDDFT NROOTS 64 END"]
+mult = 3
