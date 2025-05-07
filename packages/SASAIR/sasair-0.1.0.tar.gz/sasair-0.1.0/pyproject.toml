@@ -1,0 +1,26 @@
+
+[tool.poetry]
+name = "SASAIR"
+version = "0.1.0"
+description = "SAS Atmosphere Interface & Retrieval"
+authors = ["Roeland Maes <roeland.maes@vito.be>"]
+packages = [
+    { include = "vito",  from = "src" }
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.31"
+pydantic = "^2.0"
+cdsapi = { version = "^0.7", optional = true }
+loguru = { version = "^0.7", optional = true }
+
+
+[tool.poetry.extras]
+cds = ["cdsapi"]
+loguru = ["loguru"]
+full = ["cdsapi", "loguru"]
+
+[tool.poetry-git-version-plugin]
+make_alpha_version = false
