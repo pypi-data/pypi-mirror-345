@@ -1,0 +1,556 @@
+--- load smt 
+--- we need to import this ...
+
+fmod SATISFYING-ASSIGNMENTS is
+  pr META-LEVEL .
+
+  sort SatAssignment .
+  op _|->_ : Term Term -> SatAssignment [ctor] .
+  op {_|->_} : String String -> SatAssignment [ctor] .
+
+  sort SatAssignmentSet .
+  subsort SatAssignment < SatAssignmentSet .
+  op empty : -> SatAssignmentSet [ctor] .
+  op _,_ : SatAssignmentSet SatAssignmentSet -> SatAssignmentSet [ctor comm assoc id: empty] .
+
+  sorts SmtCheckResult .
+  subsort Bool < SmtCheckResult .
+  op unknown : -> SmtCheckResult [ctor] .
+  op {_} : SatAssignmentSet -> SmtCheckResult [ctor] .
+endfm
+
+
+fmod META-SMT-CHECK is
+  pr REAL-INTEGER .
+  pr SATISFYING-ASSIGNMENTS .
+
+  op metaSmtCheck : Module Term Qid -> SmtCheckResult .
+  eq metaSmtCheck(M:Module, TERM:Term, LOGIC:Qid) = metaSmtCheck(M:Module, TERM:Term, LOGIC:Qid, false) .
+
+  op metaSmtCheck : Module Term Qid Bool -> SmtCheckResult
+  [special (id-hook MetaLevelSmtOpSymbol    (metaSmtCheck)
+            op-hook unknownResultSymbol     (unknown : ~> SmtCheckResult)
+            op-hook satAssnSetSymbol        ({_} : SatAssignmentSet ~> SmtCheckResult)
+            op-hook emptySatAssnSetSymbol   (empty : ~> SatAssignmentSet)
+            op-hook concatSatAssnSetSymbol  (_,_ : SatAssignmentSet SatAssignmentSet ~> SatAssignmentSet)
+            op-hook satAssnSymbol           (_|->_ : Term Term ~> SatAssignment)
+            op-hook satAssnAnySymbol        ({_|->_} : String String ~> SatAssignment)
+
+            op-hook integerSymbol                      (<Integers> : ~> Integer)
+            op-hook realSymbol                         (<Reals> : ~> Real)
+
+            term-hook trueTerm                         ((true).Boolean)
+            term-hook falseTerm                        ((false).Boolean)
+
+            op-hook notBoolSymbol                      (not_ : Boolean ~> Boolean)
+            op-hook andBoolSymbol                      (_and_ : Boolean Boolean ~> Boolean)
+            op-hook xorBoolSymbol                      (_xor_ : Boolean Boolean ~> Boolean)
+            op-hook orBoolSymbol                       (_or_ : Boolean Boolean ~> Boolean)
+            op-hook impliesBoolSymbol                  (_implies_ : Boolean Boolean ~> Boolean)
+            op-hook eqBoolSymbol                       (_===_ : Boolean Boolean ~> Boolean)
+            op-hook neqBoolSymbol                      (_=/==_ : Boolean Boolean ~> Boolean)
+            op-hook iteBoolSymbol                      (_?_:_ : Boolean Boolean Boolean ~> Boolean)
+
+            op-hook unaryMinusIntSymbol                (-_ : Integer ~> Integer)
+            op-hook plusIntSymbol                      (_+_ : Integer Integer ~> Integer)
+            op-hook minusIntSymbol                     (_-_ : Integer Integer ~> Integer)
+            op-hook divIntSymbol                       (_div_ : Integer Integer ~> Integer)
+            op-hook mulIntSymbol                       (_*_ : Integer Integer ~> Integer)
+            op-hook modIntSymbol                       (_mod_ : Integer Integer ~> Integer)
+            op-hook ltIntSymbol                        (_<_ : Integer Integer ~> Boolean)
+            op-hook leqIntSymbol                       (_<=_ : Integer Integer ~> Boolean)
+            op-hook gtIntSymbol                        (_>_ : Integer Integer ~> Boolean)
+            op-hook geqIntSymbol                       (_>=_ : Integer Integer ~> Boolean)
+            op-hook eqIntSymbol                        (_===_ : Integer Integer ~> Boolean)
+            op-hook neqIntSymbol                       (_=/==_ : Integer Integer ~> Boolean)
+            op-hook iteIntSymbol                       (_?_:_ : Boolean Integer Integer ~> Integer)
+            op-hook divisibleIntSymbol                 (_divisible_ : Integer Integer ~> Boolean)
+
+            op-hook unaryMinusRealSymbol               (-_ : Real ~> Real)
+            op-hook plusRealSymbol                     (_+_ : Real Real ~> Real)
+            op-hook minusRealSymbol                    (_-_ : Real Real ~> Real)
+            op-hook divRealSymbol                      (_/_ : Real Real ~> Real)
+            op-hook mulRealSymbol                      (_*_ : Real Real ~> Real)
+            op-hook ltRealSymbol                       (_<_ : Real Real ~> Boolean)
+            op-hook leqRealSymbol                      (_<=_ : Real Real ~> Boolean)
+            op-hook gtRealSymbol                       (_>_ : Real Real ~> Boolean)
+            op-hook geqRealSymbol                      (_>=_ : Real Real ~> Boolean)
+            op-hook eqRealSymbol                       (_===_ : Real Real ~> Boolean)
+            op-hook neqRealSymbol                      (_=/==_ : Real Real ~> Boolean)
+            op-hook iteRealSymbol                      (_?_:_ : Boolean Real Real ~> Real)
+            op-hook toRealSymbol                       (toReal : Integer ~> Real)
+            op-hook toIntegerSymbol                    (toInteger : Real ~> Integer)
+            op-hook isIntegerSymbol                    (isInteger : Real ~> Boolean)
+
+            op-hook shareWith               (metaReduce : Module Term ~> ResultPair))] .
+
+--- Will be supported later.
+    --- op simplifyFormula : BooleanExpr -> BooleanExpr
+    --- [special (id-hook SimplifyFormulaSymbol
+    ---           op-hook intVarSymbol                       (i : SMTVarId ~> IntegerVar)
+    ---           op-hook boolVarSymbol                      (b : SMTVarId ~> BooleanVar)
+    ---           op-hook realVarSymbol                      (r : SMTVarId ~> RealVar)
+
+    ---           op-hook integerSymbol                      (<Integers> : ~> Integer)
+    ---           op-hook realSymbol                         (<Reals> : ~> Real)
+
+    ---           term-hook trueTerm                         ((true).Boolean)
+    ---           term-hook falseTerm                        ((false).Boolean)
+
+    ---           op-hook notBoolSymbol                      (not_ : BooleanExpr ~> BooleanExpr)
+    ---           op-hook andBoolSymbol                      (_and_ : BooleanExpr BooleanExpr ~> BooleanExpr)
+    ---           op-hook xorBoolSymbol                      (_xor_ : BooleanExpr BooleanExpr ~> BooleanExpr)
+    ---           op-hook orBoolSymbol                       (_or_ : BooleanExpr BooleanExpr ~> BooleanExpr)
+    ---           op-hook impliesBoolSymbol                  (_implies_ : BooleanExpr BooleanExpr ~> BooleanExpr)
+    ---           op-hook eqBoolSymbol                       (_===_ : BooleanExpr BooleanExpr ~> BooleanExpr)
+    ---           op-hook neqBoolSymbol                      (_=/==_ : BooleanExpr BooleanExpr ~> BooleanExpr)
+    ---           op-hook iteBoolSymbol                      (_?_:_ : BooleanExpr BooleanExpr BooleanExpr ~> BooleanExpr)
+
+    ---           op-hook unaryMinusIntSymbol                (-_ : IntegerExpr ~> IntegerExpr)
+    ---           op-hook plusIntSymbol                      (_+_ : IntegerExpr IntegerExpr ~> IntegerExpr)
+    ---           op-hook minusIntSymbol                     (_-_ : IntegerExpr IntegerExpr ~> IntegerExpr)
+    ---           op-hook divIntSymbol                       (_div_ : IntegerExpr IntegerExpr ~> IntegerExpr)
+    ---           op-hook mulIntSymbol                       (_*_ : IntegerExpr IntegerExpr ~> IntegerExpr)
+    ---           op-hook modIntSymbol                       (_mod_ : IntegerExpr IntegerExpr ~> IntegerExpr)
+    ---           op-hook ltIntSymbol                        (_<_ : IntegerExpr IntegerExpr ~> BooleanExpr)
+    ---           op-hook leqIntSymbol                       (_<=_ : IntegerExpr IntegerExpr ~> BooleanExpr)
+    ---           op-hook gtIntSymbol                        (_>_ : IntegerExpr IntegerExpr ~> BooleanExpr)
+    ---           op-hook geqIntSymbol                       (_>=_ : IntegerExpr IntegerExpr ~> BooleanExpr)
+    ---           op-hook eqIntSymbol                        (_===_ : IntegerExpr IntegerExpr ~> BooleanExpr)
+    ---           op-hook neqIntSymbol                       (_=/==_ : IntegerExpr IntegerExpr ~> BooleanExpr)
+    ---           op-hook iteIntSymbol                       (_?_:_ : BooleanExpr IntegerExpr IntegerExpr ~> IntegerExpr)
+    ---           op-hook divisibleIntSymbol                 (_divisible_ : IntegerExpr IntegerExpr ~> BooleanExpr)
+
+    ---           op-hook unaryMinusRealSymbol               (-_ : RealExpr ~> RealExpr)
+    ---           op-hook plusRealSymbol                     (_+_ : RealExpr RealExpr ~> RealExpr)
+    ---           op-hook minusRealSymbol                    (_-_ : RealExpr RealExpr ~> RealExpr)
+    ---           op-hook divRealSymbol                      (_/_ : RealExpr RealExpr ~> RealExpr)
+    ---           op-hook mulRealSymbol                      (_*_ : RealExpr RealExpr ~> RealExpr)
+    ---           op-hook ltRealSymbol                       (_<_ : RealExpr RealExpr ~> BooleanExpr)
+    ---           op-hook leqRealSymbol                      (_<=_ : RealExpr RealExpr ~> BooleanExpr)
+    ---           op-hook gtRealSymbol                       (_>_ : RealExpr RealExpr ~> BooleanExpr)
+    ---           op-hook geqRealSymbol                      (_>=_ : RealExpr RealExpr ~> BooleanExpr)
+    ---           op-hook eqRealSymbol                       (_===_ : RealExpr RealExpr ~> BooleanExpr)
+    ---           op-hook neqRealSymbol                      (_=/==_ : RealExpr RealExpr ~> BooleanExpr)
+    ---           op-hook iteRealSymbol                      (_?_:_ : BooleanExpr RealExpr RealExpr ~> Real)
+    ---           op-hook toRealSymbol                       (toReal : IntegerExpr ~> RealExpr)
+    ---           op-hook toIntegerSymbol                    (toInteger : RealExpr ~> IntegerExpr)
+    ---           op-hook isIntegerSymbol                    (isInteger : RealExpr ~> BooleanExpr)
+    --- )] .
+
+    --- op simplifyFormula : IntegerExpr -> IntegerExpr
+    --- [special (id-hook SimplifyFormulaSymbol
+    ---           op-hook shareWith                          (simplifyFormula : BooleanExpr ~> BooleanExpr)
+    --- )] .
+
+    --- op simplifyFormula : RealExpr -> RealExpr
+    --- [special (id-hook SimplifyFormulaSymbol
+    ---           op-hook shareWith                          (simplifyFormula : BooleanExpr ~> BooleanExpr)
+    --- )] .
+endfm
+
+fmod ABST-BUILTIN is
+  protecting META-LEVEL .
+  protecting CONVERSION .
+
+  sort TermAbstraction .
+  op {_,_,_} : TermList TermList Nat -> TermAbstraction [ctor format (b! o d d d d b! o)] .
+  
+  var M : Module .
+  var N N' N'' : Nat .
+  var F : Qid .
+  var TY : Type .
+  var TYS : TypeSet .
+  var C : Constant .
+  vars CD CD' : TermList .
+  vars V NV : Variable .
+  var T : Term .
+  vars TL TL' : TermList .
+  vars NTL : NeTermList .
+
+  op abst : Module TermList Nat -> TermAbstraction [format (r! o)] .
+
+  --- eq abst(M, V, N) = {V, empty, 0} .
+
+  --- ceq abst(M, C, N) = {C, empty, 0}
+  --- if TY := leastSort(M, C)
+  --- /\ not TY in ('Boolean ; 'Integer ; 'Real) .
+
+  ceq abst(M, T, N) = {NV, '_===_[NV, T], 1}
+  if 
+  --- not T :: Variable
+  --- not T :: Constant
+  --- /\ 
+  TY := leastSort(M,T)
+  /\ TY in ('Boolean ; 'Integer ; 'Real)
+  /\ NV := auxVarGen(N, TY) . 
+
+  ceq abst(M, F[TL], N) = {F[TL'], CD, N'}
+  if TY := leastSort(M,F[TL])
+  /\ not TY in ('Boolean ; 'Integer ; 'Real)
+  /\ {TL', CD, N'} := abst(M, TL, N) .
+
+  ceq abst(M, (T, NTL), N) = {(TL,TL'), conj((CD, CD')), N' + N''}
+  if { TL, CD, N' } := abst(M, T, N)
+  /\ { TL', CD', N'' } := abst(M, NTL, N + N') .
+
+  eq abst(M, empty, N) = {empty, empty, 0} .
+  eq abst(M, T, N) = {T, empty, 0} [owise] .
+
+
+*** aux functions
+*** An input TY is assumed to be a builtin sort
+*** while the output sort is extende type.
+  op auxVarGen : Nat Type -> Variable .
+  eq auxVarGen(N, TY) = qid("V" + string(N, 10) + ":" + string(TY)) .
+
+  op conj : TermList -> Term .
+  eq conj((T, NTL)) = '_and_[T, conj(NTL)] .
+  eq conj((T, nil)) = T .
+  eq conj(empty) = 'true.Boolean .
+  eq conj(T) = T [owise] .
+endfm
+
+fmod RULE-TRANSFORM is
+  pr ABST-BUILTIN .
+
+  var M : Module .
+  vars L' R' : Term .
+  vars COND COND' CND CND' : EqCondition .
+  var ATTR : AttrSet .
+  vars N N' N'' : Nat .
+  vars T T' SMT : Term .
+  var RS RS' : RuleSet .
+  vars RU RU' : Rule .
+  vars CD CD' : TermList .
+
+--- rule format
+--- rule condition is syntatically seperated
+  sort SepCondition .
+  op {_,_} : Condition Condition -> SepCondition [ctor] .
+
+  op sep : Condition -> SepCondition .
+  ceq sep(CND /\ T = 'true.Boolean /\ CND') = {COND, T = 'true.Boolean /\ COND'} 
+  if {COND, COND'} := sep(CND /\ CND') .
+  --- eq sep(T = 'true.Boolean /\ CND) = {CND, T = 'true.Boolean} .
+  eq sep(CND) = {CND, 'true.Boolean = 'true.Boolean} [owise] .
+
+  op $getSmt : Condition -> Term .
+  eq $getSmt(T = 'true.Boolean /\ CND) = '_and_[T, $getSmt(CND)] .
+  eq $getSmt(CND) = 'true.Boolean [owise] .
+
+  sort TranslateResult .
+  op {_,_} : Rule Nat -> TranslateResult [ctor] .
+
+  op trRule : Module Rule Nat -> TranslateResult . 
+  ceq trRule (M, crl T => T' if COND [ATTR]., N) =
+  	{ crl '`[_`][L'] => '`[_|_`]['`[_`][R'], conj((CD, CD', SMT))] if CND [nonexec ATTR]., N' + N'' }
+  if {L', CD, N'} := abst(M, T, N) /\ {R', CD', N''} := abst(M, T', N + N') 
+  /\ {CND, CND'} := sep(COND) /\ SMT := $getSmt(CND') .
+
+  ceq trRule (M, rl T => T' [ATTR]., N) =
+    { rl '`[_`][L'] => '`[_|_`]['`[_`][R'], conj((CD, CD'))] [nonexec ATTR]., N' + N''} 
+  if {L', CD, N'} := abst(M, T, N) /\ {R', CD', N''} := abst(M, T', N + N') .
+
+  op tr : Module RuleSet Nat -> RuleSet .
+  eq tr (M, none, N) = none .
+  ceq tr (M, RU RS, N) = normRule(RU') tr(M, RS, N + N') if { RU', N' } := trRule(M, RU, N) .
+
+  op normRule : Rule -> Rule .
+  eq normRule(crl T => T' if nil [ATTR].) = rl T => T' [ATTR]. .
+  eq normRule(RU) = RU [owise] .
+
+endfm
+
+fmod TRANSFORMATION is
+  pr RULE-TRANSFORM .
+
+  vars TY TY' : Type .
+  var TYS : TypeSet .
+  var M : Module .
+  vars L' R' : Term .
+  var COND : EqCondition .
+  var ATTR : AttrSet .
+  vars TL TL' : TermList .
+  vars N N' N'' : Nat .
+  vars T T' : Term .
+  var RS RS' : RuleSet .
+  vars RU RU' : Rule .
+  vars CD CD' : EqCondition .
+
+*** For theroy transformation
+  var H : Header .
+  var IL : ImportList .
+  var SS : SortSet .
+  var SSDS : SubsortDeclSet .
+  var OPDS : OpDeclSet .
+  var MAS : MembAxSet .
+  var EQS : EquationSet .
+  vars RLS RLS' : RuleSet .
+
+--- Least rule sort
+
+  op leastRuleSort : Module RuleSet -> TypeSet .
+  eq leastRuleSort (M, none) = none . 
+  eq leastRuleSort (M, crl T => T' if CD [ATTR] . RS) = leastSort(M, T) ; leastSort(M, T') ; leastRuleSort(M, RS) .
+  eq leastRuleSort (M,  rl T => T'       [ATTR] . RS) = leastSort(M, T) ; leastSort(M, T') ; leastRuleSort(M, RS) .
+
+  op maxRuleSort : Module Type TypeSet -> Type .
+  eq maxRuleSort (M, TY, none) = TY .
+  ceq maxRuleSort (M, TY, TYS) = 
+    if sortLeq(M, TY, TY') then TY'
+    else TY fi
+  if TY' := maxRuleSort(M, TYS) .
+  
+  op maxRuleSort : Module TypeSet -> Type .
+  eq maxRuleSort (M, TY ; TYS) = maxRuleSort(M, TY, TYS) .
+
+--- TODO: need to add fmod, smod
+
+  op replaceRule : Module RuleSet Type ~> Module .
+  eq replaceRule(mod H is IL sorts SS . SSDS OPDS MAS EQS RLS endm, RLS', TY)
+    = mod H is (protecting 'BOOLEAN . IL) sorts ('$constTerm ; SS ) . SSDS
+	    (op '`[_|_`] : '$constTerm 'Boolean -> '$constTerm [ctor] . 
+       op '`[_`] : TY -> '$constTerm [ctor] . OPDS) MAS EQS RLS' endm .
+
+  op transform : Module Nat -> Module .
+  ceq transform(M, N) = replaceRule(M, RS', TY)
+  if RS := getRls(M) 
+  /\ TYS := leastRuleSort(M, RS)
+  /\ TY := maxRuleSort(M, TYS)
+  /\ RS' := tr(M, RS, N) .
+
+  op makeConstTerm : TermList -> Term .
+  eq makeConstTerm(TL) = '`[_`][TL] .
+
+endfm
+
+fmod META-AUX is
+  pr META-LEVEL .
+
+  var RS : RuleSet .
+  vars T T' CT : Term .
+  var ATTR : AttrSet .
+  vars MO LB : Qid .
+  var CD : Condition .
+  var RL : Rule .
+  var F : Qid .
+  var TL : TermList .
+  var NTL : NeTermList .
+  var SUBS : Substitution .
+  var V : Variable .
+  var C : Constant .
+
+  sort Rule? .
+  subsort Rule < Rule? .
+
+  op noRule : -> Rule? .
+
+  op getOrigRule : Rule -> Rule . 
+  eq getOrigRule(rl '`[_`][T] => '`[_|_`]['`[_`][T'], CT] [ATTR].) = crl T => T' if CT = 'true.Boolean [ATTR]. .
+  eq getOrigRule(crl '`[_`][T] => '`[_|_`]['`[_`][T'], CT] if CD [ATTR].) = crl T => T' if CD /\ CT = 'true.Boolean [ATTR]. .
+
+  op getOrigTerm : Term -> Term . 
+  eq getOrigTerm('`[_`][T]) = T .
+
+  --- op pickRule : Qid Qid -> Rule? .
+  --- eq pickRule(MO, LB) = pickRule(upRls(MO, false), LB) .
+
+  --- op pickRule : RuleSet Qid -> Rule? .
+  --- eq pickRule(rl T => T' [label(LB) ATTR]. RS, LB) = rl T => T' [label(LB) ATTR]. .
+  --- eq pickRule(RL RS, LB) = pickRule(RS, LB) [owise] .
+  --- eq pickRule(crl T => T' if CD [label(LB) ATTR]. RS, LB) = crl T => T' [label(LB) ATTR]. .
+  --- eq pickRule(RL RS, LB) = pickRule(RS, LB) [owise] .
+  --- eq pickRule(none) = noRule .
+
+  op inst : TermList Substitution -> TermList .
+  eq inst(V, V <- T ; SUBS) = T .
+  eq inst(C, SUBS) = C .
+  eq inst(F[TL], SUBS) = F[inst(TL, SUBS)] .
+  eq inst((T, NTL), SUBS) = inst(T, SUBS), inst(NTL, SUBS) .
+  eq inst(empty, SUBS) = empty .
+
+endfm
+
+fmod META-SMT-SEARCH is
+  pr META-AUX .
+  pr META-SMT-CHECK .
+  pr TRANSFORMATION .
+
+  var M : Module .
+  vars AT AT' T T' SMT : Term .
+  vars CD CD' : TermList .
+  vars COND : Condition .
+  vars CND CND' : Condition .
+  vars STEP LOGIC : Qid .
+  var B : Bound .
+  vars N N' N'' VN : Nat .
+  vars FOLD MERGE : Bool .
+
+  sorts SmtResult2 SmtResult2? .
+  subsort SmtResult2 < SmtResult2? .
+
+  op {_,_,_,_,_,_} : Term Substitution Term Substitution Nat Nat -> SmtResult2 [ctor] . --- last one is the state number
+  op failure : -> SmtResult2? [ctor] .
+
+  op  metaSmtSearch : Module Term Term Condition Qid Bound Nat Qid Bool Bool ~> SmtResult2? .
+  ceq metaSmtSearch(M, T, T', COND, STEP, B, N, LOGIC, FOLD, MERGE)
+    = metaSmtSearch(transform(M, VN + N'), makeConstTerm(AT), makeConstTerm(AT'), CND, conj((CD, CD', SMT)), STEP, 0, B, N, LOGIC, FOLD, MERGE) --- testing
+  if {AT, CD, VN} := abst(M, T, 0) /\ {AT', CD', N'} := abst(M, T', VN)
+  /\ {CND, CND'} := sep(COND) /\ SMT := $getSmt(CND') .
+
+  op metaSmtSearch : Module Term Term Condition Qid Bound Nat Qid ~> SmtResult2? .
+  eq metaSmtSearch(M, T, T', COND, STEP, B, N, LOGIC)
+   = metaSmtSearch(M, T, T', COND, STEP, B, N, LOGIC, false, false) .
+
+  op metaSmtSearch : Module Term Term Condition Qid Bound Nat Qid Bool ~> SmtResult2? .
+  eq metaSmtSearch(M, T, T', COND, STEP, B, N, LOGIC, FOLD)
+   = metaSmtSearch(M, T, T', COND, STEP, B, N, LOGIC, FOLD, false) .
+
+  op metaSmtSearch : Module Term Term Condition Term Qid Nat Bound Nat Qid Bool Bool ~> SmtResult2?
+    [special (id-hook MetaLevelSmtOpSymbol     (metaSmtSearch)
+              op-hook smtFailureSymbol         (failure : ~> SmtResult2?)
+              op-hook smtResultSymbol          ({_,_,_,_,_,_} : Term Substitution Term Substitution Nat Nat ~> SmtResult2)
+              op-hook assignmentSymbol         (_<-_ : Qid Term ~> Assignment)
+              op-hook substitutionSymbol       (_;_ : Substitution Substitution ~> Substitution)
+              op-hook emptySubstitutionSymbol  (none : ~> Substitution)
+
+              op-hook integerSymbol                      (<Integers> : ~> Integer)
+              op-hook realSymbol                         (<Reals> : ~> Real)
+
+              term-hook trueTerm                         ((true).Boolean)
+              term-hook falseTerm                        ((false).Boolean)
+
+              op-hook notBoolSymbol                      (not_ : Boolean ~> Boolean)
+              op-hook andBoolSymbol                      (_and_ : Boolean Boolean ~> Boolean)
+              op-hook xorBoolSymbol                      (_xor_ : Boolean Boolean ~> Boolean)
+              op-hook orBoolSymbol                       (_or_ : Boolean Boolean ~> Boolean)
+              op-hook impliesBoolSymbol                  (_implies_ : Boolean Boolean ~> Boolean)
+              op-hook eqBoolSymbol                       (_===_ : Boolean Boolean ~> Boolean)
+              op-hook neqBoolSymbol                      (_=/==_ : Boolean Boolean ~> Boolean)
+              op-hook iteBoolSymbol                      (_?_:_ : Boolean Boolean Boolean ~> Boolean)
+
+              op-hook unaryMinusIntSymbol                (-_ : Integer ~> Integer)
+              op-hook plusIntSymbol                      (_+_ : Integer Integer ~> Integer)
+              op-hook minusIntSymbol                     (_-_ : Integer Integer ~> Integer)
+              op-hook divIntSymbol                       (_div_ : Integer Integer ~> Integer)
+              op-hook mulIntSymbol                       (_*_ : Integer Integer ~> Integer)
+              op-hook modIntSymbol                       (_mod_ : Integer Integer ~> Integer)
+              op-hook ltIntSymbol                        (_<_ : Integer Integer ~> Boolean)
+              op-hook leqIntSymbol                       (_<=_ : Integer Integer ~> Boolean)
+              op-hook gtIntSymbol                        (_>_ : Integer Integer ~> Boolean)
+              op-hook geqIntSymbol                       (_>=_ : Integer Integer ~> Boolean)
+              op-hook eqIntSymbol                        (_===_ : Integer Integer ~> Boolean)
+              op-hook neqIntSymbol                       (_=/==_ : Integer Integer ~> Boolean)
+              op-hook iteIntSymbol                       (_?_:_ : Boolean Integer Integer ~> Integer)
+              op-hook divisibleIntSymbol                 (_divisible_ : Integer Integer ~> Boolean)
+
+              op-hook unaryMinusRealSymbol               (-_ : Real ~> Real)
+              op-hook plusRealSymbol                     (_+_ : Real Real ~> Real)
+              op-hook minusRealSymbol                    (_-_ : Real Real ~> Real)
+              op-hook divRealSymbol                      (_/_ : Real Real ~> Real)
+              op-hook mulRealSymbol                      (_*_ : Real Real ~> Real)
+              op-hook ltRealSymbol                       (_<_ : Real Real ~> Boolean)
+              op-hook leqRealSymbol                      (_<=_ : Real Real ~> Boolean)
+              op-hook gtRealSymbol                       (_>_ : Real Real ~> Boolean)
+              op-hook geqRealSymbol                      (_>=_ : Real Real ~> Boolean)
+              op-hook eqRealSymbol                       (_===_ : Real Real ~> Boolean)
+              op-hook neqRealSymbol                      (_=/==_ : Real Real ~> Boolean)
+              op-hook iteRealSymbol                      (_?_:_ : Boolean Real Real ~> Real)
+              op-hook toRealSymbol                       (toReal : Integer ~> Real)
+              op-hook toIntegerSymbol                    (toInteger : Real ~> Integer)
+              op-hook isIntegerSymbol                    (isInteger : Real ~> Boolean)
+
+              op-hook shareWith                (metaReduce : Module Term ~> ResultPair))] .
+
+  sorts TraceStep2 Trace2 .
+  subsort TraceStep2 < Trace2 .
+
+  op {_||_,_,_} : Term Term Type Rule -> TraceStep2 [ctor] .
+  op {_||_,_} : Term Term Type -> TraceStep2 [ctor] .
+  op nil : -> Trace2 [ctor] .
+  op __ : Trace2 Trace2 -> Trace2 [ctor assoc id: nil format (d n d)] .
+
+  sorts Trace2Result Trace2Result? .
+  subsort Trace2Result < Trace2Result? .
+  
+  op {_,_} : Trace2 Substitution -> Trace2Result [ctor] .
+  op failure : -> Trace2Result? [ctor] .
+
+  op  metaSmtSearchPath : Module Term Term Condition Qid Bound Nat Qid Bool Bool ~> Trace2Result? .
+  ceq metaSmtSearchPath(M, T, T', COND, STEP, B, N, LOGIC, FOLD, MERGE)
+    = metaSmtSearchPath(transform(M, VN + N'), makeConstTerm(AT), makeConstTerm(AT'), CND, conj((CD, CD', SMT)), STEP, 0, B, N, LOGIC, FOLD, MERGE) --- testing
+  if {AT, CD, VN} := abst(M, T, 0) /\ {AT', CD', N'} := abst(M, T', VN)
+  /\ {CND, CND'} := sep(COND) /\ SMT := $getSmt(CND') .
+
+  op metaSmtSearchPath : Module Term Term Condition Qid Bound Nat Qid ~> Trace2Result? .
+  eq metaSmtSearchPath(M, T, T', COND, STEP, B, N, LOGIC)
+   = metaSmtSearchPath(M, T, T', COND, STEP, B, N, LOGIC, false, false) .
+
+  op metaSmtSearchPath : Module Term Term Condition Qid Bound Nat Qid Bool ~> Trace2Result? .
+  eq metaSmtSearchPath(M, T, T', COND, STEP, B, N, LOGIC, FOLD)
+   = metaSmtSearchPath(M, T, T', COND, STEP, B, N, LOGIC, FOLD, false) .
+
+  op metaSmtSearchPath : Module Term Term Condition Term Qid Nat Bound Nat Qid Bool Bool ~> Trace2Result?
+    [special (id-hook MetaLevelSmtOpSymbol  (metaSmtSearchPath)
+              op-hook traceStepSymbol           ({_||_,_,_} : Term Term Type Rule ~> TraceStep2)
+              op-hook traceStepNoRlSymbol       ({_||_,_} : Term Term Type ~> TraceStep2)
+              op-hook nilTraceSymbol            (nil : ~> Trace2)
+              op-hook traceSymbol               (__ : Trace2 Trace2 ~> Trace2)
+              op-hook failureTraceSymbol        (failure : ~> Trace2Result?)
+              op-hook traceResultSymbol         ({_,_} : Trace2 Substitution ~> Trace2Result)
+
+              op-hook assignmentSymbol          (_<-_ : Qid Term ~> Assignment)
+              op-hook substitutionSymbol        (_;_ : Substitution Substitution ~> Substitution)
+              op-hook emptySubstitutionSymbol   (none : ~> Substitution)
+
+              op-hook integerSymbol                      (<Integers> : ~> Integer)
+              op-hook realSymbol                         (<Reals> : ~> Real)
+
+              term-hook trueTerm                         ((true).Boolean)
+              term-hook falseTerm                        ((false).Boolean)
+
+              op-hook notBoolSymbol                      (not_ : Boolean ~> Boolean)
+              op-hook andBoolSymbol                      (_and_ : Boolean Boolean ~> Boolean)
+              op-hook xorBoolSymbol                      (_xor_ : Boolean Boolean ~> Boolean)
+              op-hook orBoolSymbol                       (_or_ : Boolean Boolean ~> Boolean)
+              op-hook impliesBoolSymbol                  (_implies_ : Boolean Boolean ~> Boolean)
+              op-hook eqBoolSymbol                       (_===_ : Boolean Boolean ~> Boolean)
+              op-hook neqBoolSymbol                      (_=/==_ : Boolean Boolean ~> Boolean)
+              op-hook iteBoolSymbol                      (_?_:_ : Boolean Boolean Boolean ~> Boolean)
+
+              op-hook unaryMinusIntSymbol                (-_ : Integer ~> Integer)
+              op-hook plusIntSymbol                      (_+_ : Integer Integer ~> Integer)
+              op-hook minusIntSymbol                     (_-_ : Integer Integer ~> Integer)
+              op-hook divIntSymbol                       (_div_ : Integer Integer ~> Integer)
+              op-hook mulIntSymbol                       (_*_ : Integer Integer ~> Integer)
+              op-hook modIntSymbol                       (_mod_ : Integer Integer ~> Integer)
+              op-hook ltIntSymbol                        (_<_ : Integer Integer ~> Boolean)
+              op-hook leqIntSymbol                       (_<=_ : Integer Integer ~> Boolean)
+              op-hook gtIntSymbol                        (_>_ : Integer Integer ~> Boolean)
+              op-hook geqIntSymbol                       (_>=_ : Integer Integer ~> Boolean)
+              op-hook eqIntSymbol                        (_===_ : Integer Integer ~> Boolean)
+              op-hook neqIntSymbol                       (_=/==_ : Integer Integer ~> Boolean)
+              op-hook iteIntSymbol                       (_?_:_ : Boolean Integer Integer ~> Integer)
+              op-hook divisibleIntSymbol                 (_divisible_ : Integer Integer ~> Boolean)
+
+              op-hook unaryMinusRealSymbol               (-_ : Real ~> Real)
+              op-hook plusRealSymbol                     (_+_ : Real Real ~> Real)
+              op-hook minusRealSymbol                    (_-_ : Real Real ~> Real)
+              op-hook divRealSymbol                      (_/_ : Real Real ~> Real)
+              op-hook mulRealSymbol                      (_*_ : Real Real ~> Real)
+              op-hook ltRealSymbol                       (_<_ : Real Real ~> Boolean)
+              op-hook leqRealSymbol                      (_<=_ : Real Real ~> Boolean)
+              op-hook gtRealSymbol                       (_>_ : Real Real ~> Boolean)
+              op-hook geqRealSymbol                      (_>=_ : Real Real ~> Boolean)
+              op-hook eqRealSymbol                       (_===_ : Real Real ~> Boolean)
+              op-hook neqRealSymbol                      (_=/==_ : Real Real ~> Boolean)
+              op-hook iteRealSymbol                      (_?_:_ : Boolean Real Real ~> Real)
+              op-hook toRealSymbol                       (toReal : Integer ~> Real)
+              op-hook toIntegerSymbol                    (toInteger : Real ~> Integer)
+              op-hook isIntegerSymbol                    (isInteger : Real ~> Boolean)
+
+              op-hook shareWith                 (metaReduce : Module Term ~> ResultPair)
+              )] .
+
+endfm
