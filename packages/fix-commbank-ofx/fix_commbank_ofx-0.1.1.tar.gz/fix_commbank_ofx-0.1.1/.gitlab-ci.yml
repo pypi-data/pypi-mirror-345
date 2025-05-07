@@ -1,0 +1,44 @@
+# See:
+# https://stefan.sofa-rockers.org/2024/11/14/gitlab-trusted-publisher/
+
+stages:
+  - build
+  - deploy
+
+default:
+  image: 'python:3'
+  before_script:
+    - 'export PATH="$HOME/.local/bin:$PATH"'
+    - 'curl -LsSf https://astral.sh/uv/install.sh | sh -s -- --verbose'
+  after_script:
+    - 'export PATH="$HOME/.local/bin:$PATH"'
+
+build:
+  stage: build
+  script:
+    - 'uv build --out-dir=dist'
+  artifacts:
+    paths:
+      - 'dist/'
+
+release:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_TAG'
+  environment:
+    name: release
+    url: 'https://pypi.org/project/fix-commbank-ofx'
+  variables:
+    PYPI_OIDC_URL: 'https://pypi.org/_/oidc/mint-token'
+    UV_PUBLISH_URL: 'https://upload.pypi.org/legacy/'
+  id_tokens:
+    PYPI_ID_TOKEN:
+      aud: 'pypi'
+  script:
+    - >-
+      resp="$(curl -X POST "${PYPI_OIDC_URL}" -d "{\"token\":\"${PYPI_ID_TOKEN}\"}")"
+    - >-
+      publish_token="$(python -c "import json; print(json.loads('${resp}')['token'])")"
+    - 'uv publish --token "$publish_token"'
+    - 'version="$(uv version --short)"'
+    - 'echo -e "\033[34;1mPackage on PyPI:\033[0m ${CI_ENVIRONMENT_URL}${version}/"'
