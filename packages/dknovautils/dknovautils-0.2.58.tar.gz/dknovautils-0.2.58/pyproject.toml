@@ -1,0 +1,100 @@
+# [build-system]
+# requires = ["hatchling"]
+# build-backend = "hatchling.build"
+
+# 之所以改成setuptools build 是因为要配置 py.typed参数 而如果用hatch工具不知道如何配置
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dknovautils"
+version = '0.2.58'
+dependencies = [
+    "python-dateutil",
+    "numpy",
+    "urllib3",
+    "typing-extensions",
+    "dataclasses-json",
+    "atomics",
+    "scp",
+    "psutil",
+    "paramiko", #network and ssh
+    "pyperclip",         #clipboard read and write
+]
+authors = [
+    { name = "dknova", email = "dikisite@outlook.com" },
+    { name = "dknova2", email = "dikisite2@outlook.com" },
+]
+description = "A small example package"
+readme = "README.md"
+license = { text = "MIT License" }
+# 需要支持python3.8. ubuntu18仓库中支持py3.8版本。需要支持py3.8到2027年。
+# 要支持py3.8 则需要使用 v0.1.x 版本
+# 202401 从 0.2.0版本开始 将支持py版本修改为 py3.10 (为了支持 类型标注|的语法)
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+
+[project.urls]
+Homepage = "https://example.com/xxx"
+Documentation = "https://readthedocs.org/xxx"
+Repository = "https://github.com/me/xxx.git"
+Issues = "https://github.com/me/xxx/issues"
+Changelog = "https://github.com/me/xxx/blob/master/CHANGELOG.md"
+
+
+[project.scripts]
+spam-cli = "spam:main_cli"
+
+
+[tool.setuptools.package-data]
+"dknovautils" = ["py.typed"]
+
+[tool.pytest.ini_options]
+#addopts = "--cov=slapping"
+testpaths = ["tests"]
+
+
+[tool.mypy]
+mypy_path = "src"
+
+#启用 strict模式
+disable_error_code = "unreachable, unreachable"
+strict = true
+
+no_implicit_reexport = false
+
+
+# warn_return_any = true
+# warn_unused_configs = true
+#warn_truthy_function = true
+# allow_redefinition = false
+exclude = [
+    '^file1\.py$',  # TOML literal string (single-quotes, no escaping necessary)
+    "^file2\\.py$", # TOML basic string (double-quotes, backslash and other characters need escaping)
+]
+
+# mypy per-module options:
+
+[[tool.mypy.overrides]]
+module = "example.*"
+disallow_untyped_defs = true
+
+# strict = false
+
+[[tool.mypy.overrides]]
+module = "mycode.foo.*"
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "mycode.bar"
+warn_return_any = false
+
+[[tool.mypy.overrides]]
+module = ["somelibrary", "some_other_library"]
+ignore_missing_imports = false
