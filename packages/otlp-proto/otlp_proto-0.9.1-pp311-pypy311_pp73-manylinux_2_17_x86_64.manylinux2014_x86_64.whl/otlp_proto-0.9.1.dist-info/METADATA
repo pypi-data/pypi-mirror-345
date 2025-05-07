@@ -1,0 +1,92 @@
+Metadata-Version: 2.4
+Name: otlp-proto
+Version: 0.9.1
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: Rust
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Framework :: OpenTelemetry
+Classifier: Framework :: OpenTelemetry :: Exporters
+Summary: 🐍Lightweight OTEL span to binary converter, written in Rust🦀
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Repository, https://github.com/dimaqq/otlp-proto
+Project-URL: Issues, https://github.com/dimaqq/otlp-proto/issues
+
+# otlp-proto
+
+`otlp-proto` is a lightweight OTLP serialisation library.
+
+It's written in Rust 🦀, and doesn't have any run-time dependencies.
+
+It serialises a bunch of spans into OTLP 1.5 binary (protobuf) format.
+
+### Motivation
+
+Tracing should be on by default.
+
+OTLP is the standard data format and API, and the standard Python package is `opentelemetry-exporter-otlp-proto-http`. It brings in a total of 18 packages and adds 9MB to the project virtual environment.
+
+A typical Python application, that's being instrumented, only generates own tracing data and needs to send it out. It doesn't need that much complexity.
+
+
+### Usage
+
+```py
+from otlp_proto import CONTENT_TYPE, encode_spans
+
+
+class SomeExporter:
+    def export(self, spans: Sequece[ReadableSpan]) -> None:
+        requests.post(
+            "http://localhost:4318/v1/traces",
+            data=encode_spans(spans),
+            headers={"Content-Type": CONTENT_TYPE},
+        )
+```
+
+### Library size
+
+- 170KB whl, containing, depending on the target platform
+  - 350KB dylib
+  - ???KB so
+
+### TODO(doc)
+
+- link to pure Python library
+- link to urllib sender
+- link to test vector generator
+
+### TODO(features)
+
+- Events
+- Links
+- Baggage
+- Schemata, when https://github.com/open-telemetry/opentelemetry-python/pull/4359 lands
+
+### TODO(fixes)
+
+- validate what fields are in fact optional
+- ???
+
+### Limitations
+
+This library is meant to marshal tracing data that's collected in the same Python process.
+
+It is not meant to be used for data receive and forwarded.
+
