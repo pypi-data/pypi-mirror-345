@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=67.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "weather-guodong"
+version = "2.0.4"
+description = "Antom支付接口集成工具（收银台模式）"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+license = "LicenseRef-Proprietary"  # 自定义私有协议标准写法
+license-files = ["LICENSE"]  # 必须同时声明
+
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11"
+]
+dependencies = [
+    "global-open-sdk-python>=1.4.4",
+    "mcp[cli]>=1.7.1",
+    "uuid>=1.30",
+]
+[project.scripts]
+weather-guodong = "antom.antom:main"
+[project.urls]
+Homepage = "https://github.com/yourusername/weather-guodong"
+Documentation = "https://github.com/yourusername/weather-guodong/wiki"
+[tool.setuptools]
+packages = ["antom"]
+package-dir = {"" = "src"}
+
+include-package-data = true
+[tool.setuptools.package-data]
+"*" = ["*.py", "*.toml", "**/*.py"]
