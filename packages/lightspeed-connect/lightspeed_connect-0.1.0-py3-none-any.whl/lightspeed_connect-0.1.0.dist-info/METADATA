@@ -1,0 +1,79 @@
+Metadata-Version: 2.3
+Name: lightspeed-connect
+Version: 0.1.0
+Summary: A Python client for connecting to Lightspeed's WebSocket API
+License: MIT
+Author: cdaviis
+Author-email: chrisdavis179@gmail.com
+Requires-Python: >=3.9
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: websockets (>=12.0)
+Description-Content-Type: text/markdown
+
+# Lightspeed Connect
+
+A Python client for the Lightspeed Connect trading API.
+
+- Supports placing and managing orders via WebSocket.
+- Built for speed, extensibility, and clarity.
+- Compatible with equities and options.
+
+## ⚠️ Disclaimer
+
+This library is unofficial and not affiliated with Lightspeed Financial Services Group LLC.  
+Use at your own risk.
+
+
+## 📦 Installation
+
+
+```bash
+pip install lightspeed-connect
+```
+
+## 🚀 Quickstart Example
+
+```python
+from lightspeed_connect import LightspeedClient, OrderSingle, Side, OrderType
+
+# Initialize the client
+client = LightspeedClient(
+    url="wss://api-cert.lightspeed.com/v1/ws",  # Use certification or production endpoint
+    api_key="your_api_key"
+)
+
+# Connect
+client.connect()
+
+# Create an order
+order = OrderSingle(
+    symbol="GOOGL",
+    side=Side.BUY,
+    order_qty=10,
+    order_type=OrderType.LIMIT,
+    price=2700.00
+)
+
+# Send the order
+client.send_order(order)
+```
+
+
+## 🛠️ Features
+
+- ✅ WebSocket-based connection
+- ✅ Submit `OrderSingle` types
+- ✅ Extendable for multileg and cancels
+- ✅ Full UUID support
+- ✅ Lightweight and dependency-minimal
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
