@@ -1,0 +1,57 @@
+# Orcastrator Configuration File Example
+
+[general]
+output_dir = "orcastrator_output" # Directory for all calculation outputs
+cpus = 1                          # Default CPU cores for ORCA calculations
+mem_per_cpu_gb = 1                # Default RAM per CPU core in GB for ORCA (e.g., %maxcore)
+# scratch_dir = "/path/to/global_scratch" # Optional: Global scratch base directory
+# If not set, scratch will be output_dir/molecule_name/scratch_for_molecule/step_name_uuid
+overwrite = false    # Whether to overwrite existing calculation step directories
+keep_scratch = false # Whether to keep scratch directories after calculations
+
+# Define one or more molecules
+# Option 1: Single molecule definition
+# [molecule]
+# name = "my_molecule"            # Name for the molecule (used for directory naming)
+# xyz_file = "path/to/molecule.xyz" # Path to input XYZ file (relative to this config file)
+# charge = 0                      # Molecular charge
+# mult = 1                        # Spin multiplicity
+
+# Option 2: Multiple molecules (preferred for multiple species)
+[[molecules]]
+name = "formaldehyde_triplet"
+xyz_file = "assets/h2.xyz"
+charge = 0
+mult = 3                      # This is the default for this molecule, can be overridden per step
+
+[[molecules]]
+name = "water_dimer"
+xyz_file = "assets/h2.xyz"
+charge = 0
+mult = 1
+
+# Define the calculation pipeline (sequence of steps)
+# Each step is executed in order. Geometry from the previous step's .xyz output
+# (if any) is used as input for the current step.
+[[pipeline]]
+name = "geom_opt"
+keywords = ["B3LYP", "def2-SVP", "D3BJ", "OPT"]
+blocks = ["%geom MaxIter 200 end"]
+
+[[pipeline]]
+name = "freq_calc"
+keywords = ["B3LYP", "def2-SVP", "D3BJ", "FREQ"]
+
+[[pipeline]]
+name = "sp_tzvp"
+keywords = ["B3LYP", "def2-TZVP", "D3BJ", "RIJCOSX"]
+
+[[pipeline]]
+name = "tddft_excited_states"
+keywords = ["B3LYP", "def2-TZVP", "D3BJ", "RIJCOSX"]
+blocks = ["%TDDFT NROOTS 2 END"]
+# mult = 1  # Optional override of multiplicity
+
+# SLURM configuration for generating batch scripts (optional)
+[slurm]
+time_h = 12
