@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: instinct_py_nodes
+Version: 0.0.1
+Summary: A Python package for creating distributed nodes using ZeroMQ
+Home-page: https://github.com/yourusername/sw-instinct-py-nodes
+Author: Nexstem
+Author-email: developers@nexstem.ai
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyzmq >=0.0.0
+
+# Nexstem Instinct Nodes
+
+A Python package for creating distributed nodes using ZeroMQ for communication.
+
+## Features
+
+- Abstract base class for creating distributed nodes
+- ZeroMQ-based communication between nodes
+- Support for multiple producers and consumers
+- Lifecycle management (start, stop, shutdown)
+- Support for different message formats (JSON and multipart strings)
+
+## Installation
+
+```bash
+pip install instinct-py-nodes
+```
+
+## Usage
+
+```python
+from instinct_py_nodes import Node, ESignalType, LifeCycleState
+
+class MyNode(Node):
+    def onStart(self):
+        # Your startup logic here
+        pass
+    
+    def onStop(self):
+        # Your stop logic here
+        pass
+    
+    def onShutdown(self):
+        # Your shutdown logic here
+        pass
+    
+    def onSignal(self):
+        # Your signal handling logic here
+        pass
+
+# Create and start your node
+node = MyNode()
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 
