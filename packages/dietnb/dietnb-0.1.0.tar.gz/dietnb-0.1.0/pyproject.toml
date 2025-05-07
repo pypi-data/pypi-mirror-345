@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name            = "dietnb"
+version         = "0.1.0"
+description     = "Save matplotlib figures as external files and link them, keeping notebooks tiny."
+readme          = "README.md"
+license         = {text = "MIT"}
+authors         = [{name = "JinLover"}]
+requires-python = ">=3.8"
+dependencies    = ["ipython>=8", "matplotlib>=3.5"]
+
+[project.scripts]
+dietnb = "dietnb._cli:main"         # Creates the 'dietnb' command
+
+[project.urls]
+Homepage = "https://github.com/JinLover/dietnb"
+
+# Removed package-dir section
+
+[tool.setuptools.packages.find]
+# Tell find to look *inside* the 'dietnb' directory for packages
+where = ["dietnb"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-mock>=3.10"
+] 
