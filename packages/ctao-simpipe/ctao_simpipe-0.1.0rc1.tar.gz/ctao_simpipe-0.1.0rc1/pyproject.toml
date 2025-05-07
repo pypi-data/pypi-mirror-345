@@ -1,0 +1,192 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+  "setuptools>=64",
+  "setuptools-scm[toml]>=8",
+]
+
+[project]
+name = "ctao-simpipe"
+description = "CTAO DPPS Simulation Production Pipeline"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "simpipe developers", email = "simtools-developer@desy.de" },
+]
+requires-python = ">=3.11"
+classifiers = [
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Astronomy",
+]
+
+dynamic = [
+  "version",
+]
+dependencies = [
+  "gammasimtools==0.15.0",
+]
+
+optional-dependencies.all = [
+  "ctao-simpipe[dev,doc,test]",
+]
+optional-dependencies.dev = [
+  "pre-commit",
+  "pylint",
+  "ruff",
+  "towncrier",
+]
+optional-dependencies.doc = [
+  "ctao-sphinx-theme~=0.1.2",
+  "myst-parser",
+  "numpydoc",
+  "sphinx",
+  "sphinx-changelog",
+  "towncrier",
+]
+optional-dependencies.test = [
+  "pytest",
+  "pytest-cov",
+  "pytest-mock",
+  "pytest-requirements",
+  "pytest-xdist",
+]
+
+urls.documentation = "https://gitlab.cta-observatory.org/cta-computing/dpps/simpipe/simpipe"
+urls.repository = "https://gitlab.cta-observatory.org/cta-computing/dpps/simpipe/simpipe"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = [ "src" ]
+exclude = [ "simpipe._dev_version.*" ]
+
+[tool.setuptools_scm]
+write_to = "src/simpipe/_version.py"
+
+[tool.ruff]
+line-length = 100
+indent-width = 4
+
+format.indent-style = "space"
+format.quote-style = "double"
+format.line-ending = "auto"
+format.skip-magic-trailing-comma = false
+lint.extend-select = [
+  "A",   # built-in shadowing
+  "C4",  # comprehension
+  "COM", # flake8-commas
+  "D",   # pydocstyle
+  "F",   # pyflakes
+  "G",   # logging
+  "I",   # isort
+  "ICN", # import name conventions
+  "ISC", # implicit string concat rules
+  "N",   # pep8 naming
+  "NPY", # numpy
+  "PT",  # pytest
+  "PTH", # use pathlib
+  "RET", # return statements
+  "RUF", # ruff
+  "UP",  # pyupgrade
+]
+lint.ignore = [
+  "COM812", # incompatible with ruff format
+  "D208",   # over-indentation (incompatible with sphinx)
+  "D214",   # section-not-over-indented
+  "D215",   # section-underline-not-over-indented
+  "G004",   # Logging statement uses f-string
+  "ISC001", # incompatible with ruff format
+  "PTH123", # open("foo") should be replaced by Path("foo").open()
+  "RUF012", #  Mutable class attributes should be annotated
+]
+lint.per-file-ignores."**/test_*.py" = [ "D" ]
+lint.per-file-ignores."**/tests/*.py" = [ "D" ]
+
+# Maximum number of characters on a single line.
+lint.pycodestyle.max-line-length = 100
+lint.pydocstyle.convention = "numpy"
+# Maximum number of arguments for function / method (default=5).
+lint.pylint.max-args = 15
+# Maximum number of attributes for a class (see R0902). (default=7)
+# lint.pylint.max-attributes = 50
+# Maximum number of branch for function / method body. (default=12)
+lint.pylint.max-branches = 25
+# Maximum number of locals for function / method body (default=15).
+lint.pylint.max-locals = 50
+# Maximum number of lines in a module. (default 1000)
+# lint.pylint.max-module-lines = 2000
+# Maximum number of positional arguments for function / method (default=5.)
+lint.pylint.max-positional-args = 15
+# Maximum number of public methods for a class (see R0904). (default=20)
+lint.pylint.max-public-methods = 50
+# Maximum number of statements in function / method body. (default=50)
+lint.pylint.max-statements = 80
+
+[tool.codespell]
+ignore-words-list = "chec,arrang,livetime"
+
+[tool.pyproject-fmt]
+keep_full_version = true
+
+[tool.pytest.ini_options]
+markers = [
+  "uses_model_database: test uses model parameter database.",
+]
+minversion = "6.0"
+norecursedirs = [
+  "build",
+  "docs/_build",
+]
+addopts = "-v --cov=simpipe --cov-report=xml --cov-report=term"
+testpaths = [ "src", "simtools/tests/integration_tests" ]
+# Ignore the warning about fontTools.misc.py23
+filterwarnings = "ignore:The py23 module has been deprecated:DeprecationWarning"
+
+[tool.coverage.report]
+exclude_also = [
+  "if __name__ == \"__main__\":",
+]
+
+[tool.coverage.run]
+omit = [ "src/simpipe/_version.py", "*__init__*", "src/simpipe/applications/**" ]
+relative_files = true
+
+[tool.towncrier]
+package = "simpipe"
+directory = "docs/changes"
+filename = "CHANGELOG.rst"
+underlines = [ "-", "~", "^" ]
+template = "docs/changes/template.rst"
+issue_format = "`!{issue} <https://gitlab.cta-observatory.org/cta-computing/dpps/simpipe/simpipe/-/merge_requests/{issue}>`__"
+start_string = ".. towncrier release notes start"
+
+[tool.towncrier.fragment.feature]
+name = "New Features"
+showcontent = true
+
+[tool.towncrier.fragment.bugfix]
+name = "Bugfixes"
+showcontent = true
+
+[tool.towncrier.fragment.api]
+name = "API Changes"
+showcontent = true
+
+[tool.towncrier.fragment.maintenance]
+name = "Maintenance"
+showcontent = true
+
+[tool.towncrier.fragment.doc]
+name = "Documentation"
+showcontent = true
+
+[tool.towncrier.fragment.model]
+name = "Simulation model"
+showcontent = true

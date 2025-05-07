@@ -1,0 +1,62 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "simpipe.fullname" . }}-fill-simulation-model
+  labels:
+    app: {{ include "simpipe.fullname" . }}-fill-simulation-model
+annotations:
+  "helm.sh/hook": post-install
+  "helm.sh/hook-weight": "-5"
+  "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ include "simpipe.fullname" . }}-fill-simulation-model
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: {{ include "simpipe.fullname" . }}-fill-simulation-model
+          image: "harbor.cta-observatory.org/proxy_cache/python:3.12"
+          command:
+            - bash
+            - -c
+            - |
+              set -ex
+              # FIXME: better way to get version? Provide image with just simtools already?
+              pip install gammasimtools==0.15.0
+
+              git clone {{ .Values.simulation_model.repository}} simulation-models
+              cd simulation-models
+              git checkout {{ .Values.simulation_model.revision }}
+
+              simtools-db-add-simulation-model-from-repository-to-db \
+                --type "model_parameters" \
+                --input_path ./simulation-models/model_parameters/ \
+                --db_name "$SIMTOOLS_DB_SIMULATION_MODEL" \
+                --db_api_authentication_database "$SIMTOOLS_DB_API_AUTHENTICATION_DATABASE" \
+                --log_level={{ .Values.simulation_model.log_level }}
+
+              # upload production tables to DB
+              simtools-db-add-simulation-model-from-repository-to-db \
+                --type "production_tables" \
+                --input_path ./simulation-models/productions/ \
+                --db_name "$SIMTOOLS_DB_SIMULATION_MODEL" \
+                --db_api_authentication_database "$SIMTOOLS_DB_API_AUTHENTICATION_DATABASE" \
+                --log_level={{ .Values.simulation_model.log_level }}
+
+          env:
+            - name: SIMTOOLS_DB_SERVER
+              value: simtools-mongodb
+            - name: SIMTOOLS_DB_SIMULATION_MODEL
+              value: "{{ index .Values.mongodb.auth.databases 0 }}"
+            - name: SIMTOOLS_DB_API_AUTHENTICATION_DATABASE
+              value: "{{ index .Values.mongodb.auth.databases 0 }}"
+            - name: SIMTOOLS_DB_API_USER
+              value: "{{ index .Values.mongodb.auth.usernames 0 }}"
+            - name: SIMTOOLS_DB_API_PW
+              value: "{{ index .Values.mongodb.auth.passwords 0 }}"
+            - name: SIMTOOLS_DB_API_PORT
+              value: "{{ .Values.mongodb.containerPorts.mongodb }}"
+            - name: SIMTOOLS_SIMTEL_PATH
+              value: "/workdir/sim_telarray/"

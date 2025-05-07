@@ -1,0 +1,110 @@
+FROM harbor.cta-observatory.org/proxy_cache/almalinux:9.5 AS build_image
+
+ARG BUILD_OPT="prod6-sc"
+ARG EXTRA_DEF="-DMAXIMUM_TELESCOPES=128"
+ARG HADRONIC_MODEL="qgs2"
+ARG AVX_FLAG="avx2"
+ARG SIMTEL_VERSION="20240913"
+ARG CORSIKA_VERSION="77550"
+ARG CORSIKA_OPT_VERSION="77500_2024-02-05"
+ARG BERNLOHR_VERSION="1.68"
+ARG MAKEFLAGS="-j4"
+
+ENV GCC_PATH="/usr/bin/"
+WORKDIR /workdir/sim_telarray
+
+RUN yum update -y && yum install -y \
+    gcc-fortran gsl-devel libgfortran \
+    autoconf automake csh patch perl which && \
+    yum clean all
+
+ADD software/corsika7.7_simtelarray_${SIMTEL_VERSION}.tar.gz .
+ADD software/corsikaOptPatch-${CORSIKA_OPT_VERSION}.tar.gz ./corsika-$CORSIKA_VERSION
+RUN tar -zxf corsika-$CORSIKA_VERSION.tar.gz && \
+    tar -zxf bernlohr-$BERNLOHR_VERSION.tar.gz -C corsika-$CORSIKA_VERSION/bernlohr && \
+    rm -f examples-with-data.tar.gz sim_telarray_config.tar.gz \
+    corsika_simtelarray.tar.gz  corsika-$CORSIKA_VERSION.tar.gz \
+    bernlohr-$BERNLOHR_VERSION.tar.gz
+
+# Apply patches for non-optimized / optimized CORSIKA
+RUN cd corsika-$CORSIKA_VERSION && \
+    if [[ $CORSIKA_VERSION -eq 77550 ]]; then \
+        (cd src && patch -b -p0 corsika.F < "../../corsika-77550.patch"); \
+    fi && \
+    if [[ "$AVX_FLAG" == "noOpt" ]]; then \
+        ../corsika_build_script $HADRONIC_MODEL generic; \
+    else \
+        ./corsika_opt_patching.sh && \
+        autoreconf && \
+        ../corsika_build_script $HADRONIC_MODEL generic cerenkopt vlibm; \
+    fi
+
+# Build non-optimized / optimized CORSIKA
+ENV MAKEFLAGS=${MAKEFLAGS}
+RUN make -C corsika-$CORSIKA_VERSION clean && rm -f */*.a lib/*/*.a && \
+    AVX_EXTRA_FLAG=$([ "$AVX_FLAG" = "avx512f" ] && echo "-ffp-contract=off" || echo "") && \
+    CFLAGS="" && CXXFLAGS="" && FFLAGS="" && \
+    if [[ "$AVX_FLAG" == "noOpt" ]]; then \
+        CFLAGS="-g  -std=c99 -O3"; \
+        CXXFLAGS="-g  -std=c99 -O3"; \
+        FFLAGS="-g -ffixed-line-length-132 -fno-automatic -frecord-marker=4 -std=legacy -std=c99 -O3"; \
+    else \
+        CFLAGS="-g -DCERENKOPT -DVLIBM -std=c99 -O3 ${AVX_FLAG:+-m$AVX_FLAG} ${avx_512_FLAG} -DVECTOR_SIZE=8 -DVECTOR_LENGTH=8"; \
+        CXXFLAGS="-g -DCERENKOPT -DVLIBM -std=c99 -O3 ${AVX_FLAG:+-m$AVX_FLAG} ${avx_512_FLAG} -DVECTOR_SIZE=8 -DVECTOR_LENGTH=8"; \
+        FFLAGS="-g -ffixed-line-length-132 -fno-automatic -frecord-marker=4 -std=legacy -DCERENKOPT -DVLIBM -std=c99 -O3 ${AVX_FLAG:+-m$AVX_FLAG} ${avx_512_FLAG} -DVECTOR_SIZE=8 -DVECTOR_LENGTH=8"; \
+    fi && \
+    make -C corsika-$CORSIKA_VERSION \
+        CC="${GCC_PATH}/gcc -static" \
+        CXX="${GCC_PATH}/g++ -static" \
+        CPP="${GCC_PATH}/gcc -static -E" \
+        F77="${GCC_PATH}/gfortran -L/lib64/" \
+        CFLAGS="${CFLAGS}" \
+        CXXFLAGS="${CXXFLAGS}" \
+        FFLAGS="$FFLAGS" \
+        install
+
+# Rename executable to 'corsika'
+RUN mv -f corsika-$CORSIKA_VERSION/run/corsika$CORSIKA_VERSIONLinux_* corsika-$CORSIKA_VERSION/run/corsika
+# Build sim_telarray
+RUN export NO_CORSIKA=1 EXTRA_DEFINES="${EXTRA_DEF}" && ./build_all $BUILD_OPT $HADRONIC_MODEL gsl
+
+# CORSIKA source code is removed to follow
+# the CORSIKA non-distribution policy.
+RUN mv ./corsika-77*/run corsika-run && \
+    rm -rf ./corsika-7[0-9]* && \
+    find . -name "*.tar.gz" -delete && \
+    find . -name "doc*" -type d -exec rm -rf {} + 2>/dev/null && \
+    find . -name "*.o" -delete && \
+    rm -rf /var/cache/yum/* /tmp/* /var/tmp/*
+
+# create a yml file in workdir with the build options
+RUN echo "build_opt: $BUILD_OPT" > /workdir/sim_telarray/build_opts.yml && \
+    echo "extra_def: $EXTRA_DEF" >> /workdir/sim_telarray/build_opts.yml && \
+    echo "hadronic_model: $HADRONIC_MODEL" >> /workdir/sim_telarray/build_opts.yml && \
+    echo "avx_flag: $AVX_FLAG" >> /workdir/sim_telarray/build_opts.yml && \
+    echo "corsika_version: $CORSIKA_VERSION" >> /workdir/sim_telarray/build_opts.yml && \
+    echo "bernlohr_version: $BERNLOHR_VERSION" >> /workdir/sim_telarray/build_opts.yml
+
+FROM harbor.cta-observatory.org/proxy_cache/almalinux:9.5-minimal
+# by default, install fixed version from pypi
+# could also be e.g. git+https://github.com/gammasim/simtools@<branch name>
+ARG SIMTOOLS_REQUIREMENT="gammasimtools==0.15.0"
+
+WORKDIR /workdir
+COPY --from=build_image /workdir/sim_telarray/ /workdir/sim_telarray/
+
+RUN microdnf update -y && microdnf install -y \
+    bc findutils gcc-c++ git gsl-devel gcc-fortran libgfortran \
+    procps python3.12-pip zstd && \
+    microdnf clean all
+
+RUN python3.12 -m venv env \
+  && source env/bin/activate \
+  && pip install -U pip \
+  && pip install --no-cache-dir ${SIMTOOLS_REQUIREMENT}
+
+# Give everyone permission to modify files in workdir for now...
+RUN chmod -R go+rw /workdir
+ENV SIMTEL_PATH="/workdir/sim_telarray/"
+ENV PATH="/workdir/env/bin/:$PATH"
+SHELL ["/bin/bash", "-c"]

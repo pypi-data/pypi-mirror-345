@@ -1,0 +1,50 @@
+include:
+  - project: 'cta-computing/dpps/aiv/dpps-aiv-toolkit'
+    ref: e8c7084c0e85c2bc8ef2e077295b19ee5bf5db06
+    file: 'ci-functions.yml'
+  - "aiv-config.yml"
+
+
+variables:
+  CHART_LOCATION: chart
+  CHART_NAME: simpipe
+  CHART_EXTRA_VALUES: "--set dev.client_image_tag=${DOCKER_TAG}"
+  DPPS_AIV_TOOLKIT_DIR: dpps-aiv-toolkit
+  DOCKER_IMAGE_CONTEXT: '${CI_PROJECT_DIR}'
+  CONDA_IMAGE: "quay.io/condaforge/miniforge3:24.11.3-0"
+  GIT_SUBMODULE_DEPTH: 1
+
+stages:
+  - prepare
+  - lint
+  - build
+  - sign
+  - tests
+  - sonarqube
+  - publish
+  - report
+
+
+build:
+  image: '${HARBOR_HOST}/dpps/kaniko-executor-alma:v0.0.0-4b86ecb'
+  variables:
+    SIMTEL_VERSION: "20240913"
+    CORSIKA_VERSION: "77550"
+    CORSIKA_OPT_VERSION: "77500_2024-02-05"
+    DOCKER_CONFIG: /kaniko/.docker
+    CI_HARBOR_REGISTRY_IMAGE: harbor.cta-observatory.org/dpps/simpipe-prod:${DOCKER_TAG}
+    KANIKO_EXTRA_ARGS: >-
+      --build-arg SIMTEL_VERSION=${SIMTEL_VERSION}
+      --build-arg CORSIKA_VERSION=${CORSIKA_VERSION}
+      --build-arg CORSIKA_OPT_VERSION=${CORSIKA_OPT_VERSION}
+      --build-arg MAKEFLAGS="-j6"
+
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - microdnf install -y make
+    - make software/corsika7.7_simtelarray_${SIMTEL_VERSION}.tar.gz
+    - make software/corsikaOptPatch-${CORSIKA_OPT_VERSION}.tar.gz
+
+sonarqube:
+  rules:
+    - when: never

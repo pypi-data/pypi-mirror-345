@@ -1,0 +1,65 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+  # Ruff
+    rev: v0.9.9
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+  # https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+        exclude: '(.*\.fits(\.fz)?)|(.*.patch.*)|(chart\/.*README.md)$'
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+  # https://pyproject-fmt.readthedocs.io/en/latest/
+  - repo: https://github.com/tox-dev/pyproject-fmt
+    rev: "v2.5.0"
+    hooks:
+      - id: pyproject-fmt
+  # codespell
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+  # markdownlint
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.44.0
+    hooks:
+      - id: markdownlint
+        args: ["--disable", "MD041"]
+  # yamllint
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: ["--strict", "-d", '{rules: {line-length: {max: 250}}}']
+        exclude: ^chart/
+  # towncrier
+  - repo: https://github.com/twisted/towncrier
+    rev: 24.8.0
+    hooks:
+      - id: towncrier-update
+        files: $docs/changes/
+        args: ['--keep']
+
+  - repo: local
+    hooks:
+    - id: CI yaml check
+      args: [ dpps-aiv-toolkit ]
+      name: CI yaml check
+      description: CI yaml check
+      language: script
+      entry: dpps-aiv-toolkit/cicheck.sh
+      pass_filenames: true
+      files: ^.gitlab-ci.yml$
+      always_run: true
+
+  - repo: https://github.com/norwoodj/helm-docs
+    rev: "v1.14.2"
+    hooks:
+    - id: helm-docs-built
+      args:
+        - "--chart-search-root=chart"

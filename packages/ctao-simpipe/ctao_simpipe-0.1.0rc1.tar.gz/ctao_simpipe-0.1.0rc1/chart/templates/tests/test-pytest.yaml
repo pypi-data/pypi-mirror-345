@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-pytest"
+  labels:
+  annotations:
+    "helm.sh/hook": test
+spec:
+  securityContext:
+    runAsUser: {{ .Values.dev.runAsUser }}
+    runAsGroup: {{ .Values.dev.runAsGroup }}
+    fsGroup: {{ .Values.dev.runAsGroup }}
+
+  containers:
+  - name: test
+    image: "{{ .Values.image.repository }}:{{ .Values.dev.client_image_tag | default .Chart.AppVersion }}"
+    workingDir: /home/simpipe/simpipe
+
+    command:
+    - bash
+    - -c
+    - |
+      set -xe
+
+      {{ if .Values.dev.mount_repo }}
+      pip install  --no-cache-dir -e .[test]
+      {{ end }}
+
+      {{ if .Values.dev.run_tests }}
+      cd ./simtools
+      python3 -m pytest \
+        -svv \
+        -o cache_dir=$PWD/.pytest-cache \
+        -n 5 \
+        --cov \
+        --cov-report=xml:/tmp/coverage.xml \
+        --junitxml=/tmp/report.xml \
+        --color=yes \
+        --log-cli-level=INFO \
+        tests/integration_tests
+
+      curl -T /tmp/coverage.xml http://testkit:8000/coverage.xml
+      curl -T /tmp/report.xml http://testkit:8000/report.xml
+      {{ end }}
+
+      {{ if .Values.dev.sleep }}
+      sleep infinity
+      {{ end }}
+
+
+    volumeMounts:
+    {{ if .Values.dev.mount_repo }}
+    - name: repo
+      mountPath: /home/simpipe/simpipe
+    {{ end }}
+
+    env:
+      - name: SIMTOOLS_DB_SERVER
+        value: simtools-mongodb
+      - name: SIMTOOLS_DB_SIMULATION_MODEL
+        value: "{{ index .Values.mongodb.auth.databases 0 }}"
+      - name: SIMTOOLS_DB_API_AUTHENTICATION_DATABASE
+        value: "{{ index .Values.mongodb.auth.databases 0 }}"
+      - name: SIMTOOLS_DB_API_USER
+        value: "{{ index .Values.mongodb.auth.usernames 0 }}"
+      - name: SIMTOOLS_DB_API_PW
+        value: "{{ index .Values.mongodb.auth.passwords 0 }}"
+      - name: SIMTOOLS_DB_API_PORT
+        value: "{{ .Values.mongodb.containerPorts.mongodb }}"
+      - name: SIMTOOLS_SIMTEL_PATH
+        value: "/workdir/sim_telarray/"
+      - name: SIMTOOLS_USER_NAME
+        value: "CI Tests"
+
+  volumes:
+  {{ if .Values.dev.mount_repo }}
+  - name: repo
+    hostPath:
+      path: /repo
+      type: Directory
+  {{ end }}
+
+  restartPolicy: Never

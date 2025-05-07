@@ -1,0 +1,62 @@
+image:
+  repository: "harbor.cta-observatory.org/dpps/simpipe-prod"
+  pullPolicy: IfNotPresent
+
+# -- Configuration of the simulation model source
+simulation_model:
+  # -- Git repository with the model files
+  repository: https://gitlab.cta-observatory.org/cta-science/simulations/simulation-model/simulation-models.git
+  # -- Git revision to checkout
+  revision: "v0.5.0"
+  # -- Log level for the application bootstrapping the simulation model database
+  log_level: "warning"
+
+
+
+dev:
+  # run tests in the container
+  run_tests: true
+  # sleep after test to allow interactive development
+  sleep: false
+  # mount the repo volume to test the code as it is being developed
+  mount_repo: true
+
+  # tag of the image used to run helm tests
+  client_image_tag:
+
+  # if true, a long-running client container will start *instead* of a test container
+  start_long_running_client: false
+
+  # user to run the container as. needs to be the same as local user if writing to repo directory
+  runAsUser: 1000
+  runAsGroup: 1000
+
+mongodb:
+  enabled: true
+  # current simtools has a whitelist for db hostnames it allows
+  # unencrypted connections for. All others require ssl, which we do not switch on here
+  fullnameOverride: simtools-mongodb
+  # simple mongodb instance, no replicasets, no sharding etc.
+  architecture: "standalone"
+  replicaCount: 1
+
+  # use image from harbor instead of default
+  global:
+    security:
+      allowInsecureImages: true
+
+  image:
+    registry: harbor.cta-observatory.org
+    repository: proxy_cache/bitnami/mongodb
+    tag: 8.0.5-debian-12-r0
+
+  auth:
+    enabled: true
+    rootUser: "root"
+    rootPassword: "topsecret"
+    usernames:
+      - "simpipe"
+    passwords:
+      - "topsecret"
+    databases:
+      - "simulation-model"
