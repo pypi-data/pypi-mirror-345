@@ -1,0 +1,143 @@
+# metamodel_version: 1.7.0
+BASE <https://w3id.org/omnibenchmark/omni-schema/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX linkml: <https://w3id.org/linkml/>
+PREFIX schema1: <http://schema.org/>
+
+
+linkml:String xsd:string
+
+linkml:Integer xsd:integer
+
+linkml:Boolean xsd:boolean
+
+linkml:Float xsd:float
+
+linkml:Double xsd:double
+
+linkml:Decimal xsd:decimal
+
+linkml:Time xsd:time
+
+linkml:Date xsd:date
+
+linkml:Datetime xsd:dateTime
+
+linkml:DateOrDatetime linkml:DateOrDatetime
+
+linkml:Uriorcurie IRI
+
+linkml:Curie xsd:string
+
+linkml:Uri IRI
+
+linkml:Ncname xsd:string
+
+linkml:Objectidentifier IRI
+
+linkml:Nodeidentifier NONLITERAL
+
+linkml:Jsonpointer xsd:string
+
+linkml:Jsonpath xsd:string
+
+linkml:Sparqlpath xsd:string
+
+<Benchmark> CLOSED {
+    (  $<Benchmark_tes> (  &<IdentifiableEntity_tes> ;
+          rdf:type [ schema1:Thing ] ? ;
+          <version> @linkml:String ;
+          <benchmarker> @linkml:String ;
+          <software_backend> [ <https://w3id.org/omnibenchmark/omni-schema/SoftwareBackendEnum#apptainer>
+             <https://w3id.org/omnibenchmark/omni-schema/SoftwareBackendEnum#envmodules>
+             <https://w3id.org/omnibenchmark/omni-schema/SoftwareBackendEnum#conda>
+             <https://w3id.org/omnibenchmark/omni-schema/SoftwareBackendEnum#docker>
+             <https://w3id.org/omnibenchmark/omni-schema/SoftwareBackendEnum#host> ] ;
+          <storage> @linkml:String ;
+          <storage_api> [ <https://w3id.org/omnibenchmark/omni-schema/StorageAPIEnum#S3> ] ;
+          <storage_bucket_name> @linkml:String ;
+          <software_environments> @<SoftwareEnvironment> + ;
+          <benchmark_yaml_spec> @linkml:String ? ;
+          <stages> @<Stage> +
+       ) ;
+       rdf:type [ <Benchmark> ]
+    )
+}
+
+<IdentifiableEntity>  (
+    @<Benchmark> OR @<IOFile> OR @<Module> OR @<SoftwareEnvironment> OR @<Stage>
+)
+
+<IdentifiableEntity_struct> {
+    (  $<IdentifiableEntity_tes> (  schema1:name @linkml:String ? ;
+          schema1:description @linkml:String ?
+       ) ;
+       rdf:type [ schema1:Thing ]
+    )
+}
+
+<InputCollection> CLOSED {
+    (  $<InputCollection_tes> <entries> @<IOFile> * ;
+       rdf:type [ <InputCollection> ] ?
+    )
+}
+
+<IOFile> CLOSED {
+    (  $<IOFile_tes> (  &<IdentifiableEntity_tes> ;
+          rdf:type [ schema1:Thing ] ? ;
+          <path> @linkml:String ?
+       ) ;
+       rdf:type [ <IOFile> ]
+    )
+}
+
+<Module> CLOSED {
+    (  $<Module_tes> (  &<IdentifiableEntity_tes> ;
+          rdf:type [ schema1:Thing ] ? ;
+          <software_environment> @<SoftwareEnvironment> ;
+          <repository> @<Repository> ;
+          <exclude> @<Module> * ;
+          <parameters> @<Parameter> *
+       ) ;
+       rdf:type [ <Module> ]
+    )
+}
+
+<Parameter> CLOSED {
+    (  $<Parameter_tes> <values> @linkml:String * ;
+       rdf:type [ <Parameter> ] ?
+    )
+}
+
+<Repository> CLOSED {
+    (  $<Repository_tes> (  <url> @linkml:String ;
+          <commit> @linkml:String
+       ) ;
+       rdf:type [ <Repository> ] ?
+    )
+}
+
+<SoftwareEnvironment> CLOSED {
+    (  $<SoftwareEnvironment_tes> (  &<IdentifiableEntity_tes> ;
+          rdf:type [ schema1:Thing ] ? ;
+          <easyconfig> @linkml:String ? ;
+          <envmodule> @linkml:String ? ;
+          <conda> @linkml:String ? ;
+          <apptainer> @linkml:String ?
+       ) ;
+       rdf:type [ <SoftwareEnvironment> ]
+    )
+}
+
+<Stage> CLOSED {
+    (  $<Stage_tes> (  &<IdentifiableEntity_tes> ;
+          rdf:type [ schema1:Thing ] ? ;
+          <modules> @<Module> + ;
+          <inputs> @<InputCollection> * ;
+          <outputs> @<IOFile> *
+       ) ;
+       rdf:type [ <Stage> ]
+    )
+}
+

@@ -1,0 +1,75 @@
+ syntax="proto3";
+ package
+// metamodel_version: 1.7.0
+// A multi-stage workflow to evaluate processing stage for a specific task.
+message Benchmark
+ {
+  uriorcurie id = 0
+  string name = 0
+  string description = 0
+  string version = 0
+  string benchmarker = 0
+  softwareBackendEnum softwareBackend = 0
+  string storage = 0
+  storageAPIEnum storageApi = 0
+  string storageBucketName = 0
+ repeated  softwareEnvironment softwareEnvironments = 0
+  string benchmarkYamlSpec = 0
+ repeated  stage stages = 0
+ }
+// A holder for valid input combinations.
+message InputCollection
+ {
+ repeated  iOFile entries = 0
+ }
+// Represents an input / output file.
+message IOFile
+ {
+  uriorcurie id = 0
+  string name = 0
+  string description = 0
+  string path = 0
+ }
+// A single benchmark component assigned to a specific stage.
+message Module
+ {
+  uriorcurie id = 0
+  string name = 0
+  string description = 0
+  softwareEnvironment softwareEnvironment = 0
+  repository repository = 0
+ repeated  module exclude = 0
+ repeated  parameter parameters = 0
+ }
+// A parameter and its scope.
+message Parameter
+ {
+ repeated  string values = 0
+ }
+// A reference to code repository containing the module's executable code.
+message Repository
+ {
+  string url = 0
+  string commit = 0
+ }
+// Contains snapshots of the software environment required for the modules to run.
+message SoftwareEnvironment
+ {
+  uriorcurie id = 0
+  string name = 0
+  string description = 0
+  string easyconfig = 0
+  string envmodule = 0
+  string conda = 0
+  string apptainer = 0
+ }
+// A benchmark subtask with equivalent and independent modules.
+message Stage
+ {
+  uriorcurie id = 0
+  string name = 0
+  string description = 0
+ repeated  module modules = 0
+ repeated  inputCollection inputs = 0
+ repeated  iOFile outputs = 0
+ }

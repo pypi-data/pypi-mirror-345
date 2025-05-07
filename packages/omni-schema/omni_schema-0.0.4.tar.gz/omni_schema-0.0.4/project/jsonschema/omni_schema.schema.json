@@ -1,0 +1,447 @@
+{
+    "$defs": {
+        "Benchmark": {
+            "additionalProperties": false,
+            "description": "A multi-stage workflow to evaluate processing stage for a specific task.",
+            "properties": {
+                "benchmark_yaml_spec": {
+                    "description": "Benchmark Specification version.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "benchmarker": {
+                    "description": "The name and contact details of the person responsible for this benchmark.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "software_backend": {
+                    "$ref": "#/$defs/SoftwareBackendEnum",
+                    "description": "The software backend used to run the benchmark, e.g. whether apptainer, envmodules, or conda."
+                },
+                "software_environments": {
+                    "description": "Dictionary of software environments keyed by their identifiers",
+                    "items": {
+                        "$ref": "#/$defs/SoftwareEnvironment"
+                    },
+                    "type": "array"
+                },
+                "stages": {
+                    "items": {
+                        "$ref": "#/$defs/Stage"
+                    },
+                    "type": "array"
+                },
+                "storage": {
+                    "description": "The place hosting all benchmark data.",
+                    "type": "string"
+                },
+                "storage_api": {
+                    "$ref": "#/$defs/StorageAPIEnum",
+                    "description": "The type of the storage API, i.e. S3."
+                },
+                "storage_bucket_name": {
+                    "description": "The name of the bucket (i.e. for S3)",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "The version of the benchmark.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "version",
+                "benchmarker",
+                "software_backend",
+                "storage",
+                "storage_api",
+                "storage_bucket_name",
+                "software_environments",
+                "stages",
+                "id"
+            ],
+            "title": "Benchmark",
+            "type": "object"
+        },
+        "IOFile": {
+            "additionalProperties": false,
+            "description": "Represents an input / output file.",
+            "properties": {
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "path": {
+                    "description": "The output path pattern for the IO file.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "IOFile",
+            "type": "object"
+        },
+        "InputCollection": {
+            "additionalProperties": false,
+            "description": "A holder for valid input combinations.",
+            "properties": {
+                "entries": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "title": "InputCollection",
+            "type": "object"
+        },
+        "Module": {
+            "additionalProperties": false,
+            "description": "A single benchmark component assigned to a specific stage.",
+            "properties": {
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "exclude": {
+                    "description": "Ignore these module's outputs as input.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "parameters": {
+                    "items": {
+                        "$ref": "#/$defs/Parameter"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "repository": {
+                    "$ref": "#/$defs/Repository",
+                    "description": "The code repository hosting the module."
+                },
+                "software_environment": {
+                    "description": "Reference to a software environment by key.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "software_environment",
+                "repository",
+                "id"
+            ],
+            "title": "Module",
+            "type": "object"
+        },
+        "Parameter": {
+            "additionalProperties": false,
+            "description": "A parameter and its scope.",
+            "properties": {
+                "values": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "title": "Parameter",
+            "type": "object"
+        },
+        "Repository": {
+            "additionalProperties": false,
+            "description": "A reference to code repository containing the module's executable code.",
+            "properties": {
+                "commit": {
+                    "description": "The commit hash.",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "The git compatible url.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "url",
+                "commit"
+            ],
+            "title": "Repository",
+            "type": "object"
+        },
+        "SoftwareBackendEnum": {
+            "description": "",
+            "enum": [
+                "apptainer",
+                "envmodules",
+                "conda",
+                "docker",
+                "host"
+            ],
+            "title": "SoftwareBackendEnum",
+            "type": "string"
+        },
+        "SoftwareEnvironment": {
+            "additionalProperties": false,
+            "description": "Contains snapshots of the software environment required for the modules to run.",
+            "properties": {
+                "apptainer": {
+                    "description": "Apptainer image static ORAS url, including name:tag.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "conda": {
+                    "description": "Conda environment file.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "easyconfig": {
+                    "description": "Easybuild configuration file.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "envmodule": {
+                    "description": "Environment module name.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "SoftwareEnvironment",
+            "type": "object"
+        },
+        "Stage": {
+            "additionalProperties": false,
+            "description": "A benchmark subtask with equivalent and independent modules.",
+            "properties": {
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "inputs": {
+                    "items": {
+                        "$ref": "#/$defs/InputCollection"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "modules": {
+                    "items": {
+                        "$ref": "#/$defs/Module"
+                    },
+                    "type": "array"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "outputs": {
+                    "items": {
+                        "$ref": "#/$defs/IOFile"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "modules",
+                "id"
+            ],
+            "title": "Stage",
+            "type": "object"
+        },
+        "StorageAPIEnum": {
+            "description": "",
+            "enum": [
+                "S3"
+            ],
+            "title": "StorageAPIEnum",
+            "type": "string"
+        }
+    },
+    "$id": "https://w3id.org/omnibenchmark/omni-schema",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "additionalProperties": true,
+    "description": "A multi-stage workflow to evaluate processing stage for a specific task.",
+    "metamodel_version": "1.7.0",
+    "properties": {
+        "benchmark_yaml_spec": {
+            "description": "Benchmark Specification version.",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "benchmarker": {
+            "description": "The name and contact details of the person responsible for this benchmark.",
+            "type": "string"
+        },
+        "description": {
+            "description": "A human-readable description for a thing",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "id": {
+            "description": "A unique identifier for a thing",
+            "type": "string"
+        },
+        "name": {
+            "description": "A human-readable name for a thing",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "software_backend": {
+            "$ref": "#/$defs/SoftwareBackendEnum",
+            "description": "The software backend used to run the benchmark, e.g. whether apptainer, envmodules, or conda."
+        },
+        "software_environments": {
+            "description": "Dictionary of software environments keyed by their identifiers",
+            "items": {
+                "$ref": "#/$defs/SoftwareEnvironment"
+            },
+            "type": "array"
+        },
+        "stages": {
+            "items": {
+                "$ref": "#/$defs/Stage"
+            },
+            "type": "array"
+        },
+        "storage": {
+            "description": "The place hosting all benchmark data.",
+            "type": "string"
+        },
+        "storage_api": {
+            "$ref": "#/$defs/StorageAPIEnum",
+            "description": "The type of the storage API, i.e. S3."
+        },
+        "storage_bucket_name": {
+            "description": "The name of the bucket (i.e. for S3)",
+            "type": "string"
+        },
+        "version": {
+            "description": "The version of the benchmark.",
+            "type": "string"
+        }
+    },
+    "required": [
+        "version",
+        "benchmarker",
+        "software_backend",
+        "storage",
+        "storage_api",
+        "storage_bucket_name",
+        "software_environments",
+        "stages",
+        "id"
+    ],
+    "title": "omni-schema",
+    "type": "object",
+    "version": null
+}

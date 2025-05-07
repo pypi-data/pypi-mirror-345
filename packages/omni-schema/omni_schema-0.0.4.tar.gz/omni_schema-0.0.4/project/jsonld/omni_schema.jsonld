@@ -1,0 +1,948 @@
+{
+  "name": "omni-schema",
+  "description": "Data model for omnibenchmark.",
+  "title": "omni-schema",
+  "see_also": [
+    "https://omnibenchmark.github.io/omni-schema"
+  ],
+  "id": "https://w3id.org/omnibenchmark/omni-schema",
+  "imports": [
+    "linkml:types"
+  ],
+  "license": "Apache Software License 2.0",
+  "prefixes": [
+    {
+      "prefix_prefix": "omni_schema",
+      "prefix_reference": "https://w3id.org/omnibenchmark/omni-schema/"
+    },
+    {
+      "prefix_prefix": "linkml",
+      "prefix_reference": "https://w3id.org/linkml/"
+    },
+    {
+      "prefix_prefix": "schema",
+      "prefix_reference": "http://schema.org/"
+    },
+    {
+      "prefix_prefix": "example",
+      "prefix_reference": "https://example.org/"
+    }
+  ],
+  "default_prefix": "omni_schema",
+  "default_range": "string",
+  "types": [
+    {
+      "name": "string",
+      "definition_uri": "https://w3id.org/linkml/String",
+      "description": "A character string",
+      "notes": [
+        "In RDF serializations, a slot with range of string is treated as a literal or type xsd:string.   If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"string\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Text"
+      ],
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "integer",
+      "definition_uri": "https://w3id.org/linkml/Integer",
+      "description": "An integer",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"integer\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Integer"
+      ],
+      "base": "int",
+      "uri": "http://www.w3.org/2001/XMLSchema#integer",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "boolean",
+      "definition_uri": "https://w3id.org/linkml/Boolean",
+      "description": "A binary (true or false) value",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"boolean\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Boolean"
+      ],
+      "base": "Bool",
+      "uri": "http://www.w3.org/2001/XMLSchema#boolean",
+      "repr": "bool",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "float",
+      "definition_uri": "https://w3id.org/linkml/Float",
+      "description": "A real number that conforms to the xsd:float specification",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"float\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Float"
+      ],
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#float",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "double",
+      "definition_uri": "https://w3id.org/linkml/Double",
+      "description": "A real number that conforms to the xsd:double specification",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"double\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "close_mappings": [
+        "schema:Float"
+      ],
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#double",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "decimal",
+      "definition_uri": "https://w3id.org/linkml/Decimal",
+      "description": "A real number with arbitrary precision that conforms to the xsd:decimal specification",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"decimal\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "broad_mappings": [
+        "schema:Number"
+      ],
+      "base": "Decimal",
+      "uri": "http://www.w3.org/2001/XMLSchema#decimal",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "time",
+      "definition_uri": "https://w3id.org/linkml/Time",
+      "description": "A time object represents a (local) time of day, independent of any particular day",
+      "notes": [
+        "URI is dateTime because OWL reasoners do not work with straight date or time",
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"time\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Time"
+      ],
+      "base": "XSDTime",
+      "uri": "http://www.w3.org/2001/XMLSchema#time",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "date",
+      "definition_uri": "https://w3id.org/linkml/Date",
+      "description": "a date (year, month and day) in an idealized calendar",
+      "notes": [
+        "URI is dateTime because OWL reasoners don't work with straight date or time",
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"date\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Date"
+      ],
+      "base": "XSDDate",
+      "uri": "http://www.w3.org/2001/XMLSchema#date",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "datetime",
+      "definition_uri": "https://w3id.org/linkml/Datetime",
+      "description": "The combination of a date and time",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"datetime\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:DateTime"
+      ],
+      "base": "XSDDateTime",
+      "uri": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "date_or_datetime",
+      "definition_uri": "https://w3id.org/linkml/DateOrDatetime",
+      "description": "Either a date or a datetime",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"date_or_datetime\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "https://w3id.org/linkml/DateOrDatetime",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "uriorcurie",
+      "definition_uri": "https://w3id.org/linkml/Uriorcurie",
+      "description": "a URI or a CURIE",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"uriorcurie\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "URIorCURIE",
+      "uri": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "curie",
+      "definition_uri": "https://w3id.org/linkml/Curie",
+      "conforms_to": "https://www.w3.org/TR/curie/",
+      "description": "a compact URI",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"curie\"."
+      ],
+      "comments": [
+        "in RDF serializations this MUST be expanded to a URI",
+        "in non-RDF serializations MAY be serialized as the compact representation"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "Curie",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "uri",
+      "definition_uri": "https://w3id.org/linkml/Uri",
+      "conforms_to": "https://www.ietf.org/rfc/rfc3987.txt",
+      "description": "a complete URI",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"uri\"."
+      ],
+      "comments": [
+        "in RDF serializations a slot with range of uri is treated as a literal or type xsd:anyURI unless it is an identifier or a reference to an identifier, in which case it is translated directly to a node"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "close_mappings": [
+        "schema:URL"
+      ],
+      "base": "URI",
+      "uri": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "ncname",
+      "definition_uri": "https://w3id.org/linkml/Ncname",
+      "description": "Prefix part of CURIE",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"ncname\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "NCName",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "objectidentifier",
+      "definition_uri": "https://w3id.org/linkml/Objectidentifier",
+      "description": "A URI or CURIE that represents an object in the model.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"objectidentifier\"."
+      ],
+      "comments": [
+        "Used for inheritance and type checking"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "ElementIdentifier",
+      "uri": "http://www.w3.org/ns/shex#iri",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "nodeidentifier",
+      "definition_uri": "https://w3id.org/linkml/Nodeidentifier",
+      "description": "A URI, CURIE or BNODE that represents a node in a model.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"nodeidentifier\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "NodeIdentifier",
+      "uri": "http://www.w3.org/ns/shex#nonLiteral",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "jsonpointer",
+      "definition_uri": "https://w3id.org/linkml/Jsonpointer",
+      "conforms_to": "https://datatracker.ietf.org/doc/html/rfc6901",
+      "description": "A string encoding a JSON Pointer. The value of the string MUST conform to JSON Point syntax and SHOULD dereference to a valid object within the current instance document when encoded in tree form.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"jsonpointer\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "jsonpath",
+      "definition_uri": "https://w3id.org/linkml/Jsonpath",
+      "conforms_to": "https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html",
+      "description": "A string encoding a JSON Path. The value of the string MUST conform to JSON Point syntax and SHOULD dereference to zero or more valid objects within the current instance document when encoded in tree form.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"jsonpath\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "sparqlpath",
+      "definition_uri": "https://w3id.org/linkml/Sparqlpath",
+      "conforms_to": "https://www.w3.org/TR/sparql11-query/#propertypaths",
+      "description": "A string encoding a SPARQL Property Path. The value of the string MUST conform to SPARQL syntax and SHOULD dereference to zero or more valid objects within the current instance document when encoded as RDF.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"sparqlpath\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    }
+  ],
+  "enums": [
+    {
+      "name": "StorageAPIEnum",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/StorageAPIEnum",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "permissible_values": [
+        {
+          "text": "S3"
+        }
+      ]
+    },
+    {
+      "name": "SoftwareBackendEnum",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/SoftwareBackendEnum",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "permissible_values": [
+        {
+          "text": "apptainer"
+        },
+        {
+          "text": "envmodules"
+        },
+        {
+          "text": "conda"
+        },
+        {
+          "text": "docker"
+        },
+        {
+          "text": "host"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "name": "id",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/id",
+      "description": "A unique identifier for a thing",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "mappings": [
+        "http://schema.org/identifier"
+      ],
+      "slot_uri": "http://schema.org/identifier",
+      "identifier": true,
+      "owner": "IdentifiableEntity",
+      "domain_of": [
+        "IdentifiableEntity"
+      ],
+      "range": "uriorcurie",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "name",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/name",
+      "description": "A human-readable name for a thing",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "mappings": [
+        "http://schema.org/name"
+      ],
+      "slot_uri": "http://schema.org/name",
+      "owner": "IdentifiableEntity",
+      "domain_of": [
+        "IdentifiableEntity"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "description",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/description",
+      "description": "A human-readable description for a thing",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "mappings": [
+        "http://schema.org/description"
+      ],
+      "slot_uri": "http://schema.org/description",
+      "owner": "IdentifiableEntity",
+      "domain_of": [
+        "IdentifiableEntity"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "version",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/version",
+      "description": "The version of the benchmark.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/version",
+      "owner": "Benchmark",
+      "domain_of": [
+        "Benchmark"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "benchmarker",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/benchmarker",
+      "description": "The name and contact details of the person responsible for this benchmark.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/benchmarker",
+      "owner": "Benchmark",
+      "domain_of": [
+        "Benchmark"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "software_backend",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/software_backend",
+      "description": "The software backend used to run the benchmark, e.g. whether apptainer, envmodules, or conda.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/software_backend",
+      "owner": "Benchmark",
+      "domain_of": [
+        "Benchmark"
+      ],
+      "range": "SoftwareBackendEnum",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "storage",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/storage",
+      "description": "The place hosting all benchmark data.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/storage",
+      "owner": "Benchmark",
+      "domain_of": [
+        "Benchmark"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "storage_api",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/storage_api",
+      "description": "The type of the storage API, i.e. S3.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/storage_api",
+      "owner": "Benchmark",
+      "domain_of": [
+        "Benchmark"
+      ],
+      "range": "StorageAPIEnum",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "storage_bucket_name",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/storage_bucket_name",
+      "description": "The name of the bucket (i.e. for S3)",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/storage_bucket_name",
+      "owner": "Benchmark",
+      "domain_of": [
+        "Benchmark"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "stages",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/stages",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/stages",
+      "owner": "Benchmark",
+      "domain_of": [
+        "Benchmark"
+      ],
+      "range": "Stage",
+      "required": true,
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "modules",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/modules",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/modules",
+      "owner": "Stage",
+      "domain_of": [
+        "Stage"
+      ],
+      "range": "Module",
+      "required": true,
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "inputs",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/inputs",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/inputs",
+      "owner": "Stage",
+      "domain_of": [
+        "Stage"
+      ],
+      "range": "InputCollection",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "outputs",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/outputs",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/outputs",
+      "owner": "Stage",
+      "domain_of": [
+        "Stage"
+      ],
+      "range": "IOFile",
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "exclude",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/exclude",
+      "description": "Ignore these module's outputs as input.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/exclude",
+      "owner": "Module",
+      "domain_of": [
+        "Module"
+      ],
+      "range": "Module",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "repository",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/repository",
+      "description": "The code repository hosting the module.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/repository",
+      "owner": "Module",
+      "domain_of": [
+        "Module"
+      ],
+      "range": "Repository",
+      "required": true,
+      "inlined": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "parameters",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/parameters",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/parameters",
+      "owner": "Module",
+      "domain_of": [
+        "Module"
+      ],
+      "range": "Parameter",
+      "multivalued": true,
+      "inlined": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "software_environments",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/software_environments",
+      "description": "Dictionary of software environments keyed by their identifiers",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/software_environments",
+      "owner": "Benchmark",
+      "domain_of": [
+        "Benchmark"
+      ],
+      "range": "SoftwareEnvironment",
+      "required": true,
+      "multivalued": true,
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "software_environment",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/software_environment",
+      "description": "Reference to a software environment by key.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/software_environment",
+      "owner": "Module",
+      "domain_of": [
+        "Module"
+      ],
+      "range": "SoftwareEnvironment",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "path",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/path",
+      "description": "The output path pattern for the IO file.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/path",
+      "owner": "IOFile",
+      "domain_of": [
+        "IOFile"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "url",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/url",
+      "description": "The git compatible url.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/url",
+      "owner": "Repository",
+      "domain_of": [
+        "Repository"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "commit",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/commit",
+      "description": "The commit hash.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/commit",
+      "owner": "Repository",
+      "domain_of": [
+        "Repository"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "values",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/values",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/values",
+      "owner": "Parameter",
+      "domain_of": [
+        "Parameter"
+      ],
+      "range": "string",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "entries",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/entries",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/entries",
+      "owner": "InputCollection",
+      "domain_of": [
+        "InputCollection"
+      ],
+      "range": "IOFile",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "easyconfig",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/easyconfig",
+      "description": "Easybuild configuration file.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/easyconfig",
+      "owner": "SoftwareEnvironment",
+      "domain_of": [
+        "SoftwareEnvironment"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "envmodule",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/envmodule",
+      "description": "Environment module name.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/envmodule",
+      "owner": "SoftwareEnvironment",
+      "domain_of": [
+        "SoftwareEnvironment"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "conda",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/conda",
+      "description": "Conda environment file.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/conda",
+      "owner": "SoftwareEnvironment",
+      "domain_of": [
+        "SoftwareEnvironment"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "apptainer",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/apptainer",
+      "description": "Apptainer image static ORAS url, including name:tag.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/apptainer",
+      "owner": "SoftwareEnvironment",
+      "domain_of": [
+        "SoftwareEnvironment"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "benchmark_yaml_spec",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/benchmark_yaml_spec",
+      "description": "Benchmark Specification version.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slot_uri": "https://w3id.org/omnibenchmark/omni-schema/benchmark_yaml_spec",
+      "owner": "Benchmark",
+      "domain_of": [
+        "Benchmark"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    }
+  ],
+  "classes": [
+    {
+      "name": "IdentifiableEntity",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/IdentifiableEntity",
+      "description": "A generic grouping for any identifiable entity",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "mappings": [
+        "schema:Thing"
+      ],
+      "abstract": true,
+      "slots": [
+        "id",
+        "name",
+        "description"
+      ],
+      "slot_usage": {},
+      "class_uri": "http://schema.org/Thing",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Benchmark",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/Benchmark",
+      "description": "A multi-stage workflow to evaluate processing stage for a specific task.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "is_a": "IdentifiableEntity",
+      "slots": [
+        "id",
+        "name",
+        "description",
+        "version",
+        "benchmarker",
+        "software_backend",
+        "storage",
+        "storage_api",
+        "storage_bucket_name",
+        "software_environments",
+        "benchmark_yaml_spec",
+        "stages"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/omnibenchmark/omni-schema/Benchmark",
+      "tree_root": true,
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Stage",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/Stage",
+      "description": "A benchmark subtask with equivalent and independent modules.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "is_a": "IdentifiableEntity",
+      "slots": [
+        "id",
+        "name",
+        "description",
+        "modules",
+        "inputs",
+        "outputs"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/omnibenchmark/omni-schema/Stage",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Module",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/Module",
+      "description": "A single benchmark component assigned to a specific stage.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "is_a": "IdentifiableEntity",
+      "slots": [
+        "id",
+        "name",
+        "description",
+        "software_environment",
+        "repository",
+        "exclude",
+        "parameters"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/omnibenchmark/omni-schema/Module",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "IOFile",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/IOFile",
+      "description": "Represents an input / output file.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "is_a": "IdentifiableEntity",
+      "slots": [
+        "id",
+        "name",
+        "description",
+        "path"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/omnibenchmark/omni-schema/IOFile",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "InputCollection",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/InputCollection",
+      "description": "A holder for valid input combinations.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slots": [
+        "entries"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/omnibenchmark/omni-schema/InputCollection",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Repository",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/Repository",
+      "description": "A reference to code repository containing the module's executable code.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slots": [
+        "url",
+        "commit"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/omnibenchmark/omni-schema/Repository",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Parameter",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/Parameter",
+      "description": "A parameter and its scope.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "slots": [
+        "values"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/omnibenchmark/omni-schema/Parameter",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "SoftwareEnvironment",
+      "definition_uri": "https://w3id.org/omnibenchmark/omni-schema/SoftwareEnvironment",
+      "description": "Contains snapshots of the software environment required for the modules to run.",
+      "from_schema": "https://w3id.org/omnibenchmark/omni-schema",
+      "is_a": "IdentifiableEntity",
+      "slots": [
+        "id",
+        "name",
+        "description",
+        "easyconfig",
+        "envmodule",
+        "conda",
+        "apptainer"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/omnibenchmark/omni-schema/SoftwareEnvironment",
+      "@type": "ClassDefinition"
+    }
+  ],
+  "metamodel_version": "1.7.0",
+  "source_file": "omni_schema.yaml",
+  "source_file_date": "2024-09-11T19:12:26",
+  "source_file_size": 5442,
+  "generation_date": "2024-09-11T19:13:36",
+  "@type": "SchemaDefinition",
+  "@context": [
+    "project/jsonld/omni_schema.context.jsonld",
+    "https://w3id.org/linkml/types.context.jsonld",
+    {
+      "@base": "https://w3id.org/omnibenchmark/omni-schema/"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+# metamodel_version: 1.7.0
+type Benchmark
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    version: String!
+    benchmarker: String!
+    softwareBackend: SoftwareBackendEnum!
+    storage: String!
+    storageApi: StorageAPIEnum!
+    storageBucketName: String!
+    softwareEnvironments: [SoftwareEnvironment]!
+    benchmarkYamlSpec: String
+    stages: [Stage]!
+  }
+
+interface IdentifiableEntity
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+  }
+
+type InputCollection
+  {
+    entries: [IOFile]
+  }
+
+type IOFile
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    path: String
+  }
+
+type Module
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    softwareEnvironment: SoftwareEnvironment!
+    repository: Repository!
+    exclude: [Module]
+    parameters: [Parameter]
+  }
+
+type Parameter
+  {
+    values: [String]
+  }
+
+type Repository
+  {
+    url: String!
+    commit: String!
+  }
+
+type SoftwareEnvironment
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    easyconfig: String
+    envmodule: String
+    conda: String
+    apptainer: String
+  }
+
+type Stage
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    modules: [Module]!
+    inputs: [InputCollection]
+    outputs: [IOFile]
+  }
+

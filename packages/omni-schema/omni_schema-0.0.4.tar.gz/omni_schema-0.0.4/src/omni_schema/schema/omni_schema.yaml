@@ -1,0 +1,261 @@
+---
+id: https://w3id.org/omnibenchmark/omni-schema
+name: omni-schema
+title: omni-schema
+description: |-
+  Data model for omnibenchmark.
+license: Apache Software License 2.0
+see_also:
+  - https://omnibenchmark.github.io/omni-schema
+
+prefixes:
+  omni_schema: https://w3id.org/omnibenchmark/omni-schema/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  example: https://example.org/
+default_prefix: omni_schema
+default_range: string
+
+imports:
+  - linkml:types
+
+enums:
+  StorageAPIEnum:
+    permissible_values:
+      S3:
+        text: S3
+  SoftwareBackendEnum:
+    permissible_values:
+      apptainer:
+        text: apptainer
+      envmodules:
+        text: envmodules
+      conda:
+        text: conda
+      docker:
+        text: docker
+      host:
+        text: host
+
+classes:
+  IdentifiableEntity:
+    abstract: true
+    description: >-
+      A generic grouping for any identifiable entity
+    slots:
+      - id
+      - name
+      - description
+    class_uri: schema:Thing
+
+  Benchmark:
+    is_a: IdentifiableEntity
+    tree_root: true
+    description: >-
+      A multi-stage workflow to evaluate processing stage for a specific task.
+    slots:
+      - version
+      - benchmarker
+      - software_backend
+      - storage
+      - storage_api
+      - storage_bucket_name
+      - software_environments
+      - benchmark_yaml_spec
+      - stages
+
+  Stage:
+    is_a: IdentifiableEntity
+    description: >-
+      A benchmark subtask with equivalent and independent modules.
+    slots:
+      - modules
+      - inputs
+      - outputs
+
+  Module:
+    is_a: IdentifiableEntity
+    description: >-
+      A single benchmark component assigned to a specific stage.
+    slots:
+      - software_environment
+      - repository
+      - exclude
+      - parameters
+
+  IOFile:
+    is_a: IdentifiableEntity
+    description: >-
+      Represents an input / output file.
+    slots:
+      - path
+
+  InputCollection:
+    description: >-
+      A holder for valid input combinations.
+    slots:
+      - entries
+
+  Repository:
+    description: >-
+      A reference to code repository containing the module's executable code.
+    slots:
+      - url
+      - commit
+
+  Parameter:
+    description: >-
+      A parameter and its scope.
+    slots:
+      - values
+
+  SoftwareEnvironment:
+    is_a: IdentifiableEntity
+    description: >-
+      Contains snapshots of the software environment required for the modules to run.
+    slots:
+      - easyconfig
+      - envmodule
+      - conda
+      - apptainer
+
+slots:
+  id:
+    identifier: true
+    slot_uri: schema:identifier
+    range: uriorcurie
+    description: A unique identifier for a thing
+    required: true
+
+  name:
+    slot_uri: schema:name
+    description: A human-readable name for a thing
+
+  description:
+    slot_uri: schema:description
+    description: A human-readable description for a thing
+
+  version:
+    range: string
+    description: The version of the benchmark.
+    required: true
+
+  benchmarker:
+    range: string
+    description: The name and contact details of the person responsible for this benchmark.
+    required: true
+
+  software_backend:
+    range: SoftwareBackendEnum
+    description: The software backend used to run the benchmark, e.g. whether apptainer, envmodules, or conda.
+    required: true
+    
+  storage:
+    range: string
+    description: The place hosting all benchmark data.
+    required: true
+
+  storage_api:
+    range: StorageAPIEnum
+    description: The type of the storage API, i.e. S3.
+    required: true
+    
+  storage_bucket_name:
+    range: string 
+    description: The name of the bucket (i.e. for S3)
+    required: true
+
+  stages:
+    range: Stage
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    required: true
+  
+  modules:
+    range: Module
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    required: true
+
+  inputs:
+    range: InputCollection
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+
+  outputs:
+    range: IOFile
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+
+  exclude:
+    range: Module
+    multivalued: true
+    description: Ignore these module's outputs as input.
+
+  repository:
+    range: Repository
+    description: The code repository hosting the module.
+    required: true
+
+  parameters:
+    range: Parameter
+    multivalued: true
+
+  software_environments:
+    range: SoftwareEnvironment
+    description: "Dictionary of software environments keyed by their identifiers"
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    required: true
+
+  software_environment:
+    range: SoftwareEnvironment
+    description: Reference to a software environment by key.
+    required: true
+
+  path:
+    range: string
+    description: The output path pattern for the IO file.
+
+  url:
+    range: string
+    description: The git compatible url.
+    required: true
+
+  commit:
+    range: string
+    description: The commit hash.
+    required: true
+
+  values:
+    range: string
+    multivalued: true
+
+  entries:
+    range: IOFile
+    multivalued: true
+
+  easyconfig:
+    range: string
+    description: Easybuild configuration file.
+
+  envmodule:
+    range: string
+    description: Environment module name.
+
+  conda:
+    range: string
+    description: Conda environment file.
+
+  apptainer:
+    range: string
+    description: Apptainer image static ORAS url, including name:tag.
+
+  benchmark_yaml_spec:
+    range: string
+    description: Benchmark Specification version.
