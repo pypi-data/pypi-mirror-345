@@ -1,0 +1,49 @@
+Metadata-Version: 2.4
+Name: wordsim
+Version: 0.1.0
+Summary: This is simply a word similarity model that matches the desired word to the most similar word in a reference list of words provided by the user.
+Home-page: https://github.com/Khaled-Terzaki/wordsim.git
+Author: Khaled Terzaki
+Author-email: khaled.m.terzaki@gmail.com
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Text Processing :: Linguistic
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary
+
+# wordsim
+This is the source code of a smart model that finds the similarity between a given word and a reference list of words. Then it returns the word that has the most similarity.
+
+## How to use:
+
+from wordsim import * # import the module
+
+lst = ['Red', 'Green', 'Blue'] # define a list of strings
+
+model = wordSim() # create an instance of the class 'wordSim'
+
+model.train(lst) # train your model using your list of strings
+
+results = model.predict('blu') # commence prediction
+
+print(results) # print results:
+
+print(model.get_best()) # or print it that way
