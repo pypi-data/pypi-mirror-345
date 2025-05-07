@@ -1,0 +1,20 @@
+
+from softwareai_engine_library.Chat.utils.encode_image_to_base64 import encode_image_to_base64
+
+def build_image_messages(images):
+    image_messages = []
+    for image in images:
+        try:
+            ext = image.filename.split('.')[-1].lower()
+            mime_type = f"image/{ext if ext != 'jpg' else 'jpeg'}"
+            base64_str = encode_image_to_base64(image)
+            image_messages.append({
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:{mime_type};base64,{base64_str}",
+                    "detail": "high"
+                }
+            })
+        except Exception as e:
+            print(f"Erro ao processar imagem: {e}")
+    return image_messages
