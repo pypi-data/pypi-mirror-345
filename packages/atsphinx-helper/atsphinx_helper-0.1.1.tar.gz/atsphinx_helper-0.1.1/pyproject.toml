@@ -1,0 +1,74 @@
+[project]
+name = "atsphinx-helper"
+version = "0.1.1"
+description = "Helper for my Sphinx extension"
+authors = [
+    { name = "Kazuya Takei", email = "myself@attakei.net" }
+]
+dependencies = [
+    "sphinx",
+]
+readme = "README.rst"
+requires-python = ">= 3.9"
+license = "Apache-2.0"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Sphinx",
+    "Framework :: Sphinx :: Extension",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Documentation :: Sphinx",
+]
+
+[project.urls]
+Home = "https://github.com/atsphinx/helper"
+Repository = "https://github.com/atsphinx/helper"
+Issues = "https://github.com/atsphinx/helper/issues"
+Changelog = "https://github.com/atsphinx/helper/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    {include-group = "test"},
+    {include-group = "docs"},
+    "doc8",
+    "esbonio",
+    "mypy",
+    "ruff",
+    "types-docutils>=0.21.0.20241128",
+]
+docs = [
+    "atsphinx-mini18n",
+    "furo",
+    "myst-parser~=2.0.0",
+    "sphinx~=7.2.6",
+    "sphinx-autobuild",
+    "sphinx-intl",
+]
+test = [
+    "pytest",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff.lint]
+select = ["C90", "D", "E", "F", "I", "W"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/atsphinx"]
+only-includes = ["src/atsphinx"]
