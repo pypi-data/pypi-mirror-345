@@ -1,0 +1,13 @@
+CMD_ATTR = '__cmd'
+CALLBACK_ID_REGEX = '__callback'
+BLOCK_ACTION_OPTIONS = '__block_action'
+DIALOG_SUBMIT_ID = '__dialog_submit'
+DIALOG_CANCEL_ID = '__dialog_cancel'
+JOB_ATTR_DAILY = '__schedule'
+WS_ATTR = '__ws'
+WS_JSON_VALUES = '__ws_json'
+VIEW_CLOSED_ID = '__view_closed'
+VIEW_SUBMIT_ID = '__view_submit'
+ASYNC_REPLY = '__async_reply'
+NO_AUTH = '__no_auth'
+
