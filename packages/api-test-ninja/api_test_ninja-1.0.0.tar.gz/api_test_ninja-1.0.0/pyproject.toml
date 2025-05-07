@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling>=1.10.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "api-test-ninja"
+version = "1.0.0"
+description = "API Testing Framework to automate API testing using LLM Agents"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+  {name = "Sajan Silwal", email = "silwalsajan@gmail.com"}
+]
+maintainers = [
+  {name = "Sajan Silwal", email = "silwalsajan@gmail.com"}
+]
+
+keywords = [
+  "api testing",
+  "openapi",
+  "swagger",
+  "yaml",
+  "llm",
+  "openai",
+  "test automation",
+  "test flows",
+  "api validation",
+  "integration testing",
+  "python testing",
+  "click cli",
+  "pytest plugin"
+]
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3",
+  "Framework :: Pytest",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Testing",
+  "Topic :: Utilities"
+]
+
+dependencies = [
+    "openai-agents>=0.0.14",
+    "openai>=1.76.0",
+    "pytest>=8.3.5",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.3",
+    "pydantic>=2.11.4",
+    "rich>=14.0.0",
+    "pytest-sugar>=1.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "ruff>=0.11.7",
+]
+
+[project.entry-points."pytest11"]
+api_ninja = "api_ninja.plugin"
+
+[project.scripts]
+api-ninja = "api_ninja.cli:cli"
+
+[project.urls]
+Homepage = "https://github.com/ssilwal29/api-ninja"
+Documentation = "https://ssilwal29.github.io/api-ninja"
+Repository = "https://github.com/ssilwal29/api-ninja"
+"Bug Tracker" = "https://github.com/ssilwal29/api-ninja/issues"
+Changelog = "https://github.com/ssilwal29/api-ninja/blob/main/CHANGELOG.md"
+
+[tool.hatch.build]
+packages = ["src/api_ninja"]
