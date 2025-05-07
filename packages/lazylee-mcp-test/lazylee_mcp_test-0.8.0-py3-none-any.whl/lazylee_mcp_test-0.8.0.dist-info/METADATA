@@ -1,0 +1,45 @@
+Metadata-Version: 2.4
+Name: lazylee-mcp-test
+Version: 0.8.0
+Summary: Add your description here
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: mcp[cli]>=1.7.1
+Requires-Dist: mcp>=1.0.0
+Dynamic: license-file
+
+### mcp server test
+
+
+#### 初始化
+
+~~~ shell 
+uv init .
+uv venv
+source .venv/bin/activate
+uv add "mcp[cli]" httpx
+~~~
+
+
+#### 本地测试验证
+npx -y @modelcontextprotocol/inspector
+
+
+#### 部署配置
+
+{
+    "mcp": {
+        "servers": {
+            "Filesystem Operations": {
+                "command": "uvx",
+                "args": [
+                    "https://github.com/lazysGit/lazylee_mcp_test.git"
+                ]
+            }
+        }
+    }
+}
+
+
