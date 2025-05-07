@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyrusapix"  # Имя вашего пакета (должно совпадать с названием в src/)
+version = "1.1"
+description = "Альтернативная библиотека для работы с Pyrus API"
+authors = [
+    { name = "Майкл Белачев", email = "mbelachev@yandex.ru" },
+]
+#readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [  # Зависимости из requirements.txt
+    "aiohttp",
+    "python-dotenv"
+]
+
+# Настройки pytest
+[tool.pytest.ini_options]
+python_files = ["test_*.py", "tests/test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["testing/tests"]  # Путь к тестам
+pythonpath = [
+    ".",       # Корень проекта
+    "src",     # Папка с вашей библиотекой
+    "testing"  # Папка с тестами
+]
