@@ -1,0 +1,142 @@
+Metadata-Version: 2.4
+Name: quma
+Version: 0.1.1
+Summary: A SQL/database library
+Keywords: sql,database
+Author-email: ebene fünf GmbH <info@ebenefuenf.de>
+Requires-Python: >=3.8
+Description-Content-Type: text/x-rst
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Database :: Front-Ends
+License-File: LICENSE.rst
+Requires-Dist: ruff ; extra == "dev"
+Requires-Dist: sphinx ; extra == "docs"
+Requires-Dist: sphinx-autobuild ; extra == "docs"
+Requires-Dist: mysqlclient ; extra == "mysql"
+Requires-Dist: psycopg2 ; extra == "postgres" and ( implementation_name=='cpython')
+Requires-Dist: psycopg2cffi ; extra == "postgres" and ( implementation_name=='pypy')
+Requires-Dist: mako ; extra == "templates"
+Requires-Dist: pytest ; extra == "test"
+Requires-Dist: pytest-cov ; extra == "test"
+Requires-Dist: coverage-conditional-plugin ; extra == "test"
+Project-URL: Documentation, https://quma.readthedocs.io
+Project-URL: Homepage, https://github.com/ebenefuenf/quma
+Project-URL: Issues, https://github.com/ebenefuenf/quma/issues
+Provides-Extra: dev
+Provides-Extra: docs
+Provides-Extra: mysql
+Provides-Extra: postgres
+Provides-Extra: templates
+Provides-Extra: test
+
+====
+quma
+====
+
+|build| |docs|
+
+quma is a small SQL database library for **Python**  and **PyPy** version 3.5 and higher.
+It maps object methods to SQL script files and supports **SQLite**, **PostgreSQL**,
+**MySQL** and **MariaDB**.
+
+It also provides a simple connection pool and templating for dynamic SQL like
+conditional WHEREs.
+
+Motivation
+----------
+
+Unlike ORMs, it allows to write SQL as it was intended and to use all features
+the DBMS provides. As it uses plain SQL files you can fully utilize your database
+editor or IDE to author your queries.
+
+If you know how to best design your DDL and already have a SELECT in your mind
+when data needs to be retrieved, welcome, this is for you.
+
+It gives you back your powers you so carelessly gave away to ORMs.
+
+Installation
+------------
+
+::
+
+    pip install quma
+
+Quick Start
+-----------
+
+The full documentation is available at https://quma.readthedocs.io
+
+Given a directory with some SQL scripts e. g.:
+
+::
+
+    /path/to/sql/scripts
+    ├── users
+    │    ├── all.sql
+    │    └── remove.sql
+    └── get_admin.sql
+
+You can access these scripts after connecting to the database:
+
+.. code-block:: python
+
+    from quma import Database
+
+    db = Database('sqlite:///:memory:', '/path/to/sql/scripts')
+
+    db.execute('CREATE TABLE users ...')
+
+    with db.cursor as cur:
+        all_users = cur.users.all()
+
+        for user in all_users:
+            print(user['name'])
+
+        cur.users.remove(id=user['id']).run()
+        cur.commit()
+
+        admin = cur.get_admin().one()
+
+Deploy to PyPi
+--------------
+
+Install ``uv`` if not already done. Bump version number in
+``setup.py``, then:
+
+::
+
+    git tag -a X.X.X -m "quma version X.X.X"
+    git push origin X.X.X
+    uv build
+
+	# publish manually
+    uv publish --username <user> --token <token>
+
+	# publish with credentials in .pypirc
+	uvx uv-publish
+
+License
+-------
+
+quma is released under the MIT license.
+
+Copyright © 2018-2024 ebene fünf GmbH. All rights reserved.
+
+.. |build| image:: https://badge.fury.io/py/quma.svg
+    :target: https://badge.fury.io/py/quma
+    :alt: PyPi package version
+
+.. |docs| image:: https://readthedocs.org/projects/quma/badge/?version=latest
+    :target: https://quma.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+
