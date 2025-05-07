@@ -1,0 +1,129 @@
+[tool.poetry]
+name = "ado_wrapper"
+description = "A high level wrapper around the AzureDevops API including OOP principals and state management"
+authors = ["Ben Skerritt"]
+version = "1.44.0"
+license = "Proprietary"
+readme = "README.md"
+packages = [{include = "ado_wrapper"}]
+
+[tool.poetry.scripts]
+ado_wrapper = "ado_wrapper.__main__:main"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "2.31.0"
+pyyaml = "6.0.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+pylint = "^2.17.5"
+pytest = "^7.4.0"
+coverage = "^7.4.4"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+exclude = [".vscode", ".pytest_cache", ".mypy_cache", ".git", "__pycache__", "script.py", "dev_testing.py"]
+strict = true
+
+[tool.pylint.main]
+ignore = [".vscode", ".pytest_cache", ".mypy_cache", ".git", "__pycache__", "script.py", "dev_testing.py"]
+recursive = true
+
+[tool.pylint.messages_control]
+max-line-length = 140
+disable = [
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "missing-timeout",
+
+    "too-few-public-methods",
+    "too-many-instance-attributes",
+    "too-many-arguments",
+
+    "wrong-import-position",
+    "duplicate-code",
+    "unused-argument",
+    "fixme",
+    "arguments-differ",
+    "arguments-renamed",
+    "invalid-name",
+    "too-many-locals",
+    "line-too-long",
+    "broad-exception-caught",
+    "import-outside-toplevel",
+    "attribute-defined-outside-init",
+    "cyclic-import",
+    "redefined-outer-name",
+    "abstract-method",
+    "pointless-statement",
+    "inconsistent-return-statements",
+    "too-many-public-methods",
+    # This is super weird, why its suddenly happening
+    "not-an-iterable",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", ]
+log_cli = true
+markers = [
+    "wip: mark test as a work in progress",
+    "from_request_payload: mark test which convert payloads to resources",
+    "update: Tests which are used to update the API",
+    "create_delete: Tests which are used to create and delete resources",
+    "get_by_id: Tests which are used to get resources by their ID",
+    "get_all: Tests which are used to get all resources",
+    "get_all_by_name: Tests which are used to get resources by their name",
+    "get_contents: Tests which get the contents of things, e.g. variable group variables",
+    "integrations: Tests which are used to test full integrations of multiple resources",
+    "hierarchy: Tests which use unofficial hierarchy calls",
+]
+
+[tool.black]
+line_length = 140
+
+[tool.isort]
+profile = "black"
+
+[tool.coverage.run]
+omit = [
+    "__pycache__/*",
+    ".mypy_cache/*",
+    ".pytest_cache/*",
+    ".ruff_cache/*",
+    ".vscode/*",
+    "ado_wrapper_logs/*",
+    "dist/*",
+    "htmlcov/*",
+    "tests/*",
+    "/opt/*",
+]
+
+[tool.bandit]
+skips = ["B101", "B105", "B106", "B107"]  # SQL Injection, assert x3
+
+[tool.ruff]
+line-length = 140
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle
+    "F",  # Pyflakes
+    "UP",  # pyupgrade
+    "B",  # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "I",  # isort
+]
+ignore = ["F401", "F403", "E501", "I001", "E226", "SIM105", "SIM118"]
