@@ -1,0 +1,28 @@
+# Orcastrator Configuration File
+
+[general]
+output_dir = "test_molecules_calculations" # Directory for calculation outputs
+overwrite = true                           # Whether to overwrite existing calculations
+keep_scratch = false                       # Whether to keep scratch directories
+
+[[molecules]]
+name = "fe_cy_m2"
+xyz_file = "assets/h2.xyz" # Path to input XYZ file
+charge = 0                 # Molecular charge
+mult = 1                   # Spin multiplicity
+
+[[molecules]]
+name = "fe_cy_m4"
+xyz_file = "assets/h2.xyz" # Path to input XYZ file
+charge = 0                 # Molecular charge
+mult = 3                   # Spin multiplicity
+
+[optimization]
+keywords = ["B3LYP", "def2-SVP", "D3BJ"] # Keywords for optimization
+
+[frequency]
+keywords = ["B3LYP", "def2-SVP", "D3BJ"] # Keywords for frequency calculation
+
+[single_point]
+keywords = ["B3LYP", "def2-TZVP", "D3BJ", "RIJCOSX"] # Keywords for single point
+blocks = ["%TDDFT NROOTS 2 END"]
