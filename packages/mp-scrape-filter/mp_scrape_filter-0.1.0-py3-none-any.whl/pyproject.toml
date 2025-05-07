@@ -1,0 +1,40 @@
+# SPDX-FileCopyrightText: 2025 Sofía Aritz <sofiaritz@fsfe.org>
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[project]
+name = "mp_scrape_filter"
+version = "0.1.0"
+dependencies = [
+    "pandas>=2",
+    "mp_scrape_core>=0.1.0",
+    "playwright>=1.50",
+]
+authors = [
+    { name = "Free Software Foundation Europe e.V.", email = "mp-scrape@fsfe.org" },
+]
+maintainers = [
+    { name = "Sofía Aritz", email = "sofiaritz@fsfe.org" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Programming Language :: Python :: 3.11",
+    "Typing :: Typed",
+]
+description = "Filter rows based on the value of a column"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "AGPL-3.0-only"
+
+[project.urls]
+Homepage = "https://git.fsfe.org/mp-scrape/mp-scrape"
+Issues = "https://git.fsfe.org/mp-scrape/mp-scrape/issues"
