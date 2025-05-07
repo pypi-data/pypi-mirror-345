@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kvmm"
+authors = [{ name = "Gitesh Chawda", email = "gitesh.ch.0912@gmail.com" }]
+description = "Pretrained keras 3 vision models"
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = [
+    "machine-learning",
+    "jax",
+    "computer-vision",
+    "neural-networks",
+    "tensorflow",
+    "torch",
+    "deep-learning",
+    "keras",
+    "imagenet",
+    "pretrained-weights",
+    "convolutional-neural-networks",
+    "transfer-learning",
+    "python-ml",
+    "data-science",
+    "ai-research",
+    "vision-transformer",
+    "image-classification",
+    "model-training",
+    "pytorch",
+]
+license = { text = "Apache License 2.0" }
+classifiers = [
+        'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: Apache Software License',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Topic :: Scientific/Engineering',
+        'Topic :: Scientific/Engineering :: Artificial Intelligence',
+        'Topic :: Software Development',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+]
+dynamic = ["version"]
+dependencies = ["keras"]
+
+[project.urls]
+homepage = "https://github.com/IMvision12/keras-vision-models"
+documentation = "https://github.com/IMvision12/keras-vision-models"
+repository = "https://github.com/IMvision12/keras-vision-models.git"
+
+[tool.setuptools.packages]
+find = { include = ["kvmm*"] }
+
+[tool.setuptools.dynamic]
+version = { attr = "kvmm.__version__" }
+
+[tool.ruff.lint]
+ignore = ["C901", "E501", "E741", "F402", "F823"]
+select = ["C", "E", "F", "I", "W"]
+
+# Ignore specific linting errors for ALL __init__.py files
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402", "F401", "F403", "F811"]
