@@ -1,0 +1,631 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ object.name }} - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <c-page-header 
+        title="{{ object.name }}"
+        :actions="[
+            {
+                'text': 'Edit',
+                'url': '{% url 'networks:template-edit' pk=object.pk %}',
+                'style': 'secondary'
+            },
+            {
+                'text': 'Delete',
+                'url': '{% url 'networks:template-delete' pk=object.pk %}',
+                'style': 'danger'
+            }
+        ]">
+        <div class="flex gap-2">
+            {% if object.is_lighthouse %}
+            <c-badge text="Lighthouse" type="success"></c-badge>
+            {% endif %}
+            {% if object.is_relay %}
+            <c-badge text="Relay" type="success"></c-badge>
+            {% endif %}
+            {% if not object.is_lighthouse and not object.is_relay %}
+            <c-badge text="Client" type="secondary"></c-badge>
+            {% endif %}
+        </div>
+    </c-page-header>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <c-info-card title="Basic Information">
+            <dl class="mt-4 space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Network</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        <a href="{% url 'networks:network-detail' pk=network.pk %}" 
+                           class="text-indigo-600 hover:text-indigo-500">
+                            {{ network.name }}
+                        </a>
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Enrollment Key</dt>
+                    <dd class="mt-1 text-sm font-mono text-gray-900">{{ object.enrollment_key }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Network Role Settings</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>Lighthouse: {{ object.is_lighthouse|yesno:"Yes,No" }}</li>
+                            <li>Relay: {{ object.is_relay|yesno:"Yes,No" }}</li>
+                            <li>Use Relay: {{ object.use_relay|yesno:"Yes,No" }}</li>
+                        </ul>
+                    </dd>
+                </div>
+            </dl>
+        </c-info-card>
+
+        <c-info-card title="Installation & Enrollment Instructions">
+            <div x-data="{
+                activeTab: 'linux',
+                copiedStates: {
+                    install_uv: false,
+                    source_uv: false,
+                    install_mesh: false,
+                    set_env: false,
+                    enroll: false,
+                    start: false,
+                    service: false,
+                    service_start: false,
+                    docker_create: false,
+                    docker_exec: false,
+                    docker_apt: false
+                },
+                showOptions: false,
+                hostname: '',
+                publicIp: '',
+                getCommand() {
+                    const token = '{{ enrollment_token }}';
+                    let cmd = 'meshadmin host enroll \\\n';
+                    if (this.hostname) cmd += '    --preferred-hostname \'' + this.hostname + '\' \\\n';
+                    if (this.publicIp) cmd += '    --mesh-public-ip \'' + this.publicIp + '\' \\\n';
+                    cmd = cmd.replace(/\\\n$/, ' ');
+                    cmd += '\'' + token + '\'';
+                    return cmd;
+                }
+            }" class="mt-4">
+                <!-- Tab Navigation -->
+                <nav class="flex space-x-4 mb-4">
+                    <button @click="activeTab = 'linux'" 
+                            :class="{'bg-indigo-100 text-indigo-700': activeTab === 'linux', 'text-gray-500 hover:text-gray-700': activeTab !== 'linux'}"
+                            class="px-3 py-2 text-sm font-medium rounded-md">
+                        Linux/macOS
+                    </button>
+                    <button @click="activeTab = 'docker'" 
+                            :class="{'bg-indigo-100 text-indigo-700': activeTab === 'docker', 'text-gray-500 hover:text-gray-700': activeTab !== 'docker'}"
+                            class="px-3 py-2 text-sm font-medium rounded-md">
+                        Docker
+                    </button>
+                </nav>
+
+                <!-- Linux/macOS Instructions -->
+                <div x-show="activeTab === 'linux'" class="space-y-4">
+                    <div class="prose prose-sm max-w-none">
+                        <h3 class="text-base font-medium text-gray-900">1. Install MeshAdmin CLI</h3>
+                        
+                        <!-- Install UV -->
+                        <div class="relative mt-4">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto"><code># Install uv package manager
+curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('curl -LsSf https://astral.sh/uv/install.sh | sh');
+                                copiedStates.install_uv = true;
+                                setTimeout(() => copiedStates.install_uv = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.install_uv" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <!-- Source UV -->
+                        <div class="relative mt-4">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto"><code># Add uv to your current shell session
+source $HOME/.local/bin/env</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('source $HOME/.local/bin/env');
+                                copiedStates.source_uv = true;
+                                setTimeout(() => copiedStates.source_uv = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.source_uv" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <!-- Install MeshAdmin -->
+                        <div class="relative mt-4">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto"><code># Install meshadmin package
+uv tool install --upgrade meshadmin</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('uv tool install --upgrade meshadmin');
+                                copiedStates.install_mesh = true;
+                                setTimeout(() => copiedStates.install_mesh = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.install_mesh" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-medium text-gray-900 mt-6">2. Create Context</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code>meshadmin context create default \
+    --endpoint '{{ server_url }}'</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('meshadmin context create default --endpoint \'{{ server_url }}\'');
+                                copiedStates.set_env = true;
+                                setTimeout(() => copiedStates.set_env = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.set_env" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-medium text-gray-900 mt-6">3. Enroll in Network</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96" x-text="getCommand()"></pre>
+                            <button @click="
+                                navigator.clipboard.writeText(getCommand().replace(/\\\n\s*/g, ' '));
+                                copiedStates.enroll = true;
+                                setTimeout(() => copiedStates.enroll = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.enroll" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-medium text-gray-900 mt-6">4. Start Process for Config Updates</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code>meshadmin nebula start</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('meshadmin nebula start');
+                                copiedStates.start = true;
+                                setTimeout(() => copiedStates.start = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.start" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-medium text-gray-900 mt-6">5. Install Service</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code>meshadmin service install</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('meshadmin service install');
+                                copiedStates.service = true;
+                                setTimeout(() => copiedStates.service = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.service" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+                        <h3 class="text-base font-medium text-gray-900 mt-6">6. Start Service</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code>meshadmin service start</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('meshadmin service start');
+                                copiedStates.service_start = true;
+                                setTimeout(() => copiedStates.service_start = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.service_start" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Docker Instructions -->
+                <div x-show="activeTab === 'docker'" class="space-y-4">
+                    <div class="prose prose-sm max-w-none">
+                        <h3 class="text-base font-medium text-gray-900">1. Setup Docker Container</h3>
+                        
+                        <!-- Create container -->
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code># Create and start container
+docker run -d --name mesh-client \
+    --cap-add=NET_ADMIN \
+    --device=/dev/net/tun:/dev/net/tun \
+    -p 4242:4242/udp \
+    ubuntu:22.04 sleep infinity</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText($el.previousElementSibling.innerText.replace(/\\\n\s*/g, ' '));
+                                copiedStates.docker_create = true;
+                                setTimeout(() => copiedStates.docker_create = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.docker_create" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <!-- Enter container -->
+                        <div class="relative mt-4">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code># Enter the container
+docker exec -it mesh-client bash</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('docker exec -it mesh-client bash');
+                                copiedStates.docker_exec = true;
+                                setTimeout(() => copiedStates.docker_exec = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.docker_exec" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <!-- Install packages -->
+                        <div class="relative mt-4">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code># Install required packages
+apt update && apt install -y curl</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('apt update && apt install -y curl');
+                                copiedStates.docker_apt = true;
+                                setTimeout(() => copiedStates.docker_apt = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.docker_apt" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-medium text-gray-900 mt-6">2. Install MeshAdmin CLI</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto"><code># Install uv package manager
+curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('curl -LsSf https://astral.sh/uv/install.sh | sh');
+                                copiedStates.install_uv = true;
+                                setTimeout(() => copiedStates.install_uv = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.install_uv" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <div class="relative mt-4">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto"><code># Add uv to your current shell session
+source $HOME/.local/bin/env</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('source $HOME/.local/bin/env');
+                                copiedStates.source_uv = true;
+                                setTimeout(() => copiedStates.source_uv = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.source_uv" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <div class="relative mt-4">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto"><code># Install meshadmin package
+uv tool install --upgrade meshadmin</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('uv tool install --upgrade meshadmin');
+                                copiedStates.install_mesh = true;
+                                setTimeout(() => copiedStates.install_mesh = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.install_mesh" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-medium text-gray-900 mt-6">3. Create Context</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code>meshadmin context create default \
+    --endpoint '{{ server_url }}'</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('meshadmin context create default --endpoint \'{{ server_url }}\'');
+                                copiedStates.set_env = true;
+                                setTimeout(() => copiedStates.set_env = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.set_env" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-medium text-gray-900 mt-6">4. Enroll in Network</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96" x-text="getCommand()"></pre>
+                            <button @click="
+                                navigator.clipboard.writeText(getCommand().replace(/\\\n\s*/g, ' '));
+                                copiedStates.enroll = true;
+                                setTimeout(() => copiedStates.enroll = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.enroll" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-medium text-gray-900 mt-6">5. Start Process for Config Updates</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code>meshadmin nebula start</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('meshadmin nebula start');
+                                copiedStates.start = true;
+                                setTimeout(() => copiedStates.start = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.start" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-medium text-gray-900 mt-6">6. Install Service</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code>meshadmin service install</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('meshadmin service install');
+                                copiedStates.service = true;
+                                setTimeout(() => copiedStates.service = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.service" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-medium text-gray-900 mt-6">7. Start Service</h3>
+                        <div class="relative">
+                            <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md whitespace-pre-wrap overflow-auto max-h-96"><code>meshadmin service start</code></pre>
+                            <button @click="
+                                navigator.clipboard.writeText('meshadmin service start');
+                                copiedStates.service_start = true;
+                                setTimeout(() => copiedStates.service_start = false, 2000)
+                            " 
+                            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                            </button>
+                            <div x-show="copiedStates.service_start" 
+                                 x-transition
+                                 x-transition.duration.300ms
+                                 class="absolute top-2 right-10 px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                Copied!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Options -->
+                <div class="mt-4">
+                    <button @click="showOptions = !showOptions" 
+                            class="text-sm text-indigo-600 hover:text-indigo-500 flex items-center gap-1">
+                        <svg class="h-4 w-4 transition-transform duration-200" 
+                             :class="{ 'rotate-90': showOptions }"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                        Customize Command
+                    </button>
+                    <div x-show="showOptions" 
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 -translate-y-1"
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 translate-y-0"
+                         x-transition:leave-end="opacity-0 -translate-y-1"
+                         class="mt-2 space-y-4 bg-gray-50 rounded-md p-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Custom Hostname</label>
+                            <input type="text" 
+                                   x-model="hostname" 
+                                   placeholder="Enter hostname"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                        {% if object.is_lighthouse %}
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Public IP</label>
+                            <input type="text" 
+                                   x-model="publicIp" 
+                                   placeholder="Enter public IP address"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </c-info-card>
+
+        <c-info-card title="Enrollment Key Settings">
+            <dl class="mt-4 space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Reusable</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.reusable|yesno:"Yes,No" }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Usage Limit</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{% if object.usage_limit %}{{ object.usage_limit }}{% else %}Unlimited{% endif %}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Current Usage</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.usage_count }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Expires At</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{% if object.expires_at %}{{ object.expires_at }}{% else %}Never{% endif %}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Ephemeral Peers</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.ephemeral_peers|yesno:"Yes,No" }}</dd>
+                </div>
+            </dl>
+        </c-info-card>
+
+        <c-info-card 
+            title="Groups"
+            :action='{
+                "text": "Manage Groups",
+                "url": "{% url 'networks:template-edit' pk=object.pk %}"
+            }'>
+            <c-tag-list
+                empty_message="No groups assigned"
+                :items='[{% for group in object.groups.all %}{
+                    "text": "{{ group.name }}",
+                    "url": "{% url 'networks:group-detail' pk=group.pk %}"
+                }{% if not forloop.last %},{% endif %}{% endfor %}]'>
+            </c-tag-list>
+        </c-info-card>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "_base.html" %}
+{% load network_tags %}
+
+{% block title %}{{ action }} {{ object|default:view.model|verbose_name }} - MeshAdmin{% endblock %}
+
+{% block content %}
+{% with model_name=view.model|verbose_name %}
+<div class="space-y-6">
+    <c-page-header 
+        title="{{ action }} {{ object|default:model_name }}"
+        :actions="[
+            {
+                'text': 'Cancel',
+                {% if model_name == 'network' %}
+                    {% if object %}
+                        'url': '{% url "networks:network-detail" pk=object.pk %}',
+                    {% else %}
+                        'url': '{% url "networks:network-list" %}',
+                    {% endif %}
+                {% else %}
+                    {% if object %}
+                        'url': '{% url view.model|url_name:'detail' pk=object.pk %}',
+                    {% else %}
+                        {% if model_name == 'network membership' %}
+                            'url': '{% url "networks:network-detail" pk=network_id %}#members-section',
+                        {% else %}
+                            'url': '{% url "networks:network-detail" pk=network_id %}#{{ model_name }}s-section',
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                'style': 'secondary'
+            }
+        ]">
+    </c-page-header>
+    <div class="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-lg">
+        <form method="post" class="divide-y divide-gray-200">
+            {% csrf_token %}
+            <div class="p-6 space-y-5">
+                {% for field in form %}
+                <div class="mb-5">
+                    <label for="{{ field.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900">
+                        {{ field.label }}
+                        {% if field.field.required %}
+                        <span class="text-red-500">*</span>
+                        {% endif %}
+                    </label>
+                    <div>
+                        {{ field|add_class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" }}
+                        {% if field.errors %}
+                        <div class="mt-2 text-sm text-red-600 whitespace-pre-line">{{ field.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="px-6 py-4 flex items-center justify-end gap-x-6 bg-gray-50">
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    {{ action }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endwith %}
+{% endblock %}
