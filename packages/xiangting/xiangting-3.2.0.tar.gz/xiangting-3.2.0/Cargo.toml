@@ -1,0 +1,29 @@
+[package]
+name = "xiangting-py"
+version = "3.2.0"
+description = "Python bindings for xiangting"
+authors = ["Apricot S."]
+edition = "2021"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/Apricot-S/xiangting-py"
+keywords = ["mahjong", "shanten", "xiangting"]
+categories = ["algorithms"]
+exclude = [
+    "/.devcontainer/**/*",
+    "/.github/**/*",
+    "/docs/**/*",
+    "/examples/**/*",
+    "/scripts/**/*",
+    "/tests/**/*",
+    "/.gitignore",
+    "/Makefile",
+]
+
+[lib]
+name = "xiangting"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.24.1", features = ["extension-module"] }
+xiangting = "3.2.0"
