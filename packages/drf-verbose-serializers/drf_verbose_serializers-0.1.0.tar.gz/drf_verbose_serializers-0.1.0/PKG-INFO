@@ -1,0 +1,150 @@
+Metadata-Version: 2.4
+Name: drf-verbose-serializers
+Version: 0.1.0
+Summary: Django REST framework extension providing verbose field names for serializers
+Home-page: https://github.com/PevznerDanill/Django-Rest-Framework-Verbose-Serializers
+Author: Даниил Певзнер
+Author-email: pevzner.danil@gmail.com
+License: MIT
+Keywords: django,django-rest-framework,serializers,api
+Classifier: Development Status :: 3 - Alpha
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 3.2
+Classifier: Framework :: Django :: 4.0
+Classifier: Framework :: Django :: 4.1
+Classifier: Framework :: Django :: 4.2
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: djangorestframework>=3.12.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# DRF Verbose Serializers
+
+A Django REST Framework extension that allows you to use verbose field names in your serializers.
+
+## Installation
+
+```bash
+pip install drf-verbose-serializers
+```
+
+## Features
+
+- Adds `verbose_field_name` parameter to DRF serializer fields
+- Allows customizing serializer output field names without changing the underlying model or serializer field names
+- Supports nested serializers with many=True relationships
+- Includes mixins for both ModelSerializer and Serializer classes
+
+## Usage
+
+### Basic Example
+
+```python
+from rest_framework import serializers
+from drf_verbose_serializers import VerboseModelSerializerMixin, VerboseCharField, VerboseIntegerField
+
+class UserSerializer(VerboseModelSerializerMixin, serializers.ModelSerializer):
+    username = VerboseCharField(verbose_field_name='Username')
+    email = VerboseCharField(verbose_field_name='Email Address')
+    age = VerboseIntegerField(verbose_field_name='Age')
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'age']
+```
+
+This will produce JSON like:
+
+```json
+{
+    "Username": "johndoe",
+    "Email Address": "john@example.com",
+    "Age": 30
+}
+```
+
+### Using with Regular Serializers
+
+```python
+from rest_framework import serializers
+from drf_verbose_serializers import VerboseSerializerMixin, VerboseCharField, VerboseIntegerField
+
+class UserSerializer(VerboseSerializerMixin, serializers.Serializer):
+    username = VerboseCharField(verbose_field_name='Username')
+    email = VerboseCharField(verbose_field_name='Email Address')
+    age = VerboseIntegerField(verbose_field_name='Age')
+```
+
+### Nested Serializers
+
+```python
+from rest_framework import serializers
+from drf_verbose_serializers import (
+    VerboseModelSerializerMixin, 
+    VerboseCharField,
+    VerbosePrimaryKeyRelatedField
+)
+
+class CommentSerializer(VerboseModelSerializerMixin, serializers.ModelSerializer):
+    text = VerboseCharField(verbose_field_name='Comment Text')
+    
+    class Meta:
+        model = Comment
+        fields = ['text']
+
+class PostSerializer(VerboseModelSerializerMixin, serializers.ModelSerializer):
+    title = VerboseCharField(verbose_field_name='Post Title')
+    body = VerboseCharField(verbose_field_name='Post Body')
+    comments = CommentSerializer(many=True, verbose_field_name='Post Comments')
+    
+    class Meta:
+        model = Post
+        fields = ['title', 'body', 'comments']
+```
+
+## Available Fields
+
+All standard DRF fields are supported with verbose name variants:
+
+- VerboseCharField
+- VerboseIntegerField
+- VerboseBooleanField
+- VerboseDateTimeField
+- VerboseDateField
+- VerboseFloatField
+- VerboseDecimalField
+- VerboseEmailField
+- VerboseSerializerMethodField
+- VerboseRelatedField
+- VerbosePrimaryKeyRelatedField
+- VerboseHyperlinkedRelatedField
+- VerboseSlugRelatedField
+- VerboseHyperlinkedIdentityField
+- VerboseListField
+- VerboseDictField
+- VerboseJSONField
+- VerboseStringRelatedField
+
+## License
+
+MIT 
