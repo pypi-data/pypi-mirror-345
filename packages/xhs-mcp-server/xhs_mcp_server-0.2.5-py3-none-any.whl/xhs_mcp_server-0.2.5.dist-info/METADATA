@@ -1,0 +1,92 @@
+Metadata-Version: 2.4
+Name: xhs_mcp_server
+Version: 0.2.5
+Summary: A Model Context Protocol (MCP) server to post xiaohongshu(rednote,小红书)
+Author-email: Zhiling Luo <godot.lzl@alibaba-inc.com>
+Requires-Python: >=3.11
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: requests
+Requires-Dist: selenium
+Description-Content-Type: text/markdown
+
+# Install the prerequisites
+
+1. install chromedriver
+find out your chrome version like "134.0.6998.166".
+download it
+```bash
+npx @puppeteer/browsers install chromedriver@134.0.6998.166
+```
+copy the chromedriver to your path or add it in your path
+
+
+# Login
+run the following command in your terminal.
+Note PATH_TO_STORE_YOUR_COOKIES is an avaliable path, for example /Users/Bruce/ . Your should use the absolute path. This MCP server will store your cookie in this path.
+```bash
+env phone=YOUR_PHONE_NUMBER json_path=PATH_TO_STORE_YOUR_COOKIES uvx --from xhs_mcp_server@latest login
+```
+it will show:
+```bash
+无效的cookies，已清理
+请输入验证码: 
+```
+
+and you need to input the verification code in the terminal and press enter.
+
+## Check it 
+```bash
+env phone=YOUR_PHONE_NUMBER json_path=PATH_TO_STORE_YOUR_COOKIES uvx --from xhs_mcp_server@latest login
+```
+it will show:
+```bash
+使用cookies登录成功
+```
+
+# Inspector
+start the inspector by following command in terminal:
+```bash
+npx @modelcontextprotocol/inspector -e phone=YOUR_PHONE_NUMBER -e json_path=PATH_TO_STORE_YOUR_COOKIES uvx xhs_mcp_server@latest
+```
+
+you can use a local image, type in its path in the inspector
+
+["PATH\TO\YOUR\IMAGE.jpg"]
+
+
+it will show an error, but it is ok, the post will be sent.
+Error
+Request timed out
+
+
+# Start the server
+start the server by following command:
+```bash
+env phone=YOUR_PHONE_NUMBER json_path=PATH_TO_STORE_YOUR_COOKIES uvx xhs_mcp_server@latest
+```
+
+or you can add following json into your config file
+```json
+{
+    "mcpServers": {
+        "xhs-mcp-server": {
+            "command": "uvx",
+            "args": [
+                "xhs_mcp_server@latest"
+            ],
+            "env": {
+                "phone": "YOUR_PHONE_NUMBER",
+                "json_path":"PATH_TO_STORE_YOUR_COOKIES"
+            }
+        }
+    }
+}
+```
+
+
+
+# Note
+This mcp server is for research purpose only, please do not use it for commercial purpose.
+
+# Contact
+godot.lzl@alibaba-inc.com
