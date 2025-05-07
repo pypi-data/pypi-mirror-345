@@ -1,0 +1,72 @@
+name: Run tests and publish binaries
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - stable
+  release:
+    types:
+      - published
+
+jobs:
+  run_tests:
+    name: Run tests and publish binaries on release for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, macos-13, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get CMake with Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: latestrc
+          ninjaVersion: latest
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+
+      - name: Setup Ruby
+        run: |
+          gem install colorize
+          gem install rubyzip
+          gem install rake
+          ruby setup.rb
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        if: matrix.os == 'windows-latest'
+
+      - name: Compile Clothoids
+        run: |
+          rake clean
+          rake
+
+      - name: Run tests
+        run: rake test
+
+      - name: Prepare release folder
+        if: github.event_name == 'release' && github.event.action == 'published'
+        run: |
+          mkdir -p release/Clothoids
+          cp -r lib release/Clothoids/
+          cp -r lib3rd release/Clothoids/
+
+      - name: Zip binaries
+        uses: vimtor/action-zip@v1.2
+        if: github.event_name == 'release' && github.event.action == 'published'
+        with:
+          files: release/Clothoids
+          dest: release/Clothoids-${{ github.event.release.tag_name }}-${{ matrix.os }}.zip
+
+      - name: Upload binaries to release
+        if: github.event_name == 'release' && github.event.action == 'published'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/Clothoids-${{ github.event.release.tag_name }}-${{ matrix.os }}.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
