@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+
+
+
+""" Launcher for output comparison tool.
+
+"""
+
+import os
+import sys
+
+# Unchanged, running from checkout, use the parent directory, the Bloodelf
+# package ought to be there.
+sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "..")))
+
+os.environ.setdefault("PYTHON", sys.executable)
+
+# isort:start
+
+from Bloodelf.tools.testing.compare_with_cpython.__main__ import main
+
+main()
+
+
