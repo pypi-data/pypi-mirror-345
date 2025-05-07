@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "docspec"
+version = "2.2.2"
+description = "Docspec is a JSON object specification for representing API documentation of programming languages."
+readme = "readme.md"
+requires-python = ">=3.8"
+dependencies = [
+    "databind-core>=4.2.6",
+    "databind-json>=4.2.6",
+    "deprecated>=1.2.12",
+]
+authors = [{ name = "Niklas Rosenstein", email = "rosensteinniklas@gmail.com" }]
+
+[project.scripts]
+docspec = "docspec.__main__:main"
+
+[tool.uv]
+dev-dependencies = [
+    "mypy>=1.13.0",
+    "pytest>=8.3.4",
+    "types-deprecated>=1.2.15.20241117",
+    "types-termcolor>=1.1.6.2",
+]
+
+[tool.mypy]
+python_version = "3.8"
+explicit_package_bases = true
+mypy_path = ["src"]
+namespace_packages = true
+pretty = true
+show_error_codes = true
+show_error_context = true
+strict = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_unreachable = true
+warn_unused_ignores = true
+check_untyped_defs = true
+
+[tool.ruff]
+line-length = 120
