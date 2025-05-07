@@ -1,0 +1,53 @@
+# pyproject.toml
+[build-system]
+requires = [
+    "setuptools>=65.5.1",
+    "wheel",
+    "Cython>=0.30",
+    "numpy"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pybmesh"
+version = "1.0.1"
+description = "Block Mesh processing library for OpenFOAM"
+readme = "README.md"
+requires-python = ">=3.11"
+license-files = ["LICENSE"]
+
+authors = [
+  { name="Alexis Sauvageon", email="alexis.sauvageon@arep.fr" },
+]
+
+keywords = ["mesh", "geometry", "openfoam"]
+
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+  "Cython==3.0.12",
+  "gmsh==4.13.1",
+  "matplotlib==3.10.1",
+  "numpy==2.2.3",
+  "pandas==2.2.2",
+  "pyside6==6.9.0",
+  "scikit_learn==1.6.1",
+  "scikit-spatial==8.1.0",
+  "scipy==1.15.2",
+  "vtk==9.3.1",
+]
+
+[project.urls]
+homepage = "https://gitlab.com/alexis.sauvageon/pybmesh.git"
+
+[tool.setuptools.package-data]
+"pybmesh" = [
+  "ressources/images/*.png",
+  "ressources/foamTimeWriter/*.pkl"
+]
+
