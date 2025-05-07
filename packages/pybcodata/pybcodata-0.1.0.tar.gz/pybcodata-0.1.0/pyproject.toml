@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pybcodata"
+version = "0.1.0"
+description = "A Python client library for interacting with Business Central's OData API"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "Akshay Prabhu", email = "akshay.pra26@gmail.com" }]
+dependencies = [
+    "aiolimiter>=1.2.1",
+    "httpx>=0.24.0",
+    "loguru>=0.7.3",
+    "polars>=0.20.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+select = ["E", "F", "B", "I", "N", "UP", "PL", "RUF"]
+ignore = []
+
+[tool.ruff.isort]
+known-first-party = ["pybcodata"]
