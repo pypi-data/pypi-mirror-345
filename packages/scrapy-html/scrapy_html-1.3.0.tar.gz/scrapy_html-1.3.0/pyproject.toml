@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scrapy_html"
+version = "1.3.0"
+description = "🌐 Um scraper que retorna o HTML completo de uma URL, tags, classes e atributos usando BeautifulSoup"
+authors = [
+    {name = "Roberto Lima", email = "robertolima.izphera@gmail.com"}
+]
+dependencies = [
+    "beautifulsoup4>=4.12.0",
+    "requests>=2.31.0",
+    "lxml>=4.9.0"
+]
+requires-python = ">=3.6"
+readme = "README.md"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+lxml = ["lxml>=4.9.0"]
+html5lib = ["html5lib>=1.1"]
+
+[project.urls]
+Homepage = "https://github.com/robertolima-dev/scrapy-html"
+Repository = "https://github.com/robertolima-dev/scrapy-html"
+Issues = "https://github.com/robertolima-dev/scrapy-html/issues"
+
+[project.scripts]
+scrapy_html = "scrapy_html.scraper:get_html_content"
