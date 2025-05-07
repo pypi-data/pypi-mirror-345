@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>immuneML: Exploratory Analysis Overview</title>
+    <style>
+        {{{css_style}}}
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Exploratory Analyses</h1>
+        <p>immuneML version: {{immuneML_version}}</p>
+        <p>Full specification is available <a href="{{{full_specs}}}">here</a>.</p>
+        <p>Log file is available <a href="{{{logfile}}}">here</a>.</p>
+        <p></p>
+        {{#analyses}}
+        <div>
+            <h2>Analysis {{name}}</h2>
+            <div class="card">
+                <div class="col-container">
+                    <div class="col">
+                        <h3>Dataset information</h3>
+                        <h4>General information</h4>
+                        <div class="table-container">
+                            <table>
+                            <tr>
+                                <td><b>Name</b></td>
+                                <td>{{dataset_name}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td>{{dataset_type}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Dataset size</b></td>
+                                <td>{{dataset_size}}</td>
+                            </tr>
+                        </table>
+                        </div>
+
+                        <h4>Dataset labels</h4>
+                        {{#show_dataset_labels}}
+                        <p>The following label(s) are available for this dataset, and may for example be used for classification:</p>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th><b>Label name</b></th>
+                                    <th><b>Label classes</b></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{#dataset_labels}}
+                                <tr>
+                                    <td>{{dataset_label_name}}</td>
+                                    <td>{{dataset_label_classes}}</td>
+                                </tr>
+                                {{/dataset_labels}}
+                                </tbody>
+                            </table>
+                        </div>
+                        {{/show_dataset_labels}}
+                        {{^show_dataset_labels}}
+                        <p>This dataset does not have any available labels.</p>
+                        {{/show_dataset_labels}}
+
+                        {{#show_preprocessing}}
+                        <h4>Preprocessings</h4>
+                        <p>The following preprocessing steps have been applied to the dataset:</p>
+                        <div>
+                            <ul>
+                                {{#preprocessing_sequence}}
+                                <li>{{preprocessing_name}}; {{preprocessing_params}}</li>
+                                {{/preprocessing_sequence}}
+                            </ul>
+                        </div>
+                        {{/show_preprocessing}}
+                    </div>
+                </div>
+                <div class="col-container">
+                    <div>
+                        {{#show_encoding}}
+                        <h3>Encoding {{encoding_key}}</h3>
+                        <h4>{{encoding_name}}</h4>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#encoding_params}}
+                                    <tr>
+                                        <td>{{param_name}}</td>
+                                        <td>{{param_value}}</td>
+                                    </tr>
+                                    {{/encoding_params}}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {{/show_encoding}}
+                        {{#show_labels}}
+                        <h3>Analysis labels</h3>
+                        <p>The following label(s) were used in this specific analysis:</p>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th><b>Label name</b></th>
+                                        <th><b>Label classes</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#analysis_labels}}
+                                    <tr>
+                                        <td>{{name}}</td>
+                                        <td>{{values}}</td>
+                                    </tr>
+                                    {{/analysis_labels}}
+                                </tbody>
+                            </table>
+                        </div>
+                        {{/show_labels}}
+                    </div>
+                </div>
+                {{#reports}}
+                <h3>Report {{name}}</h3>
+                <div>
+                    {{#show_info}}
+                    <p class="padded-bottom">{{info}}</p>
+                    {{/show_info}}
+
+                    {{#output_figures}}
+                    <div>
+                        {{#name}}<h4>{{name}}</h4>{{/name}}
+                        {{#is_embed}}
+                        <embed src="{{path}}">
+                        {{/is_embed}}
+                        {{^is_embed}}
+                        <img src="{{path}}">
+                        {{/is_embed}}
+                    </div>
+                    {{/output_figures}}
+
+                    {{#show_tables}}
+                    <p>Downloadable tables:</p>
+                    {{#output_tables}}
+                    <div>
+                        <ul>
+                        {{#is_download_link}}
+                        <li><a href="{{download_link}}" download>{{file_name}}</a></li>
+                        {{/is_download_link}}
+                        </ul>
+                    </div>
+                    {{/output_tables}}
+                    {{/show_tables}}
+
+                    {{#show_text}}
+                    <p>Text reports:</p>
+                    {{#output_text}}
+                    <div>
+                        <ul>
+                        {{#is_download_link}}
+                        <li><a href="{{download_link}}" download>{{file_name}}</a></li>
+                        {{/is_download_link}}
+                        </ul>
+                    </div>
+                    {{/output_text}}
+                    {{/show_text}}
+                </div>
+                {{/reports}}
+            </div>
+        </div>
+        {{/analyses}}
+    </div>
+</body>
+</html>
