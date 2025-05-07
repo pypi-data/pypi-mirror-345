@@ -1,0 +1,13 @@
+name: pair
+pattern: '(?P<pair>\|\s*(?P<left>!\[(?P<left_alt>.*?)\]\((?P<left_src>[^ )]+)(?:\s+"(?P<left_title>.*?)")?\)(?P<left_attr_list>\{.*?\})?)\s*\|\s*(?P<right>!\[(?P<right_alt>.*?)\]\((?P<right_src>[^ )]+)(?:\s+"(?P<right_title>.*?)")?\)(?P<right_attr_list>\{.*?\})?)\s*\|)\r?\n"(?P<caption>.*?)"'
+template: | # Indentation would be interpreted by Markdown as a codeblock and not actual HTML
+  <figure id="{{ figure.id }}" class="figure figure-{{ figure.figure_type_name }}" markdown="block">
+  <div class="figure-{{ figure.figure_type_name }}-wrapper" markdown="block">
+  <div class="figure-{{ figure.figure_type_name }}-left" markdown="block">{{ figure.match_groups.left }}</div>
+  <div class="figure-{{ figure.figure_type_name }}-right" markdown="block">{{ figure.match_groups.right }}</div>
+  </div>
+  <figcaption markdown="span">{{ figure.caption }}</figcaption>
+  </figure>
+metadata:
+  icon: material-image-multiple
+  
