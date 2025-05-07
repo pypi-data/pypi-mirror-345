@@ -1,0 +1,46 @@
+[project]
+name = "memory-bank-mcp"
+version = "0.0.1"
+description = "A FastMCP-based service for storing and retrieving project files in a SQLite database"
+readme = "README.md"
+authors = [{ name = "Dinh Truong Quang", email = "quangdinhvh2@gmail.com" }]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=2.0.0",  # Make sure you have the correct version
+    "aiosqlite>=0.17.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "python-dotenv>=1.0.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/banhmysuawx/memory-bank-mcp-python"
+"Bug Tracker" = "https://github.com/banhmysuawx/memory-bank-mcp-python/issues"
+
+[project.scripts]
+memory-bank-server = "memory_bank.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest",
+    "pytest-asyncio",
+    "build", 
+    "twine"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/memory_bank"]
