@@ -1,0 +1,44 @@
+[project]
+name = "qec"
+version = "0.3.3"
+
+description = "Python Tools for Quantum Error Correction"
+readme = "README.md"
+authors = [
+    { name = "Joschka Roffe", email = "joschka@roffe.eu" },
+    { name = "Tamas Noszko", email = "T.K.Noszko@sms.ed.ac.uk"},
+    { name = "Liam Veeder-Sweeney", email = "L.D.Veeder-Sweeney@sms.ed.ac.uk"},
+]
+license = { file = "LICENSE" }
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "ldpc>=2.2.7",
+    "numpy>=1.24.0",
+    "scipy>=1.9.3",
+    "requests",
+    "beautifulsoup4"
+]
+
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]  
+include = ["qec", "qec.*"]
+
+[tool.setuptools.package-data]
+qec = ["code_instances/saved_codes/*json"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+testpaths = "tests"
+
+
