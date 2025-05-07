@@ -1,0 +1,67 @@
+# pyproject.toml
+
+[build-system]
+# 指定建置工具及其依賴
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# --- 基礎元數據 ---
+name = "thonny-ai-helper"  # 在 PyPI 上必須是唯一的！建議使用 thonny- 前綴
+version = "0.1.0"           # 初始版本號，每次發佈新版時需要增加
+description = "An AI Assistant plugin for the Thonny Python IDE." # 簡短描述
+readme = "README.md"        # 指向您的 README 文件
+requires-python = ">=3.8"   # Thonny v4 需要 Python 3.8 或更高版本
+license = { text="MIT" } # 指向您的授權文件 (或者用 text="MIT" 等)
+
+# --- 作者資訊 ---
+authors = [
+    { name = "pondahai", email = "dahai.pon@gmail.com" },
+]
+maintainers = [
+    { name = "pondahai", email = "dahai.pon@gmail.com" },
+]
+
+# --- PyPI 分類與關鍵字 ---
+keywords = ["thonny", "plugin", "ai", "assistant", "llm", "openai"]
+classifiers = [
+    "Development Status :: 3 - Alpha",  # 開發狀態 (例如: Alpha, Beta, Production/Stable)
+    "Environment :: Plugins",
+#    "Framework :: Tk",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License", # 與您的 LICENSE 文件匹配
+    "Natural Language :: English", # 或者您的主要目標語言
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Education",
+    "Topic :: Software Development :: Debuggers",
+#    "Topic :: Software Development :: Integrated Development Environments (IDE)",
+    "Topic :: Text Editors :: Integrated Development Environments (IDE)",
+]
+
+# --- 依賴項 ---
+dependencies = [
+#    "thonny>=4.0.0",   # 非常重要：指定支援的 Thonny 最低版本
+    "requests>=2.20.0", # 指定 requests 的最低版本
+    "markdown-it-py>=3.0.0", # 指定 markdown-it-py 的最低版本
+    # 如果有其他依賴，也加在這裡
+]
+
+# --- 可選：專案連結 ---
+[project.urls]
+Homepage = "https://github.com/pondahai/thonny_ai_helper" # 您的專案主頁或倉庫連結
+Repository = "https://github.com/pondahai/thonny_ai_helper"
+# Issues = "https://github.com/your_username/your_plugin_repo/issues"
+
+# --- Setuptools 設定：告訴它在哪裡找包 ---
+[tool.setuptools.packages.find]
+where = ["src"]  # 指定原始碼在 src 目錄下
+
+# setuptools 會自動處理 src/thonnycontrib 下的命名空間包
+# 不需要為 thonnycontrib 或 ai_helper 做特殊設定，只要結構正確即可
