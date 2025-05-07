@@ -1,0 +1,96 @@
+[project]
+name = "commensurability"
+version = "1.1.0"
+description = "A package for analyzing orbit commensurabilities."
+authors = [
+    { name = "ilikecubesnstuff", email = "25328250+ilikecubesnstuff@users.noreply.github.com" },
+]
+dependencies = [
+    "pidgey>=1.0.4",
+    "matplotlib>=3.8.2",
+    "tqdm>=4.66.1",
+    "h5py>=3.10.0",
+    "more_itertools>=10.2.0",
+    "scipy>=1.13.0",
+    "astropy>=6.1.0",
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[dependency-groups]
+dev = [
+    "tox-pdm>=0.7.2",
+    "tox>=4.15.0",
+]
+test = [
+    "pytest>=8.2.0",
+    "pytest-cov>=6.0.0",
+    "sybil>=8.0.1",
+]
+type = [
+    "mypy>=1.10.0",
+]
+lint = [
+    "black>=24.4.2",
+    "isort>=5.13.2",
+]
+docs = [
+    "mkdocs>=1.6.0",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-literate-nav>=0.6.1",
+    "mkdocs-material>=9.5.21",
+    "mkdocstrings>=0.25.1",
+    "mkdocstrings-python>=1.10.0",
+]
+github = [
+    "tox-gh-actions>=3.2.0",
+    "coverage>=7.6.4",
+]
+
+[tool.black]
+line-length = 100
+target-version = [
+    "py311",
+    "py312",
+]
+
+[tool.coverage.report]
+exclude_also = [
+    "def __repr__",
+    "raise NotImplementedError",
+    "@(abc\\.)?abstractmethod",
+    "agama",
+    "gala",
+    "galpy",
+    "InteractivePlot",
+    "def .*plot(.*)",
+]
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.scripts.covreport]
+cmd = "pytest --cov-report=html --cov-report=term-missing --cov=src tests/"
