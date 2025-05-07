@@ -1,0 +1,56 @@
+Metadata-Version: 2.4
+Name: caldav2ics
+Version: 0.1.0
+Summary: Cache CalDAV calendars in static .ICS files.
+Author-email: Tim Hörmann <pypi@audivir.de>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/audivir/caldav2ics
+Project-URL: Repository, https://github.com/audivir/caldav2ics
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: caldav
+Requires-Dist: icalendar
+Requires-Dist: msgspec[toml]
+Requires-Dist: typing-extensions
+Provides-Extra: dev
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: coverage[toml]; extra == "dev"
+Requires-Dist: vulture; extra == "dev"
+Dynamic: license-file
+
+# CalDAV2ICS
+
+A simple script to download all calendars from a CalDAV server and save them as .ics files.
+
+# Installation
+
+```bash
+pip install caldav2ics
+```
+
+# Usage
+- Create a config .toml file
+```toml
+[server_a]
+url = "https://caldav.server_a.com/calendar/remote.php/dav/calendars/user/"
+username = "user"
+save-dir = "calendars/server_a"
+
+[calendar_b]
+...
+```
+- Run the script
+```bash
+caldav2ics -c config.toml
+```
+or without to be prompted for the password
+```bash
+C2I_PASSWORD=$(cat .password) caldav2ics -c config.toml
+```
+
+# TODO
+- tests
