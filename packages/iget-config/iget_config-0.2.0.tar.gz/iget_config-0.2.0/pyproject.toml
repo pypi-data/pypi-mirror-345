@@ -1,0 +1,35 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"] # 指定构建工具和最低版本
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iget-config" # 包名称
+version = "0.2.0" # 版本号更新
+authors = [
+    { name = "bdj", email = "byx945@gmail.com" }, # 作者信息
+]
+description = "一个为 PyTorch 项目设计的直观的配置管理库。它通过简单的 YAML 文件实现层级化配置，支持 TEST, DEV, PROD 等多种运行模式，并可通过类继承方便地扩展。让管理不同环境和实验的配置变得轻松。 (注意：作为库使用时，请确保运行目录下存在 `temp/mode.txt` 文件和包含 YAML 文件的 `config` 目录以符合当前加载逻辑)。" # 描述
+readme = "readme.md" # 指定 README 文件
+requires-python = ">=3.8" # 最低 Python 版本要求
+classifiers = [ # PyPI 分类，帮助用户查找
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", # 假设您使用 MIT 许可，如果不是请修改
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Intended Audience :: Developers",
+    "Natural Language :: Chinese (Simplified)",
+]
+dependencies = [ # 核心依赖项
+    "pyyaml>=5.4", # YAML 解析
+    "torch>=1.8",  # PyTorch 依赖 (根据代码导入)
+]
+
+[project.urls] # 可选，项目相关链接
+"Homepage" = "https://github.com/by90" # 替换为您的项目主页或仓库 URL
+"Bug Tracker" = "https://github.com/by90" # 替换为 Bug 追踪地址
+
+# 指定 Python 包的查找位置
+[tool.setuptools.packages.find]
+where = ["src"] # 告诉 setuptools 在 src 目录下查找包 

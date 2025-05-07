@@ -1,0 +1,41 @@
+  data:
+    exclude_days: 1
+    feature_bins: [[10.0, 30.0, 100.0, 200.0], [-0.12, -0.07, -0.01, 0.01, 0.07, 0.12],
+      [-0.08, -0.03, -0.01, 0.01, 0.03, 0.08], [0.01, 0.05, 0.2, 0.5, 2, 10], [-0.08,
+        -0.03, -0.01, 0.01, 0.03, 0.08], [0.01, 0.03, 0.08], [-0.08, -0.03, -0.01],
+      [0.1, 0.9], [0.1, 0.9], [0.1, 0.9]]
+    feature_mode: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    feature_size: 12
+    label_bins: [-0.12, -0.07, -0.01, 0.01, 0.07, 0.12]
+    label_mode: 2
+    loss_weight: [0.2357, 0.1966, 0.025, 0.0284, 0.0266, 0.1852, 0.3026]
+    test_days: 30
+    train_days: 1000
+    validate_days: 240
+    value_size: 1
+    window_size: 20
+  default_yaml_file: src\config\cnn_dev.yaml
+  fc1_out_size: 64
+  flat_size: 240
+  kernel_size: 3
+  num_blocks: 6
+  num_filters: 64
+  num_layers: 1
+  num_out_filters: 64
+  optimizer:
+    lr: 0.02
+    min_delta: 0.0
+    min_lr: 0.0001
+    optimizers_factor: 0.5
+    optimizers_patience: 10
+    optimizers_threshold: 0.0
+    patience: 30
+  padding: 1
+  prefix: cnn
+  train:
+    batch_size: 100
+    graph_rate: 10
+    log_mode: true
+    num_epochs: 1000
+    num_workers: 0
+    shuffle: true

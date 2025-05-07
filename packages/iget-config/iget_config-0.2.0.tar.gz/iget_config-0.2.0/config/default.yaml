@@ -1,0 +1,42 @@
+train:
+  batch_size: 256
+  num_epochs: 10
+  num_workers: 0
+  shuffle: true
+  log_mode: true
+  graph_rate: 10
+
+data:
+  window_size: 6
+  label_size: 1
+  label_exclude_days: 1
+  label_mode: 2
+  train_days: 1000
+  validate_days: 240
+  test_days: 30
+  feature_size: 12
+  feature_mode: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  label_bins: [-0.12, -0.07, -0.01, 0.01, 0.07, 0.12]
+  feature_bins: [
+    [10.00, 30.00, 100.00, 200.00],
+    [-0.12, -0.07, -0.01, 0.01, 0.07, 0.12],
+    [-0.08, -0.03, -0.01, 0.01, 0.03, 0.08],
+    [0.01, 0.05, 0.2, 0.5, 2, 10],
+    [-0.08, -0.03, -0.01, 0.01, 0.03, 0.08],
+    [0.01, 0.03, 0.08],
+    [-0.08, -0.03, -0.01],
+    [0.1, 0.9],
+    [0.1, 0.9],
+    [0.1, 0.9]
+  ]
+  loss_weight: [0.2357, 0.1966, 0.025, 0.0284, 0.0266, 0.1852, 0.3026]
+  max_stop_rate: 0.3
+
+optimizer:
+  lr: 0.02
+  min_lr: 0.0001
+  patience: 30
+  min_delta: 0.000
+  optimizers_threshold: 0.000
+  optimizers_patience: 10
+  optimizers_factor: 0.5
