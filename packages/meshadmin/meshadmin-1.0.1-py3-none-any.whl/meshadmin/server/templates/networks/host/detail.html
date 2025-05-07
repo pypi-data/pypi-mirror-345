@@ -1,0 +1,276 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ object.name }} - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <c-page-header 
+        title="{{ object.name }}"
+        :actions="[
+            {
+                'text': 'Edit',
+                'url': '{% url 'networks:host-edit' pk=object.pk %}',
+                'style': 'secondary'
+            },
+            {
+                'text': 'Delete',
+                'url': '{% url 'networks:host-delete' pk=object.pk %}',
+                'style': 'danger'
+            }
+        ]">
+        <div class="flex items-center gap-4">
+            <c-badge text="{{ object.assigned_ip|default:'Not assigned' }}" type="secondary"></c-badge>
+            {% if object.is_lighthouse %}
+            <c-badge text="Lighthouse" type="success"></c-badge>
+            {% endif %}
+            {% if object.is_relay %}
+            <c-badge text="Relay" type="success"></c-badge>
+            {% endif %}
+        </div>
+    </c-page-header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left column - Host info -->
+        <div class="space-y-6">
+            <c-info-card title="Network Information">
+                <dl class="mt-4 space-y-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Network</dt>
+                        <dd class="mt-1 text-sm text-gray-900">
+                            <a href="{% url 'networks:network-detail' pk=network.pk %}" 
+                               class="text-indigo-600 hover:text-indigo-500">
+                                {{ network.name }}
+                            </a>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Last Config Refresh</dt>
+                        <dd class="mt-1 text-sm text-gray-900">
+                            {{ object.last_config_refresh|default:"Never" }}
+                        </dd>
+                    </div>
+                </dl>
+            </c-info-card>
+
+            <c-info-card title="Connection Settings">
+                <dl class="mt-4 space-y-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Public IP/Hostname</dt>
+                        <dd class="mt-1 text-sm text-gray-900">
+                            {{ object.public_ip_or_hostname|default:"-" }}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Interface</dt>
+                        <dd class="mt-1 text-sm text-gray-900">
+                            {{ object.interface|default:"-" }}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Use Relay</dt>
+                        <dd class="mt-1 text-sm text-gray-900">
+                            {{ object.use_relay|yesno:"Yes,No" }}
+                        </dd>
+                    </div>
+                </dl>
+            </c-info-card>
+
+            <c-info-card title="Client Version">
+                <dl class="mt-4 space-y-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Current Version</dt>
+                        <dd class="mt-1 text-sm">
+                            {% if object.cli_version %}
+                                <span class="{% if object.is_cli_version_outdated == True %}text-red-600 font-medium{% else %}text-gray-900{% endif %}">
+                                    {{ object.cli_version }}
+                                    {% if object.is_cli_version_outdated == True %}
+                                        <span class="inline-flex items-center ml-2 rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10">
+                                            Outdated
+                                        </span>
+                                    {% elif object.is_cli_version_outdated == "Unknown" %}
+                                        <span class="inline-flex items-center ml-2 rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                            Status Unknown
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center ml-2 rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">
+                                            Up to date
+                                        </span>
+                                    {% endif %}
+                                </span>
+                            {% else %}
+                                <span class="text-gray-500">Unknown</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    {% if object.get_latest_cli_version %}
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Latest Available Version</dt>
+                        <dd class="mt-1 text-sm text-gray-900">
+                            {{ object.get_latest_cli_version }}
+                        </dd>
+                    </div>
+                    {% endif %}
+                </dl>
+                <div class="mt-4" id="upgrade-button-container">
+                    {% include "networks/host/upgrade_button.html" %}
+                </div>
+            </c-info-card>
+            <c-info-card 
+                title="Groups"
+                :action='{
+                    "text": "Manage Groups",
+                    "url": "{% url 'networks:host-edit' pk=object.pk %}"
+                }'>
+                <c-tag-list
+                    empty_message="Not a member of any groups"
+                    :items='[{% for group in object.groups.all %}{
+                        "text": "{{ group.name }}",
+                        "url": "{% url 'networks:group-detail' pk=group.pk %}"
+                    }{% if not forloop.last %},{% endif %}{% endfor %}]'>
+                </c-tag-list>
+            </c-info-card>
+        </div>
+
+        <!-- Right column - Configuration tabs -->
+        <div class="lg:col-span-2" x-data="{ 
+            activeTab: 'current',
+            baseVersion: null,
+            compareVersion: null
+        }">
+            <div class="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-lg">
+                <!-- Tab navigation -->
+                <div class="border-b border-gray-200">
+                    <nav class="flex -mb-px" aria-label="Tabs">
+                        <button @click="activeTab = 'current'" 
+                                :class="{'border-indigo-500 text-indigo-600': activeTab === 'current',
+                                        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'current'}"
+                                class="w-1/3 border-b-2 py-4 px-1 text-center text-sm font-medium">
+                            Current Config
+                        </button>
+                        <button @click="activeTab = 'history'"
+                                :class="{'border-indigo-500 text-indigo-600': activeTab === 'history',
+                                        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'history'}"
+                                class="w-1/3 border-b-2 py-4 px-1 text-center text-sm font-medium">
+                            History
+                        </button>
+                        <button @click="activeTab = 'diff'"
+                                :class="{'border-indigo-500 text-indigo-600': activeTab === 'diff',
+                                        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'diff'}"
+                                class="w-1/3 border-b-2 py-4 px-1 text-center text-sm font-medium">
+                            Compare Versions
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- Tab content -->
+                <div class="p-6">
+                    <!-- Current config tab -->
+                    <div x-show="activeTab === 'current'" x-cloak>
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="text-sm font-medium text-gray-900">Current Version</span>
+                                {% if config %}
+                                <div class="mt-1 space-y-1">
+                                    <div class="text-sm text-gray-500">Generated {{ config.created_at|date:"Y-m-d H:i" }}</div>
+                                    <div class="font-mono text-xs text-gray-500 break-all">{{ config.sha256 }}</div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <a href="{% url 'networks:show-host-config' pk=object.pk %}"
+                                download="{{ object.name }}-{{ config.created_at|date:"Y-m-d-H-i" }}.yaml"
+                                class="inline-flex items-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                                </svg>
+                                Download
+                            </a>
+                        </div>
+                        {% if config %}
+                        <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md overflow-auto max-h-[36rem]">{{ config.config }}</pre>
+                        {% else %}
+                        <div class="rounded-md bg-gray-50 p-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-gray-500">No configuration has been generated yet</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- History tab -->
+                    <div x-show="activeTab === 'history'" x-cloak>
+                        <div class="space-y-4 overflow-auto max-h-[36rem]">
+                            {% for config in config_history %}
+                            <div class="border border-gray-200 rounded-lg" x-data="{ open: false }">
+                                <div class="flex items-center justify-between p-4">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Version from {{ config.created_at|date:"Y-m-d H:i" }}</p>
+                                        <p class="mt-1 font-mono text-xs text-gray-500 break-all">{{ config.sha256 }}</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button @click="open = !open" 
+                                                class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                            <span x-text="open ? 'Hide' : 'Show'"></span>
+                                        </button>
+                                        <button @click="activeTab = 'diff'; compareVersion = '{{ config.id }}'"
+                                                class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-indigo-600 shadow-sm ring-1 ring-inset ring-indigo-200 hover:bg-indigo-50">
+                                            Compare
+                                        </button>
+                                    </div>
+                                </div>
+                                <div x-show="open" x-collapse x-cloak class="border-t border-gray-200">
+                                    <pre class="text-sm font-mono bg-gray-50 p-4 rounded-b-lg overflow-auto max-h-96">{{ config.config }}</pre>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Diff tab -->
+                    <div x-show="activeTab === 'diff'" x-cloak>
+                        <div class="mb-4 flex gap-4">
+                            <div class="flex-1">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Base Version</label>
+                                <select x-model.number="baseVersion" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <option value="">Select version</option>
+                                    {% for config in config_history %}
+                                    <option value="{{ config.id }}">{{ config.created_at|date:"Y-m-d H:i" }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="flex-1">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Compare Version</label>
+                                <select x-model.number="compareVersion" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <option value="">Select version</option>
+                                    {% for config in config_history %}
+                                    <option value="{{ config.id }}">{{ config.created_at|date:"Y-m-d H:i" }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="flex items-end">
+                                <button class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                                        :class="{'opacity-50 cursor-not-allowed': !baseVersion || !compareVersion}"
+                                        @click="if(baseVersion && compareVersion) {
+                                            htmx.ajax('GET', `/host/${baseVersion}/diff/${compareVersion}/`, {target: '#diff-output', swap: 'innerHTML'});
+                                        }"
+                                        :disabled="!baseVersion || !compareVersion">
+                                    Compare
+                                </button>
+                            </div>
+                        </div>
+                        <div id="diff-output" class="bg-gray-50 rounded-lg overflow-auto max-h-[32rem] p-4">
+                            <div class="text-gray-500 text-sm">Select two versions to compare</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

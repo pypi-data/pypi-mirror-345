@@ -1,0 +1,35 @@
+{% extends "_base.html" %}
+{% load network_tags %}
+
+{% block title %}{{ action }} Group - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <c-page-header 
+        title="{{ action }} Group"
+        :actions="[
+            {
+                'text': 'Cancel',
+                {% if object %}
+                    'url': '{% url "networks:group-detail" pk=object.pk %}',
+                {% else %}
+                    'url': '{% url "networks:network-detail" pk=network_id %}#groups-section',
+                {% endif %}
+                'style': 'secondary'
+            }
+        ]">
+    </c-page-header>
+
+    <div class="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-lg">
+        <form method="post" class="divide-y divide-gray-200"
+              hx-post="{{ request.path }}"
+              hx-target=".form-content"
+              hx-swap="innerHTML">
+            {% csrf_token %}
+            <div class="p-6 space-y-5 form-content">
+                {% include "networks/group/_form_content.html" %}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,97 @@
+{% extends "_base.html" %}
+
+{% block title %}Rule Details - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <c-page-header 
+        title="Rule Details"
+        :actions="[
+            {
+                'text': 'Edit',
+                'url': '{% url "networks:rule-edit" pk=object.pk %}',
+                'style': 'secondary'
+            },
+            {
+                'text': 'Delete',
+                'url': '{% url "networks:rule-delete" pk=object.pk %}',
+                'style': 'danger'
+            }
+        ]">
+        <div class="flex gap-2">
+            <c-badge text="{{ object.get_direction_display }}" type="primary"></c-badge>
+            <c-badge text="{{ object.get_proto_display }}" type="secondary"></c-badge>
+        </div>
+    </c-page-header>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <c-info-card title="Rule Information">
+            <dl class="mt-4 space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Direction</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.get_direction_display }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Protocol</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.get_proto_display }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Port</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.port }}</dd>
+                </div>
+                {% if object.cidr %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">CIDR</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.cidr }}</dd>
+                </div>
+                {% endif %}
+                {% if object.local_cidr %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Local CIDR</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.local_cidr }}</dd>
+                </div>
+                {% endif %}
+            </dl>
+        </c-info-card>
+
+        <c-info-card title="Related Information">
+            <dl class="mt-4 space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Security Group</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        <a href="{% url 'networks:group-detail' pk=object.security_group.pk %}" 
+                           class="text-indigo-600 hover:text-indigo-500">
+                            {{ object.security_group.name }}
+                        </a>
+                    </dd>
+                </div>
+                {% if group %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Source Group</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        <a href="{% url 'networks:group-detail' pk=object.group.pk %}"
+                           class="text-indigo-600 hover:text-indigo-500">
+                            {{ object.group.name }}
+                        </a>
+                    </dd>
+                </div>
+                {% endif %}
+                {% if object.groups.exists %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Destination Groups</dt>
+                    <dd class="mt-1">
+                        <c-tag-list
+                            empty_message="No destination groups configured"
+                            :items='[{% for group in object.groups.all %}{
+                                "text": "{{ group.name }}",
+                                "url": "{% url "networks:group-detail" pk=group.pk %}"
+                            }{% if not forloop.last %},{% endif %}{% endfor %}]'>
+                        </c-tag-list>
+                    </dd>
+                </div>
+                {% endif %}
+            </dl>
+        </c-info-card>
+    </div>
+</div>
+{% endblock %} 

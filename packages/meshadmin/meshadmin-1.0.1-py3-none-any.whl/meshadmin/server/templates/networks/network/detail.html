@@ -1,0 +1,262 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ network.name }} - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <c-page-header 
+        title="{{ network.name }}"
+        :actions="[
+            {
+                'text': 'Edit',
+                'url': '{% url 'networks:network-edit' pk=network.pk %}',
+                'style': 'secondary'
+            },
+            {
+                'text': 'Delete',
+                'url': '{% url 'networks:network-delete' pk=network.pk %}',
+                'style': 'danger'
+            }
+        ]">
+        <c-badge text="{{ network.cidr }}" type="secondary"></c-badge>
+        <c-badge text="{{ network.update_interval }}s" type="secondary"></c-badge>
+    </c-page-header>
+
+    <!-- Tabs -->
+    <div x-data="{ activeTab: window.location.hash ? window.location.hash.substring(1) : 'hosts-section' }">
+        <!-- Tab navigation -->
+        <div class="border-b border-gray-200">
+            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                <a href="#hosts-section" @click="activeTab = 'hosts-section'; window.location.hash = 'hosts-section'"
+                    :class="activeTab === 'hosts-section' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'"
+                    class="whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium">
+                    Hosts
+                </a>
+                <a href="#groups-section" @click="activeTab = 'groups-section'; window.location.hash = 'groups-section'"
+                    :class="activeTab === 'groups-section' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'"
+                    class="whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium">
+                    Groups
+                </a>
+                <a href="#cas-section" @click="activeTab = 'cas-section'; window.location.hash = 'cas-section'"
+                    :class="activeTab === 'cas-section' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'"
+                    class="whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium">
+                    Certificate Authorities
+                </a>
+                <a href="#templates-section" @click="activeTab = 'templates-section'; window.location.hash = 'templates-section'"
+                    :class="activeTab === 'templates-section' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'"
+                    class="whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium">
+                    Templates
+                </a>
+                <a href="#rollouts-section" @click="activeTab = 'rollouts-section'; window.location.hash = 'rollouts-section'"
+                    :class="activeTab === 'rollouts-section' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'"
+                    class="whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium">
+                    Rollouts
+                </a>
+                <a href="#members-section" @click="activeTab = 'members-section'; window.location.hash = 'members-section'"
+                    :class="activeTab === 'members-section' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'"
+                    class="whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium">
+                    Members
+                </a>
+            </nav>
+        </div>
+
+        <!-- Hosts Section -->
+        <div x-show="activeTab === 'hosts-section'">
+            <c-section 
+                title="Hosts"
+                description="A list of all hosts in this network."
+                :actions="[
+                    {
+                        'url': '{% url 'networks:network-rollout-create' network_id=network.id %}',
+                        'text': 'Create Rollout'
+                    },
+                    {
+                        'url': '{% url 'networks:network-host-create' network_id=network.id %}',
+                        'text': 'Create Host'
+                    }
+                ]">
+                <div id="hosts-table">
+                    {% include "networks/network/_hosts_table.html" %}
+                </div>
+            </c-section>
+        </div>
+
+        <!-- Groups Section -->
+        <div x-show="activeTab === 'groups-section'">
+            <c-section 
+                title="Groups"
+                description="Groups are used to organize hosts and manage firewall rules."
+                :action="{
+                    'url': '{% url 'networks:network-group-create' network_id=network.id %}',
+                    'text': 'Add Group'
+                }">
+                {% if groups %}
+                <c-table :headers="['Name','Hosts Count','Security Rules']">
+                    {% for group in groups %}
+                    <tr class="cursor-pointer hover:bg-gray-50" onclick="window.location='{% url 'networks:group-detail' pk=group.pk %}'">
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                            {{ group.name }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            {{ group.host_set.count }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            {{ group.rules.count }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </c-table>
+                {% else %}
+                <c-empty-state message="No groups found in this network."></c-empty-state>
+                {% endif %}
+            </c-section>
+        </div>
+
+        <!-- Certificate Authorities Section -->
+        <div x-show="activeTab === 'cas-section'">
+            <c-section 
+                title="Certificate Authorities"
+                description="A list of all certificate authorities in this network."
+                :action="{
+                    'url': '{% url 'networks:network-ca-create' network_id=network.id %}',
+                    'text': 'Add CA'
+                }">
+                {% if cas %}
+                <div id="cas-table">
+                    {% include "networks/network/_cas_table.html" %}
+                </div>
+                {% else %}
+                <c-empty-state message="No certificate authorities found in this network."></c-empty-state>
+                {% endif %}
+            </c-section>
+        </div>
+
+        <!-- Templates Section -->
+        <div x-show="activeTab === 'templates-section'">
+            <c-section 
+                title="Templates"
+                description="A list of all templates in this network."
+                :action="{
+                    'url': '{% url 'networks:network-template-create' network_id=network.id %}',
+                    'text': 'Add Template'
+                }">
+                {% if templates %}
+                <c-table :headers="['Name','Type','Status','Usage', 'Ephemeral']">
+                    {% for template in templates %}
+                    <tr class="cursor-pointer hover:bg-gray-50" onclick="window.location='{% url 'networks:template-detail' pk=template.pk %}'">
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            {{ template.name }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            {% if template.is_lighthouse %}
+                            <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">Lighthouse</span>
+                            {% endif %}
+                            {% if template.is_relay %}
+                            <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">Relay</span>
+                            {% endif %}
+                            {% if not template.is_lighthouse and not template.is_relay %}
+                            <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">Client</span>
+                            {% endif %}
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {% if template.expires_at %}
+                                {% if template.expires_at < now %}
+                                    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10">Expired</span>
+                                {% else %}
+                                    <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-700/10">Expires {{ template.expires_at|date:"M j, Y" }}</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">Active</span>
+                            {% endif %}
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {% if not template.reusable %}
+                                {% if template.usage_count > 0 %}
+                                    <span class="text-red-600">Used</span>
+                                {% else %}
+                                    <span>Single Use</span>
+                                {% endif %}
+                            {% elif template.usage_limit %}
+                                {{ template.usage_count }}/{{ template.usage_limit }} uses
+                            {% else %}
+                                {{ template.usage_count }} uses
+                            {% endif %}
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {% if template.ephemeral_peers %}
+                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">Yes</span>
+                            {% else %}
+                                <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10">No</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </c-table>
+                {% else %}
+                <c-empty-state message="No templates found in this network."></c-empty-state>
+                {% endif %}
+            </c-section>
+        </div>
+
+        <!-- Add Rollouts Section -->
+        <div x-show="activeTab === 'rollouts-section'">
+            <c-section 
+                title="Configuration Rollouts"
+                description="Manage configuration updates across hosts."
+                :action="{
+                    'url': '{% url 'networks:network-rollout-create' network_id=network.id %}',
+                    'text': 'Create Rollout'
+                }">
+                {% if rollouts %}
+                <c-table :headers="['Name','Status','Progress','Created']">
+                    {% for rollout in rollouts %}
+                    <tr class="cursor-pointer hover:bg-gray-50" onclick="window.location='{% url 'networks:rollout-detail' pk=rollout.pk %}'">
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                            {{ rollout.name }}
+                        </td>
+                        <td class="px-6 py-4 text-sm">
+                            <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium
+                                {% if rollout.status == 'COMPLETED' %}bg-green-50 text-green-700 ring-green-700/10
+                                {% elif rollout.status == 'FAILED' %}bg-red-50 text-red-700 ring-red-700/10
+                                {% else %}bg-yellow-50 text-yellow-700 ring-yellow-700/10{% endif %} ring-1 ring-inset">
+                                {{ rollout.status }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            {{ rollout.completed_hosts.count }}/{{ rollout.target_hosts.count }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            {{ rollout.created_at|date:"Y-m-d H:i" }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </c-table>
+                {% else %}
+                <c-empty-state message="No rollouts found in this network."></c-empty-state>
+                {% endif %}
+            </c-section>
+        </div>
+
+        <!-- Members Section -->
+        <div x-show="activeTab === 'members-section'">
+            <c-section 
+                title="Members"
+                description="Manage network access and permissions."
+                :action="{
+                    'url': '{% url 'networks:network-member-add' network_id=network.id %}',
+                    'text': 'Add Member'
+                }">
+                {% if memberships %}
+                <c-table :headers="['Username','Email','Role','Actions']">
+                    {% for membership in memberships %}
+                        {% include "networks/network/_member_row.html" %}
+                    {% endfor %}
+                </c-table>
+                {% else %}
+                <c-empty-state message="No members found in this network."></c-empty-state>
+                {% endif %}
+            </c-section>
+        </div>
+    </div>
+</div>
+{% endblock %}

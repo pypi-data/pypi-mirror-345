@@ -1,0 +1,129 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ object.name }} - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <c-page-header 
+        title="{{ object.name }}"
+        :actions="[
+            {% if object.status == 'PENDING' %}
+            {
+                'text': 'Unfreeze All',
+                'form': {
+                    'action': '{% url 'networks:rollout-unfreeze' pk=object.pk %}',
+                    'method': 'post'
+                },
+                'style': 'primary',
+            },
+            {% endif %}
+            {
+                'text': 'Edit',
+                'url': '{% url 'networks:rollout-edit' pk=object.pk %}',
+                'style': 'secondary'
+            },
+            {
+                'text': 'Delete',
+                'url': '{% url 'networks:rollout-delete' pk=object.pk %}',
+                'style': 'danger'
+            }
+        ]"
+        description="Configuration rollout for {{ object.network.name }}">
+        <c-badge text="{{ object.status }}" 
+            type="{% if object.status == 'COMPLETED' %}success
+                 {% elif object.status == 'FAILED' %}error
+                 {% else %}warning{% endif %}">
+        </c-badge>
+    </c-page-header>
+
+    <div class="grid grid-cols-1 gap-6">
+        <!-- Rollout Info -->
+        <c-info-card title="Details">
+            <dl class="mt-4 space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Network</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        <a href="{% url 'networks:network-detail' pk=object.network.pk %}" 
+                           class="text-indigo-600 hover:text-indigo-500">
+                            {{ object.network.name }}
+                        </a>
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Created At</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        {{ object.created_at|date:'Y-m-d H:i' }}
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Progress</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        {{ object.completed_hosts.count }}/{{ object.target_hosts.count }} hosts
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Notes</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        {{ object.notes|default:'-' }}
+                    </dd>
+                </div>
+            </dl>
+        </c-info-card>
+
+        <!-- Target Hosts -->
+        <div class="lg:col-span-2">
+            <c-section title="Target Hosts">
+                <c-table :headers="['Name','IP','Status','Last Config','Actions']">
+                    {% for host in object.target_hosts.all %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                            <a href="{% url 'networks:host-detail' pk=host.pk %}" class="hover:text-indigo-600">
+                                {{ host.name }}
+                            </a>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            {{ host.assigned_ip|default:"Not assigned" }}
+                        </td>
+                        <td class="px-6 py-4 text-sm">
+                            {% if host in object.completed_hosts.all %}
+                            <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">
+                                Completed
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-700/10">
+                                Pending
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            {{ host.last_config_refresh|default:"Never" }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            <div class="flex items-center gap-2">
+                                {% if host not in object.completed_hosts.all %}
+                                <form method="post" action="{% url 'networks:rollout-unfreeze' pk=object.pk %}" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="host_id" value="{{ host.id }}">
+                                    <button type="submit" 
+                                        class="inline-flex items-center rounded-md bg-white px-2 py-1 text-xs font-medium text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                        Unfreeze
+                                    </button>
+                                </form>
+                                {% endif %}
+                                <form method="post" action="{% url 'networks:host-refresh-config' pk=host.pk rollout_id=object.pk %}" class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit" 
+                                        class="inline-flex items-center rounded-md bg-white px-2 py-1 text-xs font-medium text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                        Refresh Config
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </c-table>
+            </c-section>
+        </div>
+    </div>
+</div>
+{% endblock %}

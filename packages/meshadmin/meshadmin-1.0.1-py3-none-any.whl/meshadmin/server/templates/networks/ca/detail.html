@@ -1,0 +1,146 @@
+{% extends "_base.html" %}
+{% load network_tags %}
+
+{% block title %}{{ object.name }} - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <c-page-header 
+        title="{{ object.name }}"
+        :actions="[
+            {
+                'text': 'Edit',
+                'url': '{% url 'networks:ca-edit' pk=object.pk %}',
+                'style': 'secondary'
+            },
+            {
+                'text': 'Delete',
+                'url': '{% url 'networks:ca-delete' pk=object.pk %}',
+                'style': 'danger'
+            }
+        ]">
+        {% if object.signingca_set.exists %}
+        <c-badge text="Signing CA" type="success"></c-badge>
+        {% endif %}
+    </c-page-header>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <c-info-card title="Basic Information">
+            <dl class="mt-4 space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Network</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        <a href="{% url 'networks:network-detail' pk=network.pk %}" 
+                           class="text-indigo-600 hover:text-indigo-500">
+                            {{ network.name }}
+                        </a>
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Certificate</dt>
+                    <dd class="mt-1">
+                        <pre class="text-sm font-mono bg-gray-50 p-4 rounded-md overflow-auto max-h-96">{{ object.cert }}</pre>
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Days Until Expiry</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.days_until_expiry }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Active Certificates</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.hostcert_set.count }}</dd>
+                </div>
+            </dl>
+        </c-info-card>
+
+        <c-info-card title="Certificate Details">
+            {% if object.cert_print %}
+            <dl class="mt-4 space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Curve</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.cert_print.details.curve }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Name</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.cert_print.details.name }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Valid From</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.cert_print.details.notBefore }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Valid Until</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.cert_print.details.notAfter }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Is CA</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.cert_print.details.isCA|yesno:"Yes,No" }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Public Key</dt>
+                    <dd class="mt-1 text-sm font-mono text-gray-900">{{ object.cert_print.details.publicKey }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Fingerprint</dt>
+                    <dd class="mt-1 text-sm font-mono text-gray-900">{{ object.cert_print.fingerprint }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Groups</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        {% if object.cert_print.details.groups %}
+                            {{ object.cert_print.details.groups|join:", " }}
+                        {% else %}
+                            <span class="text-gray-400">No groups</span>
+                        {% endif %}
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">IPs</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        {% if object.cert_print.details.ips %}
+                            {{ object.cert_print.details.ips|join:", " }}
+                        {% else %}
+                            <span class="text-gray-400">No IPs</span>
+                        {% endif %}
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Subnets</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        {% if object.cert_print.details.subnets %}
+                            {{ object.cert_print.details.subnets|join:", " }}
+                        {% else %}
+                            <span class="text-gray-400">No subnets</span>
+                        {% endif %}
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Issuer</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        {% if object.cert_print.details.issuer %}
+                            {{ object.cert_print.details.issuer }}
+                        {% else %}
+                            <span class="text-gray-400">No issuer</span>
+                        {% endif %}
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Signature</dt>
+                    <dd class="text-sm font-mono bg-gray-50 p-4 rounded-md overflow-auto max-h-96">
+                        <pre>{{ object.cert_print.signature }}</pre>
+                    </dd>
+                </div>
+            </dl>
+            {% else %}
+            <p class="text-sm text-gray-500">No certificate details available</p>
+            {% endif %}
+        </c-info-card>
+    </div>
+
+    <c-section title="Issued Host Certificates">
+        <div id="hosts-table">
+            {% include "networks/network/_hosts_table.html" %}
+        </div>
+    </c-section>
+</div>
+{% endblock %}
