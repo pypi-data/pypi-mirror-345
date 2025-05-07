@@ -1,0 +1,57 @@
+[project]
+name = "zaturn"
+version = "0.1.7"
+description = "AI Data Analysis MCP"
+authors = [
+  {name = "Karthik Devan", email = "krtdvn@gmail.com"},
+]
+maintainers = [
+  {name = "Karthik Devan", email = "krtdvn@gmail.com"},
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "clickhouse-connect>=0.8.17",
+    "cryptography>=44.0.2",
+    "duckdb>=1.2.1",
+    "fastmcp>=0.4.1",
+    "kaleido==0.2.1",
+    "pandas>=2.2.3",
+    "platformdirs>=4.3.7",
+    "plotly[express]>=6.0.1",
+    "psycopg2-binary>=2.9.10",
+    "pyarrow>=19.0.1",
+    "pymysql>=1.1.1",
+    "python-lsp-server>=1.12.2",
+    "seaborn>=0.13.2",
+    "setuptools>=78.1.0",
+    "sqlalchemy>=2.0.40",
+    "tabulate>=0.9.0",
+]
+
+[project.scripts]
+zaturn_mcp = "zaturn:main"
+
+[project.urls]
+Homepage = "https://github.com/kdqed/zaturn"
+Issues = "https://github.com/kdqed/zaturn/issues"
+
+[build-system]
+requires = [
+    "setuptools>=60",
+    "setuptools-scm>=8.0"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+exclude = ["docs*", "brand*", "debug*"]
+include = ["zaturn*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.*"]
+
+[dependency-groups]
+dev = []
