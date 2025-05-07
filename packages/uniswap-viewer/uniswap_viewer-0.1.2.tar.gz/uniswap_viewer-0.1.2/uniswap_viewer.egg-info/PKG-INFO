@@ -1,0 +1,104 @@
+Metadata-Version: 2.4
+Name: uniswap-viewer
+Version: 0.1.2
+Summary: Lightweight Python library for reading Uniswap V3 prices and tick data via Web3.
+Home-page: https://github.com/fomalhaut88/uniswap-viewer
+Author: Alexander Fomalhaut
+License: MIT
+Keywords: uniswap v3 web3 defi ethereum blockchain async
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: aiohttp>=3.11
+Requires-Dist: pdoc>=15.0
+Requires-Dist: requests>=2.32
+Requires-Dist: web3>=7.11
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# uniswap-viewer
+
+A lightweight Python library for accessing Uniswap V3 on-chain data.
+
+`uniswap-viewer` provides a clean and efficient interface for reading price and 
+tick information directly from Uniswap V3 smart contracts using `web3.py`. It 
+supports both synchronous and asynchronous workflows and is ideal for 
+developers, analysts, and algorithmic traders.
+
+## Features
+
+- Supports both sync and async Web3 clients  
+- Fetches token prices using `sqrtPriceX96` and token decimals  
+- Retrieves detailed tick data via ABI-decoded contract calls  
+- Computes tick index, tick spacing, and tick slot  
+- Includes block streaming generator to track new blocks in real time  
+- Built-in utilities for loading ABIs and checking Ethereum addresses  
+
+## Modules
+
+- `viewer_sync.py` – synchronous Uniswap V3 viewer using `web3.Web3`
+- `viewer_async.py` – asynchronous Uniswap V3 viewer using `web3.AsyncWeb3`
+- `utils.py` – helper functions (ABI loading, tick keys, address filters)
+
+## Usage
+
+### Sync example
+
+```python
+from uniswap_viewer import ViewerSync, get_token_address
+from web3 import Web3
+
+w3 = Web3(Web3.HTTPProvider("<your_provider_url>"))
+
+viewer = ViewerSync(w3, "usdt", "weth", fee=3000)
+viewer.init()
+price = viewer.get_price()
+```
+
+### Async example
+
+```python
+from uniswap_viewer import ViewerAsync, get_token_address
+from web3 import AsyncWeb3
+
+w3 = AsyncWeb3(AsyncWeb3.AsyncHTTPProvider("<your_provider_url>"))
+
+viewer = ViewerAsync(w3, "usdt", "weth", fee=3000)
+await viewer.init()
+price = await viewer.get_price()
+```
+
+## Requirements
+
+- Python 3.8+
+- `web3` library (sync or async)
+
+## Motivation
+
+This library is designed for:
+
+- Developers integrating Uniswap data directly from the blockchain
+- Quants and analysts building custom tooling
+- Avoiding reliance on third-party APIs like The Graph
+
+## License
+
+MIT
