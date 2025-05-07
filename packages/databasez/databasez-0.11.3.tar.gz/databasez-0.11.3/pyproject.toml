@@ -1,0 +1,228 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "databasez"
+description = "Async database support for Python."
+long_description = "Async database support for Python."
+readme = "README.md"
+requires-python = ">=3.9"
+dynamic = ['version']
+authors = [{ name = "Tiago Silva", email = "tiago.arasilva@gmail.com" }]
+classifiers = [
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development",
+    "Typing :: Typed",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: AsyncIO",
+    "Framework :: AnyIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = ["sqlalchemy[asyncio]>=2.0.25,<2.1", "orjson"]
+keywords = [
+    "mysql",
+    "postgres",
+    "sqlalchemy",
+    "sqlite",
+    "asyncio",
+    "esmerald",
+    "saffier",
+    "jdbc"
+]
+
+[project.urls]
+Homepage = "https://github.com/dymmond/databasez"
+Documentation = "https://databasez.tarsild/"
+Changelog = "https://databasez.dymmond.com/release-notes/"
+Funding = "https://github.com/sponsors/tarsil"
+Source = "https://github.com/dymmond/databasez"
+
+[project.optional-dependencies]
+# for preventing failures
+testing = []
+aiomysql = ["aiomysql"]
+aioodbc = ["aioodbc"]
+aiosqlite = ["aiosqlite"]
+asyncpg = ["asyncpg"]
+jdbc = ["jpype1"]
+# without aio, async prefix
+odbc = ["aioodbc"]
+mysql = ["asyncmy"]
+postgresql = ["asyncpg"]
+sqlite = ["aiosqlite"]
+
+all = ["databasez[jdbc,mysql,aiomysql,odbc,postgresql,sqlite]"]
+
+[tool.hatch.version]
+path = "databasez/__init__.py"
+
+
+[tool.mypy]
+strict = true
+disallow_any_generics = false
+disallow_untyped_decorators = true
+implicit_reexport = true
+disallow_incomplete_defs = true
+disable_error_code = "attr-defined"
+disallow_untyped_defs = true
+ignore_missing_imports = true
+no_implicit_optional = true
+
+[tool.ruff]
+extend-exclude = ["docs"]
+line-length = 99
+indent-width = 4
+fix = true
+
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "C", # flake8-comprehensions
+    "B", # flake8-bugbear
+    "I", # isort
+    "ASYNC", # ASYNC
+    "UP",
+    "SIM", # simplification
+]
+
+ignore = [
+    "B008", # do not perform function calls in argument defaults
+    "C901", # too complex
+    "E712", # Comparison to True should be cond is True
+]
+
+
+[tool.ruff.lint.per-file-ignores]
+"docs_src/*" = ["ASYNC", "F704", "B007"]
+
+[tool.ruff.lint.isort]
+known-third-party = ["esmerald", "starlette"]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 120
+max-doc-length = 120
+
+[[tool.mypy.overrides]]
+module = "databasez.tests.*"
+ignore_missing_imports = true
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["sqlalchemy.*", "asyncpg", "alembic", "sqlalchemy_utils.*"]
+ignore_missing_imports = true
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "docs_src.*"
+ignore_errors = true
+
+[tool.pytest.ini_options]
+addopts = ["--strict-config", "--strict-markers", "--pdbcls=IPython.terminal.debugger:Pdb"]
+xfail_strict = true
+junit_family = "xunit2"
+setup_timeout = 5
+execution_timeout = 10
+teardown_timeout = 5
+asyncio_default_fixture_loop_scope = "module"
+reruns = 1
+reruns_delay = 1
+
+[tool.hatch.build.targets.sdist]
+include = ["/databasez"]
+
+
+[tool.hatch.envs.default]
+features = ["all"]
+extra-dependencies = [
+    # for debugging
+    "sqlalchemy_utils",
+    "ipdb>=0.13.13",
+    "pre-commit>=2.17.0,<4.0.0",
+]
+
+[tool.hatch.envs.default.scripts]
+clean_pyc = "find . -type f -name \"*.pyc\" -delete"
+clean_pycache = "find . -type d -name \"*__pycache__*\" -delete"
+
+[tool.hatch.envs.docs]
+dependencies = [
+    "mkautodoc>=0.2.0,<0.3.0",
+    "mkdocs>=1.4.2,<2.0.0",
+    "mkdocs-material>=9.4.4,<10.0.0",
+    "mdx-include>=1.4.1,<2.0.0",
+    "mkdocs-macros-plugin>=1.0.0,<2.0.0",
+    "mkdocstrings>=0.19.0,<0.26.0",
+    "pyyaml>=5.3.1,<7.0.0",
+]
+[tool.hatch.envs.docs.scripts]
+build = "mkdocs build"
+serve = "mkdocs serve --dev-addr localhost:8000"
+
+
+
+[tool.hatch.envs.test]
+# type-checking
+features = ["all"]
+extra-dependencies = [
+    "mypy>=1.1.0,<2.0.0",
+]
+
+[tool.hatch.envs.test.scripts]
+check_types = "mypy -p databasez"
+
+[tool.hatch.envs.hatch-static-analysis]
+# disables custom ruff rules, required to align with pre-commit
+config-path = "none"
+dependencies = ["ruff==0.11.8"]
+
+
+[tool.hatch.envs.hatch-test]
+features = ["all"]
+
+extra-dependencies = [
+    # for debugging
+    "sqlalchemy_utils",
+    "ipdb>=0.13.13",
+    "esmerald>=1.1.0",
+    "mypy>=1.1.0,<2.0.0",
+    "starlette>=0.26.1",
+    "httpx",
+    "psycopg[binary]",
+    "pyodbc",
+    "pytest-timeouts",
+    "pytest-rerunfailures",
+    "pytest-asyncio",
+    "pytest-xdist",
+    "anyio",
+    "uvloop"
+]
+
+[tool.hatch.envs.hatch-test.env-vars]
+TEST_DATABASE_URLS = """
+sqlite+aiosqlite:///testsuite.sqlite3,\
+mysql+aiomysql://username:passwsss*1348394#%40@localhost:3306/testsuite,\
+mysql+asyncmy://username:passwsss*1348394#%40@localhost:3306/testsuite,\
+postgresql+psycopg://username:passwsss*1348394#%40@localhost:5432/testsuite,\
+postgresql+asyncpg://username:passwsss*1348394#%40@localhost:5432/testsuite,\
+mssql+aioodbc://sa:Mssql123mssql-%40@localhost:1433/master?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes&Encrypt=Optional\
+"""
