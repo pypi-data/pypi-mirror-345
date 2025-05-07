@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=64", "wheel", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "energyid-webhooks"
+dynamic = ["version"]
+authors = [
+    { name = "Jan Pecinovsky", email = "jan@energieid.be" },
+    { name = "Oscar Swyns", email = "oscar@energieid.be" },
+]
+description = "Light weight Python package to interface with EnergyID Webhooks"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "aiohttp>=3.11.12",
+    "backoff>=2.2.1",
+    "requests>=2.32.3",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/EnergieID/energyid-webhooks-py"
+"Bug Tracker" = "https://github.com/EnergieID/energyid-webhooks-py/issues"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "jupyter>=1.0.0",
+    "mypy>=1.15.0",
+    "nest-asyncio>=1.5.8",
+    "python-dotenv>=1.0.0",
+]
+
+[tool.setuptools_scm]
+version_file = "src/energyid_webhooks/_version.py"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools.package-data]
+"energyid_webhooks" = ["py.typed"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
