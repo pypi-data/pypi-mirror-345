@@ -1,0 +1,105 @@
+Metadata-Version: 2.4
+Name: mcp-test-server
+Version: 0.3.4
+Summary: A custom MCP SSE HTTP Server with parameter support
+Author: MCP Demo
+License-Expression: MIT
+Requires-Python: >=3.10
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: pydantic>=2.0.0
+Description-Content-Type: text/markdown
+
+# MCP SSE 服务器
+
+这是一个基于Python Flask实现的MCP（Message Communication Protocol）服务器，支持SSE（Server-Sent Events）和自定义HTTP参数。
+
+## 功能特点
+
+- 基于SSE的实时消息推送
+- 支持自定义客户端ID和消息类型
+- 跨域支持（CORS）
+- 内置测试页面
+
+## 依赖要求
+
+- Python 3.7+
+- Flask 2.3.3
+- Flask-CORS 4.0.0
+- Gunicorn 21.2.0
+- python-dotenv 1.0.0
+
+## 安装说明
+
+### 从PyPI安装（推荐）
+```bash
+pip install mcp-test-server
+```
+
+### 从源码安装
+1. 克隆仓库：
+```bash
+git clone https://github.com/mcp-demo/my-sse-http-custom-param-server.git
+cd my-sse-http-custom-param-server
+```
+
+2. 安装依赖：
+```bash
+pip install -r requirements.txt
+```
+
+### 运行服务器
+```bash
+mcp-test-server
+```
+
+服务器将在 http://localhost:5000 启动
+
+## 发布说明
+
+1. 构建包：
+```bash
+python -m build
+```
+
+2. 发布到PyPI：
+```bash
+python -m twine upload dist/*
+```
+
+## 使用方法
+
+### 测试页面
+
+访问 http://localhost:5000 可以看到内置的测试页面。
+
+### SSE 接口
+
+接口地址：`/events`
+
+支持的URL参数：
+- `client_id`: 客户端标识符
+- `type`: 消息类型
+
+示例：
+```javascript
+const eventSource = new EventSource('/events?client_id=client1&type=notification');
+
+eventSource.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    console.log('收到消息:', data);
+};
+```
+
+## 生产环境部署
+
+使用Gunicorn启动服务：
+
+```bash
+gunicorn -w 4 -b 0.0.0.0:5000 main:app
+```
+
+## 注意事项
+
+- 开发模式下默认启用了调试功能
+- 生产环境部署时建议使用Gunicorn作为WSGI服务器
+- 确保防火墙允许5000端口的访问
