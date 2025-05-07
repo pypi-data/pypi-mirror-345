@@ -1,0 +1,97 @@
+Metadata-Version: 2.4
+Name: edge-mdt-cl-dev
+Version: 0.4.0.dev7
+Summary: Edge MDT Custom Layers package
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: numpy
+Requires-Dist: packaging
+Provides-Extra: torch
+Requires-Dist: torch==2.5.*; extra == "torch"
+Requires-Dist: torchvision==0.20.*; extra == "torch"
+Requires-Dist: onnx==1.17.*; extra == "torch"
+Requires-Dist: onnxruntime==1.21.*; extra == "torch"
+Requires-Dist: onnxruntime_extensions==0.13.*; extra == "torch"
+Provides-Extra: tf
+Requires-Dist: tensorflow==2.15.*; extra == "tf"
+Dynamic: license-file
+Dynamic: provides-extra
+
+# Edge MDT Custom Layers (EdgeMDT CL)
+
+Edge MDT Custom Layers (EdgeMDT CL) is an open-source project implementing detection post process NN layers not supported by the TensorFlow Keras API or Torch's torch.nn for the easy integration of those layers into pretrained models.
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Supported Versions](#supported-versions)
+- [API](#api)
+  - [TensorFlow API](#tensorflow-api)
+  - [PyTorch API](#pytorch-api)
+- [License](#license)
+
+
+## Getting Started
+
+This section provides an installation and a quick starting guide.
+
+### Installation
+
+To install the latest stable release of SCL, run the following command:
+```
+pip install edge-mdt-cl
+```
+By default, no framework dependencies are installed.
+To install SCL including the latest tested dependencies (up to patch version) for TensorFlow:
+```
+pip install edge-mdt-cl[tf]
+```
+To install SCL including the latest tested dependencies (up to patch version) for PyTorch/ONNX/OnnxRuntime:
+```
+pip install edge-mdt-cl[torch]
+```
+### Supported Versions
+
+#### TensorFlow
+
+| **Tested FW versions** | **Tested Python version** | **Serialization** |
+|------------------------|---------------------------|-------------------|
+| 2.10                   | 3.9-3.10                  | .h5               |
+| 2.11                   | 3.9-3.10                  | .h5               |
+| 2.12                   | 3.9-3.11                  | .h5  .keras       |
+| 2.13                   | 3.9-3.11                  | .keras            |
+| 2.14                   | 3.9-3.11                  | .keras            |
+| 2.15                   | 3.9-3.11                  | .keras            |
+
+#### PyTorch
+
+| **Tested FW versions**                                                                                                   | **Tested Python version** | **Serialization**              |
+|--------------------------------------------------------------------------------------------------------------------------|---------------------------|--------------------------------|
+| torch 2.0-2.4<br/>torchvision 0.15-0.19<br/>onnxruntime 1.15-1.19<br/>onnxruntime_extensions 0.8-0.12<br/>onnx 1.14-1.16 | 3.9-3.12                  | .onnx (via torch.onnx.export)  |
+
+## API
+For edge-mdt-cl API see https://sonysemiconductorsolutions.github.io/aitrios-edge-mdt-cl
+
+### TensorFlow API
+For TensorFlow layers see
+[KerasAPI](https://sonysemiconductorsolutions.github.io/aitrios-edge-mdt-cl/edgemdt_cl/keras.html)
+
+To load a model with custom layers in TensorFlow, see [custom_layers_scope](https://sonysemiconductorsolutions.github.io/aitrios-edge-mdt-cl/edgemdt_cl/keras.html#custom_layers_scope)
+
+### PyTorch API
+For PyTorch layers see
+[PyTorchAPI](https://sonysemiconductorsolutions.github.io/aitrios-edge-mdt-cl/edgemdt_cl/pytorch.html)
+
+No special handling is required for torch.onnx.export and onnx.load.
+
+For OnnxRuntime support see [load_custom_ops](https://sonysemiconductorsolutions.github.io/aitrios-edge-mdt-cl/edgemdt_cl/pytorch.html#load_custom_ops) 
+
+## License
+[Apache License 2.0](LICENSE.md).
+
+
