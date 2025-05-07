@@ -1,0 +1,77 @@
+release-date = "2023-03-10"
+
+[[entries]]
+id = "8628524b-3376-45db-a676-240b00c20d08"
+type = "fix"
+description = "Swap in `blib2to3` parser (bundled with the `black` package) for the stdlib `lib2to3` module in order to support `match` statements (PEP 634 - Structural Pattern Matching)."
+author = "@nrser"
+pr = "https://github.com/NiklasRosenstein/docspec/pull/80"
+
+[[entries]]
+id = "1e03c529-5dc3-4d7b-a2d9-827376ddeee9"
+type = "improvement"
+description = "add back `files` as a keyword-only argument to `load_python_modules()`"
+author = "@NiklasRosenstein"
+issues = [
+    "https://github.com/NiklasRosenstein/docspec/issues/75",
+]
+
+[[entries]]
+id = "9e84cf49-c0a4-4ee9-87d7-379f082a7d46"
+type = "tests"
+description = "add testcase for #76"
+author = "@NiklasRosenstein"
+issues = [
+    "https://github.com/NiklasRosenstein/docspec/issues/76",
+]
+
+[[entries]]
+id = "8e5b8177-cbb9-4b70-8a54-822f2cda7774"
+type = "fix"
+description = "Support parsing raw docstrings and decoding escape sequences appropriately using `str.encode(\"latin1\").decode(\"unicode_escape\")` (see https://stackoverflow.com/a/58829514/791713)."
+author = "@NiklasRosenstein"
+issues = [
+    "https://github.com/NiklasRosenstein/docspec/issues/71",
+]
+
+[[entries]]
+id = "2e159810-b33a-4c44-936f-ca1f884ff882"
+type = "tests"
+description = "add test case for parsing docstring _after_ a variable declaration"
+author = "@NiklasRosenstein"
+issues = [
+    "https://github.com/NiklasRosenstein/docspec/issues/65",
+]
+
+[[entries]]
+id = "da5abd74-881d-43a9-8e8d-5476f62e54d3"
+type = "improvement"
+description = "Explicitly do not support tuple-upackings as it is unclear how to assign the associated docstring and value."
+author = "@NiklasRosenstein"
+
+[[entries]]
+id = "f71d41d1-cc7a-4dc3-999d-70f94f6a3f80"
+type = "feature"
+description = "Support docstrings on the same line for variable definitions (ex.: `a: int #: This is the docstring`)."
+author = "@NiklasRosenstein"
+issues = [
+    "https://github.com/NiklasRosenstein/docspec/issues/2",
+]
+
+[[entries]]
+id = "4f5e29cd-317c-485b-ba3f-6f56ebb970d8"
+type = "fix"
+description = "Fix hash docstrings (`#:`) loosing their indentation relative to the rest of the docstring lines."
+author = "@NiklasRosenstein"
+issues = [
+    "https://github.com/NiklasRosenstein/docspec/issues/1",
+]
+
+[[entries]]
+id = "74ceb273-f285-416e-baf0-52b4cdab0b81"
+type = "tests"
+description = "Add unit test for #72"
+author = "@NiklasRosenstein"
+issues = [
+    "https://github.com/NiklasRosenstein/docspec/issues/72",
+]

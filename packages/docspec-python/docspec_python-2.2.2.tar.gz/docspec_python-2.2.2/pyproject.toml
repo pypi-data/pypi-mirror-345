@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "docspec-python"
+version = "2.2.2"
+description = "A parser based on lib2to3 producing docspec data from Python source code."
+readme = "readme.md"
+requires-python = ">=3.8"
+dependencies = [
+    "black>=24.8.0",
+    "docspec==2.2.1",
+    "nr-util>=0.8.12",
+]
+authors = [{ name = "Niklas Rosenstein", email = "rosensteinniklas@gmail.com" }]
+
+[project.scripts]
+docspec-python = "docspec_python.__main__:main"
+
+[tool.uv]
+dev-dependencies = [
+    "mypy>=1.13.0",
+    "pytest>=8.3.4",
+    "types-deprecated>=1.2.15.20241117",
+    "types-termcolor>=1.1.6.2",
+]
+
+[tool.uv.sources]
+docspec = { workspace = true }
+
+[tool.mypy]
+python_version = "3.8"
+explicit_package_bases = true
+mypy_path = ["src"]
+namespace_packages = true
+pretty = true
+show_error_codes = true
+show_error_context = true
+strict = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_unreachable = true
+warn_unused_ignores = true
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "blib2to3.*"
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 120
