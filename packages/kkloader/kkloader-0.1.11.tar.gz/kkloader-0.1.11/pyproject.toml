@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "kkloader"
+version = "0.1.11"
+description = "a simple deserializer / serializer for Koikatu / EmotionCreators / Honeycome / SummerVacationScramble data."
+authors = ["great-majority <wired.wireless0@gmail.com>"]
+homepage = "https://github.com/great-majority/KoikatuCharaLoader"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+msgpack = "^1.0.3"
+pandas = "^2.2.2"
+lz4 = "^4.4.4"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.3"
+pytest = "^7.1.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+pattern = "(?P<base>\\d+(\\.\\d+)*)"
+format = "{base}"
+
+[tool.ruff]
+line-length = 255
+
+[tool.ruff.lint]
+extend-ignore = ["E203"]
+select = ["I", "E", "F"]
+
+[tool.ruff.lint.isort]
+section-order = ["future", "standard-library", "first-party", "local-folder", "third-party"]
