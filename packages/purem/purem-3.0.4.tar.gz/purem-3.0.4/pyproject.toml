@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "purem"
+version = "3.0.4"
+description = "The official high-performance mapping function for mixed-type arrays powered by Work TIF Ltd."
+readme = { file = "README.rst", content-type = "text/x-rst" }
+requires-python = ">=3.11"
+license = "BUSL-1.1"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Raman Marozau", email = "raman@worktif.com" }
+]
+keywords = ["mapping", "performance", "numpy", "arrays"]
+classifiers = [
+    "Typing :: Typed",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Operating System :: MacOS",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows"
+]
+dependencies = [
+    "numpy~=2.1.3",
+    "numba~=0.61.0",
+    "certifi~=2025.1.31",
+    "pydantic~=2.10.6",
+    "dotenv~=0.9.9",
+    "python-dotenv~=1.1.0",
+    "setuptools~=65.5.1",
+    "requests~=2.32.3",
+    "pytest~=8.3.5",
+    "pytest-env~=1.1.5",
+]
+
+[tool.setuptools]
+packages = ["purem"]
+
+[project.urls]
+Homepage = "https://github.com/worktif/purem"
+Documentation = "https://worktif.com/docs/basic-usage"
+
+[project.optional-dependencies]
+dev = ["pytest", "flake8", "black", "coverage", " pytest-mock"]
