@@ -1,0 +1,128 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  UV_CACHE_DIR: ".cache/uv"
+  REGISTRY: registry.gitlab.com
+  IMAGE_NAME: meshadmin/meshadmin
+
+default:
+  image: "python:3.13"
+  before_script:
+    - 'export PATH="$HOME/.local/bin:$PATH"'
+    - "curl -LsSf https://astral.sh/uv/install.sh | sh -s -- --verbose"
+  after_script:
+    - 'export PATH="$HOME/.local/bin:$PATH"'
+    - "uv cache prune --ci"
+  cache:
+    paths:
+      - ".cache/uv"
+
+pytest:
+  stage: test
+  script:
+    - uv sync --extra server
+    - mkdir -p /opt/nebula
+    - cp src/meshadmin/server/assets/Linux/x86_64/* /opt/nebula/
+    - chmod +x /opt/nebula/*
+    - uv run pytest -m "not runtime" --cov --cov-report=xml:coverage.xml --cov-report=html:coverage_html
+    - uv run --with pip-audit pip-audit -v
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+    paths:
+      - coverage_html
+  coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+
+build:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_TAG
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - echo "$CI_DEPLOY_PASSWORD" | docker login $REGISTRY -u $CI_DEPLOY_USER --password-stdin
+  script:
+    - docker build . --tag $REGISTRY/$IMAGE_NAME
+    - docker push $REGISTRY/$IMAGE_NAME
+    - |
+      if [[ -n "$CI_COMMIT_TAG" ]]; then
+        echo "Building and pushing version tagged image: $CI_COMMIT_TAG"
+        docker build . --tag $REGISTRY/$IMAGE_NAME:$CI_COMMIT_TAG
+        docker push $REGISTRY/$IMAGE_NAME:$CI_COMMIT_TAG
+      fi
+
+deploy:
+  stage: deploy
+  image: ubuntu:latest
+  only:
+    - main
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker compose pull && docker compose up -d && exit"
+  after_script:
+    - rm -rf ~/.ssh
+
+build-package:
+  stage: "build"
+  script:
+    - "uv build --out-dir=dist"
+  artifacts:
+    paths:
+      - "dist/"
+
+.release-base:
+  # Abstract base job for "release" jobs.
+  # Extending jobs must define the following variables:
+  # - PYPI_OIDC_AUD: Audience for the ID token that GitLab issues to the pipeline job
+  # - PYPI_OIDC_URL: PyPI endpoint for retrieving a publish token with GitLab's ID token
+  # - UV_PUBLISH_URL: PyPI endpoint for the actual upload
+  stage: "deploy"
+  id_tokens:
+    PYPI_ID_TOKEN:
+      aud: "$PYPI_OIDC_AUD"
+  script:
+    - >-
+      resp="$(curl -X POST "${PYPI_OIDC_URL}" -d "{\"token\":\"${PYPI_ID_TOKEN}\"}")"
+    - >-
+      publish_token="$(python -c 'import json, sys; print(json.load(sys.stdin)["token"])' <<< "${resp}")"
+    - 'uv publish --token "$publish_token" dist/*'
+    - 'version="$(uv run --with hatch-vcs hatchling version)"'
+    - 'echo -e "\033[34;1mPackage on PyPI:\033[0m ${CI_ENVIRONMENT_URL}${version}/"'
+
+release-test:
+  extends: ".release-base"
+  rules:
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_TAG"
+  environment:
+    name: "release-test"
+    url: "https://test.pypi.org/project/meshadmin/"
+  variables:
+    PYPI_OIDC_AUD: "testpypi"
+    PYPI_OIDC_URL: "https://test.pypi.org/_/oidc/mint-token"
+    UV_PUBLISH_URL: "https://test.pypi.org/legacy/"
+
+release:
+  extends: ".release-base"
+  rules:
+    - if: "$CI_COMMIT_TAG"
+  environment:
+    name: "release"
+    url: "https://pypi.org/project/meshadmin/"
+  variables:
+    PYPI_OIDC_AUD: "pypi"
+    PYPI_OIDC_URL: "https://pypi.org/_/oidc/mint-token"
+    UV_PUBLISH_URL: "https://upload.pypi.org/legacy/"

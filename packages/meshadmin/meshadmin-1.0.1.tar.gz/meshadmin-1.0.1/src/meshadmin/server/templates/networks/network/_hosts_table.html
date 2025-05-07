@@ -1,0 +1,143 @@
+{% if hosts %}
+<div class="mt-2 mb-4 flex items-center gap-4">
+    <div class="relative flex-1 max-w-sm">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input
+            type="search"
+            name="search"
+            placeholder="Search hosts..."
+            class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500"
+            hx-get=""
+            hx-trigger="keyup changed delay:500ms"
+            hx-target="#hosts-table"
+            hx-include="[name='stale_config']"
+            value="{{ request.GET.search|default:'' }}"
+        >
+    </div>
+    <div class="flex items-center">
+        <input
+            type="checkbox"
+            id="stale_config"
+            name="stale_config"
+            class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-indigo-500"
+            hx-get=""
+            hx-trigger="change"
+            hx-target="#hosts-table"
+            hx-include="[name='search']"
+            {% if request.GET.stale_config %}checked{% endif %}
+        >
+        <label for="stale_config" class="ms-2 text-sm font-medium text-gray-900">Show stale configs only</label>
+    </div>
+</div>
+
+<div x-data="{ 
+    copiedIp: null,
+    copyToClipboard(ip) {
+        navigator.clipboard.writeText(ip);
+        this.copiedIp = ip;
+        setTimeout(() => this.copiedIp = null, 2000);
+    }
+}">
+    <c-table :headers="['Name','IP','Lighthouse','Relay','Last Config','Config Updates','Ephemeral', 'Version']">
+        {% for host in hosts %}
+        <tr class="cursor-pointer hover:bg-gray-50" 
+            @click="if (!$event.target.closest('button')) window.location='{% url 'networks:host-detail' pk=host.pk %}'">
+            <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                {{ host.name }}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500 relative">
+                <div class="flex items-center">
+                    <span>{{ host.assigned_ip|default:"Not assigned" }}</span>
+                    {% if host.assigned_ip %}
+                    <button
+                        @click.stop="copyToClipboard('{{ host.assigned_ip }}')"
+                        class="ml-2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                    >
+                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                            <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                        </svg>
+                        <div x-show="copiedIp === '{{ host.assigned_ip }}'" 
+                             x-transition
+                             x-transition.duration.300ms
+                             class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                            Copied!
+                        </div>
+                    </button>
+                    {% endif %}
+                </div>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500">
+                {% if host.is_lighthouse %}
+                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">Lighthouse</span>
+                {% endif %}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500">
+                {% if host.is_relay %}
+                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">Relay</span>
+                {% endif %}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500">
+                {% if host.last_config_refresh %}
+                    <span class="{% if host.is_config_stale %}text-red-600{% endif %}">
+                        {{ host.last_config_refresh|default:"Never" }}
+                    </span>
+                {% else %}
+                    <span class="text-red-600">Never</span>
+                {% endif %}
+            </td>
+            <td class="px-6 py-4 text-sm">
+                {% if host.config_freeze %}
+                <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-700/10">
+                    Manual
+                </span>
+                {% else %}
+                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">
+                    Auto
+                </span>
+                {% endif %}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500">
+                {% if host.is_ephemeral %}
+                <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10">
+                    Yes
+                </span>
+                {% else %}
+                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">
+                    No
+                </span>
+                {% endif %}
+            </td>
+            <td class="px-6 py-4 text-sm">
+                {% if host.cli_version %}
+                    <div class="flex flex-col">
+                        <span class="{% if host.is_cli_version_outdated == True %}text-red-600{% endif %}">
+                            {{ host.cli_version }}
+                        </span>
+                    </div>
+                {% else %}
+                    <span class="text-gray-400">Unknown</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </c-table>
+</div>
+
+<c-pagination 
+    total="{{ paginator.count }}"
+    current="{{ page_obj.number }}"
+    per-page="{{ per_page }}"
+    :per-page-options="[25, 50, 100]"
+    page-param="hosts_page"
+    htmx
+    htmx-target="#hosts-table">
+</c-pagination>
+
+{% else %}
+<c-empty-state message="No hosts found in this network."></c-empty-state>
+{% endif %}

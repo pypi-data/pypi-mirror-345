@@ -1,0 +1,84 @@
+services:
+
+  lighthouse_hetzner:
+    build:
+      context: ..
+    user: root
+    command: >
+      sh -c "
+        meshadmin host enroll &&
+        meshadmin nebula start
+      "
+    environment:
+      MESH_ADMIN_ENDPOINT: ${MESH_ADMIN_ENDPOINT}
+      MESH_CONFIG_PATH: ${MESH_CONFIG_PATH}
+      MESH_ENROLLMENT_KEY: ${LIGHTHOUSE_ENROLLMENT_KEY}
+      MESH_PUBLIC_IP: ${LIGHTHOUSE_PUBLIC_IP}
+      MESH_HOSTNAME: ${LIGHTHOUSE_HOSTNAME}
+    ports:
+      - "4242:4242/udp"
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - net
+
+  host1:
+    build:
+      context: ..
+    user: root
+    command: >
+      sh -c "
+        meshadmin host enroll &&
+        meshadmin nebula start
+      "
+    environment:
+      MESH_ADMIN_ENDPOINT: ${MESH_ADMIN_ENDPOINT}
+      MESH_CONFIG_PATH: ${MESH_CONFIG_PATH}
+      MESH_ENROLLMENT_KEY: ${HOST_ENROLLMENT_KEY}
+      MESH_HOSTNAME: host1
+      MESH_PUBLIC_IP: ${HOST_PUBLIC_IP}
+    ports:
+      - "4243:4242/udp"
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - net
+
+  host2:
+    build:
+      context: ..
+    user: root
+    command: >
+      sh -c "
+        meshadmin host enroll &&
+        meshadmin nebula start
+      "
+    environment:
+      MESH_ADMIN_ENDPOINT: ${MESH_ADMIN_ENDPOINT}
+      MESH_CONFIG_PATH: ${MESH_CONFIG_PATH}
+      MESH_ENROLLMENT_KEY: ${HOST_ENROLLMENT_KEY}
+      MESH_HOSTNAME: host2
+      MESH_PUBLIC_IP: ${HOST_PUBLIC_IP}
+    ports:
+      - "4244:4242/udp"
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.155.0/24
+          gateway: 10.0.155.1
+volumes:
+  keycloak_data:
+  meshadmin_data:

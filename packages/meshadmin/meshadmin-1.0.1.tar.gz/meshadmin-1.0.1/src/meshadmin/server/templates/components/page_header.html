@@ -1,0 +1,51 @@
+<div class="sm:flex sm:items-start justify-between">
+    <div class="sm:flex-auto">
+        <div class="flex items-center gap-x-3">
+            <h1 class="text-xl font-medium text-gray-900">{{ title }}</h1>
+            {{ slot }}
+        </div>
+        {% if description %}
+        <p class="mt-2 text-sm text-gray-700">{{ description }}</p>
+        {% endif %}
+    </div>
+    {% if actions %}
+    <div class="mt-4 sm:mt-0 sm:flex-none space-x-3">
+        {% for action in actions %}
+            {% if action.form %}
+            <form method="{{ action.form.method }}" action="{{ action.form.action }}" class="inline">
+                {% csrf_token %}
+                <button type="submit" 
+                    class="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium
+                    {% if action.style == 'danger' %}
+                    text-red-700 bg-white ring-1 ring-inset ring-red-300 hover:bg-red-50
+                    {% else %}
+                    text-gray-900 bg-white ring-1 ring-inset ring-gray-300 hover:bg-gray-50
+                    {% endif %}">
+                    {% if action.icon %}
+                    <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="{{ action.icon }}" clip-rule="evenodd" />
+                    </svg>
+                    {% endif %}
+                    {{ action.text }}
+                </button>
+            </form>
+            {% else %}
+            <a href="{{ action.url }}" 
+               class="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium
+               {% if action.style == 'danger' %}
+               text-red-700 bg-white ring-1 ring-inset ring-red-300 hover:bg-red-50
+               {% else %}
+               text-gray-900 bg-white ring-1 ring-inset ring-gray-300 hover:bg-gray-50
+               {% endif %}">
+                {% if action.icon %}
+                <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="{{ action.icon }}" clip-rule="evenodd" />
+                </svg>
+                {% endif %}
+                {{ action.text }}
+            </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>

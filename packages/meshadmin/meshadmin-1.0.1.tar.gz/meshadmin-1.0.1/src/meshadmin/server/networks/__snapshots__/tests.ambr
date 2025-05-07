@@ -1,0 +1,126 @@
+# serializer version: 1
+# name: test_host_template
+  dict({
+    'firewall': dict({
+      'conntrack': dict({
+        'default_timeout': '10m',
+        'tcp_timeout': '12m',
+        'udp_timeout': '3m',
+      }),
+      'inbound': list([
+      ]),
+      'inbound_action': 'drop',
+      'outbound': list([
+      ]),
+      'outbound_action': 'drop',
+    }),
+    'lighthouse': dict({
+      'am_lighthouse': False,
+      'hosts': list([
+        '100.100.64.1',
+        '100.100.64.2',
+        '100.100.64.3',
+        '100.100.64.4',
+      ]),
+      'interval': 60,
+    }),
+    'listen': dict({
+      'host': '0.0.0.0',
+      'port': 4242,
+    }),
+    'logging': dict({
+      'format': 'text',
+      'level': 'info',
+    }),
+    'pki': dict({
+      'key': 'host.key',
+    }),
+    'punchy': dict({
+      'punch': True,
+    }),
+    'relay': dict({
+      'am_relay': False,
+      'use_relays': True,
+    }),
+    'static_host_map': dict({
+      '100.100.64.1': list([
+        '127.0.0.1:4242',
+      ]),
+      '100.100.64.2': list([
+        '127.0.0.2:4242',
+      ]),
+      '100.100.64.3': list([
+        '127.0.0.3:4242',
+      ]),
+      '100.100.64.4': list([
+        '127.0.0.4:4242',
+      ]),
+    }),
+    'tun': dict({
+      'dev': 'nebula1',
+      'disabled': False,
+      'drop_local_broadcast': False,
+      'drop_multicast': False,
+      'mtu': 1300,
+      'routes': None,
+      'tx_queue': 500,
+      'unsafe_routes': None,
+    }),
+  })
+# ---
+# name: test_lighthouse_template
+  dict({
+    'firewall': dict({
+      'conntrack': dict({
+        'default_timeout': '10m',
+        'tcp_timeout': '12m',
+        'udp_timeout': '3m',
+      }),
+      'inbound': list([
+      ]),
+      'inbound_action': 'drop',
+      'outbound': list([
+      ]),
+      'outbound_action': 'drop',
+    }),
+    'lighthouse': dict({
+      'am_lighthouse': True,
+      'hosts': list([
+      ]),
+      'interval': 60,
+    }),
+    'listen': dict({
+      'host': '0.0.0.0',
+      'port': 4242,
+    }),
+    'logging': dict({
+      'format': 'text',
+      'level': 'info',
+    }),
+    'pki': dict({
+      'key': 'host.key',
+    }),
+    'punchy': dict({
+      'punch': True,
+    }),
+    'relay': dict({
+      'am_relay': True,
+      'use_relays': True,
+    }),
+    'static_host_map': dict({
+      '100.100.64.1': list([
+        '127.0.0.1:4242',
+      ]),
+    }),
+    'tun': dict({
+      'dev': 'nebula1',
+      'disabled': False,
+      'drop_local_broadcast': False,
+      'drop_multicast': False,
+      'mtu': 1300,
+      'routes': None,
+      'tx_queue': 500,
+      'unsafe_routes': None,
+    }),
+  })
+# ---

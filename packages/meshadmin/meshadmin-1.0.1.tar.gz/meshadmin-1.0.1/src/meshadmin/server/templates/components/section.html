@@ -1,0 +1,38 @@
+<div class="mt-6">
+    <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+            <h3 class="text-base font-semibold leading-6 text-gray-900">{{ title }}</h3>
+            {% if description %}
+            <p class="mt-2 text-sm text-gray-700">{{ description }}</p>
+            {% endif %}
+        </div>
+        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+            {% if action %}
+            <a href="{{ action.url }}" 
+                class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                {{ action.text }}
+            </a>
+            {% elif htmx %}
+            <button {% if htmx.click %}{{ htmx.click }}{% else %}
+                    hx-post="{{ htmx.url }}"
+                    hx-target="#{{ htmx.target }}"
+                    hx-swap="innerHTML"
+                    {% endif %}
+                    class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                {{ htmx.text }}
+            </button>
+            {% endif %}
+            {% if actions %}
+            <div class="flex space-x-3">
+                {% for action in actions %}
+                <a href="{{ action.url }}"
+                    class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                    {{ action.text }}
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {{ slot }}
+</div>
