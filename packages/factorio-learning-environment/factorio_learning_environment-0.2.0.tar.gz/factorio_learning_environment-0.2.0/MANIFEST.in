@@ -1,0 +1,38 @@
+# Include license and readme
+include LICENSE
+include README.md
+include CONTRIBUTING.md
+include pyproject.toml
+include setup.py
+
+# Include package utilities
+recursive-include pkg_utils *.py
+
+# Include documentation
+recursive-include docs *.html *.css *.js *.png *.jpg *.jpeg *.gif *.svg *.ico *.mp4 *.webp
+recursive-exclude docs/leaderboard/node_modules *
+
+# Include the factorio_learning_environment package
+recursive-include factorio_learning_environment *
+
+# Exclude the original module directories to avoid duplication
+prune agents
+prune env
+prune eval
+prune data
+prune server
+
+# Exclude unnecessary files
+global-exclude *.py[cod] __pycache__ *.so *.dylib .DS_Store
+global-exclude *.git* *.ipynb_checkpoints* 
+global-exclude .env venv/ venv_py311/ env/ .venv/
+prune log
+prune dist
+prune build
+prune *.egg-info
+
+# Include necessary data directories while excluding large files
+prune data/_screenshots
+prune docs/assets/videos
+prune eval/open/summary_cache
+prune cluster/docker/mods/stdlib_*
