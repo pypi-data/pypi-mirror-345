@@ -1,0 +1,119 @@
+"enable-external-mysql-associated-service"
+******************************************
+
+* Description
+
+* Usage
+
+* Required Parameters
+
+* Optional Parameters
+
+* Global Parameters
+
+* Example using required parameter
+
+
+Description
+===========
+
+Enable an Associated Service for an external MySQL database resource.
+An Associated Service example is OPSI.
+
+
+Usage
+=====
+
+   oci database-management managed-my-sql-databases external-my-sql-database enable-external-mysql-associated-service [OPTIONS]
+
+
+Required Parameters
+===================
+
+--connector-id [text]
+
+OCID of the External MySQL Database connector.
+
+--external-my-sql-database-id [text]
+
+The OCID of the External MySQL Database.
+
+--service-name [text]
+
+Name of the Associated Service.
+
+Accepted values are:
+
+   OPERATIONS_INSIGHTS
+
+--service-resource-id [text]
+
+OCID of the Service Resource.
+
+
+Optional Parameters
+===================
+
+--from-json [text]
+
+Provide input to this command as a JSON document from a file using the
+file://path-to/file syntax.
+
+The "--generate-full-command-json-input" option can be used to
+generate a sample json file to be used with this command option. The
+key names are pre-populated and match the command option names
+(converted to camelCase format, e.g. compartment-id –> compartmentId),
+while the values of the keys need to be populated by the user before
+using the sample file as an input to this command. For any command
+option that accepts multiple values, the value of the key can be a
+JSON array.
+
+Options can still be provided on the command line. If an option exists
+in both the JSON document and the command line then the command line
+specified value will be used.
+
+For examples on usage of this option, please see our “using CLI with
+advanced JSON options” link: https://docs.cloud.oracle.com/iaas/Conte
+nt/API/SDKDocs/cliusing.htm#AdvancedJSONOptions
+
+--if-match [text]
+
+For optimistic concurrency control. In the PUT or DELETE call for a
+resource, set the *if-match* parameter to the value of the etag from a
+previous GET or POST response for that resource. The resource will be
+updated or deleted only if the etag you provide matches the resource’s
+current etag value.
+
+
+Global Parameters
+=================
+
+Use "oci --help" for help on global parameters.
+
+"--auth-purpose", "--auth", "--cert-bundle", "--cli-auto-prompt", "--
+cli-rc-file", "--config-file", "--connection-timeout", "--debug", "--
+defaults-file", "--endpoint", "--generate-full-command-json-input", "
+--generate-param-json-input", "--help", "--latest-version", "--max-
+retries", "--no-retry", "--opc-client-request-id", "--opc-request-id",
+"--output", "--profile", "--proxy", "--query", "--raw-output", "--
+read-timeout", "--realm-specific-endpoint", "--region", "--release-
+info", "--request-id", "--version", "-?", "-d", "-h", "-i", "-v"
+
+
+Example using required parameter
+================================
+
+Copy the following CLI commands into a file named example.sh. Run the
+command by typing “bash example.sh” and replacing the example
+parameters with your own.
+
+Please note this sample will only work in the POSIX-compliant bash-
+like shell. You need to set up the OCI configuration and appropriate
+security policies before trying the examples.
+
+       export connector_id=<substitute-value-of-connector_id> # https://docs.cloud.oracle.com/en-us/iaas/tools/oci-cli/latest/oci_cli_docs/cmdref/database-management/managed-my-sql-databases/external-my-sql-database/enable-external-mysql-associated-service.html#cmdoption-connector-id
+       export external_my_sql_database_id=<substitute-value-of-external_my_sql_database_id> # https://docs.cloud.oracle.com/en-us/iaas/tools/oci-cli/latest/oci_cli_docs/cmdref/database-management/managed-my-sql-databases/external-my-sql-database/enable-external-mysql-associated-service.html#cmdoption-external-my-sql-database-id
+       export service_name=<substitute-value-of-service_name> # https://docs.cloud.oracle.com/en-us/iaas/tools/oci-cli/latest/oci_cli_docs/cmdref/database-management/managed-my-sql-databases/external-my-sql-database/enable-external-mysql-associated-service.html#cmdoption-service-name
+       export service_resource_id=<substitute-value-of-service_resource_id> # https://docs.cloud.oracle.com/en-us/iaas/tools/oci-cli/latest/oci_cli_docs/cmdref/database-management/managed-my-sql-databases/external-my-sql-database/enable-external-mysql-associated-service.html#cmdoption-service-resource-id
+
+       oci database-management managed-my-sql-databases external-my-sql-database enable-external-mysql-associated-service --connector-id $connector_id --external-my-sql-database-id $external_my_sql_database_id --service-name $service_name --service-resource-id $service_resource_id
