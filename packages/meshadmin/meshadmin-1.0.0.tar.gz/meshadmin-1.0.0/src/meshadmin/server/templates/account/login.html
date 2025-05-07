@@ -1,0 +1,73 @@
+{% extends "_base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block title %}Sign In - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gray-50">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-lg">
+        <div class="p-8 space-y-6">
+            <h1 class="text-2xl font-extrabold text-center text-gray-900">
+                Sign in to MeshAdmin
+            </h1>
+            <p class="text-sm text-center text-gray-600">
+                Sign in to manage your mesh networks
+            </p>
+
+            {% get_providers as socialaccount_providers %}
+
+            {% if socialaccount_providers %}
+                {% for provider in socialaccount_providers %}
+                    {% if provider.id == "openid_connect" %}
+                    <div class="mt-4">
+                        <a href="{% provider_login_url provider.id process='login' %}"
+                           class="flex w-full items-center justify-center gap-3 px-4 py-3 bg-blue-600 rounded-lg text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            Sign in
+                        </a>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% if socialaccount_providers|length > 1 %}
+                    <div class="mt-6">
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="bg-white px-2 text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 space-y-3">
+                        {% for provider in socialaccount_providers %}
+                            {% if provider.id != "openid_connect" %}
+                            <div>
+                                <a href="{% provider_login_url provider.id process='login' %}"
+                                   class="flex w-full items-center justify-center gap-3 px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    {{ provider.name }}
+                                </a>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            {% if form.errors %}
+            <div class="mt-6">
+                <div class="rounded-lg bg-red-50 p-4">
+                    <div class="text-sm text-red-700">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

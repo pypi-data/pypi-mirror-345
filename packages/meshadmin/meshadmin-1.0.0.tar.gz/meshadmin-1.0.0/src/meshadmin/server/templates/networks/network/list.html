@@ -1,0 +1,73 @@
+{% extends "_base.html" %}
+
+{% block title %}Networks - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <c-page-header 
+        title="Manage Networks"
+        :actions="[
+            {
+                'text': 'Add Network',
+                'url': '{% url 'networks:network-create' %}',
+                'style': 'primary'
+            }
+        ]">
+    </c-page-header>
+
+    {% if object_list %}
+    <div x-data="{ 
+        copiedId: null,
+        copyToClipboard(text, id) {
+            navigator.clipboard.writeText(text);
+            this.copiedId = id;
+            setTimeout(() => this.copiedId = null, 2000);
+        }
+    }">
+        <div class="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-lg">
+            <c-table :headers="['Name','CIDR','Hosts','Templates','Update Interval']">
+                {% for network in object_list %}
+                <tr class="cursor-pointer hover:bg-gray-50" 
+                    @click="if (!$event.target.closest('button')) window.location='{% url 'networks:network-detail' pk=network.pk %}'">
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        {{ network.name }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500 relative">
+                        <div class="flex items-center">
+                            <span>{{ network.cidr }}</span>
+                            <button
+                                @click.stop="copyToClipboard('{{ network.cidr }}', {{ network.pk }})"
+                                class="ml-2 text-gray-400 hover:text-gray-600 focus:outline-none relative"
+                            >
+                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                </svg>
+                                <div x-show="copiedId === {{ network.pk }}" 
+                                        x-transition
+                                        x-transition.duration.300ms
+                                        class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full px-2 py-1 bg-gray-800 text-white text-xs rounded">
+                                    Copied!
+                                </div>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500 relative">
+                        {{ network.host_set.count }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500 relative">
+                        {{ network.template_set.count }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500 relative">
+                        {{ network.update_interval }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </c-table>
+        </div>
+    </div>
+    {% else %}
+    <c-empty-state message="No networks found. Would you like to create one?"></c-empty-state>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+Metadata-Version: 2.4
+Name: meshadmin
+Version: 1.0.0
+Summary: Management for Nebula Mesh networks.
+License: Proprietary
+Requires-Python: >=3.13
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: jwcrypto>=1.5.6
+Requires-Dist: pydantic>=2.10.6
+Requires-Dist: pyjwt>=2.10.1
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: rich>=13.9.4
+Requires-Dist: structlog>=25.2.0
+Requires-Dist: typer>=0.15.2
+Provides-Extra: server
+Requires-Dist: django-allauth[socialaccount]>=65.4.1; extra == 'server'
+Requires-Dist: django-cotton>=1.6.0; extra == 'server'
+Requires-Dist: django-htmx>=1.22.0; extra == 'server'
+Requires-Dist: django-ninja>=1.3.0; extra == 'server'
+Requires-Dist: django-structlog>=9.0.1; extra == 'server'
+Requires-Dist: django-tailwind-cli>=4.1.0; extra == 'server'
+Requires-Dist: django-tailwind>=3.8.0; extra == 'server'
+Requires-Dist: django>=5.1.8; extra == 'server'
+Requires-Dist: jinja2>=3.1.6; extra == 'server'
+Requires-Dist: python-dotenv>=1.1.0; extra == 'server'
+Requires-Dist: python-semantic-release>=9.20.0; extra == 'server'
+Requires-Dist: syrupy>=4.8.2; extra == 'server'
+Requires-Dist: uvicorn>=0.34.0; extra == 'server'
+Requires-Dist: whitenoise>=6.9.0; extra == 'server'
+Description-Content-Type: text/markdown
+
+# Meshadmin
+A simple admin interface for the nebula mesh.
+
+Allows to administer multiple networks.
+
+## Documentation
+
+- [Installation and Basic Usage](#installation)
+- [Release Process](#release)
+- [Hetzner Cloud Setup Demo](docs/hetzner-demo.md)
+
+## Installation
+###  Setup CLI on host
+```bash
+# Install Curl
+apt install curl
+
+# Install uv package manager
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Add uv to your current shell session
+source $HOME/.local/bin/env
+
+# Install meshadmin package
+uv tool install meshadmin
+```
+
+### Usage
+```bash
+# Create a context
+meshadmin context create default --endpoint <MESH_SERVER_URL>
+
+# Enroll a new host
+meshadmin host enroll <ENROLLMENT_KEY>
+
+# Start process for config updates
+meshadmin nebula start
+
+# Install as a service
+meshadmin service install
+
+# Start service
+meshadmin service start
+
+# Other commands
+meshadmin --help
+```
+
+
+## Release
+
+We use [**Hatch VCS**](https://github.com/ofek/hatch-vcs) to manage versions dynamically based on Git tags and commits. Stable releases are deployed to PyPI when a Git tag is pushed, while development versions are used for testing.
+
+### **1. Development Versions**
+
+- Development versions are generated dynamically from Git commits.
+- They follow the format: `0.1.dev<N>` (e.g., `0.1.dev20`).
+
+### **Stable Releases**
+
+- A stable release is triggered by pushing an **annotated Git tag**.
+- Follow SemVer, e.g., `v0.2.0`.
+- The CI/CD pipeline automatically detects the tag and releases the package to PyPI.
+
+### Releasing a Stable Version:
+
+```bash
+git tag -a v0.2.0 -m "Release version 0.2.0"
+git push origin v0.2.0
+```
+
+- After the pipeline is completed, the package will be available at:
+    - **PyPI**: https://pypi.org/project/meshadmin/

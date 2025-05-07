@@ -1,0 +1,32 @@
+services:
+  meshadmin_server:
+    build: .
+    environment:
+      MESHSERVER_SQLITE_PATH: /data/test-db.sqlite
+      MESHSERVER_ALLOWED_HOSTS: localhost
+      MESHSERVER_SECRET_KEY: test-secret-key
+      MESHSERVER_DEBUG: true
+      MESHSERVER_USE_X_FORWARDED_HOST: false
+      MESHADMIN_TEST_MODE: true
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_EMAIL: admin@example.com
+      DJANGO_SUPERUSER_PASSWORD: admin
+    ports:
+      - "8000:8000"
+    volumes:
+      - test-db:/data
+      - ./src/meshadmin/server/assets/Linux/x86_64:/opt/nebula
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        meshserver migrate --noinput
+        meshserver createsuperuser --noinput
+        meshserver runserver 0.0.0.0:8000 --noreload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/test"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  test-db:

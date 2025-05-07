@@ -1,0 +1,50 @@
+<c-table :headers="['Name','Status','Certificates','Expiration','Actions']">
+    {% for ca in cas %}
+    <tr class="cursor-pointer hover:bg-gray-50" onclick="window.location='{% url 'networks:ca-detail' pk=ca.pk %}'">
+        <td class="px-6 py-4 text-sm text-gray-500">
+            {{ ca.name }}
+        </td>
+        <td class="px-6 py-4 text-sm text-gray-500">
+            {% if ca.signingca_set.exists %}
+            <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">Signing CA</span>
+            {% endif %}
+        </td>
+        <td class="px-6 py-4 text-sm text-gray-500">
+            {{ ca.hostcert_set.count }}
+        </td>
+        <td class="px-6 py-4 text-sm text-gray-500">
+            {% if ca.cert_print.details.notAfter %}
+                {% with days_until=ca.days_until_expiry %}
+                    {% if days_until <= 30 %}
+                    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10">
+                        Expires in {{ days_until }} days
+                    </span>
+                    {% elif days_until <= 60 %}
+                    <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-700/10">
+                        Expires in {{ days_until }} days
+                    </span>
+                    {% else %}
+                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                        Expires in {{ days_until }} days
+                    </span>
+                    {% endif %}
+                {% endwith %}
+            {% else %}
+            <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">
+                No expiration
+            </span>
+            {% endif %}
+        </td>
+        <td class="px-6 py-4 text-sm text-gray-500">
+            {% if not ca.signingca_set.exists %}
+            <button hx-post="{% url 'networks:ca-make-signing' pk=ca.pk %}"
+                    hx-target="#cas-table"
+                    onclick="event.stopPropagation()"
+                    class="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10 hover:bg-indigo-100">
+                Make Signing CA
+            </button>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</c-table> 

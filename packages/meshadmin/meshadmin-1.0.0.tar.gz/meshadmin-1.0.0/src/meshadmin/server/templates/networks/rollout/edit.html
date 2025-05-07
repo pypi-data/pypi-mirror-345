@@ -1,0 +1,101 @@
+{% extends "_base.html" %}
+
+{% block title %}Edit {{ object.name }} - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <c-page-header 
+        title="Edit {{ object.name }}"
+        description="Edit rollout configuration">
+    </c-page-header>
+
+    <div class="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-lg">
+        <form method="post" class="divide-y divide-gray-200">
+            {% csrf_token %}
+            <div class="p-6 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <!-- Name -->
+                <div class="sm:col-span-4">
+                    <label for="id_name" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
+                    <div class="mt-2">
+                        <input type="text" 
+                               name="name" 
+                               id="id_name"
+                               value="{{ object.name }}"
+                               required
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="col-span-full">
+                    <label for="id_notes" class="block text-sm font-medium leading-6 text-gray-900">Notes</label>
+                    <div class="mt-2">
+                        <textarea name="notes" 
+                                 id="id_notes" 
+                                 rows="3"
+                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{{ object.notes }}</textarea>
+                    </div>
+                    <p class="mt-3 text-sm leading-6 text-gray-600">Optional notes about this rollout.</p>
+                </div>
+
+                <!-- Host Selection -->
+                <div class="col-span-full">
+                    <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">Target Hosts</label>
+                    <div class="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-lg max-h-96 overflow-y-auto">
+                        <table class="min-w-full divide-y divide-gray-300">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                        <input type="checkbox" 
+                                               x-data
+                                               @click="document.querySelectorAll('[name=hosts]').forEach(cb => cb.checked = $event.target.checked)"
+                                               class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                                    </th>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Name</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">IP</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                {% for host in hosts %}
+                                <tr>
+                                    <td class="px-3 py-4">
+                                        <input type="checkbox" 
+                                               name="hosts" 
+                                               value="{{ host.id }}"
+                                               {% if host in object.target_hosts.all %}checked{% endif %}
+                                               class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                                    </td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ host.name }}</td>
+                                    <td class="px-3 py-4 text-sm text-gray-500">{{ host.assigned_ip|default:"Not assigned" }}</td>
+                                    <td class="px-3 py-4 text-sm text-gray-500">
+                                        {% if host.is_lighthouse %}
+                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">Lighthouse</span>
+                                        {% elif host.is_relay %}
+                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">Relay</span>
+                                        {% else %}
+                                        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Client</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 py-4 flex items-center justify-end gap-x-6 bg-gray-50">
+                <a href="{% url 'networks:rollout-detail' pk=object.pk %}" 
+                   class="text-sm font-semibold leading-6 text-gray-900">
+                    Cancel
+                </a>
+                <button type="submit" 
+                        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ object.name }} - MeshAdmin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <c-page-header 
+        title="{{ object.name }}"
+        :actions="[
+            {
+                'text': 'Edit',
+                'url': '{% url 'networks:group-edit' pk=object.pk %}',
+                'style': 'secondary'
+            },
+            {
+                'text': 'Delete',
+                'url': '{% url 'networks:group-delete' pk=object.pk %}',
+                'style': 'danger'
+            }
+        ]">
+    </c-page-header>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <c-info-card title="Network Information">
+            <dl class="mt-4 space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Network</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        <a href="{% url 'networks:network-detail' pk=network.pk %}" 
+                           class="text-indigo-600 hover:text-indigo-500">
+                            {{ network.name }}
+                        </a>
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Description</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ object.description }}</dd>
+                </div>
+            </dl>
+        </c-info-card>
+
+        <c-info-card title="Used in Templates">
+            <c-tag-list
+                empty_message="Not used in any templates"
+                :items='[{% for template in object.template_set.all %}{
+                    "text": "{{ template.name }}",
+                    "url": "{% url 'networks:template-detail' pk=template.pk %}"
+                }{% if not forloop.last %},{% endif %}{% endfor %}]'>
+            </c-tag-list>
+        </c-info-card>
+    </div>
+
+    <c-section title="Rules">
+        <div id="rules-list">
+            {% include "networks/group/_rules_list.html" with read_only=True %}
+        </div>
+    </c-section>
+
+    <c-section title="Config Overrides">
+        <div id="configs-list">
+            {% include "networks/group/_configs_list.html" with read_only=True %}
+        </div>
+    </c-section>
+
+    <c-section title="Member Hosts">
+        <div id="hosts-table">
+            {% include "networks/network/_hosts_table.html" %}
+        </div>
+    </c-section>
+</div>
+{% endblock %}
