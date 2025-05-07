@@ -1,0 +1,98 @@
+Metadata-Version: 2.1
+Name: zqykj_modelcalc_client
+Version: 1.0.2
+Summary: lbsys
+Home-page: https://github.com/yourusername/mypackage
+Author: cxx
+Author-email: cuixiaoxiao@zqykj.com
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.0.0
+
+## 模型标签统一管理系统终端调用Client工具调用简述
+
+#### 1.根据ruleId获取规则执行协议
+    ruleTaskInfo = client.get_rule_protocol(rule_id=1911658357835882497)
+    print(ruleTaskInfo)
+
+#### 2.根据ruleCode获取规则执行协议
+    ruleTaskInfo = client.get_rule_protocol_by_code(rule_code=TBC_COMMS_UPN_0001)
+    print(ruleTaskInfo)
+
+#### 3.执行规则
+    taskId = client.execute_rule_protocol(protocol_data=ruleTaskInfo)
+    print(taskId)
+
+#### 4.根据modelId获取模型执行协议
+    modelTaskInfo = client.get_model_protocol(model_id=1911658357835882497)
+    print(modelTaskInfo)
+
+#### 5.根据modelCode获取模型执行协议
+    modelTaskInfo = client.get_model_protocol_by_code(model_code=model_001)
+    print(modelTaskInfo)
+
+#### 6.执行模型
+    taskId = client.execute_model_protocol(protocol_data=modelTaskInfo)
+    print(taskId)
+
+#### 7.查询任务结果
+    taskInfo = client.get_task_info(task_id=taskId)
+    print(taskInfo)
+
+#### 8.终止任务
+    client.stop_task(task_id=taskId)
+
+#### 9.将规则执行协议生成json文件并保存到指定目录
+    full_path = client.save_rule_protocol_to_file(path="F:\\data", rule_code="TBC_COMMS_UPN_0004")
+    print(full_path)
+
+#### 10.将模型执行协议生成json文件并保存到指定目录
+    full_path = client.save_model_protocol_to_file(path="F:\\data", rule_code="model_001")
+    print(full_path)
+
+#### 11.将所有规则执行协议生成json文件并保存到指定目录
+    saved_files = client.save_all_rule_protocol_to_file(path="F:\\data")
+    print(saved_files)
+
+#### 12.将所有模型执行协议生成json文件并保存到指定目录
+    saved_files = client.save_all_model_protocol_to_file(path="F:\\data")
+    print(saved_files)
+
+
+
+
+## 依赖包安装
+##### 安装依赖工具
+pip install zqykj_modelcalc_client
+
+#### 调用示例
+    import zqykj_modelcalc_client.web as model_client
+    
+    client = model_client.ModelClient(base_url="http://ip:port")  # 初始化client
+    
+    
+    if __name__ == '__main__':
+        try:
+            # 获取规则列表
+            rules = client.list_rules()
+            print(f"共有{len(rules)}条规则")
+            print(rules)
+    
+            # 获取规则协议
+            ruleTaskInfo = client.get_rule_protocol(rule_id=1911658357835882497)
+            print(ruleTaskInfo)
+    
+            # 执行规则
+            taskId = client.execute_rule_protocol(protocol_data=ruleTaskInfo)
+            print(taskId)
+    
+            # 查询任务结果
+            taskInfo = client.get_task_info(task_id=taskId)
+            print(taskInfo)
+    
+        except model_client.FinanceAPIError as e:
+            print(f"API调用失败: {e} (状态码: {e.status_code})")
+            if e.detail:
+                print(f"错误详情: {e.detail}")
+
+#### 还有哪些需要注意项
