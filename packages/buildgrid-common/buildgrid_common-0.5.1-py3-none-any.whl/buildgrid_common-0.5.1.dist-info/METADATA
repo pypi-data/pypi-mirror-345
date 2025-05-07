@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: buildgrid-common
+Version: 0.5.1
+Summary: Shared Python library for BuildGrid ecosystem
+License: Apache License, Version 2.0
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: grpcio>=1.33.2
+Requires-Dist: protobuf
+Requires-Dist: pydantic
+Requires-Dist: ruamel.yaml
+Provides-Extra: metrics
+Requires-Dist: statsd; extra == "metrics"
+Provides-Extra: jwt
+Requires-Dist: pyjwt[crypto]; extra == "jwt"
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-asyncio; extra == "dev"
+Requires-Dist: freezegun; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: mypy-protobuf<3.5; extra == "dev"
+Requires-Dist: grpc-stubs; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Provides-Extra: all
+Requires-Dist: buildgrid-common[dev,jwt,metrics]; extra == "all"
+Dynamic: license-file
+
+# BuildGrid Common
+
+🚧 This library is currently WIP and the interfaces might be unstable before reaching version `1.0.0*`. 🚧
+
+The shared Python Library for the BuildGrid ecosystem.
+
+## Components
+
+### [buildgrid_common.protos](./buildgrid_common/protos/)
+
+Generated proto source files that are compatible with the current BuildGrid service.
+
+### [protogen](./protos/protogen.py)
+
+Utility to generate python source files from protos.
+
+## Contributing
+
+- [CONTRIBUTING](./CONTRIBUTING.md) guide
+- [BuildGrid Resources](https://buildgrid.build/index.html#resources)
