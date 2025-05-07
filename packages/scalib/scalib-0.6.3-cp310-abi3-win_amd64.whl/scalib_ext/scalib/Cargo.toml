@@ -1,0 +1,98 @@
+[package]
+name = "scalib"
+version = "0.1.0"
+authors = [
+    "Olivier Bronchain <olivier.bronchain@uclouvain.be>",
+    "Gaëtan Cassiers <gaetan.cassiers@uclouvain.be>",
+]
+edition = "2021"
+
+[features]
+blis = ["blis-src", "blis-sys2"]
+
+[dependencies]
+
+# Utilities
+thiserror = "2.0.9"
+itertools = "0.14"
+rayon = "1.10"
+num-integer = "0.1"
+index_vec = { version = "0.1.4", features = [
+    "serde",
+] } # Type-safe indices in FactorGraph
+indexmap = { version = "2.5.0", features = ["serde"] } # Factor graph data
+serde = { version = "1.0.217", features = [
+    "derive",
+    "rc",
+] } # Serialization for pickle support
+
+# Factor graph parsing and error display
+chumsky = "0.9"
+ariadne = "0.5"
+
+# analysis of factor graphs
+petgraph = { version = "0.7", default-features = false, features = ["serde-1"] }
+
+
+# Progress bars
+indicatif = { version = "0.17" }
+hytra = "0.1"
+crossbeam-utils = "0.8"
+
+geigen = { path = "../geigen" }
+
+# Numerical libs
+ndarray = { version = "0.16.1", features = ["rayon", "approx", "serde"] }
+blis-src = { version = "0.2.2", default-features = false, features = [
+    "static",
+    "pthreads",
+], optional = true }
+blis-sys2 = { version = "0.2.2", optional = true }
+matrixmultiply = "0.3"
+kdtree = { version = "0.7", features = ["serialize"] }
+nalgebra = "0.33.2"
+nshare = { version = "0.10", default-features = false, features = [
+    "nalgebra",
+    "ndarray",
+] }
+
+realfft = "3.4.0"
+num-traits = "0.2"
+quickdiv = "0.1.1"
+
+[lib]
+bench = false
+
+[dev-dependencies]
+criterion = "0.5"
+ndarray-rand = "0.15"
+rand_xoshiro = "0.6"
+approx = "0.5"
+ndarray-stats = "0.6"
+
+[profile.bench]
+debug = 1
+
+[[bench]]
+name = "belief_propagation"
+harness = false
+
+[[bench]]
+name = "snr"
+harness = false
+
+[[bench]]
+name = "mttest"
+harness = false
+
+[[bench]]
+name = "ttest"
+harness = false
+
+[[bench]]
+name = "mlda"
+harness = false
+
+[[bench]]
+name = "cpa"
+harness = false
