@@ -1,0 +1,77 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "filedetect"
+dynamic = ["version"]
+description = "Detects files in a directory and its subdirectories."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "AGPL-3.0-or-later"
+keywords = [
+    "file",
+    "directory",
+    "subdirectory",
+    "detect",
+    "filedetect",
+    "path",
+    "pathlib",
+    "filesystem",
+    "io",
+    "traversal",
+    "file system",
+]
+authors = [
+    { name = "Marceau", email = "pypi@marceau-h.fr" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/Marceau-h/filedetect#readme"
+Issues = "https://github.com/Marceau-h/filedetect/issues"
+Source = "https://github.com/Marceau-h/filedetect"
+
+[tool.hatch.version]
+path = "src/filedetect/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/filedetect tests}"
+
+[tool.coverage.run]
+source_pkgs = ["filedetect"]
+branch = true
+parallel = true
+omit = [
+  "src/filedetect/__about__.py",
+]
+
+[tool.coverage.paths]
+filedetect = ["src/filedetect", "*/filedetect/src/filedetect"]
+tests = ["tests", "*/filedetect/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[project.scripts]
+filedetect = "filedetect.cli:main"
