@@ -1,0 +1,185 @@
+Metadata-Version: 2.4
+Name: ragbits
+Version: 0.17.0
+Summary: Building blocks for rapid development of GenAI applications
+Project-URL: Homepage, https://github.com/deepsense-ai/ragbits
+Project-URL: Bug Reports, https://github.com/deepsense-ai/ragbits/issues
+Project-URL: Documentation, https://ragbits.deepsense.ai/
+Project-URL: Source, https://github.com/deepsense-ai/ragbits
+Author-email: "deepsense.ai" <ragbits@deepsense.ai>
+License-Expression: MIT
+Keywords: GenAI,Generative AI,LLMs,Large Language Models,Prompt Management,RAG,Retrieval Augmented Generation
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: ragbits-chat==0.17.0
+Requires-Dist: ragbits-cli==0.17.0
+Requires-Dist: ragbits-core==0.17.0
+Requires-Dist: ragbits-document-search==0.17.0
+Requires-Dist: ragbits-evaluate==0.17.0
+Requires-Dist: ragbits-guardrails==0.17.0
+Provides-Extra: azure
+Requires-Dist: azure-core<2.0.0,>=1.32.0; extra == 'azure'
+Requires-Dist: azure-identity<2.0.0,>=1.19.0; extra == 'azure'
+Requires-Dist: azure-storage-blob<13.0.0,>=12.24.1; extra == 'azure'
+Provides-Extra: chroma
+Requires-Dist: chromadb<1.0.0,>=0.6.3; extra == 'chroma'
+Provides-Extra: docling
+Requires-Dist: docling<3.0.0,>=2.15.1; extra == 'docling'
+Provides-Extra: fastembed
+Requires-Dist: fastembed<1.0.0,>=0.4.2; extra == 'fastembed'
+Provides-Extra: fastembed-gpu
+Requires-Dist: fastembed-gpu<1.0.0,>=0.4.2; extra == 'fastembed-gpu'
+Provides-Extra: gcs
+Requires-Dist: gcloud-aio-storage<10.0.0,>=9.3.0; extra == 'gcs'
+Provides-Extra: hf
+Requires-Dist: datasets<4.0.0,>=3.0.1; extra == 'hf'
+Provides-Extra: lab
+Requires-Dist: gradio<5.0.0,~=4.44.0; extra == 'lab'
+Provides-Extra: local
+Requires-Dist: numpy<2.0.0,>=1.26.0; extra == 'local'
+Requires-Dist: sentence-transformers<5.0.0,>=4.0.2; extra == 'local'
+Requires-Dist: torch<3.0.0,>=2.2.1; extra == 'local'
+Requires-Dist: transformers<5.0.0,>=4.44.2; extra == 'local'
+Provides-Extra: openai
+Requires-Dist: openai<2.0.0,>=1.57.3; extra == 'openai'
+Provides-Extra: otel
+Requires-Dist: opentelemetry-api<2.0.0,>=1.27.0; extra == 'otel'
+Provides-Extra: pgvector
+Requires-Dist: asyncpg<1.0.0,>=0.30.0; extra == 'pgvector'
+Provides-Extra: promptfoo
+Requires-Dist: pyyaml<7.0.0,>=6.0.2; extra == 'promptfoo'
+Provides-Extra: qdrant
+Requires-Dist: qdrant-client<2.0.0,>=1.12.1; extra == 'qdrant'
+Provides-Extra: ray
+Requires-Dist: ray[data]<3.0.0,>=2.43.0; extra == 'ray'
+Provides-Extra: relari
+Requires-Dist: continuous-eval<1.0.0,>=0.3.12; extra == 'relari'
+Provides-Extra: s3
+Requires-Dist: boto3<2.0.0,>=1.35.42; extra == 's3'
+Description-Content-Type: text/markdown
+
+<div align="center">
+
+<h1>Ragbits</h1>
+
+*Building blocks for rapid development of GenAI applications*
+
+[Documentation](https://ragbits.deepsense.ai) | [Contact](https://deepsense.ai/contact/)
+
+[![PyPI - License](https://img.shields.io/pypi/l/ragbits)](https://pypi.org/project/ragbits)
+[![PyPI - Version](https://img.shields.io/pypi/v/ragbits)](https://pypi.org/project/ragbits)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ragbits)](https://pypi.org/project/ragbits)
+
+</div>
+
+---
+
+## Features
+
+### 🔨 Build Reliable & Scalable GenAI Apps
+- **Swap LLMs anytime** – Switch between [100+ LLMs via LiteLLM](https://ragbits.deepsense.ai/how-to/llms/use_llms/) or run [local models](https://ragbits.deepsense.ai/how-to/llms/use_local_llms/).
+- **Type-safe LLM calls** – Use Python generics to [enforce strict type safety](https://ragbits.deepsense.ai/how-to/prompts/use_prompting/#how-to-configure-prompts-output-data-type) in model interactions.
+- **Bring your own vector store** – Connect to [Qdrant](https://ragbits.deepsense.ai/api_reference/core/vector-stores/#ragbits.core.vector_stores.qdrant.QdrantVectorStore), [PgVector](https://ragbits.deepsense.ai/api_reference/core/vector-stores/#ragbits.core.vector_stores.pgvector.PgVectorStore), and more with built-in support.
+- **Developer tools included** – [Manage vector stores](https://ragbits.deepsense.ai/cli/main/#ragbits-vector-store), query pipelines, and [test prompts from your terminal](https://ragbits.deepsense.ai/quickstart/quickstart1_prompts/#testing-the-prompt-from-the-cli).
+- **Modular installation** – Install only what you need, reducing dependencies and improving performance.
+
+### 📚 Fast & Flexible RAG Processing
+- **Ingest 20+ formats** – Process PDFs, HTML, spreadsheets, presentations, and more. Process data using [unstructured](https://unstructured.io/) or create a custom provider.
+- **Handle complex data** – Extract tables, images, and structured content with built-in VLMs support.
+- **Connect to any data source** – Use prebuilt connectors for S3, GCS, Azure, or implement your own.
+- **Scale ingestion** – Process large datasets quickly with [Ray-based parallel processing](https://ragbits.deepsense.ai/how-to/document_search/distributed_ingestion/#how-to-ingest-documents-in-a-distributed-fashion).
+
+### 🚀 Deploy & Monitor with Confidence
+- **Real-time observability** – Track performance with [OpenTelemetry](https://ragbits.deepsense.ai/how-to/project/use_tracing/#opentelemetry-trace-handler) and [CLI insights](https://ragbits.deepsense.ai/how-to/project/use_tracing/#cli-trace-handler).
+- **Built-in testing** – Validate prompts [with promptfoo](https://ragbits.deepsense.ai/how-to/prompts/promptfoo/) before deployment.
+- **Auto-optimization** – Continuously evaluate and refine model performance.
+- **Visual testing UI (Coming Soon)** – Test and optimize applications with a visual interface.
+
+
+## What's Included?
+
+- [X] **[Core](https://github.com/deepsense-ai/ragbits/tree/main/packages/ragbits-core)** - Fundamental tools for working with prompts and LLMs.
+- [X] **[Document Search](https://github.com/deepsense-ai/ragbits/tree/main/packages/ragbits-document-search)** - Handles vector search to retrieve relevant documents.
+- [X] **[CLI](https://github.com/deepsense-ai/ragbits/tree/main/packages/ragbits-cli)** - The `ragbits` shell command, enabling tools such as GUI prompt management.
+- [x] **[Guardrails](https://github.com/deepsense-ai/ragbits/tree/main/packages/ragbits-guardrails)** - Ensures response safety and relevance.
+- [x] **[Evaluation](https://github.com/deepsense-ai/ragbits/tree/main/packages/ragbits-evaluate)** - Unified evaluation framework for Ragbits components.
+- [ ] **Flow Controls** - Manages multi-stage chat flows for performing advanced actions *(coming soon)*.
+- [ ] **Structured Querying** - Queries structured data sources in a predictable manner *(coming soon)*.
+- [ ] **Caching** - Adds a caching layer to reduce costs and response times *(coming soon)*.
+
+## Installation
+
+To use the complete Ragbits stack, install the `ragbits` package:
+
+```sh
+pip install ragbits
+```
+
+Alternatively, you can use individual components of the stack by installing their respective packages: `ragbits-core`, `ragbits-document-search`, `ragbits-cli`.
+
+## Quickstart
+
+First, create a prompt and a model for the data used in the prompt:
+
+```python
+from pydantic import BaseModel
+from ragbits.core.prompt import Prompt
+
+class Dog(BaseModel):
+    breed: str
+    age: int
+    temperament: str
+
+class DogNamePrompt(Prompt[Dog, str]):
+    system_prompt = """
+    You are a dog name generator. You come up with funny names for dogs given the dog details.
+    """
+
+    user_prompt = """
+    The dog is a {breed} breed, {age} years old, and has a {temperament} temperament.
+    """
+```
+
+Next, create an instance of the LLM and the prompt:
+
+```python
+from ragbits.core.llms.litellm import LiteLLM
+
+llm = LiteLLM("gpt-4o")
+example_dog = Dog(breed="Golden Retriever", age=3, temperament="friendly")
+prompt = DogNamePrompt(example_dog)
+```
+
+Finally, generate a response from the LLM using the prompt:
+
+```python
+response = await llm.generate(prompt)
+print(f"Generated dog name: {response}")
+```
+
+## How Ragbits documentation is organized
+
+- [Quickstart](https://ragbits.deepsense.ai/quickstart/quickstart1_prompts/) - Get started with Ragbits in a few minutes
+- [How-to guides](https://ragbits.deepsense.ai/how-to/prompts/use_prompting/) - Learn how to use Ragbits in your projects
+- [CLI](https://ragbits.deepsense.ai/cli/main/) - Learn how to run Ragbits in your terminal
+- [API reference](https://ragbits.deepsense.ai/api_reference/core/prompt/) - Explore the underlying API of Ragbits
+
+
+## License
+
+Ragbits is licensed under the [MIT License](https://github.com/deepsense-ai/ragbits/tree/main/LICENSE).
+
+## Contributing
+
+We welcome contributions! Please read [CONTRIBUTING.md](https://github.com/deepsense-ai/ragbits/tree/main/CONTRIBUTING.md) for more information.
