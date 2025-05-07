@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "linchemin"
+version = "3.2.0"
+description = "Toolkit to create, manipulate, and query networks of Chemical Reactions and Chemicals"
+license = { file = "LICENSE" }
+authors = [
+        { name = "Marco Stenta", email = "marco.stenta@syngenta.com" },
+        { name = "Marta Pasquini", email = "marta.pasquini@syngenta.com" },
+]
+readme = "README.md"
+# https://pypi.org/classifiers/
+classifiers = [
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: OS Independent",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Topic :: Scientific/Engineering :: Chemistry",
+]
+keywords = ["reaction", "chemoinformatics", "computer-aided synthesis planning"]
+requires-python = ">=3.8"
+dependencies = [
+        "dynaconf",
+        # NOTE: hdbscan>=0.8.29 is required for compatibility with joblib 1.2.0.
+        "hdbscan>=0.8.29",
+        "joblib",
+        "networkx",
+        "numpy",
+        "pandas",
+        "pydantic",
+        "pydot",
+        "pyyaml",
+        "requests",
+        "rdchiral",
+        "rdkit>=2023.9",
+        "scikit-learn",
+]
+
+[project.optional-dependencies]
+dev = [
+        "bumpver",
+        "flake8==6.0.0",
+        "isort==5.12.0",
+        "black== 23.9.1",
+        "pre-commit==3.2.*",
+        "pytest-cov",
+        "pytest",
+        "sphinx",
+        "pytest-mock"
+]
+
+[project.urls]
+homepage = "https://linchemin.github.io"
+repository = "https://github.com/syngenta/linchemin"
+
+[project.scripts]
+linchemin = "linchemin.interfaces.cli:linchemin_cli"
+linchemin_configure = "linchemin.configuration.config:configure"
+
+[tool.isort]
+atomic = true
+py_version = "38"
+skip_gitignore = true
+
+[tool.bumpver]
+current_version = "3.2.0"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "Bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = ['current_version = "{version}"', 'version = "{version}"']
+"docs/source/conf.py" = ['version = "{version}"']
