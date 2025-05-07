@@ -1,0 +1,1 @@
+from .funciones import algoritmo_genetico, crear_individuo, mutar, crossover, torneo, funcion_objetvio
