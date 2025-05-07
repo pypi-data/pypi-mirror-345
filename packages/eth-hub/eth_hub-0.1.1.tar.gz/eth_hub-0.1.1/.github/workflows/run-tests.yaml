@@ -1,0 +1,36 @@
+name: Run tests
+
+on:
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+  run_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: '.python-version'
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Install package in editable mode
+        run: uv pip install -e .
+
+      - name: Run pytest
+        run: uv run pytest
+
+      - name: Run mypy
+        run: uv run mypy src
+
+      - name: format
+        run: uv run ruff format --check src
