@@ -1,0 +1,91 @@
+Metadata-Version: 2.1
+Name: pyquafu
+Version: 0.4.4
+Summary: Python toolkit for Quafu-Cloud
+Home-page: https://github.com/ScQ-Cloud/pyquafu
+Author: ssli
+Author-email: ssli@iphy.ac.cn
+License: Apache-2.0 License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: autograd>=1.6.2
+Requires-Dist: graphviz>=0.14.2
+Requires-Dist: ipython>=8.14.0
+Requires-Dist: matplotlib>=3.5.2
+Requires-Dist: networkx>=2.6.3
+Requires-Dist: numpy<2.0.0,>=1.20.3
+Requires-Dist: ply~=3.11
+Requires-Dist: pybind11>=2.10.3
+Requires-Dist: requests>=2.26.0
+Requires-Dist: scikit-build>=0.16.1
+Requires-Dist: scipy>=1.8.1
+Requires-Dist: setuptools>=58.0.4
+Requires-Dist: sparse>=0.13.0
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+
+# PyQuafu
+[![License](https://img.shields.io/github/license/ScQ-Cloud/pyquafu.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
+[![](https://github.com/ScQ-Cloud/pyquafu/actions/workflows/unittest.yml/badge.svg)](https://github.com/ScQ-Cloud/pyquafu/actions/workflows/unittest.yml)
+[![](https://img.shields.io/github/release/ScQ-Cloud/pyquafu.svg?style=popout-square)](https://github.com/ScQ-Cloud/pyquafu/releases)
+[![](https://img.shields.io/pypi/dm/pyquafu?style=popout-square)](https://pypi.org/project/pyquafu/)
+
+## Introduction
+
+**PyQuafu** is designed for users to construct, compile, and execute quantum circuits on quantum devices on [Quafu](http://quafu.baqis.ac.cn/) using Python. With PyQuafu, you can interact with various real quantum backends provided by the experimental group from [Quafu](http://quafu.baqis.ac.cn/).
+
+## Installation
+
+### Install via PyPI
+
+You can install PyQuafu directly from PyPI:
+
+```bash
+pip install pyquafu
+```
+
+### Build from Source
+
+Alternatively, you can build PyQuafu from the source:
+
+```bash
+pip install -r requirements.txt
+python setup.py install
+```
+
+### Graphviz Dependency
+
+If you need to visualize Directed Acyclic Graphs (DAGs), ensure that the [Graphviz software](https://graphviz.org/) is installed on your system. Refer to the [graphviz · PyPI](https://pypi.org/project/graphviz/#description) page for installation guidance.
+
+### GPU Support
+
+To install PyQuafu with GPU-based circuit simulation, you need to build from the source and ensure that the [CUDA Toolkit](https://developer.nvidia.com/cuda-downloads) is installed. Use the following command to install the GPU version:
+
+```bash
+python setup.py install -DUSE_GPU=ON
+```
+
+If you also have [cuQuantum](https://developer.nvidia.com/cuquantum-sdk) installed, you can install PyQuafu with cuQuantum support:
+
+```bash
+python setup.py install -DUSE_GPU=ON -DUSE_CUQUANTUM=ON
+```
+
+## Documentation
+
+For detailed documentation about usage, please visit the [PyQuafu documentation website](https://scq-cloud.github.io/).
+
+## Note for Apple Silicon Mac Users
+
+If you encounter the error "illegal hardware instruction" on an Apple silicon Mac, ensure that you have updated to the arm64 version of Anaconda. See [this issue](https://github.com/abess-team/abess/issues/310) for more details.
+
+## Examples
+
+### Quantum Reinforcement Learning
+
+This example demonstrates how quantum reinforcement learning interacts with Quafu to solve the CartPole environment. For more details, refer to the [quantum-RL-with-quafu repository](https://github.com/enchanted123/quantum-RL-with-quafu).
+
+## Author
+
+This project is developed by the quantum cloud computing team at the Beijing Academy of Quantum Information Sciences.
