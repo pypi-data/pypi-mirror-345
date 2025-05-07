@@ -1,0 +1,112 @@
+start: (_NL | special | widget_tree | widget_rule_tree)*
+
+special: "#:" special_directive _NL?
+special_directive: kivy_version
+    | kv_version
+    | import
+    | set
+    | include
+
+version: V_MAJOR "." V_MINOR ("." V_PATCH)? (V_PRE_RELEASE)? (V_BUILD_VERSION)?
+V_MAJOR: /\d+/
+V_MINOR: /\d+/
+V_PATCH: /\d+/
+V_PRE_RELEASE: "rc" | "a" | "b" | ".dev" | ".post"
+V_BUILD_VERSION: /\d+/
+
+kivy_version: "kivy" _WHITESPACE version
+kv_version: "kv" _WHITESPACE version
+IMPORT_NAME: ANY
+IMPORT_MODULE: ANY
+import: "import" IMPORT_NAME _WHITESPACE IMPORT_MODULE
+
+SET_NAME: ANY
+SET_VALUE: /.+/
+set: "set" _WHITESPACE SET_NAME _WHITESPACE SET_VALUE
+
+INCLUDE_NAME: ANY
+include: "include" INCLUDE_NAME
+
+widget_rule_tree: widget_rule _NL* (_INDENT (widget_tree | widget_property | canvas_tree)+ _DEDENT)?
+
+CLASS_NAME: /[A-Za-z_][A-Za-z0-9_]*/
+base_classes: CLASS_NAME ("+" CLASS_NAME)*
+WIDGET_NAME: /[A-Za-z_][A-Za-z0-9_]*/
+widget_rule_name: WIDGET_NAME ("@" base_classes)?
+widget_rule: "<" widget_rule_name ">" ":"?
+
+widget_tree: widget _NL* (_INDENT (widget_tree | widget_property | canvas_tree)+ _DEDENT)?
+widget: WIDGET ":"?
+widget_property: PROPERTY_NAME ":" property_value
+
+property_value: property_value_inline | property_value_block
+property_value_inline: _WHITESPACE? PROPERTY_VALUE_INLINE _WHITESPACE? _NL
+PROPERTY_VALUE_INLINE: /[^#\n]+/
+PROPERTY_VALUE_BLOCK_LINE: /[^#\n]+/
+property_value_block_line: PROPERTY_VALUE_BLOCK_LINE _NL
+property_value_block: _NL _INDENT property_value_block_line+ _DEDENT
+
+canvas: CANVAS
+    | CANVAS "." (CANVAS_BEFORE | CANVAS_AFTER)
+canvas_tree: canvas ":" _NL* (_INDENT canvas_instruction_tree* _DEDENT)?
+CANVAS: "canvas"
+CANVAS_BEFORE: "before"
+CANVAS_AFTER: "after"
+canvas_instruction_property: PROPERTY_NAME ":" property_value
+canvas_instruction_tree: canvas_instruction _NL* (_INDENT canvas_instruction_property* _DEDENT)?
+canvas_instruction: CANVAS_INSTRUCTION ":"? _NL?
+
+CANVAS_INSTRUCTION: "ApplyContextMatrix" // 1.6.0+
+    | "Bezier" // 1.0.8+
+    | "BindTexture"
+    | "BorderImage"
+    | "BoxShadow" // 2.2.0+
+    | "Callback"
+    | "ChangeState" // 1.6.0+
+    | "ClearBuffers" // 1.3.0+
+    | "ClearColor" // 1.3.0+
+    | "Color"
+    | "Ellipse"
+    | "Fbo"
+    | "Line"
+    | "LoadIdentity"
+    | "Mesh"
+    | "Point"
+    | "PopMatrix"
+    | "PopState"
+    | "PushMatrix"
+    | "PushState"
+    | "Quad"
+    | "Rectangle"
+    | "Rotate"
+    | "RoundedRectangle"
+    | "Scale"
+    | "SmoothEllipse" // 2.3.0+
+    | "SmoothLine" // 1.9.0+
+    | "SmoothQuad" // 2.3.0+
+    | "SmoothRectangle" // 2.3.0+
+    | "SmoothRoundedRectangle" // 2.3.0+
+    | "SmoothTriangle" // 2.3.0+
+    | "StencilPush"
+    | "StencilPop"
+    | "StencilPush"
+    | "StencilUnUse"
+    | "StencilUse"
+    | "Translate"
+    | "Triangle"
+    | "UpdateNormalMatrix"
+WIDGET: /(?!CANVAS)[A-Z][A-Za-z0-9]+/
+PROPERTY_NAME: /[a-z_]+/
+PROPERTY_VALUE: /[a-zA-Z_\.][a-zA-Z0-9_\.]*/
+COMMENT: /\s*#(?!:)[^\n]*/
+
+line: /[^\n]+/
+
+// only (multi-)space supported in special
+_WHITESPACE: " "+
+ANY: /\S+/
+_NL: (/\r?\n[\t ]*/)+
+
+%ignore /[ \t\f]+/
+%ignore COMMENT
+%declare _INDENT _DEDENT
