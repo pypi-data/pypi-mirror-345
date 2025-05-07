@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcard"
+version = "0.1.4"
+description = "MCard: Memory Card with TDD approach"
+readme = "README.md"
+authors = [
+    {name = "MCard Team", email = "user@example.com"}
+]
+requires-python = ">=3.11.0"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    # Core dependencies
+    "python-dateutil==2.8.2",
+    "SQLAlchemy==1.4.47",
+    "aiosqlite==0.17.0",
+    "duckdb>=0.9.2",
+    "lancedb>=0.3.3",
+    "python-dotenv==1.0.0",
+    # Logging and monitoring
+    "structlog>=23.2.0",
+    "python-json-logger==2.0.7",
+    # Removed pytest and twine from here
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.3", # Moved from dependencies
+    "pytest-asyncio==0.23.2",
+    "pytest-cov==4.1.0",
+    "mypy>=1.7.1",
+    "black>=23.11.0",
+    "isort>=5.12.0",
+    "twine>=6.1.0", # Moved from dependencies
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/MCard_TDD"
+Issues = "https://github.com/yourusername/MCard_TDD/issues"
+
+[project.scripts]
+mcard = "mcard.app.app:main"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "--cov=mcard --cov-report=term-missing"
