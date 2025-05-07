@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "hacksaws"
+version = "0.3.0"
+license = "MIT"
+description = """\
+    A command line utility for AWS profiles using dynamic authentication \
+    methods such as MFA. \
+    """
+authors = ["Scott Ernst <swernst@gmail.com>"]
+readme = "README.md"
+homepage = "https://gitlab.com/rocket-boosters/hacksaws"
+repository = "https://gitlab.com/rocket-boosters/hacksaws"
+documentation = "https://gitlab.com/rocket-boosters/hacksaws"
+keywords = ["aws", "authentication"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Utilities"
+]
+exclude = ["hacksaws/tests"]
+
+[tool.poetry.scripts]
+hacksaws = 'hacksaws:main'
+
+[tool.poetry.dependencies]
+python = "^3.10.3"
+boto3 = "^1.16.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.1.2"
+toml = "^0.10.1"
+coverage = ">=5.3"
+lobotomy = ">=0.1.4"
+black = { version = "*", allow-prereleases = true }
+pytest-cov = ">=2.10.1"
+flake8 = ">=3.8.4"
+flake8-black = "^0.2.1"
+mypy = ">=0.900"
+taskipy = "^1.4.0"
+
+[tool.taskipy.tasks]
+# https://github.com/illBeRoy/taskipy
+black = "black ."
+black_lint = "black . --check"
+mypy = "mypy . --install-types --non-interactive --ignore-missing-imports"
+flake8 = "flake8 ."
+test = "pytest . --cov-report=term-missing --cov=."
+lint = "task black_lint && task flake8 && task mypy"
+check = "task black && task flake8 && task mypy && task test"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
