@@ -1,0 +1,28 @@
+[package]
+name = "representation"
+version = "0.6.10"
+edition = "2021"
+rust-version.workspace = true
+readme = "README.md"
+
+[features]
+pyo3 = [ ]
+
+[dependencies]
+utils = { path = "../utils" }
+spargebra = {path = "../spargebra"}
+
+log.workspace = true
+oxrdf = {workspace = true, features = ["oxsdatatypes"]}
+polars = {workspace = true, features=["performant", "lazy", "dtype-full", "timezones", "polars-time", "partition_by", "cross_join", "strings"], default-features = false }
+chrono.workspace = true
+chrono-tz.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+pyo3 = {workspace = true, features = ["chrono-tz", "chrono"]}
+serde = {workspace = true, features = ["derive"]}
+oxsdatatypes.workspace = true
+rayon.workspace = true
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(feature, values("gil-refs", "rdf-star"))'] }

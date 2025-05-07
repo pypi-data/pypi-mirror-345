@@ -1,0 +1,16 @@
+[package]
+name = "utils"
+version = "0.1.0"
+edition = "2021"
+rust-version.workspace = true
+
+[features]
+pyo3 = [ "dep:pyo3" ]
+
+[dependencies]
+
+polars = { workspace = true, features = ["lazy"], default-features = false }
+polars-core = {workspace = true, default-features = false}
+thiserror.workspace = true
+
+pyo3 = { workspace = true, optional = true }
