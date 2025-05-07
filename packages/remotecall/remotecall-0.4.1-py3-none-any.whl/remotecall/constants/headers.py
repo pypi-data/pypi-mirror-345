@@ -1,0 +1,5 @@
+CONTENT_DISPOSITION = "content-disposition"
+CONTENT_LENGTH = "content-length"
+CONTENT_TYPE = "content-type"
+MULTIPART_FORM_DATA = "multipart/form-data"
+BOUNDARY = "boundary"
