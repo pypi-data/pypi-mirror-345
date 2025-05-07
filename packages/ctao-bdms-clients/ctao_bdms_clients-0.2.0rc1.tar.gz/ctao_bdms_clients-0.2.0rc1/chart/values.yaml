@@ -1,0 +1,466 @@
+# TODO: set password from secret
+# TODO: generate random, avoid repeating
+# Some values (like database connection strings and image tags) are repeated in the chart.
+# It is a known difficulty with Helm charts (e.g. https://github.com/helm/helm/issues/2492)
+# The repetition can be avoided with yaml anchors but it is problematic (https://helm.sh/docs/chart_template_guide/yaml_techniques/#yaml-anchors)
+# Alternatively, we can modify the chart to use the values from the secret or common values
+# In production this is templated with GitOps and repetitive values are rather avoided
+
+# -- This is a destructive operation, it will delete all data in the database
+safe_to_bootstrap_rucio: true
+
+# -- This will configure the rucio server with the storages
+configure_test_setup: true
+
+# Interfaces
+## TODO: kustomize/template/anchor, not currently used
+
+## Ingress: this is how the server is accessed by the clients
+
+auth:
+  # -- The hostname of the Rucio authentication server. It is used by clients and services to authenticate with Rucio
+  authRucioHost: rucio-server.local
+  certificate:
+    letsencrypt:
+      # -- Enables SSL/TLS certificate provisioning using Let's encrypt
+      enabled: false
+      # -- Email address for Let's encrypt registration and renewal reminders
+      email: ""
+    existingSecret:
+      # -- Use an existing kubernetes (K8s) secret for certificates instead of creating new ones
+      enabled: true
+      # -- The name of the kubernetes secret containing the TLS certificate and key
+      secretName: rucio-server.local
+      # -- The key inside the kubernetes secret that stores the private key
+      key: tls.key
+      # -- The key inside the kubernetes secret that stores the TLS certificate
+      cert: tls.crt
+
+server:
+  # -- The hostname of the Rucio server. It is used by clients and services to communicate with Rucio
+  rucioHost: rucio-server-manual-tc.local
+  certificate:
+    letsencrypt:
+      # -- Enables SSL/TLS certificate provisioning using Let's encrypt
+      enabled: false
+      email: ""
+    existingSecret:
+      # -- Use an existing kubernetes (K8s) secret for certificates instead of creating new ones
+      enabled: true
+      # -- The name of the kubernetes secret containing the TLS certificate and key
+      secretName: rucio-server-manual-tc.local
+      # -- The key inside the kubernetes secret that stores the private key
+      key: tls.key
+     # -- The key inside the kubernetes secret that stores the TLS certificate
+      cert: tls.crt
+
+## SE configuration
+# -- a list of Rucio Storage Elements (RSE)
+# TODO: enforce some values schema according to DPPS ideas
+# -- a list of Rucio Storage Elements (RSE)
+
+
+# TODO: make more clear mechanism to handle different upgrade scenarios
+# If there is a conflict between existing configuration, the configuration will fail. In this case, likely the
+# configuration should be deleted and re-created.
+
+configure:
+  identities:
+  - type: "X509"
+    id: "CN=DPPS User"
+    email: "dpps-test@cta-observatory.org"
+    account: "root"
+
+  rses:
+    STORAGE-1:
+      rse_type: "DISK"
+      # attributes can be custom or reserved (from rucio RseAttr)
+      attributes:
+        # this RSE attribute is currently required for the rucio-dirac integration, see https://github.com/rucio/rucio/issues/6852
+        ANY: True
+        ONSITE: True
+        fts: https://bdms-fts:8446
+      limits_by_account:
+        root: -1
+      protocols:
+      - domains:
+          lan:
+            read: 1
+            write: 1
+            delete: 1
+          wan:
+            read: 1
+            write: 1
+            delete: 1
+            third_party_copy_read: 1
+            third_party_copy_write: 1
+        extended_attributes: None
+        hostname: rucio-storage-1
+        impl: rucio.rse.protocols.gfal.Default
+        port: 1094
+        prefix: //rucio
+        scheme: root
+
+
+    STORAGE-2:
+      recreate_if_exists: true
+      attributes:
+        ANY: True
+        OFFSITE: True
+        fts: https://bdms-fts:8446
+      limits_by_account:
+        root: -1
+      protocols:
+      - domains:
+          lan:
+            read: 1
+            write: 1
+            delete: 1
+          wan:
+            read: 1
+            write: 1
+            delete: 1
+            third_party_copy_read: 1
+            third_party_copy_write: 1
+        extended_attributes: None
+        hostname: rucio-storage-2
+        impl: rucio.rse.protocols.gfal.Default
+        port: 1094
+        prefix: //rucio
+        scheme: root
+
+    STORAGE-3:
+      recreate_if_exists: true
+      attributes:
+        ANY: True
+        OFFSITE: True
+        fts: https://bdms-fts:8446
+      limits_by_account:
+        root: -1
+      protocols:
+      - domains:
+          lan:
+            read: 1
+            write: 1
+            delete: 1
+          wan:
+            read: 1
+            write: 1
+            delete: 1
+            third_party_copy_read: 1
+            third_party_copy_write: 1
+        extended_attributes: None
+        hostname: rucio-storage-3
+        impl: rucio.rse.protocols.gfal.Default
+        port: 1094
+        prefix: //rucio
+        scheme: root
+
+  # -- A list of RSE distance specifications, each a list of 4 values: source RSE, destination RSE, distance (integer), and ranking (integer)
+  rse_distances:
+  - ["STORAGE-1", "STORAGE-2", 1, 1]
+  - ["STORAGE-2", "STORAGE-1", 1, 1]
+  - ["STORAGE-1", "STORAGE-3", 1, 1]
+  - ["STORAGE-3", "STORAGE-1", 1, 1]
+  - ["STORAGE-2", "STORAGE-3", 1, 1]
+  - ["STORAGE-3", "STORAGE-2", 1, 1]
+
+  # -- This script is executed after the Rucio server is deployed and configured. It can be used to perform additional configuration or setup tasks if they currently cannot be done with the chart values.
+  extra_script: |
+    # add a scope
+    rucio-admin scope add --account root --scope root
+    rucio add-container /ctao.dpps.test
+
+# note that the SE configuration above is not aware of if the storage is a test or not
+# this is why there is certain duplication, but it's intentional
+
+# --- A list of test storages, deployed in the test setup
+test_storages:
+  xrootd:
+    image:
+      # -- The container image repository for the XRootD storage deployment
+      repository: harbor.cta-observatory.org/proxy_cache/rucio/test-xrootd
+      # -- Defines the specific version of the XRootD image to use
+      tag: 37.1.0
+    instances:
+    # "rucio-storage-1" is also mounted to the test pod as /storage-1
+    - "rucio-storage-1"
+    - "rucio-storage-2"
+    - "rucio-storage-3"
+
+rucio_db:
+  # -- The database connection URI for Rucio. It is of the format: `postgresql://<user>:<password>@<host>:<port>/<database>`, this field in use only if 'existingSecret.enabled' is set to 'false', otherwise ignored
+  connection: "postgresql://rucio:XcL0xT9FgFgJEc4i3OcQf2DMVKpjIWDGezqcIPmXlM@bdms-postgresql:5432/rucio"
+  existingSecret:
+    # -- If true, the database connection URI is obtained from a kubernetes secret in
+    enabled: false
+    # -- The name of the kubernetes secret storing the database connection URI. Its in use only if 'existingSecret.enabled: true'
+    secretName: rucio-db
+    # -- The key inside the kubernetes secret that holds the database connection URI
+    key: connection
+  # -- If true, deploys a postgresql instance for the Rucio database, otherwise use an external database
+  deploy: true
+
+
+####################################################
+
+
+# -- Databases Credentials used by Rucio to access the database. If postgresql subchart is deployed, these credentials should match those in postgresql.global.postgresql.auth. If postgresql subchart is not deployed, an external database must be provided
+database:
+  # -- The Rucio database connection URI
+  default: "postgresql://rucio:XcL0xT9FgFgJEc4i3OcQf2DMVKpjIWDGezqcIPmXlM@bdms-postgresql:5432/rucio"
+
+bootstrap:
+  image:
+    # -- The container image for bootstrapping Rucio (initialization, configuration) with the CTAO Rucio policy package installed
+    repository: harbor.cta-observatory.org/dpps/bdms-rucio-server
+    # -- The specific image tag to use for the bootstrap container
+    tag: 35.7.0-v0.2.0
+
+rucio-server:
+  image:
+    # -- The container image repository for Rucio server with the CTAO Rucio policy package installed
+    repository: harbor.cta-observatory.org/dpps/bdms-rucio-server
+    # -- The specific image tag to deploy
+    tag: 35.7.0-v0.2.0
+    # -- It defines when kubernetes should pull the container image, the options available are: Always, IfNotPresent, and Never
+    pullPolicy: Always
+
+  # TODO: replace with internal svc
+  # -- The hostname of the Rucio authentication server.
+  authRucioHost: rucio-server.local
+  # -- Number of replicas of the Rucio server to deploy. We can increase it to meet higher availability goals
+  replicaCount: 1
+  ftsRenewal:
+    # TODO: do we need this in prod? if yes, can also test it
+    # FTSRenewal is set to false, can be set to true to allow periodic FTS credentials renewals for data transfers
+    # -- Enables automatic renewal of FTS credentials using X.509 certificates and proxy
+    enabled: false
+
+  config:
+    database:
+      # -- The database connection URI for Rucio
+      default: "postgresql://rucio:XcL0xT9FgFgJEc4i3OcQf2DMVKpjIWDGezqcIPmXlM@bdms-postgresql:5432/rucio"
+    policy:
+      # -- Defines the policy permission model for Rucio for determining how authorization and access controls are applied, its value should be taken from the installed Rucio policy package
+      package: "bdms_rucio_policy"
+      permission: "ctao"
+      schema: "ctao_bdms"
+      lfn2pfn_algorithm_default: "ctao_bdms"
+
+  ingress:
+    # -- Enables an ingress resource (controller) for exposing the Rucio server externally to allow clients connect to the Rucio server. It needs one of the ingress controllers (NGINX, Traefik) to be installed
+    enabled: true
+    # -- Defines the hostname to be used to access the Rucio server. It should match DNS configuration and TLS certificates
+    hosts:
+      - rucio-server-manual-tc.local
+
+  service:
+    # -- Specifies the kubernetes service type for making the Rucio server accessible within or outside the kubernetes cluster, available options include clusterIP (internal access only, default), NodePort (exposes the service on port across all cluster nodes), and LoadBalancer (Uses an external load balancer)
+    type: ClusterIP
+    # -- The port exposed by the kubernetes service, making the Rucio server accessible within the cluster
+    port: 443
+    # -- The port inside the Rucio server container that listens for incoming traffic
+    targetPort: 443
+    # -- The network protocol used for HTTPS based communication
+    protocol: TCP
+    # -- The name of the service port
+    name: https
+  # -- Enables the Rucio server to use SSL/TLS for secure communication, requiring valid certificates to be configured
+  useSSL: true
+
+  httpd_config:
+    # -- Enables Rucio server to support and interact with grid middleware (storages) for X509 authentication with proxies
+    grid_site_enabled: "True"
+    # -- Allows for custom LFNs with slashes in request URLs so that Rucio server (Apache) can decode and handle such requests properly
+    encoded_slashes: "True"
+
+rucio-daemons:
+  image:
+    # -- Specifies the container image repository for Rucio daemons
+    repository: harbor.cta-observatory.org/dpps/bdms-rucio-daemons
+    # -- Specific image tag to use for deployment
+    tag: 35.7.0-v0.2.0
+    # -- It defines when kubernetes should pull the container image, the options available are: Always, IfNotPresent, and Never
+    pullPolicy: Always
+  # -- Number of container instances to deploy for each Rucio daemon, this daemon submits new transfer requests to the FTS
+  conveyorTransferSubmitterCount: 1
+  # -- Polls FTS to check the status of ongoing transfers
+  conveyorPollerCount: 1
+  # -- Marks completed transfers and updates metadata
+  conveyorFinisherCount: 1
+  # -- Listens to messages from ActiveMQ, which FTS uses to publish transfer status updates. This ensures Rucio is notified of completed or failed transfers in real time
+  conveyorReceiverCount: 1
+  # conveyorStagerCount: 1
+  # conveyorThrottlerCount: 1
+  # conveyerPreparerCount: 1
+  # -- Evaluates Rucio replication rules and triggers transfers
+  judgeEvaluatorCount: 1
+  #judgeRepairerCount: 1 (In production, we absolutely need repairer, since it guarantees that the rule is unstuck. But in test, we have to run it only manually.)
+
+  conveyorTransferSubmitter:
+    # -- Specifies which Rucio activities to be handled. Some of the activities for data movements are 'User Subscriptions' and 'Production Transfers'
+    activities: "'User Subscriptions'"
+    # -- Defines the interval (in seconds) the daemon waits before checking for new transfers
+    sleepTime: 5
+    # -- Sets the timeout if required for archiving completed transfers
+    archiveTimeout: ""
+    resources:
+      limits:
+        # specifies the maximum resources the container can use
+        memory: "4Gi"
+        cpu: "3000m"
+      requests:
+        # specifies the requests as the minimum guaranteed resources
+        memory: "200Mi"
+        cpu: "700m"
+
+  conveyorPoller:
+    # -- Specifies which Rucio activities to be handled. Some of the activities for data movements are 'User Subscriptions' and 'Production Transfers'
+    activities: "'User Subscriptions'"
+    # -- Defines how often (in seconds) the daemon polls for transfer status updates
+    sleepTime: 60
+    # -- Filters transfers that are older than the specified time (in seconds) before polling
+    olderThan: 600
+    resources:
+      limits:
+        memory: "4Gi"
+        cpu: "3000m"
+      requests:
+        memory: "200Mi"
+        cpu: "700m"
+
+  conveyorFinisher:
+    # -- Specifies which Rucio activities to be handled. Some of the activities for data movements are 'User Subscriptions' and 'Production Transfers'
+    activities: "'User Subscriptions'"
+    # -- Defines how often (in seconds) the daemon processes finished transfers
+    sleepTime: 5
+    resources:
+      limits:
+        memory: "4Gi"
+        cpu: "3000m"
+      requests:
+        memory: "200Mi"
+        cpu: "700m"
+
+
+  judgeEvaluator:
+
+    resources:
+      limits:
+        memory: "4Gi"
+        cpu: "3000m"
+      requests:
+        memory: "1Gi"
+        cpu: "700m"
+
+
+
+  #TODO: switch to whatever is not deprecated
+  # -- Enables the use of deprecated implicit secrets for authentication
+  useDeprecatedImplicitSecrets: true
+
+  # this goes into the rucio.cfg
+  config:
+    database:
+      # -- Specifies the connection URI for the Rucio database, these settings will be written to 'rucio.cfg'
+      default: "postgresql://rucio:XcL0xT9FgFgJEc4i3OcQf2DMVKpjIWDGezqcIPmXlM@bdms-postgresql:5432/rucio"
+
+    # current rucio uses policy/permission as vo name in
+    # conveyor-receiver, see https://github.com/rucio/rucio/issues/7207
+    policy:
+      # -- Defines the policy permission model for Rucio for determining how authorization and access controls are applied, its value should be taken from the installed Rucio policy package
+      package: "bdms_rucio_policy"
+      permission: "ctao"
+      schema: "ctao_bdms"
+      lfn2pfn_algorithm_default: "ctao_bdms"
+
+    common:
+      extract_scope: "ctao_bdms"
+
+    messaging-fts3:
+      # -- Specifies the message broker used for FTS messaging
+      brokers: "fts-activemq"
+      # -- Defines the port used for the broker
+      port: 61613
+      # -- Specifies the non-SSL port
+      nonssl_port: 61613
+      # -- Determines whether to use SSL for message broker connections. If true, valid certificates are required for securing the connection
+      use_ssl: False
+      # -- Specifies the message broker queue path where FTS sends transfer status updates. This is the place where Rucio listens for completed transfer notifications
+      destination: /topic/transfer.fts_monitoring_complete
+      voname: ctao
+      # -- Specifies the authentication credential (username) for connecting to the message broker
+      username: fts
+      # -- Specifies the authentication credential (password) for connecting to the message broker
+      password: topsecret
+
+
+
+postgresql:
+  # --  Configuration of built-in postgresql database. If 'enabled: true', a postgresql instance will be deployed, otherwise, an external database must be provided in database.default value
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        # -- The database username for authentication
+        username: rucio
+        # -- The password for the database user
+        password: "XcL0xT9FgFgJEc4i3OcQf2DMVKpjIWDGezqcIPmXlM"
+        # -- The name of the database to be created and used by Rucio
+        database: rucio
+
+
+# TODO: change to rucio config
+rucio:
+  # -- Specifies the username for Rucio operations as part of Rucio configuration
+  username: dpps
+  # TODO: generate random
+  password: secret
+  # -- The version of Rucio being deployed
+  version: 35.7.0
+# -- Specifies the Namespace suffix used for managing deployments in kubernetes
+suffix_namespace: "default"
+
+# FTS test setup
+fts:
+  # -- Specifies the configuration for FTS test step (FTS server, FTS database, and ActiveMQ broker containers). Enables or disables the deployment of a FTS instance for testing. This is set to 'False' if an external FTS is used
+  enabled: True
+
+  # TODO: generate random when needed
+  # -- Defines the root password for the FTS database
+  ftsdb_root_password: iB7dMiIybdoaozWZMkvRo0eg9HbQzG9+5up50zUDjE4
+  # -- Defines the password for the FTS database user
+  ftsdb_password: SDP2RQkbJE2f+ohUb2nUu6Ae10BpQH0VD70CsIQcDtM
+
+  messaging:
+    broker: "localhost:61613"
+    use_broker_credentials: "true"
+    username: "fts"
+    password: "topsecret"
+
+  # # TODO: this is temporary, to investigate why the fts is spending so much time/cpu doing nothing, only in CI
+  # securityContext:
+  #   capabilities:
+  #     add:
+  #     - SYS_PTRACE
+
+
+dev:
+  # -- sleep after test to allow interactive development
+  sleep: false
+  run_tests: true
+  mount_repo: true
+  client_image_tag:
+
+cert-generator-grid:
+  enabled: true
+  generatePreHooks: true
+
+# -- Starts containers with the same image as the one used in the deployment before all volumes are available. Saves time in the first deployment
+prepuller_enabled: true
+
+rethinkdb:
+  enabled: false
+  storageClassName:
+  storageSize: 1Gi

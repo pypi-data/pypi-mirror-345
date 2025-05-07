@@ -1,0 +1,46 @@
+include:
+  - project: 'cta-computing/dpps/aiv/dpps-aiv-toolkit'
+    ref: 23eafda64340b8036cbed5ce196784a03666cad8
+    file: 'ci-functions.yml'
+  - "aiv-config.yml"
+
+
+variables:
+  CHART_LOCATION: chart
+  CHART_NAME: bdms
+  CHART_EXTRA_VALUES: "--set dev.client_image_tag=${DOCKER_TAG}"
+  DPPS_AIV_TOOLKIT_DIR: dpps-aiv-toolkit
+  DOCKER_IMAGE_CONTEXT: '${CI_PROJECT_DIR}'
+  RUCIO_VERSION: "35.4.1"
+  RUCIO_TAG: "release-${RUCIO_VERSION}"
+
+stages:
+  - prepare
+  - lint
+  - build
+  - sign
+  - tests
+  - sonarqube
+  - publish
+  - report
+
+k8s-integration-tests:
+  # override from toolkit
+  before_script:
+    - apk add --no-cache make wget || true # might fail depending on the image
+    - echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && echo fs.inotify.max_user_instances=8192 | tee -a /etc/sysctl.conf && sysctl -p || true
+    # create .env file with CI secrets
+    - echo -e "MINIO_ACCESS_KEY=$MINIO_ACCESS_KEY\nMINIO_SECRET_KEY=$MINIO_SECRET_KEY\n" > .env
+
+build:
+  variables:
+    CI_HARBOR_REGISTRY_IMAGE: '${HARBOR_HOST}/dpps/bdms-client:${DOCKER_TAG}'
+    KANIKO_EXTRA_ARGS: --build-arg RUCIO_TAG=${RUCIO_TAG}
+
+hadolint:
+  rules:
+    - when: never
+
+sign:
+  rules:
+    - when: never

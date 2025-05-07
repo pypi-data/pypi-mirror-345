@@ -1,0 +1,39 @@
+apiVersion: v2
+name: bdms
+version: 0.1.0
+appVersion: 0.1.0
+description: A Helm chart for the bdms project
+type: application
+keywords:
+- bdms
+- rucio
+- monitoring
+- postgresql
+
+maintainers:
+- name: The BDMS Authors
+  email: ""
+
+dependencies:
+- name: postgresql
+  condition: postgresql.enabled
+  version: 15.5.10
+  repository: oci://registry-1.docker.io/bitnamicharts
+
+- name: rucio-server
+  version: 35.0.0
+  repository: oci://harbor.cta-observatory.org/dpps
+
+- name: rucio-daemons
+  version: 35.0.0
+  repository: oci://harbor.cta-observatory.org/dpps
+
+- name: cert-generator-grid
+  condition: cert-generator-grid.enabled
+  version: v0.2.2
+  repository: oci://harbor.cta-observatory.org/dpps
+
+- name: fts
+  condition: fts.enabled
+  version: v0.3.0
+  repository: oci://harbor.cta-observatory.org/dpps

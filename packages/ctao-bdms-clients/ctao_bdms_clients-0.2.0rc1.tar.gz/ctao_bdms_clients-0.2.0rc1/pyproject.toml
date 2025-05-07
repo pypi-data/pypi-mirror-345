@@ -1,0 +1,174 @@
+[build-system]
+requires = ["setuptools>=65", "setuptools_scm[toml]>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ctao-bdms-clients"
+description = "Client module for the CTAO DPPS Bulk Data Management System"
+readme = "README.md"
+license = {text = "BSD-3-Clause"}
+authors = [
+  {name = "Georgios Zacharis", email = "georgios.zacharis@inaf.it"},
+  {name = "Stefano Gallozzi", email = "Stefano.gallozzi@inaf.it"},
+  {name = "Michele Mastropietro", email = "michele.mastropietro@inaf.it"},
+  {name = "Syed Anwar Ul Hasan", email = "syedanwarul.hasan@cta-consortium.org"},
+  {name = "Maximilian Linhoff", email = "maximilian.linhoff@cta-observatory.org"},
+  {name = "Volodymyr Savchenko", email = "Volodymyr.Savchenko@epfl.ch"},
+]
+
+requires-python = ">=3.9"
+dependencies = [
+  "astropy>=6.0.1,<8.0.0a0",
+  "ctao-bdms-rucio-policy~=0.1.0",
+  "rucio-clients~=35.7.0",
+]
+
+# needed for setuptools_scm, we don"t define a static version
+dynamic = ["version"]
+
+[project.urls]
+repository = "https://gitlab.cta-observatory.org/cta-computing/dpps/bdms/bdms"
+documentation = "http://cta-computing.gitlab-pages.cta-observatory.org/dpps/bdms/bdms"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["bdms._dev_version"]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-cov",
+  "pytest-requirements",
+  "python-dotenv",
+  "minio",
+]
+doc = [
+  "sphinx",
+  "numpydoc",
+  "ctao-sphinx-theme",
+  "myst-parser",
+  "sphinx-changelog",
+  "sphinx-automodapi",
+]
+dev = [
+  "setuptools_scm",
+  "sphinx-autobuild",
+]
+
+# we can use self-references to simplify all
+all = [
+  "bdms[test,doc,dev]",
+]
+
+[tool.setuptools_scm]
+write_to = "src/bdms/_version.py"
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+
+[tool.ruff.lint]
+extend-select = [
+    "I", # isort
+    "N", # pep8 naming
+    "D", # pydocstyle
+    "NPY", # numpy
+    "PT", # pytest
+    "UP", # pyupgrade
+    "COM", # flake8-commas
+    "ISC", # implicit string concat rules
+    "ICN", # import name conventions
+    "G", # logging
+]
+ignore = [
+    "COM812", # incompatible with ruff format
+    "ISC001", # incompatible with ruff format
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.per-file-ignores]
+# no documentation linting for test files
+"**/tests/**" = ["D"]
+"**/tests_*.py" = ["D"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["bdms"]
+
+[tool.coverage.run]
+relative_files = true
+source = ["src"]
+omit = [
+    "src/bdms/_version.py",
+    "src/bdms/_dev_version/*"
+]
+
+[tool.pytest.ini_options]
+minversion = "7"
+testpaths = ["src"]
+log_cli_level = "INFO"
+xfail_strict = true
+# print summary of failed tests, force errors if settings are misspelled
+addopts = ["-ra", "--strict-config", "--strict-markers", "-p", "pytest_requirements"]
+filterwarnings = [
+    "error",
+    # this warning comes from pytest itself and was triggered by a resource
+    # leak in rucio in a subthread. Keep it as a warning. Issue is opened.
+    # https://github.com/rucio/rucio/issues/6787
+    "default::pytest.PytestUnraisableExceptionWarning",
+]
+
+
+[tool.repo-review]
+select = ["PY", "PP", "PC"]
+ignore = [
+    "PY007", # we do not use tox for now
+    "PC140", # mypy is not used
+    "PC170", # pygrep is not used
+    "PC180", # prettier is not used
+    "PC111", # blacken-docs is not used
+    "PC901", # no CI setup currently for updating pre-commit hooks
+]
+
+[tool.codespell]
+skip = "*.fits,*.fits.gz,*.fits.fz"
+ignore-words = ".codespell-ignores"
+
+[tool.towncrier]
+package = "bdms"
+directory = "docs/changes"
+filename = "CHANGES.rst"
+template = "docs/changes/template.rst"
+underlines = ["-", "~", "^"]
+# template to turn the number to a link, we link to merge requests
+issue_format = "`!{issue} <https://gitlab.cta-observatory.org/cta-computing/dpps/bdms/bdms/-/merge_requests/{issue}>`__"
+
+[tool.towncrier.fragment.feature]
+    name = "New Features"
+    showcontent = true
+
+[tool.towncrier.fragment.bugfix]
+    name = "Bug Fixes"
+    showcontent = true
+
+[tool.towncrier.fragment.api]
+    name = "API Changes"
+    showcontent = true
+
+[tool.towncrier.fragment.optimization]
+    name = "Refactoring and Optimization"
+    showcontent = true
+
+[tool.towncrier.fragment.maintenance]
+    name = "Maintenance"
+    showcontent = true

@@ -1,0 +1,159 @@
+{{- $suffix_namespace := .Values.suffix_namespace -}}
+{{ $values := .Values -}}
+{{- range $name := .Values.test_storages.xrootd.instances }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    app: {{ $name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+    spec:
+      hostname: {{ $name }}
+      volumes:
+      {{- if eq $name "rucio-storage-1" }}
+      - name: bdms-storage-1-data
+        persistentVolumeClaim:
+          claimName: storage-1-pvc # This is the PVC name
+      {{- end }}
+      - name: bdms-{{ $name }}-hostkey
+        secret:
+          defaultMode: 420
+          secretName: {{ template "certprefix" $ }}-{{ $name }}-hostkey
+      - name: cafile
+        secret:
+          defaultMode: 420
+          secretName: {{ template "certprefix" $ }}-server-cafile
+      - name: xrdconfig
+        configMap:
+          name: xrdconfig
+          defaultMode: 0444
+      - name: xrd-entrypoint
+        configMap:
+          name: xrd-entrypoint
+          defaultMode: 0555
+      {{- if eq $name "rucio-storage-1" }}
+      initContainers: #Initialize the PersistentVolumeClaim volume
+        - name: bdms-storage-1-init #Name
+          image: busybox:latest #You can use another image, like alpine/BusyBox, but must provide sh and chmod
+          command: ["/bin/sh", "-c", "mkdir -p /rucio/data && chmod -R 777 /rucio/data"] #This make the folder and sets all permissions correct
+          volumeMounts:
+            - name: bdms-storage-1-data
+              mountPath: /rucio #Modify mount path
+      {{- end }}
+      containers:
+      - name: {{ $name }}
+        image: "{{ $values.test_storages.xrootd.image.repository }}:{{ $values.test_storages.xrootd.image.tag }}"
+        volumeMounts:
+        {{- if eq $name "rucio-storage-1" }}
+        - name: bdms-storage-1-data
+          mountPath: /rucio #Modify mount path to point to the volume, check if the volume its the data created on the previous init command
+        {{- end }}
+        - name: bdms-{{ $name }}-hostkey
+          mountPath: /tmp/xrdcert.pem
+          subPath: hostcert.pem
+        - name: bdms-{{ $name }}-hostkey
+          mountPath: /tmp/xrdkey.pem
+          subPath: hostkey.pem
+        - name: cafile
+          subPath: ca.pem
+          mountPath: /etc/grid-security/certificates/74df993b.0
+        - name: xrdconfig
+          mountPath: /etc/xrootd/xrdrucio.cfg
+          subPath: xrdrucio.cfg
+        - name: xrd-entrypoint
+          mountPath: /docker-entrypoint.sh
+          subPath: docker-entrypoint.sh
+        ports:
+        - containerPort: 1094
+        env:
+        - name: "XRDPORT"
+          value: "1094"
+        - name: "HOSTNAME"
+          value: "{{ $name }}"
+        - name: "XrdSecGSISRVNAMES"
+          value: "{{ $name }},{{ $name }}.{{ $suffix_namespace }}.svc.cluster.local"
+
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          # uses ~4GB of memory when idle, or more when under load (TODO: measure memory usage profile)
+          limits:
+            memory: "4Gi"
+            cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    app: {{ $name }}
+spec:
+  selector:
+    app: {{ $name }}
+  ports:
+  - protocol: TCP
+    port: 1094
+    targetPort: 1094
+  type: ClusterIP
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xrdconfig
+data:
+  xrdrucio.cfg: |
+    all.export /rucio
+    xrootd.seclib /usr/lib64/libXrdSec.so
+    sec.protocol /usr/lib64 gsi -dlgpxy:1 -exppxy:=creds
+    xrootd.chksum adler32 /usr/local/bin/xrdadler32.sh
+    ofs.tpc autorm fcreds gsi =X509_USER_PROXY pgm /usr/bin/xrdcp --server
+    xrd.port 1094
+
+    xrd.maxfd 1024
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xrd-entrypoint
+data:
+  docker-entrypoint.sh: |
+    #!/bin/bash
+
+    ulimit -n 1024
+
+    echo "xrd.port $XRDPORT" >> /etc/xrootd/xrdrucio.cfg
+    echo '======== /etc/xrootd/xrdrucio.cfg ========'
+    cat /etc/xrootd/xrdrucio.cfg
+    echo '=========================================='
+
+    echo 'Fixing ownership and permissions'
+    cp /tmp/xrdcert.pem /etc/grid-security/xrd/xrdcert.pem
+    cp /tmp/xrdkey.pem /etc/grid-security/xrd/xrdkey.pem
+    chown -R xrootd:xrootd /etc/grid-security/xrd
+    chmod 0400 /etc/grid-security/xrd/xrdkey.pem
+
+    xrootd -R xrootd -n rucio -c /etc/xrootd/xrdrucio.cfg
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage-1-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce  # Or ReadWriteMany if supported by your storage class
+  resources:
+    requests:
+      storage: 2Gi  # Adjust size as needed
+  storageClassName: standard

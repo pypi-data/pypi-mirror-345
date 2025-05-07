@@ -1,0 +1,26 @@
+{{ if .Values.prepuller_enabled }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Release.Name }}-prepuller
+  namespace: {{ .Release.Namespace }}
+  labels:
+    name: {{ .Release.Name }}-prepuller
+spec:
+  selector:
+    matchLabels:
+      name: {{ .Release.Name }}-prepuller
+  template:
+    metadata:
+      labels:
+        name: {{ .Release.Name }}-prepuller
+    spec:
+      containers:
+      - name: daemons
+        {{- $repo := index .Values "rucio-daemons" "image" "repository" }}
+        {{- $tag := index .Values "rucio-daemons" "image" "tag" }}
+        image: "{{ $repo }}:{{ $tag }}"
+        command:
+        - sleep
+        - infinity
+{{- end }}

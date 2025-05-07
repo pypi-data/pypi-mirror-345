@@ -1,0 +1,135 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "bdms-pytest"
+  annotations:
+    "helm.sh/hook": test
+spec:
+  volumes:
+  - name: rucio-config
+    configMap:
+      name: {{ template "bdms.fullname" . }}-rucio-config
+  - name: cafile
+    secret:
+      defaultMode: 420
+      secretName: {{ template "certprefix" . }}-server-cafile
+  - name: dppsuser-certkey
+    secret:
+      defaultMode: 420
+      secretName: {{ template "certprefix" . }}-dppsuser-certkey
+  - name: scripts
+    configMap:
+      name: {{ template "bdms.fullname" . }}-scripts
+  - name: dppsuser-certkey-600
+    secret:
+      defaultMode: 0600
+      secretName: {{ template "certprefix" . }}-dppsuser-certkey
+  - name: dppsuser-certkey-400
+    secret:
+      defaultMode: 0400
+      secretName: {{ template "certprefix" . }}-dppsuser-certkey
+  {{ if .Values.dev.mount_repo }}
+  - name: repo
+    hostPath:
+      path: /repo
+      type: Directory
+  {{ end }}
+  - name: storage-1-data
+    persistentVolumeClaim:
+      claimName: storage-1-pvc
+
+  containers:
+  - name: test-rucio
+    image: harbor.cta-observatory.org/dpps/bdms-client:{{ .Values.dev.client_image_tag | default .Chart.AppVersion}}
+    workingDir: /home/user/bdms
+    securityContext:
+      runAsUser: 0
+    command:
+    - /bin/sh
+    - -c
+    - |
+      set -ex
+
+      export PYTHONUNBUFFERED=1
+
+      export HELM_RELEASE_NAME={{ .Release.Name }}
+
+      {{ .Files.Get "scripts/certificates/install_ca.sh" | indent 10 }}
+
+      voms-proxy-init -valid 9999:00 -cert /opt/rucio/etc/usercert.pem -key /opt/rucio/etc/userkey.pem
+
+      # test access to the storage
+      xrdfs root://rucio-storage-1 spaceinfo /rucio
+
+      {{ .Files.Get "scripts/bootstrap_rucio/wait_for_rucio.sh" | indent 10 }}
+
+      {{ if .Values.dev.mount_repo }}
+      python3 -m pip install .[test]
+
+      {{ if .Values.dev.run_tests }}
+      python3 -m pytest \
+        -svv \
+        -o cache_dir=$PWD/.pytest-cache \
+        --cov \
+        --cov-report=xml:/tmp/coverage.xml \
+        --junitxml=/tmp/report.xml \
+        --color=yes \
+        --log-cli-level=INFO \
+        --durations=10 --durations-min=30
+
+      curl -T /tmp/coverage.xml http://testkit:8000/coverage.xml
+      curl -T /tmp/report.xml http://testkit:8000/report.xml
+      {{ end }}
+      {{ end }}
+
+      {{ if .Values.dev.sleep }}
+      sleep infinity
+      {{ end }}
+
+
+    volumeMounts:
+    - name: rucio-config
+      mountPath: /opt/rucio/etc/rucio.cfg
+      subPath: rucio.cfg
+
+    - name: cafile
+      subPath: ca.pem
+      mountPath: /etc/grid-security/ca.pem
+
+    - name: dppsuser-certkey-400
+      mountPath: /opt/rucio/etc/userkey.pem
+      subPath: dppsuser.key.pem
+
+    - name: dppsuser-certkey-600
+      mountPath: /opt/rucio/etc/usercert.pem
+      subPath: dppsuser.pem
+
+    - name: cafile
+      subPath: ca.pem
+      mountPath: /etc/grid-security/certificates/74df993b.0
+
+    - name: scripts
+      mountPath: /scripts
+
+    {{ if .Values.dev.mount_repo }}
+    - name: repo
+      mountPath: /home/user/bdms/
+    {{ end }}
+    - name: storage-1-data
+      mountPath: /storage-1
+
+    env:
+    - name: RUCIO_CLIENT_MODE
+      value: user
+
+
+  restartPolicy: Never
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "bdms.fullname" . }}-scripts
+data:
+{{ (.Files.Glob "scripts/**").AsConfig | indent 2 }}

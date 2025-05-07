@@ -1,0 +1,229 @@
+
+{{ if .Values.safe_to_bootstrap_rucio | default false }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "bdms.fullname" . }}-bootstrap-rucio
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-10"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      volumes:
+      {{ include "volumes_cert" . | indent 8 }}
+      initContainers:
+      - name: test-connection
+        image: postgres:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -x
+
+          while true; do
+            pg_isready --dbname=rucio --host={{ .Release.Name }}-postgresql --port=5432 --username=rucio && break
+            sleep 3
+          done
+
+        volumeMounts:
+        {{ include "volume_mounts_rucio_config" . | indent 8 }}
+        {{ include "volume_mounts_cert" . | indent 8 }}
+        env:
+        {{ include "env_helm_release" . | indent 8 }}
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgresql
+              key: postgres-password
+
+      containers:
+      - name: bootstrap-rucio
+        image: {{ .Values.bootstrap.image.repository }}:{{ .Values.bootstrap.image.tag }}
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -x
+
+          {{ .Files.Get "scripts/certificates/install_ca.sh" | indent 10 }}
+          {{ .Files.Get "scripts/bootstrap_rucio/wait_for_rucio.sh" | indent 10 }}
+
+          echo "Running reset database script..."
+
+          python3 /usr/local/rucio/tools/reset_database.py
+
+        volumeMounts:
+        {{ include "volume_mounts_rucio_config" . | indent 8 }}
+        {{ include "volume_mounts_cert" . | indent 8 }}
+        env:
+        {{ include "env_helm_release" . | indent 8 }}
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgresql
+              key: postgres-password
+      restartPolicy: OnFailure
+{{ end }}
+{{ if .Values.configure_test_setup | default false }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "bdms.fullname" . }}-configure-test-rucio
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      volumes:
+      {{ include "volumes_cert" . | indent 8 }}
+      resources:
+        requests:
+          memory: "2Gi"
+          cpu: "500m"
+        limits:
+          memory: "8Gi"
+          cpu: "2000m"
+      containers:
+      - name: configure-test-rucio
+        image: {{ .Values.bootstrap.image.repository }}:{{ .Values.bootstrap.image.tag }}
+        securityContext:
+          runAsUser: 0
+        env:
+        {{ include "env_helm_release" . | indent 8 }}
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -ex
+
+          # TODO: make or find an image?
+          dnf install -y voms-clients
+
+          {{ .Files.Get "scripts/certificates/install_ca.sh" | indent 10 }}
+
+          WAIT_RUCIO_PING=1
+          {{ .Files.Get "scripts/bootstrap_rucio/wait_for_rucio.sh" | indent 10 }}
+
+          echo "Configuring test rucio setup ..."
+
+          set -eux -o pipefail
+
+          voms-proxy-init -valid 9999:00 -cert /opt/rucio/etc/usercert.pem -key /opt/rucio/etc/userkey.pem -out /tmp/x509up
+          cp -fv /tmp/x509up /tmp/x509up_u$(id -u)
+
+          echo "Configuring identities ..."
+          {{ range .Values.configure.identities -}}
+          rucio-admin -v identity add
+                {{- range $k, $v := .}} --{{ $k }}="{{ $v }}"{{ end }} || echo "Identity already exists"
+          {{- end }}
+
+          {{- range $rse_name, $rse_spec := .Values.configure.rses }}
+
+          echo "Configuring RSE {{ $rse_name }} ..."
+
+          rucio-admin -v rse add "{{ $rse_name }}"
+
+          # TODO: there is a strange race condition here, where the rse is not yet available
+          # in some sequences it does not happen, depending on the order of the rse creation
+          # this time it started to happen after FTS container was separated?
+          while true; do
+            rucio-admin -v rse info "{{ $rse_name }}" && break
+            sleep 3
+          done
+
+          {{- range $rse_spec.protocols }}
+          rucio-admin -v rse add-protocol \
+              --hostname "{{ .hostname }}" \
+              --scheme {{ .scheme }} \
+              --prefix {{ .prefix }} \
+              --port {{ .port }} \
+              --impl {{ .impl | default "rucio.rse.protocols.gfal.Default" }} \
+              --domain-json '{{ .domains | toJson }}' \
+              "{{ $rse_name }}"
+          {{- end }}
+
+          {{- range $k, $v := $rse_spec.attributes }}
+          rucio-admin rse set-attribute --rse "{{ $rse_name }}" --key "{{ $k }}" --value "{{ $v }}"
+          {{- end }}
+
+
+          {{ range $account, $limit := $rse_spec.limits_by_account }}
+          rucio-admin account set-limits {{ $account }} "{{ $rse_name }}" {{ $limit }}
+          {{ end }}
+
+          echo "Configuring RSE {{ $rse_name }} done"
+          rucio-admin rse info "{{ $rse_name }}"
+
+          {{- end }}
+
+          {{- range $distance_tuple := .Values.configure.rse_distances }}
+          echo "Configuring RSE distance {{ $distance_tuple }} ..."
+          rucio-admin rse add-distance \
+            "{{ index $distance_tuple 0 }}" \
+            "{{ index $distance_tuple 1 }}" \
+            --distance {{ index $distance_tuple 2 }} \
+            --ranking {{ index $distance_tuple 3 }}
+          {{- end }}
+
+          {{- .Values.configure.extra_script | nindent 10 }}
+
+
+        volumeMounts:
+        {{ include "volume_mounts_rucio_config" . | indent 8 }}
+        {{ include "volume_mounts_cert" . | indent 8 }}
+
+      # TODO: this is not configuration and is good to do on any upgrade, or even more often (as in rucio)
+      - name: delegate-to-fts
+        image: {{ .Values.bootstrap.image.repository }}:{{ .Values.bootstrap.image.tag }}
+        securityContext:
+          runAsUser: 0
+        env:
+        {{ include "env_helm_release" . | indent 8 }}
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -ex
+          echo "Verify connection to the FTS, and delegate a proxy"
+
+          export FTS_URL="https://{{ .Release.Name }}-fts:8446"
+
+          # TODO: make or find an image with fts-rest-client?
+          dnf config-manager --set-enabled crb
+          dnf install -y epel-release
+          curl -sSfL -o /etc/yum.repos.d/fts3.repo https://fts-repo.web.cern.ch/fts-repo/fts3-el9.repo
+          curl -sSfL -o /etc/yum.repos.d/fts3-depend.repo https://fts-repo.web.cern.ch/fts-repo/fts3-depend.repo
+          dnf install -y fts-rest-client fts-msg voms-clients
+
+          {{ .Files.Get "scripts/certificates/install_ca.sh" | indent 10 }}
+
+          while true; do
+            if curl -v $FTS_URL; then
+              echo "FTS is up"
+              break
+            fi
+            echo "FTS is not up, retrying in 5 seconds"
+            sleep 5
+          done
+
+          curl -v $FTS_URL
+
+          FTS_ARGS="--capath /etc/grid-security/certificates --cert /opt/rucio/etc/usercert.pem --key /opt/rucio/etc/userkey.pem  -s $FTS_URL"
+          fts-rest-whoami $FTS_ARGS
+          fts-rest-delegate -vf $FTS_ARGS
+
+        volumeMounts:
+        {{ include "volume_mounts_rucio_config" . | indent 8 }}
+        {{ include "volume_mounts_cert" . | indent 8 }}
+
+      restartPolicy: Never
+
+{{ end }}
