@@ -1,0 +1,1 @@
+from .ai_helper import load_plugin
