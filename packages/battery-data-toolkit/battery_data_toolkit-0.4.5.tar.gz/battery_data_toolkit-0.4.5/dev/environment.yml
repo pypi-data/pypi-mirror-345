@@ -1,0 +1,15 @@
+# Conda environment file
+name: batdata
+channels:
+  - defaults
+dependencies:
+  - python==3.10.*
+  - pandoc  # Needed for the
+
+  # For now, use Pip for everything major
+  - pip
+  - pip:
+    # Install jupyter
+    - jupyterlab
+    - matplotlib
+    - -e ..[test,docs]

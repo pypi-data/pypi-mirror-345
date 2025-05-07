@@ -1,0 +1,42 @@
+name: Python Package
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+      max-parallel: 5
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+      - name: Install package
+        run: |
+          pip install -e .[test]
+      - name: Lint with flake8
+        run: |
+          flake8 battdat/ tests
+      - name: Test with pytest
+        run: |
+          pytest --cov=batdata tests
+      - name: Coveralls
+        run: |
+          pip install coveralls
+          coveralls --service=github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test example notebooks
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          pip install jupyter matplotlib
+          home_dir=`pwd`
+          for notebook in `find . -name "*.ipynb"`; do
+             cd `dirname $notebook`
+             jupyter execute `basename $notebook`
+             cd $home_dir
+          done
