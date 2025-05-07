@@ -1,0 +1,107 @@
+# oss_tools.py
+import os
+import alibabacloud_oss_v2 as oss
+
+from pydantic import Field
+from alibabacloud_oss_v2 import Credentials
+from alibabacloud_oss_v2.credentials import EnvironmentVariableCredentialsProvider
+
+
+tools = []
+
+
+class CredentialsProvider(EnvironmentVariableCredentialsProvider):
+    def __init__(self) -> None:
+        super().__init__()
+        access_key_id = os.getenv('ALIBABA_CLOUD_ACCESS_KEY_ID')
+        access_key_secret = os.getenv('ALIBABA_CLOUD_ACCESS_KEY_SECRET')
+        session_token = os.getenv('ALIBABA_CLOUD_SESSION_TOKEN', None)
+
+        self._credentials = Credentials(
+            access_key_id, access_key_secret, session_token)
+
+    def get_credentials(self) -> Credentials:
+        return self._credentials
+
+
+def create_client(region_id: str) -> oss.Client:
+    credentials_provider = CredentialsProvider()
+    cfg = oss.config.load_default()
+    cfg.credentials_provider = credentials_provider
+    cfg.region = region_id
+    return oss.Client(cfg)
+
+
+@tools.append
+def ListBuckets(
+    RegionId: str = Field(description='AlibabaCloud region ID', default='cn-hangzhou'),
+    Prefix: str = Field(description='AlibabaCloud OSS Bucket Name prefix', default=None)
+):
+    """列出指定区域的所有OSS存储空间。"""
+    client = create_client(region_id=RegionId)
+    paginator = client.list_buckets_paginator()
+    results = []
+    for page in paginator.iter_page(oss.ListBucketsRequest(prefix=Prefix)):
+        for bucket in page.buckets:
+            results.append(bucket.__str__())
+    return results
+
+
+@tools.append
+def ListObjects(
+    RegionId: str = Field(description='AlibabaCloud region ID', default='cn-hangzhou'),
+    BucketName: str = Field(description='AlibabaCloud OSS Bucket Name'),
+    Prefix: str = Field(description='AlibabaCloud OSS Bucket Name prefix', default=None)
+):
+    """获取指定OSS存储空间中的所有文件信息。"""
+    if not BucketName:
+        raise ValueError("Bucket name is required")
+    client = create_client(region_id=RegionId)
+    paginator = client.list_objects_v2_paginator()
+    results = []
+    for page in paginator.iter_page(oss.ListObjectsV2Request(
+            bucket=BucketName,
+            prefix=Prefix
+        )):
+        for object in page.contents:
+            results.append(object.__str__())
+    return results
+
+
+@tools.append
+def PutBucket(
+    RegionId: str = Field(description='AlibabaCloud region ID', default='cn-hangzhou'),
+    BucketName: str = Field(description='AlibabaCloud OSS Bucket Name'),
+    StorageClass: str = Field(description='The Storage Type of AlibabaCloud OSS Bucket, The value range is as follows: '
+                                          'Standard (default): standard storage, '
+                                          'IA: infrequent access, Archive: archive storage, '
+                                          'ColdArchive: cold archive storage, '
+                                          'DeepColdArchive: deep cold archive storage', default='Standard'),
+    DataRedundancyType: str = Field(description='The data disaster recovery type of AlibabaCloud OSS Bucket, '
+                                                'LRS (default): Locally redundant LRS, which stores your data '
+                                                'redundantly on different storage devices in the same availability zone. '
+                                                'ZRS: Intra-city redundant ZRS, which uses a multi-availability zone '
+                                                '(AZ) mechanism to store your data redundantly in three availability '
+                                                'zones in the same region.', default='LRS')
+):
+    """创建一个新的OSS存储空间。"""
+    client = create_client(region_id=RegionId)
+    result = client.put_bucket(oss.PutBucketRequest(
+        bucket=BucketName,
+        create_bucket_configuration=oss.CreateBucketConfiguration(
+            storage_class=StorageClass,
+            data_redundancy_type=DataRedundancyType
+        )
+    ))
+    return result.__str__()
+
+
+@tools.append
+def DeleteBucket(
+    RegionId: str = Field(description='AlibabaCloud region ID', default='cn-hangzhou'),
+    BucketName: str = Field(description='AlibabaCloud OSS Bucket Name')
+):
+    """删除指定的OSS存储空间。"""
+    client = create_client(region_id=RegionId)
+    result = client.delete_bucket(oss.DeleteBucketRequest(bucket=BucketName))
+    return result.__str__()
