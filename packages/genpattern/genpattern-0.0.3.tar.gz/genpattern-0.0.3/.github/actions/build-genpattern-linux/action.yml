@@ -1,0 +1,59 @@
+name: "Build genpattern – Linux"
+description: "Build, test and package genpattern on Linux"
+
+inputs:
+  artifact_name:
+    description: "Name for the uploaded build artifact"
+    required: true
+  build_sdist:
+    description: "If true, Docker also builds the source distribution"
+    default: "false"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare directories
+      run: mkdir -p dist artifact
+      shell: bash
+
+    - name: Cache Docker images
+      uses: AndreKurait/docker-cache@0.6.0
+      with:
+        key: docker-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('Dockerfile', 'docker/**') }}
+
+    - name: Build Docker builder image
+      run: |
+        if docker image inspect gp_cpp_builder >/dev/null 2>&1; then
+          echo "Docker builder image exists. Skipping build."
+        else
+          docker build . -t gp_cpp_builder
+        fi
+      shell: bash
+
+    - name: Build and test in Docker
+      run: docker run --rm -v "$(pwd):/app" gp_cpp_builder
+      shell: bash
+
+    - name: Stage shared library
+      run: cp build/gp_cpp/libgenpattern.so artifact/
+      shell: bash
+
+    - name: Stage wheels and sdist
+      run: |
+        cp dist/*.whl      artifact/ 2>/dev/null || true
+        cp dist/*.tar.gz   artifact/ 2>/dev/null || true
+      shell: bash
+
+    - name: Upload wheels and sdist
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheels-${{ inputs.artifact_name }}
+        path: |
+          dist/*.whl
+          dist/*.tar.gz
+
+    - name: Upload Linux build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: artifact/
