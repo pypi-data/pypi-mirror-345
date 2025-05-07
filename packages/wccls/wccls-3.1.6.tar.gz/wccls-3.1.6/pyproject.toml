@@ -1,0 +1,90 @@
+[project]
+name = "wccls"
+version = "3.1.6"
+description = "Scraper for the WCCLS account page"
+maintainers = [
+	{ name = "Rehan Khwaja", email = "rehan@khwaja.name" }
+]
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+classifiers = [
+	"Development Status :: 5 - Production/Stable",
+	"Intended Audience :: Developers",
+	"Programming Language :: Python :: 3.9",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "beautifulsoup4>=4.9.3",
+    "requests>=2.25.1",
+    "urllib3>=1.26 ; python_full_version >= '3.10'",
+    "aiohttp>=3.9",
+]
+
+[project.urls]
+Homepage = "https://github.com/rkhwaja/wccls"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=7.1",
+    "pytest-cov>=2.10.1",
+    "pytest-asyncio>=0.16.0",
+    "poethepoet>=0.16.4",
+    "ruff>=0.6.3",
+]
+
+[tool.poe.tasks]
+lint = "ruff check src tests"
+
+[tool.poe.tasks.test]
+shell = """
+pytest --cov=src/wccls || exit 1
+coverage xml
+"""
+
+[tool.ruff]
+line-length = 200
+lint.ignore = [
+	"A005",   # disallows shadowing a builtin module
+	"ANN",    # requires annotations
+	"B011",   # disallows assert False
+	"D",      # requires docstrings
+	"DTZ",    # requires aware datetimes
+	"EM",     # disallows f-strings in exception constructors
+	"FBT003", # disallows boolean positional parameters
+	"FIX002", # disallows TODOs
+	"I",      # isort - produces false positives
+	"N",      # PEP8 naming
+	"PT013",  # requires importing pytest in a particular way
+	"PT015",  # No `assert False` in tests
+	"PTH123", # disallows use of builtin open
+	"S101",   # disallows use of assert
+	"TC",     # requires use of type-checking blocks
+	"TD",     # requires a specific format of TODO comments
+	"TRY003", # disallows long exception messages
+	"W191",   # disallows tab indentation
+	]
+lint.select = ["ALL"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"__init__.py" = [
+	"F403", # disallows star imports
+	]
+"tests/*" = [
+	"INP001", # disallows namespace packages
+	]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+multiline-quotes = "single"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

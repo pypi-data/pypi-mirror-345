@@ -1,0 +1,24 @@
+rule infer
+  command = /Users/rehan/.virtualenvs/wccls/bin/python -m pytype.single --imports_info $imports --module-name $module -V 3.9 -o $out --fix-module-collisions --no-report-errors --nofail --quick $in
+  description = infer $module
+rule check
+  command = /Users/rehan/.virtualenvs/wccls/bin/python -m pytype.single --imports_info $imports --module-name $module -V 3.9 -o $out --analyze-annotated --fix-module-collisions --nofail --quick $in
+  description = check $module
+build /Users/rehan/src/wccls/.pytype/pyi/wccls/wccls.pyi: check /Users/rehan/src/wccls/wccls/wccls.py
+  imports = /Users/rehan/src/wccls/.pytype/imports/wccls.wccls.imports
+  module = wccls.wccls
+build /Users/rehan/src/wccls/.pytype/pyi/wccls/parser.pyi: check /Users/rehan/src/wccls/wccls/parser.py | /Users/rehan/src/wccls/.pytype/pyi/wccls/wccls.pyi
+  imports = /Users/rehan/src/wccls/.pytype/imports/wccls.parser.imports
+  module = wccls.parser
+build /Users/rehan/src/wccls/.pytype/pyi/wccls/bibliocommons.pyi: check /Users/rehan/src/wccls/wccls/bibliocommons.py | /Users/rehan/src/wccls/.pytype/pyi/wccls/parser.pyi /Users/rehan/src/wccls/.pytype/pyi/wccls/wccls.pyi
+  imports = /Users/rehan/src/wccls/.pytype/imports/wccls.bibliocommons.imports
+  module = wccls.bibliocommons
+build /Users/rehan/src/wccls/.pytype/pyi/wccls/__init__.pyi: check /Users/rehan/src/wccls/wccls/__init__.py | /Users/rehan/src/wccls/.pytype/pyi/wccls/wccls.pyi /Users/rehan/src/wccls/.pytype/pyi/wccls/bibliocommons.pyi
+  imports = /Users/rehan/src/wccls/.pytype/imports/wccls.__init__.imports
+  module = wccls.__init__
+build /Users/rehan/src/wccls/.pytype/pyi/tests/__init__.pyi: check /Users/rehan/src/wccls/tests/__init__.py
+  imports = /Users/rehan/src/wccls/.pytype/imports/tests.__init__.imports
+  module = tests.__init__
+build /Users/rehan/src/wccls/.pytype/pyi/tests/test_main.pyi: check /Users/rehan/src/wccls/tests/test_main.py | /Users/rehan/src/wccls/.pytype/pyi/wccls/__init__.pyi
+  imports = /Users/rehan/src/wccls/.pytype/imports/tests.test_main.imports
+  module = tests.test_main
