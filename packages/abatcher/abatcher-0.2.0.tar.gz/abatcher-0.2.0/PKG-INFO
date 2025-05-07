@@ -1,0 +1,65 @@
+Metadata-Version: 2.3
+Name: abatcher
+Version: 0.2.0
+Summary: Parallel HTTP request batcher with rate limiting, retries, connection pooling, and more.
+Author: David Gasquez
+Author-email: David Gasquez <davidgasquez@gmail.com>
+Requires-Dist: aiometer>=1.0.0
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: tenacity>=9.1.2
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+
+# `abatcher`
+
+Simple parallel HTTP request batcher with rate limiting, retries, connection pooling, and more. The entire API is only 1 function.
+
+## 🛠️ Usage
+
+Using abatcher should be as simple as:
+
+```python
+import abatcher
+
+requests = [
+    # Simple URL GET request
+    "https://httpbin.org/anything",
+    # Custom request
+    {
+        "url": "https://httpbin.org/post",
+        "method": "POST",
+        "params": {"name": "Test"},
+        "headers": {"X-Custom": "value"},
+    },
+]
+
+results = abatcher.run(requests)
+
+print(f"Batch requests results: {results}")
+```
+
+If you need more control, you can also send a custom client.
+
+```python
+import httpx
+import abatcher
+
+custom_client = httpx.AsyncClient(
+    auth=("user", "pass"),
+    timeout=httpx.Timeout(45.0),
+    limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
+)
+
+results = abatcher.run(
+    requests,
+    client=custom_client,
+    max_concurrent=20,
+    max_per_second=10,
+    cache=True,
+    cache_dir="custom_cache",
+    cache_ttl=3600,
+)
+
+print(f"Batch requests results: {results}")
+
+```
