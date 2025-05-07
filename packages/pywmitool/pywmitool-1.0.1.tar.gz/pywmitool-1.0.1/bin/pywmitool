@@ -1,0 +1,177 @@
+#!/usr/bin/env python
+'''Python WMI Query Tool
+
+Shell tool for performing WMI queries
+'''
+import sys
+import argparse
+import asyncio
+import logging
+import time
+import getpass
+from aiowmi.connection import Connection
+from aiowmi.query import Query
+from aiowmi.exceptions import WbemFalse, ServerNotOptimized
+
+
+async def main(
+        address, username, password, domain,
+        wqlstr, namespace, timeout, noopt):
+    query = Query(wqlstr, namespace=namespace)
+
+    start = time.time()
+    service = None
+
+    conn = Connection(address, username, password, domain=domain)
+    await conn.connect(timeout=timeout)
+    try:
+        service = await conn.negotiate_ntlm()
+
+        await query.start(conn, service)
+
+        if not noopt:
+            try:
+                await query.optimize()
+                logging.debug('Using Smart Enum requests')
+            except ServerNotOptimized:
+                logging.debug('Server is not optimized')
+        else:
+            logging.debug('Optimize disabled')
+
+        while True:
+            try:
+                res = await query.next()
+            except WbemFalse:
+                break
+            props = res.get_properties()
+
+            for name, prop in props.items():
+                if prop.value is None:
+                    if prop.get_type() is int:
+                        prop.value = 0
+
+                print(name, '\n\t', prop.value)
+
+                if prop.is_reference():
+                    try:
+                        res = await prop.get_reference(conn, service)
+                    except WbemFalse:
+                        continue
+                    ref_props = res.get_properties()
+                    for name, prop in ref_props.items():
+                        print('\t\t', name, '\n\t\t\t', prop.value)
+
+        await query.done()
+    except Exception:
+        raise
+    finally:
+        if service:
+            service.close()
+        conn.close()
+        end = time.time()
+        logging.debug(f'done in {end-start}')
+
+
+__version__ = (1, 0, 1)  # Update setup.py as well
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        '-a',
+        '--address',
+        type=str,
+        required=True,
+        help='host name or address of remote host')
+
+    parser.add_argument(
+        '-u',
+        '--username',
+        type=str,
+        required=True,
+        help='Username')
+
+    parser.add_argument(
+        '-p',
+        '--password',
+        type=str,
+        help='password (asked if not provided)')
+
+    parser.add_argument(
+        '-d',
+        '--domain',
+        type=str,
+        default='',
+        help='optional domain name')
+
+    parser.add_argument(
+        '-q',
+        '--wql',
+        type=str,
+        required=True,
+        help='WQL string')
+
+    parser.add_argument(
+        '-n',
+        '--namespace',
+        type=str,
+        default='root/cimv2',
+        help='Namespace, defaults to `root/cimv2`')
+
+    parser.add_argument(
+        '-t',
+        '--timeout',
+        type=int,
+        default=5,
+        help='Timeout in seconds')
+
+    parser.add_argument(
+        '--no-optimize',
+        action='store_true',
+        help='Disable Smart Enum for optimized queries')
+
+    parser.add_argument(
+        '--debug',
+        action='store_true',
+        help='Enable debug logging')
+
+    parser.add_argument(
+        '--version',
+        action='store_true',
+        help='Print version and exit')
+
+    args = parser.parse_args()
+
+    if not args.password:
+        args.password = getpass.getpass(prompt='Password: ', stream=None)
+
+    if args.version:
+        print(__version__)
+        sys.exit(0)
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG if args.debug else logging.WARNING)
+
+    ch = logging.StreamHandler()
+
+    ch.setLevel(logging.DEBUG if args.debug else logging.WARNING)
+
+    formatter = logging.Formatter(
+            fmt='[%(levelname)1.1s %(asctime)s %(module)s:%(lineno)d] ' +
+                '%(message)s',
+            datefmt='%y%m%d %H:%M:%S',
+            style='%')
+
+    ch.setFormatter(formatter)
+
+    loop = asyncio.new_event_loop()
+    loop.run_until_complete(main(
+        args.address,
+        args.username,
+        args.password,
+        args.domain,
+        args.wql,
+        args.namespace,
+        args.timeout,
+        args.no_optimize
+    ))
