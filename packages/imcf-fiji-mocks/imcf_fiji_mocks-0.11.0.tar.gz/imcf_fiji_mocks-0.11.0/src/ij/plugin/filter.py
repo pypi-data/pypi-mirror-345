@@ -1,0 +1,2 @@
+ThresholdToSelection = None
+ImageProcessor = None
