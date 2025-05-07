@@ -1,0 +1,65 @@
+Metadata-Version: 2.4
+Name: traia-tools
+Version: 0.1.18
+Summary: Custom tools for Traia/CrewAI for Web3 and crypto trading strategies
+Author-email: Traia <support@traia.io>
+License-Expression: MIT
+Project-URL: Documentation, https://docs.crewai.com/
+Project-URL: Source, https://github.com/traia/traia-tools
+Keywords: crewai,web3,cryptocurrency,tools
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests==2.32.3
+Requires-Dist: crewai==0.114.0
+Requires-Dist: pydantic==2.11.3
+Requires-Dist: transformers==4.46.3
+Requires-Dist: beautifulsoup4==4.13.4
+Requires-Dist: boto3==1.37.36
+Requires-Dist: embedchain==0.1.128
+Dynamic: license-file
+
+# Traia Tools
+
+**Traia Tools** is a collection of custom Python tools for [CrewAI](https://docs.crewai.com/) agents that specialize in Web3 and cryptocurrency trading strategies. This repository is structured as a Python package to be installed via `pip`, providing tools that integrate smoothly into CrewAI environments.
+
+## Features
+- **Sentiment Analysis Tool**: Analyze sentiment of text relevant to crypto markets or social media chatter.
+- **CoinGecko Quote Tool**: Fetch and process cryptocurrency price data from CoinGecko.
+
+## Installation
+
+1. Clone or download this repository.
+2. Navigate to the `traia-tools` folder.
+3. Install via `pip` (this will use the `pyproject.toml` file):
+   ```bash
+   pip install .
+   ```
+
+## Usage
+After installation, you can import and use the tools directly in your code, such as:
+
+```python
+from traia_tools.tools import CoinGeckoQuoterTool
+
+# Example usage
+quoter = CoinGeckoQuoterTool()
+quote = quoter.run("BTC")
+print(quote)
+```
+
+## Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your changes.
+3. Make your changes and commit them.
+4. Push your changes to your fork.
+5. Create a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
