@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import json
+import platform
+import subprocess
+from datetime import datetime
+from pathlib import Path
+
+def find_mkdocs_projects():
+    try:
+        git_root = Path(subprocess.check_output(
+            ['git', 'rev-parse', '--show-toplevel'],
+            text=True, encoding='utf-8'
+        ).strip())
+
+        projects = []
+        for config_file in git_root.rglob('mkdocs.y*ml'):
+            if config_file.name.lower() in ('mkdocs.yml', 'mkdocs.yaml'):
+                projects.append(config_file.parent)
+
+        return projects
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to find the Git repository root: {e}", file=sys.stderr)
+        return []
+
+def get_file_dates(file_path):
+    try:
+        stat = os.stat(file_path)
+        modified = datetime.fromtimestamp(stat.st_mtime)
+
+        system = platform.system().lower()
+        if system.startswith('win'):  # Windows
+            created = datetime.fromtimestamp(stat.st_ctime)
+        elif system == 'darwin':  # macOS
+            try:
+                created = datetime.fromtimestamp(stat.st_birthtime)
+            except AttributeError:
+                created = datetime.fromtimestamp(stat.st_ctime)
+        else:  # Linux 和其他系统
+            created = modified
+
+        return created.isoformat(), modified.isoformat()
+    except (OSError, ValueError):
+        current_time = datetime.now()
+        return current_time.isoformat(), current_time.isoformat()
+
+def update_dates_cache():
+    for project_dir in find_mkdocs_projects():
+        docs_dir = project_dir / 'docs'
+        if not docs_dir.exists():
+            print(f"Document directory does not exist: {docs_dir}")
+            continue
+
+        dates_cache = {}
+        md_files = list(docs_dir.rglob("*.md"))
+        
+        for md_file in md_files:
+            try:
+                rel_path = str(md_file.relative_to(docs_dir))
+                created, modified = get_file_dates(md_file)
+                dates_cache[rel_path] = {
+                    "created": created,
+                    "modified": modified
+                }
+            except Exception as e:
+                print(f"Error processing file {md_file}: {e}")
+
+        if not dates_cache:
+            continue
+
+        cache_file = docs_dir / '.dates_cache.json'
+        try:
+            with open(cache_file, "w") as f:
+                json.dump(dates_cache, f, indent=2, ensure_ascii=False)
+            subprocess.run(["git", "add", str(cache_file)], check=True)
+            # print(f"The cache file {cache_file} has been updated")
+        except Exception as e:
+            print(f"Error writing to cache file: {e}", file=sys.stderr)
+            raise
+
+if __name__ == "__main__":
+    try:
+        update_dates_cache()
+    except Exception as e:
+        print(f"Hook execution error: {e}", file=sys.stderr)
+        sys.exit(1)
