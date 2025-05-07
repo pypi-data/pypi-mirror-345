@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "media-similarity"
+dependencies = [
+  "media-tagging",
+  "igraph",
+]
+requires-python = ">=3.8"
+description = "Groups similar media into clusters"
+readme = "README.md"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+server = [
+  "media-tagging[server]",
+]
+all = [
+  "media-similarity[server]"
+]
+
+
+[tool.setuptools.dynamic]
+version = {attr = "media_similarity.__version__"}
+
+[options.extras_require]
+test =  [
+  "pytest",
+  "pytest-cov"
+]
+
+[project.scripts]
+media-similarity="media_similarity.entrypoints.cli:main"
