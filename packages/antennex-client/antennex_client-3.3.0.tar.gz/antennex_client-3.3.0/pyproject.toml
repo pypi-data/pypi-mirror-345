@@ -1,0 +1,94 @@
+[build-system]
+requires = [ "setuptools",]
+build-backend = "setuptools.build_meta"
+
+[tool.poetry]
+name = "antennex_client"
+version = "3.3.0"
+description = "ANTENNEX Reverberation Chamber API"
+authors = [ "ANTENNEX B.V. <info@antennex.tech>",]
+license = "BSD-3-Clause"
+readme = "README.md"
+keywords = [ "OpenAPI", "OpenAPI-Generator", "ANTENNEX Reverberation Chamber API",]
+maintainers = [ "Roel Budé <roel.bude@antennex.tech>", "Joris Dobbelsteen <joris.dobbelsteen@antennex.tech",]
+homepage = "https://antennex.tech/"
+[[tool.poetry.include]]
+path = "antennex_client/py.typed"
+format = [ "sdist", "wheel",]
+
+[[tool.poetry.include]]
+path = "antennex_client/*"
+format = [ "sdist", "wheel",]
+
+[[tool.poetry.include]]
+path = "antennex_client/**/*"
+format = [ "sdist", "wheel",]
+
+[tool.mypy]
+files = [ "antennex_client", "tests",]
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+strict_concatenate = true
+check_untyped_defs = true
+disallow_subclassing_any = true
+disallow_untyped_decorators = true
+disallow_any_generics = true
+
+[tool.poetry.dependencies]
+python = "^3.8"
+urllib3 = ">= 1.25.3 < 3.0.0"
+python-dateutil = ">= 2.8.2"
+pydantic = ">= 2"
+typing-extensions = ">= 4.7.1"
+matplotlib = ">=3.5.1"
+[[tool.poetry.dependencies.numpy]]
+python = "=3.7"
+version = ">=1.21.5"
+
+[[tool.poetry.dependencies.numpy]]
+python = "^3.8"
+version = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = ">= 7.2.1"
+pytest-cov = ">= 2.8.1"
+tox = ">= 3.9.0"
+flake8 = ">= 4.0.0"
+types-python-dateutil = ">= 2.8.19.14"
+mypy = ">= 1.5"
+
+[tool.poetry.extras]
+docs = [ "Sphinx", "sphinx-rtd-theme", "sphinx-automodapi",]
+
+[tool.pylint."MESSAGES CONTROL"]
+extension-pkg-whitelist = "pydantic"
+
+[tool.pytest.ini_options]
+addopts = [ "--import-mode=importlib",]
+pythonpath = [ ".",]
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+[[tool.poetry.group.docs.dependencies.Sphinx]]
+python = "<3.8"
+version = "<6.0"
+
+[[tool.poetry.group.docs.dependencies.Sphinx]]
+python = ">=3.8,<3.9"
+version = "<7.2"
+
+[[tool.poetry.group.docs.dependencies.Sphinx]]
+python = ">=3.9"
+version = ">=7.2"
+
+[tool.poetry.group.docs.dependencies.sphinx-rtd-theme]
+version = ">=0.5"
+optional = true
+
+[tool.poetry.group.docs.dependencies.sphinx-automodapi]
+version = ">=0.5"
+optional = true
