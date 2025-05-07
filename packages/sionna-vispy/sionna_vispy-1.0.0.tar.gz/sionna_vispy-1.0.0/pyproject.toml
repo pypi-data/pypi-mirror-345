@@ -1,0 +1,150 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+
+[dependency-groups]
+dev = [
+  {include-group = "tests"},
+  "bump-my-version>=0.10.0",
+  "pre-commit>=3.5.0",
+]
+tests = [
+  "pytest>=8.3.3",
+  "sionna-vispy[recommended]",
+]
+
+[project]
+authors = [
+  {name = "Jérome Eertmans", email = "jeertmans@icloud.com"},
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Topic :: Multimedia :: Graphics",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = [
+  "drjit>=1.0.3",
+  "matplotlib>=3.7.5",
+  "numpy>=1.24.4",
+  "sionna-rt>=1.0.0",
+  "vispy>=0.14.2",
+]
+description = "VisPy scene previewer for Sionna"
+dynamic = ["readme", "version"]
+keywords = ["sionna", "vispy", "raytracing", "preview"]
+license = "MIT"
+name = "sionna-vispy"
+requires-python = ">= 3.8"
+
+[project.optional-dependencies]
+recommended = [
+  "jupyter-rfb>=0.3.3",
+  "pyside6>=6.0.0",
+]
+
+[project.urls]
+Changelog = "https://github.com/jeertmans/sionna-vispy/releases"
+Documentation = "https://github.com/jeertmans/sionna-vispy"
+Founding = "https://github.com/sponsors/jeertmans"
+Homepage = "https://github.com/jeertmans/sionna-vispy"
+Repository = "https://github.com/jeertmans/sionna-vispy"
+
+[tool.bumpversion]
+allow_dirty = false
+commit = true
+commit_args = ""
+current_version = "1.0.0"
+ignore_missing_version = false
+message = "chore(deps): bump version from {current_version} to {new_version}"
+parse = '(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(\.(?P<fix>\d+))?'
+regex = false
+replace = "{new_version}"
+search = "{current_version}"
+serialize = ["{major}.{minor}.{patch}.{fix}", "{major}.{minor}.{patch}"]
+sign_tags = false
+tag = false
+tag_message = "chore(version): {current_version} → {new_version}"
+tag_name = "v{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "src/sionna_vispy/__version__.py"
+replace = '__version__ = "{new_version}"'
+search = '__version__ = "{current_version}"'
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+replace = "v{new_version}"
+search = "Unreleased"
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+replace = "v{new_version}"
+search = "unreleased"
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+replace = "v{current_version}...v{new_version}"
+search = "v{current_version}...HEAD"
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+replace = '''<!-- start changelog -->
+
+(unreleased)=
+## [Unreleased](https://github.com/jeertmans/sionna-vispy/compare/v{new_version}...HEAD)'''
+search = "<!-- start changelog -->"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sionna_vispy"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
+pattern = '> \[!([A-Z]+)\]'
+replacement = '> **\1:**'
+
+[tool.hatch.version]
+path = "src/sionna_vispy/__version__.py"
+
+[tool.pyright]
+include = ["src/sionna_vispy"]
+venv = ".venv"
+venvPath = "."
+
+[tool.pytest.ini_options]
+filterwarnings = [
+  "error",
+  "ignore:((.|\n)*)Sentinel is not a public part of the traitlets API((.|\n)*):DeprecationWarning",
+  "ignore: Conversion of an array with ndim > 0 to a scalar is deprecated.*:DeprecationWarning",
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+extend-select = ["B", "C90", "I", "N", "RUF", "UP", "T"]
+isort = {known-first-party = ["sionna_vispy", "tests"]}
+
+[tool.uv]
+override-dependencies = [
+  "matplotlib>=3.7.5",
+  "numpy>=1.24.4",
+  "scipy>=1.10.1",
+]
+
+[tool.uv.sources]
+sionna-vispy = {workspace = true}

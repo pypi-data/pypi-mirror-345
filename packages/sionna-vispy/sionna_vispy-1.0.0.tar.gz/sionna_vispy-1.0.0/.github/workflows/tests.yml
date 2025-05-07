@@ -1,0 +1,40 @@
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+  workflow_dispatch:
+
+name: Tests
+
+env:
+  QT_QPA_PLATFORM: offscreen
+  DISPLAY: :99
+
+jobs:
+  pytest:
+    strategy:
+      fail-fast: false
+      matrix:
+        pyversion: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        exclude:  # See https://github.com/NVlabs/sionna-rt/issues/15
+        - pyversion: '3.8'
+        - pyversion: '3.9'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+
+    - name: Install Linux dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install freeglut3-dev xvfb x11-utils llvm
+        nohup Xvfb $DISPLAY -screen 0 1400x900x24 -dpi 96 +extension RANDR +render &
+
+    - name: Run pytest
+      run: uv run --python ${{ matrix.pyversion }} --locked pytest
