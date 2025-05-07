@@ -1,0 +1,55 @@
+site_name: openaivec, A Pandas and Spark extension for OpenAI
+site_url: https://openaivec.anareg.design
+site_description: Library for processing data using OpenAI, compatible with Pandas and Spark DataFrames.
+site_author: anaregdesign
+theme:
+  name: material
+  features:
+    - social
+    - navigation.expand
+    - navigation.sections
+
+nav:
+  - Home: index.md
+  - PyPI: https://pypi.org/project/openaivec/
+  - GitHub: https://github.com/anaregdesign/openaivec
+  - Examples:
+      - examples/pandas.ipynb
+      - examples/spark.ipynb
+      - examples/prompt.ipynb
+      - examples/generate_faq.ipynb
+      - examples/aio.ipynb
+  - API Reference:
+      - pandas_ext: api/pandas_ext.md
+      - spark: api/spark.md
+      - prompt: api/prompt.md
+      - util: api/util.md
+      - responses: api/responses.md
+      - embeddings: api/embeddings.md
+
+extra:
+  tags:
+    - Python
+    - OpenAI
+    - Pandas
+    - Apache Spark
+    - vectorization
+    - embeddings
+    - NLP
+  analytics:
+    provider: google
+    property: G-J7N4M1XMRZ
+
+plugins:
+  - search
+  - mkdocs-jupyter
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - src
+          docstring_style: google
+          show_submodules: true
+
+markdown_extensions:
+  - pymdownx.superfences
